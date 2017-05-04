@@ -140,7 +140,7 @@ export default {
 
 
     // Footer
-  footerHeight: 50,
+  footerHeight: 40,
   footerDefaultBg: '#FFF',
 
 

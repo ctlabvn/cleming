@@ -37,17 +37,9 @@ export default class extends Component {
                 <Button onPress={e=>this.tabClick(item.route)} textSmall key={index}>                        
                     <Icon name={item.icon} style={
                       item.route === route  ? styles.footerIconActive : styles.footerIcon
-                    } />
-                    <Text style={item.route === route ? styles.active : {}}>{item.name}</Text>
+                    } />                    
                 </Button>
-              )}                
-              <Button onPress={e=>this.tabClick('notification')} badge textSmall>                  
-                  <Badge style={styles.badgeText}><Text>5</Text></Badge>      
-                  <Icon name="notification" style={
-                    {...(route === 'notification' ? styles.footerIconActive : styles.footerIcon), ...styles.badgeIcon}
-                  }/>
-                  <Text style={route === 'notification' ? styles.active : {}}>Notification</Text>
-              </Button>
+              )}
             </FooterTab>
         </Footer>            
       )
