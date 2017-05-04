@@ -25,9 +25,19 @@ import Message from './containers/Message'
 import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
-
+import TransactionList from './containers/TransactionList'
+import MerchantOverview from './containers/MerchantOverview'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    merchantOverview: {
+        title: 'Merchant Name',
+        Page: MerchantOverview
+    },
+    transactionList: {
+        title: 'Danh sách giao dịch',
+        Page: TransactionList,
+        headerType: 'none'
+    },
     notFound: {
         title: 'Not Found',
         Page: NotFound,

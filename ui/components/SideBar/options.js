@@ -1,6 +1,16 @@
 export default { 
   listItems: [
     {
+      name: 'Merchant Overview',
+      route: 'merchantOverview',
+      icon: 'setting'
+    },
+    {
+      name: 'Danh sách giao dịch',
+      route: 'transactionList',
+      icon: 'setting'
+    },
+    {
       name: 'Network',
       route: 'network',
       icon: 'network',
