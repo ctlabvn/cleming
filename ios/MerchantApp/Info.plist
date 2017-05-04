@@ -86,6 +86,7 @@
       <string>Skia.ttf</string>
       <string>Times New Roman.ttf</string>
       <string>Zocial.ttf</string>
+      <string>clingme_font.ttf</string>
     </array>
     <key>UILaunchStoryboardName</key>
     <string>LaunchScreen</string>
