@@ -6,12 +6,15 @@ import {
     Button, List, ListItem, Switch, Spinner,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
+import CacheableImage from '~/ui/components/CacheableImage'
 
 import { Text } from 'react-native'
 
 import styles from './styles'
+import UserCard from './components/UserCard'
+import OwnerCard from './components/OwnerCard'
 
-const img = 'http://wordsmith.org/words/images/avatar2_large.png'
+const img = 'https://facebook.github.io/react/img/logo_og.png'
 const data = []
 
 for (let i = 0; i < 5; i++) {
@@ -28,16 +31,13 @@ for (let i = 0; i < 5; i++) {
     })
 }
 
-class UserCard extends Component {
-    render() {
-        return (
-            <View>
-                <Text>{this.props.userName}</Text>
-            </View>
-        )
-    }
-}
-
+data.push({
+    owner: {
+        userName: 'User Name',
+        img: img
+    },
+    employeeList: []
+})
 
 class UserManagement extends Component {
     constructor(props) {
@@ -48,33 +48,71 @@ class UserManagement extends Component {
         }
     }
     
-    renderEmployeeRow(data) {
+    componentDidMount() {
+        
+    }
+    
+    renderEmployeeRow(data, sectionID, rowID, highlightRow) {
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
-                    <Col style={{backgroundColor: 'red', width: '30%'}}>
-                        <Text>Avatar</Text>
+                    <Col style={{width: '20%', flexDirection: 'row'}}>
+                        <Col>
+                            <Row style={styles.topLeftGrid}/>
+                            <Row style={styles.bottomLeftGrid}/>
+                        </Col>
+                        <Col>
+                            <Row style={[styles.topRightGrid, {borderBottomWidth: 1}]}/>
+                            <Row style={[styles.bottomRightGrid, {borderTopWidth: 1}]}/>
+                        </Col>
                     </Col>
-                    <Col style={{backgroundColor: 'blue', width: '70%'}}>
-                        <Row style={{backgroundColor: 'blue', height: '50%'}}>
-                            <Text>Name</Text>
-                        </Row>
-                        <Row style={{backgroundColor: 'green', height: '50%'}}>
-                            <Text>Sub</Text>
-                        </Row>
+                    <Col style={{width: '80%'}}>
+                        <UserCard data={data}/>
                     </Col>
                 </Grid>
             </ListItem>
         )
     }
     
+    renderBlueLineBelowOwner() {
+        return (
+            <View style={{height: 20}}>
+                <Grid>
+                    <Col style={{width: '20%', flexDirection: 'row'}}>
+                        <Col>
+                            <Row style={styles.topLeftGrid}/>
+                            <Row style={styles.bottomLeftGrid}/>
+                        </Col>
+                        <Col>
+                            <Row style={styles.topRightGrid}/>
+                            <Row style={styles.bottomRightGrid}/>
+                        </Col>
+                    </Col>
+                    <Col style={{width: '80%'}}/>
+                </Grid>
+            </View>
+        )
+    }
+    
     renderRow(data) {
+        blueLineBelowOwner = null
+        console.log()
+        if (data.employeeList.length != 0) {
+            blueLineBelowOwner = this.renderBlueLineBelowOwner()
+        }
         return (
             <ListItem style={styles.listItem}>
-                <UserCard userName={data.owner.userName}/>
-                <List
-                    dataArray={data.employeeList}
-                    renderRow={this.renderEmployeeRow.bind(this)}/>
+                <Grid>
+                    <Col>
+                        <View style={{height: 40}}>
+                            <OwnerCard data={data.owner}/>
+                        </View>
+                        {blueLineBelowOwner}
+                        <List
+                            dataArray={data.employeeList}
+                            renderRow={this.renderEmployeeRow.bind(this)}/>
+                    </Col>
+                </Grid>
             </ListItem>
         )
     }
@@ -84,9 +122,13 @@ class UserManagement extends Component {
             <Container>
                 <Content style={{backgroundColor: 'white'}}>
                     <List
+                        style={{marginBottom: 50, marginTop: 20}}
                         dataArray={data}
                         renderRow={this.renderRow.bind(this)}/>
                 </Content>
+                <Button style={styles.addUserButton}>
+                    <Text style={styles.addUserText}>Add User</Text>
+                </Button>
             </Container>
         )
     }
