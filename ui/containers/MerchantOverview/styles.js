@@ -13,7 +13,8 @@ export default {
     },
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
-        marginBottom: 10
+        marginBottom: 10,
+        fontSize: 13
     },
     infoContainer: {
         flexDirection: 'row',

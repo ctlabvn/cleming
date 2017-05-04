@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
+import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import Content from '~/ui/components/Content'
@@ -13,7 +13,7 @@ import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 @connect(null, authAction)
 @reduxForm({ form: 'TestForm' })
-export default class TransactionList extends Component {
+export default class MerchantOverview extends Component {
 
     constructor(props) {
         super(props)
@@ -54,7 +54,8 @@ export default class TransactionList extends Component {
             <View style={styles.container}>
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={styles.contentContainer}>
-                    <View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>
+                    {/*<View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>*/}
+                    <Image source={require('~/assets/images/store_with_background.jpg')} style={{width: '100%', height: 150}}/>
                     <Text style={styles.timeInteval}>13/4/2017 đến 20/4/2017</Text>
                     
                     <View style={styles.infoContainer}>

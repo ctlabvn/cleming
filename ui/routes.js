@@ -27,6 +27,7 @@ import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
+import DeliveryList from './containers/DeliveryList'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
@@ -37,6 +38,10 @@ export default {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
         headerType: 'none'
+    },
+    deliveryList: {
+        title: 'Danh sách giao hàng',
+        Page: DeliveryList
     },
     notFound: {
         title: 'Not Found',
