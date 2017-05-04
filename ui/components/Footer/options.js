@@ -3,22 +3,22 @@ export default {
     {
       name: 'Home Feeds',
       route: 'home',
-      icon: 'home',      
+      icon: 'fbtn-01',      
     },    
     {
       name: 'Delegation',
       route: 'delegation',
-      icon: 'delegation',
+      icon: 'deals',
     },
     {
       name: 'Vault',
       route: 'vault',
-      icon: 'vault',
+      icon: 'report2',
     },
     {
       name: 'Message',
       route: 'message',
-      icon: 'message',
+      icon: 'fbtn-04',
     }, 
   ]
 

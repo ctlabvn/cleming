@@ -155,8 +155,8 @@ export default {
     // Tab
   topTabBarTextSize: 11,
   tabDefaultBg: '#3F51B5',
-  topTabBarTextColor: '#959595',
-  topTabBarActiveTextColor: '#959595',
+  topTabBarTextColor: '#808080',
+  topTabBarActiveTextColor: '#02abd2',
   topTabDefaultBg: '#d7d7d7',
   topTabActiveBgColor: undefined,
   topTabBarBorderColor: 'transparent',
@@ -165,7 +165,7 @@ export default {
 
     // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#00aeef',
+  toolbarDefaultBg: '#00a9d4',
   toolbarHeight: (platform === 'ios') ? 76 : 56,
   toolbarIconSize: (platform === 'ios') ? 20 : 22,
   toolbarSearchIconSize: (platform === 'ios') ? 20 : 23,

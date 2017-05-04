@@ -3,6 +3,7 @@ import { TouchableWithoutFeedback, View } from 'react-native'
 import { Icon as IconNB } from 'native-base'
 import Svg from 'react-native-svg'
 import svgs from './svgs'
+import ClingmeIcon, { glyphMap } from '~/ui/elements/ClingmeIcon'
 
 export default class extends Component {
 
@@ -16,8 +17,13 @@ export default class extends Component {
     const {style={}, name, onPress, ...props} = this.props    
     // fallback to material?
     const svg = svgs[name]
-    if (!svg) 
-        return <IconNB {...this.props} />
+    if (!svg) {
+      return (
+        glyphMap[name] 
+        ? <ClingmeIcon {...this.props} />
+        : <IconNB {...this.props} />
+      )
+    }
 
     const {
       fontSize=24,       
