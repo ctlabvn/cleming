@@ -42,4 +42,7 @@ if(!__DEV__) {
       error: noop,
       warn: noop,
     }
+} else {
+  // To see all the requests in the chrome Dev tools in the network tab.
+  GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
 }
