@@ -141,16 +141,21 @@ export default class App extends Component {
   }
 
   _onLeftClick=(type)=>{
-    const {openDrawer, goBack} = this.props
+    const {goBack} = this.props
     switch(type){
       case 'none':      
-        return false
-      case 'back':
-      case 'searchBack':
+        return false      
+      default:
         return goBack()
+    }      
+  }
+  
+  _onRightClick=(type)=>{
+    const {openDrawer} = this.props
+    switch(type){
       default:
         return openDrawer()
-    }      
+    }
   }
 
   _onTabClick=(type, route)=>{    
@@ -226,7 +231,7 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onItemRef={ref=>this.header=ref} />
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref=>this.header=ref} />
           <Navigator ref={ref=>this.navigator=ref}
               configureScene={this.constructor.configureScene}
               initialRoute={{title, path}}
