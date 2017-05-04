@@ -1,6 +1,5 @@
 import material from '~/theme/variables/material'
-// import {PRIMARY_COLOR} from '~/store/constants/colors'
-const PRIMARY_COLOR = '#1b9dd8'
+import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
     dropdownContainer:{
         position: 'absolute',

@@ -1,5 +1,4 @@
-// import { PRIMARY_COLOR } from '~/store/constants/colors'
-const PRIMARY_COLOR = '#1b9dd8'
+import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
     dateFilter: {
         flexDirection: 'row',
