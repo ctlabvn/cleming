@@ -173,14 +173,14 @@ export default {
         title: 'Interaction',
         Page: Interaction,
     },
-    calendar:{
-        title: 'Calendar',
-        Page: Calendar,
-    },
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
         headerType: 'back',
         footerType: 'none',
+    },
+    calendar:{
+        title: 'Calendar',
+        Page: Calendar,
     }
 }

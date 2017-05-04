@@ -61,5 +61,42 @@ export default {
     addUserText: {
         fontWeight: 'bold',
         color: 'white'
+    },
+    accountButton: {
+        backgroundColor: 'white',
+        paddingLeft: 0,
+        borderWidth: 0,
+        shadowColor: 'white',
+        padding: 0
+    },
+    ownerButton: {
+        backgroundColor: 'white',
+        paddingLeft: 0,
+        borderWidth: 0,
+        shadowColor: 'white',
+        paddingRight: 0,
+        height: 40
+    },
+    modalContainer: {
+        height: 250,
+        width: '90%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        overflow: 'hidden'
+    },
+    modalButton: {
+        backgroundColor: 'white',
+        paddingLeft: 0,
+        borderWidth: 0,
+        shadowColor: 'white',
+        paddingRight: 0
+    },
+    modalCancelButtonText: {
+        color: 'gray',
+        fontWeight: 'bold'
+    },
+    modalOkButtonText: {
+        color: '#00a9d7',
+        fontWeight: 'bold'
     }
 }

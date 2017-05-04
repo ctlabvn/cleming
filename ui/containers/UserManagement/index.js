@@ -6,10 +6,9 @@ import {
     Button, List, ListItem, Switch, Spinner,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import CacheableImage from '~/ui/components/CacheableImage'
-
 import { Text } from 'react-native'
 
+import Modal from '~/ui/components/Modal'
 import styles from './styles'
 import UserCard from './components/UserCard'
 import OwnerCard from './components/OwnerCard'
@@ -42,14 +41,23 @@ data.push({
 class UserManagement extends Component {
     constructor(props) {
         super(props)
-        
         this.state = {
-            
+            modalOpen: false
         }
     }
     
     componentDidMount() {
         
+    }
+    
+    onAccountPress(data) {
+        this.setState({
+            data: data
+        }, () => {
+            this.setState({
+                modalOpen: true
+            })
+        })
     }
     
     renderEmployeeRow(data, sectionID, rowID, highlightRow) {
@@ -66,8 +74,12 @@ class UserManagement extends Component {
                             <Row style={[styles.bottomRightGrid, {borderTopWidth: 1}]}/>
                         </Col>
                     </Col>
-                    <Col style={{width: '80%'}}>
-                        <UserCard data={data}/>
+                    <Col style={{width: '80%', justifyContent: 'center'}}>
+                        <Button
+                            onPress={this.onAccountPress.bind(this, data)}
+                            style={styles.accountButton}>
+                            <UserCard data={data}/>
+                        </Button>
                     </Col>
                 </Grid>
             </ListItem>
@@ -104,9 +116,9 @@ class UserManagement extends Component {
             <ListItem style={styles.listItem}>
                 <Grid>
                     <Col>
-                        <View style={{height: 40}}>
+                        <Button style={styles.ownerButton}>
                             <OwnerCard data={data.owner}/>
-                        </View>
+                        </Button>
                         {blueLineBelowOwner}
                         <List
                             dataArray={data.employeeList}
@@ -114,6 +126,36 @@ class UserManagement extends Component {
                     </Col>
                 </Grid>
             </ListItem>
+        )
+    }
+    
+    renderModal() {
+        return(
+            <View style={styles.modalContainer}>
+                <Grid>
+                    <Col>
+                        <Row style={{height: '30%', width: '90%', alignSelf: 'center'}}>
+                            <UserCard data={this.state.data}/>
+                        </Row>
+                        <Row style={{height: '50%'}}>
+    
+                        </Row>
+                        <Row style={{height: '20%'}}>
+                            <Col style={{width: '50%'}}/>
+                            <Col style={{width: '25%'}}>
+                                <Button style={styles.modalButton}>
+                                    <Text style={styles.modalCancelButtonText}>Cancel</Text>
+                                </Button>
+                            </Col>
+                            <Col style={{width: '25%'}}>
+                                <Button style={styles.modalButton}>
+                                    <Text style={styles.modalOkButtonText}>OK</Text>
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Grid>
+            </View>
         )
     }
     
@@ -126,6 +168,9 @@ class UserManagement extends Component {
                         dataArray={data}
                         renderRow={this.renderRow.bind(this)}/>
                 </Content>
+                <Modal onCloseClick={e=>this.setState({modalOpen:false})} open={this.state.modalOpen}>
+                    {this.renderModal()}
+                </Modal>
                 <Button style={styles.addUserButton}>
                     <Text style={styles.addUserText}>Add User</Text>
                 </Button>
