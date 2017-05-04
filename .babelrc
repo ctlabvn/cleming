@@ -1,0 +1,7 @@
+{
+    "plugins": [
+      "transform-decorators-legacy", 
+      "babel-plugin-root-import"
+    ],
+    "presets": ["react-native"]
+}
