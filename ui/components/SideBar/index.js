@@ -40,7 +40,7 @@ export default class extends Component {
   }
 
   render() {
-    const {profile, forwardTo} = this.props    
+    const {profile, forwardTo, closeDrawer} = this.props    
     if(!profile)
       return (<Spinner color="green" />)
     // by default it is flex, so do not set flex portion
@@ -50,30 +50,24 @@ export default class extends Component {
         <Content
           bounces={false}
           style={styles.container}
-        >
-          <View style={styles.drawerCover}>
-            <CacheableImage source={avatar}
-              placeholder={<Icon name="image" style={styles.drawerImage}/>} 
-              style={styles.drawerImage}/>            
-
-            <Text large style={styles.text}>{profile.DisplayName}</Text>
-            <Text small style={styles.text}>{profile.Birthdate}</Text>
-            <View style={styles.editContainer}>
-              <Text small style={styles.text}>{profile.City}, {profile.Country}</Text>
-              <Icon onPress={e=>this.navigateTo('user/profile')} name="edit" style={styles.iconEdit} />
-            </View>
+        >          
+          <View row style={styles.drawerCover}>                        
+            <Text bold style={styles.text}>More</Text>            
           </View>
+          <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
+            <Icon name="close" style={styles.buttonIconClose} />
+          </Button>
           {options.listItems.map((item, index) =>
-              <ListItem key={index} button onPress={e => this.navigateTo(item.route)} >
-                <Left>
-                  <Icon name={item.icon} style={styles.icon} />                  
-                  <Text style={styles.iconText}>{item.name}</Text>
-                </Left>                
-              </ListItem>)}
-          
-          <ListItem noBorder style={styles.listItem} button onPress={this._handleLogout} >
+          <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
             <Left>                  
-              <Text style={styles.iconTextLast}>Log Out</Text>
+              <Text style={styles.iconText}>{item.name}</Text>
+            </Left>                
+          </ListItem>
+          )}
+          
+          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
+            <Left>                  
+              <Text style={styles.iconText}>Đăng xuất</Text>
             </Left>                
           </ListItem>
         </Content>

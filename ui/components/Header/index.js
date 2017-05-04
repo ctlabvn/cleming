@@ -46,7 +46,7 @@ export default class extends Component {
   
   _rightClick = (e)=>{
     const {onRightClick} = this.props
-    onRightClick && onRightClick()
+    onRightClick && onRightClick(this.state.type)
   }
 
   renderHeaderBack(title){    
@@ -65,8 +65,8 @@ export default class extends Component {
   renderHeaderSearch(iconName="menu"){    
     const left = (
       <Button transparent onPress={this._leftClick}>
-        <Icon style={styles.menuIcon} name={iconName}/>
-      </Button>
+        <Icon style={styles.uploadIcon} name="cloud-upload"/>
+      </Button>      
     )
     const center = (
       <Item style={styles.searchContainer}>
@@ -79,7 +79,7 @@ export default class extends Component {
     )
     const right = (
       <Button transparent onPress={this._rightClick}>
-        <Icon style={styles.uploadIcon} name="cloud-upload"/>
+        <Icon style={styles.menuIcon} name={iconName}/>
       </Button>
     )
     return this.renderHeader(left, center, right)    

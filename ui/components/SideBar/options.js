@@ -11,44 +11,44 @@ export default {
       icon: 'setting'
     },
     {
-      name: 'Network',
+      name: 'Quản lý thanh toán',
       route: 'network',
-      icon: 'network',
+      // icon: 'network',
     },    
     {
-      name: 'Activity Log',
+      name: 'Tạo lịch đặt chỗ',
       route: 'activityLog',
-      icon: 'activity',
+      // icon: 'activity',
     },
     {
-      name: 'Account Setting',
+      name: 'Kết quả kinh doanh',
       route: 'user/setting',
-      icon: 'setting',
+      // icon: 'setting',
     },
     {
-      name: 'Manage Interaction',
+      name: 'Quản lý cửa hàng',
       route: 'interaction',
-      icon: 'interaction',
+      // icon: 'interaction',
     },
     {
-      name: 'Calendar',
+      name: 'Phản hồi khách hàng',
       route: 'calendar',
-      icon: 'calendar',
+      // icon: 'calendar',
     },
     {
-      name: 'Reminder',
+      name: 'Inbox',
       route: 'calendar',
-      icon: 'reminder',
+      // icon: 'reminder',
     },
     {
-      name: 'Poll',
+      name: 'Quản lý tài khoản',
       route: 'calendar',
-      icon: 'poll',
+      // icon: 'poll',
     },
     {
-      name: 'Help & Support',
+      name: 'Trợ giúp',
       route: 'calendar',
-      icon: 'help',    
+      // icon: 'help',    
     },
 
   ]

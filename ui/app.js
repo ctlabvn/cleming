@@ -141,21 +141,21 @@ export default class App extends Component {
   }
 
   _onLeftClick=(type)=>{
-    const {openDrawer, goBack} = this.props
+    const {goBack} = this.props
     switch(type){
       case 'none':      
-        return false
-      case 'back':
-      case 'searchBack':
-        return goBack()
+        return false      
       default:
-        return openDrawer()
+        return goBack()
     }      
   }
   
-  _onRightClick=()=>{
-      const {forwardTo} = this.props
-      forwardTo('userManagement')
+  _onRightClick=(type)=>{
+    const {openDrawer} = this.props
+    switch(type){
+      default:
+        return openDrawer()
+    }
   }
 
   _onTabClick=(type, route)=>{    
@@ -220,7 +220,9 @@ export default class App extends Component {
         <Drawer
           ref={ref => this.drawer = ref}
           open={drawerState === 'opened'}
-          type="displace"             
+          type="overlay"          
+          side="right"   
+          openDrawerOffset={0.27}
           tweenDuration={200}
           content={<SideBar/>}
           onClose={closeDrawer}
