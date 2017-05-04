@@ -215,7 +215,9 @@ export default class App extends Component {
         <Drawer
           ref={ref => this.drawer = ref}
           open={drawerState === 'opened'}
-          type="displace"             
+          type="overlay"          
+          side="right"   
+          openDrawerOffset={0.27}
           tweenDuration={200}
           content={<SideBar/>}
           onClose={closeDrawer}

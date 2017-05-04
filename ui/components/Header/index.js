@@ -59,9 +59,9 @@ export default class extends Component {
   // public data not event
   renderHeaderSearch(iconName="menu"){    
     const left = (
-      <Button transparent onPress={this._leftClick}>
-        <Icon style={styles.menuIcon} name={iconName}/>
-      </Button>
+      <Button transparent>
+        <Icon style={styles.uploadIcon} name="cloud-upload"/>
+      </Button>      
     )
     const center = (
       <Item style={styles.searchContainer}>
@@ -73,8 +73,8 @@ export default class extends Component {
       </Item>
     )
     const right = (
-      <Button transparent>
-        <Icon style={styles.uploadIcon} name="cloud-upload"/>
+      <Button transparent onPress={this._leftClick}>
+        <Icon style={styles.menuIcon} name={iconName}/>
       </Button>
     )
     return this.renderHeader(left, center, right)    
