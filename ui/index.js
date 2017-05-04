@@ -32,17 +32,3 @@ export default class Regit extends Component {
     )
   }
 } 
-
-// hotfix in case babel remove console does not work
-if(!__DEV__) {
-    const noop = () => {}
-    console = {
-      info: noop,
-      log: noop,
-      error: noop,
-      warn: noop,
-    }
-} else {
-  // To see all the requests in the chrome Dev tools in the network tab.
-  GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
-}
