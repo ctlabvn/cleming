@@ -152,6 +152,11 @@ export default class App extends Component {
         return openDrawer()
     }      
   }
+  
+  _onRightClick=()=>{
+      const {forwardTo} = this.props
+      forwardTo('userManagement')
+  }
 
   _onTabClick=(type, route)=>{    
     const {forwardTo} = this.props
@@ -224,7 +229,7 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onItemRef={ref=>this.header=ref} />
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref=>this.header=ref} />
           <Navigator ref={ref=>this.navigator=ref}
               configureScene={this.constructor.configureScene}
               initialRoute={{title, path}}

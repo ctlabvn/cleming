@@ -24,6 +24,7 @@ import Vault from './containers/Vault'
 import Message from './containers/Message'
 import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
+import UserManagement from './containers/UserManagement'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -166,5 +167,10 @@ export default {
         title: 'Calendar',
         Page: Calendar,
     },
-
+    userManagement: {
+        title: 'User Management',
+        Page: UserManagement,
+        headerType: 'back',
+        footerType: 'none',
+    }
 }

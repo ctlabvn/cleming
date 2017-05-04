@@ -43,6 +43,11 @@ export default class extends Component {
       this.props.search(value)
     } 
   }
+  
+  _rightClick = (e)=>{
+    const {onRightClick} = this.props
+    onRightClick && onRightClick()
+  }
 
   renderHeaderBack(title){    
     const left = (
@@ -73,7 +78,7 @@ export default class extends Component {
       </Item>
     )
     const right = (
-      <Button transparent>
+      <Button transparent onPress={this._rightClick}>
         <Icon style={styles.uploadIcon} name="cloud-upload"/>
       </Button>
     )
