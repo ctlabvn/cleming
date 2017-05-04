@@ -48,7 +48,7 @@ export default {
     },
     {
       name: 'Quản lý tài khoản',
-      route: 'calendar',
+      route: 'userManagement',
       // icon: 'poll',
     },
     {

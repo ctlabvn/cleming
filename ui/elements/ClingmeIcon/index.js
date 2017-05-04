@@ -163,7 +163,7 @@ export const glyphMap = {
   "filter": 58929
 };
 
-const iconSet = createIconSet(glyphMap, 'clingme_font', 'ClingmeIcon.ttf');
+const iconSet = createIconSet(glyphMap, 'clingme_font', 'clingme_font.ttf');
 
 export default iconSet;
 
