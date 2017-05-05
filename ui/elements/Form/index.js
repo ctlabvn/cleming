@@ -19,9 +19,9 @@ export const InputField = ({ input, label, meta: { touched, error, warning }, ic
     {addon}
     <Input   
       placeholder={label}    
-      {...input}                   
-      {...custom}      
-      placeholderTextColor={material.inputColorPlaceholder} 
+      {...input}
+      placeholderTextColor={material.inputColorPlaceholder}
+      {...custom}
       style={{...styles.input, ...inputStyle}}     
     />    
     {icon && <Icon

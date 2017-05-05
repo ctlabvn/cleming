@@ -25,6 +25,7 @@ import Message from './containers/Message/ChatAvatarList'
 import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
+import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
 // we can use animationType object for each route via Navigator.SceneConfigs
@@ -176,6 +177,12 @@ export default {
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    'userManagement/action/createUser': {
+        title: 'Create User',
+        Page: CreateUserContainer,
         headerType: 'back',
         footerType: 'none',
     },
