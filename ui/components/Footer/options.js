@@ -2,7 +2,7 @@ export default {
   footerItems: [
     {
       name: 'Home Feeds',
-      route: 'home',
+      route: 'merchantOverview',
       icon: 'fbtn-01',      
     },    
     {

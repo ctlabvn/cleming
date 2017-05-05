@@ -1,17 +1,20 @@
-import {PRIMARY_COLOR} from '~/ui/shared/constants'
+import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR} from '~/ui/shared/constants'
 export default{
     container: {
-        backgroundColor: 'rgba(0,0,0,0.1)',
-        height: '100%'
+        backgroundColor: 'lightgrey',
+        height: '100%',
+        paddingBottom: 60
     },
     contentContainer: {
-        marginTop: 50
+        marginTop: 50,
+        height: '100%'
     },
     deliveryBlock: {
         flexDirection: 'column',
         backgroundColor: 'white',
         borderRadius: 2,
-        padding: 10
+        padding: 10,
+        marginBottom: 10
     },
     row: {
         flexDirection: 'row',
@@ -31,20 +34,26 @@ export default{
         alignItems: 'center'
     },
     deliveryCodeWaitingConfirm: {
-        color: 'orange'
+        color: WARNING_COLOR
     },
     deliveryCodeWaitingDelivery: {
         color: PRIMARY_COLOR
     },
     deliveryCodeSuccess: {
-        color: 'green'
+        color: SUCCESS_COLOR
     },
-
+    icon: {
+        fontSize: 20,
+        marginRight: 5
+    },
     avatar: {
         width: 40,
         height: 40
     },
     phoneNumber: {
+        color: PRIMARY_COLOR
+    },
+    phoneIcon: {
         color: PRIMARY_COLOR
     },
     reject: {
