@@ -35,12 +35,82 @@ import { logoSource, storeTransparent } from '~/assets'
 @reduxForm({ form: 'LoginForm', validate})
 export default class extends Component {
 
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      showForgot: false,
+      showPassword: false,
+    }
+  }
+
   _handleLogin = ({email, password}) => {    
     this.props.login(email, password)
   }
 
+  _handleForgot = ({email})=>{    
+    this.setState({showForgot: false})
+  }
+
+  _handleShowForgot=(e)=>{
+    this.setState({showForgot: true})
+  }
+
+  renderPasswordForm(){
+    return (
+      <Form style={styles.formForgot}>
+          <Text style={{...styles.label, marginTop: 50, marginBottom: 20}}>
+            Đây là lần đầu đăng nhập của bạn{"\n"}
+            Vui lòng tạo Mật khẩu riêng để bảo mật
+          </Text>      
+          <Field name="password" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />              
+          <Field name="password" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />              
+          <Field name="password" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />              
+          <Button onPress={e=>this.setState({showPassword:false})} 
+            style={styles.button}>
+            <Text>Cập nhật</Text>
+          </Button>
+                   
+      </Form>
+    )
+  }
+
+  renderForgotForm(){
+    const {handleSubmit} = this.props
+    return (
+      <Form style={styles.formForgot}>
+          <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>      
+          <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />          
+          <Button onPress={this._handleForgot} 
+            style={styles.button}>
+            <Text>Gửi</Text>
+          </Button>
+                   
+      </Form>
+    )
+  }
+
+  renderLoginForm(){
+    const {handleSubmit} = this.props
+    return (
+      <Form style={styles.form}>                
+          <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
+          <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
+          <Button onPress={handleSubmit(this._handleLogin)} 
+            style={styles.button}>
+            <Text>Đăng nhập</Text>
+          </Button>
+          
+          <Button onPress={this._handleShowForgot} transparent>
+            <Text style={styles.label}>Quên mật khẩu?</Text>
+          </Button>
+                   
+      </Form>
+    )
+  }
+
   render() {    
-    const { handleSubmit, submitting, forwardTo, loginRequest } = this.props          
+    const {forwardTo, loginRequest} = this.props          
     if(loginRequest.status === 'pending'){
       return (
         <Preload/>
@@ -52,23 +122,14 @@ export default class extends Component {
         <LinearGradient colors={['#14b3dd', '#019ecb', '#007dad']}>    
           <Content>                 
                      
-            <Icon name="logo" style={styles.logoIcon} />
+            {!this.state.showPassword &&
+              <Icon onPress={e=>this.setState({showPassword:true})} name="logo" style={styles.logoIcon} />
+            }
             
-            <Form style={styles.form}>
-                
-                <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
-                <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
-                <Button onPress={handleSubmit(this._handleLogin)} 
-                  style={styles.button}>
-                  <Text>Đăng nhập</Text>
-                </Button>
-                
-                <Button transparent>
-                  <Text style={styles.label}>Quên mật khẩu?</Text>
-                </Button>
-                         
-
-            </Form>
+            { this.state.showPassword 
+              ? this.renderPasswordForm ()
+              : (this.state.showForgot ? this.renderForgotForm() : this.renderLoginForm())
+            }
 
             <Thumbnail square style={styles.logo} source={storeTransparent} />
             <Text style={styles.logoText}>FOR BUSINESS</Text>

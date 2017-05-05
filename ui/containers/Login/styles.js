@@ -9,6 +9,11 @@ export default {
   form:{
     paddingLeft: 20,
     paddingRight: 20,
+    marginBottom: -20, 
+    zIndex: 1, //above image
+  },
+  get formForgot(){
+    return {...this.form, marginBottom: 20}
   },
   logoIcon:{
     color: '#fff',
@@ -20,8 +25,7 @@ export default {
   logo: {
     width: 250, 
     height: 250,
-    resizeMode: 'contain',   
-    marginTop: -40, 
+    resizeMode: 'contain',       
     marginBottom: -70,
     alignSelf:'center',
   },
@@ -50,6 +54,9 @@ export default {
     color: '#FFF',
     textAlign: 'center',
     fontWeight: '500',
+  },
+  get labelForgot(){
+    return {...this.label, textAlign:'left',margin:10}
   },
   whiteColor: {
     color: '#FFF',
