@@ -8,11 +8,12 @@ import Content from '~/ui/components/Content'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as authAction from '~/store/actions/auth'
+import * as commonActions from '~/store/actions/common'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
-@connect(null, authAction)
+@connect(null, commonActions)
 @reduxForm({ form: 'TestForm' })
 export default class MerchantOverview extends Component {
 
@@ -20,7 +21,7 @@ export default class MerchantOverview extends Component {
         super(props)
     }
     render() {
-        const { handleSubmit, submitting } = this.props
+        const { handleSubmit, submitting, forwardTo } = this.props
         var dropdownValues = [
             {
                 id: 0,
@@ -56,62 +57,62 @@ export default class MerchantOverview extends Component {
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={styles.contentContainer}>
                     {/*<View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>*/}
-                    <Image source={require('~/assets/images/store_with_background.jpg')} style={{width: '100%', height: 150}}/>
+                    <Image source={require('~/assets/images/store_with_background.jpg')} style={{ width: '100%', height: 150 }} />
                     <Text style={styles.timeInteval}>13/4/2017 đến 20/4/2017</Text>
-                    
+
                     <View style={styles.infoContainer}>
                         <View style={styles.infoItemBorderRight}>
                             <Text style={styles.infoItemNumber}>64.419</Text>
                             <Text style={styles.infoItemLabel}>Tiếp cận</Text>
                         </View>
-                         <View style={styles.infoItemBorderRight}>
+                        <View style={styles.infoItemBorderRight}>
                             <Text style={styles.infoItemNumber}>4.267</Text>
                             <Text style={styles.infoItemLabel}>Xem</Text>
                         </View>
-                         <View style={styles.infoItemBorderRight}>
+                        <View style={styles.infoItemBorderRight}>
                             <Text style={styles.infoItemNumber}>1.606</Text>
                             <Text style={styles.infoItemLabel}>Tìm hiểu</Text>
                         </View>
-                         <View style={styles.infoItem}>
-                            <Text style={{...styles.infoItemNumber, color: 'green'}}>45</Text>
+                        <View style={styles.infoItem}>
+                            <Text style={{ ...styles.infoItemNumber, color: 'green' }}>45</Text>
                             <Text style={styles.infoItemLabel}>Mua</Text>
                         </View>
                     </View>
-                    <TouchableOpacity>
-                    <View style={styles.menuItem}>
-                        <View style={styles.leftBlock}>
-                            <Icon name='transaction' style={styles.icon}/>
-                            <Text>Giao dịch</Text>
+                    <TouchableOpacity onPress={()=>forwardTo('transactionList')}>
+                        <View style={styles.menuItem}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='transaction' style={styles.icon} />
+                                <Text>Giao dịch</Text>
+                            </View>
+                            <View style={styles.rightBlock}>
+                                <Text style={styles.numberRight}>6</Text>
+                                <Icon name='chevron-right' style={styles.rightIcon} />
+                            </View>
                         </View>
-                        <View style={styles.rightBlock}>
-                            <Text style={styles.numberRight}>6</Text>
-                            <Icon name='chevron-right' style={styles.rightIcon}/>
-                        </View>
-                    </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                    <View style={styles.menuItem}>
-                        <View style={styles.leftBlock}>
-                            <Icon name='calendar-checked' style={styles.icon}/>
-                            <Text>Đặt chỗ</Text>
+                        <View style={styles.menuItem}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='calendar-checked' style={styles.icon} />
+                                <Text>Đặt chỗ</Text>
+                            </View>
+                            <View style={styles.rightBlock}>
+                                <Text style={styles.numberRight}>6</Text>
+                                <Icon name='chevron-right' style={styles.rightIcon} />
+                            </View>
                         </View>
-                        <View style={styles.rightBlock}>
-                            <Text style={styles.numberRight}>6</Text>
-                            <Icon name='chevron-right' style={styles.rightIcon}/>
-                        </View>
-                    </View>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                    <View style={styles.menuItem}>
-                        <View style={styles.leftBlock}>
-                            <Icon name='shiping-bike2' style={styles.icon}/>
-                            <Text>Đặt giao hàng</Text>
+                        <View style={styles.menuItem}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='shiping-bike2' style={styles.icon} />
+                                <Text>Đặt giao hàng</Text>
+                            </View>
+                            <View style={styles.rightBlock}>
+                                <Text style={styles.numberRight}>6</Text>
+                                <Icon name='chevron-right' style={styles.rightIcon} />
+                            </View>
                         </View>
-                        <View style={styles.rightBlock}>
-                            <Text style={styles.numberRight}>6</Text>
-                            <Icon name='chevron-right' style={styles.rightIcon}/>
-                        </View>
-                    </View>
                     </TouchableOpacity>
                 </View>
                 <View>
