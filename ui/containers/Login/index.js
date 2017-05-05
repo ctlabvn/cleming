@@ -13,6 +13,8 @@ import {
 import styles from './styles'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
+import Icon from '~/ui/elements/Icon'
+import LinearGradient from 'react-native-linear-gradient'
 
 import routes from '~/ui/routes'
 
@@ -25,7 +27,7 @@ import Content from '~/ui/components/Content'
 import Preload from '~/ui/containers/Preload'
 import { InputField } from '~/ui/elements/Form'
 import { validate } from './utils'
-import { logoSource } from '~/assets'
+import { logoSource, storeTransparent } from '~/assets'
 
 @connect(state=>({  
   loginRequest: commonSelectors.getRequest(state, 'login'),  
@@ -47,27 +49,32 @@ export default class extends Component {
 
     return (
       <Container style={styles.container}>
+        <LinearGradient colors={['#14b3dd', '#019ecb', '#007dad']}>    
+          <Content>                 
+                     
+            <Icon name="logo" style={styles.logoIcon} />
+            
+            <Form style={styles.form}>
+                
+                <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
+                <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
+                <Button onPress={handleSubmit(this._handleLogin)} 
+                  style={styles.button}>
+                  <Text>Đăng nhập</Text>
+                </Button>
+                
+                <Button transparent>
+                  <Text style={styles.label}>Quên mật khẩu?</Text>
+                </Button>
+                         
 
-        <Content>                                
-          <Thumbnail square style={styles.logo} source={logoSource} />        
-          
-          <Form style={styles.form}>
-              
-              <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
-              <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
-              <Button onPress={handleSubmit(this._handleLogin)} 
-                style={styles.button}>
-                <Text>Đăng nhập</Text>
-              </Button>
-              <KeyboardAvoidingView>
-                <Text style={styles.label}>Quên mật khẩu?</Text>
-              </KeyboardAvoidingView>
-              <Button bordered style={styles.outlineButton} onPress={()=>forwardTo('signup1')}>
-                <Text style={styles.whiteColor}>Sign up</Text>
-              </Button>              
+            </Form>
 
-          </Form>
-        </Content>
+            <Thumbnail square style={styles.logo} source={storeTransparent} />
+            <Text style={styles.logoText}>FOR BUSINESS</Text>
+
+          </Content>
+        </LinearGradient>
       </Container>
     )
   }
