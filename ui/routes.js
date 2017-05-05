@@ -25,8 +25,10 @@ import Message from './containers/Message/ChatAvatarList'
 import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
+import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
+import DeliveryList from './containers/DeliveryList'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
@@ -37,6 +39,10 @@ export default {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
         headerType: 'none'
+    },
+    deliveryList: {
+        title: 'Danh sách giao hàng',
+        Page: DeliveryList
     },
     notFound: {
         title: 'Not Found',
@@ -177,6 +183,12 @@ export default {
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    'userManagement/action/createUser': {
+        title: 'Create User',
+        Page: CreateUserContainer,
         headerType: 'back',
         footerType: 'none',
     },

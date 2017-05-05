@@ -56,7 +56,8 @@ export default {
         bottom: 0,
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: '#00a9d4'
+        backgroundColor: '#00a9d4',
+        borderRadius: 0
     },
     addUserText: {
         fontWeight: 'bold',
@@ -78,7 +79,7 @@ export default {
         height: 40
     },
     modalContainer: {
-        height: 250,
+        height: 200,
         width: '90%',
         backgroundColor: 'white',
         borderRadius: 10,
@@ -98,5 +99,14 @@ export default {
     modalOkButtonText: {
         color: '#00a9d7',
         fontWeight: 'bold'
+    },
+    rowCheckBox: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginRight: 25
+    },
+    rowText: {
+        color: '#7e7e7e',
+        marginLeft: 15
     }
 }

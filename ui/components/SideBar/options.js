@@ -1,6 +1,12 @@
 export default { 
   listItems: [
     {
+      name: 'Danh sách giao hàng',
+      route: 'deliveryList',
+      icon: 'setting'
+    },
+
+    {
       name: 'Merchant Overview',
       route: 'merchantOverview',
       icon: 'setting'

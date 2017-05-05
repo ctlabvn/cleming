@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
+import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio } from 'native-base'
+import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import Content from '~/ui/components/Content'
@@ -11,9 +11,10 @@ import * as authAction from '~/store/actions/auth'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
+import Icon from '~/ui/elements/Icon'
 @connect(null, authAction)
 @reduxForm({ form: 'TestForm' })
-export default class TransactionList extends Component {
+export default class MerchantOverview extends Component {
 
     constructor(props) {
         super(props)
@@ -54,7 +55,8 @@ export default class TransactionList extends Component {
             <View style={styles.container}>
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={styles.contentContainer}>
-                    <View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>
+                    {/*<View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>*/}
+                    <Image source={require('~/assets/images/store_with_background.jpg')} style={{width: '100%', height: 150}}/>
                     <Text style={styles.timeInteval}>13/4/2017 đến 20/4/2017</Text>
                     
                     <View style={styles.infoContainer}>
@@ -78,7 +80,7 @@ export default class TransactionList extends Component {
                     <TouchableOpacity>
                     <View style={styles.menuItem}>
                         <View style={styles.leftBlock}>
-                            <Icon name='favorite' />
+                            <Icon name='transaction' style={styles.icon}/>
                             <Text>Giao dịch</Text>
                         </View>
                         <View style={styles.rightBlock}>
@@ -90,7 +92,7 @@ export default class TransactionList extends Component {
                     <TouchableOpacity>
                     <View style={styles.menuItem}>
                         <View style={styles.leftBlock}>
-                            <Icon name='favorite' />
+                            <Icon name='calendar-checked' style={styles.icon}/>
                             <Text>Đặt chỗ</Text>
                         </View>
                         <View style={styles.rightBlock}>
@@ -102,7 +104,7 @@ export default class TransactionList extends Component {
                     <TouchableOpacity>
                     <View style={styles.menuItem}>
                         <View style={styles.leftBlock}>
-                            <Icon name='favorite' />
+                            <Icon name='shiping-bike2' style={styles.icon}/>
                             <Text>Đặt giao hàng</Text>
                         </View>
                         <View style={styles.rightBlock}>
