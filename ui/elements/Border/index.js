@@ -1,24 +1,13 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import material from '~/theme/variables/material'
 import { View } from 'react-native'
 
-export default class extends Component{
 
-  constructor(props) {
-    super(props)
-  
-    this.state = {
-      width: props.width,
-    }
-  }
-
-  onLayout(event) {    
-    const {width} = event.nativeEvent.layout    
-    this.setState({width})
-  }
+export default class extends PureComponent{
 
   render(){
     const {color='red', size=2, padding=2} = this.props
-    const num = this.state.width / (size + padding * 2)
+    const num = material.deviceWidth / (size + padding * 2)
     
     const borders = []
     for(let i=0;i<num;i++){
@@ -33,9 +22,10 @@ export default class extends Component{
 
     return (
       <View style={{
+        overflow: 'hidden',
         flexDirection: 'row',
         justifyContent: 'space-around',
-      }} onLayout={(event) => this.onLayout(event)}>
+      }}>
         {borders}
       </View>
     )
