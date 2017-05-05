@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { TouchableWithoutFeedback, View } from 'react-native'
-import { Icon as IconNB } from 'native-base'
+import { Icon as IconNB, mapPropsToStyleNames, connectStyle } from 'native-base'
 import Svg from 'react-native-svg'
 import svgs from './svgs'
 import ClingmeIcon, { glyphMap } from '~/ui/elements/ClingmeIcon'
 
+// we can connect to whatever Name space
+@connectStyle('NativeBase.Icon', {}, mapPropsToStyleNames)
 export default class extends Component {
 
   static propTypes = {               

@@ -56,7 +56,7 @@ export default {
         headerType: 'home',   
     },  
     notification: {
-        title: 'Notification',
+        title: 'Notification center',
         Page: Notification,
     },   
     delegation: {
