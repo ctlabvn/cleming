@@ -73,5 +73,13 @@ export default {
     copyIcon: {
         color: '#00a9d7',
         marginRight: 5
-    }
+    },
+    modalContainer: {
+        width: '90%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        overflow: 'hidden',
+        minHeight: 50,
+        justifyContent: 'center'
+    },
 }

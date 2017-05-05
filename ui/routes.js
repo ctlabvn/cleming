@@ -26,6 +26,7 @@ import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
 import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
+import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
 import DeliveryList from './containers/DeliveryList'
@@ -189,6 +190,12 @@ export default {
     'userManagement/action/createUser': {
         title: 'Create User',
         Page: CreateUserContainer,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    'userManagement/action/updateUser': {
+        title: 'Update User',
+        Page: UpdateUserContainer,
         headerType: 'back',
         footerType: 'none',
     },
