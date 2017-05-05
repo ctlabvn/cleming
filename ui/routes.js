@@ -29,7 +29,12 @@ import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
+import ListDeal from './containers/ListDeal'
+import DealsOverview from './containers/DealsOverview'
+import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
+import TransactionDetail from './containers/TransactionDetail'
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
@@ -40,6 +45,11 @@ export default {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
         headerType: 'none'
+    },
+    transactionDetail: {
+        title: 'Chi tiết giao dịch',
+        Page: TransactionDetail,
+        headerType: 'back'
     },
     deliveryList: {
         title: 'Danh sách giao hàng',
@@ -202,5 +212,19 @@ export default {
     calendar:{
         title: 'Calendar',
         Page: Calendar,
+    },
+    listdeal: {
+        title: 'List Deal',
+        Page: ListDeal,
+    },
+    dealsOverview: {
+        title: 'Deals Overview',
+        Page: DealsOverview,
+        footerType: 'none',
+    },
+    dealDetail: {
+        title: 'Deals Overview',
+        Page: DealDetail,
+        footerType: 'none',
     }
 }

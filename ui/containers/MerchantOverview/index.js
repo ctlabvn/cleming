@@ -85,7 +85,7 @@ export default class MerchantOverview extends Component {
                                 <Text>Giao dịch</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <Text style={styles.numberRight}>6</Text>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
@@ -97,7 +97,7 @@ export default class MerchantOverview extends Component {
                                 <Text>Đặt chỗ</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <Text style={styles.numberRight}>6</Text>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
@@ -109,7 +109,7 @@ export default class MerchantOverview extends Component {
                                 <Text>Đặt giao hàng</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <Text style={styles.numberRight}>6</Text>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>

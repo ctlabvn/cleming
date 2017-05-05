@@ -14,7 +14,9 @@ export default {
         marginRight: 5
     },
     calendarIcon: {
-        color: PRIMARY_COLOR
+        color: PRIMARY_COLOR,
+        fontSize: 20,
+        marginRight: 3
     },
     filterIntevalLabel: {
         color: PRIMARY_COLOR,
