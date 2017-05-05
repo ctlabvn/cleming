@@ -115,6 +115,11 @@ class UserManagement extends Component {
         )
     }
     
+    onUpdateUserPress() {
+        const { forwardTo } = this.props
+        forwardTo('userManagement/action/updateUser')
+    }
+    
     renderRow(data) {
         blueLineBelowOwner = null
         console.log()
@@ -125,7 +130,9 @@ class UserManagement extends Component {
             <ListItem style={styles.listItem}>
                 <Grid>
                     <Col>
-                        <Button style={styles.ownerButton}>
+                        <Button
+                            onPress={this.onUpdateUserPress.bind(this)}
+                            style={styles.ownerButton}>
                             <OwnerCard data={data.owner}/>
                         </Button>
                         {blueLineBelowOwner}

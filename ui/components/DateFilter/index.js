@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button, ScrollableTab } from 'native-base'
+import { List, ListItem, Text, Thumbnail, Button, ScrollableTab } from 'native-base'
 import { View, ListView, TouchableOpacity, Animated, Easing, Tabs, Tab } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import RadioPopup from '~/ui/components/RadioPopup'
 import moment from 'moment'
+import Icon from '~/ui/elements/Icon'
 export default class DateFilter extends Component {
     constructor(props) {
         super(props)
@@ -175,8 +176,8 @@ export default class DateFilter extends Component {
                 <RadioPopup ref='dateFilterTypePopup' listValue={this.dateFilterListValue} selectedValue={this.state.currentDateFilter} onClickYes={this._handleYesDateFilter.bind(this)} />
                 <TouchableOpacity onPress={() => this._handlePressTriggerDateFilterPopup()}>
                     <View style={styles.stickPart}>
-                        <Icon name="event-note" style={styles.calendarIcon} />
-                        <Text style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
+                        <Icon name="calendar" style={styles.calendarIcon} />
+                        <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
                 <ListView style={styles.dateFilterList} horizontal={true} showsHorizontalScrollIndicator={false}
@@ -184,7 +185,7 @@ export default class DateFilter extends Component {
                     renderRow={
                         (rowData) => {
                             return (<TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
-                                <Text style={(rowData.display).localeCompare(currentSelectValue.display) == 0 ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                <Text small style={(rowData.display).localeCompare(currentSelectValue.display) == 0 ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
                             </TouchableOpacity>
                             )
                         }

@@ -26,6 +26,18 @@ export default (variables = variable) => {
       },
       '.large': {
         fontSize: variables.btnTextSizeLarge
+      },
+      '.primary': {
+        color: '#00a9d4'
+      },
+      '.success': {
+        color: 'green'
+      },
+      '.warning': {
+        color: 'orange'
+      },
+      '.error': {
+        color: 'red'
       }
   };
 
