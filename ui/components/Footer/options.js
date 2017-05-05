@@ -5,9 +5,14 @@ export default {
       route: 'home',
       icon: 'fbtn-01',      
     },    
+    // {
+    //   name: 'Delegation',
+    //   route: 'delegation',
+    //   icon: 'deals',
+    // },
     {
-      name: 'Delegation',
-      route: 'delegation',
+      name: 'List Deal',
+      route: 'listdeal',
       icon: 'deals',
     },
     {

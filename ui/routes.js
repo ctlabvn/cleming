@@ -27,6 +27,9 @@ import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
+import ListDeal from './containers/ListDeal'
+import DealsOverview from './containers/DealsOverview'
+import DealDetail from './containers/DealDetail'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
@@ -182,5 +185,19 @@ export default {
     calendar:{
         title: 'Calendar',
         Page: Calendar,
+    },
+    listdeal: {
+        title: 'List Deal',
+        Page: ListDeal,
+    },
+    dealsOverview: {
+        title: 'Deals Overview',
+        Page: DealsOverview,
+        footerType: 'none',
+    },
+    dealDetail: {
+        title: 'Deals Overview',
+        Page: DealDetail,
+        footerType: 'none',
     }
 }
