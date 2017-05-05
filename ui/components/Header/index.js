@@ -63,11 +63,6 @@ export default class extends Component {
 
   // public data not event
   renderHeaderSearch(iconName="menu"){    
-    const left = (
-      <Button transparent onPress={this._leftClick}>
-        <Icon style={styles.uploadIcon} name="cloud-upload"/>
-      </Button>      
-    )
     const center = (
       <Item style={styles.searchContainer}>
           <Icon name="search" style={styles.searchIcon} />
@@ -77,12 +72,34 @@ export default class extends Component {
             placeholder="Regit Search" />                        
       </Item>
     )
-    const right = (
-      <Button transparent onPress={this._rightClick}>
-        <Icon style={styles.menuIcon} name={iconName}/>
+    return this.renderHeaderTitle(center, "cloud-upload")    
+  }
+
+  renderHeaderHome(title, leftIcon='add_place'){
+    const left = (
+      <Button transparent style={styles.circleButton} onPress={this._leftClick}>
+        <Icon style={styles.circleIcon} name={leftIcon}/>
       </Button>
     )
-    return this.renderHeader(left, center, right)    
+    return this.renderHeaderTitle(title, left)
+  }
+
+  renderHeaderTitle(title, leftIcon="back", rightIcon="menu"){
+    const left = (typeof leftIcon === "string" 
+      ? <Button transparent onPress={this._leftClick}>
+          <Icon style={styles.leftIcon} name={leftIcon}/>
+        </Button>    
+      : leftIcon  
+    )
+    const center = (
+      typeof title ==="string" ? <Title full>{title}</Title> : title
+    )
+    const right = (rightIcon &&
+      <Button transparent onPress={this._rightClick}>
+        <Icon style={styles.menuIcon} name={rightIcon}/>
+      </Button>
+    )
+    return this.renderHeader(left, center, right) 
   }
 
   renderHeader(left, center, right, props) {    
@@ -106,8 +123,10 @@ export default class extends Component {
         return this.renderHeaderBack(title)
       case 'searchBack':
         return this.renderHeaderSearch('keyboard-arrow-left')
+      case 'home':
+        return this.renderHeaderHome(title)
       default:
-        return this.renderHeaderSearch()
+        return this.renderHeaderTitle(title)
     } 
   }
 }

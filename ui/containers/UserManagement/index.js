@@ -3,15 +3,18 @@
  */
 import React, { Component } from 'react'
 import {
-    Button, List, ListItem, Switch, Spinner,
+    Button, List, ListItem, Switch, Spinner, CheckBox,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text } from 'react-native'
+import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
 import UserCard from './components/UserCard'
 import OwnerCard from './components/OwnerCard'
+
+import * as commonActions from '~/store/actions/common'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 const data = []
@@ -38,11 +41,17 @@ data.push({
     employeeList: []
 })
 
+@connect(state=>({
+    
+}), {...commonActions})
+
 class UserManagement extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalOpen: false
+            modalOpen: false,
+            updateInfoChecked: false,
+            deleteAccountChecked: false
         }
     }
     
@@ -129,6 +138,18 @@ class UserManagement extends Component {
         )
     }
     
+    onUpdateInfoPress() {
+        this.setState({
+            updateInfoChecked: !this.state.updateInfoChecked
+        })
+    }
+    
+    onDeleteAccountPress() {
+        this.setState({
+            deleteAccountChecked: !this.state.deleteAccountChecked
+        })
+    }
+    
     renderModal() {
         return(
             <View style={styles.modalContainer}>
@@ -138,7 +159,28 @@ class UserManagement extends Component {
                             <UserCard data={this.state.data}/>
                         </Row>
                         <Row style={{height: '50%'}}>
-    
+                            <Col style={{width: '70%'}}>
+                                <Row style={{alignItems: 'center'}}>
+                                    <Text style={styles.rowText}>Thay đổi thông tin</Text>
+                                </Row>
+                                <Row style={{alignItems: 'center'}}>
+                                    <Text style={styles.rowText}>Xoá tài khoản khỏi danh sách</Text>
+                                </Row>
+                            </Col>
+                            <Col style={{width: '30%'}}>
+                                <Row style={styles.rowCheckBox}>
+                                    <CheckBox
+                                        style={{borderWidth: 2}}
+                                        onPress={this.onUpdateInfoPress.bind(this)}
+                                        checked={this.state.updateInfoChecked}/>
+                                </Row>
+                                <Row style={styles.rowCheckBox}>
+                                    <CheckBox
+                                        style={{borderWidth: 2}}
+                                        onPress={this.onDeleteAccountPress.bind(this)}
+                                        checked={this.state.deleteAccountChecked}/>
+                                </Row>
+                            </Col>
                         </Row>
                         <Row style={{height: '20%'}}>
                             <Col style={{width: '50%'}}/>
@@ -159,6 +201,11 @@ class UserManagement extends Component {
         )
     }
     
+    onCreateUserPress() {
+        const { forwardTo } = this.props
+        forwardTo('userManagement/action/createUser')
+    }
+    
     render() {
         return (
             <Container>
@@ -171,7 +218,9 @@ class UserManagement extends Component {
                 <Modal onCloseClick={e=>this.setState({modalOpen:false})} open={this.state.modalOpen}>
                     {this.renderModal()}
                 </Modal>
-                <Button style={styles.addUserButton}>
+                <Button
+                    onPress={this.onCreateUserPress.bind(this)}
+                    style={styles.addUserButton}>
                     <Text style={styles.addUserText}>Add User</Text>
                 </Button>
             </Container>

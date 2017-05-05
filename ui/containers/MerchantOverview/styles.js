@@ -1,7 +1,7 @@
 import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
     container: {
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: 'lightgrey',
         height: '100%',
         width: '100%',
     },
@@ -13,7 +13,8 @@ export default {
     },
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
-        marginBottom: 10
+        marginBottom: 10,
+        fontSize: 13
     },
     infoContainer: {
         flexDirection: 'row',
@@ -73,6 +74,10 @@ export default {
     },
     rightIcon: {
         color: 'rgba(0,0,0,0.5)'
+    },
+    icon: {
+        fontSize: 20,
+        marginRight: 5
     }
 
 

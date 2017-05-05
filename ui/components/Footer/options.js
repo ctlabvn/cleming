@@ -2,7 +2,7 @@ export default {
   footerItems: [
     {
       name: 'Home Feeds',
-      route: 'home',
+      route: 'merchantOverview',
       icon: 'fbtn-01',      
     },    
     // {
@@ -21,8 +21,8 @@ export default {
       icon: 'report2',
     },
     {
-      name: 'Message',
-      route: 'message',
+      name: 'Notification',
+      route: 'notification',
       icon: 'fbtn-04',
     }, 
   ]

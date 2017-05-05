@@ -97,7 +97,7 @@ export default class extends Component {
                   pageSize={notifications.take}                  
                   dataArray={notifications.data} renderRow={(item) =>
                     <ListItem noBorder style={styles.listItemContainer}>                    
-                        <Icon name={options.iconMap[item.Type] || 'network'} style={styles.icon}/>                    
+                        <Icon name={options.iconMap[item.Type] || 'network'} gray/>                    
                         <Body>
                           {renderTextParts(
                             item.Title.replace(item.FromUserDisplayName, `#${item.FromUserDisplayName}#`)

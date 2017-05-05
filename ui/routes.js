@@ -25,11 +25,14 @@ import Message from './containers/Message/ChatAvatarList'
 import Interaction from './containers/Interaction'
 import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
+import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
 import ListDeal from './containers/ListDeal'
 import DealsOverview from './containers/DealsOverview'
 import DealDetail from './containers/DealDetail'
+import DeliveryList from './containers/DeliveryList'
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
@@ -41,6 +44,10 @@ export default {
         Page: TransactionList,
         headerType: 'none'
     },
+    deliveryList: {
+        title: 'Danh sách giao hàng',
+        Page: DeliveryList
+    },
     notFound: {
         title: 'Not Found',
         Page: NotFound,
@@ -49,10 +56,11 @@ export default {
     },
     home: {        
         title: 'Home',
-        Page: Home,        
+        Page: Home,     
+        headerType: 'home',   
     },  
     notification: {
-        title: 'Notification',
+        title: 'Notification center',
         Page: Notification,
     },   
     delegation: {
@@ -179,6 +187,12 @@ export default {
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    'userManagement/action/createUser': {
+        title: 'Create User',
+        Page: CreateUserContainer,
         headerType: 'back',
         footerType: 'none',
     },
