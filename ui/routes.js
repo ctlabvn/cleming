@@ -205,7 +205,7 @@ export default {
         footerType: 'none',
     },
     'userManagement/action/updateUser': {
-        title: 'Update User',
+        title: 'User Info',
         Page: UpdateUserContainer,
         headerType: 'back',
         footerType: 'none',
