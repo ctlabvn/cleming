@@ -6,15 +6,20 @@ export default class extends Component{
   constructor(props) {
     super(props)
   
-    this.state = {}
+    this.state = {
+      width: props.width,
+    }
   }
 
-  onLayout(event) {
-    const {color='red', size=2, padding=2} = this.props
+  onLayout(event) {    
     const {width} = event.nativeEvent.layout    
-    const num = width / (size + padding * 2)
-    
+    this.setState({width})
+  }
 
+  render(){
+    const {color='red', size=2, padding=2} = this.props
+    const num = this.state.width / (size + padding * 2)
+    
     const borders = []
     for(let i=0;i<num;i++){
       borders.push(<View key={i} style={{
@@ -26,17 +31,12 @@ export default class extends Component{
       )
     }
 
-    this.setState({ borders })
-  }
-
-  render(){
-    
     return (
       <View style={{
         flexDirection: 'row',
         justifyContent: 'space-around',
       }} onLayout={(event) => this.onLayout(event)}>
-        {this.state.borders}
+        {borders}
       </View>
     )
   }
