@@ -6,7 +6,7 @@ import { View } from 'react-native'
 export default class extends PureComponent{
 
   render(){
-    const {color='red', size=2, padding=2} = this.props
+    const {color='red', size=2, padding=2, style} = this.props
     const num = material.deviceWidth / (size + padding * 2)
     
     const borders = []
@@ -25,6 +25,7 @@ export default class extends PureComponent{
         overflow: 'hidden',
         flexDirection: 'row',
         justifyContent: 'space-around',
+        ...style,
       }}>
         {borders}
       </View>

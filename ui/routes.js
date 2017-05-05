@@ -69,6 +69,7 @@ export default {
     notification: {
         title: 'Notification center',
         Page: Notification,
+        headerType: 'none',
     },   
     delegation: {
         title: 'Delegation',

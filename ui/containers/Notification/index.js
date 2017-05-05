@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import {                 
     Button, Container, ListItem, List, Spinner,
-    Text, Item, View, Input, Left, Body,
+    Text, Item, View, Input, Left, Right, Body,
 } from 'native-base'
 
+import moment from 'moment'
+
 import Content from '~/ui/components/Content'
+import Border from '~/ui/elements/Border'
 import { connect } from 'react-redux'
 import * as commonActions from '~/store/actions/common'
 import * as notificationActions from '~/store/actions/notification'
@@ -79,6 +82,128 @@ export default class extends Component {
     }        
   }
 
+  renderNotificationContent(item){
+    const type = options.iconMap[item.Type] || 'network'
+    switch(type){
+      case 'calendar':
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View>
+                <Text small>Yêu cầu đặt chỗ chờ xác nhận</Text>
+                <Text bold style={{
+                  color: '#08a7ce'
+                }}>#DC123456</Text>
+              </View>
+              <Text note style={{
+                alignSelf: 'flex-end'
+              }}>
+                2 khách
+              </Text>                        
+            </View>
+
+            <View style={styles.listItemRow}>                        
+              
+              <Text note small>Có yêu cầu gọi món</Text>                        
+              <Text note small style={{
+                alignSelf: 'flex-end'
+              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>
+            </View>
+            <Border style={{
+              marginLeft: 15,
+              marginTop: 10,
+            }} color='rgba(0,0,0,0.5)' size={1} />
+          </Body>
+        )
+
+      case 'clingme-wallet':
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View>
+                <Text small>Giao dịch thành công</Text>
+                <Text bold style={{
+                  color: '#838383'
+                }}>#CL123456</Text>
+              </View>
+              <Text note small style={{
+                alignSelf: 'flex-end'
+              }}>
+                Số hóa đơn: <Text small bold style={{
+                  color: '#08a7ce',
+                }}>00456</Text>
+              </Text>                        
+            </View>
+
+            <View style={styles.listItemRow}>                        
+              
+              <Text note small>Khách hàng: <Text small bold style={{
+                color: '#838383'
+              }}>Username</Text></Text>                        
+              <Text note small style={{
+                alignSelf: 'flex-end'
+              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>                          
+            </View>
+              
+              <Text style={{
+                alignSelf: 'flex-end',
+                marginRight: 0,
+                color: '#0388b5',
+              }}>
+                <Text style={{
+                fontWeight: '900',
+                color: '#0388b5',
+                fontSize: 20,
+              }}>560.000</Text>đ
+              </Text>
+            
+            <Border style={{
+              marginLeft: 15,
+              marginTop: 10,
+            }} color='rgba(0,0,0,0.5)' size={1} />
+          </Body>
+        )
+
+      default:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View>
+                <Text small>Giao dịch mới chờ xử lý</Text>
+                <Text bold style={{
+                  color: '#f7ae3b'
+                }}>#CL123456</Text>
+              </View>
+              <Text note style={{
+                alignSelf: 'flex-end'
+              }}>
+                <Text style={{
+                  color: '#838383',
+                }} bold>400.000</Text>đ
+              </Text>                        
+            </View>
+
+            <View style={styles.listItemRow}>                        
+              
+              <Text note small>Khách hàng: <Text small bold style={{
+                color: '#838383'
+              }}>Username</Text></Text>                        
+              <Text note small style={{
+                alignSelf: 'flex-end'
+              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>
+            </View>
+            <Border style={{
+              marginLeft: 15,
+              marginTop: 10,
+            }} color='rgba(0,0,0,0.5)' size={1} />
+          </Body>
+        )
+
+        
+                      
+    }
+  }
+
   render() {
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     const {notifications, notificationRequest} = this.props    
@@ -86,6 +211,12 @@ export default class extends Component {
     return (          
        
         <Container>
+
+            <Text active small style={{
+              alignSelf:'flex-end',
+              marginVertical: 10,
+              marginRight: 10,
+            }}>Đánh dấu tất cả đã đọc</Text>
                     
             <Content               
               onEndReached={this._loadMore} onRefresh={this._onRefresh}             
@@ -96,14 +227,17 @@ export default class extends Component {
                   removeClippedSubviews={false}                    
                   pageSize={notifications.take}                  
                   dataArray={notifications.data} renderRow={(item) =>
-                    <ListItem noBorder style={styles.listItemContainer}>                    
-                        <Icon name={options.iconMap[item.Type] || 'network'} gray/>                    
-                        <Body>
-                          {renderTextParts(
-                            item.Title.replace(item.FromUserDisplayName, `#${item.FromUserDisplayName}#`)
-                          )}                        
-                          <TimeAgo note small time={item.DateTime} />
-                        </Body>
+                    <ListItem noBorder style={styles.listItemContainer}>   
+                      <View style={{
+                        justifyContent: 'space-between',   
+                        alignSelf:'flex-start',
+                        height: 47,                     
+                      }}>
+                        <Icon name={options.iconMap[item.Type] || 'network'} style={styles.icon}/>                    
+                        <View style={styles.circle}/>
+                      </View>                      
+                      {this.renderNotificationContent(item)}
+
                     </ListItem>  
                 } />
               } 
