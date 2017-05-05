@@ -23,9 +23,9 @@ export default{
     },
     block: {
         flexDirection: 'column',
-        borderStyle: 'dotted',
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'rgba(0,0,0,0.5)',
+        // borderStyle: 'dotted',
+        // borderBottomWidth: 0.5,
+        // borderBottomColor: 'rgba(0,0,0,0.5)',
         marginTop: 5,
         marginBottom: 5
     },

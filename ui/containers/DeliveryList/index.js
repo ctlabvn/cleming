@@ -87,9 +87,9 @@ export default class DeliveryList extends Component {
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
-                    {item.products.map((subItem)=>
+                    {item.products.map((subItem, index)=>
                         (
-                            <View style={styles.row}>
+                            <View key={index} style={styles.row}>
                                 <Text bold>{subItem.name}</Text>
                                 <Text>SL: <Text bold>{subItem.number}</Text></Text>
                             </View>
