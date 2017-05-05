@@ -38,7 +38,7 @@ export default {
         padding: 10
     },
     infoItemNumber: {
-        fontSize: 22,
+        fontSize: 20,
         color: PRIMARY_COLOR
     },
     infoItemLabel: {
@@ -63,13 +63,17 @@ export default {
         flexDirection: 'row',
         alignItems: 'center'
     },
+    badgeContainer: {
+        width: 20,
+        height: 20,
+        borderRadius: 20,
+        backgroundColor: PRIMARY_COLOR,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     numberRight: {
         fontWeight: 'bold',
         color: 'white',
-        backgroundColor: PRIMARY_COLOR,
-        width: 25,
-        height: 25,
-        borderRadius: 25,
         textAlign: 'center'
     },
     rightIcon: {

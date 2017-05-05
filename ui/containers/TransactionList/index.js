@@ -6,13 +6,13 @@ import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
+import * as commonAction from '~/store/actions/common'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
-@connect(null, authAction)
+@connect(null, commonAction)
 @reduxForm({ form: 'TestForm' })
 export default class TransactionList extends Component {
 
@@ -54,7 +54,7 @@ export default class TransactionList extends Component {
         console.log('Praten press tab', item)
     }
     render() {
-        const { handleSubmit, submitting } = this.props
+        const { handleSubmit, submitting, forwardTo } = this.props
         var dropdownValues = [
             {
                 id: 0,
@@ -108,88 +108,91 @@ export default class TransactionList extends Component {
                     <View style={styles.filterByTransactionType}>
                         <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                             <View style={styles.leftContainer}>
-                                <Icon name='tune' style={styles.transactionTypeIcon} />
-                                <Text>{currentFilter}</Text>
+                                <Icon name='filter' style={styles.transactionTypeIcon} />
+                                <Text small>{currentFilter}</Text>
                             </View>
                         </TouchableOpacity>
 
-                        <Text style={styles.numberRight}>10</Text>
+                        <Text small style={styles.numberRight}>10</Text>
                     </View>
-                    <Content style={{padding:10, height: '100%'}}>
-                        <View style={styles.block}>
-                            <View style={styles.row}>
+                    <Content style={{ padding: 10, height: '100%' }}>
+                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
+                            <View style={styles.block}>
                                 <View style={styles.row}>
-                                    <Icon name='order-history' style={{...styles.icon, ...styles.processing}} />
-                                    <Text small style={{...styles.transactionCode, ...styles.processing}}>#CL123456</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>#CL123456</Text>
+                                    </View>
+                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
                                 </View>
-                                <Text small style={styles.moneyNumber}>400.000đ</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <View style={styles.placeholder} />
-                                    <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                    </View>
+                                    <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
                                 </View>
-                                <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
-                                    <Text style={styles.processing} small>Đang xử lí</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <Text style={styles.processing} small>Đang xử lí</Text>
+                                    </View>
+                                    <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
                                 </View>
-                                <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
-
-                        <View style={styles.block}>
-                            <View style={styles.row}>
+                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
+                            <View style={styles.block}>
                                 <View style={styles.row}>
-                                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success}} />
-                                    <Text small style={{...styles.transactionCode, ...styles.success}}>#CL123456</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>#CL123456</Text>
+                                    </View>
+                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
                                 </View>
-                                <Text small style={styles.moneyNumber}>400.000đ</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <View style={styles.placeholder} />
-                                    <Text small>Khách hàng: <Text small bold>Username</Text></Text>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small>Khách hàng: <Text small bold>Username</Text></Text>
+                                    </View>
+                                    <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
                                 </View>
-                                <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
-                                    <Text style={styles.success} small>Thành công</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <Text style={styles.success} small>Thành công</Text>
+                                    </View>
+                                    <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
                                 </View>
-                                <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
-
-                        <View style={styles.block}>
-                            <View style={styles.row}>
+                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
+                            <View style={styles.block}>
                                 <View style={styles.row}>
-                                    <Icon name='unlike_s' style={{...styles.icon, ...styles.reject}} />
-                                    <Text small style={{...styles.transactionCode, ...styles.reject}}>#CL123456</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>#CL123456</Text>
+                                    </View>
+                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
                                 </View>
-                                <Text small style={styles.moneyNumber}>400.000đ</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <View style={styles.placeholder} />
-                                    <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                    </View>
+                                    <Text small style={styles.timestamp}>17:30 14/10/2017</Text>
                                 </View>
-                                <Text small style={styles.timestamp}>17:30 14/10/2017</Text>
-                            </View>
-                            <View style={styles.row}>
                                 <View style={styles.row}>
-                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
-                                    <Text small style={styles.reject}>Bị từ chối</Text>
+                                    <View style={styles.row}>
+                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <Text small style={styles.reject}>Bị từ chối</Text>
+                                    </View>
+                                    <Text small style={styles.processing}>Chưa trả phí Clingme</Text>
                                 </View>
-                                <Text small style={styles.processing}>Chưa trả phí Clingme</Text>
                             </View>
-                        </View>
-
+                        </TouchableOpacity>
                     </Content>
 
                 </View>

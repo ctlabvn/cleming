@@ -35,7 +35,8 @@ export default {
     },
     transactionTypeIcon: {
         color: PRIMARY_COLOR,
-        marginRight: 3
+        marginRight: 3,
+        fontSize: 20
     },
     transactionCode: {
         fontWeight: 'bold'
