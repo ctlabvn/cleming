@@ -78,7 +78,7 @@ export default (variables = variable) => {
         },
         paddingHorizontal: variables.buttonPadding,
       },
-      paddingHorizontal: 15,
+      paddingHorizontal: 10,
     },
     '.searchBar': {
       'NativeBase.Item': {
@@ -292,7 +292,7 @@ export default (variables = variable) => {
     },
     backgroundColor: variables.toolbarDefaultBg,
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     justifyContent: 'center',
     paddingTop: (platform === 'ios') ? 15 : 0,
     borderBottomWidth: (platform === 'ios') ? (1/PixelRatio.getPixelSizeForLayoutSize(1)) : 0,

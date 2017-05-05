@@ -22,9 +22,21 @@ export default {
   menuIcon:{
     marginLeft:0,
   },
-  uploadIcon: {
-    fontSize: 17,
-    marginRight:-3    
+  leftIcon: {
+    color: '#fff',
+    fontSize: 18,
+    // marginRight:-3    
+  },
+  circleButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15, 
+    backgroundColor: '#fff',    
+    marginLeft: 10,
+  },
+  circleIcon: {
+    color: material.tabBarActiveTextColor,
+    fontSize: 18,
   },
   searchInput:{
     height: material.platform === 'ios' ? 30 : 50,    

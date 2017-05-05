@@ -7,9 +7,9 @@ import URL from 'url-parse'
 // import renderer from 'react-test-renderer';
 import { matchPath } from 'react-router'
 const routes = {
-  'abc': false,
-  'delegation':true,
-  'delegation/detail/:id':true,
+  'abc': false,  
+  'userManagement/action/createUser':true,
+  'userManagement/action':true,
   'def': false,
 }
 
@@ -28,8 +28,8 @@ const matchRoutes = (pathname) => {
 }
 
 it('renders correctly', () => {
-  const match = matchRoutes('delegation/detail/refresh')
-  const url = new URL('delegation/detail/refresh?key=value', null, true)
-  console.log(url)
-  // console.log(match)
+  const match = matchRoutes('userManagement/action/createUser')
+  // const url = new URL('delegation/detail/refresh?key=value', null, true)
+  // console.log(url)
+  console.log(match)
 });

@@ -274,7 +274,7 @@ export default {
 
     // Title
   titleFontfamily: (platform === 'ios') ? 'Roboto' : 'Roboto_medium',
-  titleFontSize: 19,
+  titleFontSize: 15,
   subTitleFontSize: 14,
   subtitleColor: '#FFF',
 
