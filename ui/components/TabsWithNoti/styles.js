@@ -19,8 +19,8 @@ export default {
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        borderBottomWidth: 2,
-        borderColor: 'white'
+        // borderBottomWidth: 2,
+        // borderColor: 'white'
     },
     tab: {
         flexDirection: 'row',
@@ -30,13 +30,15 @@ export default {
         color: 'white',
         marginRight: 3,
         fontWeight: '900',
+        fontSize: 14
 
 
     },
     tabTextDeactive: {
         color: 'rgba(255,255,255,0.5)',
         marginRight: 3,
-        fontWeight: '100'
+        fontWeight: '100',
+        fontSize: 14
     },
     tabNumberContainerActive: {
         width: 20,
