@@ -1,3 +1,5 @@
+import material from '~/theme/variables/material'
+
 export default {
   item: {
     backgroundColor: '#fff',
@@ -7,11 +9,14 @@ export default {
     paddingLeft: 10,
     paddingRight: 10,
     width: '100%',    
+    height: 40,
     borderBottomWidth: 0,
   },
   input: {    
     fontFamily: 'Roboto',
-    fontWeight: '300',        
+    fontWeight: '300',    
+    height:'100%',
+    fontSize: material.btnTextSize,    
   },
   inputIcon: {
     paddingRight:0,

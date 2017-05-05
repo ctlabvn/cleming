@@ -49,18 +49,18 @@ export default class extends Component {
       <Container style={styles.container}>
 
         <Content>                                
-          <Thumbnail style={styles.logo} source={logoSource} />        
+          <Thumbnail square style={styles.logo} source={logoSource} />        
           
           <Form style={styles.form}>
               
-              <Field autoCapitalize="none" name="email" label="Email" component={InputField} />
-              <Field name="password" label="Password" secureTextEntry={true} component={InputField} />              
+              <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
+              <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
               <Button onPress={handleSubmit(this._handleLogin)} 
                 style={styles.button}>
-                <Text>Sign in</Text>
+                <Text>Đăng nhập</Text>
               </Button>
               <KeyboardAvoidingView>
-                <Text style={styles.label}>Forgot password?</Text>
+                <Text style={styles.label}>Quên mật khẩu?</Text>
               </KeyboardAvoidingView>
               <Button bordered style={styles.outlineButton} onPress={()=>forwardTo('signup1')}>
                 <Text style={styles.whiteColor}>Sign up</Text>

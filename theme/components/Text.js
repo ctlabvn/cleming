@@ -5,7 +5,7 @@ import variable from './../variables/platform';
 
 export default (variables = variable) => {
   const textTheme = {
-      fontSize: variables.DefaultFontSize - 1,
+      fontSize: variables.DefaultFontSize - 3,
       fontFamily: variables.fontFamily,
       color: variables.textColor,
       '.bold': {
