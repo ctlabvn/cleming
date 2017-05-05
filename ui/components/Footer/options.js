@@ -5,9 +5,14 @@ export default {
       route: 'merchantOverview',
       icon: 'fbtn-01',      
     },    
+    // {
+    //   name: 'Delegation',
+    //   route: 'delegation',
+    //   icon: 'deals',
+    // },
     {
-      name: 'Delegation',
-      route: 'delegation',
+      name: 'List Deal',
+      route: 'listdeal',
       icon: 'deals',
     },
     {
@@ -16,8 +21,8 @@ export default {
       icon: 'report2',
     },
     {
-      name: 'Message',
-      route: 'message',
+      name: 'Notification',
+      route: 'notification',
       icon: 'fbtn-04',
     }, 
   ]
