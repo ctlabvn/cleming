@@ -12,3 +12,5 @@ export const membershipIcon = require('./images/membership.png')
 export const otherIcon = require('./images/other.png')
 export const relationshipIcon = require('./images/relationship.png')
 export const documentIcon = require('./images/document.png')
+
+export const storeTransparent = require('./images/store_without_background.png')

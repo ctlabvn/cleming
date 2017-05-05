@@ -16,8 +16,8 @@ export default {
       icon: 'report2',
     },
     {
-      name: 'Message',
-      route: 'message',
+      name: 'Notification',
+      route: 'notification',
       icon: 'fbtn-04',
     }, 
   ]

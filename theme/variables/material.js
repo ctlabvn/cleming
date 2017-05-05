@@ -87,10 +87,7 @@ export default {
   get btnWarningColor() {
     return this.inverseTextColor;
   },
-  get btnTextSize() {
-    return (platform === 'ios') ? this.fontSizeBase * 1.1 :
-        this.fontSizeBase - 1;
-  },
+  btnTextSize: 14,
   get btnTextSizeLarge() {
     return this.fontSizeBase * 1.5;
   },
@@ -274,7 +271,7 @@ export default {
 
     // Title
   titleFontfamily: (platform === 'ios') ? 'Roboto' : 'Roboto_medium',
-  titleFontSize: 19,
+  titleFontSize: 15,
   subTitleFontSize: 14,
   subtitleColor: '#FFF',
 

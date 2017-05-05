@@ -52,10 +52,11 @@ export default {
     },
     home: {        
         title: 'Home',
-        Page: Home,        
+        Page: Home,     
+        headerType: 'home',   
     },  
     notification: {
-        title: 'Notification',
+        title: 'Notification center',
         Page: Notification,
     },   
     delegation: {

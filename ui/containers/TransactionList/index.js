@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio } from 'native-base'
+import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, Content, Input, Radio } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
-import Content from '~/ui/components/Content'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as authAction from '~/store/actions/auth'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
+import Icon from '~/ui/elements/Icon'
+import Border from '~/ui/elements/Border'
 @connect(null, authAction)
 @reduxForm({ form: 'TestForm' })
 export default class TransactionList extends Component {
@@ -101,7 +102,7 @@ export default class TransactionList extends Component {
             <View style={styles.container}>
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />
-                <View style={{ marginTop: 50 }}>
+                <View style={{ marginTop: 50, height: '100%' }}>
                     <TabsWithNoti tabData={tabData} activeTab={1} onPressTab={this._handlePressTab.bind(this)} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} />
                     <View style={styles.filterByTransactionType}>
@@ -114,6 +115,83 @@ export default class TransactionList extends Component {
 
                         <Text style={styles.numberRight}>10</Text>
                     </View>
+                    <Content style={{padding:10, height: '100%'}}>
+                        <View style={styles.block}>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='order-history' style={{...styles.icon, ...styles.processing}} />
+                                    <Text small style={{...styles.transactionCode, ...styles.processing}}>#CL123456</Text>
+                                </View>
+                                <Text small style={styles.moneyNumber}>400.000đ</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <View style={styles.placeholder} />
+                                    <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                </View>
+                                <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
+                                    <Text style={styles.processing} small>Đang xử lí</Text>
+                                </View>
+                                <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
+                            </View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+
+                        <View style={styles.block}>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success}} />
+                                    <Text small style={{...styles.transactionCode, ...styles.success}}>#CL123456</Text>
+                                </View>
+                                <Text small style={styles.moneyNumber}>400.000đ</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <View style={styles.placeholder} />
+                                    <Text small>Khách hàng: <Text small bold>Username</Text></Text>
+                                </View>
+                                <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
+                                    <Text style={styles.success} small>Thành công</Text>
+                                </View>
+                                <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
+                            </View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+
+                        <View style={styles.block}>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='unlike_s' style={{...styles.icon, ...styles.reject}} />
+                                    <Text small style={{...styles.transactionCode, ...styles.reject}}>#CL123456</Text>
+                                </View>
+                                <Text small style={styles.moneyNumber}>400.000đ</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <View style={styles.placeholder} />
+                                    <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                </View>
+                                <Text small style={styles.timestamp}>17:30 14/10/2017</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.row}>
+                                    <Icon name='option_check' style={{...styles.icon,...styles.notPayIcon}}/>
+                                    <Text small style={styles.reject}>Bị từ chối</Text>
+                                </View>
+                                <Text small style={styles.processing}>Chưa trả phí Clingme</Text>
+                            </View>
+                        </View>
+
+                    </Content>
+
                 </View>
             </View>
         )
