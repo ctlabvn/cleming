@@ -36,15 +36,19 @@ export default class MerchantOverview extends Component {
     }
     render() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
-        var allPlace = this.props.place.listPlace.map(item=>item.placeId).join(';')
+        if (!place || !place.listPlace || !place.statistic){
+            return (<Text>Loading...</Text>)
+        }
+        var allPlace = place.listPlace.map(item=>item.placeId).join(';')
         var defaultSelected = {
             id: allPlace,
             name: "Tất cả địa điểm"
         }
-        var dropdownValues = this.props.place.listPlace.map(item=>({
+        var dropdownValues = place.listPlace.map(item=>({
             id: item.placeId,
             name: item.address
         }))
+        dropdownValues = [defaultSelected, ...dropdownValues]
 
         return (
             <View style={styles.container}>
