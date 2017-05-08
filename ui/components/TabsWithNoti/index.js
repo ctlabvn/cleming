@@ -9,7 +9,6 @@ import moment from 'moment'
 export default class TabsWithNoti extends Component {
     constructor(props) {
         super(props)
-        console.log('Props', props)
         this.state = {
             activeTab: props.activeTab || 1
         }

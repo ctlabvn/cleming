@@ -41,11 +41,11 @@ export default class extends Component {
 
   render() {
     const {profile, forwardTo, closeDrawer} = this.props    
-    if(!profile)
-      return (<Spinner color="green" />)
-    // by default it is flex, so do not set flex portion
-    // render profile
-    const avatar = {uri: (API_BASE + profile.PhotoUrl)}
+    // if(!profile)
+    //   return (<Spinner color="green" />)
+    // // by default it is flex, so do not set flex portion
+    // // render profile
+    // const avatar = {uri: (API_BASE + profile.PhotoUrl)}
     return (      
         <Content
           bounces={false}
