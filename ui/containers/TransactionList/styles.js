@@ -27,15 +27,18 @@ export default {
     leftContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        marginLeft: 10,
+
     },
     numberRight: {
         color: PRIMARY_COLOR,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginRight: 10,
     },
     transactionTypeIcon: {
         color: PRIMARY_COLOR,
-        marginRight: 3,
+        marginRight: 7,
         fontSize: 20
     },
     transactionCode: {
@@ -55,10 +58,11 @@ export default {
     },
     icon: {
         fontSize: 17,
-        width: 20
+        width: 20,
+        marginRight: 10,
     },
     placeholder: {
-        width: 20        
+        width: 30
     },
     processing: {
         color: WARNING_COLOR
@@ -74,9 +78,5 @@ export default {
     },
     smallText: {
         fontSize: 13,
-    }
-
-
-
-
+    },
 }
