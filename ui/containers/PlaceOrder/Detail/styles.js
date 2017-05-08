@@ -16,8 +16,9 @@ export default {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    width: '70%',
-    alignSelf: 'center'
+    width: '55%',
+    alignSelf: 'center',
+    flexDirection: 'row'
   },
   placeContainer: {
     height: '80%',

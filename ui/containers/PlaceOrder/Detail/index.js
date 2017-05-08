@@ -146,14 +146,8 @@ export default class PlaceOrderDetail extends Component {
             </Grid>
           </View>
           <View style={styles.codeContainer}>
-            <Grid>
-              <Col style={{justifyContent: 'center', alignItems: 'flex-end'}}>
-                <Text style={{...styles.normalText, ...styles.codeTitleText}}>Mã đặt chỗ:</Text>
-              </Col>
-              <Col style={{justifyContent: 'center'}}>
-                <Text primary bold style={{...styles.codeText}}>#DC123456</Text>
-              </Col>
-            </Grid>
+            <Text style={{...styles.normalText, ...styles.codeTitleText}}>Mã đặt chỗ: </Text>
+            <Text primary bold style={{...styles.codeText}}>#DC123456</Text>
           </View>
         </View>
       </Container>
