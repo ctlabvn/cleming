@@ -46,12 +46,13 @@ export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            jobModalOpen: false,
-            permissionModalOpen: false,
-            fromTimeVisible: false,
-            toTimeVisible: false,
-            fromTime: new Date(),
-            toTime: new Date()
+          jobModalOpen: false,
+          permissionModalOpen: false,
+          fromTimeVisible: false,
+          toTimeVisible: false,
+          fromTime: new Date(),
+          toTime: new Date(),
+          checkAll: false
         }
     }
     
@@ -105,10 +106,14 @@ export default class CreateUserContainer extends Component {
         })
     }
     
-    onMarkAllPress() {
+    onCheckAllPress(fields) {
+      fields.map((address, index) => {
         this.setState({
-            markedAll: !this.state.markedAll
+          checkAll: !this.state.checkAll
+        }, () => {
+          this.props.change(`${address}.ad`, this.state.checkAll)
         })
+      })
     }
     
     renderJobModal() {
@@ -231,7 +236,10 @@ export default class CreateUserContainer extends Component {
                             dashColor={'#a2a2a2'}
                             dashThickness={1}
                             style={{flex: 1, marginBottom: 10}}/>
-                        <FieldArray name="GroupAddress" component={renderGroupAddress}/>
+                        <FieldArray
+                          checkAll={this.onCheckAllPress.bind(this)}
+                          name="GroupAddress"
+                          component={renderGroupAddress}/>
                         <View style={{marginTop: 15}}>
                             <Grid>
                                 <Col>

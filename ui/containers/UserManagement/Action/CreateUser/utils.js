@@ -22,7 +22,7 @@ export const validate = (values) => {
     return errors
 }
 
-export const renderGroupAddress = ({ fields, check }) => {
+export const renderGroupAddress = ({ fields, checkAll }) => {
     return (
         <View>
             <Grid>
@@ -32,7 +32,9 @@ export const renderGroupAddress = ({ fields, check }) => {
                 <Col style={{alignItems: 'center'}}>
                     <Text
                         style={styles.rightAddressTitleText}
-                        onPress={() => {}}>Đánh dấu tất cả</Text>
+                        onPress={() => {
+                            checkAll(fields)
+                        }}>Đánh dấu tất cả</Text>
                 </Col>
             </Grid>
             {fields.map((address, index) =>

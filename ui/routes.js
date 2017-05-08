@@ -35,6 +35,7 @@ import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
 import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
+import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -59,6 +60,11 @@ export default {
     placeOrderList: {
         title: 'Danh sách đặt chỗ',
         Page: PlaceOrderList,
+        headerType: 'back'
+    },
+    placeOrderDetail: {
+        title: 'Chi tiết đặt chỗ',
+        Page: PlaceOrderDetail,
         headerType: 'back'
     },
     notFound: {

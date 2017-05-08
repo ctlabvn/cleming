@@ -75,5 +75,23 @@ export default {
     button: {
         justifyContent: 'center',
         width: '40%',
+    },
+    detailButton: {
+      flex: 1,
+      backgroundColor: 'white',
+      flexDirection: 'column',
+      height: 150,
+      paddingBottom: 0,
+      borderWidth: 0,
+      zIndex: 0,
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      shadowColor: 'white',
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 0,
+      alignItems: 'stretch'
     }
 }

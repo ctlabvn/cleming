@@ -1,6 +1,7 @@
 import { apiPost } from '~/store/api/common'
 import { CLINGME_SERVER } from '~/store/constants/api'
 import md5 from 'md5'
+import 'whatwg-fetch'
 export default {
 
 
@@ -30,6 +31,7 @@ export default {
         password: md5(password),
       })
     }).then(async (response) => {
+        console.log(response)
       const xsession = response.headers.map['x-session'][0]
       const body = await response.json()
       return { ...body.updated.account, xsession }

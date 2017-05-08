@@ -17,6 +17,10 @@ export default {
 
   getBusinessProfile(accessToken) {
     return apiGet('/Api/BusinessAccount/BusinessAccountProfile', {}, accessToken)
+  },
+  
+  getListAccount() {
+    return apiPost('/account/list')
   }
 
 }
