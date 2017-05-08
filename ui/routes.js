@@ -65,7 +65,8 @@ export default {
     placeOrderDetail: {
         title: 'Chi tiết đặt chỗ',
         Page: PlaceOrderDetail,
-        headerType: 'back'
+        headerType: 'back',
+        footerType: 'none',
     },
     notFound: {
         title: 'Not Found',
