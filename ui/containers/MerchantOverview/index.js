@@ -90,7 +90,7 @@ export default class MerchantOverview extends Component {
                             </View>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>forwardTo('placeOrderList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon} />

@@ -33,17 +33,18 @@ import DealsOverview from './containers/DealsOverview'
 import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
 import TransactionDetail from './containers/TransactionDetail'
+import PlaceOrderList from './containers/PlaceOrderList'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     merchantOverview: {
         title: 'Merchant Name',
-        Page: MerchantOverview
+        Page: MerchantOverview,
+        headerType: 'none'
     },
     transactionList: {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
-        headerType: 'none'
     },
     transactionDetail: {
         title: 'Chi tiết giao dịch',
@@ -53,6 +54,11 @@ export default {
     deliveryList: {
         title: 'Danh sách giao hàng',
         Page: DeliveryList
+    },
+    placeOrderList: {
+        title: 'Danh sách đặt chỗ',
+        Page: PlaceOrderList,
+        headerType: 'back'
     },
     notFound: {
         title: 'Not Found',

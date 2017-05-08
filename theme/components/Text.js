@@ -38,6 +38,12 @@ export default (variables = variable) => {
       },
       '.error': {
         color: 'red'
+      },
+      '.white': {
+        color: 'white'
+      },
+      '.light': {
+        color: 'lightgrey'
       }
   };
 

@@ -259,7 +259,7 @@ export default {
     warning: {
         color: WARNING_COLOR
     },
-    
+
 
     backgroundBlue: {
         backgroundColor: 'blue'
@@ -283,5 +283,8 @@ export default {
     borderBottomPrimary: {
         borderBottomColor: PRIMARY_COLOR
     },
+    lineThrough: {
+        textDecorationLine: 'line-through'
+    }
 
 }

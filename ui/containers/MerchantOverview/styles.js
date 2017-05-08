@@ -81,7 +81,8 @@ export default {
     },
     icon: {
         fontSize: 20,
-        marginRight: 5
+        marginRight: 5,
+        color: 'grey'
     }
 
 

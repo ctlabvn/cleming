@@ -32,7 +32,7 @@ export default class TransactionDetail extends Component {
     }
     render() {
         // 'WAITING', 'SUCCESS', 'REJECT'
-        const transactionStatus = 'REJECT'
+        const transactionStatus = 'WAITING'
         return (
             <Content>
                 <View style={styles.container}>
@@ -112,11 +112,13 @@ export default class TransactionDetail extends Component {
                             </View>
                             <View style={styles.rowSpaceAround}>
                                 <View style={styles.gridItem}>
-                                    <Text success style={styles.textInfo}>69.699đ</Text>
+                                    {transactionStatus == 'REJECT'? 
+                                        <Text style={{...styles.textInfo, ...styles.lineThrough}}>69.699đ</Text> : <Text success style={styles.textInfo}>69.699đ</Text>}
                                     <Text style={styles.labelInfo}>Tổng tiền Cashback</Text>
                                 </View>
                                 <View style={styles.gridItem}>
-                                    <Text primary style={styles.textInfo}>10.111đ</Text>
+                                    {transactionStatus == 'REJECT'?
+                                        <Text style={{...styles.textInfo, ...styles.lineThrough}}>10.111đ</Text>:<Text primary style={styles.textInfo}>10.111đ</Text>}
                                     <Text style={styles.labelInfo}>Phí Clingme</Text>
                                 </View>
                             </View>
