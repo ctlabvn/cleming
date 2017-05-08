@@ -2,6 +2,9 @@
  * Created by vjtc0n on 5/8/17.
  */
 import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import { Dimensions } from 'react-native'
+
+const {height, width} = Dimensions.get('window');
 
 export default {
   merchantAddress: {
@@ -76,7 +79,8 @@ export default {
     alignSelf: 'center',
     width: '90%',
     justifyContent: 'center',
-    borderRadius: 5
+    borderRadius: 3,
+    height: (height > 660) ? '80%' : '60%'
   },
   declineButton: {
     backgroundColor: '#d9d9d9'
