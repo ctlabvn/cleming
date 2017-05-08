@@ -15,6 +15,9 @@ export const auth = (state = initialState, {type, payload}) => {
   switch (type) {   
     case 'app/setAuthState':
       return {...state, loggedIn: payload}
+    case 'app/setUserData': {
+      return {...state, user: payload}
+    }
     case 'app/saveLoggedUser':
       return {...state, ...payload}   // {user,token}
     case 'app/removeLoggedUser':

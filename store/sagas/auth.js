@@ -7,7 +7,8 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 import {
     setAuthState,
     saveLoggedUser,
-    removeLoggedUser
+    removeLoggedUser,
+    setUserData
 } from '~/store/actions/auth'
 
 import {
@@ -16,15 +17,30 @@ import {
 
 import { closeDrawer } from '~/store/actions/common'
 
+// const requestLogin = createRequestSaga({
+//     request: api.auth.login,
+//     key: 'login',
+//     cancel: 'app/logout',
+//     success: [
+//         (data) => saveLoggedUser(data),
+//         ({access_token}) => getProfile(access_token),
+//         () => setAuthState(true),                   
+//         () => forwardTo('home'), 
+//         () => setToast('Logged successfully!!!'),            
+//     ],
+//     failure: [
+//         () => setToast('Couldn\'t login', 'error')
+//     ],
+// })
+
 const requestLogin = createRequestSaga({
     request: api.auth.login,
     key: 'login',
     cancel: 'app/logout',
     success: [
-        (data) => saveLoggedUser(data),
-        ({access_token}) => getProfile(access_token),
-        () => setAuthState(true),                   
-        () => forwardTo('home'), 
+        (data) => setUserData(data),          
+        ()=>setAuthState(true),
+        () => forwardTo('merchantOverview'), 
         () => setToast('Logged successfully!!!'),            
     ],
     failure: [

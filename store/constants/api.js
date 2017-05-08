@@ -4,4 +4,5 @@ import { Platform } from 'react-native'
 const LOCAL_IP = Platform.OS === 'ios' ? '127.0.0.1' : '10.0.3.2'
 
 export const API_BASE = 'http://demo.regit.today'
+export const CLINGME_SERVER = 'http://dev.clingme.net:9099/'
 export const API_TIMEOUT = 10000

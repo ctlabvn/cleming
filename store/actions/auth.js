@@ -21,6 +21,10 @@ export const setAuthState = (newAuthState) => ({
   payload: newAuthState, 
 })
 
+export const setUserData = (userData) => ({
+  type: 'app/setUserData',
+  payload: userData, 
+})
 
 export const saveLoggedUser = ({userName,...token}) => ({
   type: 'app/saveLoggedUser',
