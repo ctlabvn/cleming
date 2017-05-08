@@ -3,13 +3,15 @@
  */
 import React, { Component } from 'react'
 import {
-    Button, List, ListItem, Switch, Spinner, CheckBox,
+    Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 import {
     InputField,
@@ -17,6 +19,7 @@ import {
     DateField,
 } from '~/ui/elements/Form'
 import Icon from '~/ui/elements/Icon'
+import Modal from '~/ui/components/Modal'
 
 import { validate, renderGroupAddress } from './utils'
 import styles from './styles'
@@ -43,16 +46,63 @@ export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            
+            jobModalOpen: false,
+            permissionModalOpen: false,
+            fromTimeVisible: false,
+            toTimeVisible: false,
+            fromTime: new Date(),
+            toTime: new Date()
         }
     }
     
     onJobPositionFocus() {
-        console.log("OKKKK")
+        this.setState({
+            jobModalOpen: true
+        })
     }
     
     onPermissionFocus() {
-        console.log("OKKKK")
+        this.setState({
+            permissionModalOpen: true
+        })
+    }
+    
+    onFromTimeFocus() {
+        this.setState({
+            fromTimeVisible: true
+        })
+    }
+    
+    onFromTimeCancel() {
+        this.setState({
+            fromTimeVisible: false
+        })
+    }
+    
+    setFromTime(value) {
+        this.setState({
+            fromTimeVisible: false,
+            fromTime: value
+        })
+    }
+    
+    onToTimeFocus() {
+        this.setState({
+            toTimeVisible: true
+        })
+    }
+    
+    onToTimeCancel() {
+        this.setState({
+            toTimeVisible: false
+        })
+    }
+    
+    setToTime(value) {
+        this.setState({
+            toTimeVisible: false,
+            toTime: value
+        })
     }
     
     onMarkAllPress() {
@@ -61,7 +111,25 @@ export default class CreateUserContainer extends Component {
         })
     }
     
+    renderJobModal() {
+        return(
+            <View style={styles.modalContainer}>
+                <Text>ABC</Text>
+            </View>
+        )
+    }
+    
+    renderPermissionModal() {
+        return(
+            <View style={styles.modalContainer}>
+                <Text>ABC</Text>
+            </View>
+        )
+    }
+    
     render() {
+        let fromTime = moment(this.state.fromTime).format("HH:mm")
+        let toTime = moment(this.state.toTime).format("HH:mm")
         return (
             <Container>
                 <Content style={{backgroundColor: 'white'}}>
@@ -101,7 +169,8 @@ export default class CreateUserContainer extends Component {
                                 label="Vị trí kinh doanh"
                                 name="position"
                                 component={InputField}
-                                placeholderTextColor="#7e7e7e"/>
+                                placeholderTextColor="#7e7e7e">
+                            </Field>
                         </View>
                         <View style={styles.inputContainer}>
                             <Field
@@ -134,8 +203,10 @@ export default class CreateUserContainer extends Component {
                                 <Col style={{alignItems: 'center'}}>
                                     <View style={{...styles.inputContainer, marginRight: 10}}>
                                         <Field
+                                            onPress={this.onFromTimeFocus.bind(this)}
+                                            editable={false}
                                             style={styles.inputField}
-                                            label="7:00"
+                                            label={fromTime}
                                             name="fromDate"
                                             component={InputField}
                                             placeholderTextColor="#7e7e7e"/>
@@ -144,8 +215,10 @@ export default class CreateUserContainer extends Component {
                                 <Col style={{alignItems: 'center'}}>
                                     <View style={{...styles.inputContainer, marginLeft: 10}}>
                                         <Field
+                                            onPress={this.onToTimeFocus.bind(this)}
+                                            editable={false}
                                             style={styles.inputField}
-                                            label="21:00"
+                                            label={toTime}
                                             name="toDate"
                                             component={InputField}
                                             placeholderTextColor="#7e7e7e"/>
@@ -178,7 +251,7 @@ export default class CreateUserContainer extends Component {
                                     <Col style={{alignItems: 'flex-end', width: '70%'}}>
                                         <Icon
                                             style={styles.copyIcon}
-                                            name="menu"/>
+                                            name="copy"/>
                                     </Col>
                                     <Col style={{justifyContent: 'center', width: '30%'}}>
                                         <Text style={styles.copyText}>Copy</Text>
@@ -196,6 +269,30 @@ export default class CreateUserContainer extends Component {
                             </Col>
                         </Grid>
                     </View>
+                    <Modal onCloseClick={e=>this.setState({jobModalOpen:false})} open={this.state.jobModalOpen}>
+                        {this.renderJobModal()}
+                    </Modal>
+                    <Modal onCloseClick={e=>this.setState({permissionModalOpen:false})} open={this.state.permissionModalOpen}>
+                        {this.renderPermissionModal()}
+                    </Modal>
+                    <DateTimePicker
+                        mode="time"
+                        titleIOS="Chọn thời gian"
+                        confirmTextIOS="Ok"
+                        cancelTextIOS="Cancel"
+                        isVisible={this.state.fromTimeVisible}
+                        onConfirm={this.setFromTime.bind(this)}
+                        onCancel={this.onFromTimeCancel.bind(this)}
+                    />
+                    <DateTimePicker
+                        mode="time"
+                        titleIOS="Chọn thời gian"
+                        confirmTextIOS="Ok"
+                        cancelTextIOS="Cancel"
+                        isVisible={this.state.toTimeVisible}
+                        onConfirm={this.setToTime.bind(this)}
+                        onCancel={this.onToTimeCancel.bind(this)}
+                    />
                 </Content>
             </Container>
         )

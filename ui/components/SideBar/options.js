@@ -23,7 +23,7 @@ export default {
     },    
     {
       name: 'Tạo lịch đặt chỗ',
-      route: 'activityLog',
+      route: 'placeOrder/detail',
       // icon: 'activity',
     },
     {
