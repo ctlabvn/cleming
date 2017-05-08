@@ -13,12 +13,15 @@ import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
-@connect(null, commonActions)
+@connect(state=>({
+    stateProp: state
+}), commonActions)
 @reduxForm({ form: 'TestForm' })
 export default class MerchantOverview extends Component {
 
     constructor(props) {
         super(props)
+        console.log(props.stateProp)
     }
     render() {
         const { handleSubmit, submitting, forwardTo } = this.props
