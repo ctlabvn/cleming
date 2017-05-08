@@ -11,7 +11,6 @@ const requestListTransaction = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            console.log('Transaction List', data)
             if (data.code && data.msg == 'session_expired'){
                 return forwardTo('login')
             }

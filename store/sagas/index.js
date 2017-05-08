@@ -8,7 +8,7 @@ import network from './network'
 import delegation from './delegation'
 import vault from './vault'
 import transaction from './transaction'
-
+import place from './place'
 // saga must be a function like generator of other functions
 export default function* () {
   yield [       
@@ -20,6 +20,7 @@ export default function* () {
     ...network.map(watcher => fork(watcher)),
     ...delegation.map(watcher => fork(watcher)),
     ...vault.map(watcher => fork(watcher)),
-    ...transaction.map(watcher => fork(watcher))
+    ...transaction.map(watcher => fork(watcher)),
+    ...place.map(watcher => fork(watcher))
   ]
 }

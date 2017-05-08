@@ -7,7 +7,7 @@ import network from './network'
 import delegation from './delegation'
 import vault from './vault'
 import transaction from './transaction'
-
+import place from './place';
 // we compose all api for each category here as single entry point
 // api will be an single entry point for all frame methods
 // this is where common functions are put
@@ -20,5 +20,6 @@ export default {
   network,
   delegation,
   vault,
-  transaction
+  transaction,
+  place
 }

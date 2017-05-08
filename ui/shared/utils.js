@@ -29,6 +29,6 @@ export const getTextParts = text => {
     : [text]
 }
 
-export const formatMoney = str => {
+export const formatNumber = str => {
   return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }

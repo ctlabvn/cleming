@@ -31,7 +31,6 @@ export default {
         password: md5(password),
       })
     }).then(async (response) => {
-        console.log(response)
       const xsession = response.headers.map['x-session'][0]
       const body = await response.json()
       return { ...body.updated.account, xsession }

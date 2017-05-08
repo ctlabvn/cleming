@@ -44,7 +44,6 @@ export default class DateFilter extends Component {
         return this.state
     }
     _handlePressTriggerDateFilterPopup() {
-        // console.log('Press date filter')
         this.refs.dateFilterTypePopup.setModalVisible(true)
     }
     _handlePressDateFilter(item) {

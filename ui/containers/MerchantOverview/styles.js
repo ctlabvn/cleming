@@ -1,4 +1,4 @@
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import { PRIMARY_COLOR, SUCCESS_COLOR } from '~/ui/shared/constants'
 export default {
     container: {
         backgroundColor: 'lightgrey',
@@ -83,6 +83,9 @@ export default {
         fontSize: 20,
         marginRight: 5,
         color: 'grey'
+    },
+    success: {
+        color: SUCCESS_COLOR
     }
 
 

@@ -48,11 +48,6 @@ export default class extends PureComponent {
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}
-          onLayout={(event) => {
-            console.log('vertical case')
-            console.log('Height', event.nativeEvent.layout.height)
-            console.log('Width', event.nativeEvent.layout.width)
-          }}
         >
           {borders}
         </View>

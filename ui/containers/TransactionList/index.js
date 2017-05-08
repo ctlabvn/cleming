@@ -14,7 +14,7 @@ import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 import moment from 'moment'
-import {formatMoney} from '~/ui/shared/utils'
+import {formatNumber} from '~/ui/shared/utils'
 @connect(state => ({
     user: state.auth.user,
     listTransaction: state.transaction.listTransaction
@@ -115,7 +115,7 @@ export default class TransactionList extends Component {
                     <View style={styles.block}>
                         <View style={styles.row}>
                             {transactionNumberBlock}
-                            <Text bold>{formatMoney(item.moneyAmount)}đ</Text>
+                            <Text bold>{formatNumber(item.moneyAmount)}đ</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
