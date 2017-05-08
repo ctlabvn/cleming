@@ -28,6 +28,7 @@ export default {
     },
     dateFilterList: {
         // padding: 50,
+        marginRight: 10,
         flexDirection: 'row'
     },
     dateFilterListItemDeactive: {
