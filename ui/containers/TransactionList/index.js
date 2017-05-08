@@ -116,6 +116,8 @@ export default class TransactionList extends Component {
                         <Text small style={styles.numberRight}>10</Text>
                     </View>
                     <Content style={{ padding: 10, height: '100%' }}>
+
+
                         <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
                             <View style={styles.block}>
                                 <View style={styles.row}>
@@ -142,6 +144,9 @@ export default class TransactionList extends Component {
                             </View>
                         </TouchableOpacity>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
+
+
+
                         <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
                             <View style={styles.block}>
                                 <View style={styles.row}>
@@ -193,6 +198,41 @@ export default class TransactionList extends Component {
                                 </View>
                             </View>
                         </TouchableOpacity>
+
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
+                            <View style={styles.block}>
+                                <View style={styles.row}>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>#CL123456</Text>
+                                    </View>
+                                    <Text small style={styles.moneyNumber}>17:30 14/10/2017</Text>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
+                                    </View>
+                                    <Text small success style={styles.timestamp}>Thành công</Text>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.row}>
+                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <Text small>Số HĐ: </Text><Text bold primary>00425</Text>
+                                    </View>
+                                    <Text bold>400.000đ</Text>
+                                </View>
+                                <View style={styles.row}>
+                                    <View style={styles.row}>
+                                        <View style={styles.placeholder} />
+                                        <Text small warning>Chờ Clingme hoàn tiền</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+
+
                     </Content>
 
                 </View>
