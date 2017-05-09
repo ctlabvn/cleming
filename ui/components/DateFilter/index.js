@@ -13,11 +13,7 @@ export default class DateFilter extends Component {
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             currentDateFilter: 'day',
-            currentSelectValue: {
-                from: '',
-                to: '',
-                display: ''
-            }
+            currentSelectValue: this._getDefaultCurrnetSelectValue('day')
         };
         this.dateFilterListValue = [
             {
@@ -55,18 +51,18 @@ export default class DateFilter extends Component {
         })
     }
     _handleYesDateFilter(item) {
-        // console.log('Date Filter item', item)
         this.setState({ currentDateFilter: item })
-        this.setState({
-            currentSelectValue: {
-                from: '',
-                to: '',
-                display: ''
-            }
-        })
+        this.setState({currentSelectValue: this._getDefaultCurrnetSelectValue(item)})
+        setTimeout(()=>{
+            this.refs.dateFilterList.scrollToEnd({animated: false})
+        }, 0)
+        
+
     }
     componentDidMount() {
-        // this.refs.dateFilterList.scrollToEnd({ animated: false })
+        setTimeout(()=>{
+            this.refs.dateFilterList.scrollToEnd({ animated: false })
+        }, 0)
     }
     componentDidUpdate() {
         // this.refs.dateFilterList.scrollToEnd({ animated: false })
@@ -76,8 +72,13 @@ export default class DateFilter extends Component {
             // lastest 7 days
             return [6, 5, 4, 3, 2, 1, 0].map((item) => {
                 let now = moment().subtract(item, 'days')
+                let from = moment().subtract(item, 'days').startOf('day').unix()
+                let to = moment().subtract(item, 'days').endOf('day').unix()
                 return {
-                    value: now.format('DD/MM/YYYY'),
+                    value: {
+                        from: from,
+                        to: to
+                    },
                     display: now.format('DD/MM/YYYY')
                 }
             })
@@ -88,8 +89,8 @@ export default class DateFilter extends Component {
                 let endWeek = moment().subtract(item, 'weeks').endOf('isoWeek')
                 return {
                     value: {
-                        from: startWeek.format('DD/MM/YYYY'),
-                        to: endWeek.format('DD/MM/YYYY')
+                        from: startWeek.unix(),
+                        to: endWeek.unix()
                     },
                     display: startWeek.format('DD/MM/YYYY') + ' to ' + endWeek.format('DD/MM/YYYY')
                 }
@@ -101,8 +102,8 @@ export default class DateFilter extends Component {
                 let endMonth = moment().subtract(item, 'months').endOf('month')
                 return {
                     value: {
-                        from: startMonth.format('DD/MM/YYYY'),
-                        to: endMonth.format('DD/MM/YYYY')
+                        from: startMonth.unix(),
+                        to: endMonth.unix()
                     },
                     display: currentMonth.format('MM/YYYY')
                 }
@@ -114,8 +115,8 @@ export default class DateFilter extends Component {
                 let endYear = moment().subtract(item, 'years').endOf('year')
                 return {
                     value: {
-                        from: startYear.format('DD/MM/YYYY'),
-                        to: endYear.format('DD/MM/YYYY')
+                        from: startYear.unix(),
+                        to: endYear.unix()
                     },
                     display: currentYear.format('YYYY')
                 }
@@ -125,8 +126,13 @@ export default class DateFilter extends Component {
     _getDefaultCurrnetSelectValue(filterType) {
         if (filterType == 'day') {
             let now = moment()
+            let from = moment().startOf('day').unix()
+            let to = moment().endOf('day').unix()
             return {
-                value: now.format('DD/MM/YYYY'),
+                value: {
+                    from: from,
+                    to: to
+                },
                 display: now.format('DD/MM/YYYY')
             }
         } else if (filterType == 'week') {
@@ -135,8 +141,8 @@ export default class DateFilter extends Component {
             let endWeek = moment().endOf('isoWeek')
             return {
                 value: {
-                    from: startWeek.format('DD/MM/YYYY'),
-                    to: endWeek.format('DD/MM/YYYY')
+                    from: startWeek.unix(),
+                    to: endWeek.unix()
                 },
                 display: startWeek.format('DD/MM/YYYY') + ' to ' + endWeek.format('DD/MM/YYYY')
             }
@@ -146,8 +152,8 @@ export default class DateFilter extends Component {
             let endMonth = moment().endOf('month')
             return {
                 value: {
-                    from: startMonth.format('DD/MM/YYYY'),
-                    to: endMonth.format('DD/MM/YYYY')
+                    from: startMonth.unix(),
+                    to: endMonth.unix()                
                 },
                 display: currentMonth.format('MM/YYYY')
             }
@@ -157,14 +163,15 @@ export default class DateFilter extends Component {
             let endYear = moment().endOf('year')
             return {
                 value: {
-                    from: startYear.format('DD/MM/YYYY'),
-                    to: endYear.format('DD/MM/YYYY')
+                    from: startYear.unix(),
+                    to: endYear.unix()
                 },
                 display: currentYear.format('YYYY')
             }
         }
     }
     render() {
+        console.log('Go to render')
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
         const data = this.ds.cloneWithRows(_data)
@@ -183,9 +190,10 @@ export default class DateFilter extends Component {
                     ref='dateFilterList' dataSource={data}
                     renderRow={
                         (rowData) => {
-                            return (<TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
-                                <Text small style={(rowData.display).localeCompare(currentSelectValue.display) == 0 ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
-                            </TouchableOpacity>
+                            return (
+                                <TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
+                                    <Text small style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to)?styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                </TouchableOpacity>
                             )
                         }
                     }

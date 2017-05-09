@@ -14,7 +14,6 @@ const requestListTransaction = createRequestSaga({
             if (data.code && data.msg == 'session_expired'){
                 return forwardTo('login')
             }
-            console.log('Transaction List', data)
             return setListTransaction(data.updated.data)
         }          
     ],
