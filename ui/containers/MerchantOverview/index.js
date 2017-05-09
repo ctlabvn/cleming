@@ -24,16 +24,26 @@ export default class MerchantOverview extends Component {
     constructor(props) {
         super(props)
     }
+
     componentDidMount() {
-        this.props.getListPlace(this.props.user.xsession, () => {
-            var allPlace = this.props.place.listPlace.map(item => item.placeId).join(';')
-            console.log('All place', allPlace)
-            this.props.getPlaceStatistic(this.props.user.xsession, allPlace)
+        this.props.getListPlace(this.props.user.xsession, (err, data) => {
+            console.log(err, data)
+            if(data && data.updated && data.updated.listPlace){
+                var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
+                console.log('All place', allPlace)
+                this.props.getPlaceStatistic(this.props.user.xsession, allPlace)
+            }
         })
     }
+
+    componentWillFocus(){
+        console.log('focus')
+    }
+
     _handleChangePlace(item) {
         this.props.getPlaceStatistic(this.props.user.xsession, item.id)
     }
+
     render() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
         if (!place || !place.listPlace || !place.statistic) {

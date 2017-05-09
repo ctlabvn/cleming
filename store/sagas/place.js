@@ -11,9 +11,9 @@ const requestListPlace = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            if (data.code && data.msg == 'session_expired'){
-                return forwardTo('login')
-            }
+            // if (data.code && data.msg == 'session_expired'){
+            //     return forwardTo('login')
+            // }
             return setListPlace(data.updated.listPlace)
         }          
     ],
@@ -26,10 +26,8 @@ const requestPlaceStatistic = createRequestSaga({
     key: 'placeStatistic',
     cancel: 'app/logout',
     success: [
-        (data) => {
-            if (data.code && data.msg == 'session_expired'){
-                return forwardTo('login')
-            }
+        (data) => {            
+            console.log('data', data)
             return setPlaceStatistic(data.updated.data)
         }          
     ],

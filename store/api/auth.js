@@ -37,6 +37,13 @@ export default {
     })
   },
 
+  // login(userName, password) {
+  //   return apiPost('/login', {
+  //     userName,
+  //     password
+  //   })
+  // },
+
   refreshAccessToken(refreshToken) {
     return apiPost(`/auth/token`, {
       refreshToken,
