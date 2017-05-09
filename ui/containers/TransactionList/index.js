@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, Content, Input, Radio } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
+import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -17,6 +17,7 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 @connect(state => ({
     user: state.auth.user,
+    place: state.place,
     listTransaction: state.transaction.listTransaction
 }), { ...commonAction, ...transactionAction })
 @reduxForm({ form: 'TestForm' })
@@ -63,85 +64,106 @@ export default class TransactionList extends Component {
         this.props.getListTransaction(this.props.user.xsession)
     }
     _renderTransactionItem(item) {
-        // moment().format('MMMM Do YYYY, h:mm:ss a'); // May 8th 2017, 2:15:38 pm
-        //status: int, //trạng thái hóa đơn, nếu 1 – hóa đơn đã được Clingme duyệt (hiển thị dấu tích
-        // màu xanh), 0 – là hóa đơn đang chờ duyệt (hiển thị đồng hồ chờ), 3 – là hóa đơn đã được
-        // xem xét đang chờ được Clingme duyệt (hiển thị đồng hồ chờ).
         var transactionNumberBlock;
         var statusText;
-        switch (item.status) {
+        switch (item.transactionStatus) {
             case 0: // chờ duyệt
                 transactionNumberBlock =
                     (<View style={styles.row}>
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.transactionNumber}</Text>
+                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text warning small>Đang xử lí</Text>
                 break
-            case 1: // đã duyệtb
+            case 3:
+                transactionNumberBlock =
+                    (<View style={styles.row}>
+                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
+                    </View>)
+                statusText = <Text warning small>Đang xử lí</Text>
+                break
+
+            case 1: // thành công
                 transactionNumberBlock =
                     (<View style={styles.row}>
                         <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.transactionNumber}</Text>
+                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text success small>Thành công</Text>
                 break
-            case 3:
+            case 2: // Bị từ chối
                 transactionNumberBlock = (
                     <View style={styles.row}>
-                        <View style={styles.placeholder} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.transactionNumber}</Text>
+                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.dealTransactionIdDisplay}</Text>
                     </View>
                 )
                 statusText = <Text small error>Bị từ chối</Text>
                 break
             default:
-                transactionNumberBlock =
+               transactionNumberBlock =
                     (<View style={styles.row}>
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.transactionNumber}</Text>
+                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
+                statusText = <Text warning small>Đang xử lí</Text>
                 break
         }
         var payClingmeText;
-        if (parseInt(item.clingmeMoney) > 0) {
+        var payIndicator = null
+        if (parseInt(item.paymentStatus) > 0) {
             payClingmeText = <Text small>Đã trả phí Clingme</Text>
         } else {
             payClingmeText = <Text small warning>Chưa trả phí Clingme</Text>
+            payIndicator = <View style={styles.readIndicator} />
         }
         return (
-            <View key={item.transactionNumber}>
-                <TouchableOpacity onPress={() => this.props.forwardTo('transactionDetail')}>
+            <ListItem key={item.dealTransactionId} 
+                onPress={() => this.props.forwardTo('transactionDetail')}
+                style={styles.listItem}
+                pageSize={10}
+                >
                     <View style={styles.block}>
                         <View style={styles.row}>
                             {transactionNumberBlock}
-                            <Text bold>{formatNumber(item.moneyAmount)}đ</Text>
+                            <Text bold>{formatNumber(item.originPrice)}đ</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
                                 <View style={styles.placeholder} />
-                                <Text small>Khách hàng: <Text bold small>{item.userId}</Text></Text>
+                                <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
                             </View>
                             <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
                                 <View style={styles.placeholder}>
-                                    <View style={styles.readIndicator} />
+                                    {payIndicator}
                                 </View>
                                 {statusText}
                             </View>
                             {payClingmeText}
                         </View>
-                    </View>
-                </TouchableOpacity>
+                    </View> 
                 <Border color='rgba(0,0,0,0.5)' size={1} />
-            </View>
+            </ListItem>
         )
     }
     render() {
         const { handleSubmit, submitting, forwardTo, listTransaction } = this.props
         // console.log('Re-render', this.props.listTransaction)
+        // First Time
+        if (!listTransaction) {
+            return (
+                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                    <ActivityIndicator
+                        size="large"
+                    />
+                    <Text>Loading...</Text>
+                </View>
+            )
+        }
 
         var dropdownValues = [
             {
@@ -189,25 +211,30 @@ export default class TransactionList extends Component {
         return (
             <View style={styles.container}>
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
-                <RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />
+                {/*<RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={tabData} activeTab={1} onPressTab={this._handlePressTab.bind(this)} />
+                    <TabsWithNoti tabData={tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} />
-                    <View style={styles.filterByTransactionType}>
+
+                    {/*<View style={styles.filterByTransactionType}>
                         <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                             <View style={styles.leftContainer}>
                                 <Icon name='filter' style={styles.transactionTypeIcon} />
                                 <Text small>{currentFilter}</Text>
                             </View>
                         </TouchableOpacity>
-
                         <Text small style={styles.numberRight}>10</Text>
-                    </View>
+                    </View>*/}
+
                     <Content style={{ padding: 10, height: '100%' }}>
-                        {/*{listTransaction.map((item) => this._renderTransactionItem(item))}*/}
+                        <List dataArray={listTransaction.slice(0, 10)}
+                            renderRow={(item) =>this._renderTransactionItem(item)}>
+                        </List>
+
+                        {/*{listTransaction.slice(0, 10).map((item) => this._renderTransactionItem(item))}*/}
 
 
-                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
+                        {/*<TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
                             <View style={styles.block}>
                                 <View style={styles.row}>
                                     <View style={styles.row}>
@@ -327,7 +354,7 @@ export default class TransactionList extends Component {
                                     </View>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity>*/}
 
 
                     </Content>

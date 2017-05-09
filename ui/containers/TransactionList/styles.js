@@ -47,7 +47,8 @@ export default {
     block: {
         flexDirection: 'column',
         backgroundColor: 'white',
-        borderRadius: 3,
+        width: '100%',
+        // borderRadius: 3,
         padding: 10,
         marginBottom: 10
     },
@@ -86,5 +87,6 @@ export default {
         width: 10,
         height: 10,
         borderRadius: 5
-    }
+    },
+    listItem: {flexDirection: 'column', paddingRight: 0, paddingBottom: 0, marginLeft: 0, marginRight: 0, borderBottomWidth: 0, paddingTop: 0},
 }

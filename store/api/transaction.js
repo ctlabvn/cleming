@@ -1,8 +1,8 @@
 import { CLINGME_SERVER } from '~/store/constants/api'
 export default {
     list(xsession, from=1320985607, to=1510374407) {
-        //http://dev.clingme.net:9099/transaction/list?fromTime=1320985607&toTime=1510374407
-        return fetch(CLINGME_SERVER + 'transaction/list?fromTime='+from+'&toTime='+to, {
+        // ?placeId=3108&fromTime=1494257316&toTime=1494257316&option=1
+        return fetch(CLINGME_SERVER + 'transaction/merchantApp/list-direct?fromTime='+from+'&toTime='+to, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
