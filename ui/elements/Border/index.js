@@ -16,6 +16,7 @@ export default class extends PureComponent {
           width: size,
           height: size,
           borderRadius: size / 2,
+          margin: padding
         }} />
         )
       }
