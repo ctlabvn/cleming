@@ -68,7 +68,8 @@ export default {
         paddingLeft: 0,
         borderWidth: 0,
         shadowColor: 'white',
-        padding: 0
+        padding: 0,
+        elevation: 0
     },
     ownerButton: {
         backgroundColor: 'white',
@@ -76,7 +77,8 @@ export default {
         borderWidth: 0,
         shadowColor: 'white',
         paddingRight: 0,
-        height: 40
+        height: 40,
+        elevation: 0
     },
     modalContainer: {
         height: 200,
@@ -90,7 +92,8 @@ export default {
         paddingLeft: 0,
         borderWidth: 0,
         shadowColor: 'white',
-        paddingRight: 0
+        paddingRight: 0,
+        elevation: 0
     },
     modalCancelButtonText: {
         color: 'gray',
