@@ -42,7 +42,7 @@ export default {
     merchantOverview: {
         title: 'Merchant Name',
         Page: MerchantOverview,
-        headerType: 'none'
+        headerType: 'noBack'
     },
     transactionList: {
         title: 'Danh sách giao dịch',
@@ -66,7 +66,7 @@ export default {
         title: 'Chi tiết đặt chỗ',
         Page: PlaceOrderDetail,
         headerType: 'back',
-        footerType: 'none',
+        footerType: 'noBack',
     },
     notFound: {
         title: 'Not Found',
@@ -109,78 +109,78 @@ export default {
         headerType: 'none',
         footerType: 'none',
     },  
-    signup1: {
-        title: 'Sign Up',
-        Page: SignUpStep1,        
-        headerType: 'back',
-        footerType: 'none',
-    },   
-    signup2: {
-        title: 'Step 2',
-        Page: SignUpStep2,        
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    signup3: {
-        title: 'Step 3',
-        Page: SignUpStep3,        
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    signup4: {
-        title: 'Step 4',
-        Page: SignUpStep4,        
-        headerType: 'back',
-        footerType: 'none',
-    },
-    signup5: {
-        title: 'Step 5',
-        Page: SignUpStep5,        
-        headerType: 'back',
-        footerType: 'none',
-    },
-    signup6: {
-        title: 'Step 6',
-        Page: SignUpStep6,        
-        headerType: 'back',
-        footerType: 'none',
-    },
-    'user/action/changePassword':{   
-        title: 'Change Password',
-        Page: ChangePassword,
-        headerType: 'back',
-        footerType: 'none',
-    },    
-    'user/action/changeEmail':{
-        title: 'Change Email',
-        Page: ChangeEmail,
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    'user/action/changePIN':{
-        title: 'Change PIN',
-        Page: ChangePIN,
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    'user/action/changePhoneNumber':{
-        title: 'Change Phone',
-        Page: ChangePhoneNumber,
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    'user/action/changeSecurityQuestion':{
-        title: 'Change Question',
-        Page: ChangeSecurityQuestion,
-        headerType: 'back',
-        footerType: 'none',
-    }, 
-    'user/action/closeAccount':{
-        title: 'Close Account',
-        Page: CloseAccount,
-        headerType: 'back',
-        footerType: 'none',
-    }, 
+    // signup1: {
+    //     title: 'Sign Up',
+    //     Page: SignUpStep1,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },   
+    // signup2: {
+    //     title: 'Step 2',
+    //     Page: SignUpStep2,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // signup3: {
+    //     title: 'Step 3',
+    //     Page: SignUpStep3,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // signup4: {
+    //     title: 'Step 4',
+    //     Page: SignUpStep4,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },
+    // signup5: {
+    //     title: 'Step 5',
+    //     Page: SignUpStep5,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },
+    // signup6: {
+    //     title: 'Step 6',
+    //     Page: SignUpStep6,        
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },
+    // 'user/action/changePassword':{   
+    //     title: 'Change Password',
+    //     Page: ChangePassword,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },    
+    // 'user/action/changeEmail':{
+    //     title: 'Change Email',
+    //     Page: ChangeEmail,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // 'user/action/changePIN':{
+    //     title: 'Change PIN',
+    //     Page: ChangePIN,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // 'user/action/changePhoneNumber':{
+    //     title: 'Change Phone',
+    //     Page: ChangePhoneNumber,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // 'user/action/changeSecurityQuestion':{
+    //     title: 'Change Question',
+    //     Page: ChangeSecurityQuestion,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
+    // 'user/action/closeAccount':{
+    //     title: 'Close Account',
+    //     Page: CloseAccount,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // }, 
     activityLog:{
         title: 'Activity Log',
         Page: ActivityLog,

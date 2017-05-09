@@ -5,7 +5,7 @@ import {
 } from '~/store/constants/api'
 
 const urlEncode = data => data 
-? Object.keys(data).map((key) => key + '=' + encodeURIComponent(data[key])).join('&')
+? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
 : ''
 
 export const rejectErrors = (res) => {

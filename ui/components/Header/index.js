@@ -118,13 +118,15 @@ export default class extends Component {
     // event will be invoke via pageInstance
     switch(type){
       case 'none':      
-        return this.renderHeaderTitle(title, null)
+        return false
       case 'back':
         return this.renderHeaderBack(title)
       case 'searchBack':
         return this.renderHeaderSearch('keyboard-arrow-left')
       case 'home':
-        return this.renderHeaderHome(title)      
+        return this.renderHeaderHome(title)  
+      case 'noBack':
+        this.renderHeaderTitle(title, null)    
       default:
         return this.renderHeaderTitle(title)
     } 
