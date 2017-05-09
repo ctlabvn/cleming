@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import {
   Button, List, ListItem, Switch, Spinner, CheckBox, Picker, Text,
-  Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
+  Container, Item, Input, Left, Body, Right, View, Grid, Col, Row
 } from 'native-base'
+import Content from '~/ui/components/Content'
 import {  } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
@@ -29,9 +30,11 @@ export default class PlaceOrderDetail extends Component {
   render() {
     return (
       <Container>
+        
         <View style={styles.merchantAddress}>
           <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
         </View>
+        
         <View style={{backgroundColor: 'white', height: '100%'}}>
           <View style={styles.placeContainer}>
             <Grid>
@@ -150,6 +153,7 @@ export default class PlaceOrderDetail extends Component {
             <Text primary bold style={{...styles.codeText}}>#DC123456</Text>
           </View>
         </View>
+        
       </Container>
     )
   }

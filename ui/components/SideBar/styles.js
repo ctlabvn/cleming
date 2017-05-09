@@ -4,7 +4,7 @@ export default {
   container: {
     flex: 1, 
     backgroundColor: '#00a9d4',    
-    marginTop: 20,
+    // top: 20,
   },
   buttonClose:{
     position: 'absolute',
