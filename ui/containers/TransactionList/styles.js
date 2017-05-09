@@ -62,7 +62,9 @@ export default {
         marginRight: 10,
     },
     placeholder: {
-        width: 30
+        width: 30,
+        flexDirection: 'row',
+        justifyContent: 'center'
     },
     processing: {
         color: WARNING_COLOR
@@ -79,4 +81,10 @@ export default {
     smallText: {
         fontSize: 13,
     },
+    readIndicator: {
+        backgroundColor: PRIMARY_COLOR,
+        width: 10,
+        height: 10,
+        borderRadius: 5
+    }
 }

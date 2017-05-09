@@ -14,7 +14,7 @@ import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 import moment from 'moment'
-import {formatNumber} from '~/ui/shared/utils'
+import { formatNumber } from '~/ui/shared/utils'
 @connect(state => ({
     user: state.auth.user,
     listTransaction: state.transaction.listTransaction
@@ -59,7 +59,7 @@ export default class TransactionList extends Component {
     _handlePressTab(item) {
         console.log('Praten press tab', item)
     }
-    componentDidMount() {   
+    componentDidMount() {
         this.props.getListTransaction(this.props.user.xsession)
     }
     _renderTransactionItem(item) {
@@ -104,9 +104,9 @@ export default class TransactionList extends Component {
                 break
         }
         var payClingmeText;
-        if (parseInt(item.clingmeMoney) > 0){
+        if (parseInt(item.clingmeMoney) > 0) {
             payClingmeText = <Text small>Đã trả phí Clingme</Text>
-        }else{
+        } else {
             payClingmeText = <Text small warning>Chưa trả phí Clingme</Text>
         }
         return (
@@ -126,7 +126,9 @@ export default class TransactionList extends Component {
                         </View>
                         <View style={styles.row}>
                             <View style={styles.row}>
-                                <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                <View style={styles.placeholder}>
+                                    <View style={styles.readIndicator} />
+                                </View>
                                 {statusText}
                             </View>
                             {payClingmeText}
@@ -223,7 +225,9 @@ export default class TransactionList extends Component {
                                 </View>
                                 <View style={styles.row}>
                                     <View style={styles.row}>
-                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <View style={styles.placeholder}>
+                                            <View style={styles.readIndicator} />
+                                        </View>
                                         <Text style={styles.processing} small>Đang xử lí</Text>
                                     </View>
                                     <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
@@ -252,7 +256,9 @@ export default class TransactionList extends Component {
                                 </View>
                                 <View style={styles.row}>
                                     <View style={styles.row}>
-                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <View style={styles.placeholder}>
+                                            <View style={styles.readIndicator} />
+                                        </View>
                                         <Text style={styles.success} small>Thành công</Text>
                                     </View>
                                     <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
@@ -278,7 +284,9 @@ export default class TransactionList extends Component {
                                 </View>
                                 <View style={styles.row}>
                                     <View style={styles.row}>
-                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <View style={styles.placeholder}>
+                                            <View style={styles.readIndicator} />
+                                        </View>
                                         <Text small style={styles.reject}>Bị từ chối</Text>
                                     </View>
                                     <Text small style={styles.processing}>Chưa trả phí Clingme</Text>
@@ -305,7 +313,9 @@ export default class TransactionList extends Component {
                                 </View>
                                 <View style={styles.row}>
                                     <View style={styles.row}>
-                                        <Icon name='option_check' style={{ ...styles.icon, ...styles.notPayIcon }} />
+                                        <View style={styles.placeholder}>
+                                            <View style={styles.readIndicator} />
+                                        </View>
                                         <Text small>Số HĐ: </Text><Text bold primary>00425</Text>
                                     </View>
                                     <Text bold>400.000đ</Text>
