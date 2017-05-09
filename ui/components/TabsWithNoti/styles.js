@@ -28,7 +28,7 @@ export default {
     },
     tabTextActive: {
         color: 'white',
-        marginRight: 3,
+        marginRight: 6,
         fontWeight: '900',
         fontSize: 14
 
@@ -36,7 +36,7 @@ export default {
     },
     tabTextDeactive: {
         color: 'rgba(255,255,255,0.5)',
-        marginRight: 3,
+        marginRight: 6,
         fontWeight: '100',
         fontSize: 14
     },

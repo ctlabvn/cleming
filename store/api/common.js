@@ -5,7 +5,7 @@ import {
 } from '~/store/constants/api'
 
 const urlEncode = data => data 
-? Object.keys(data).map((key) => key + '=' + encodeURIComponent(data[key])).join('&')
+? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
 : ''
 
 export const rejectErrors = (res) => {
@@ -26,14 +26,19 @@ export const fetchJson = (url, options = {}, base = API_BASE) => (
     ...options,
     headers: {
       ...options.headers,
-      'Content-Type':'application/x-www-form-urlencoded',      
-      // 'Accept': 'application/json',
-      // 'Content-Type': 'application/json',
+      // 'Content-Type':'application/x-www-form-urlencoded',   
+      // Origin: API_BASE,      
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-VERSION': 1,
+      'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
+      'X-DATA-VERSION': 1,
+      'X-AUTH': '',
     },
   })
   .then(rejectErrors)
   // default return empty json when no content
-  .then((res) => {
+  .then((res) => {    
     const contentType = res.headers.get("content-type") || ''
     return (res.status !== 204 && contentType.indexOf("application/json") !== -1) ? res.json() : {}
   })
@@ -44,7 +49,7 @@ export const fetchJsonWithToken = (token, url, options = {}, ...args) => (
     ...options,
     headers: {
       ...options.header,
-      Authorization: `Bearer ${token.accessToken || token}`,
+      'X-SESSION': token.accessToken || token,
     },
   }, ...args)
 )
@@ -55,7 +60,7 @@ export const apiCall = (url, options, token = null) =>
 
 // must have data to post, put should not return data
 export const apiPost = (url, data, token, method='POST') => 
-  apiCall(url, { method, body: urlEncode(data) }, token)
+  apiCall(url, { method, body: JSON.stringify(data) }, token)
 
 export const apiGet = (url, data, token, method='GET') => 
   apiCall(url + '?' + urlEncode(data), { method }, token)

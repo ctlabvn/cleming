@@ -30,6 +30,10 @@ import { validate } from './utils'
 import { logoSource, storeTransparent } from '~/assets'
 
 @connect(state=>({  
+  initialValues:{
+    email: 'thao@clingme.vn',
+    password: 'clingme',
+  },
   loginRequest: commonSelectors.getRequest(state, 'login'),  
 }), {...commonActions, ...authActions})
 @reduxForm({ form: 'LoginForm', validate})

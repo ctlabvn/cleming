@@ -36,11 +36,16 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
     // default is empty
     let args = action.args || []
     // check to see if we have success callback that pass as a param, so that it will be callback from where it was born
-    // with this way we can make something like cleaning the messages
-    let successCallback = typeof args[args.length-1] === 'function' ? args[args.length-1] : null
-    if(successCallback){
+    // with this way we can make something like cleaning the messages    
+    let callback = typeof args[args.length-1] === 'function' ? args[args.length-1] : null
+    if(callback){
       args = args.slice(0, -1)
     }
+    // error first callback
+    let ret = null
+    let err = null
+
+    // store into redux
     const requestKey = (typeof key === 'function') ? key(...args) : key
     // for key, we render unique key using action.args
     // but for actionCreator when callback, we should pass the whole action
@@ -81,17 +86,25 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
         // mark cancelled request
         yield put(markRequestCancelled(cancelRet, requestKey))
       } else {
+
+        // throw unthorized response
+        if(data.code === 1903){
+          throw {
+            status: 401,
+            message: data.msg,
+          }
+        }
+
         // callback on success
         if(success) for(let actionCreator of success){          
           yield put(actionCreator(data, action))
-        }        
-
-        // check if the last param is action, should call it as actionCreator
-        if(successCallback) {
-          yield put(invokeCallback(successCallback, data, action))        
-        } 
+        }                
         // finally mark the request success
         yield put(markRequestSuccess(requestKey))
+
+        // assign data, for cancel both ret and err is null
+        ret = data
+
       }            
       
     } catch (reason) {
@@ -121,11 +134,18 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
       }        
       yield put(markRequestFailed(reason, requestKey))
 
-      console.log(reason)
+      // mark error
+      err = reason      
       
     } finally {
       if(stop) for(let actionCreator of stop){          
-        yield put(actionCreator(reason, action))
+        yield put(actionCreator(ret, action))
+      } 
+      // check if the last param is action, should call it as actionCreator
+      // from where it is called, we can access action[type and args], 
+      // so we will use it with first error callback style
+      if(callback) {
+        yield put(invokeCallback(callback, err, ret))        
       } 
     }
   }
