@@ -29,8 +29,8 @@ export default class TopDropdown extends PureComponent {
             duration: this.state.openningDropdown ? 300 : 300,
             easing: Easing.inOut(Easing.quad)
         }).start(() => {
-            console.log('Open/Closing drop down');
-
+            // console.log('Open/Closing drop down');
+            this.props.onSelect && this.props.onSelect(this.state.selectedOption)
         });
 
         this.setState({ openningDropdown: !this.state.openningDropdown })
@@ -43,8 +43,7 @@ export default class TopDropdown extends PureComponent {
         this.toggle()
     }
     _handlePress(item) {
-        this.setState({ selectedOption: item })
-        this.props.onSelect && this.props.onSelect(item)
+        this.setState({ selectedOption: item })        
         this.toggle()
     }
     _handlePressDropdown() {
@@ -57,7 +56,7 @@ export default class TopDropdown extends PureComponent {
         return (
             <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownHeader}>
-                    <Text style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                    <Text numberOfLines={1}  style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: 'white'

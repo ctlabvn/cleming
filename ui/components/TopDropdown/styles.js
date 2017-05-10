@@ -14,8 +14,8 @@ export default {
         flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 50,
+        paddingRight: 50,        
         height: 50
     },
     dropdownSelectedValue:{
@@ -26,6 +26,7 @@ export default {
     dropdownIcon:{
         position: 'absolute',
         right: 0,
+        paddingRight: 10,
     },
     dropdownList:{
         backgroundColor: PRIMARY_COLOR,
