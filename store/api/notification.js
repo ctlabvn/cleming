@@ -10,9 +10,9 @@ export default {
   /**
   * Logs the current user out
   */
-  getNotification(accessToken, start=0, take=10) {
+  getNotification(session, page=1) {
     // return fetchJsonWithToken(token, `/logout`)
-    return apiGet('/Api/Notifications/GetNotificationByAccountId', {start, take}, accessToken)
+    return apiGet('/notify/list', {page}, session)
   },
 
 }

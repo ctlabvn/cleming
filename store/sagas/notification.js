@@ -13,7 +13,7 @@ const requestGetNotification = createRequestSaga({
     request: api.notification.getNotification,
     key: 'getNotification',    
     success: [
-        (data, {args:[accessToken, start, take]}) => replaceNotification({data, start, take}),              
+        (data, {args:[session, page]}) => replaceNotification({data, page}),              
     ],
     failure: [
         () => setToast('Couldn\'t get notification', 'error')
