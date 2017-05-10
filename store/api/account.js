@@ -27,4 +27,8 @@ export default {
     return apiPost('/change/password', {oldPassword, password}, session)
   },
 
+  resetPassword(userName) {
+    return apiPost('/reset/password', {userName})
+  },
+
 }

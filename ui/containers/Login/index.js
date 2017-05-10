@@ -21,6 +21,7 @@ import routes from '~/ui/routes'
 // this way help copy and paste faster
 import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
+import * as accountActions from '~/store/actions/account'
 import * as commonSelectors from '~/store/selectors/common'
 
 import Content from '~/ui/components/Content'
@@ -34,8 +35,8 @@ import { logoSource, storeTransparent } from '~/assets'
     email: 'thao@clingme.vn',
     password: 'clingme',
   },
-  loginRequest: commonSelectors.getRequest(state, 'login'),  
-}), {...commonActions, ...authActions})
+  loginRequest: commonSelectors.getRequest(state, 'login'),    
+}), {...commonActions, ...authActions, ...accountActions})
 @reduxForm({ form: 'LoginForm', validate})
 export default class extends Component {
 
@@ -53,7 +54,7 @@ export default class extends Component {
   }
 
   _handleForgot = ({email})=>{    
-    this.setState({showForgot: false})
+    this.props.resetPassword(email, ()=>this.setState({showForgot: false}))    
   }
 
   _handleShowForgot=(e)=>{
@@ -85,7 +86,7 @@ export default class extends Component {
       <Form style={styles.formForgot}>
           <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>      
           <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />          
-          <Button onPress={this._handleForgot} 
+          <Button onPress={handleSubmit(this._handleForgot)} 
             style={styles.button}>
             <Text>Gửi</Text>
           </Button>

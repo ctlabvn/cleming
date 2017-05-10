@@ -1,4 +1,4 @@
-import { apiPost } from '~/store/api/common'
+import { apiPost, apiGet } from '~/store/api/common'
 import { CLINGME_SERVER } from '~/store/constants/api'
 import md5 from 'md5'
 import 'whatwg-fetch'
