@@ -32,7 +32,8 @@ export default {
     height: 30,
     borderRadius: 15, 
     backgroundColor: '#fff',    
-    marginLeft: 10,
+    marginLeft: 10,    
+    justifyContent: 'center',
   },
   circleIcon: {
     color: material.tabBarActiveTextColor,

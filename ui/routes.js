@@ -48,7 +48,7 @@ export default {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
     },
-    transactionDetail: {
+    'transactionDetail/:id': {
         title: 'Chi tiết giao dịch',
         Page: TransactionDetail,
         headerType: 'back'

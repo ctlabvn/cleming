@@ -83,7 +83,7 @@ export default class PlaceOrderList extends Component {
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
-                            <View style={styles.rowPadding}>
+                            <View style={{...styles.rowPadding}}>
                                 <View style={styles.row}>
                                     <Icon name='account' style={{...styles.icon, ...styles.iconLeft}} />
                                     <Text small style={{color: 'black'}}>Username</Text>
