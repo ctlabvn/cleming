@@ -30,6 +30,7 @@ import {
 export default class extends Component {  
 
   _handleLogout = (e) => {    
+    this.props.closeDrawer()
     this.props.logout(this.props.session)       
   }
 

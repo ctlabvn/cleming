@@ -11,7 +11,8 @@ export const changePassword = (...args) => ({
 })
 
 export const resetPassword = (...args) => ({
-  
+  type: 'app/resetPassword',
+  args,
 })
 
 

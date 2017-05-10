@@ -23,8 +23,27 @@ const requestGetProfile = createRequestSaga({
 const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
+    success: [
+        () => setToast('Change password successfully!')
+    ],
     failure: [
         () => setToast('Couldn\'t change password', 'error')
+    ]
+})
+
+const requestResetPassword = createRequestSaga({
+    request: api.account.resetPassword,
+    key: 'resetPassword',    
+    success: [
+        ({code, msg}) => {
+        if(code === 1201)  {
+            throw new Error(msg)            
+        }
+          return setToast('Reset password successfully!')  
+        } 
+    ],
+    failure: [
+        () => setToast('Couldn\'t reset password', 'error')
     ]
 })
 
@@ -38,7 +57,8 @@ export default [
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [
             takeLatest('app/getProfile', requestGetProfile),  
-            takeLatest('app/changePassword', requestChangePassword),            
+            takeLatest('app/changePassword', requestChangePassword),  
+            takeLatest('app/resetPassword', requestResetPassword),            
         ]
     },
 ]

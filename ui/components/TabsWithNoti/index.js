@@ -19,6 +19,9 @@ export default class TabsWithNoti extends Component {
             this.props.onPressTab(item)
         }
     }
+    getActiveTab(){
+        return this.state.activeTab
+    }
     render() {
         return (
             <View style={styles.tabBar}>

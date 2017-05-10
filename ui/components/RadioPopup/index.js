@@ -21,6 +21,10 @@ export default class RadioPopup extends Component {
     getSelectedValue(){
         return this.state.selectedValue
     }
+    update(listValue){
+        this.setState({listValue: listValue})
+        this.setState({selectedValue: listValue[0].value})
+    }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible })
     }
