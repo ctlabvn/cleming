@@ -43,7 +43,6 @@ export default class DateFilter extends Component {
         this.refs.dateFilterTypePopup.setModalVisible(true)
     }
     _handlePressDateFilter(item) {
-        console.log('Item', item)
         this.setState({ currentSelectValue: item })
         this.props.onPressFilter({
             currentDateFilter: this.state.currentDateFilter,
@@ -171,7 +170,6 @@ export default class DateFilter extends Component {
         }
     }
     render() {
-        console.log('Go to render')
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
         const data = this.ds.cloneWithRows(_data)
