@@ -7,13 +7,10 @@ import { setListTransaction } from '~/store/actions/transaction'
 
 const requestListTransaction = createRequestSaga({
     request: api.transaction.list,
-    key: '',
+    key: 'transaction/list',
     cancel: 'app/logout',
     success: [
         (data) => {
-            if (data.code && data.msg == 'session_expired'){
-                return forwardTo('login')
-            }
             console.log('Load transaction', data)
             return setListTransaction(data.updated.data)
         }          
@@ -22,11 +19,25 @@ const requestListTransaction = createRequestSaga({
         () => setToast('Couldn\'t login', 'error')
     ],
 })
-
+requestListTransactionPayWithClingme = createRequestSaga({
+    request: api.transaction.listPayWithClingme,
+    key: 'transaction/listPayWithClingme',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            console.log('Load transaction PayWithClingme', data)
+            return setListTransaction(data.updated.data)
+        }          
+    ],
+    failure: [
+        () => setToast('Couldn\'t login', 'error')
+    ],
+})
 export default [
     function* fetchWatcher() {
         yield [            
             takeLatest('transaction/list', requestListTransaction),
+            takeLatest('transaction/listPayWithClingme', requestListTransactionPayWithClingme)
         ]
     },
 ]

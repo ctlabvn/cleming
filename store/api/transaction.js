@@ -14,4 +14,7 @@ export default {
     list(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0) {
         return apiGet('/transaction/merchantApp/list-direct', {placeId, fromTime, toTime, option}, xsession)
     },
+    listPayWithClingme(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0) {
+        return apiGet('/transaction/merchantApp/list-clm', {placeId, fromTime, toTime, option}, xsession)
+    },
 }

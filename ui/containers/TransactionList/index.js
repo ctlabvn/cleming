@@ -77,22 +77,33 @@ export default class TransactionList extends Component {
     _handlePressFilter(item) {
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
+        if (this.refs.tabs.getActiveTab() == 1){ //trả qua Clingme
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
+        }else{ // Trả trực tiếp
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
+        }
     }
     _handlePressTab(item) {
-        // let currentPlace = this.refs.placeDropdown.getValue()
-        // let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilter = this.refs.dateFilter.getData()
         if (item.tabID==1){ // Trả qua Clingme
-            // this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
-            // this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
+            this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
         }else{ // Trả trực tiếp
             this.refs.transactionFilter.updateFilter(this.transactionFilterListDỉrect)
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+
         }
     }
     _handleTopDrowpdown(item) {
         let dateFilterData = this.refs.dateFilter.getData()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
+        if (this.refs.tabs.getActiveTab() == 1){ //trả qua Clingme
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
+        }else{ // Trả trực tiếp
+            this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
+        }
+        
     }
     componentDidMount() {
         let dateFilterData = this.refs.dateFilter.getData()
@@ -219,7 +230,7 @@ export default class TransactionList extends Component {
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
                 {/*<RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListDỉrect} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={this.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} refs='tabs'/>
+                    <TabsWithNoti tabData={this.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs'/>
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={this.transactionFilterListDỉrect} ref='transactionFilter'
