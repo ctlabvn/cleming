@@ -26,42 +26,57 @@ export default class TransactionList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentTransactionTypeFilter: 1
+            currentTransactionTypeFilter: 0,
+            loading: false,
         }
         this.transactionFilterListValue = [
             {
-                value: 1,
+                value: 0,
                 display: 'Tất cả giao dịch'
             },
             {
+                value: 1,
+                display: 'Clingme đã duyệt'
+            },
+            {
                 value: 2,
-                display: 'Giao dịch có Cashback'
+                display: 'Cashback thành công'
             },
             {
                 value: 3,
-                display: 'Chờ Clingme hoàn tiền'
-            },
-            {
-                value: 4,
-                display: 'Clingme đã hoàn tiền'
+                display: 'Bị từ chối'
             }
         ];
     }
     _handlePressTransactionFilter() {
-        console.log('press filter')
         this.refs.transactionTypePopup.setModalVisible(true)
     }
     _handleYesFilterTransactionType(item) {
         this.setState({ currentTransactionTypeFilter: item })
+        let dateFilterData = this.refs.dateFilter.getData()
+        let currentPlace = this.refs.placeDropdown.getValue()
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, item)
     }
     _handlePressFilter(item) {
-        console.log('Pressing Filter', item)
+        // this.setState({ loading: true })
+        let currentPlace = this.refs.placeDropdown.getValue()
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
     }
     _handlePressTab(item) {
         console.log('Praten press tab', item)
     }
+    _handleTopDrowpdown(item) {
+        // console.log('Place Dropdown Change', item)
+        let dateFilterData = this.refs.dateFilter.getData()
+        // console.log('Date Filter Data Change Dropdown', dateFilterData)
+        // this.setState({ loading: true })
+        this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
+    }
     componentDidMount() {
-        this.props.getListTransaction(this.props.user.xsession)
+        let dateFilterData = this.refs.dateFilter.getData()
+        let currentPlace = this.refs.placeDropdown.getValue()
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
+
     }
     _renderTransactionItem(item) {
         var transactionNumberBlock;
@@ -102,7 +117,7 @@ export default class TransactionList extends Component {
                 statusText = <Text small error>Bị từ chối</Text>
                 break
             default:
-               transactionNumberBlock =
+                transactionNumberBlock =
                     (<View style={styles.row}>
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
                         <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
@@ -119,39 +134,39 @@ export default class TransactionList extends Component {
             payIndicator = <View style={styles.readIndicator} />
         }
         return (
-            <ListItem key={item.dealTransactionId} 
+            <ListItem key={item.dealTransactionId}
                 onPress={() => this.props.forwardTo('transactionDetail')}
                 style={styles.listItem}
-                pageSize={10}
-                >
-                    <View style={styles.block}>
+            >
+                <View style={styles.block}>
+                    <View style={styles.row}>
+                        {transactionNumberBlock}
+                        <Text bold>{formatNumber(item.originPrice)}đ</Text>
+                    </View>
+                    <View style={styles.row}>
                         <View style={styles.row}>
-                            {transactionNumberBlock}
-                            <Text bold>{formatNumber(item.originPrice)}đ</Text>
+                            <View style={styles.placeholder} />
+                            <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
                         </View>
+                        <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
+                    </View>
+                    <View style={styles.row}>
                         <View style={styles.row}>
-                            <View style={styles.row}>
-                                <View style={styles.placeholder} />
-                                <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
+                            <View style={styles.placeholder}>
+                                {payIndicator}
                             </View>
-                            <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
+                            {statusText}
                         </View>
-                        <View style={styles.row}>
-                            <View style={styles.row}>
-                                <View style={styles.placeholder}>
-                                    {payIndicator}
-                                </View>
-                                {statusText}
-                            </View>
-                            {payClingmeText}
-                        </View>
-                    </View> 
+                        {payClingmeText}
+                    </View>
+                </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
             </ListItem>
         )
     }
     render() {
-        const { handleSubmit, submitting, forwardTo, listTransaction } = this.props
+        console.log('Rerender Loading', this.state.loading)
+        const { handleSubmit, submitting, forwardTo, listTransaction, place } = this.props
         // console.log('Re-render', this.props.listTransaction)
         // First Time
         if (!listTransaction) {
@@ -164,37 +179,11 @@ export default class TransactionList extends Component {
                 </View>
             )
         }
-
-        var dropdownValues = [
-            {
-                id: 0,
-                name: "Tất cả địa điểm"
-            },
-            {
-                id: 2,
-                name: "33 Nguyễn Chí Thanh, Ba Đình, HN"
-            },
-            {
-                id: 3,
-                name: "105 Láng Hạ, Đống Đa, HN"
-            },
-            {
-                id: 4,
-                name: "98 Hoàng Quốc Việt, Cầu Giấy, HN",
-            },
-            {
-                id: 5,
-                name: "5 Đinh Tiên Hoàng, Hoàn Kiếm, HN"
-            },
-            {
-                id: 6,
-                name: "69 Bạch Mai, Hai Bà Trưng, HN"
-            }
-        ]
-        var defaultSelected = {
-            id: 0,
-            name: "Tất cả địa điểm"
-        }
+        var dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
+        var defaultSelected = dropdownValues[0]
         var currentFilter = this.transactionFilterListValue.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
         var tabData = [
             {
@@ -208,15 +197,19 @@ export default class TransactionList extends Component {
                 number: 50
             }
         ]
+        var noData = null
+        if (listTransaction.length == 0) {
+            noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
+        }
         return (
             <View style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
-                {/*<RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
+                <RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <TabsWithNoti tabData={tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} />
-                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} />
+                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
 
-                    {/*<View style={styles.filterByTransactionType}>
+                    <View style={styles.filterByTransactionType}>
                         <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                             <View style={styles.leftContainer}>
                                 <Icon name='filter' style={styles.transactionTypeIcon} />
@@ -224,13 +217,20 @@ export default class TransactionList extends Component {
                             </View>
                         </TouchableOpacity>
                         <Text small style={styles.numberRight}>10</Text>
-                    </View>*/}
+                    </View>
 
                     <Content style={{ padding: 10, height: '100%' }}>
+                        {/*{this.state.loading &&
+                            (<View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+                                <Text>Loading...</Text>
+                            </View>)
+                        }*/}
                         <List dataArray={listTransaction.slice(0, 10)}
-                            renderRow={(item) =>this._renderTransactionItem(item)}>
+                            renderRow={(item) => this._renderTransactionItem(item)}
+                            pageSize={10}
+                        >
                         </List>
-
+                        {noData}
                         {/*{listTransaction.slice(0, 10).map((item) => this._renderTransactionItem(item))}*/}
 
 

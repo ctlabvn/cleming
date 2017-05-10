@@ -34,7 +34,10 @@ export default class RadioPopup extends Component {
                 animationType={"none"}
                 transparent={true}
                 visible={this.state.modalVisible}
-                onRequestClose={() => { alert("Modal has been closed.") }}
+                onRequestClose={() => {
+                    this.setModalVisible(!this.state.modalVisible)
+                    this.setState({selectedValue: this.cachedSelectValue})
+                }}
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
@@ -51,12 +54,14 @@ export default class RadioPopup extends Component {
                         <View style={styles.confirmBlock}>
                             <Button light transparent onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible)
+                                this.setState({selectedValue: this.cachedSelectValue})
                             }} style={styles.confirmButton}>
                                 <Text style={{color: 'grey'}}>Cancel</Text>
                             </Button>
                             <Button primary transparent onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible)
                                 this.props.onClickYes(this.state.selectedValue)
+                                this.cachedSelectValue = this.state.selectedValue
                             }} style={styles.confirmButton}>
                                 <Text style={{color: 'blue'}}>OK</Text>
                             </Button>

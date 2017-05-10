@@ -1,18 +1,17 @@
 import { CLINGME_SERVER } from '~/store/constants/api'
+import { apiGet } from '~/store/api/common'
+// export default {
+//     list(xsession, modeGet=1) {        
+//         return apiGet('/place/list', {modeGet}, xsession)
+//     },
+//             // fromTime=1304848140&toTime=1494236940
+//     statistic(xsession, placeIds, fromTime=1304848140, toTime=1494236940){
+//         return apiGet('/place/statisticBasic', {placeIds, fromTime, toTime}, xsession)
+//     }
+// }
+
 export default {
-    list(xsession, from=1320985607, to=1510374407) {
-        // ?placeId=3108&fromTime=1494257316&toTime=1494257316&option=1
-        return fetch(CLINGME_SERVER + 'transaction/merchantApp/list-direct?fromTime='+from+'&toTime='+to, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-VERSION': 1,
-                'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
-                'X-DATA-VERSION': 1,
-                'X-AUTH': '',
-                'X-SESSION': xsession
-            },
-        }).then(response=>response.json())
+    list(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0) {
+        return apiGet('/transaction/merchantApp/list-direct', {placeId, fromTime, toTime, option}, xsession)
     },
 }
