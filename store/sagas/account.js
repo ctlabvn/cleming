@@ -20,6 +20,14 @@ const requestGetProfile = createRequestSaga({
     ],
 })
 
+const requestChangePassword = createRequestSaga({
+    request: api.account.changePassword,
+    key: 'changePassword',    
+    failure: [
+        () => setToast('Couldn\'t change password', 'error')
+    ]
+})
+
 
 // root saga reducer
 export default [
@@ -29,7 +37,8 @@ export default [
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [
-            takeLatest('app/getProfile', requestGetProfile),            
+            takeLatest('app/getProfile', requestGetProfile),  
+            takeLatest('app/changePassword', requestChangePassword),            
         ]
     },
 ]

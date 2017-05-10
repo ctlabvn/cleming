@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Easing } from 'react-native'
@@ -6,7 +6,7 @@ import styles from './styles'
 import Content from '~/ui/components/Content'
 
 
-export default class TopDropdown extends Component {
+export default class TopDropdown extends PureComponent {
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)
     }

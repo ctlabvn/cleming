@@ -24,13 +24,13 @@ import {
 } from '~/store/constants/api'
 
 @connect(state=>({
-  token: authSelectors.getToken(state),
+  session: authSelectors.getSession(state),
   profile: accountSelectors.getProfile(state),
 }), {...authActions, ...commonActions})
 export default class extends Component {  
 
   _handleLogout = (e) => {    
-    this.props.logout(this.props.token)       
+    this.props.logout(this.props.session)       
   }
 
   navigateTo(route) {
