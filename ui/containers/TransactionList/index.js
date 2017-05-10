@@ -16,6 +16,9 @@ import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
+
+import options from './options'
+
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
@@ -28,50 +31,6 @@ export default class TransactionList extends Component {
         this.state = {
             loading: false,
         }
-        this.transactionFilterListDỉrect = [
-            {
-                value: 0,
-                display: 'Tất cả giao dịch'
-            },
-            {
-                value: 1,
-                display: 'Clingme đã duyệt'
-            },
-            {
-                value: 2,
-                display: 'Cashback thành công'
-            },
-            {
-                value: 3,
-                display: 'Bị từ chối'
-            }
-        ]
-        this.transactionFilterListClingme=[
-            {
-                value: 0,
-                display: 'Tất cả giao dịch'
-            },
-            {
-                value: 1,
-                display: 'Đã thanh toán'
-            },
-            {
-                value: 2,
-                display: 'Hoàn tất thanh toán'
-            }
-        ]
-        this.tabData = [
-            {
-                tabID: 1,
-                text: 'Trả qua Clingme',
-                number: 4
-            },
-            {
-                tabID: 2,
-                text: 'Trả trực tiếp',
-                number: 50
-            }
-        ]
     }
 
     _handlePressFilter(item) {
@@ -87,12 +46,11 @@ export default class TransactionList extends Component {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilter = this.refs.dateFilter.getData()
         if (item.tabID==1){ // Trả qua Clingme
-            this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
+            this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
         }else{ // Trả trực tiếp
-            this.refs.transactionFilter.updateFilter(this.transactionFilterListDỉrect)
+            this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-
         }
     }
     _handleTopDrowpdown(item) {
@@ -171,7 +129,7 @@ export default class TransactionList extends Component {
             payIndicator = <View style={styles.readIndicator} />
         }
         return (
-            <ListItem key={item.dealTransactionId}
+            <ListItem
                 onPress={() => this.props.forwardTo('transactionDetail/'+item.dealTransactionIdDisplay)}
                 style={styles.listItem}
             >
@@ -197,7 +155,9 @@ export default class TransactionList extends Component {
                         {payClingmeText}
                     </View>
                 </View>
+                {
                 <Border color='rgba(0,0,0,0.5)' size={1} />
+            }
             </ListItem>
         )
     }
@@ -219,7 +179,7 @@ export default class TransactionList extends Component {
         }))
         var defaultSelected = dropdownValues[0]
         // var currentFilter;
-        // currentFilter = this.transactionFilterListDỉrect.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
+        // currentFilter = options.transactionFilterListDỉrect.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
         
         var noData = null
         if (listTransaction.length == 0) {
@@ -228,12 +188,12 @@ export default class TransactionList extends Component {
         return (
             <View style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
-                {/*<RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListDỉrect} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
+                {/*<RadioPopup ref='transactionTypePopup' listValue={options.transactionFilterListDỉrect} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={this.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs'/>
+                    <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs'/>
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={this.transactionFilterListDỉrect} ref='transactionFilter'
+                        listValue={options.transactionFilterListDỉrect} ref='transactionFilter'
                     />
                     {/*<View style={styles.filterByTransactionType}>
                         <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
@@ -251,7 +211,7 @@ export default class TransactionList extends Component {
                                 <Text>Loading...</Text>
                             </View>)
                         }*/}
-                        <List dataArray={listTransaction.slice(0, 10)}
+                        <List dataArray={listTransaction}
                             renderRow={(item) => this._renderTransactionItem(item)}
                             pageSize={10}
                         >

@@ -54,9 +54,9 @@ export default class extends Component {
       selected: 0,
       refreshing: false,
     }
-    const avatar = {uri: (API_BASE + props.profile.PhotoUrl)}
+    // const avatar = {uri: (API_BASE + props.profile.PhotoUrl)}
     this.options = [
-      {key: 'basicInformation', icon: avatar, title: 'Basic', type: 'avatar'}, 
+      // {key: 'basicInformation', icon: avatar, title: 'Basic', type: 'avatar'}, 
       {key: 'contact', icon: contactIcon, title: 'Contact'},
       {key: 'groupAddress', icon: addressIcon, title: 'Address'},
       {key: 'groupFinancial', icon: financeIcon, title: 'Financial'},

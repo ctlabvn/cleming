@@ -17,3 +17,13 @@ export const setPlaceStatistic = (statistic) => ({
     type: 'place/setStatisticState',
     payload: statistic
 })
+
+export const getMerchantNews = (...args) => ({
+  type: 'place/getNews',
+  args
+})
+
+export const setMerchantNews = (news) => ({
+  type: 'place/setNews',
+  payload: news
+})

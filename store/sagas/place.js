@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListPlace, setPlaceStatistic } from '~/store/actions/place'
+import { setListPlace, setPlaceStatistic, setMerchantNews } from '~/store/actions/place'
 
 const requestListPlace = createRequestSaga({
     request: api.place.list,
@@ -36,11 +36,26 @@ const requestPlaceStatistic = createRequestSaga({
     ],
 })
 
+const requestNews = createRequestSaga({
+  request: api.place.news,
+  key: 'merchantNews',
+  cancel: 'app/logout',
+  success: [
+    (data) => {
+      return setMerchantNews(data.updated.data)
+    }
+  ],
+  failure: [
+    () => setToast('Couldn\'t connect to server', 'error')
+  ],
+})
+
 export default [
     function* fetchWatcher() {
         yield [            
             takeLatest('place/list', requestListPlace),
-            takeLatest('place/statistic', requestPlaceStatistic)
+            takeLatest('place/statistic', requestPlaceStatistic),
+            takeLatest('place/getNews', requestNews)
         ]
     },
     

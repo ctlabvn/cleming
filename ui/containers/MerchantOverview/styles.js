@@ -91,7 +91,7 @@ export default {
     dateFilterContainer: {
         backgroundColor: 'white',
         flexDirection: 'column',
-        marginLeft: 40,
+        marginLeft: 45,
         marginRight: 20
     }
 
