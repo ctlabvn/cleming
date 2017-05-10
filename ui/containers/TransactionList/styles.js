@@ -84,9 +84,9 @@ export default {
     },
     readIndicator: {
         backgroundColor: PRIMARY_COLOR,
-        width: 10,
-        height: 10,
-        borderRadius: 5
+        width: 7,
+        height: 7,
+        borderRadius: 7
     },
     listItem: {flexDirection: 'column', paddingRight: 0, paddingBottom: 0, marginLeft: 0, marginRight: 0, borderBottomWidth: 0, paddingTop: 0},
 }
