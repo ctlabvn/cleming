@@ -24,9 +24,7 @@ export default class TransactionFilter extends Component {
         }
     }
     _handleYesFilterTransactionType(item){
-        console.log('Transaction Filter', item)
         let selectValue = this.state.listValue.filter(value=>value.value==item)[0]
-        console.log('select value', selectValue)
         this.setState({selectValue: selectValue})
         this.props.onFilterChange(selectValue)
     }
@@ -35,6 +33,7 @@ export default class TransactionFilter extends Component {
         // this.props.onFilterChange()
     }
     updateFilter(listValue){
+        this.setState({listValue: listValue, selectValue: listValue[0]})
         this.refs.transactionTypePopup.update(listValue)
     }
     getCurrentValue(){

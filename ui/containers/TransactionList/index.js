@@ -80,8 +80,11 @@ export default class TransactionList extends Component {
         this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
     }
     _handlePressTab(item) {
+        // let currentPlace = this.refs.placeDropdown.getValue()
+        // let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         if (item.tabID==1){ // Trả qua Clingme
-            this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
+            // this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
+            // this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
         }else{ // Trả trực tiếp
             this.refs.transactionFilter.updateFilter(this.transactionFilterListDỉrect)
         }
