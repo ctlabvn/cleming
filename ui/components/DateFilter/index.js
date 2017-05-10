@@ -54,6 +54,7 @@ export default class DateFilter extends Component {
         this.setState({currentSelectValue: this._getDefaultCurrnetSelectValue(item)})
         setTimeout(()=>{
             this.refs.dateFilterList.scrollToEnd({animated: false})
+            this.props.onPressFilter(this.state)
         }, 0)
         
 
