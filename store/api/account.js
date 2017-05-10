@@ -21,6 +21,10 @@ export default {
   
   getListAccount() {
     return apiPost('/account/list')
-  }
+  },
+
+  changePassword(session, oldPassword, password) {
+    return apiPost('/change/password', {oldPassword, password}, session)
+  },
 
 }

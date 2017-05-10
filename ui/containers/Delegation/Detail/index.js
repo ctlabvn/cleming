@@ -44,8 +44,7 @@ export default class extends Component {
   }
 
   render() {
-    const {route, goBack, roles, dateIndefinite, handleSubmit} = this.props       
-  
+    const {route, goBack, roles, dateIndefinite, handleSubmit} = this.props           
     return (          
        
         <Container>        
