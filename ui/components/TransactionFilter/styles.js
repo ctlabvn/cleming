@@ -5,8 +5,6 @@ export default {
         width: '100%',
         backgroundColor: 'white',
         flexDirection: 'column',
-        height: '100%',
-        paddingBottom: 50
     },
     picker: {
         color: 'white',

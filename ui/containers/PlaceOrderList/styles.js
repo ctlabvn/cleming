@@ -80,7 +80,7 @@ export default {
       flex: 1,
       backgroundColor: 'white',
       flexDirection: 'column',
-      height: 150,
+      height: 250,
       paddingBottom: 0,
       borderWidth: 0,
       zIndex: 0,
