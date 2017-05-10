@@ -14,7 +14,8 @@ export default {
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
         marginBottom: 10,
-        fontSize: 13
+        fontSize: 13,
+        marginTop: 10
     },
     infoContainer: {
         flexDirection: 'row',
@@ -86,7 +87,12 @@ export default {
     },
     success: {
         color: SUCCESS_COLOR
+    },
+    dateFilterContainer: {
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        marginLeft: 45,
+        marginRight: 20
     }
-
 
 }

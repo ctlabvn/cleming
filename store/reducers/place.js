@@ -1,5 +1,6 @@
 const initialState = {  
-  listPlace: []
+  listPlace: [],
+  news: {}
 }
 export const place = (state = initialState, {type, payload}) => {
   switch (type) {   
@@ -7,6 +8,8 @@ export const place = (state = initialState, {type, payload}) => {
       return {...state, listPlace: payload}
     case 'place/setStatisticState':
       return {...state, statistic: payload}
+    case 'place/setNews':
+      return {...state, news: payload}
     default:
       return state
   }
