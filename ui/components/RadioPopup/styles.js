@@ -34,5 +34,15 @@ export default {
     confirmButton: {
         // width: '45%', 
         justifyContent: 'center'
-    }
+    },
+    listItem: {
+    },
+
+    itemText: {
+        flex: 1,
+    },
+    itemRadio: {
+
+    },
+
 }

@@ -45,9 +45,9 @@ export default class RadioPopup extends Component {
                         {this.state.popupHeader && <Text>{this.state.popupHeader}</Text>}
                         {this.state.listValue.map((item) => {
                             return (
-                                <ListItem key={item.value} style={{ borderBottomWidth: 0 }} onPress={() => this._handlePressRadio(item)}>
-                                    <Radio selected={selectedValue == item.value} style={{ marginRight: 10 }} />
-                                    <Text>{item.display}</Text>
+                                <ListItem key={item.value} style={{ ...styles.listItem, borderBottomWidth: 0 }} onPress={() => this._handlePressRadio(item)}>
+                                    <Text style={{...styles.itemText}}>{item.display}</Text>
+                                    <Radio selected={selectedValue == item.value} style={{...styles.itemRadio}} onPress={() => this._handlePressRadio(item)}/>
                                 </ListItem>
                             )
                         })}
