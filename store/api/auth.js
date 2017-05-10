@@ -59,9 +59,9 @@ export default {
   /**
   * Logs the current user out
   */
-  logout(accessToken) {
+  logout(session) {
     // return fetchJsonWithToken(token, `/logout`)
-    return apiPost(`/api/Account/Logout`, {}, accessToken)
+    return apiGet(`/logout`, {}, session)
   },
 
 }
