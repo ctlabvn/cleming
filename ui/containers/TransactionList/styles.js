@@ -88,5 +88,13 @@ export default {
         height: 7,
         borderRadius: 7
     },
-    listItem: {flexDirection: 'column', paddingRight: 0, paddingBottom: 0, marginLeft: 0, marginRight: 0, borderBottomWidth: 0, paddingTop: 0},
+    listItem: {
+      flexDirection: 'column',
+      paddingRight: 0,
+      paddingBottom: 0,
+      marginLeft: 0,
+      marginRight: 0,
+      borderBottomWidth: 0,
+      paddingTop: 0
+    }
 }

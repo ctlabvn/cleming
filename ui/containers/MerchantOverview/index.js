@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio } from 'native-base'
+import { ScrollView } from 'react-native'
+import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Content, Container } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
-import Content from '~/ui/components/Content'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as commonActions from '~/store/actions/common'
@@ -43,6 +43,16 @@ export default class MerchantOverview extends Component {
     _handleChangePlace(item) {
         this.props.getPlaceStatistic(this.props.user.xsession, item.id)
     }
+  
+    _handlePressFilter(item) {
+        // this.setState({ loading: true })
+        let currentPlace = this.refs.placeDropdown.getValue()
+        this.props.getPlaceStatistic(
+          this.props.user.xsession,
+          currentPlace.id,
+          item.currentSelectValue.value.from,
+          item.currentSelectValue.value.to)
+    }
 
     render() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
@@ -56,23 +66,30 @@ export default class MerchantOverview extends Component {
                 </View>
             )
         }
-        var allPlace = place.listPlace.map(item => item.placeId).join(';')
-        var defaultSelected = {
+        let allPlace = place.listPlace.map(item => item.placeId).join(';')
+        let defaultSelected = {
             id: allPlace,
             name: "Tất cả địa điểm"
         }
-        var dropdownValues = place.listPlace.map(item => ({
+        let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
         }))
         dropdownValues = [defaultSelected, ...dropdownValues]
 
         return (
-            <View style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace.bind(this)} selectedOption={defaultSelected} />
+            <Container style={styles.container}>
+                <TopDropdown
+                  ref='placeDropdown'
+                  dropdownValues={dropdownValues}
+                  onSelect={this._handleChangePlace.bind(this)}
+                  selectedOption={defaultSelected} />
                 <View style={styles.contentContainer}>
                     {/*<View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>*/}
                     <Image source={require('~/assets/images/store_with_background.jpg')} style={{ width: '100%', height: 150 }} />
+                    <View style={styles.dateFilterContainer}>
+                        <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
+                    </View>
                     <Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
 
                     <View style={styles.infoContainer}>
@@ -93,47 +110,49 @@ export default class MerchantOverview extends Component {
                             <Text style={styles.infoItemLabel}>Mua</Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => forwardTo('transactionList')}>
-                        <View style={styles.menuItem}>
-                            <View style={styles.leftBlock}>
-                                <Icon name='transaction' style={styles.icon} />
-                                <Text>Giao dịch</Text>
+                    <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
+                        <TouchableOpacity onPress={() => forwardTo('transactionList')}>
+                            <View style={styles.menuItem}>
+                                <View style={styles.leftBlock}>
+                                    <Icon name='transaction' style={styles.icon} />
+                                    <Text>Giao dịch</Text>
+                                </View>
+                                <View style={styles.rightBlock}>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <Icon name='chevron-right' style={styles.rightIcon} />
+                                </View>
                             </View>
-                            <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
-                                <Icon name='chevron-right' style={styles.rightIcon} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
+                            <View style={styles.menuItem}>
+                                <View style={styles.leftBlock}>
+                                    <Icon name='calendar-checked' style={styles.icon} />
+                                    <Text>Đặt chỗ</Text>
+                                </View>
+                                <View style={styles.rightBlock}>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <Icon name='chevron-right' style={styles.rightIcon} />
+                                </View>
                             </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
-                        <View style={styles.menuItem}>
-                            <View style={styles.leftBlock}>
-                                <Icon name='calendar-checked' style={styles.icon} />
-                                <Text>Đặt chỗ</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.menuItem}>
+                                <View style={styles.leftBlock}>
+                                    <Icon name='shiping-bike2' style={styles.icon} />
+                                    <Text>Đặt giao hàng</Text>
+                                </View>
+                                <View style={styles.rightBlock}>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <Icon name='chevron-right' style={styles.rightIcon} />
+                                </View>
                             </View>
-                            <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
-                                <Icon name='chevron-right' style={styles.rightIcon} />
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.menuItem}>
-                            <View style={styles.leftBlock}>
-                                <Icon name='shiping-bike2' style={styles.icon} />
-                                <Text>Đặt giao hàng</Text>
-                            </View>
-                            <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
-                                <Icon name='chevron-right' style={styles.rightIcon} />
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </ScrollView>
                 </View>
                 <View>
 
                 </View>
-            </View>
+            </Container>
         )
     }
 }
