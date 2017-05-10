@@ -35,7 +35,7 @@ const renderTextParts = text => {
 }
 
 @connect(state=>({
-  token: authSelectors.getToken(state),
+  session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
   notificationRequest: commonSelectors.getRequest(state, 'getNotification'),  
 }), {...commonActions, ...notificationActions})
@@ -52,14 +52,15 @@ export default class extends Component {
 
   componentWillFocus(){
     // make it like before    
-    const {token, notifications, getNotification} = this.props
+    const {session, notifications, getNotification} = this.props
     if(!notifications.data.length) {
-      getNotification(token)  
-    } else {
-      this.state.refreshing && this.setState({
-        refreshing: false,
-      })
-    }
+      getNotification(session, 1, ()=>getNotification(session, 2))  
+    } 
+
+    this.setState({
+      refreshing: false,
+    })
+    
   }
 
   componentWillMount(){
@@ -67,30 +68,30 @@ export default class extends Component {
   }
 
   _onRefresh =() => {    
+    const {session, getNotification} = this.props
     this.setState({refreshing: true})        
-    this.props.getNotification(this.props.token, 0, 10, ()=>this.setState({refreshing: false}))    
+    getNotification(session, 1, ()=>getNotification(session, 2, ()=>this.setState({refreshing: false})))    
   }    
 
   _loadMore = ()=>{
     if(this.state.loading || this.state.refreshing)
       return
-    
-    const {token, notifications, getNotification} = this.props
+    console.log('load more')
+    const {session, notifications, getNotification} = this.props
     if(notifications.hasMore){
       this.setState({loading: true})          
-      getNotification(token, notifications.start + notifications.take, notifications.take, ()=>this.setState({loading: false}))              
+      getNotification(session, notifications.page + 1, ()=>this.setState({loading: false}))              
     }        
   }
 
-  renderNotificationContent(item){
-    const type = options.iconMap[item.Type] || 'network'
-    switch(type){
-      case 'calendar':
+  renderNotificationContent({title, notifyType, createdTime}){    
+    switch(notifyType){
+      case 1:
         return (
           <Body>
             <View style={styles.listItemRow}>                                         
               <View>
-                <Text small>Yêu cầu đặt chỗ chờ xác nhận</Text>
+                <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#08a7ce'
                 }}>#DC123456</Text>
@@ -104,10 +105,10 @@ export default class extends Component {
 
             <View style={styles.listItemRow}>                        
               
-              <Text note small>Có yêu cầu gọi món</Text>                        
+              <Text note small>{title}</Text>                        
               <Text note small style={{
                 alignSelf: 'flex-end'
-              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>
+              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
             </View>
             <Border style={{
               marginLeft: 15,
@@ -116,12 +117,12 @@ export default class extends Component {
           </Body>
         )
 
-      case 'clingme-wallet':
+      case 2:
         return (
           <Body>
             <View style={styles.listItemRow}>                                         
               <View>
-                <Text small>Giao dịch thành công</Text>
+                <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#838383'
                 }}>#CL123456</Text>
@@ -142,7 +143,7 @@ export default class extends Component {
               }}>Username</Text></Text>                        
               <Text note small style={{
                 alignSelf: 'flex-end'
-              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>                          
+              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>                          
             </View>
               
               <Text style={{
@@ -169,7 +170,7 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>                                         
               <View>
-                <Text small>Giao dịch mới chờ xử lý</Text>
+                <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#f7ae3b'
                 }}>#CL123456</Text>
@@ -190,7 +191,7 @@ export default class extends Component {
               }}>Username</Text></Text>                        
               <Text note small style={{
                 alignSelf: 'flex-end'
-              }}>{moment(item.DateTime).format('hh:mm     DD/M/YY')}</Text>
+              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
             </View>
             <Border style={{
               marginLeft: 15,
@@ -222,10 +223,10 @@ export default class extends Component {
               onEndReached={this._loadMore} onRefresh={this._onRefresh}             
               style={styles.container} refreshing={this.state.refreshing} 
             >              
-              {notifications && 
+              {notifications &&
                 <List
-                  removeClippedSubviews={false}                    
-                  pageSize={notifications.take}                  
+                  removeClippedSubviews={false}       
+                  pageSize={10}                                           
                   dataArray={notifications.data} renderRow={(item) =>
                     <ListItem noBorder style={styles.listItemContainer}>   
                       <View style={{
@@ -233,7 +234,7 @@ export default class extends Component {
                         alignSelf:'flex-start',
                         height: 47,                     
                       }}>
-                        <Icon name={options.iconMap[item.Type] || 'network'} style={styles.icon}/>                    
+                        <Icon name={options.iconMap[item.notifyType] || 'clingme-wallet'} style={styles.icon}/>                    
                         <View style={styles.circle}/>
                       </View>                      
                       {this.renderNotificationContent(item)}

@@ -82,7 +82,7 @@ export default {
     notification: {
         title: 'Notification center',
         Page: Notification,
-        headerType: 'none',
+        headerType: 'home',
     },   
     delegation: {
         title: 'Delegation',

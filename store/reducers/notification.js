@@ -1,13 +1,14 @@
 
-export const notification = (state={hasMore:true, start:0, take: 10, data:[]}, {type, payload}) => {
+export const notification = (state={hasMore:true, page:1, data:[]}, {type, payload}) => {  
   switch (type) {   
-    // we can store current page? for paging...
-    case 'app/replaceNotification':             
+    // we can store current page? for paging...    
+    case 'app/replaceNotification':            
+      const list = payload.data.updated.notifyResponse.lstNotification 
+      console.log(list)
       return {
-        start: payload.start || 0, 
-        take: payload.take || 10, 
-        data: payload.start ? [...state.data, ...payload.data] : payload.data, 
-        hasMore: payload.data.length >0 
+        page: payload.page || 1,         
+        data: payload.page > 1 ? [...state.data, ...list] : list, 
+        hasMore: list.length >0 
       }  
     default:
       return state
