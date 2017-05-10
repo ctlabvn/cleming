@@ -20,7 +20,7 @@ if (__DEV__) {
   !window.devToolsExtension && middleware.push(require('./logger').default)  
 
   // To see all the requests in the chrome Dev tools in the network tab.
-  // GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
+  GLOBAL.XMLHttpRequest = GLOBAL.originalXMLHttpRequest || GLOBAL.XMLHttpRequest
 }
 
 const enhancer = [autoRehydrate(), applyMiddleware(...middleware)]
