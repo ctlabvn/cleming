@@ -220,7 +220,7 @@ export default {
   listDividerBg: '#f4f4f4',
   listItemHeight: 45,
   listItemActiveColor: '#c7eafb',
-  listBtnUnderlayColor: '#DDD',
+  listBtnUnderlayColor: 'transparent',
 
     // Card
   cardBorderColor: '#ccc',
