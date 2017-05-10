@@ -80,7 +80,8 @@ export default {
     width: '90%',
     justifyContent: 'center',
     borderRadius: 3,
-    height: (height > 660) ? '80%' : '60%'
+    height: (height > 660) ? '80%' : '60%',
+    elevation: 0
   },
   declineButton: {
     backgroundColor: '#d9d9d9'

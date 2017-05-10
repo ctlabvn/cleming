@@ -40,7 +40,7 @@ const requestLogin = createRequestSaga({
     success: [
         (data) => setUserData(data),          
         ()=>setAuthState(true),
-        () => forwardTo('merchantOverview'), 
+        () => forwardTo('merchantOverview', true), 
         () => setToast('Logged successfully!!!'),            
     ],
     failure: [

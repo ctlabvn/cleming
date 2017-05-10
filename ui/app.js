@@ -221,7 +221,19 @@ export default class App extends Component {
           ref={ref => this.drawer = ref}
           open={drawerState === 'opened'}
           type="overlay"          
-          side="right"   
+          side="right"  
+          tweenHandler={ratio => ({
+            drawer:{
+              top: 20,
+            },
+              main: {
+              opacity: 1,              
+              },
+              mainOverlay: {
+              opacity: ratio / 2,
+              backgroundColor: 'black',
+              },
+})}
           openDrawerOffset={0.27}
           tweenDuration={200}
           content={<SideBar/>}

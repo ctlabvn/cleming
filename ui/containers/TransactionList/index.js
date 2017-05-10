@@ -122,7 +122,6 @@ export default class TransactionList extends Component {
             <ListItem key={item.dealTransactionId} 
                 onPress={() => this.props.forwardTo('transactionDetail')}
                 style={styles.listItem}
-                pageSize={10}
                 >
                     <View style={styles.block}>
                         <View style={styles.row}>
@@ -228,7 +227,9 @@ export default class TransactionList extends Component {
 
                     <Content style={{ padding: 10, height: '100%' }}>
                         <List dataArray={listTransaction.slice(0, 10)}
-                            renderRow={(item) =>this._renderTransactionItem(item)}>
+                            renderRow={(item) =>this._renderTransactionItem(item)}
+                            pageSize={10}
+                            >
                         </List>
 
                         {/*{listTransaction.slice(0, 10).map((item) => this._renderTransactionItem(item))}*/}
