@@ -77,7 +77,7 @@ export default class extends Component {
 
   renderHeaderHome(title, leftIcon='add_place'){
     const left = (
-      <Button transparent style={styles.circleButton} onPress={this._leftClick}>
+      <Button noPadder transparent style={styles.circleButton} onPress={this._leftClick}>
         <Icon style={styles.circleIcon} name={leftIcon}/>
       </Button>
     )
