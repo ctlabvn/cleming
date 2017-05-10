@@ -26,12 +26,14 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
+        const { place } = this.props
         this.props.getListPlace(this.props.user.xsession, (err, data) => {
             console.log(err, data)
             if(data && data.updated && data.updated.listPlace){
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
                 console.log('All place', allPlace)
-                this.props.getPlaceStatistic(this.props.user.xsession, allPlace)
+                this.props.getPlaceStatistic(this.props.user.xsession, allPlace, place.statistic.fromTime, place.statistic.toTime)
+                this.props.getMerchantNews(this.props.user.xsession, allPlace, place.statistic.fromTime, place.statistic.toTime)
             }
         })
     }
@@ -41,17 +43,24 @@ export default class MerchantOverview extends Component {
     }
 
     _handleChangePlace(item) {
-        this.props.getPlaceStatistic(this.props.user.xsession, item.id)
+      const { place } = this.props
+        this.props.getPlaceStatistic(this.props.user.xsession, item.id, place.statistic.fromTime, place.statistic.toTime)
+        this.props.getMerchantNews(this.props.user.xsession, item.id, place.statistic.fromTime, place.statistic.toTime)
     }
   
     _handlePressFilter(item) {
         // this.setState({ loading: true })
-        let currentPlace = this.refs.placeDropdown.getValue()
-        this.props.getPlaceStatistic(
-          this.props.user.xsession,
-          currentPlace.id,
-          item.currentSelectValue.value.from,
-          item.currentSelectValue.value.to)
+      let currentPlace = this.refs.placeDropdown.getValue()
+      this.props.getPlaceStatistic(
+        this.props.user.xsession,
+        currentPlace.id,
+        item.currentSelectValue.value.from,
+        item.currentSelectValue.value.to)
+      this.props.getMerchantNews(
+        this.props.user.xsession,
+        currentPlace.id,
+        item.currentSelectValue.value.from,
+        item.currentSelectValue.value.to)
     }
 
     render() {
@@ -118,7 +127,7 @@ export default class MerchantOverview extends Component {
                                     <Text>Giao dịch</Text>
                                 </View>
                                 <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.transactionNews}</Text></View>
                                     <Icon name='chevron-right' style={styles.rightIcon} />
                                 </View>
                             </View>
@@ -130,7 +139,7 @@ export default class MerchantOverview extends Component {
                                     <Text>Đặt chỗ</Text>
                                 </View>
                                 <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.bookingNews}</Text></View>
                                     <Icon name='chevron-right' style={styles.rightIcon} />
                                 </View>
                             </View>
@@ -142,7 +151,7 @@ export default class MerchantOverview extends Component {
                                     <Text>Đặt giao hàng</Text>
                                 </View>
                                 <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>6</Text></View>
+                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.orderNews}</Text></View>
                                     <Icon name='chevron-right' style={styles.rightIcon} />
                                 </View>
                             </View>
