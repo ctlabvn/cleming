@@ -10,6 +10,7 @@ import * as commonAction from '~/store/actions/common'
 import * as transactionAction from '~/store/actions/transaction'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
+import TransactionFilter from '~/ui/components/TransactionFilter'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
@@ -22,14 +23,12 @@ import { formatNumber } from '~/ui/shared/utils'
 }), { ...commonAction, ...transactionAction })
 @reduxForm({ form: 'TestForm' })
 export default class TransactionList extends Component {
-
     constructor(props) {
         super(props)
         this.state = {
-            currentTransactionTypeFilter: 0,
             loading: false,
         }
-        this.transactionFilterListValue = [
+        this.transactionFilterListDỉrect = [
             {
                 value: 0,
                 display: 'Tất cả giao dịch'
@@ -46,37 +45,61 @@ export default class TransactionList extends Component {
                 value: 3,
                 display: 'Bị từ chối'
             }
-        ];
+        ]
+        this.transactionFilterListClingme=[
+            {
+                value: 0,
+                display: 'Tất cả giao dịch'
+            },
+            {
+                value: 1,
+                display: 'Đã thanh toán'
+            },
+            {
+                value: 2,
+                display: 'Hoàn tất thanh toán'
+            }
+        ]
+        this.tabData = [
+            {
+                tabID: 1,
+                text: 'Trả qua Clingme',
+                number: 4
+            },
+            {
+                tabID: 2,
+                text: 'Trả trực tiếp',
+                number: 50
+            }
+        ]
     }
-    _handlePressTransactionFilter() {
-        this.refs.transactionTypePopup.setModalVisible(true)
-    }
-    _handleYesFilterTransactionType(item) {
-        this.setState({ currentTransactionTypeFilter: item })
-        let dateFilterData = this.refs.dateFilter.getData()
-        let currentPlace = this.refs.placeDropdown.getValue()
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, item)
-    }
+
     _handlePressFilter(item) {
-        // this.setState({ loading: true })
         let currentPlace = this.refs.placeDropdown.getValue()
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
     }
     _handlePressTab(item) {
-        console.log('Praten press tab', item)
+        if (item.tabID==1){ // Trả qua Clingme
+            this.refs.transactionFilter.updateFilter(this.transactionFilterListClingme)
+        }else{ // Trả trực tiếp
+            this.refs.transactionFilter.updateFilter(this.transactionFilterListDỉrect)
+        }
     }
     _handleTopDrowpdown(item) {
-        // console.log('Place Dropdown Change', item)
         let dateFilterData = this.refs.dateFilter.getData()
-        // console.log('Date Filter Data Change Dropdown', dateFilterData)
-        // this.setState({ loading: true })
-        this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
     }
     componentDidMount() {
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, this.state.currentTransactionTypeFilter)
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
 
+    }
+    _handleTransactionFilterChange(item){
+        console.log('On Change Filter', item)
     }
     _renderTransactionItem(item) {
         var transactionNumberBlock;
@@ -135,7 +158,7 @@ export default class TransactionList extends Component {
         }
         return (
             <ListItem key={item.dealTransactionId}
-                onPress={() => this.props.forwardTo('transactionDetail')}
+                onPress={() => this.props.forwardTo('transactionDetail/'+item.dealTransactionIdDisplay)}
                 style={styles.listItem}
             >
                 <View style={styles.block}>
@@ -165,10 +188,7 @@ export default class TransactionList extends Component {
         )
     }
     render() {
-        console.log('Rerender Loading', this.state.loading)
         const { handleSubmit, submitting, forwardTo, listTransaction, place } = this.props
-        // console.log('Re-render', this.props.listTransaction)
-        // First Time
         if (!listTransaction) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
@@ -184,19 +204,9 @@ export default class TransactionList extends Component {
             name: item.address
         }))
         var defaultSelected = dropdownValues[0]
-        var currentFilter = this.transactionFilterListValue.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
-        var tabData = [
-            {
-                tabID: 1,
-                text: 'Trả qua Clingme',
-                number: 4
-            },
-            {
-                tabID: 2,
-                text: 'Trả trực tiếp',
-                number: 50
-            }
-        ]
+        // var currentFilter;
+        // currentFilter = this.transactionFilterListDỉrect.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
+        
         var noData = null
         if (listTransaction.length == 0) {
             noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
@@ -204,12 +214,14 @@ export default class TransactionList extends Component {
         return (
             <View style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
-                <RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListValue} selectedValue={this.state.currentTransactionTypeFilter} onClickYes={this._handleYesFilterTransactionType.bind(this)} />
+                {/*<RadioPopup ref='transactionTypePopup' listValue={this.transactionFilterListDỉrect} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} />
+                    <TabsWithNoti tabData={this.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} refs='tabs'/>
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
-
-                    <View style={styles.filterByTransactionType}>
+                    <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
+                        listValue={this.transactionFilterListDỉrect} ref='transactionFilter'
+                    />
+                    {/*<View style={styles.filterByTransactionType}>
                         <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                             <View style={styles.leftContainer}>
                                 <Icon name='filter' style={styles.transactionTypeIcon} />
@@ -217,7 +229,7 @@ export default class TransactionList extends Component {
                             </View>
                         </TouchableOpacity>
                         <Text small style={styles.numberRight}>10</Text>
-                    </View>
+                    </View>*/}
 
                     <Content style={{ padding: 10, height: '100%' }}>
                         {/*{this.state.loading &&
