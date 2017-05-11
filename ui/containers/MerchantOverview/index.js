@@ -14,7 +14,10 @@ import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import moment from 'moment'
+import { storeTransparent } from '~/assets'
 import { formatNumber } from '~/ui/shared/utils'
+import LinearGradient from 'react-native-linear-gradient'
+
 @connect(state => ({
     user: state.auth.user,
     place: state.place
@@ -174,14 +177,19 @@ export default class MerchantOverview extends Component {
                   dropdownValues={dropdownValues}
                   onSelect={this._handleChangePlace.bind(this)}
                   selectedOption={defaultSelected} />
+                 
                 <View style={styles.contentContainer}>
                     {/*<View style={{width: '100%', height: 200, backgroundColor: 'lightblue'}}></View>*/}
-                    <Image source={require('~/assets/images/store_with_background.jpg')} style={{ width: '100%', height: 150 }} />
+                    <LinearGradient style={{paddingTop:15}} colors={['#00a9d4', '#007dad']}>  
+                      <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
+                    </LinearGradient>
                     <View style={styles.dateFilterContainer}>
                         <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     </View>
                     {mainContainer}
                 </View>
+                
+
                 <View>
 
                 </View>
