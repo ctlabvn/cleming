@@ -76,7 +76,7 @@ export default class extends Component {
   _loadMore = ()=>{
     if(this.state.loading || this.state.refreshing)
       return
-    console.log('load more')
+    // console.log('load more')
     const {session, notifications, getNotification} = this.props
     if(notifications.hasMore){
       this.setState({loading: true})          

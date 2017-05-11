@@ -685,8 +685,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = TXU6BDYHDH;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 9CATQ2N2W2;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1166,7 +1166,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = TXU6BDYHDH;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
@@ -1181,10 +1181,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchantTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1196,7 +1196,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Hung Lai (FA7Y8ZETLC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TXU6BDYHDH;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
@@ -1211,10 +1211,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchantTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
