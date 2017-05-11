@@ -39,20 +39,10 @@ export default class TransactionDetail extends Component {
                 return <View style={{ ...styles.barMain, ...styles.backgroundWarning }}></View>
         }
     }
-    componentWillFocus() {
-        console.log('Will FC')
-        console.log('Param ID', this.props.route)
-    }
     render() {
-        // 'WAITING', 'SUCCESS', 'REJECT'
         const { route } = this.props
-        console.log('Transaction Id', route.params.id)
-        // "markTimeDeal": long, 	// thời gian đánh dấu deal
-        // "invoiceTime": long,	// thời gian in trên hóa đơn
-
         let transactionId = route.params.id
         let transactionInfo = this.props.listTransaction.filter((item) => item.dealTransactionIdDisplay == transactionId)[0]
-        console.log('transactionInfo', transactionInfo)
         const transactionStatus = 'WAITING'
         return (
             <Content>

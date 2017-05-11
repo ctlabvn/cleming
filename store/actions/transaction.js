@@ -8,3 +8,8 @@ export const setListTransaction = (listTransaction) => ({
   type: 'app/setListTransaction',
   payload: listTransaction, 
 })
+
+export const getListTransactionPayWithClingme= (...args) => ({
+  type: 'transaction/listPayWithClingme',
+  args
+})

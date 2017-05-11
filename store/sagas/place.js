@@ -18,7 +18,7 @@ const requestListPlace = createRequestSaga({
         }          
     ],
     failure: [
-        () => setToast('Couldn\'t login', 'error')
+        (data) => setToast('Place List: '+JSON.stringify(data), 'error')
     ],
 })
 const requestPlaceStatistic = createRequestSaga({
@@ -32,7 +32,7 @@ const requestPlaceStatistic = createRequestSaga({
         }          
     ],
     failure: [
-        () => setToast('Couldn\'t login', 'error')
+        (data) => setToast('Place Statistic: '+JSON.stringify(data), 'error')
     ],
 })
 
