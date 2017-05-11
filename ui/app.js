@@ -119,7 +119,7 @@ export default class App extends Component {
   renderComponentFromPage(page){
     const {Page, ...route} = page
     return (
-      <Page ref={ref=>route.path && (this.pageInstances[route.path]=this.getPageInstance(ref))} route={route} app={this}/>
+      <Page ref={ref=>route.path && (this.pageInstances[route.path]=ref)} route={route} app={this}/>
     )
   }
 
@@ -187,24 +187,16 @@ export default class App extends Component {
     })
   }
 
-  getPageInstance(ref){
-    let whatdog = 10
-    let component = ref
-
-
-
+  handleFocusableComponent(component) {
+    // do not loop forever
+    let whatdog = 10    
+    let ref = component
     // maybe connect, check name of constructor is _class means it is a component :D
-    if(component && !component.render){
-      component = component._reactInternalInstance._renderedComponent
-      while(component._instance && !component._instance.render && whatdog > 0){
-        component = component._renderedComponent
-        whatdog--
-      }
-      component = component._instance
-    }
-
-    // component && console.log(component, component.render, component.componentWillFocus)
-    return component
+    while(ref && whatdog > 0){
+      ref.componentWillFocus && ref.componentWillFocus()
+      ref = ref._reactInternalInstance._renderedComponent._instance
+      whatdog--
+    }    
   }
 
   // we need didFocus, it is like componentDidMount for the second time
@@ -212,6 +204,7 @@ export default class App extends Component {
     // currently we support only React.Component instead of check the existing method
     // when we extend the Component, it is still instanceof
     const component = this.pageInstances[path]        
+    
     // check method
     if(component){       
       const {Page, ...route} = this.page
@@ -224,7 +217,7 @@ export default class App extends Component {
       }  
 
       // after update the content then focus on it, so we have new content
-      component.componentWillFocus && component.componentWillFocus()      
+      this.handleFocusableComponent(component)          
     }     
 
   }

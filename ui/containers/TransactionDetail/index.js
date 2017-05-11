@@ -17,7 +17,8 @@ export default class TransactionDetail extends Component {
     // 1 là thành công, 2 là bị từ chối
     _renderStatus(status) {
         switch (status) {
-            case (0 | 3):
+            case 0:
+            case 3:
                 return <Text small bold warning>Clingme đã duyệt</Text>
             case 1:
                 return <Text small bold success>Thành công</Text>
@@ -29,7 +30,8 @@ export default class TransactionDetail extends Component {
     }
     _renderBar(status) {
         switch (status) {
-            case (0 | 3):
+            case 0:
+            case 3:
                 return <View style={{ ...styles.barMain, ...styles.backgroundWarning }}></View>
             case 1:
                 return <View style={{ ...styles.barMain, ...styles.backgroundSuccess }}></View>
@@ -41,6 +43,7 @@ export default class TransactionDetail extends Component {
     }
     render() {
         const { route } = this.props
+        console.log(route)
         let transactionId = route.params.id
         let transactionInfo = this.props.listTransaction.filter((item) => item.dealTransactionIdDisplay == transactionId)[0]
         const transactionStatus = 'WAITING'

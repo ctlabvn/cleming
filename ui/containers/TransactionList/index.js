@@ -30,6 +30,10 @@ export default class TransactionList extends Component {
         }
     }
 
+    componentWillFocus(){
+        console.log('focus')
+    }
+
     _handlePressFilter(item) {
         console.log('Handle Press Item', item)
         let currentPlace = this.refs.placeDropdown.getValue()

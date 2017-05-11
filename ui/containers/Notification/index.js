@@ -215,6 +215,16 @@ export default class extends Component {
   }
 
   render() {
+
+    // const { notificationRequest} = this.props    
+    // const data= []
+    // for(let i=1;i<100;i++){
+    //   data.push({title: 'title'+i,notifyType:1})
+    // }
+    // const notifications = {
+    //   data,
+    // }
+    
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     const {notifications, notificationRequest} = this.props    
     
