@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { LayoutAnimation } from 'react-native'
 import {                 
     Button, Container, ListItem, List, Spinner,
     Text, Item, View, Input, Left, Right, Body,
@@ -61,6 +62,10 @@ export default class extends Component {
       refreshing: false,
     })
     
+  }
+
+  componentWillUpdate() {
+    LayoutAnimation.easeInEaseOut();
   }
 
   componentWillMount(){
@@ -213,11 +218,12 @@ export default class extends Component {
        
         <Container>
 
-            <Text active small style={{
+            <Button transparent><Text active small style={{
               alignSelf:'flex-end',
               marginVertical: 10,
               marginRight: 10,
             }}>Đánh dấu tất cả đã đọc</Text>
+            </Button>
                     
             <Content               
               onEndReached={this._loadMore} onRefresh={this._onRefresh}             
