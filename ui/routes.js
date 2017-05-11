@@ -36,6 +36,7 @@ import DeliveryList from './containers/DeliveryList'
 import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
+import TestAnimation from './containers/TestAnimation'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -240,5 +241,11 @@ export default {
         title: 'Deals Overview',
         Page: DealDetail,
         footerType: 'none',
-    }
+    },
+    testAnimation: {
+        title: 'Test Animation',
+        Page: TestAnimation,
+        headerType: 'back',
+        footerType: 'none',
+    },
 }
