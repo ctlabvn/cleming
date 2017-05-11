@@ -89,6 +89,10 @@ export default class extends Component {
     }        
   }
 
+  _handleNotiRead = (e) => {
+    
+  }
+
   renderNotificationContent({title, notifyType, createdTime}){    
     switch(notifyType){
       case 1:
@@ -218,11 +222,10 @@ export default class extends Component {
        
         <Container>
 
-            <Button transparent><Text active small style={{
-              alignSelf:'flex-end',
-              marginVertical: 10,
-              marginRight: 10,
-            }}>Đánh dấu tất cả đã đọc</Text>
+            <Button onPress={this._handleNotiRead} noPadder style={{
+              alignSelf:'flex-end',              
+              marginRight: 10,              
+            }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
             </Button>
                     
             <Content               
