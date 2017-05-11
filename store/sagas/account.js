@@ -6,6 +6,7 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 
 import {
     replaceProfile,
+    setListEmployee
 } from '~/store/actions/account'
 
 
@@ -47,6 +48,17 @@ const requestResetPassword = createRequestSaga({
     ]
 })
 
+const requestGetListEmployee = createRequestSaga({
+  request: api.account.getListEmployee,
+  key: 'getListEmployee',
+  success: [
+    (data) => setListEmployee(data),
+  ],
+  failure: [
+    () => setToast('Couldn\'t get employee list', 'error')
+  ],
+})
+
 
 // root saga reducer
 export default [
@@ -58,7 +70,8 @@ export default [
         yield [
             takeLatest('app/getProfile', requestGetProfile),  
             takeLatest('app/changePassword', requestChangePassword),  
-            takeLatest('app/resetPassword', requestResetPassword),            
+            takeLatest('app/resetPassword', requestResetPassword),
+            takeLatest('app/getListEmployee', requestGetListEmployee)
         ]
     },
 ]

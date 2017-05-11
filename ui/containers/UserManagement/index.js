@@ -15,48 +15,53 @@ import UserCard from './components/UserCard'
 import OwnerCard from './components/OwnerCard'
 
 import * as commonActions from '~/store/actions/common'
+import * as accountActions from '~/store/actions/account'
+import * as authSelectors from '~/store/selectors/auth'
+import * as accountSelectors from '~/store/selectors/account'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
-const data = []
-
-for (let i = 0; i < 5; i++) {
-    data.push({
-        owner: {
-            userName: 'User Name',
-            img: img
-        },
-        employeeList: [
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Manager', address: 'Hoang Quoc Viet', img: img},
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Cashier', address: 'Hoang Quoc Viet', img: img},
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Accountant', address: 'Hoang Quoc Viet', img: img}
-        ]
-    })
-}
-
-data.push({
-    owner: {
-        userName: 'User Name',
-        img: img
-    },
-    employeeList: []
-})
 
 @connect(state=>({
-    
-}), {...commonActions})
+  session: authSelectors.getSession(state),
+  listEmployee: accountSelectors.getListEmployee(state),
+  user: authSelectors.getUser(state)
+}), {...commonActions, ...accountActions})
 
 class UserManagement extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalOpen: false,
-            updateInfoChecked: false,
-            deleteAccountChecked: false
+          modalOpen: false,
+          updateInfoChecked: false,
+          deleteAccountChecked: false,
+          isFetchingData: false,
+          data: []
         }
     }
     
     componentDidMount() {
-        
+      this.setState({
+          isFetchingData: true
+      })
+      let { getListEmployee, session, user } = this.props
+      getListEmployee(session, () => {
+        console.log("OK", this.props.listEmployee)
+        console.log("User", user)
+        let data = []
+        for (let i = 0; i < 1; i++) {
+          data.push({
+            owner: user,
+            employeeList: this.props.listEmployee
+          })
+        }
+        this.setState({
+            data: data
+        }, () => {
+            this.setState({
+                isFetchingData: false
+            })
+          })
+      })
     }
     
     onAccountPress(data) {
@@ -70,17 +75,25 @@ class UserManagement extends Component {
     }
     
     renderEmployeeRow(data, sectionID, rowID, highlightRow) {
+        let lastLeftVerticalBlueLine = null
+        let lastRightVerticalBlueLine = null
+        if (rowID == (this.props.listEmployee.length - 1)) {
+            
+        } else {
+          lastLeftVerticalBlueLine = styles.bottomLeftGrid
+          lastRightVerticalBlueLine = styles.bottomRightGrid
+        }
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
                     <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
                             <Row style={styles.topLeftGrid}/>
-                            <Row style={styles.bottomLeftGrid}/>
+                            <Row style={lastLeftVerticalBlueLine}/>
                         </Col>
                         <Col>
                             <Row style={[styles.topRightGrid, {borderBottomWidth: 1}]}/>
-                            <Row style={[styles.bottomRightGrid, {borderTopWidth: 1}]}/>
+                            <Row style={[lastRightVerticalBlueLine, {borderTopWidth: 1, borderColor: '#00a9d7'}]}/>
                         </Col>
                     </Col>
                     <Col style={{width: '80%', justifyContent: 'center'}}>
@@ -123,7 +136,7 @@ class UserManagement extends Component {
     renderRow(data) {
         blueLineBelowOwner = null
         console.log()
-        if (data.employeeList.length != 0) {
+        if (this.props.listEmployee.length != 0) {
             blueLineBelowOwner = this.renderBlueLineBelowOwner()
         }
         return (
@@ -214,12 +227,15 @@ class UserManagement extends Component {
     }
     
     render() {
+        if (this.state.isFetchingData) {
+            return <Spinner/>
+        }
         return (
             <Container>
                 <Content style={{backgroundColor: 'white'}}>
                     <List
                         style={{marginBottom: 50, marginTop: 20}}
-                        dataArray={data}
+                        dataArray={this.state.data}
                         renderRow={this.renderRow.bind(this)}/>
                 </Content>
                 <Modal onCloseClick={e=>this.setState({modalOpen:false})} open={this.state.modalOpen}>

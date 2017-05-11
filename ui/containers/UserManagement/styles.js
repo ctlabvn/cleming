@@ -49,7 +49,7 @@ export default {
     },
     bottomRightGrid: {
         borderLeftWidth: 1,
-        borderColor: '#00a9d7',
+        borderColor: '#00a9d7'
     },
     addUserButton: {
         position: 'absolute',

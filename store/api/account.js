@@ -30,5 +30,9 @@ export default {
   resetPassword(userName) {
     return apiPost('/reset/password', {userName})
   },
+  
+  getListEmployee(session) {
+    return apiGet('/merchantapp/list-subaccount', {}, session)
+  }
 
 }

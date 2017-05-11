@@ -17,11 +17,11 @@ export default class OwnerCard extends Component {
         return (
             <Grid>
                 <Col style={{width: '20%', justifyContent: 'center', alignItems: 'center'}}>
-                    <CacheableImage style={styles.avatar} source={{uri: data.img}} />
+                    <CacheableImage style={styles.avatar} source={{uri: data.avatar}} />
                 </Col>
                 <Col style={{ width: '80%'}}>
                     <Row style={{ height: '50%', alignItems: 'flex-end'}}>
-                        <Text style={styles.nameText}>{data.userName}</Text>
+                        <Text style={styles.nameText}>{data.fullName}</Text>
                     </Row>
                     <Row style={{height: '50%'}}>
                         <Text style={styles.subTitleText}>Owner</Text>
