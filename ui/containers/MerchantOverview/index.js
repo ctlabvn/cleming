@@ -26,8 +26,9 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
-        const { place } = this.props
         this.props.getListPlace(this.props.user.xsession, (err, data) => {
+            const { place } = this.props
+            console.log(place.statistic.fromTime)
             console.log(err, data)
             if(data && data.updated && data.updated.listPlace){
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
