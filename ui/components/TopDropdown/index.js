@@ -35,10 +35,7 @@ export default class TopDropdown extends PureComponent {
 
         LayoutAnimation.easeInEaseOut()
 
-        this.setState({ openningDropdown: !this.state.openningDropdown }, () => {
-            // console.log('Open/Closing drop down');
-            this.props.onSelect && this.props.onSelect(this.state.selectedOption)
-        })
+        this.setState({ openningDropdown: !this.state.openningDropdown })
     }
 
     componentWillMount() {
@@ -49,6 +46,7 @@ export default class TopDropdown extends PureComponent {
     }
     _handlePress(item) {
         this.setState({ selectedOption: item })        
+        this.props.onSelect && this.props.onSelect(item)
         this.toggle()
     }
     _handlePressDropdown() {
