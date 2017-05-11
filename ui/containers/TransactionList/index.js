@@ -14,6 +14,7 @@ import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
+// import Perf from 'react-addons-perf';
 
 import options from './options'
 
@@ -31,11 +32,11 @@ export default class extends Component {
     }
 
     componentWillFocus(){
-        console.log('focus')
+        // console.log('focus')
     }
-
+    // net filter transaction type
     _handlePressFilter(item) {
-        console.log('Handle Press Item', item)
+        // console.log('Handle Press Item', item)
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
@@ -50,6 +51,7 @@ export default class extends Component {
 
         }
     }
+    // Not need filter transaction type
     _handlePressTab(item) {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilter = this.refs.dateFilter.getData()
@@ -66,6 +68,23 @@ export default class extends Component {
             )
         }
     }
+
+    _handleTransactionFilterChange(item) {
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilter = this.refs.dateFilter.getData()
+        this.setState({ loading: true })
+        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
+                () => this.setState({loading: false})
+            )
+        } else { // Trả trực tiếp
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
+                () => this.setState({ loading: false })
+            )
+        }
+    }
+
+    // Need Filter transaction type
     _handleTopDrowpdown(item) {
         let dateFilterData = this.refs.dateFilter.getData()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
@@ -81,21 +100,14 @@ export default class extends Component {
         }
 
     }
-    componentWillFocus(){
-        console.log('Component Will Focus')
-    }
     componentDidMount() {
-        console.log('Did mount transaction list')
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({loading: true})
         this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             ()=>this.setState({loading: false})
-        )
-    }
-    _handleTransactionFilterChange(item) {
-        console.log('On Change Filter', item)
+        )  
     }
 
     _renderTransactionItem(item) {
@@ -103,13 +115,6 @@ export default class extends Component {
         var statusText;
         switch (item.transactionStatus) {
             case 0: // chờ duyệt
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text warning small>Đang xử lí</Text>
-                break
             case 3:
                 transactionNumberBlock =
                     (<View style={styles.row}>
@@ -118,7 +123,6 @@ export default class extends Component {
                     </View>)
                 statusText = <Text warning small>Đang xử lí</Text>
                 break
-
             case 1: // thành công
                 transactionNumberBlock =
                     (<View style={styles.row}>
@@ -187,7 +191,6 @@ export default class extends Component {
         )
     }
     render() {
-        console.log('render transaction list')
         const { handleSubmit, submitting, forwardTo, listTransaction, place } = this.props
         if (!listTransaction) {
             return (
