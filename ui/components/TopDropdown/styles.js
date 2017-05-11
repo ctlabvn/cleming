@@ -30,8 +30,7 @@ export default {
     },
     dropdownList:{
         backgroundColor: PRIMARY_COLOR,
-        width: '100%',
-        height: 150, 
+        width: '100%',        
         zIndex: 1000,
     },
     dropdownListItem:{
