@@ -21,3 +21,13 @@ export const replaceProfile = (data) => ({
   type: 'app/replaceProfile',
   payload: data,
 })
+
+export const getListEmployee = (...args) => ({
+  type: 'app/getListEmployee',
+  args
+})
+
+export const setListEmployee = (data) => ({
+  type: 'app/setListEmployee',
+  payload: data
+})
