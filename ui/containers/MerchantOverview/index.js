@@ -131,7 +131,7 @@ export default class MerchantOverview extends Component {
                           </View>
                       </View>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => forwardTo('testAnimation')}>
                       <View style={styles.menuItem}>
                           <View style={styles.leftBlock}>
                               <Icon name='shiping-bike2' style={styles.icon} />
