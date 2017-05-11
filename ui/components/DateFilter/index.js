@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Thumbnail, Button, ScrollableTab } from 'native-base'
-import { View, ListView, TouchableOpacity, Animated, Easing, Tabs, Tab } from 'react-native'
+import { List, ListItem, Text, Button } from 'native-base'
+import { View, ListView, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import RadioPopup from '~/ui/components/RadioPopup'
@@ -51,16 +51,15 @@ export default class DateFilter extends Component {
     }
     _handleYesDateFilter(item) {
         this.setState({ currentDateFilter: item })
-        this.setState({currentSelectValue: this._getDefaultCurrnetSelectValue(item)})
-        setTimeout(()=>{
-            this.refs.dateFilterList.scrollToEnd({animated: false})
+        this.setState({ currentSelectValue: this._getDefaultCurrnetSelectValue(item) })
+        setTimeout(() => {
+            this.refs.dateFilterList.scrollToEnd({ animated: false })
             this.props.onPressFilter(this.state)
         }, 0)
-        
 
     }
     componentDidMount() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.refs.dateFilterList.scrollToEnd({ animated: false })
         }, 0)
     }
@@ -153,7 +152,7 @@ export default class DateFilter extends Component {
             return {
                 value: {
                     from: startMonth.unix(),
-                    to: endMonth.unix()                
+                    to: endMonth.unix()
                 },
                 display: currentMonth.format('MM/YYYY')
             }
@@ -191,7 +190,7 @@ export default class DateFilter extends Component {
                         (rowData) => {
                             return (
                                 <TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
-                                    <Text small style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to)?styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                    <Text small style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
                                 </TouchableOpacity>
                             )
                         }

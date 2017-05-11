@@ -34,13 +34,15 @@ export default {
     dateFilterListItemDeactive: {
         borderBottomColor: 'transparent',
         marginRight: 25,
-        color: 'rgba(0,0,0,0.5)'
+        color: 'rgba(0,0,0,0.5)',
+        padding: 5
     },
     dateFilterListItemActive: {
         borderBottomColor: 'transparent',
         marginRight: 25,
         color: PRIMARY_COLOR,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        padding: 5
     }
 
 

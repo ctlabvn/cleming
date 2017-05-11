@@ -26,14 +26,23 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
-        const { place } = this.props
         this.props.getListPlace(this.props.user.xsession, (err, data) => {
+            let toTime = moment(new Date())
+            let dateFilterData = this.refs.dateFilter.getData()
             console.log(err, data)
             if(data && data.updated && data.updated.listPlace){
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
                 console.log('All place', allPlace)
-                this.props.getPlaceStatistic(this.props.user.xsession, allPlace, place.statistic.fromTime, place.statistic.toTime)
-                this.props.getMerchantNews(this.props.user.xsession, allPlace, place.statistic.fromTime, place.statistic.toTime)
+                this.props.getPlaceStatistic(
+                  this.props.user.xsession,
+                  allPlace,
+                  dateFilterData.currentSelectValue.value.from,
+                  dateFilterData.currentSelectValue.value.to)
+                this.props.getMerchantNews(
+                    this.props.user.xsession,
+                    allPlace,
+                    dateFilterData.currentSelectValue.value.from,
+                    dateFilterData.currentSelectValue.value.to)
             }
         })
     }
@@ -62,18 +71,91 @@ export default class MerchantOverview extends Component {
         item.currentSelectValue.value.from,
         item.currentSelectValue.value.to)
     }
+    
+    renderLoading() {
+      return (
+        <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+            <ActivityIndicator
+              size="large"
+            />
+            <Text>Loading...</Text>
+        </View>
+      )
+    }
+    
+    renderMainContainer() {
+        const { handleSubmit, submitting, forwardTo, place } = this.props
+        return(
+          <View style={{alignItems: 'center'}}>
+              <Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
+    
+              <View style={styles.infoContainer}>
+                  <View style={styles.infoItemBorderRight}>
+                      <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeReach)}</Text>
+                      <Text style={styles.infoItemLabel}>Tiếp cận</Text>
+                  </View>
+                  <View style={styles.infoItemBorderRight}>
+                      <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeView)}</Text>
+                      <Text style={styles.infoItemLabel}>Xem</Text>
+                  </View>
+                  <View style={styles.infoItemBorderRight}>
+                      <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeInteract)}</Text>
+                      <Text style={styles.infoItemLabel}>Tìm hiểu</Text>
+                  </View>
+                  <View style={styles.infoItem}>
+                      <Text style={{ ...styles.infoItemNumber, ...styles.success }}>{formatNumber(place.statistic.placeBought)}</Text>
+                      <Text style={styles.infoItemLabel}>Mua</Text>
+                  </View>
+              </View>
+              <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={() => forwardTo('transactionList')}>
+                      <View style={styles.menuItem}>
+                          <View style={styles.leftBlock}>
+                              <Icon name='transaction' style={styles.icon} />
+                              <Text>Giao dịch</Text>
+                          </View>
+                          <View style={styles.rightBlock}>
+                              <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.transactionNews}</Text></View>
+                              <Icon name='chevron-right' style={styles.rightIcon} />
+                          </View>
+                      </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
+                      <View style={styles.menuItem}>
+                          <View style={styles.leftBlock}>
+                              <Icon name='calendar-checked' style={styles.icon} />
+                              <Text>Đặt chỗ</Text>
+                          </View>
+                          <View style={styles.rightBlock}>
+                              <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.bookingNews}</Text></View>
+                              <Icon name='chevron-right' style={styles.rightIcon} />
+                          </View>
+                      </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                      <View style={styles.menuItem}>
+                          <View style={styles.leftBlock}>
+                              <Icon name='shiping-bike2' style={styles.icon} />
+                              <Text>Đặt giao hàng</Text>
+                          </View>
+                          <View style={styles.rightBlock}>
+                              <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.orderNews}</Text></View>
+                              <Icon name='chevron-right' style={styles.rightIcon} />
+                          </View>
+                      </View>
+                  </TouchableOpacity>
+              </ScrollView>
+          </View>
+        )
+    }
 
     render() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
+        let mainContainer = null
         if (!place || !place.listPlace || !place.statistic) {
-            return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
-                    <ActivityIndicator
-                        size="large"
-                    />
-                    <Text>Loading...</Text>
-                </View>
-            )
+            mainContainer = this.renderLoading()
+        } else {
+            mainContainer = this.renderMainContainer()
         }
         let allPlace = place.listPlace.map(item => item.placeId).join(';')
         let defaultSelected = {
@@ -99,64 +181,7 @@ export default class MerchantOverview extends Component {
                     <View style={styles.dateFilterContainer}>
                         <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     </View>
-                    <Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
-
-                    <View style={styles.infoContainer}>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeReach)}</Text>
-                            <Text style={styles.infoItemLabel}>Tiếp cận</Text>
-                        </View>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeView)}</Text>
-                            <Text style={styles.infoItemLabel}>Xem</Text>
-                        </View>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeInteract)}</Text>
-                            <Text style={styles.infoItemLabel}>Tìm hiểu</Text>
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={{ ...styles.infoItemNumber, ...styles.success }}>{formatNumber(place.statistic.placeBought)}</Text>
-                            <Text style={styles.infoItemLabel}>Mua</Text>
-                        </View>
-                    </View>
-                    <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-                        <TouchableOpacity onPress={() => forwardTo('transactionList')}>
-                            <View style={styles.menuItem}>
-                                <View style={styles.leftBlock}>
-                                    <Icon name='transaction' style={styles.icon} />
-                                    <Text>Giao dịch</Text>
-                                </View>
-                                <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.transactionNews}</Text></View>
-                                    <Icon name='chevron-right' style={styles.rightIcon} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
-                            <View style={styles.menuItem}>
-                                <View style={styles.leftBlock}>
-                                    <Icon name='calendar-checked' style={styles.icon} />
-                                    <Text>Đặt chỗ</Text>
-                                </View>
-                                <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.bookingNews}</Text></View>
-                                    <Icon name='chevron-right' style={styles.rightIcon} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.menuItem}>
-                                <View style={styles.leftBlock}>
-                                    <Icon name='shiping-bike2' style={styles.icon} />
-                                    <Text>Đặt giao hàng</Text>
-                                </View>
-                                <View style={styles.rightBlock}>
-                                    <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.orderNews}</Text></View>
-                                    <Icon name='chevron-right' style={styles.rightIcon} />
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    </ScrollView>
+                    {mainContainer}
                 </View>
                 <View>
 

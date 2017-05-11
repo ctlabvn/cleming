@@ -6,7 +6,7 @@ export default {
         width: '100%',
     },
     contentContainer: {
-        marginTop: 50,
+        marginTop: 140,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
