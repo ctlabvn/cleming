@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { LayoutAnimation } from 'react-native'
 import {                 
     Button, Container, ListItem, List, Spinner,
     Text, Item, View, Input, Left, Right, Body,
@@ -63,6 +64,10 @@ export default class extends Component {
     
   }
 
+  componentWillUpdate() {
+    LayoutAnimation.easeInEaseOut();
+  }
+
   componentWillMount(){
     this.componentWillFocus()      
   }
@@ -76,7 +81,7 @@ export default class extends Component {
   _loadMore = ()=>{
     if(this.state.loading || this.state.refreshing)
       return
-    console.log('load more')
+    // console.log('load more')
     const {session, notifications, getNotification} = this.props
     if(notifications.hasMore){
       this.setState({loading: true})          
@@ -213,11 +218,12 @@ export default class extends Component {
        
         <Container>
 
-            <Text active small style={{
+            <Button transparent><Text active small style={{
               alignSelf:'flex-end',
               marginVertical: 10,
               marginRight: 10,
             }}>Đánh dấu tất cả đã đọc</Text>
+            </Button>
                     
             <Content               
               onEndReached={this._loadMore} onRefresh={this._onRefresh}             
