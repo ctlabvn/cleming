@@ -54,7 +54,7 @@ export default {
         borderRadius: 2,
         width: '98%',
         padding: 10,
-        marginBottom: 5
+        marginBottom: 7
     },
     leftBlock: {
         flexDirection: 'row',
