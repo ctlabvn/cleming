@@ -53,7 +53,7 @@ const UIManager = NativeModules.UIManager
 export default class App extends Component {    
 
   static configureScene(route) {
-      const {animationType = 'FadeAndroid'} = routes[route.path] || {}
+      const {animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight'} = routes[route.path] || {}
       // return Navigator.SceneConfigs[animationType]
       // Navigator.SceneConfigs[animationType]
       // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted

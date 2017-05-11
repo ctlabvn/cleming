@@ -30,5 +30,5 @@ export default {
     alignSelf:'flex-start',
     fontSize: 18,    
     marginLeft:10,    
-  }
+  },
 }
