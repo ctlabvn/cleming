@@ -229,19 +229,29 @@ export default {
     navigateInvoiceBlock: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10
-    },
-    previousInvoiceBlock: {
-        flexDirection: 'row',
+        padding: 10,
         alignItems: 'center'
     },
-    nextInvoiceBlock: {
+    buttonLeft: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '45%',
+        justifyContent: 'flex-start',
+        paddingLeft: 0,
+        paddingRight: 0,
+    },
+    buttonRight: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '45%',
+        justifyContent: 'flex-end',
+        paddingLeft: 0,
+        paddingRight: 0,
     },
     icon: {
         fontSize: 20,
-        marginLeft: 3
+        marginLeft: 3,
+        color: 'grey',
     },
     marginRight: {
         marginRight: 3
@@ -259,8 +269,9 @@ export default {
     warning: {
         color: WARNING_COLOR
     },
-
-
+    disabled: {
+        color: '#f4f4f4'
+    },
     backgroundBlue: {
         backgroundColor: 'blue'
     },
@@ -285,6 +296,9 @@ export default {
     },
     lineThrough: {
         textDecorationLine: 'line-through'
+    },
+    btnTxt: {
+        fontSize: 12
     }
 
 }
