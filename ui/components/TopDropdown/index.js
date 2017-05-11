@@ -57,7 +57,7 @@ export default class TopDropdown extends PureComponent {
     render() {
         const { notifications, getNotificationRequest, getNotification, dropdownValues } = this.props
         const { openningDropdown } = this.state
-        const maxHeight = openningDropdown ? 0 : 150
+        const maxHeight = openningDropdown ? 150 : 0
         // console.log(this.props.dropdownValues)
         // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
         return (
