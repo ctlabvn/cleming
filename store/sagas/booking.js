@@ -12,7 +12,7 @@ const requestBookingList = createRequestSaga({
     success: [
         (data) => {
             console.log('Load booking', data)
-            return setBookingList(data.updated.bookingList)
+            return setBookingList(data.updated)
         }          
     ],
     failure: [
@@ -22,7 +22,6 @@ const requestBookingList = createRequestSaga({
         }
     ],
 })
-
 export default [
     function* fetchWatcher() {
         yield [            

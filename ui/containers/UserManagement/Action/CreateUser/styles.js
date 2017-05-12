@@ -8,11 +8,15 @@ export default {
         height: 50
     },
     inputContainer: {
-        marginBottom: 15
+        marginBottom: 15,
+        minHeight: 50,
     },
     inputIcon: {
         fontSize: 20,
         color: '#7e7e7e'
+    },
+    inputText: {
+      color: "#7e7e7e"
     },
     listItem:{
         marginLeft:10,
