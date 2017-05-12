@@ -1,7 +1,7 @@
-import { PRIMARY_COLOR, SUCCESS_COLOR } from '~/ui/shared/constants'
+import { PRIMARY_COLOR, SUCCESS_COLOR, BACKGROUND_COLOR_1, TEXT_COLOR_1 } from '~/ui/shared/constants'
 export default {
     container: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: BACKGROUND_COLOR_1,
         height: '100%',
         width: '100%',
     },
@@ -43,7 +43,7 @@ export default {
         color: PRIMARY_COLOR
     },
     infoItemLabel: {
-        color: 'rgba(0,0,0,0.5)',
+        color: TEXT_COLOR_1,
         fontSize: 13
     },
     menuItem: {
@@ -94,6 +94,10 @@ export default {
         flexDirection: 'column',
         marginLeft: 45,
         marginRight: 20
+    },
+
+    textLabelRightImage: {
+        color: TEXT_COLOR_1,
     }
 
 }
