@@ -21,6 +21,9 @@ import {
 import Icon from '~/ui/elements/Icon'
 import Modal from '~/ui/components/Modal'
 
+import * as authSelectors from '~/store/selectors/auth'
+import * as accountSelectors from '~/store/selectors/account'
+
 import { validate, renderGroupAddress } from './utils'
 import styles from './styles'
 
@@ -33,12 +36,12 @@ for (let i = 0; i < 5; i++) {
 
 const formSelector = formValueSelector('CreateUserForm')
 @connect(state=>({
-    
+  listEmployee: accountSelectors.getListEmployee(state)
 }), {}, (stateProps, dispatchProps, ownProps)=>({
-    initialValues: {
-        GroupAddress: data
-    },
-    ...ownProps, ...stateProps, ...dispatchProps,
+  initialValues: {
+    GroupAddress: data
+  },
+  ...ownProps, ...stateProps, ...dispatchProps,
 }))
 @reduxForm({ form: 'CreateUserForm'})
 
@@ -52,8 +55,35 @@ export default class CreateUserContainer extends Component {
           toTimeVisible: false,
           fromTime: new Date(),
           toTime: new Date(),
-          checkAll: false
+          checkAll: false,
+          employeeDetail: {},
+          rowIDOfEmployee: 0
         }
+    }
+  
+    componentWillFocus(){
+      console.log('Will Focus detail')
+    }
+    
+    componentDidMount() {
+      let rowIDOfEmployee = Number(this.props.route.params.id)
+      console.log(rowIDOfEmployee)
+      console.log(this.props.listEmployee[rowIDOfEmployee])
+      this.setState({
+        employeeDetail: this.props.listEmployee[rowIDOfEmployee],
+        rowIDOfEmployee: rowIDOfEmployee
+      })
+    }
+  
+    componentWillReceiveProps(nextProps) {
+      console.log(nextProps)
+      let rowIDOfEmployee = Number(nextProps.route.params.id)
+      console.log(rowIDOfEmployee)
+      console.log(nextProps.listEmployee[rowIDOfEmployee])
+      this.setState({
+        employeeDetail: nextProps.listEmployee[rowIDOfEmployee],
+        rowIDOfEmployee: rowIDOfEmployee
+      })
     }
     
     onJobPositionFocus() {
