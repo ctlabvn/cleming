@@ -63,7 +63,7 @@ export default {
         Page: PlaceOrderList,
         headerType: 'back'
     },
-    placeOrderDetail: {
+    'placeOrderDetail/:id': {
         title: 'Chi tiết đặt chỗ',
         Page: PlaceOrderDetail,
         headerType: 'back',

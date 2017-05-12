@@ -28,18 +28,8 @@ export default class PlaceOrderList extends Component {
         super(props)
         this.state = {
             refreshing: false,
-            loading: false,
-        }
-    }
-    _handlePressTab(item) {
-        // status: 0 là lấy các booking đang chờ, status = 1 là booking đã được xác nhận
-
-        // Chờ xác nhận 
-        console.log('Press Tab', item)
-        if (item.id == 1){
-            this.props.getBookingList(this.props.user.xsession, '', 0, 1510374407, 0)
-        }else{ // Đã xác nhận  1    
-            this.props.getBookingList(this.props.user.xsession, '', 0, 1510374407, 1) 
+            loadingMore: false,
+            loading: false
         }
     }
 
@@ -47,87 +37,117 @@ export default class PlaceOrderList extends Component {
         const { forwardTo } = this.props
         forwardTo('placeOrderDetail')
     }
-    componentDidMount() {
-        // console.log('Place list', this.props.place)
-        let placeList = this.props.place.listPlace.map(item => item.placeId).join(',')
-        console.log('Place', placeList)
-        this.props.getBookingList(this.props.user.xsession)
-    }
-    _renderBookingItem(item) {
+    _renderBookingItem(item) {        
+        let totalQuantity = item.orderRowList ? item.orderRowList.map(x=>x.quantity).reduce((a,b)=>a+b, 0): 0
         return (
-            <View style={styles.block}>
-                <Button
-                    onPress={this.onDetailPlacePress.bind(this)}
-                    style={styles.detailButton}>
-                    <View style={styles.rowPadding}>
-                        <Text primary bold>{item.orderCode}</Text>
-                        <Text small style={{ color: 'black' }}>17:10 10/03/2017</Text>
+
+            <ListItem onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)} style={styles.listItem}>
+                <View style={styles.rowPadding}>
+                    <Text primary bold>{item.orderCode}</Text>
+                    <Text small style={{ color: 'black' }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                </View>
+                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <View style={styles.row}>
+                    <View style={styles.column}>
+                        <Icon name='calendar' style={styles.icon} />
+                        <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                    <View style={styles.column}>
+                        <Icon name='history' style={styles.icon} />
+                        <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
+                    </View>
+                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                    <View style={styles.column}>
+                        <Icon name='friend' style={styles.icon} />
+                        <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
+                    </View>
+                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                    <View style={styles.column}>
+                        <Icon name='want-feed' style={styles.icon} />
+                        <Text style={{ color: 'black' }}>{totalQuantity}</Text>
+                    </View>
+                </View>
+                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <View style={{ ...styles.rowPadding }}>
                     <View style={styles.row}>
-                        <View style={styles.column}>
-                            <Icon name='calendar' style={styles.icon} />
-                            <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                        <View style={styles.column}>
-                            <Icon name='history' style={styles.icon} />
-                            <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                        <View style={styles.column}>
-                            <Icon name='friend' style={styles.icon} />
-                            <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                        <View style={styles.column}>
-                            <Icon name='want-feed' style={styles.icon} />
-                            <Text style={{ color: 'black' }}>2</Text>
-                        </View>
+                        <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
+                        <Text small style={{ color: 'black' }}>{item.userInfo.memberName}</Text>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                    <View style={{ ...styles.rowPadding }}>
-                        <View style={styles.row}>
-                            <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                            <Text small style={{ color: 'black' }}>{item.userInfo.memberName}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                            <Text primary>{item.userInfo.phoneNumber}</Text>
-                        </View>
+                    <View style={styles.row}>
+                        <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                        <Text primary>{item.userInfo.phoneNumber}</Text>
                     </View>
-                    <View style={{ ...styles.rowPadding, ...styles.center }}>
-                        <Text error small>Đã có 3 mã đặt chỗ được xác nhận trong khoảng thời gian này</Text>
-                    </View>
-                </Button>
-            </View>
+                </View>
+            </ListItem >
         )
     }
-    _onRefresh = ()=>{
-        console.log('On refresh')
+    _onRefresh = () => {
         this.setState({ refreshing: true })
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData()
+        let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
         // page: int, //page hiện tại muốn lấy,
         // pageNumber: int, //số page tối đa có thể lấy,
         // resultNumber: int, //số lượng kết quả,
         // isLast: boolean, //có phải là trang cuối cùng hay không
-        this.props.getBookingList(this.props.user.xsession, ()=>{
-            this.setState({refreshing: false})
-        })
+        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+            dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+            status, () => this.setState({ loading: false }))
     }
     _loadMore = () => {
         const { booking } = this.props
-        console.log('Load More', booking)
-        this.setState({loading: true})
-        let activeTab = this.refs.tabs.getActiveTab()
-        let status = activeTab == 1 ? 0:1
-        console.log('active Tab', activeTab)
-        if (!booking.isLast){
-            this.props.getBookingList(this.props.user.xsession, '', 0, 1510374407, status, booking.page+1, 
-                ()=>this.setState({loading: false}))
+        this.setState({ loadingMore: true })
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData()
+        let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
+
+        if (!booking.isLast) {
+            this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+                status, booking.page + 1,
+                () => this.setState({ loadingMore: false }))
         }
     }
-    render() {
+    _handlePressTab(item) {
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData()
+        let status = item == 1 ? 0 : 1
+        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+            dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+            status, () => this.setState({ loading: false }))
+    }
+    _handleTopDrowpdown(item) {
         const { booking } = this.props
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData()
+        let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
+        this.setState({ loading: true })
+        this.props.getBookingList(this.props.user.xsession, item.id,
+            dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+            status, () => this.setState({ loading: false }))
+
+    }
+    _handlePressFilter(item) {
+        const { booking } = this.props
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
+        this.setState({ loading: true })
+        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+            item.currentSelectValue.value.from, item.currentSelectValue.value.to,
+            status, () => this.setState({ loading: false }))
+    }
+    componentDidMount() {
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData()
+        let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
+        this.setState({ loading: true })
+        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+            dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+            status, () => this.setState({ loading: false }))
+    }
+    render() {
+        const { booking, place } = this.props
         if (!booking) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -137,25 +157,40 @@ export default class PlaceOrderList extends Component {
             )
         }
 
+        // GET PLACE LIST
+        let allPlace = place.listPlace.map(item => item.placeId).join(',')
+        let dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
+        let defaultSelected = {
+            id: allPlace,
+            name: "Tất cả địa điểm"
+        }
+        dropdownValues = [defaultSelected, ...dropdownValues]
         return (
             <View style={styles.container}>
-                <View style={styles.merchantAddress}>
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
+                <View style={{ marginTop: 50, height: '100%' }}>
+                    {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
+                </View>*/}
+                    <TabsWithNoti tabData={options.tabData} activeTab={1} ref='tabs'
+                        onPressTab={this._handlePressTab.bind(this)} />
+                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
+                    <Content
+                        padder
+                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                        refreshing={this.state.refreshing}
+                    >
+                        {this.state.loading && <Spinner color='red' />}
+                        <List dataArray={booking.bookingList}
+                            renderRow={(item) => this._renderBookingItem(item)}
+                            pageSize={10}
+                        />
+                        {this.state.loadingMore && <Spinner color='red' />}
+                    </Content>
                 </View>
-                <TabsWithNoti tabData={options.tabData} activeTab={1} ref='tabs' 
-                    onPressTab={this._handlePressTab.bind(this)} />
-                <Content
-                    padder
-                    onEndReached={this._loadMore} onRefresh={this._onRefresh}
-                    refreshing={this.state.refreshing}
-                >
-                    <List dataArray={booking.bookingList}
-                        renderRow={(item) => this._renderBookingItem(item)}
-                        pageSize={10}
-                    />
-                    {this.state.loading && <Spinner color='red'/>}
-                </Content>
-
             </View >
         )
     }

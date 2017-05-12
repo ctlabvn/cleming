@@ -1,4 +1,4 @@
-import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR} from '~/ui/shared/constants'
+import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
 export default {
     container: {
         backgroundColor: 'lightgrey',
@@ -13,7 +13,8 @@ export default {
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
     },
     rowPaddingTB: {
         paddingTop: 10,
@@ -37,7 +38,7 @@ export default {
         flexDirection: 'column',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         padding: 10
     },
     block: {
@@ -100,4 +101,17 @@ export default {
         color: 'black',
         marginTop: 5,
     },
+    listItem: {
+        flexDirection: 'column',
+        paddingRight: 0,
+        paddingBottom: 0,
+        marginLeft: 0,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        paddingTop: 0,
+        backgroundColor: 'white',
+        borderRadius: 3,
+        marginBottom: 10
+    },
+  
 }
