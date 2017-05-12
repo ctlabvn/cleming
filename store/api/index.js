@@ -8,6 +8,7 @@ import delegation from './delegation'
 import vault from './vault'
 import transaction from './transaction'
 import place from './place';
+import booking from './booking'
 // we compose all api for each category here as single entry point
 // api will be an single entry point for all frame methods
 // this is where common functions are put
@@ -21,5 +22,6 @@ export default {
   delegation,
   vault,
   transaction,
-  place
+  place,
+  booking
 }
