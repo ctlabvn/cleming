@@ -10,7 +10,7 @@ export default class TabsWithNoti extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            activeTab: props.activeTab || 1
+            activeTab: props.activeTab || props.tabData[0].tabID,
         }
     }
     _handlePressTab(item) {

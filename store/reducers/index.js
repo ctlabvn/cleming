@@ -3,14 +3,15 @@ import { reducer as form } from 'redux-form'
 import { requests, toast, drawer, router, search } from './common'
 import { auth } from './auth'
 import { account } from './account'
-import { data } from './data'
+// import { data } from './data'
 import { notification } from './notification'
-import { campaign } from './campaign'
-import { network } from './network'
-import { delegation } from './delegation'
-import { vault } from './vault'
+// import { campaign } from './campaign'
+// import { network } from './network'
+// import { delegation } from './delegation'
+// import { vault } from './vault'
 import { transaction } from './transaction'
 import { place } from './place'
+import { order } from './order'
 import { booking } from './booking'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
@@ -25,15 +26,16 @@ const rootReducer = combineReducers({
   router,
   auth,
   account,
-  data,
+  // data,
   notification,
-  campaign,
-  network,
-  delegation,
-  vault,
+  // campaign,
+  // network,
+  // delegation,
+  // vault,
   transaction,
   place,
-  booking
+  booking,
+  order,
 })
 
 export default rootReducer

@@ -64,10 +64,6 @@ export default class extends Component {
     
   }
 
-  componentWillUpdate() {
-    LayoutAnimation.easeInEaseOut();
-  }
-
   componentWillMount(){
     this.componentWillFocus()      
   }

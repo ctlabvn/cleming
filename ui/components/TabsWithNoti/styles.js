@@ -3,18 +3,18 @@ export default {
     tabBar: {
         flexDirection: 'row',
         backgroundColor: PRIMARY_COLOR,
-        justifyContent: 'space-between'
+        justifyContent: 'space-around'
     },
     tabDeactive: {
         flexDirection: 'row',
-        flex: 1,
+        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
+        // padding: 10,
 
     },
     tabActive: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
