@@ -136,6 +136,10 @@ export default class CreateUserContainer extends Component {
       })
     }
     
+    onCheckDetailAddress(address) {
+      this.props.change(`${address}.ad`, true)
+    }
+    
     renderJobModal() {
         return(
             <View style={styles.modalContainer}>
@@ -245,6 +249,8 @@ export default class CreateUserContainer extends Component {
                             dashThickness={1}
                             style={{flex: 1, marginBottom: 10}}/>
                         <FieldArray
+                          employeeListPlace={this.props.listEmployee[Number(this.props.route.params.id)].listPlace}
+                          onCheckDetailAddress={this.onCheckDetailAddress.bind(this)}
                           checkAll={this.onCheckAllPress.bind(this)}
                           name="GroupAddress"
                           component={renderGroupAddress}/>
