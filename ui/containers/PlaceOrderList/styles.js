@@ -1,4 +1,4 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR} from '~/ui/shared/constants'
 export default {
     container: {
         backgroundColor: 'lightgrey',
@@ -61,7 +61,7 @@ export default {
         color: 'grey'
     },
     iconLeft: {
-        marginRight: 3
+        marginRight: 10
     },
     iconRight: {
         marginLeft: 3
@@ -77,22 +77,27 @@ export default {
         width: '40%',
     },
     detailButton: {
-      flex: 1,
-      backgroundColor: 'white',
-      flexDirection: 'column',
-      height: 250,
-      paddingBottom: 0,
-      borderWidth: 0,
-      zIndex: 0,
-      shadowOffset: {
-        width: 0,
-        height: 0
-      },
-      shadowColor: 'white',
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingTop: 0,
-      alignItems: 'stretch',
-      elevation: 0
-    }
+        flex: 1,
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        height: 250,
+        paddingBottom: 0,
+        borderWidth: 0,
+        zIndex: 0,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowColor: 'white',
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+        alignItems: 'stretch',
+        elevation: 0
+    },
+
+    labelUnderImage: {
+        color: 'black',
+        marginTop: 5,
+    },
 }

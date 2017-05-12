@@ -114,7 +114,7 @@ export default class MerchantOverview extends Component {
                       <View style={styles.menuItem}>
                           <View style={styles.leftBlock}>
                               <Icon name='transaction' style={styles.icon} />
-                              <Text>Giao dịch</Text>
+                              <Text style={{...styles.textLabelRightImage}}>Giao dịch</Text>
                           </View>
                           <View style={styles.rightBlock}>
                               <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.transactionNews}</Text></View>
@@ -126,7 +126,7 @@ export default class MerchantOverview extends Component {
                       <View style={styles.menuItem}>
                           <View style={styles.leftBlock}>
                               <Icon name='calendar-checked' style={styles.icon} />
-                              <Text>Đặt chỗ</Text>
+                              <Text style={{...styles.textLabelRightImage}}>Đặt chỗ</Text>
                           </View>
                           <View style={styles.rightBlock}>
                               <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.bookingNews}</Text></View>
@@ -138,7 +138,7 @@ export default class MerchantOverview extends Component {
                       <View style={styles.menuItem}>
                           <View style={styles.leftBlock}>
                               <Icon name='shiping-bike2' style={styles.icon} />
-                              <Text>Đặt giao hàng</Text>
+                              <Text style={{...styles.textLabelRightImage}}>Đặt giao hàng</Text>
                           </View>
                           <View style={styles.rightBlock}>
                               <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.orderNews}</Text></View>
