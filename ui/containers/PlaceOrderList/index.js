@@ -8,14 +8,16 @@ import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as authAction from '~/store/actions/auth'
 import * as commonActions from '~/store/actions/common'
+import * as bookingActions from '~/store/actions/booking'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 @connect(state=>({
-  
-}), {...commonActions})
+    user: state.auth.user,
+    place: state.place,
+}), {...commonActions, ...bookingActions})
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -39,6 +41,12 @@ export default class PlaceOrderList extends Component {
     onDetailPlacePress() {
       const { forwardTo } = this.props
       forwardTo('placeOrderDetail')
+    }
+    componentDidMount(){
+        // console.log('Place list', this.props.place)
+        let placeList = this.props.place.listPlace.map(item=>item.placeId).join(',')
+        console.log('Place', placeList)
+        this.props.getBookingList(this.props.user.xsession, placeList)
     }
     
     render() {
