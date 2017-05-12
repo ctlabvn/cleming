@@ -12,10 +12,14 @@ import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
-@connect(null, authAction)
-@reduxForm({ form: 'TestForm' })
 
-export default class DeliveryList extends Component {
+import { formatNumber } from '~/ui/shared/utils'
+
+@connect(state=>({
+    place: state.place,
+}), authAction)
+// @reduxForm({ form: 'TestForm' })
+export default class extends Component {
 
     constructor(props) {
         super(props)
@@ -38,7 +42,7 @@ export default class DeliveryList extends Component {
         console.log('Press tab Delivery', item)
     }
     _numberWithDot(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return formatNumber(x)
     }
     _renderRow(item) {
         var statusBlock=null;
@@ -128,37 +132,17 @@ export default class DeliveryList extends Component {
         )
     }
     render() {
-        const { handleSubmit, submitting } = this.props
-        var dropdownValues = [
-            {
-                id: 0,
-                name: "Tất cả địa điểm"
-            },
-            {
-                id: 2,
-                name: "33 Nguyễn Chí Thanh, Ba Đình, HN"
-            },
-            {
-                id: 3,
-                name: "105 Láng Hạ, Đống Đa, HN"
-            },
-            {
-                id: 4,
-                name: "98 Hoàng Quốc Việt, Cầu Giấy, HN",
-            },
-            {
-                id: 5,
-                name: "5 Đinh Tiên Hoàng, Hoàn Kiếm, HN"
-            },
-            {
-                id: 6,
-                name: "69 Bạch Mai, Hai Bà Trưng, HN"
-            }
-        ]
-        var defaultSelected = {
-            id: 0,
+        const { handleSubmit, submitting, place } = this.props
+        let allPlace = place.listPlace.map(item => item.placeId).join(';')
+        let defaultSelected = {
+            id: allPlace,
             name: "Tất cả địa điểm"
         }
+        let dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
+        dropdownValues = [defaultSelected, ...dropdownValues]
 
         var number = 400000
         var items=[
@@ -221,6 +205,7 @@ export default class DeliveryList extends Component {
             },
 
         ]
+
         return (
             <View style={styles.container}>
                 <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />

@@ -163,6 +163,7 @@ export default class CreateUserContainer extends Component {
     }
     
     render() {
+        
         let fromTime = moment(this.state.fromTime).format("HH:mm")
         let toTime = moment(this.state.toTime).format("HH:mm")
         return (
