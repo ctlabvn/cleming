@@ -1,13 +1,10 @@
 import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR} from '~/ui/shared/constants'
 export default{
     container: {
-        backgroundColor: 'lightgrey',
-        height: '100%',
-        paddingBottom: 60
+        paddingTop: 50, 
     },
     contentContainer: {
-        marginTop: 50,
-        height: '100%'
+      padding: 10,
     },
     deliveryBlock: {
         flexDirection: 'column',

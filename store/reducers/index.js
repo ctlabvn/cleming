@@ -11,6 +11,7 @@ import { notification } from './notification'
 // import { vault } from './vault'
 import { transaction } from './transaction'
 import { place } from './place'
+import { order } from './order'
 import { booking } from './booking'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   // vault,
   transaction,
   place,
-  booking
+  booking,
+  order,
 })
 
 export default rootReducer
