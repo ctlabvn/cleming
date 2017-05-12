@@ -35,7 +35,8 @@ class UserManagement extends Component {
           updateInfoChecked: false,
           deleteAccountChecked: false,
           isFetchingData: false,
-          data: []
+          data: [],
+          rowIDOfEmployee: 0
         }
     }
     
@@ -64,9 +65,10 @@ class UserManagement extends Component {
       })
     }
     
-    onAccountPress(data) {
+    onAccountPress(data, rowID) {
         this.setState({
-            data: data
+            employeeData: data,
+            rowIDOfEmployee: rowID
         }, () => {
             this.setState({
                 modalOpen: true
@@ -75,30 +77,35 @@ class UserManagement extends Component {
     }
     
     renderEmployeeRow(data, sectionID, rowID, highlightRow) {
-        let lastLeftVerticalBlueLine = null
-        let lastRightVerticalBlueLine = null
+        let lastLeftVerticalBlueLineLength = null
+        let lastRightVerticalBlueLineLength = null
         if (rowID == (this.props.listEmployee.length - 1)) {
-            
+          lastLeftVerticalBlueLineLength = 1
+          lastRightVerticalBlueLineLength = 0
         } else {
-          lastLeftVerticalBlueLine = styles.bottomLeftGrid
-          lastRightVerticalBlueLine = styles.bottomRightGrid
+          lastLeftVerticalBlueLineLength = '100%'
+          lastRightVerticalBlueLineLength = '100%'
         }
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
                     <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
-                            <Row style={styles.topLeftGrid}/>
-                            <Row style={lastLeftVerticalBlueLine}/>
+                          <Row style={styles.topLeftGrid}/>
+                          <Row style={{...styles.bottomLeftGridContainer}}>
+                            <View style={{...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength}}/>
+                          </Row>
                         </Col>
                         <Col>
-                            <Row style={[styles.topRightGrid, {borderBottomWidth: 1}]}/>
-                            <Row style={[lastRightVerticalBlueLine, {borderTopWidth: 1, borderColor: '#00a9d7'}]}/>
+                          <Row style={{...styles.topRightGrid, borderBottomWidth: 1}}/>
+                          <Row style={styles.bottomRightGridContainer}>
+                            <View style={{height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid}}/>
+                          </Row>
                         </Col>
                     </Col>
                     <Col style={{width: '80%', justifyContent: 'center'}}>
                         <Button
-                            onPress={this.onAccountPress.bind(this, data)}
+                            onPress={this.onAccountPress.bind(this, data, rowID)}
                             style={styles.accountButton}>
                             <UserCard data={data}/>
                         </Button>
@@ -170,13 +177,32 @@ class UserManagement extends Component {
         })
     }
     
+    onCancelModal() {
+      this.setState({
+        modalOpen: false
+      })
+    }
+    
+    onSubmitModal() {
+      const {forwardTo} = this.props
+      if (this.state.updateInfoChecked) {
+        this.setState({
+          updateInfoChecked: !this.state.updateInfoChecked
+        })
+        forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
+      }
+      this.setState({
+        modalOpen: false
+      })
+    }
+    
     renderModal() {
         return(
             <View style={styles.modalContainer}>
                 <Grid>
                     <Col>
                         <Row style={{height: '30%', width: '90%', alignSelf: 'center'}}>
-                            <UserCard data={this.state.data}/>
+                            <UserCard data={this.state.employeeData}/>
                         </Row>
                         <Row style={{height: '50%'}}>
                             <Col style={{width: '70%'}}>
@@ -205,12 +231,16 @@ class UserManagement extends Component {
                         <Row style={{height: '20%'}}>
                             <Col style={{width: '50%'}}/>
                             <Col style={{width: '25%'}}>
-                                <Button style={styles.modalButton}>
+                                <Button
+                                  onPress={this.onCancelModal.bind(this)}
+                                  style={styles.modalButton}>
                                     <Text style={styles.modalCancelButtonText}>Cancel</Text>
                                 </Button>
                             </Col>
                             <Col style={{width: '25%'}}>
-                                <Button style={styles.modalButton}>
+                                <Button
+                                  onPress={this.onSubmitModal.bind(this)}
+                                  style={styles.modalButton}>
                                     <Text style={styles.modalOkButtonText}>OK</Text>
                                 </Button>
                             </Col>

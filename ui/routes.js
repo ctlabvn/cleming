@@ -218,6 +218,12 @@ export default {
         headerType: 'back',
         footerType: 'none',
     },
+    'userManagement/action/updateEmployeeInfo/:id': {
+        title: 'Update Employee',
+        Page: CreateUserContainer,
+        headerType: 'back',
+        footerType: 'none',
+    },
     'userManagement/action/updateUser': {
         title: 'User Info',
         Page: UpdateUserContainer,

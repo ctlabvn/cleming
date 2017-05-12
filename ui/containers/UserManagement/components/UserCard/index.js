@@ -27,7 +27,7 @@ export default class UserCard extends Component {
                 </Col>
                 <Col style={{width: '80%'}}>
                     <Row style={{ height: '50%', alignItems: 'flex-end'}}>
-                        <Text style={styles.nameText}>{data.email} / {data.phoneNumber}</Text>
+                        <Text numberOfLines={1} style={styles.nameText}>{data.email} / {data.phoneNumber}</Text>
                     </Row>
                     <Row style={{ height: '50%'}}>
                         <Text style={styles.subTitleText}>{jobTitle} - {data.userName}</Text>
