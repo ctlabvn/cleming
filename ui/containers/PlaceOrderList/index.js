@@ -72,22 +72,22 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text style={{color: 'black'}}>14/2</Text>
+                                    <Text style={{...styles.labelUnderImage}}>14/2</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text style={{color: 'black'}}>11:30</Text>
+                                    <Text style={{...styles.labelUnderImage}}>11:30</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
-                                    <Text style={{color: 'black'}}>2</Text>
+                                    <Text style={{...styles.labelUnderImage}}>2</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
-                                    <Text style={{color: 'black'}}>2</Text>
+                                    <Text style={{...styles.labelUnderImage}}>2</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -121,29 +121,29 @@ export default class PlaceOrderList extends Component {
                         <View style={styles.row}>
                             <View style={styles.column}>
                                 <Icon name='calendar' style={styles.icon} />
-                                <Text>14/2</Text>
+                                <Text style={{...styles.labelUnderImage}}>14/2</Text>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                             <View style={styles.column}>
                                 <Icon name='history' style={styles.icon} />
-                                <Text>11:30</Text>
+                                <Text style={{...styles.labelUnderImage}}>11:30</Text>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                             <View style={styles.column}>
                                 <Icon name='friend' style={styles.icon} />
-                                <Text>2</Text>
+                                <Text style={{...styles.labelUnderImage}}>2</Text>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                             <View style={styles.column}>
                                 <Icon name='want-feed' style={styles.icon} />
-                                <Text>2</Text>
+                                <Text style={{...styles.labelUnderImage}}>2</Text>
                             </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                         <View style={styles.rowPadding}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{...styles.icon, ...styles.iconLeft}} />
-                                <Text small>Username</Text>
+                                <Text small style={{color: 'black'}}>Username</Text>
                             </View>
                             <View style={styles.row}>
                                 <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
