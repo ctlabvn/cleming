@@ -18,7 +18,7 @@ const requestBookingList = createRequestSaga({
     failure: [
         (data) => {
             console.log('Booking Err', data)
-            setToast('Booking Fail: '+JSON.stringify(data), 'error')
+            return setToast('Booking Fail: '+JSON.stringify(data), 'error')
         }
     ],
 })
