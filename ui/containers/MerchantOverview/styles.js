@@ -36,7 +36,7 @@ export default {
         flex: 1,
         borderRightColor: 'rgba(0,0,0,0.5)',
         borderRightWidth: 0.5,
-        padding: 10
+        padding: 5
     },
     infoItemNumber: {
         fontSize: 20,
