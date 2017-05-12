@@ -35,10 +35,11 @@ export default class PlaceOrderDetail extends Component {
     if (!bookingArr || bookingArr.length == 0) {
       // redirect
       this.props.forwardTo('merchantOverview')
+
     }
     this.setState({ bookingDetail: bookingArr[0] })
   }
-  componentWillReceiveProps() {
+  componentWillFocus(){
     let bookingId = this.props.route.params.id
     let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
     if (!bookingArr || bookingArr.length == 0) {

@@ -88,8 +88,7 @@ export default class TransactionDetail extends Component {
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
     }
     // Go to Page 
-    componentWillReceiveProps(){
-        // console.log('Will receive props')
+    componentWillFocus(){
         let transactionId = this.props.route.params.id
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         
@@ -98,11 +97,6 @@ export default class TransactionDetail extends Component {
         let transaction = this.props.listTransaction[index]
         // console.log('Transaction Set state', transaction)
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
-    }
-    componentDidUpdate(){
-    }
-    componentWillFocus(){
-        // console.log('Will Focus detail')
     }
 
     render() {
