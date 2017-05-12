@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Thumbnail, Button, Content } from 'native-base'
+import { List, ListItem, Text, Thumbnail, Button, Content, Spinner } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Easing } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
-import {formatNumber} from '~/ui/shared/utils'
+import { formatNumber } from '~/ui/shared/utils'
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
@@ -15,9 +15,18 @@ export default class TransactionDetail extends Component {
     //  "transactionStatus": int,	
     // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý, 
     // 1 là thành công, 2 là bị từ chối
+    constructor(props) {
+        super(props)
+        this.state = {
+            transactionInfo: {},
+            hasNext: false,
+            hasPrevious: false
+        }
+    }
     _renderStatus(status) {
         switch (status) {
-            case (0 | 3):
+            case 0:
+            case 3:
                 return <Text small bold warning>Clingme đã duyệt</Text>
             case 1:
                 return <Text small bold success>Thành công</Text>
@@ -29,7 +38,8 @@ export default class TransactionDetail extends Component {
     }
     _renderBar(status) {
         switch (status) {
-            case (0 | 3):
+            case 0:
+            case 3:
                 return <View style={{ ...styles.barMain, ...styles.backgroundWarning }}></View>
             case 1:
                 return <View style={{ ...styles.barMain, ...styles.backgroundSuccess }}></View>
@@ -39,11 +49,110 @@ export default class TransactionDetail extends Component {
                 return <View style={{ ...styles.barMain, ...styles.backgroundWarning }}></View>
         }
     }
+    goPrevious() {
+        console.log('Go previous')
+        let transactionId = this.state.transactionInfo.dealTransactionIdDisplay
+        console.log('Transaction ID', transactionId)
+        let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
+        if (index <= 0) { return }
+        index--
+
+        let hasPrevious = (index == 0) ? false : true
+        let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
+        let transaction = this.props.listTransaction[index]
+
+        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
+    }
+    goNext() {
+        console.log('Go Next')
+        let transactionId = this.state.transactionInfo.dealTransactionIdDisplay
+        let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
+        if (index >= this.props.listTransaction.length - 1) { return }
+        index++
+
+        let hasPrevious = (index == 0) ? false : true
+        let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
+        let transaction = this.props.listTransaction[index]
+        
+        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
+    }
+    componentDidMount(){
+        console.log('Will did mount')
+        let transactionId = this.props.route.params.id
+        let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
+        
+        let hasPrevious = (index == 0) ? false : true
+        let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
+        let transaction = this.props.listTransaction[index]
+        console.log('Transaction Set state', transaction)
+        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
+    }
+    // Go to Page 
+    componentWillReceiveProps(){
+        console.log('Will receive props')
+        let transactionId = this.props.route.params.id
+        let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
+        
+        let hasPrevious = (index == 0) ? false : true
+        let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
+        let transaction = this.props.listTransaction[index]
+        console.log('Transaction Set state', transaction)
+        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })   
+    }
+    componentWillFocus(){
+        console.log('Will Focus detail')
+    }
+
     render() {
         const { route } = this.props
-        let transactionId = route.params.id
-        let transactionInfo = this.props.listTransaction.filter((item) => item.dealTransactionIdDisplay == transactionId)[0]
+        // console.log(route)
+        // let transactionId = route.params.id
+        // let transactionInfo = this.props.listTransaction.filter((item) => item.dealTransactionIdDisplay == transactionId)[0]
+
+        let transactionInfo = this.state.transactionInfo
+
         const transactionStatus = 'WAITING'
+        if (Object.keys(this.state.transactionInfo).length == 0) {
+            return (
+                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Spinner color='red' />
+                    <Text small>Loading...</Text>
+                </View>
+            )
+        }
+        let btnPrev, btnNext
+        if (this.state.hasPrevious) {
+            btnPrev = (
+                <Button dark transparent style={styles.buttonLeft}
+                    onPress={() => this.goPrevious()}>
+                    <Icon name="keyboard-arrow-left" style={styles.icon} />
+                    <Text small>Giao dịch trước</Text>
+                </Button>
+            )
+        } else {
+            btnPrev = (
+                <Button light disabled transparent style={styles.buttonLeft}>
+                    <Icon name="keyboard-arrow-left" style={{...styles.icon, ...styles.disabled}} />
+                    <Text small>Giao dịch trước</Text>
+                </Button>
+            )
+        }
+
+        if (this.state.hasNext) {
+            btnNext = (
+                <Button dark transparent style={styles.buttonRight} onPress={() => this.goNext()}>
+                    <Text small>Giao dịch sau</Text>
+                    <Icon name="keyboard-arrow-right" style={styles.icon} />
+                </Button>
+            )
+        }else{
+            btnNext = (
+                <Button light disabled transparent style={styles.buttonRight}>
+                    <Text small>Giao dịch sau</Text>
+                    <Icon name="keyboard-arrow-right" style={{...styles.icon, ...styles.disabled}} />
+                </Button>
+            )
+        }
         return (
             <Content>
                 <View style={styles.container}>
@@ -150,21 +259,15 @@ export default class TransactionDetail extends Component {
                         </Button>
                     </View>}
 
-                    <View style={{...styles.rowPadding, ...styles.center}}>
+                    <View style={{ ...styles.rowPadding, ...styles.center }}>
                         <Button light style={styles.confirmButton}>
                             <Text>Không đồng ý</Text>
                         </Button>
                     </View>
 
                     <View style={styles.navigateInvoiceBlock}>
-                        <View style={styles.previousInvoiceBlock}>
-                            <Icon name="keyboard-arrow-left" />
-                            <Text small>Giao dịch trước</Text>
-                        </View>
-                        <View style={styles.nextInvoiceBlock}>
-                            <Text small>Giao dịch sau</Text>
-                            <Icon name="keyboard-arrow-right" />
-                        </View>
+                        {btnPrev}
+                        {btnNext}
                     </View>
                 </View>
             </Content>

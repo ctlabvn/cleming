@@ -89,6 +89,10 @@ export default class extends Component {
     }        
   }
 
+  _handleNotiRead = (e) => {
+    
+  }
+
   renderNotificationContent({title, notifyType, createdTime}){    
     switch(notifyType){
       case 1:
@@ -211,6 +215,16 @@ export default class extends Component {
   }
 
   render() {
+
+    // const { notificationRequest} = this.props    
+    // const data= []
+    // for(let i=1;i<100;i++){
+    //   data.push({title: 'title'+i,notifyType:1})
+    // }
+    // const notifications = {
+    //   data,
+    // }
+    
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     const {notifications, notificationRequest} = this.props    
     
@@ -218,11 +232,10 @@ export default class extends Component {
        
         <Container>
 
-            <Button transparent><Text active small style={{
-              alignSelf:'flex-end',
-              marginVertical: 10,
-              marginRight: 10,
-            }}>Đánh dấu tất cả đã đọc</Text>
+            <Button onPress={this._handleNotiRead} noPadder style={{
+              alignSelf:'flex-end',              
+              marginRight: 10,              
+            }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
             </Button>
                     
             <Content               

@@ -54,7 +54,7 @@ export default {
         borderRadius: 2,
         width: '98%',
         padding: 10,
-        marginBottom: 5
+        marginBottom: 7
     },
     leftBlock: {
         flexDirection: 'row',
@@ -65,8 +65,8 @@ export default {
         alignItems: 'center'
     },
     badgeContainer: {
-        width: 20,
-        height: 20,
+        width: 25,
+        height: 25,
         borderRadius: 20,
         backgroundColor: PRIMARY_COLOR,
         justifyContent: 'center',
@@ -82,7 +82,8 @@ export default {
     },
     icon: {
         fontSize: 20,
-        marginRight: 5,
+        marginRight: 10,
+        marginLeft: 5,
         color: 'grey'
     },
     success: {

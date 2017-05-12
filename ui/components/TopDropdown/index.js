@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Easing } from 'react-native'
+import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 
@@ -24,14 +24,16 @@ export default class TopDropdown extends PureComponent {
         return this.state.selectedOption;
     }
     toggle() {
-        Animated.timing(this.state.fadeAnim, {
-            toValue: this.state.openningDropdown ? 0 : 1,
-            duration: this.state.openningDropdown ? 300 : 300,
-            easing: Easing.inOut(Easing.quad)
-        }).start(() => {
-            // console.log('Open/Closing drop down');
-            this.props.onSelect && this.props.onSelect(this.state.selectedOption)
-        });
+        // Animated.timing(this.state.fadeAnim, {
+        //     toValue: this.state.openningDropdown ? 0 : 1,
+        //     duration: this.state.openningDropdown ? 300 : 300,
+        //     easing: Easing.inOut(Easing.quad)
+        // }).start(() => {
+        //     // console.log('Open/Closing drop down');
+        //     this.props.onSelect && this.props.onSelect(this.state.selectedOption)
+        // });
+
+        LayoutAnimation.easeInEaseOut()
 
         this.setState({ openningDropdown: !this.state.openningDropdown })
     }
@@ -44,15 +46,18 @@ export default class TopDropdown extends PureComponent {
     }
     _handlePress(item) {
         this.setState({ selectedOption: item })        
+        this.props.onSelect && this.props.onSelect(item)
         this.toggle()
     }
     _handlePressDropdown() {
 
     }
     render() {
-        const { notifications, getNotificationRequest, getNotification } = this.props
+        const { notifications, getNotificationRequest, getNotification, dropdownValues } = this.props
         const { openningDropdown } = this.state
-        const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
+        const maxHeight = openningDropdown ? 150 : 0
+        // console.log(this.props.dropdownValues)
+        // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
         return (
             <View style={styles.dropdownContainer}>
                 <View style={styles.dropdownHeader}>
@@ -65,18 +70,16 @@ export default class TopDropdown extends PureComponent {
                     </Button>
                 </View>
 
-                <Animated.View style={{
-                    zIndex: 21,
-                    height,
-                }}>
-                    <List dataArray={this.props.dropdownValues} style={styles.dropdownList}
-                        renderRow={(item) =>
-                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
-                                <Text style={styles.dropdownListItemText}>{item.name}</Text>
-                            </ListItem>
-                        }>
-                    </List>
-                 </Animated.View>
+                <List dataArray={dropdownValues} style={{
+                    ...styles.dropdownList,
+                    maxHeight,
+                }}
+                    renderRow={(item) =>
+                        <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
+                            <Text style={styles.dropdownListItemText}>{item.name}</Text>
+                        </ListItem>
+                    }>
+                </List>
             </View>
         )
     }

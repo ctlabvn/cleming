@@ -26,13 +26,11 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
+        let dateFilterData = this.refs.dateFilter.getData()
         this.props.getListPlace(this.props.user.xsession, (err, data) => {
             let toTime = moment(new Date())
-            let dateFilterData = this.refs.dateFilter.getData()
-            console.log(err, data)
             if(data && data.updated && data.updated.listPlace){
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
-                console.log('All place', allPlace)
                 this.props.getPlaceStatistic(
                   this.props.user.xsession,
                   allPlace,
@@ -52,9 +50,10 @@ export default class MerchantOverview extends Component {
     }
 
     _handleChangePlace(item) {
-      const { place } = this.props
-        this.props.getPlaceStatistic(this.props.user.xsession, item.id, place.statistic.fromTime, place.statistic.toTime)
-        this.props.getMerchantNews(this.props.user.xsession, item.id, place.statistic.fromTime, place.statistic.toTime)
+        const { place } = this.props
+        let dateFilterData = this.refs.dateFilter.getData()
+        this.props.getPlaceStatistic(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        this.props.getMerchantNews(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
     }
   
     _handlePressFilter(item) {
@@ -132,7 +131,7 @@ export default class MerchantOverview extends Component {
                           </View>
                       </View>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => forwardTo('testAnimation')}>
                       <View style={styles.menuItem}>
                           <View style={styles.leftBlock}>
                               <Icon name='shiping-bike2' style={styles.icon} />

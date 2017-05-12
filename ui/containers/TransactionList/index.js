@@ -22,12 +22,16 @@ import options from './options'
     place: state.place,
     listTransaction: state.transaction.listTransaction
 }), { ...commonAction, ...transactionAction })
-export default class TransactionList extends Component {
+export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
             loading: false,
         }
+    }
+
+    componentWillFocus(){
+        console.log('focus')
     }
 
     _handlePressFilter(item) {
@@ -36,7 +40,9 @@ export default class TransactionList extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value)
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
+                () => this.setState({loading: false})
+            )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
                 () => this.setState({ loading: false })
@@ -47,30 +53,46 @@ export default class TransactionList extends Component {
     _handlePressTab(item) {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilter = this.refs.dateFilter.getData()
+        this.setState({loading: true})
         if (item.tabID == 1) { // Trả qua Clingme
             this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
+                ()=>this.setState({loading: false})
+            )
         } else { // Trả trực tiếp
             this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
+                ()=>this.setState({loading: false})
+            )
         }
     }
     _handleTopDrowpdown(item) {
         let dateFilterData = this.refs.dateFilter.getData()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.setState({loading: true})
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
+                ()=>this.setState({loading: false})
+            )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value)
+            this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
+                ()=>this.setState({loading: false})
+            )
         }
 
     }
+    componentWillFocus(){
+        console.log('Component Will Focus')
+    }
     componentDidMount() {
+        console.log('Did mount transaction list')
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-
+        this.setState({loading: true})
+        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+            ()=>this.setState({loading: false})
+        )
     }
     _handleTransactionFilterChange(item) {
         console.log('On Change Filter', item)
@@ -165,6 +187,7 @@ export default class TransactionList extends Component {
         )
     }
     render() {
+        console.log('render transaction list')
         const { handleSubmit, submitting, forwardTo, listTransaction, place } = this.props
         if (!listTransaction) {
             return (
