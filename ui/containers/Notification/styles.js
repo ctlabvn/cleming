@@ -31,4 +31,7 @@ export default {
     fontSize: 18,    
     marginLeft:10,    
   },
+  textGray: {
+    color: '#838383'
+  },
 }

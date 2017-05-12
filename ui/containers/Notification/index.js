@@ -93,7 +93,7 @@ export default class extends Component {
     
   }
 
-  renderNotificationContent({title, notifyType, createdTime}){    
+  renderNotificationContent({title, notifyType, createdTime, content}){    
     switch(notifyType){
       case 1:
         return (
@@ -103,7 +103,7 @@ export default class extends Component {
                 <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#08a7ce'
-                }}>#DC123456</Text>
+                }}>{content}</Text>
               </View>
               <Text note style={{
                 alignSelf: 'flex-end'
@@ -134,7 +134,7 @@ export default class extends Component {
                 <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#838383'
-                }}>#CL123456</Text>
+                }}>{content}</Text>
               </View>
               <Text note small style={{
                 alignSelf: 'flex-end'
@@ -182,7 +182,7 @@ export default class extends Component {
                 <Text small>{title}</Text>
                 <Text bold style={{
                   color: '#f7ae3b'
-                }}>#CL123456</Text>
+                }}>{content}</Text>
               </View>
               <Text note style={{
                 alignSelf: 'flex-end'
@@ -224,7 +224,7 @@ export default class extends Component {
     // const notifications = {
     //   data,
     // }
-    
+
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     const {notifications, notificationRequest} = this.props    
     

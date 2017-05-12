@@ -50,9 +50,9 @@ export default class TransactionDetail extends Component {
         }
     }
     goPrevious() {
-        console.log('Go previous')
+        // console.log('Go previous')
         let transactionId = this.state.transactionInfo.dealTransactionIdDisplay
-        console.log('Transaction ID', transactionId)
+        // console.log('Transaction ID', transactionId)
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         if (index <= 0) { return }
         index--
@@ -64,7 +64,7 @@ export default class TransactionDetail extends Component {
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
     }
     goNext() {
-        console.log('Go Next')
+        // console.log('Go Next')
         let transactionId = this.state.transactionInfo.dealTransactionIdDisplay
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         if (index >= this.props.listTransaction.length - 1) { return }
@@ -77,30 +77,32 @@ export default class TransactionDetail extends Component {
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
     }
     componentDidMount(){
-        console.log('Will did mount')
+        // console.log('Will did mount')
         let transactionId = this.props.route.params.id
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         
         let hasPrevious = (index == 0) ? false : true
         let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
         let transaction = this.props.listTransaction[index]
-        console.log('Transaction Set state', transaction)
+        // console.log('Transaction Set state', transaction)
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
     }
     // Go to Page 
     componentWillReceiveProps(){
-        console.log('Will receive props')
+        // console.log('Will receive props')
         let transactionId = this.props.route.params.id
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         
         let hasPrevious = (index == 0) ? false : true
         let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
         let transaction = this.props.listTransaction[index]
-        console.log('Transaction Set state', transaction)
-        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })   
+        // console.log('Transaction Set state', transaction)
+        this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
+    }
+    componentDidUpdate(){
     }
     componentWillFocus(){
-        console.log('Will Focus detail')
+        // console.log('Will Focus detail')
     }
 
     render() {
@@ -112,7 +114,7 @@ export default class TransactionDetail extends Component {
         let transactionInfo = this.state.transactionInfo
 
         const transactionStatus = 'WAITING'
-        if (Object.keys(this.state.transactionInfo).length == 0) {
+        if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color='red' />
@@ -154,7 +156,7 @@ export default class TransactionDetail extends Component {
             )
         }
         return (
-            <Content>
+            <Content ref='content'>
                 <View style={styles.container}>
                     <View style={styles.rowPadding}>
                         <Text small>{transactionInfo.placeAddress}</Text>
