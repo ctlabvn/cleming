@@ -22,7 +22,7 @@ export const validate = (values) => {
     return errors
 }
 
-export const renderGroupAddress = ({ fields, checkAll }) => {
+export const renderGroupAddress = ({ fields, checkAll, onCheckDetailAddress, employeeListPlace }) => {
     return (
         <View>
             <Grid>
@@ -39,6 +39,7 @@ export const renderGroupAddress = ({ fields, checkAll }) => {
             </Grid>
             {fields.map((address, index) =>
                 {
+                    console.log(employeeListPlace)
                     return (
                         <ListItem key={index} last={index===fields.length-1} style={styles.listItem}>
                             <Text small style={styles.left}>{fields.get(index).address}</Text>

@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import TopDropdown from '../../components/DropDownList'
 
 import {
     InputField,
@@ -21,25 +22,34 @@ import {
 import Icon from '~/ui/elements/Icon'
 import Modal from '~/ui/components/Modal'
 
+import * as authSelectors from '~/store/selectors/auth'
+import * as accountSelectors from '~/store/selectors/account'
+
 import { validate, renderGroupAddress } from './utils'
 import styles from './styles'
 
-const data = []
-for (let i = 0; i < 5; i++) {
-    data.push({
-        address: 'Hoang Quoc Viet'
-    })
-}
-
 const formSelector = formValueSelector('CreateUserForm')
 @connect(state=>({
-    
-}), {}, (stateProps, dispatchProps, ownProps)=>({
-    initialValues: {
-        GroupAddress: data
-    },
-    ...ownProps, ...stateProps, ...dispatchProps,
-}))
+  listEmployee: accountSelectors.getListEmployee(state),
+  place: state.place
+}), {}, (stateProps, dispatchProps, ownProps)=>{
+    let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+    let permission = null
+    switch (employeeDetail.titleType) {
+      case 1: permission = "Nhân Viên"
+    }
+    console.log(employeeDetail.listPlace)
+    return ({
+      initialValues: {
+        GroupAddress: stateProps.place.listPlace,
+        name: employeeDetail.userName,
+        email: employeeDetail.email,
+        phone: employeeDetail.phoneNumber,
+        permission: permission
+      },
+      ...ownProps, ...stateProps, ...dispatchProps,
+    })
+})
 @reduxForm({ form: 'CreateUserForm'})
 
 export default class CreateUserContainer extends Component {
@@ -52,20 +62,30 @@ export default class CreateUserContainer extends Component {
           toTimeVisible: false,
           fromTime: new Date(),
           toTime: new Date(),
-          checkAll: false
+          checkAll: false,
+          employeeDetail: {},
+          rowIDOfEmployee: 0
         }
     }
-    
-    onJobPositionFocus() {
-        this.setState({
-            jobModalOpen: true
-        })
+  
+    componentWillFocus(){
+      let rowIDOfEmployee = Number(this.props.route.params.id)
+      this.setState({
+        employeeDetail: this.props.listEmployee[rowIDOfEmployee],
+        rowIDOfEmployee: rowIDOfEmployee
+      })
     }
     
-    onPermissionFocus() {
-        this.setState({
-            permissionModalOpen: true
-        })
+    componentDidMount() {
+      let rowIDOfEmployee = Number(this.props.route.params.id)
+      this.setState({
+        employeeDetail: this.props.listEmployee[rowIDOfEmployee],
+        rowIDOfEmployee: rowIDOfEmployee
+      })
+    }
+  
+    componentWillReceiveProps(nextProps) {
+      
     }
     
     onFromTimeFocus() {
@@ -116,6 +136,10 @@ export default class CreateUserContainer extends Component {
       })
     }
     
+    onCheckDetailAddress(address) {
+      this.props.change(`${address}.ad`, true)
+    }
+    
     renderJobModal() {
         return(
             <View style={styles.modalContainer}>
@@ -133,6 +157,7 @@ export default class CreateUserContainer extends Component {
     }
     
     render() {
+        
         let fromTime = moment(this.state.fromTime).format("HH:mm")
         let toTime = moment(this.state.toTime).format("HH:mm")
         return (
@@ -141,6 +166,7 @@ export default class CreateUserContainer extends Component {
                     <View style={{paddingLeft: 15, paddingRight: 15}}>
                         <View style={styles.inputContainer}>
                             <Field
+                                inputStyle={styles.inputText}
                                 style={styles.inputField}
                                 label="Họ và tên"
                                 name="name"
@@ -149,6 +175,7 @@ export default class CreateUserContainer extends Component {
                         </View>
                         <View style={styles.inputContainer}>
                             <Field
+                                inputStyle={styles.inputText}
                                 style={styles.inputField}
                                 label="Email"
                                 name="email"
@@ -157,38 +184,24 @@ export default class CreateUserContainer extends Component {
                         </View>
                         <View style={styles.inputContainer}>
                             <Field
+                                inputStyle={styles.inputText}
                                 style={styles.inputField}
                                 label="Phone number"
                                 name="phone"
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
                         </View>
-                        <View style={styles.inputContainer}>
-                            <Field
-                                inputStyle={{}}
-                                iconStyle={styles.inputIcon}
-                                icon="foward"
-                                onPress={this.onJobPositionFocus.bind(this)}
-                                editable={false}
-                                style={styles.inputField}
-                                label="Vị trí kinh doanh"
-                                name="position"
-                                component={InputField}
-                                placeholderTextColor="#7e7e7e">
-                            </Field>
-                        </View>
-                        <View style={styles.inputContainer}>
-                            <Field
-                                inputStyle={{}}
-                                iconStyle={styles.inputIcon}
-                                icon="foward"
-                                onPress={this.onPermissionFocus.bind(this)}
-                                editable={false}
-                                style={styles.inputField}
-                                label="Phân quyền"
-                                name="permission"
-                                component={InputField}
-                                placeholderTextColor="#7e7e7e"/>
+                        <View style={{...styles.inputContainer, zIndex: 100}}>
+                            <TopDropdown
+                              ref='placeDropdown'
+                              dropdownValues={[
+                                {id: 1, name: "Nhan Vien"},
+                                {id: 2, name: "Admin"}
+                              ]}
+                              //onSelect={this._handleChangePlace.bind(this)}
+                              selectedOption={{
+                                id: 1, name: "Nhan Vien"
+                              }} />
                         </View>
                         <Dash
                             dashLength={2}
@@ -237,6 +250,8 @@ export default class CreateUserContainer extends Component {
                             dashThickness={1}
                             style={{flex: 1, marginBottom: 10}}/>
                         <FieldArray
+                          employeeListPlace={this.props.listEmployee[Number(this.props.route.params.id)].listPlace}
+                          onCheckDetailAddress={this.onCheckDetailAddress.bind(this)}
                           checkAll={this.onCheckAllPress.bind(this)}
                           name="GroupAddress"
                           component={renderGroupAddress}/>

@@ -1,29 +1,29 @@
-import Home from './containers/Home'
+// import Home from './containers/Home'
 import NotFound from './containers/NotFound'
 import Notification from './containers/Notification'
 import Login from './containers/Login'
-import SignUpStep1 from './containers/SignUp/Step1'
-import SignUpStep2 from './containers/SignUp/Step2'
-import SignUpStep3 from './containers/SignUp/Step3'
-import SignUpStep4 from './containers/SignUp/Step4'
-import SignUpStep5 from './containers/SignUp/Step5'
-import SignUpStep6 from './containers/SignUp/Step6'
-import UserProfile from './containers/User/Profile'
-import UserSetting from './containers/User/Setting'
-import Delegation from './containers/Delegation/Index'
-import DelegationDetail from './containers/Delegation/Detail'
-import ActivityLog from './containers/ActivityLog'
-import Network from './containers/Network'
-import ChangePassword from './containers/User/Action/ChangePassword'
-import ChangeEmail from './containers/User/Action/ChangeEmail'
-import ChangePIN from './containers/User/Action/ChangePIN'
-import ChangePhoneNumber from './containers/User/Action/ChangePhoneNumber' 
-import ChangeSecurityQuestion from './containers/User/Action/ChangeSecurityQuestion'
-import CloseAccount from './containers/User/Action/CloseAccount'
-import Vault from './containers/Vault'
-import Message from './containers/Message/ChatAvatarList'
-import Interaction from './containers/Interaction'
-import Calendar from './containers/Calendar'
+// import SignUpStep1 from './containers/SignUp/Step1'
+// import SignUpStep2 from './containers/SignUp/Step2'
+// import SignUpStep3 from './containers/SignUp/Step3'
+// import SignUpStep4 from './containers/SignUp/Step4'
+// import SignUpStep5 from './containers/SignUp/Step5'
+// import SignUpStep6 from './containers/SignUp/Step6'
+// import UserProfile from './containers/User/Profile'
+// import UserSetting from './containers/User/Setting'
+// import Delegation from './containers/Delegation/Index'
+// import DelegationDetail from './containers/Delegation/Detail'
+// import ActivityLog from './containers/ActivityLog'
+// import Network from './containers/Network'
+// import ChangePassword from './containers/User/Action/ChangePassword'
+// import ChangeEmail from './containers/User/Action/ChangeEmail'
+// import ChangePIN from './containers/User/Action/ChangePIN'
+// import ChangePhoneNumber from './containers/User/Action/ChangePhoneNumber' 
+// import ChangeSecurityQuestion from './containers/User/Action/ChangeSecurityQuestion'
+// import CloseAccount from './containers/User/Action/CloseAccount'
+// import Vault from './containers/Vault'
+// import Message from './containers/Message/ChatAvatarList'
+// import Interaction from './containers/Interaction'
+// import Calendar from './containers/Calendar'
 import UserManagement from './containers/UserManagement'
 import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
@@ -36,7 +36,7 @@ import DeliveryList from './containers/DeliveryList'
 import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
-import TestAnimation from './containers/TestAnimation'
+// import TestAnimation from './containers/TestAnimation'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -63,7 +63,7 @@ export default {
         Page: PlaceOrderList,
         headerType: 'back'
     },
-    placeOrderDetail: {
+    'placeOrderDetail/:id': {
         title: 'Chi tiết đặt chỗ',
         Page: PlaceOrderDetail,
         headerType: 'back',
@@ -75,35 +75,35 @@ export default {
         headerType: 'none',
         footerType: 'none',
     },
-    home: {        
-        title: 'Home',
-        Page: Home,     
-        headerType: 'home',   
-    },  
+    // home: {        
+    //     title: 'Home',
+    //     Page: Home,     
+    //     headerType: 'home',   
+    // },  
     notification: {
         title: 'Notification center',
         Page: Notification,
         headerType: 'home',
     },   
-    delegation: {
-        title: 'Delegation',
-        Page: Delegation,
-    },
-    'delegation/detail/:id': {
-        title: 'Delegation Detail',
-        Page: DelegationDetail,
-        headerType: 'back',
-        footer: false,
-    },
-    'user/profile': {
-        title: 'User Profile',
-        Page: UserProfile,
-        headerType: 'none',
-    },  
-    'user/setting': {
-        title: 'User Setting',
-        Page: UserSetting,
-    },       
+    // delegation: {
+    //     title: 'Delegation',
+    //     Page: Delegation,
+    // },
+    // 'delegation/detail/:id': {
+    //     title: 'Delegation Detail',
+    //     Page: DelegationDetail,
+    //     headerType: 'back',
+    //     footer: false,
+    // },
+    // 'user/profile': {
+    //     title: 'User Profile',
+    //     Page: UserProfile,
+    //     headerType: 'none',
+    // },  
+    // 'user/setting': {
+    //     title: 'User Setting',
+    //     Page: UserSetting,
+    // },       
     login: {
         title: 'Login',
         Page: Login,        
@@ -182,30 +182,30 @@ export default {
     //     headerType: 'back',
     //     footerType: 'none',
     // }, 
-    activityLog:{
-        title: 'Activity Log',
-        Page: ActivityLog,
-        headerType: 'searchBack',
-    },
-    network:{
-        title: 'Network',
-        Page: Network,
-        headerType: 'searchBack',
-    },
-    vault:{
-        title: 'Vault',
-        Page: Vault,        
-    },
-    message:{
-        title: 'Message',
-        Page: Message,    
-        footerType: 'none',
-        headerType: 'searchBack',    
-    },
-    interaction:{
-        title: 'Interaction',
-        Page: Interaction,
-    },
+    // activityLog:{
+    //     title: 'Activity Log',
+    //     Page: ActivityLog,
+    //     headerType: 'searchBack',
+    // },
+    // network:{
+    //     title: 'Network',
+    //     Page: Network,
+    //     headerType: 'searchBack',
+    // },
+    // vault:{
+    //     title: 'Vault',
+    //     Page: Vault,        
+    // },
+    // message:{
+    //     title: 'Message',
+    //     Page: Message,    
+    //     footerType: 'none',
+    //     headerType: 'searchBack',    
+    // },
+    // interaction:{
+    //     title: 'Interaction',
+    //     Page: Interaction,
+    // },
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
@@ -218,16 +218,22 @@ export default {
         headerType: 'back',
         footerType: 'none',
     },
+    'userManagement/action/updateEmployeeInfo/:id': {
+        title: 'Update Employee',
+        Page: CreateUserContainer,
+        headerType: 'back',
+        footerType: 'none',
+    },
     'userManagement/action/updateUser': {
         title: 'User Info',
         Page: UpdateUserContainer,
         headerType: 'back',
         footerType: 'none',
     },
-    calendar:{
-        title: 'Calendar',
-        Page: Calendar,
-    },
+    // calendar:{
+    //     title: 'Calendar',
+    //     Page: Calendar,
+    // },
     listdeal: {
         title: 'List Deal',
         Page: ListDeal,
@@ -242,10 +248,10 @@ export default {
         Page: DealDetail,
         footerType: 'none',
     },
-    testAnimation: {
-        title: 'Test Animation',
-        Page: TestAnimation,
-        headerType: 'back',
-        footerType: 'none',
-    },
+    // testAnimation: {
+    //     title: 'Test Animation',
+    //     Page: TestAnimation,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    // },
 }

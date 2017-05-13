@@ -1,84 +1,140 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio, Card, Content } from 'native-base'
+import { Container, List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio, Card } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
+import * as orderActions from '~/store/actions/order'
+import * as orderSelectors from '~/store/selectors/order'
+import * as authSelectors from '~/store/selectors/auth'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
+import Content from '~/ui/components/Content'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
-@connect(null, authAction)
-@reduxForm({ form: 'TestForm' })
 
-export default class DeliveryList extends Component {
+import options from './options'
+import { formatNumber } from '~/ui/shared/utils'
+
+
+@connect(state=>({
+    place: state.place,
+    order: orderSelectors.getOrder(state),
+    session: authSelectors.getSession(state),
+}), orderActions)
+// @reduxForm({ form: 'TestForm' })
+export default class extends Component {
 
     constructor(props) {
         super(props)
-        this.tabData = [
-            {
-                tabID: 1,
-                text: 'Chờ xác nhận'
-            },
-            {
-                tabID: 2,
-                text: 'Chờ giao hàng'
-            },
-            {
-                tabID: 3,
-                text: 'Thành công'
-            },
-        ]
+
+        this.state = {          
+          selectedPlace: props.place.listPlace.map(item => item.placeId).join(','),
+          refreshing: false,
+          loading: false,
+        }  
+
+        this.selectedStatus = 0
     }
-    _handlePressTab(item) {
-        console.log('Press tab Delivery', item)
+
+    componentWillFocus(){        
+
+        // make it like before    
+        const {order} = this.props
+        if(!order.orderList.length) {
+          this.loadPage()
+        } 
+
+        this.setState({
+          refreshing: false,
+        })
+        
     }
-    _numberWithDot(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+    componentWillMount(){
+        this.componentWillFocus()      
     }
-    _renderRow(item) {
+
+    loadPage(page=1){
+       const {session, getOrderList} = this.props      
+       const {selectedPlace} = this.state
+        getOrderList(session, selectedPlace, this.selectedStatus, page, 
+          ()=>this.setState({
+            refreshing: false,
+            loading: false,
+          }))
+    }
+
+    _handleChangePlace = (item) => {        
+        this.setState({
+          selectedPlace: item.id,
+        }, ()=>this.loadPage())                
+    }
+
+    _onRefresh =() => {    
+      this.setState({refreshing: true})        
+      this.loadPage()
+    }    
+
+    _loadMore = ()=>{
+      if(this.state.loading || this.state.refreshing)
+        return
+      // console.log('load more')
+      const {order} = this.props
+      if(order.hasMore){
+        this.setState({loading: true})          
+        this.loadPage(order.page + 1)              
+      }        
+    }
+        
+    _handlePressTab = (item) => {
+        this.selectedStatus = item.tabID
+        this.loadPage()
+    }
+
+    _renderRow({orderInfo, orderRowList}) {
         var statusBlock=null;
-        var bottomBlock=null;
-        if (item.status == 'WAITING_CONFIRM'){
+        // var bottomBlock=null;
+        const status = this.selectedStatus
+        if (status === 0){
             statusBlock =  (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingConfirm}>{item.deliveryCode}</Text>
+                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
                 </View>
             )
-            bottomBlock = (
-                <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-                    <Button transparent><Text style={styles.reject}>Từ chối</Text></Button>
-                    <Button transparent><Text style={styles.confirm}>Xác nhận</Text></Button>
-                </View>
-            )
-        }else if(item.status == 'WAITING_DELIVERY'){
+            // bottomBlock = (
+            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+            //         <Button transparent><Text style={styles.reject}>Từ chối</Text></Button>
+            //         <Button transparent><Text style={styles.confirm}>Xác nhận</Text></Button>
+            //     </View>
+            // )
+        }else if(status === 1){
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingDelivery}>{item.deliveryCode}</Text>
+                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
                 </View>
             )
-            bottomBlock = (
-                <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-                    <Button transparent><Text style={styles.reject}>Hủy</Text></Button>
-                    <Button transparent><Text style={styles.confirm}>Đã giao thành công</Text></Button>
-                </View>
-            )
-        }else if (item.status == 'DELIVERY_SUCCESS'){
+            // bottomBlock = (
+            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
+            //         <Button transparent><Text style={styles.reject}>Hủy</Text></Button>
+            //         <Button transparent><Text style={styles.confirm}>Đã giao thành công</Text></Button>
+            //     </View>
+            // )
+        }else {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeSuccess}>{item.deliveryCode}</Text>
+                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.orderCode}</Text>
                 </View>
             )
         }
         return (
-            <View style={styles.deliveryBlock} key={item.deliveryCode}>
+            <View style={styles.deliveryBlock} key={orderInfo.clingmeId}>
                 <View style={styles.block}>
                     <View style={styles.row}>
                         {statusBlock}
@@ -87,11 +143,11 @@ export default class DeliveryList extends Component {
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
-                    {item.products.map((subItem, index)=>
+                    {orderRowList.map((subItem, index)=>
                         (
                             <View key={index} style={styles.row}>
-                                <Text bold>{subItem.name}</Text>
-                                <Text>SL: <Text bold>{subItem.number}</Text></Text>
+                                <Text bold>{subItem.itemName}</Text>
+                                <Text>SL: <Text bold>{subItem.quantity}</Text></Text>
                             </View>
                         )
                     )}
@@ -100,7 +156,7 @@ export default class DeliveryList extends Component {
                 <View style={styles.block}>
                     <Text>
                         <Text style={{ fontWeight: 'bold' }}>Ghi chú: </Text>
-                        Đây là một ghi chú
+                        {orderInfo.note}
                     </Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -108,133 +164,60 @@ export default class DeliveryList extends Component {
                     <View style={styles.row}>
                         <View style={styles.row}>
                             <Icon name='account' style={styles.icon} />
-                            <Text>Username</Text>
+                            <Text>{orderInfo.userInfo.memberName}</Text>
                         </View>
                         <View style={styles.row}>
                             <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
-                            <Text style={styles.phoneNumber}>09778765062</Text>
+                            <Text style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
                         </View>
                     </View>
                     <View style={styles.row}>
-                        <Text>Địa chỉ: 98 Hoàng Quốc Việt</Text>
+                        <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text>Đã thanh toán</Text>
-                        <Text bold>{this._numberWithDot(item.total)}đ</Text>
+                        <Text bold>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
-                {bottomBlock}
+                
             </View>
         )
     }
+
     render() {
-        const { handleSubmit, submitting } = this.props
-        var dropdownValues = [
-            {
-                id: 0,
-                name: "Tất cả địa điểm"
-            },
-            {
-                id: 2,
-                name: "33 Nguyễn Chí Thanh, Ba Đình, HN"
-            },
-            {
-                id: 3,
-                name: "105 Láng Hạ, Đống Đa, HN"
-            },
-            {
-                id: 4,
-                name: "98 Hoàng Quốc Việt, Cầu Giấy, HN",
-            },
-            {
-                id: 5,
-                name: "5 Đinh Tiên Hoàng, Hoàn Kiếm, HN"
-            },
-            {
-                id: 6,
-                name: "69 Bạch Mai, Hai Bà Trưng, HN"
-            }
-        ]
-        var defaultSelected = {
-            id: 0,
+        const { handleSubmit, submitting, place } = this.props
+        
+        let defaultSelected = {
+            id: this.state.selectedPlace,
             name: "Tất cả địa điểm"
         }
+        let dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
+        dropdownValues = [defaultSelected, ...dropdownValues]
 
-        var number = 400000
-        var items=[
-            {
-                products: [
-                    {
-                        name: 'Name of Product',
-                        number: 1
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 2
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 3
-                    },
-                ],
-                status: 'WAITING_CONFIRM',
-                deliveryCode: '#GHI123',
-                total: 1200000
-            },
-            {
-                products: [
-                    {
-                        name: 'Name of Product',
-                        number: 1
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 2
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 3
-                    },
-                ],
-                status: 'WAITING_DELIVERY',
-                deliveryCode: '#GHI456',
-                total: 300000
-            },
-            {
-                products: [
-                    {
-                        name: 'Name of Product',
-                        number: 1
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 2
-                    },
-                    {
-                        name: 'Name of Product',
-                        number: 3
-                    },
-                ],
-                status: 'DELIVERY_SUCCESS',
-                deliveryCode: '#GHI785',
-                total: 690000
-            },
+        const {orderList} = this.props.order
+        
 
-        ]
         return (
-            <View style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
-                <View style={styles.contentContainer}>
-                    <TabsWithNoti tabData={this.tabData} activeTab={1} onPressTab={this._handlePressTab.bind(this)} />
+            <Container style={styles.container}>
+                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} selectedOption={defaultSelected} />
+                
+                <TabsWithNoti tabData={options.tabData} 
+                  activeTab={0} onPressTab={this._handlePressTab} />
 
-                    <Content style={{ padding: 10, height: 200 }}>
-                        {items.map(item=>(
+                <Content 
+                onEndReached={this._loadMore} onRefresh={this._onRefresh}             
+                refreshing={this.state.refreshing} 
+                style={styles.contentContainer}>
+                        {orderList && orderList.map(item=>(
                             this._renderRow(item)
                         ))}
-                    </Content>
+                    
 
-                </View>
-            </View>
+                </Content>
+            </Container>
         )
     }
 }

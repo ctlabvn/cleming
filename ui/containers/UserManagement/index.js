@@ -15,53 +15,60 @@ import UserCard from './components/UserCard'
 import OwnerCard from './components/OwnerCard'
 
 import * as commonActions from '~/store/actions/common'
+import * as accountActions from '~/store/actions/account'
+import * as authSelectors from '~/store/selectors/auth'
+import * as accountSelectors from '~/store/selectors/account'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
-const data = []
-
-for (let i = 0; i < 5; i++) {
-    data.push({
-        owner: {
-            userName: 'User Name',
-            img: img
-        },
-        employeeList: [
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Manager', address: 'Hoang Quoc Viet', img: img},
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Cashier', address: 'Hoang Quoc Viet', img: img},
-            { email: 'Email', phone: 'Phone Number', jobTitle: 'Accountant', address: 'Hoang Quoc Viet', img: img}
-        ]
-    })
-}
-
-data.push({
-    owner: {
-        userName: 'User Name',
-        img: img
-    },
-    employeeList: []
-})
 
 @connect(state=>({
-    
-}), {...commonActions})
+  session: authSelectors.getSession(state),
+  listEmployee: accountSelectors.getListEmployee(state),
+  user: authSelectors.getUser(state)
+}), {...commonActions, ...accountActions})
 
 class UserManagement extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalOpen: false,
-            updateInfoChecked: false,
-            deleteAccountChecked: false
+          modalOpen: false,
+          updateInfoChecked: false,
+          deleteAccountChecked: false,
+          isFetchingData: false,
+          data: [],
+          rowIDOfEmployee: 0
         }
     }
     
     componentDidMount() {
-        
-    }
-    
-    onAccountPress(data) {
+      this.setState({
+          isFetchingData: true
+      })
+      let { getListEmployee, session, user } = this.props
+      getListEmployee(session, () => {
+        console.log("OK", this.props.listEmployee)
+        console.log("User", user)
+        let data = []
+        for (let i = 0; i < 1; i++) {
+          data.push({
+            owner: user,
+            employeeList: this.props.listEmployee
+          })
+        }
         this.setState({
             data: data
+        }, () => {
+            this.setState({
+                isFetchingData: false
+            })
+          })
+      })
+    }
+    
+    onAccountPress(data, rowID) {
+        this.setState({
+            employeeData: data,
+            rowIDOfEmployee: rowID
         }, () => {
             this.setState({
                 modalOpen: true
@@ -70,22 +77,35 @@ class UserManagement extends Component {
     }
     
     renderEmployeeRow(data, sectionID, rowID, highlightRow) {
+        let lastLeftVerticalBlueLineLength = null
+        let lastRightVerticalBlueLineLength = null
+        if (rowID == (this.props.listEmployee.length - 1)) {
+          lastLeftVerticalBlueLineLength = 1
+          lastRightVerticalBlueLineLength = 0
+        } else {
+          lastLeftVerticalBlueLineLength = '100%'
+          lastRightVerticalBlueLineLength = '100%'
+        }
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
                     <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
-                            <Row style={styles.topLeftGrid}/>
-                            <Row style={styles.bottomLeftGrid}/>
+                          <Row style={styles.topLeftGrid}/>
+                          <Row style={{...styles.bottomLeftGridContainer}}>
+                            <View style={{...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength}}/>
+                          </Row>
                         </Col>
                         <Col>
-                            <Row style={[styles.topRightGrid, {borderBottomWidth: 1}]}/>
-                            <Row style={[styles.bottomRightGrid, {borderTopWidth: 1}]}/>
+                          <Row style={{...styles.topRightGrid, borderBottomWidth: 1}}/>
+                          <Row style={styles.bottomRightGridContainer}>
+                            <View style={{height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid}}/>
+                          </Row>
                         </Col>
                     </Col>
                     <Col style={{width: '80%', justifyContent: 'center'}}>
                         <Button
-                            onPress={this.onAccountPress.bind(this, data)}
+                            onPress={this.onAccountPress.bind(this, data, rowID)}
                             style={styles.accountButton}>
                             <UserCard data={data}/>
                         </Button>
@@ -123,7 +143,7 @@ class UserManagement extends Component {
     renderRow(data) {
         blueLineBelowOwner = null
         console.log()
-        if (data.employeeList.length != 0) {
+        if (this.props.listEmployee.length != 0) {
             blueLineBelowOwner = this.renderBlueLineBelowOwner()
         }
         return (
@@ -157,13 +177,32 @@ class UserManagement extends Component {
         })
     }
     
+    onCancelModal() {
+      this.setState({
+        modalOpen: false
+      })
+    }
+    
+    onSubmitModal() {
+      const {forwardTo} = this.props
+      if (this.state.updateInfoChecked) {
+        this.setState({
+          updateInfoChecked: !this.state.updateInfoChecked
+        })
+        forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
+      }
+      this.setState({
+        modalOpen: false
+      })
+    }
+    
     renderModal() {
         return(
             <View style={styles.modalContainer}>
                 <Grid>
                     <Col>
                         <Row style={{height: '30%', width: '90%', alignSelf: 'center'}}>
-                            <UserCard data={this.state.data}/>
+                            <UserCard data={this.state.employeeData}/>
                         </Row>
                         <Row style={{height: '50%'}}>
                             <Col style={{width: '70%'}}>
@@ -192,12 +231,16 @@ class UserManagement extends Component {
                         <Row style={{height: '20%'}}>
                             <Col style={{width: '50%'}}/>
                             <Col style={{width: '25%'}}>
-                                <Button style={styles.modalButton}>
+                                <Button
+                                  onPress={this.onCancelModal.bind(this)}
+                                  style={styles.modalButton}>
                                     <Text style={styles.modalCancelButtonText}>Cancel</Text>
                                 </Button>
                             </Col>
                             <Col style={{width: '25%'}}>
-                                <Button style={styles.modalButton}>
+                                <Button
+                                  onPress={this.onSubmitModal.bind(this)}
+                                  style={styles.modalButton}>
                                     <Text style={styles.modalOkButtonText}>OK</Text>
                                 </Button>
                             </Col>
@@ -214,12 +257,15 @@ class UserManagement extends Component {
     }
     
     render() {
+        if (this.state.isFetchingData) {
+            return <Spinner/>
+        }
         return (
             <Container>
                 <Content style={{backgroundColor: 'white'}}>
                     <List
                         style={{marginBottom: 50, marginTop: 20}}
-                        dataArray={data}
+                        dataArray={this.state.data}
                         renderRow={this.renderRow.bind(this)}/>
                 </Content>
                 <Modal onCloseClick={e=>this.setState({modalOpen:false})} open={this.state.modalOpen}>

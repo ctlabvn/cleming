@@ -91,5 +91,19 @@ export default {
   },
   declineText: {
     color: '#7e7e7e'
+  },
+  rowPaddingTB: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  center: {
+    justifyContent: 'center'
+  },
+  block: {
+    flexDirection: 'column',
+    paddingTop: 10,
+    paddingBottom: 10
   }
 }

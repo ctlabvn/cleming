@@ -1,7 +1,7 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
 export default {
     container: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: BACKGROUND_COLOR_1,
         height: '100%',
         paddingBottom: 10
     },
@@ -13,7 +13,8 @@ export default {
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
     },
     rowPaddingTB: {
         paddingTop: 10,
@@ -37,7 +38,7 @@ export default {
         flexDirection: 'column',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
         padding: 10
     },
     block: {
@@ -61,7 +62,7 @@ export default {
         color: 'grey'
     },
     iconLeft: {
-        marginRight: 3
+        marginRight: 10
     },
     iconRight: {
         marginLeft: 3
@@ -77,22 +78,40 @@ export default {
         width: '40%',
     },
     detailButton: {
-      flex: 1,
-      backgroundColor: 'white',
-      flexDirection: 'column',
-      height: 250,
-      paddingBottom: 0,
-      borderWidth: 0,
-      zIndex: 0,
-      shadowOffset: {
-        width: 0,
-        height: 0
-      },
-      shadowColor: 'white',
-      paddingLeft: 0,
-      paddingRight: 0,
-      paddingTop: 0,
-      alignItems: 'stretch',
-      elevation: 0
-    }
+        flex: 1,
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        height: 250,
+        paddingBottom: 0,
+        borderWidth: 0,
+        zIndex: 0,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowColor: 'white',
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+        alignItems: 'stretch',
+        elevation: 0
+    },
+
+    labelUnderImage: {
+        color: 'black',
+        marginTop: 5,
+    },
+    listItem: {
+        flexDirection: 'column',
+        paddingRight: 0,
+        paddingBottom: 0,
+        marginLeft: 0,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        paddingTop: 0,
+        backgroundColor: 'white',
+        borderRadius: 3,
+        marginBottom: 10
+    },
+  
 }
