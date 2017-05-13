@@ -4,13 +4,17 @@
 
 // Takes care of changing the application state
 // state is previous state, 
-export const account = (state = {}, {type, payload}) => {
+export const account = (state = {
+  generatedPassword: ''
+}, {type, payload}) => {
   switch (type) {   
     case 'app/replaceProfile':
       // payload is access token
       return {...state, profile: payload }
     case 'app/setListEmployee':
       return {...state, listEmployee: payload.updated.data}
+    case 'app/setGeneratedPassword':
+      return {...state, generatedPassword: payload.updated.data.password}
     default:
       return state
   }
