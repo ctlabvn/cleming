@@ -24,21 +24,23 @@ import Modal from '~/ui/components/Modal'
 
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
+import * as accountActions from '~/store/actions/account'
 
-import { validate, renderGroupAddress } from './utils'
+import { validate, renderGroup } from './utils'
 import styles from './styles'
 
 const formSelector = formValueSelector('CreateUserForm')
 @connect(state=>({
+  session: authSelectors.getSession(state),
   listEmployee: accountSelectors.getListEmployee(state),
-  place: state.place
-}), {}, (stateProps, dispatchProps, ownProps)=>{
+  place: state.place,
+  generatedPassword: accountSelectors.getGeneratedPassword(state)
+}), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
     }
-    console.log(employeeDetail.listPlace)
     return ({
       initialValues: {
         GroupAddress: stateProps.place.listPlace,
@@ -69,19 +71,20 @@ export default class CreateUserContainer extends Component {
     }
   
     componentWillFocus(){
-      let rowIDOfEmployee = Number(this.props.route.params.id)
-      this.setState({
-        employeeDetail: this.props.listEmployee[rowIDOfEmployee],
-        rowIDOfEmployee: rowIDOfEmployee
-      })
+      let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+      let permission = null
+      switch (employeeDetail.titleType) {
+        case 1: permission = "Nhân Viên"
+      }
+      this.props.change('GroupAddress', this.props.place.listPlace)
+      this.props.change('name', employeeDetail.userName)
+      this.props.change('email', employeeDetail.email)
+      this.props.change('phone', employeeDetail.phoneNumber)
+      this.props.change('permission', permission)
     }
     
     componentDidMount() {
-      let rowIDOfEmployee = Number(this.props.route.params.id)
-      this.setState({
-        employeeDetail: this.props.listEmployee[rowIDOfEmployee],
-        rowIDOfEmployee: rowIDOfEmployee
-      })
+      
     }
   
     componentWillReceiveProps(nextProps) {
@@ -140,24 +143,11 @@ export default class CreateUserContainer extends Component {
       this.props.change(`${address}.ad`, true)
     }
     
-    renderJobModal() {
-        return(
-            <View style={styles.modalContainer}>
-                <Text>ABC</Text>
-            </View>
-        )
+    onGeneratedPasswordPress() {
+      this.props.getGeneratedPassword(this.props.session)
     }
-    
-    renderPermissionModal() {
-        return(
-            <View style={styles.modalContainer}>
-                <Text>ABC</Text>
-            </View>
-        )
-    }
-    
+  
     render() {
-        
         let fromTime = moment(this.state.fromTime).format("HH:mm")
         let toTime = moment(this.state.toTime).format("HH:mm")
         return (
@@ -254,11 +244,13 @@ export default class CreateUserContainer extends Component {
                           onCheckDetailAddress={this.onCheckDetailAddress.bind(this)}
                           checkAll={this.onCheckAllPress.bind(this)}
                           name="GroupAddress"
-                          component={renderGroupAddress}/>
+                          component={renderGroup}/>
                         <View style={{marginTop: 15}}>
                             <Grid>
                                 <Col>
-                                    <Button style={styles.createPasswordButton}>
+                                    <Button
+                                      onPress={this.onGeneratedPasswordPress.bind(this)}
+                                      style={styles.createPasswordButton}>
                                         <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
                                     </Button>
                                 </Col>
@@ -268,7 +260,7 @@ export default class CreateUserContainer extends Component {
                             <Grid>
                                 <Col/>
                                 <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                                    <Text style={styles.passwordText}>ABC123</Text>
+                                    <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
                                 </Col>
                                 <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
                                     <Col style={{alignItems: 'flex-end', width: '70%'}}>
@@ -292,12 +284,6 @@ export default class CreateUserContainer extends Component {
                             </Col>
                         </Grid>
                     </View>
-                    <Modal onCloseClick={e=>this.setState({jobModalOpen:false})} open={this.state.jobModalOpen}>
-                        {this.renderJobModal()}
-                    </Modal>
-                    <Modal onCloseClick={e=>this.setState({permissionModalOpen:false})} open={this.state.permissionModalOpen}>
-                        {this.renderPermissionModal()}
-                    </Modal>
                     <DateTimePicker
                         mode="time"
                         titleIOS="Chọn thời gian"
