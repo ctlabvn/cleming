@@ -165,7 +165,9 @@ export default class extends Component {
             case 3:
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text warning small>Clingme đã duyệt</Text>
@@ -173,7 +175,9 @@ export default class extends Component {
             case 1: // thành công
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text success small>Thành công</Text>
@@ -181,7 +185,9 @@ export default class extends Component {
             case 2: // Bị từ chối
                 transactionNumberBlock = (
                     <View style={styles.row}>
-                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.dealTransactionIdDisplay}</Text>
                     </View>
                 )
@@ -190,7 +196,9 @@ export default class extends Component {
             default:
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text warning small>Đang xử lí</Text>
