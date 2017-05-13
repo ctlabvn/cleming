@@ -93,7 +93,7 @@ export default class PlaceOrderList extends Component {
         // isLast: boolean, //có phải là trang cuối cùng hay không
         this.props.getBookingList(this.props.user.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-            status, () => this.setState({ loading: false }))
+            status, () => this.setState({ refreshing: false }))
     }
     _loadMore = () => {
         const { booking } = this.props

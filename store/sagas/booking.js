@@ -11,7 +11,10 @@ const requestBookingList = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            // console.log('Load booking', data)
+            console.log('Load booking', data)
+            if (data.code){
+                return setToast('Load Booking Fail: '+JSON.stringify(data), 'error')
+            }
             return setBookingList(data.updated)
         }          
     ],

@@ -12,6 +12,9 @@ const requestListTransaction = createRequestSaga({
     success: [
         (data) => {
             console.log('Load transaction', data)
+            if (data.code){
+                return setToast('Load trans fail: '+JSON.stringify(data), 'error')
+            }
             return setListTransaction(data.updated.data)
         }          
     ],

@@ -131,8 +131,9 @@ export default class PlaceOrderDetail extends Component {
                 <Text primary style={{ ...styles.rightText, ...styles.boldText }}>{totalQuantity}</Text>
               </View>
             </View>
-            {orderRow}
-
+            <Content>
+              {orderRow}
+            </Content>
             {/*{orderRow}*/}
             {/*<Grid>
               <Row style={{ height: '7%' }}>
