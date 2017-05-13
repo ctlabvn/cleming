@@ -16,7 +16,9 @@ const requestListTransaction = createRequestSaga({
         }          
     ],
     failure: [
-        (data) => setToast('Load Fail: '+JSON.stringify(data), 'error')
+        (data) => {
+            return setToast('Load Fail: '+JSON.stringify(data), 'error')
+        }
     ],
 })
 requestListTransactionPayWithClingme = createRequestSaga({
@@ -30,7 +32,7 @@ requestListTransactionPayWithClingme = createRequestSaga({
         }          
     ],
     failure: [
-        () => setToast('Couldn\'t login', 'error')
+        () => setToast('Couldn\'t load list transaction Clingme', 'error')
     ],
 })
 export default [
