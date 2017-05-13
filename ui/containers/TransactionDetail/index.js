@@ -249,11 +249,6 @@ export default class TransactionDetail extends Component {
                             <Text small bold>#FF6969</Text>
                         </View>*/}
                     </View>
-                    {(transactionInfo.transactionStatus == 0 || transactionInfo.transactionStatus == 3) && <View style={styles.rowPadding}>
-                        <Button light style={styles.confirmButton}>
-                            <Text>Không đồng ý</Text>
-                        </Button>
-                    </View>}
 
                     <View style={{ ...styles.rowPadding, ...styles.center }}>
                         <Button light style={styles.confirmButton}>
