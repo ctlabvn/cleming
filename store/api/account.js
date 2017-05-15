@@ -14,9 +14,15 @@ export default {
     // return fetchJsonWithToken(token, `/logout`)
     return apiGet('/Api/AccountSettings/Profile', {}, accessToken)
   },
-
-  getBusinessProfile(accessToken) {
-    return apiGet('/Api/BusinessAccount/BusinessAccountProfile', {}, accessToken)
+  
+  updateProfile (accessToken, updatedInfo) {
+    // return fetchJsonWithToken(token, `/logout`)
+    return apiPost('/edit/info', {updatedInfo}, accessToken)
+  },
+  
+  updateAvatar (accessToken, avatarFile) {
+    // return fetchJsonWithToken(token, `/logout`)
+    return apiPost('/edit/info', {avatarFile}, accessToken)
   },
   
   getListAccount() {
@@ -45,6 +51,10 @@ export default {
   
   createEmployeeInfo(session, updatedData) {
     return apiPost('/merchantapp/add-subaccount', {updatedData}, session)
+  },
+  
+  deleteEmployeeInfo(session, bizAccountId) {
+    return apiPost('//merchantapp/delete-subaccount', {bizAccountId}, session)
   }
 
 }

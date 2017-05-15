@@ -5,6 +5,11 @@ export const getProfile = (...args) => ({
   args,
 })
 
+export const updateProfile = (...args) => ({
+  type: 'app/updateProfile',
+  args,
+})
+
 export const changePassword = (...args) => ({
   type: 'app/changePassword',
   args,
@@ -44,5 +49,15 @@ export const setGeneratedPassword = (data) => ({
 
 export const updateEmployeeInfo = (...args) => ({
   type: 'app/updateEmployeeInfo',
+  args
+})
+
+export const createEmployeeInfo = (...args) => ({
+  type: 'app/createEmployeeInfo',
+  args
+})
+
+export const deleteEmployeeInfo = (...args) => ({
+  type: 'app/deleteEmployeeInfo',
   args
 })
