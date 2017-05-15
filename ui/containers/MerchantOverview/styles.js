@@ -4,9 +4,10 @@ export default {
         backgroundColor: BACKGROUND_COLOR_1,
         height: '100%',
         width: '100%',
+        paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
     },
     contentContainer: {
-        marginTop: 140,
+        marginTop: 50,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
