@@ -30,15 +30,19 @@ import { validate, renderGroup } from './utils'
 import styles from './styles'
 
 const formSelector = formValueSelector('CreateUserForm')
+
+
 @connect(state=>({
   session: authSelectors.getSession(state),
   listEmployee: accountSelectors.getListEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
-  values: formSelector(state, 'name', 'phone')
+  abc: formSelector(state, 'name', 'phone')
 }), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
-    if (typeof ownProps.route.params.id == 'undefined') {
+    
+
+    if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
         initialValues: {
@@ -53,7 +57,9 @@ const formSelector = formValueSelector('CreateUserForm')
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
+      break
     }
+
     return ({
       enableReinitialize: true,
       initialValues: {
@@ -67,7 +73,6 @@ const formSelector = formValueSelector('CreateUserForm')
     })
 })
 @reduxForm({ form: 'CreateUserForm'})
-
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
@@ -83,6 +88,7 @@ export default class CreateUserContainer extends Component {
           rowIDOfEmployee: 0,
           chosenListPlaceID: []
         }
+        
     }
   
     componentWillFocus(){
@@ -175,7 +181,7 @@ export default class CreateUserContainer extends Component {
       let fromTime = moment(this.state.fromTime).format("HH:mm")
       let toTime = moment(this.state.toTime).format("HH:mm")
       handleSubmit(this.onSubmit)
-      console.log(this.props.values)
+      console.log(this.props.abc)
     }
     
     handleGetListPlaceFromArrayField(data) {
