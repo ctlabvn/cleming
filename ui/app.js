@@ -12,6 +12,7 @@ import material from '~/theme/variables/material'
 // import Navigator from './components/Navigator'
 import Toasts from './components/Toasts'
 import AfterInteractions from './components/AfterInteractions'
+import PushNotification from 'react-native-push-notification'
 import SideBar from './components/SideBar'
 import Preload from './containers/Preload'
 import Header from '~/ui/components/Header'
@@ -64,11 +65,56 @@ export default class App extends Component {
       }
   }
 
+  initPushNotification(options) {
+    PushNotification.configure({      
+      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications) 
+      // senderID: "YOUR GCM SENDER ID",
+
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+          alert: true,
+          badge: true,
+          sound: true
+      },
+
+      // Should the initial notification be popped automatically
+      // default: true
+      popInitialNotification: true,
+
+      /**
+        * (optional) default: true
+        * - Specified if permissions (ios) and token (android and ios) will requested or not,
+        * - if not, you must call PushNotification.requestPermissions() later
+        */
+      requestPermissions: true,
+
+      ...options,
+    })
+  }
+
+  showNotification(options) {
+    return PushNotification.localNotification(options)
+  }
+
   constructor(props) {
     super(props)
     // default is not found page, render must show error
     this.page = getPage(props.router.route) || routes.notFound      
-    this.pageInstances = {}      
+    this.pageInstances = {}   
+
+    this.initPushNotification({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function(token) {
+          console.log( 'TOKEN:', token )
+      },
+
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: function(notification) {
+          console.log( 'NOTIFICATION:', notification )
+      },
+
+      senderID: '496598136742',
+    })       
   }
 
   // replace view from stack, hard code but have high performance
@@ -261,9 +307,9 @@ export default class App extends Component {
               renderScene={this._renderPage}                           
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref=>this.footer=ref} />
-          <Toasts/>
-          <Popover ref={ref=>this.popover=ref}/>
-        </Drawer>   
+          <Toasts/>          
+          <Popover ref={ref=>this.popover=ref}/>          
+        </Drawer>           
       </StyleProvider>          
     )
   }

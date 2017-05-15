@@ -5,7 +5,7 @@ import configureStore from '~/store/config'
 
 import Preload from './containers/Preload'
 
-export default class Regit extends Component {
+export default class extends Component {
 
   constructor(props) {
     super(props)
@@ -27,7 +27,7 @@ export default class Regit extends Component {
 
     return (
       <Provider store={store}>
-        <App/>
+        <App/>        
       </Provider>
     )
   }

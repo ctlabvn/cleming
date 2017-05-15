@@ -86,7 +86,10 @@ export default class extends Component {
   }
 
   _handleNotiRead = (e) => {
-    
+    this.props.app.showNotification({
+      title: "My Notification Title", 
+      message: "My Notification Message", 
+    })
   }
 
   renderNotificationContent({title, notifyType, createdTime, content}){    
