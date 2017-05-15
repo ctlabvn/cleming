@@ -106,7 +106,7 @@ export default class App extends Component {
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
-          // console.log( 'TOKEN:', token )
+          console.warn( 'TOKEN:', token)
           this.pushToken = token.token
       },
 
