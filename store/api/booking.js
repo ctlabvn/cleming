@@ -7,9 +7,12 @@ export default {
         // console.log('xss booking', xsession)
         // console.log('page', page)
         // console.log('status', status)
+        console.log('Booking API', xsession+'---'+place_list+'----'+from_time+'----'+to_time+'---'+status+'---'+page)
         return apiGet('/booking/list', {place_list, from_time, to_time, status, page}, xsession)
     },
+
     detail(xsession, bookingId){
-        return apiGet('/booking/detail')
+        console.log('Getting Detail', xsession+'---'+bookingId)
+        return apiGet('/booking/detail', {bookingId}, xsession)
     }
 }

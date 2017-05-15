@@ -27,7 +27,6 @@ export default class PlaceOrderList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            refreshing: false,
             loadingMore: false,
             loading: false
         }
@@ -83,7 +82,7 @@ export default class PlaceOrderList extends Component {
         )
     }
     _onRefresh = () => {
-        this.setState({ refreshing: true })
+        this.setState({ loading: true })
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
@@ -93,7 +92,7 @@ export default class PlaceOrderList extends Component {
         // isLast: boolean, //có phải là trang cuối cùng hay không
         this.props.getBookingList(this.props.user.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-            status, () => this.setState({ refreshing: false }))
+            status, () => this.setState({ loading: false }))
     }
     _loadMore = () => {
         const { booking } = this.props
@@ -181,9 +180,8 @@ export default class PlaceOrderList extends Component {
                     <Content
                         padder
                         onEndReached={this._loadMore} onRefresh={this._onRefresh}
-                        refreshing={this.state.refreshing}
+                        refreshing={this.state.loading}
                     >
-                        {this.state.loading && <Spinner color='red' />}
                         <List dataArray={booking.bookingList}
                             renderRow={(item) => this._renderBookingItem(item)}
                             pageSize={10}
