@@ -146,6 +146,11 @@ export default class CreateUserContainer extends Component {
     onGeneratedPasswordPress() {
       this.props.getGeneratedPassword(this.props.session)
     }
+    
+    onSubmitUser() {
+      let fromTime = moment(this.state.fromTime).format("HH:mm")
+      let toTime = moment(this.state.toTime).format("HH:mm")
+    }
   
     render() {
         let fromTime = moment(this.state.fromTime).format("HH:mm")
@@ -278,7 +283,9 @@ export default class CreateUserContainer extends Component {
                     <View style={{marginTop: 40}}>
                         <Grid>
                             <Col>
-                                <Button style={styles.submitButton}>
+                                <Button
+                                  onPress={this.onSubmitUser.bind(this)}
+                                  style={styles.submitButton}>
                                     <Text style={styles.createPasswordButtonText}>OK</Text>
                                 </Button>
                             </Col>

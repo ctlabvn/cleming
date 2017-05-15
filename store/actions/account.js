@@ -41,3 +41,8 @@ export const setGeneratedPassword = (data) => ({
   type: 'app/setGeneratedPassword',
   payload: data
 })
+
+export const updateEmployeeInfo = (...args) => ({
+  type: 'app/updateEmployeeInfo',
+  args
+})
