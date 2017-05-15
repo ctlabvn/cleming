@@ -4,7 +4,7 @@
 import React, {Component} from 'react'
 import { Field, FieldArray } from 'redux-form'
 import {
-    ListItem, Text, View, Grid, Col
+    ListItem, Text, View, Grid, Col, CheckBox
 } from 'native-base'
 
 import _ from 'underscore'
@@ -28,44 +28,50 @@ export class renderGroup extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      
+      fields: props.fields.map((c, index)=>({
+        placeId: props.fields.get(index).placeId,
+        checked: false,
+        address: props.fields.get(index).address
+      })),
+      checkAll: false
     }
   }
   
-  componentWillReceiveProps(nextProps) {
-    /*console.log(nextProps)
-    console.log(this.state.employeeListPlace)
-    console.log(nextProps.employeeListPlace)
-    console.log(_.isEqual(this.state.employeeListPlace, nextProps.employeeListPlace))
-    if (!_.isEqual(this.props.employeeListPlace, nextProps.employeeListPlace)) {
-      this.props.fields.map((address, index) => {
-        nextProps.employeeListPlace.forEach((place) => {
-          if (place.placeId == this.props.fields.get(index).placeId) {
-            this.props.onCheckDetailAddress(address)
-          }
-        })
-      })
-    }
-    this.setState({
-      employeeListPlace: nextProps.employeeListPlace
-    })*/
+  componentWillMount() {
+    
   }
   
   componentDidMount() {
-    this.props.fields.map((address, index) => {
-      this.props.employeeListPlace.forEach((place) => {
-        if (place.placeId == this.props.fields.get(index).placeId) {
-          this.props.onCheckDetailAddress(address)
-        }
-      })
+    
+  }
+  
+  getSelected(){
+    return this.state.fields.filter(c=>c.checked).map(c=>c.placeId)
+  }
+  
+  handleCheck(index){
+    const newState = this.state.fields.slice(0)
+    newState[index].checked = !newState[index].checked
+    this.setState({fields: newState}, () => {
+      this.props.handleGetListPlaceFromArrayField(this.getSelected())
+    })
+  }
+  
+  handleCheckAll() {
+    const newState = this.state.fields.slice(0)
+    newState.map((c, index) => {
+      c.checked = !this.state.checkAll
     })
     this.setState({
-      employeeListPlace: this.props.employeeListPlace
+      fields: newState,
+      checkAll: !this.state.checkAll
+    }, () => {
+      this.props.handleGetListPlaceFromArrayField(this.getSelected())
     })
   }
   
   render() {
-    let {fields, checkAll} = this.props
+    let { employeeListPlace } = this.props
     return (
       <View>
         <Grid>
@@ -75,20 +81,22 @@ export class renderGroup extends Component {
               <Col style={{alignItems: 'center'}}>
                   <Text
                     style={styles.rightAddressTitleText}
-                    onPress={() => {
-                            checkAll(fields)
-                        }}>
+                    onPress={this.handleCheckAll.bind(this)}>
                       Đánh dấu tất cả
                   </Text>
             </Col>
         </Grid>
-        {fields.map((address, index) =>
+        {this.state.fields.map((address, index) =>
           {
             return (
-              <ListItem key={index} last={index===fields.length-1} style={styles.listItem}>
-                  <Text small style={styles.left}>{fields.get(index).address}</Text>
+              <ListItem key={index} last={index===this.state.fields.length-1} style={styles.listItem}>
+                  <Text small style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
-                      <Field name={`${address}.ad`}  component={CheckBoxField}/>
+                    <CheckBox
+                      checked={address.checked}
+                      onPress={e=>this.handleCheck(index)}
+                    />
+                    
                   </View>
               </ListItem>
             )

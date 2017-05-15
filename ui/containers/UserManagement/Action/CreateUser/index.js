@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -34,14 +34,14 @@ const formSelector = formValueSelector('CreateUserForm')
   session: authSelectors.getSession(state),
   listEmployee: accountSelectors.getListEmployee(state),
   place: state.place,
-  generatedPassword: accountSelectors.getGeneratedPassword(state)
+  generatedPassword: accountSelectors.getGeneratedPassword(state),
+  values: formSelector(state, 'name', 'phone')
 }), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
     if (typeof ownProps.route.params.id == 'undefined') {
       return ({
         enableReinitialize: true,
         initialValues: {
-          GroupAddress: stateProps.place.listPlace,
           name: '',
           email: '',
           phone: '',
@@ -80,7 +80,8 @@ export default class CreateUserContainer extends Component {
           toTime: new Date(),
           checkAll: false,
           employeeDetail: {},
-          rowIDOfEmployee: 0
+          rowIDOfEmployee: 0,
+          chosenListPlaceID: []
         }
     }
   
@@ -88,6 +89,7 @@ export default class CreateUserContainer extends Component {
       if (typeof this.props.route.params.id != "undefined") {
         let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
         let permission = null
+        let listPlaceID = []
         switch (employeeDetail.titleType) {
           case 1: permission = "Nhân Viên"
         }
@@ -96,12 +98,21 @@ export default class CreateUserContainer extends Component {
         this.props.change('email', employeeDetail.email)
         this.props.change('phone', employeeDetail.phoneNumber)
         this.props.change('permission', permission)
+        employeeDetail.listPlace.map((place, index) => {
+          listPlaceID.push(place.placeId)
+        })
+        this.setState({
+          chosenListPlaceID: listPlaceID
+        })
       } else {
         this.props.change('GroupAddress', this.props.place.listPlace)
         this.props.change('name', '')
         this.props.change('email', '')
         this.props.change('phone', '')
         this.props.change('permission', "Nhân Viên")
+        this.setState({
+          chosenListPlaceID: []
+        })
       }
     }
     
@@ -151,27 +162,26 @@ export default class CreateUserContainer extends Component {
         })
     }
     
-    onCheckAllPress(fields) {
-      fields.map((address, index) => {
-        this.setState({
-          checkAll: !this.state.checkAll
-        }, () => {
-          this.props.change(`${address}.ad`, this.state.checkAll)
-        })
-      })
-    }
-    
-    onCheckDetailAddress(address) {
-      this.props.change(`${address}.ad`, true)
-    }
-    
     onGeneratedPasswordPress() {
       this.props.getGeneratedPassword(this.props.session)
     }
     
+    onSubmit = ({name, email, phone}) => {
+      console.log(name)
+    }
+    
     onSubmitUser() {
+      const {handleSubmit} = this.props
       let fromTime = moment(this.state.fromTime).format("HH:mm")
       let toTime = moment(this.state.toTime).format("HH:mm")
+      handleSubmit(this.onSubmit)
+      console.log(this.props.values)
+    }
+    
+    handleGetListPlaceFromArrayField(data) {
+      this.setState({
+        chosenListPlaceID: data
+      })
     }
   
     render() {
@@ -273,9 +283,8 @@ export default class CreateUserContainer extends Component {
                             dashThickness={1}
                             style={{flex: 1, marginBottom: 10}}/>
                         <FieldArray
+                          handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
                           employeeListPlace={listPlace}
-                          onCheckDetailAddress={this.onCheckDetailAddress.bind(this)}
-                          checkAll={this.onCheckAllPress.bind(this)}
                           name="GroupAddress"
                           component={renderGroup}/>
                         <View style={{marginTop: 15}}>
