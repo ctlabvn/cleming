@@ -94,6 +94,7 @@ export default class App extends Component {
   }
 
   showNotification(options) {
+    // trigger local notification, like fetch from push server
     return PushNotification.localNotification(options)
   }
 
