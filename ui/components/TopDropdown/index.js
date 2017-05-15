@@ -15,7 +15,7 @@ export default class TopDropdown extends PureComponent {
         this.state = {
             openningDropdown: false,
             zIndex: 0,
-            fadeAnim: new Animated.Value(0),
+            // fadeAnim: new Animated.Value(0),
             selectedOption: props.selectedOption||{id: -1, name: ""},
             dropdownValues: props.dropdownValues||[],
         }

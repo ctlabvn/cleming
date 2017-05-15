@@ -37,6 +37,14 @@ export default {
   
   getGeneratedPassword(session) {
     return apiGet('/merchantapp/gen-password', {}, session)
+  },
+  
+  updateEmployeeInfo(session, updatedData) {
+    return apiPost('/merchantapp/edit-subaccount', {updatedData}, session)
+  },
+  
+  createEmployeeInfo(session, updatedData) {
+    return apiPost('/merchantapp/add-subaccount', {updatedData}, session)
   }
 
 }
