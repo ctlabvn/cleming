@@ -37,11 +37,25 @@ const formSelector = formValueSelector('CreateUserForm')
   generatedPassword: accountSelectors.getGeneratedPassword(state)
 }), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+    if (typeof ownProps.route.params.id == 'undefined') {
+      return ({
+        enableReinitialize: true,
+        initialValues: {
+          GroupAddress: stateProps.place.listPlace,
+          name: '',
+          email: '',
+          phone: '',
+          permission: "Nhân Viên"
+        },
+        ...ownProps, ...stateProps, ...dispatchProps,
+      })
+    }
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
     }
     return ({
+      enableReinitialize: true,
       initialValues: {
         GroupAddress: stateProps.place.listPlace,
         name: employeeDetail.userName,
@@ -71,16 +85,24 @@ export default class CreateUserContainer extends Component {
     }
   
     componentWillFocus(){
-      let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
-      let permission = null
-      switch (employeeDetail.titleType) {
-        case 1: permission = "Nhân Viên"
+      if (typeof this.props.route.params.id != "undefined") {
+        let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+        let permission = null
+        switch (employeeDetail.titleType) {
+          case 1: permission = "Nhân Viên"
+        }
+        this.props.change('GroupAddress', this.props.place.listPlace)
+        this.props.change('name', employeeDetail.userName)
+        this.props.change('email', employeeDetail.email)
+        this.props.change('phone', employeeDetail.phoneNumber)
+        this.props.change('permission', permission)
+      } else {
+        this.props.change('GroupAddress', this.props.place.listPlace)
+        this.props.change('name', '')
+        this.props.change('email', '')
+        this.props.change('phone', '')
+        this.props.change('permission', "Nhân Viên")
       }
-      this.props.change('GroupAddress', this.props.place.listPlace)
-      this.props.change('name', employeeDetail.userName)
-      this.props.change('email', employeeDetail.email)
-      this.props.change('phone', employeeDetail.phoneNumber)
-      this.props.change('permission', permission)
     }
     
     componentDidMount() {
@@ -155,6 +177,12 @@ export default class CreateUserContainer extends Component {
     render() {
         let fromTime = moment(this.state.fromTime).format("HH:mm")
         let toTime = moment(this.state.toTime).format("HH:mm")
+        let listPlace = null
+        if (typeof this.props.route.params.id == "undefined") {
+          listPlace = []
+        } else {
+          listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
+        }
         return (
             <Container>
                 <Content style={{backgroundColor: 'white'}}>
@@ -245,7 +273,7 @@ export default class CreateUserContainer extends Component {
                             dashThickness={1}
                             style={{flex: 1, marginBottom: 10}}/>
                         <FieldArray
-                          employeeListPlace={this.props.listEmployee[Number(this.props.route.params.id)].listPlace}
+                          employeeListPlace={listPlace}
                           onCheckDetailAddress={this.onCheckDetailAddress.bind(this)}
                           checkAll={this.onCheckAllPress.bind(this)}
                           name="GroupAddress"
