@@ -6,7 +6,8 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 
 import {
     replaceProfile,
-    setListEmployee
+    setListEmployee,
+    setGeneratedPassword
 } from '~/store/actions/account'
 
 
@@ -59,6 +60,17 @@ const requestGetListEmployee = createRequestSaga({
   ],
 })
 
+const requestGetGeneratedPassword = createRequestSaga({
+  request: api.account.getGeneratedPassword,
+  key: 'getGeneratedPassword',
+  success: [
+    (data) => setGeneratedPassword(data),
+  ],
+  failure: [
+    () => setToast('Couldn\'t get password', 'error')
+  ],
+})
+
 
 // root saga reducer
 export default [
@@ -68,10 +80,11 @@ export default [
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [
-            takeLatest('app/getProfile', requestGetProfile),  
-            takeLatest('app/changePassword', requestChangePassword),  
-            takeLatest('app/resetPassword', requestResetPassword),
-            takeLatest('app/getListEmployee', requestGetListEmployee)
+          takeLatest('app/getProfile', requestGetProfile),
+          takeLatest('app/changePassword', requestChangePassword),
+          takeLatest('app/resetPassword', requestResetPassword),
+          takeLatest('app/getListEmployee', requestGetListEmployee),
+          takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword)
         ]
     },
 ]

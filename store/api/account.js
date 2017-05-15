@@ -33,6 +33,10 @@ export default {
   
   getListEmployee(session) {
     return apiGet('/merchantapp/list-subaccount', {}, session)
+  },
+  
+  getGeneratedPassword(session) {
+    return apiGet('/merchantapp/gen-password', {}, session)
   }
 
 }

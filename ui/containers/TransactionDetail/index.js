@@ -88,8 +88,7 @@ export default class TransactionDetail extends Component {
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
     }
     // Go to Page 
-    componentWillReceiveProps(){
-        // console.log('Will receive props')
+    componentWillFocus(){
         let transactionId = this.props.route.params.id
         let index = this.props.listTransaction.findIndex(item => item.dealTransactionIdDisplay == transactionId)
         
@@ -98,11 +97,6 @@ export default class TransactionDetail extends Component {
         let transaction = this.props.listTransaction[index]
         // console.log('Transaction Set state', transaction)
         this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
-    }
-    componentDidUpdate(){
-    }
-    componentWillFocus(){
-        // console.log('Will Focus detail')
     }
 
     render() {
@@ -255,11 +249,6 @@ export default class TransactionDetail extends Component {
                             <Text small bold>#FF6969</Text>
                         </View>*/}
                     </View>
-                    {(transactionInfo.transactionStatus == 0 || transactionInfo.transactionStatus == 3) && <View style={styles.rowPadding}>
-                        <Button light style={styles.confirmButton}>
-                            <Text>Không đồng ý</Text>
-                        </Button>
-                    </View>}
 
                     <View style={{ ...styles.rowPadding, ...styles.center }}>
                         <Button light style={styles.confirmButton}>

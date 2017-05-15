@@ -46,8 +46,6 @@ class UserManagement extends Component {
       })
       let { getListEmployee, session, user } = this.props
       getListEmployee(session, () => {
-        console.log("OK", this.props.listEmployee)
-        console.log("User", user)
         let data = []
         for (let i = 0; i < 1; i++) {
           data.push({

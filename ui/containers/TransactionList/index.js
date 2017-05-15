@@ -7,6 +7,7 @@ import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as commonAction from '~/store/actions/common'
 import * as transactionAction from '~/store/actions/transaction'
+import * as authActions from '~/store/actions/auth'
 import TransactionFilter from '~/ui/components/TransactionFilter'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
@@ -21,18 +22,16 @@ import options from './options'
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
-    listTransaction: state.transaction.listTransaction
-}), { ...commonAction, ...transactionAction })
+    transaction: state.transaction
+}), { ...commonAction, ...transactionAction, ...authActions })
 export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
             loading: false,
+            refreshing: false,
+            loadingMore: false
         }
-    }
-
-    componentWillFocus(){
-        // console.log('focus')
     }
     // net filter transaction type
     _handlePressFilter(item) {
@@ -42,11 +41,17 @@ export default class extends Component {
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
+                }
             )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({ loading: false })
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
 
         }
@@ -55,16 +60,22 @@ export default class extends Component {
     _handlePressTab(item) {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilter = this.refs.dateFilter.getData()
-        this.setState({loading: true})
+        this.setState({ loading: true })
         if (item.tabID == 1) { // Trả qua Clingme
             this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
-                ()=>this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
         } else { // Trả trực tiếp
             this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
-                ()=>this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
         }
     }
@@ -75,11 +86,17 @@ export default class extends Component {
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
-                () => this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
-                () => this.setState({ loading: false })
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
         }
     }
@@ -88,14 +105,20 @@ export default class extends Component {
     _handleTopDrowpdown(item) {
         let dateFilterData = this.refs.dateFilter.getData()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({loading: true})
+        this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
             this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
-                ()=>this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
+                }
             )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
-                ()=>this.setState({loading: false})
+                () => {
+                    this.setState({ loading: false })
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
+                }
             )
         }
 
@@ -103,11 +126,63 @@ export default class extends Component {
     componentDidMount() {
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({loading: true})
+        let transactionFilterComponent = this.refs.transactionFilter
+        let transactionFilter = transactionFilterComponent.getCurrentValue()
+        this.setState({ loading: true })
         this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-            ()=>this.setState({loading: false})
-        )  
+            () => {
+                this.setState({ loading: false })
+                transactionFilterComponent.updateIndicatorNumber(this.props.transaction.totalRecord)
+            }
+        )
+    }
+    // need care about currentPage
+    _loadMore = ()=>{
+        console.log('Props', this.props)
+        const {transaction} = this.props
+        console.log('Trans load More', transaction)
+        if (transaction.pageNumber >= transaction.totalPage){
+            return;
+        }
+        console.log('On loadMore trans', transaction)
+        let dateFilterData = this.refs.dateFilter.getData()
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.setState({ loadingMore: true })
+        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
+            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
+                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+                transactionFilter.value, transaction.pageNumber+1,
+                () => this.setState({ loadingMore: false })
+            )
+        } else { // Trả trực tiếp
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
+                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+                transactionFilter.value, transaction.pageNumber+1,
+                () => this.setState({ loadingMore: false })
+            )
+        }
+    }
+
+    _onRefresh= () => {
+        console.log('On refreshing trans')
+        let dateFilterData = this.refs.dateFilter.getData()
+        let currentPlace = this.refs.placeDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this.setState({ refreshing: true })
+        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
+             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
+                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+                transactionFilter.value,
+                () => this.setState({ refreshing: false })
+            )
+        } else { // Trả trực tiếp
+            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
+                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+                transactionFilter.value,
+                () => this.setState({ refreshing: false })
+            )
+        }
     }
 
     _renderTransactionItem(item) {
@@ -118,15 +193,19 @@ export default class extends Component {
             case 3:
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
-                statusText = <Text warning small>Đang xử lí</Text>
+                statusText = <Text warning small>Clingme đã duyệt</Text>
                 break
             case 1: // thành công
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text success small>Thành công</Text>
@@ -134,7 +213,9 @@ export default class extends Component {
             case 2: // Bị từ chối
                 transactionNumberBlock = (
                     <View style={styles.row}>
-                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.dealTransactionIdDisplay}</Text>
                     </View>
                 )
@@ -143,7 +224,9 @@ export default class extends Component {
             default:
                 transactionNumberBlock =
                     (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        <View style={styles.placeholder}>
+                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
+                        </View>
                         <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text warning small>Đang xử lí</Text>
@@ -191,8 +274,8 @@ export default class extends Component {
         )
     }
     render() {
-        const { handleSubmit, submitting, forwardTo, listTransaction, place } = this.props
-        if (!listTransaction) {
+        const { handleSubmit, submitting, forwardTo, transaction, place } = this.props
+        if (!transaction) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color='red' />
@@ -200,180 +283,50 @@ export default class extends Component {
                 </View>
             )
         }
-        var dropdownValues = place.listPlace.map(item => ({
+        let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
         }))
-        var defaultSelected = dropdownValues[0]
-        // var currentFilter;
-        // currentFilter = options.transactionFilterListDỉrect.filter((item) => item.value == this.state.currentTransactionTypeFilter)[0].display
+        let defaultSelected = dropdownValues[0]
+        if (dropdownValues.length > 1) {
+            defaultSelected = {
+                id: '',
+                name: 'Tất cả địa điểm'
+            }
+            dropdownValues = [defaultSelected, ...dropdownValues]
+        }
 
-        var noData = null
-        if (listTransaction.length == 0) {
+        let noData = null
+        if (transaction.listTransaction && transaction.listTransaction.length == 0) {
             noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
+        }
+        let moreData = null
+        if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0){
+            moreData = <View style={{flexDirection: 'row', justifyContent: 'center'}}><Text small>No more data</Text></View>
         }
         return (
             <Container style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
-                {/*<RadioPopup ref='transactionTypePopup' listValue={options.transactionFilterListDỉrect} onClickYes={this._handleYesFilterTransactionType.bind(this)} />*/}
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilterListDỉrect} ref='transactionFilter'
                     />
-                    {/*<View style={styles.filterByTransactionType}>
-                        <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
-                            <View style={styles.leftContainer}>
-                                <Icon name='filter' style={styles.transactionTypeIcon} />
-                                <Text small>{currentFilter}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <Text small style={styles.numberRight}>10</Text>
-                    </View>*/}
-
-                    <Content style={{ padding: 10, height: '100%' }} refreshing={true}>
-                        {this.state.loading &&
-                            (<View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <Spinner color='red' />
-                            </View>)
-                        }
-                        {/*<View style={{ backgroundColor: 'grey', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                            <Spinner color='red' />
-                        </View>*/}
-
-                        <List dataArray={listTransaction}
+                    <Content
+                        padder
+                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                        refreshing={this.state.refreshing}
+                    >
+                        {this.state.loading && <Spinner color='red' />}
+                        <List dataArray={transaction.listTransaction||[]}
                             renderRow={(item) => this._renderTransactionItem(item)}
                             pageSize={10}
                         >
                         </List>
+                        {this.state.loadingMore && <Spinner color='red' />}
                         {noData}
-                        {/*{listTransaction.slice(0, 10).map((item) => this._renderTransactionItem(item))}*/}
-
-
-                        {/*<TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
-                            <View style={styles.block}>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>#CL123456</Text>
-                                    </View>
-                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
-                                    </View>
-                                    <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder}>
-                                            <View style={styles.readIndicator} />
-                                        </View>
-                                        <Text style={styles.processing} small>Đang xử lí</Text>
-                                    </View>
-                                    <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-
-
-
-                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
-                            <View style={styles.block}>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>#CL123456</Text>
-                                    </View>
-                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small>Khách hàng: <Text small bold>Username</Text></Text>
-                                    </View>
-                                    <Text style={styles.timestamp} small>17:30 14/10/2017</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder}>
-                                            <View style={styles.readIndicator} />
-                                        </View>
-                                        <Text style={styles.success} small>Thành công</Text>
-                                    </View>
-                                    <Text style={styles.processing} small>Chưa trả phí Clingme</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
-                            <View style={styles.block}>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
-                                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>#CL123456</Text>
-                                    </View>
-                                    <Text small style={styles.moneyNumber}>400.000đ</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
-                                    </View>
-                                    <Text small style={styles.timestamp}>17:30 14/10/2017</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder}>
-                                            <View style={styles.readIndicator} />
-                                        </View>
-                                        <Text small style={styles.reject}>Bị từ chối</Text>
-                                    </View>
-                                    <Text small style={styles.processing}>Chưa trả phí Clingme</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                        <TouchableOpacity onPress={() => forwardTo('transactionDetail')}>
-                            <View style={styles.block}>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>#CL123456</Text>
-                                    </View>
-                                    <Text small style={styles.moneyNumber}>17:30 14/10/2017</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small>Khách hàng: <Text bold small>Username</Text></Text>
-                                    </View>
-                                    <Text small success style={styles.timestamp}>Thành công</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder}>
-                                            <View style={styles.readIndicator} />
-                                        </View>
-                                        <Text small>Số HĐ: </Text><Text bold primary>00425</Text>
-                                    </View>
-                                    <Text bold>400.000đ</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <View style={styles.row}>
-                                        <View style={styles.placeholder} />
-                                        <Text small warning>Chờ Clingme hoàn tiền</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableOpacity>*/}
-
-
+                        {moreData}
                     </Content>
 
                 </View>

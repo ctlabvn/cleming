@@ -4,21 +4,16 @@ export default {
       name: 'Home Feeds',
       route: 'merchantOverview',
       icon: 'fbtn-01',      
-    },    
-    // {
-    //   name: 'Delegation',
-    //   route: 'delegation',
-    //   icon: 'deals',
-    // },
-    {
-      name: 'List Deal',
-      route: 'listdeal',
-      icon: 'deals',
     },
     {
-      name: 'Vault',
-      route: 'vault',
-      icon: 'report2',
+      name: 'Giao dịch',
+      route: 'transactionList',
+      icon: 'transaction',
+    },
+    {
+      name: 'Đặt chỗ',
+      route: 'placeOrderList',
+      icon: 'calendar-checked',
     },
     {
       name: 'Notification',

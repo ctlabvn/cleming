@@ -1,7 +1,7 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
 export default {
     container: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: BACKGROUND_COLOR_1,
         height: '100%',
         paddingBottom: 10
     },

@@ -56,17 +56,18 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginRight: 5,
     },
     icon: {
         fontSize: 17,
         width: 20,
-        marginRight: 10,
         color: 'grey'
     },
     placeholder: {
         width: 30,
+        marginRight: 5,
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     processing: {
         color: WARNING_COLOR
