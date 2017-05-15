@@ -10,6 +10,7 @@ import moment from 'moment';
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
 import * as commonActions from '~/store/actions/common'
+import * as bookingActions from '~/store/actions/booking'
 import styles from './styles'
 
 const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
@@ -20,7 +21,7 @@ const longText = "When the scroll view is disabled, this defines how far your to
   user: state.auth.user,
   place: state.place,
   booking: state.booking
-}), commonActions)
+}), { ...commonActions, ...bookingActions })
 
 export default class PlaceOrderDetail extends Component {
   constructor(props) {
@@ -30,21 +31,39 @@ export default class PlaceOrderDetail extends Component {
     }
   }
   componentDidMount() {
+    const { getBookingDetail } = this.props
     let bookingId = this.props.route.params.id
     let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
     if (!bookingArr || bookingArr.length == 0) {
-      // redirect
-      this.props.forwardTo('merchantOverview')
-
+      // if not in store, load from API
+      getBookingDetail(this.props.user.xsession, bookingId,
+        (error, data) => {
+          console.log('Err Booking detail', error)
+          console.log('Booking Detail', data)
+          if (data.updated) {
+            this.setState({ bookingDetail: data.updated.bookingInfo })
+            return
+          }
+        }
+      )
     }
     this.setState({ bookingDetail: bookingArr[0] })
   }
-  componentWillFocus(){
+  componentWillFocus() {
     let bookingId = this.props.route.params.id
     let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
     if (!bookingArr || bookingArr.length == 0) {
-      //redirect
-      this.props.forwardTo('merchantOverview')
+      //if not in store, load from API
+      getBookingDetail(this.props.user.xsession, bookingId,
+        (error, data) => {
+          console.log('Err Booking Detail', error)
+          console.log('Booking Detail', data)
+          if (data.updated) {
+            this.setState({ bookingDetail: data.updated.bookingInfo })
+            return
+          }
+        }
+      )
     }
     this.setState({ bookingDetail: bookingArr[0] })
   }

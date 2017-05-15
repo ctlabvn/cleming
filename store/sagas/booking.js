@@ -12,23 +12,37 @@ const requestBookingList = createRequestSaga({
     success: [
         (data) => {
             console.log('Load booking', data)
-            if (data.code){
-                return setToast('Load Booking Fail: '+JSON.stringify(data), 'error')
+            if (data.code) {
+                return setToast('Load Booking Fail: ' + JSON.stringify(data), 'error')
             }
             return setBookingList(data.updated)
-        }          
+        }
     ],
+
     failure: [
         (data) => {
             console.log('Booking Err', data)
-            return setToast('Booking Fail: '+JSON.stringify(data), 'error')
+            return setToast('Booking Fail: ' + JSON.stringify(data), 'error')
         }
     ],
 })
+
+const requestBookingDetail = createRequestSaga({
+    request: api.booking.detail,
+    key: 'booking/detail',
+    cancel: 'app/logout',
+    failure: [
+        (data) => {
+            return setToast('Booking Item Fail: ' + JSON.stringify(data), 'error')
+        }
+    ]
+})
+
 export default [
     function* fetchWatcher() {
-        yield [            
+        yield [
             takeLatest('booking/list', requestBookingList),
+            takeLatest('booking/detail', requestBookingDetail)
         ]
     },
 ]

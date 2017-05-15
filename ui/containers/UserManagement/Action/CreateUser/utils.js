@@ -33,7 +33,7 @@ export class renderGroup extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
+    /*console.log(nextProps)
     console.log(this.state.employeeListPlace)
     console.log(nextProps.employeeListPlace)
     console.log(_.isEqual(this.state.employeeListPlace, nextProps.employeeListPlace))
@@ -48,7 +48,7 @@ export class renderGroup extends Component {
     }
     this.setState({
       employeeListPlace: nextProps.employeeListPlace
-    })
+    })*/
   }
   
   componentDidMount() {

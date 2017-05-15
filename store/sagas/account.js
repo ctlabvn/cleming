@@ -71,6 +71,39 @@ const requestGetGeneratedPassword = createRequestSaga({
   ],
 })
 
+const requestUpdateEmployeeInfo = createRequestSaga({
+  request: api.account.updateEmployeeInfo,
+  key: 'updateEmployeeInfo',
+  success: [
+    
+  ],
+  failure: [
+    () => setToast('Couldn\'t update employee', 'error')
+  ],
+})
+
+const requestCreateEmployeeInfo = createRequestSaga({
+  request: api.account.createEmployeeInfo,
+  key: 'createEmployeeInfo',
+  success: [
+  
+  ],
+  failure: [
+    () => setToast('Couldn\'t create employee', 'error')
+  ],
+})
+
+const requestDeleteEmployeeInfo = createRequestSaga({
+  request: api.account.deleteEmployeeInfo,
+  key: 'deleteEmployeeInfo',
+  success: [
+  
+  ],
+  failure: [
+    () => setToast('Couldn\'t delete employee', 'error')
+  ],
+})
+
 
 // root saga reducer
 export default [
@@ -84,7 +117,10 @@ export default [
           takeLatest('app/changePassword', requestChangePassword),
           takeLatest('app/resetPassword', requestResetPassword),
           takeLatest('app/getListEmployee', requestGetListEmployee),
-          takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword)
+          takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword),
+          takeLatest('app/updateEmployeeInfo', requestUpdateEmployeeInfo),
+          takeLatest('app/createEmployeeInfo', requestCreateEmployeeInfo),
+          takeLatest('app/deleteEmployeeInfo', requestDeleteEmployeeInfo)
         ]
     },
 ]

@@ -29,7 +29,6 @@ export default class extends Component {
         super(props)
         this.state = {
             loading: false,
-            refreshing: false,
             loadingMore: false
         }
     }
@@ -169,18 +168,18 @@ export default class extends Component {
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ refreshing: true })
+        this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
              this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value,
-                () => this.setState({ refreshing: false })
+                () => this.setState({ loading: false })
             )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value,
-                () => this.setState({ refreshing: false })
+                () => this.setState({ loading: false })
             )
         }
     }
@@ -316,9 +315,8 @@ export default class extends Component {
                     <Content
                         padder
                         onEndReached={this._loadMore} onRefresh={this._onRefresh}
-                        refreshing={this.state.refreshing}
+                        refreshing={this.state.loading}
                     >
-                        {this.state.loading && <Spinner color='red' />}
                         <List dataArray={transaction.listTransaction||[]}
                             renderRow={(item) => this._renderTransactionItem(item)}
                             pageSize={10}
