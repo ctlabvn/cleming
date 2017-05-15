@@ -85,10 +85,10 @@ export default class extends Component {
     }        
   }
 
-  _handleNotiRead = (e) => {
+  _handleNotiRead = (e) => {    
     this.props.app.showNotification({
-      title: "My Notification Title", 
-      message: "My Notification Message", 
+      title: "My Push Token", 
+      message: this.props.app.pushToken,
     })
   }
 

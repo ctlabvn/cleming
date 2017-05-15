@@ -24,6 +24,7 @@ import Popover from '~/ui/components/Popover'
 import { matchPath } from 'react-router'
 import { connect } from 'react-redux'
 
+import { SENDER_ID } from '~/store/constants/api'
 // should show error if not found
 import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
@@ -104,8 +105,9 @@ export default class App extends Component {
 
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function(token) {
-          console.log( 'TOKEN:', token )
+      onRegister: (token) => {
+          // console.log( 'TOKEN:', token )
+          this.pushToken = token.token
       },
 
       // (required) Called when a remote or local notification is opened or received
@@ -113,8 +115,8 @@ export default class App extends Component {
           console.log( 'NOTIFICATION:', notification )
       },
 
-      senderID: '496598136742',
-    })       
+      senderID: SENDER_ID,
+    })      
   }
 
   // replace view from stack, hard code but have high performance

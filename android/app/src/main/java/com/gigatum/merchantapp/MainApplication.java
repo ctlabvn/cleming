@@ -1,10 +1,11 @@
-package com.merchantapp;
+package com.gigatum.merchantapp;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.gigatum.merchantapp.BuildConfig;
 import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.horcrux.svg.SvgPackage;

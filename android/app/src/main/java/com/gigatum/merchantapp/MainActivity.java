@@ -1,4 +1,4 @@
-package com.merchantapp;
+package com.gigatum.merchantapp;
 
 import com.facebook.react.ReactActivity;
 
