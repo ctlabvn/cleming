@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "496598136742",
+    "firebase_url": "https://clingmemerchantapp.firebaseio.com",
+    "project_id": "clingmemerchantapp",
+    "storage_bucket": "clingmemerchantapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496598136742:android:b44a899ebd5f6e34",
+        "android_client_info": {
+          "package_name": "com.merchantapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "496598136742-2nc9jcohe2pnqvbn7tlg40qjfo81414e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO0zCMiZjE9pZ9tyco7I1cdoezL44LJ3Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
