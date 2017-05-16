@@ -106,7 +106,7 @@ export default class TransactionDetail extends Component {
         // let transactionInfo = this.props.listTransaction.filter((item) => item.dealTransactionIdDisplay == transactionId)[0]
 
         let transactionInfo = this.state.transactionInfo
-
+        console.log('transaction info', transactionInfo)
         const transactionStatus = 'WAITING'
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return (
@@ -182,7 +182,7 @@ export default class TransactionDetail extends Component {
 
 
                     <View style={styles.rowPadding}>
-                        <Text small style={styles.mark}>Đánh dấu: {moment(transactionInfo).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <Text small style={styles.mark}>Đánh dấu: {moment(transactionInfo.markTimeDeal*1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                         {this._renderStatus(transactionInfo.transactionStatus)}
                     </View>
 
@@ -206,7 +206,7 @@ export default class TransactionDetail extends Component {
 
 
                     <View style={{ ...styles.rowPadding, ...styles.center }}>
-                        <Text small>Xuất hóa đơn: {moment(transactionInfo.invoiceTime).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <Text small>Xuất hóa đơn: {moment(transactionInfo.invoiceTime*1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                     </View>
 
                     <View style={styles.invoiceBlock}>

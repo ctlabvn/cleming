@@ -44,7 +44,7 @@ const requestLogin = createRequestSaga({
         () => setToast('Logged successfully!!!'),            
     ],
     failure: [
-        () => setToast('Couldn\'t login', 'error')
+        (data) => setToast('Couldn\'t login: '+JSON.stringify(data), 'error')
     ],
 })
 
