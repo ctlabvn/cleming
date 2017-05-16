@@ -41,8 +41,33 @@ export class renderGroup extends Component {
     
   }
   
+  componentWillReceiveProps(nextProps) {
+    const newState = this.state.fields.slice(0)
+    newState.map((c, index) => {
+      newState[index].checked = false
+      nextProps.employeeListPlace.map((place, placeIndex) => {
+        if (place.placeId == c.placeId) {
+          newState[index].checked = true
+        }
+      })
+    })
+    this.setState({
+      fields: newState
+    })
+  }
+  
   componentDidMount() {
-    
+    const newState = this.state.fields.slice(0)
+    newState.map((c, index) => {
+      this.props.employeeListPlace.map((place, placeIndex) => {
+        if (place.placeId == c.placeId) {
+          newState[index].checked = true
+        }
+      })
+    })
+    this.setState({
+      fields: newState
+    })
   }
   
   getSelected(){

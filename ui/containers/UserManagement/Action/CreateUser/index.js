@@ -37,7 +37,7 @@ const formSelector = formValueSelector('CreateUserForm')
   listEmployee: accountSelectors.getListEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
-  abc: formSelector(state, 'name', 'phone')
+  formValues: formSelector(state, 'name', 'email', 'phone', 'permission')
 }), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
     
@@ -49,7 +49,10 @@ const formSelector = formValueSelector('CreateUserForm')
           name: '',
           email: '',
           phone: '',
-          permission: "Nhân Viên"
+          permission: {
+            id: 1,
+            name: "Nhân Viên"
+          }
         },
         ...ownProps, ...stateProps, ...dispatchProps,
       })
@@ -67,7 +70,10 @@ const formSelector = formValueSelector('CreateUserForm')
         name: employeeDetail.userName,
         email: employeeDetail.email,
         phone: employeeDetail.phoneNumber,
-        permission: permission
+        permission: {
+          id: employeeDetail.titleType,
+          name: permission
+        }
       },
       ...ownProps, ...stateProps, ...dispatchProps,
     })
@@ -86,7 +92,8 @@ export default class CreateUserContainer extends Component {
           checkAll: false,
           employeeDetail: {},
           rowIDOfEmployee: 0,
-          chosenListPlaceID: []
+          chosenListPlaceID: [],
+          currentJob: props.formValues.permission
         }
         
     }
@@ -103,31 +110,29 @@ export default class CreateUserContainer extends Component {
         this.props.change('name', employeeDetail.userName)
         this.props.change('email', employeeDetail.email)
         this.props.change('phone', employeeDetail.phoneNumber)
-        this.props.change('permission', permission)
         employeeDetail.listPlace.map((place, index) => {
           listPlaceID.push(place.placeId)
         })
         this.setState({
-          chosenListPlaceID: listPlaceID
+          chosenListPlaceID: listPlaceID,
+          currentJob: {
+            id: employeeDetail.titleType,
+            name: permission
+          }
         })
       } else {
         this.props.change('GroupAddress', this.props.place.listPlace)
         this.props.change('name', '')
         this.props.change('email', '')
         this.props.change('phone', '')
-        this.props.change('permission', "Nhân Viên")
         this.setState({
-          chosenListPlaceID: []
+          chosenListPlaceID: [],
+          currentJob: {
+            id: 1,
+            name: "Nhân Viên"
+          }
         })
       }
-    }
-    
-    componentDidMount() {
-      
-    }
-  
-    componentWillReceiveProps(nextProps) {
-      
     }
     
     onFromTimeFocus() {
@@ -172,21 +177,24 @@ export default class CreateUserContainer extends Component {
       this.props.getGeneratedPassword(this.props.session)
     }
     
-    onSubmit = ({name, email, phone}) => {
-      console.log(name)
-    }
-    
     onSubmitUser() {
-      const {handleSubmit} = this.props
       let fromTime = moment(this.state.fromTime).format("HH:mm")
       let toTime = moment(this.state.toTime).format("HH:mm")
-      handleSubmit(this.onSubmit)
-      console.log(this.props.abc)
+      console.log(this.props.formValues)
     }
     
     handleGetListPlaceFromArrayField(data) {
       this.setState({
         chosenListPlaceID: data
+      })
+    }
+  
+    handleChangePlace(item) {
+      this.setState({
+        currentJob: {
+          id: item.id,
+          name: item.name
+        }
       })
     }
   
@@ -234,13 +242,11 @@ export default class CreateUserContainer extends Component {
                             <TopDropdown
                               ref='placeDropdown'
                               dropdownValues={[
-                                {id: 1, name: "Nhan Vien"},
+                                {id: 1, name: "Nhân Viên"},
                                 {id: 2, name: "Admin"}
                               ]}
-                              //onSelect={this._handleChangePlace.bind(this)}
-                              selectedOption={{
-                                id: 1, name: "Nhan Vien"
-                              }} />
+                              onSelect={this.handleChangePlace.bind(this)}
+                              selectedOption={this.state.currentJob} />
                         </View>
                         <Dash
                             dashLength={2}
