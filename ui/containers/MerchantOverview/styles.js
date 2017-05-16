@@ -4,13 +4,23 @@ export default {
         backgroundColor: BACKGROUND_COLOR_1,
         height: '100%',
         width: '100%',
-        paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
+        // paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
     },
     contentContainer: {
         marginTop: 50,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    topDropdownPlaceHolder: {
+        height: 50, 
+        width: '100%',
+        backgroundColor: '#00a9d4',  
+        zIndex: 1000, 
+        top: 0, 
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'center' 
     },
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
