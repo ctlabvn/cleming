@@ -51,9 +51,9 @@ const formSelector = formValueSelector('CreateUserForm')
         enableReinitialize: true,
         initialValues: {
           GroupAddress: stateProps.place.listPlace,
-          name: '',
-          email: '',
-          phone: '',
+          name: 'Clingme',
+          email: 'Abc@gmail.com',
+          phone: '1234567810',
           permission: {
             id: 1,
             name: "Nhân Viên"
@@ -189,7 +189,7 @@ export default class CreateUserContainer extends Component {
       })
       let userInfo = {}
       let listPlaceId = this.state.chosenListPlaceID.join(";")
-      userInfo.fullname = this.props.formValues.name
+      userInfo.fullName = this.props.formValues.name
       userInfo.phoneNumber = this.props.formValues.phone
       userInfo.password = md5(this.props.generatedPassword)
       userInfo.email = this.props.formValues.email

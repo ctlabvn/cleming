@@ -83,7 +83,7 @@ export class renderGroup extends Component {
     console.log(newState[index].checked)
     newState[index].checked = !newState[index].checked
     console.log(newState[index].checked)
-    console.log(newState)
+    console.log(newState[index])
     this.setState({fields: newState}, () => {
       this.props.handleGetListPlaceFromArrayField(this.getSelected())
     })

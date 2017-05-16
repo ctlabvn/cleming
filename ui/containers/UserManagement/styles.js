@@ -33,7 +33,8 @@ export default {
         color: '#7e7e7e'
     },
     subTitleText: {
-        color: '#bcbcbc'
+        color: '#bcbcbc',
+        height: 20
     },
     topLeftGrid: {
         borderRightWidth: 1,

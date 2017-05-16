@@ -40,6 +40,25 @@ class UserManagement extends Component {
         }
     }
     
+    componentWillReceiveProps(nextProps) {
+      if (this.props.listEmployee != nextProps.listEmployee || this.props.user != nextProps.user) {
+        let data = []
+        for (let i = 0; i < 1; i++) {
+          data.push({
+            owner: nextProps.user,
+            employeeList: nextProps.listEmployee
+          })
+        }
+        this.setState({
+          data: data
+        }, () => {
+          this.setState({
+            isFetchingData: false
+          })
+        })
+      }
+    }
+    
     componentDidMount() {
       this.setState({
           isFetchingData: true
