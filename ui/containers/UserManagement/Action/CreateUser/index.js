@@ -43,9 +43,6 @@ const formSelector = formValueSelector('CreateUserForm')
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission')
 }), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
-    let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
-    
-
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
@@ -62,6 +59,7 @@ const formSelector = formValueSelector('CreateUserForm')
         ...ownProps, ...stateProps, ...dispatchProps,
       })
     }
+    let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
