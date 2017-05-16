@@ -59,8 +59,10 @@ export const apiCall = (url, options, token = null) =>
   token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
 
 // must have data to post, put should not return data
-export const apiPost = (url, data, token, method='POST') => 
-  apiCall(url, { method, body: JSON.stringify(data) }, token)
+export const apiPost = (url, data, token, method='POST') => {
+  console.log(data)
+  return apiCall(url, { method, body: JSON.stringify(data) }, token)
+}
 
 export const apiGet = (url, data, token, method='GET') => 
   apiCall(url + '?' + urlEncode(data), { method }, token)

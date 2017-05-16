@@ -46,15 +46,15 @@ export default {
   },
   
   updateEmployeeInfo(session, updatedData) {
-    return apiPost('/merchantapp/edit-subaccount', {updatedData}, session)
+    return apiPost('/merchantapp/edit-subaccount', updatedData, session)
   },
   
   createEmployeeInfo(session, updatedData) {
-    return apiPost('/merchantapp/add-subaccount', {updatedData}, session)
+    return apiPost('/merchantapp/add-subaccount', updatedData, session)
   },
   
   deleteEmployeeInfo(session, bizAccountId) {
-    return apiPost('//merchantapp/delete-subaccount', {bizAccountId}, session)
+    return apiPost('/merchantapp/delete-subaccount', {bizAccountId}, session)
   }
 
 }

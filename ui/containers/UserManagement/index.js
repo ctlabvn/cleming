@@ -165,13 +165,15 @@ class UserManagement extends Component {
     
     onUpdateInfoPress() {
         this.setState({
-            updateInfoChecked: !this.state.updateInfoChecked
+            updateInfoChecked: !this.state.updateInfoChecked,
+            deleteAccountChecked: false
         })
     }
     
     onDeleteAccountPress() {
         this.setState({
-            deleteAccountChecked: !this.state.deleteAccountChecked
+            deleteAccountChecked: !this.state.deleteAccountChecked,
+            updateInfoChecked: false
         })
     }
     
@@ -188,6 +190,31 @@ class UserManagement extends Component {
           updateInfoChecked: !this.state.updateInfoChecked
         })
         forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
+      } else if (this.state.deleteAccountChecked) {
+        this.setState({
+          isFetchingData: true
+        })
+        this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.state.rowIDOfEmployee].bizAccountId, () => {
+          this.props.getListEmployee(this.props.session, () => {
+            let data = []
+            for (let i = 0; i < 1; i++) {
+              data.push({
+                owner: this.props.user,
+                employeeList: this.props.listEmployee
+              })
+            }
+            this.setState({
+              data: data
+            }, () => {
+              this.setState({
+                isFetchingData: false
+              })
+            })
+          })
+        })
+        this.setState({
+          deleteAccountChecked: !this.state.deleteAccountChecked
+        })
       }
       this.setState({
         modalOpen: false

@@ -2,9 +2,8 @@
  * Created by vjtc0n on 5/5/17.
  */
 import React, {Component} from 'react'
-import { Field, FieldArray } from 'redux-form'
 import {
-    ListItem, Text, View, Grid, Col, CheckBox
+    ListItem, Text, View, Grid, Col, CheckBox, List
 } from 'native-base'
 
 import _ from 'underscore'
@@ -42,18 +41,20 @@ export class renderGroup extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    const newState = this.state.fields.slice(0)
-    newState.map((c, index) => {
-      newState[index].checked = false
-      nextProps.employeeListPlace.map((place, placeIndex) => {
-        if (place.placeId == c.placeId) {
-          newState[index].checked = true
-        }
+    if (this.props.employeeListPlace != nextProps.employeeListPlace) {
+      const newState = this.state.fields.slice(0)
+      newState.map((c, index) => {
+        newState[index].checked = false
+        nextProps.employeeListPlace.map((place, placeIndex) => {
+          if (place.placeId == c.placeId) {
+            newState[index].checked = true
+          }
+        })
       })
-    })
-    this.setState({
-      fields: newState
-    })
+      this.setState({
+        fields: newState
+      })
+    }
   }
   
   componentDidMount() {
@@ -67,6 +68,8 @@ export class renderGroup extends Component {
     })
     this.setState({
       fields: newState
+    }, () => {
+      this.props.handleGetListPlaceFromArrayField(this.getSelected())
     })
   }
   
@@ -75,8 +78,12 @@ export class renderGroup extends Component {
   }
   
   handleCheck(index){
+    console.log(index)
     const newState = this.state.fields.slice(0)
+    console.log(newState[index].checked)
     newState[index].checked = !newState[index].checked
+    console.log(newState[index].checked)
+    console.log(newState)
     this.setState({fields: newState}, () => {
       this.props.handleGetListPlaceFromArrayField(this.getSelected())
     })
@@ -96,7 +103,6 @@ export class renderGroup extends Component {
   }
   
   render() {
-    let { employeeListPlace } = this.props
     return (
       <View>
         <Grid>
