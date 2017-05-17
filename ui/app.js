@@ -227,7 +227,7 @@ export default class App extends Component {
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const {router, goBack} = this.props
-      if (router.route === 'home') {
+      if (router.route === 'merchantOverview') {
         return false
       }
       // go back
