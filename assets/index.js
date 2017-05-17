@@ -14,3 +14,4 @@ export const relationshipIcon = require('./images/relationship.png')
 export const documentIcon = require('./images/document.png')
 
 export const storeTransparent = require('./images/store_without_background.png')
+export const storeFilled      = require('./images/store_with_background.jpg')

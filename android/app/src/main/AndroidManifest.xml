@@ -9,7 +9,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
+    <!--<uses-feature android:name="android.hardware.location.gps" />-->
 
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
@@ -31,6 +35,9 @@
       android:icon="@mipmap/app_icon"
       android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB6tl0mdEfr1Jxj75sg-Nq7kaaIYnhh_sk"/>
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
