@@ -46,3 +46,8 @@ export const saveRefreshToken = (data) => ({
 export const removeLoggedUser = () => ({
   type: 'app/removeLoggedUser',  
 })
+
+export const setUserAvatar = (avatarUrl) => ({
+  type: 'app/setUserAvatar',
+  payload: avatarUrl,
+})

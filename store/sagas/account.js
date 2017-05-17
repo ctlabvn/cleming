@@ -10,6 +10,10 @@ import {
     setGeneratedPassword
 } from '~/store/actions/account'
 
+import {
+  setUserAvatar
+} from '~/store/actions/auth'
+
 
 const requestGetProfile = createRequestSaga({
     request: api.account.getProfile,
@@ -104,6 +108,17 @@ const requestDeleteEmployeeInfo = createRequestSaga({
   ],
 })
 
+const requestUpdateOwnerAvatar = createRequestSaga({
+  request: api.account.updateOwnerAvatar,
+  key: 'updateOwnerAvatar',
+  success: [
+    (data) => setUserAvatar(data),
+  ],
+  failure: [
+    () => setToast('Couldn\'t upload avatar', 'error')
+  ],
+})
+
 
 // root saga reducer
 export default [
@@ -120,7 +135,8 @@ export default [
           takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword),
           takeLatest('app/updateEmployeeInfo', requestUpdateEmployeeInfo),
           takeLatest('app/createEmployeeInfo', requestCreateEmployeeInfo),
-          takeLatest('app/deleteEmployeeInfo', requestDeleteEmployeeInfo)
+          takeLatest('app/deleteEmployeeInfo', requestDeleteEmployeeInfo),
+          takeLatest('app/updateOwnerAvatar', requestUpdateOwnerAvatar)
         ]
     },
 ]

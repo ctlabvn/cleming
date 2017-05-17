@@ -17,13 +17,19 @@ import {
 } from '~/ui/elements/Form'
 import Icon from '~/ui/elements/Icon'
 import PhotoChooser from '~/ui/components/PhotoChooser'
+import CacheableImage from '~/ui/components/CacheableImage'
+
+import * as authSelectors from '~/store/selectors/auth'
+import * as accountActions from '~/store/actions/account'
 
 import styles from './styles'
+const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
-    
-}), {}, (stateProps, dispatchProps, ownProps)=>({
+  session: authSelectors.getSession(state),
+  user: authSelectors.getUser(state)
+}), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>({
     initialValues: {
         
     },
@@ -39,9 +45,29 @@ export default class UpdateUserContainer extends Component {
         }
     }
     
-    handleChoosePhoto = ({uri, data})=>{
-        // update 'data:image/jpeg;base64,' + data
-        this.setState({avatar:{uri}})
+    handleChoosePhoto = (response)=>{
+      console.log(response)
+      let formData = new FormData()
+      formData.append("avatarFile", response.uri)
+      //formData.append('Content-Type', 'image/jpeg');
+      let xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.open('POST', 'http://dev.clingme.net:9099/edit/avatar');
+      xhr.setRequestHeader('X-SESSION', this.props.session)
+      xhr.setRequestHeader('X-VERSION', 1)
+      xhr.setRequestHeader('X-AUTH', '')
+      xhr.setRequestHeader('X-DATA-VERSION', 1)
+      xhr.setRequestHeader('X-TIMESTAMP', Math.floor((new Date().getTime()) / 1000))
+      xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+      xhr.setRequestHeader("cache-control", "no-cache");
+      xhr.setRequestHeader('Accept', 'application/json')
+      xhr.addEventListener("readystatechange", function () {
+        console.log(xhr)
+      });
+  
+      xhr.send(formData);
+      /*formData.append('avatarFile', uri.replace('file://', ''))
+      this.props.updateOwnerAvatar(this.props.session, formData)*/
     }
     
     render() {
@@ -50,7 +76,9 @@ export default class UpdateUserContainer extends Component {
                 <Content style={{backgroundColor: 'white'}}>
                     <View style={{paddingLeft: 15, paddingRight: 15}}>
                         <View style={styles.avatarContainer}>
-                            <View style={{width: 120, height: 120, backgroundColor: '#d9d9d9', borderRadius: 60}}/>
+                            <CacheableImage
+                              style={styles.avatar}
+                              source={{uri: this.props.user.avatar || img}} />
                             <PhotoChooser style={styles.photoIcon} onSuccess={this.handleChoosePhoto}/>
                         </View>
                         <View style={styles.inputContainer}>
