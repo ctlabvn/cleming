@@ -35,4 +35,10 @@ export default {
         zIndex:10,
         marginTop: 20
     },
+    avatar: {
+      width: 120,
+      height: 120,
+      backgroundColor: '#d9d9d9',
+      borderRadius: 60
+    }
 }

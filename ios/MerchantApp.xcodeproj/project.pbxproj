@@ -13,6 +13,7 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* MerchantAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MerchantAppTests.m */; };
+		09DD1B4C41DB4B07B8BF4C5F /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2795A2E6C8FA4833A47C0547 /* SimpleLineIcons.ttf */; };
 		0FF6B924D45F4A0584BBEB12 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9785EAACEE39414BB3EB9CFA /* Rubik-Bold.ttf */; };
 		11C1B5A0E3394A68B538CB29 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B0738855D4864180A5FD14DA /* EvilIcons.ttf */; };
 		1269B2B2A6CF416FA4D797E4 /* Microsoft Sans Serif.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4164715D85294712AEEF5CED /* Microsoft Sans Serif.ttf */; };
@@ -24,6 +25,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+<<<<<<< HEAD
+		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		14F05DDB28754E09AD91DBD9 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21392F52503B490DB1FCD60A /* libRNFetchBlob.a */; };
+=======
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 		1567D5C94F66427DBC311FAD /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E51D8B9E474E4884BAFF7E6F /* Roboto_medium.ttf */; };
 		1C5F5FA83FC142E387F147E5 /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D09B4B7E6C2D4A6BA8C06089 /* Arial.ttf */; };
 		1CC2BED014954CF581AAB1A7 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 172CAE934BC84898B6BDF826 /* Arial Black.ttf */; };
@@ -343,6 +349,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		C2B8DCD71ECBF28C00977603 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC2E2C6728A3423E8CBBB3A5 /* RNFetchBlob.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A15C300E1CD25C330074CB35;
+			remoteInfo = RNFetchBlob;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -370,9 +383,13 @@
 		14000322DAB14E0BA2CDCC84 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		172CAE934BC84898B6BDF826 /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
+		21392F52503B490DB1FCD60A /* libRNFetchBlob.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFetchBlob.a; sourceTree = "<group>"; };
 		2294767123CF43F08093C6E7 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		24DDD9441EC999CF00B391DF /* MerchantApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MerchantApp.entitlements; path = MerchantApp/MerchantApp.entitlements; sourceTree = "<group>"; };
+<<<<<<< HEAD
+		2795A2E6C8FA4833A47C0547 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+=======
 		24DDDA391ECC085500B391DF /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "Pods/../build/Debug-iphoneos/React/libReact.a"; sourceTree = "<group>"; };
 		24DDDC371ECC2DC600B391DF /* AIRGMSMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSMarker.h; sourceTree = "<group>"; };
 		24DDDC381ECC2DC600B391DF /* AIRGMSMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
@@ -445,6 +462,7 @@
 		24DDDC7D1ECC2DC600B391DF /* SMCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMCalloutView.m; sourceTree = "<group>"; };
 		24DDDC7E1ECC2DC600B391DF /* RCTConvert+AirMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+AirMap.h"; sourceTree = "<group>"; };
 		24DDDC7F1ECC2DC600B391DF /* RCTConvert+AirMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+AirMap.m"; sourceTree = "<group>"; };
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 		2981C30D21664DF7AF173FCD /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		2B97CB47DD99488EB2306242 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		2DEF85572158489B86FA4153 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
@@ -486,6 +504,7 @@
 		E51D8B9E474E4884BAFF7E6F /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		E648D0B6A7E94491A763D4CB /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		E97137DAF2314D8A8AB04998 /* SF-UI-Text-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-UI-Text-Regular.otf"; path = "../node_modules/native-base/Fonts/SF-UI-Text-Regular.otf"; sourceTree = "<group>"; };
+		EC2E2C6728A3423E8CBBB3A5 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/react-native-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		F0B9740FD8E14FCC9F853392 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F1E632A32B364466BCCB8F9A /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		F32476BA77CB4914933C9E90 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
@@ -523,8 +542,12 @@
 				D52DECED0849443FB50E18D3 /* libRNImagePicker.a in Frameworks */,
 				95AD3AA8A37543A6AAB15D6A /* libRNFS.a in Frameworks */,
 				61FB672DF3F44D9A991FCA07 /* libBVLinearGradient.a in Frameworks */,
+<<<<<<< HEAD
+				14F05DDB28754E09AD91DBD9 /* libRNFetchBlob.a in Frameworks */,
+=======
 				6DC96094E4F34B529D52AE55 /* libRNDeviceInfo.a in Frameworks */,
 				A12A279ACE2BEF2776CB19DC /* Pods_MerchantApp.framework in Frameworks */,
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -847,8 +870,12 @@
 				604E75DF00924444AEA26F5D /* RNImagePicker.xcodeproj */,
 				2DEF85572158489B86FA4153 /* RNFS.xcodeproj */,
 				C3013A559B744690BBA98ED1 /* BVLinearGradient.xcodeproj */,
+<<<<<<< HEAD
+				EC2E2C6728A3423E8CBBB3A5 /* RNFetchBlob.xcodeproj */,
+=======
 				5049ADE382544156B9E7B833 /* RNDeviceInfo.xcodeproj */,
 				0271962DE4F84D4D8F1EA166 /* AirMaps.xcodeproj */,
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -882,6 +909,14 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* MerchantApp.app */,
 				00E356EE1AD99517003FC87E /* MerchantAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2B8DCB81ECBF28C00977603 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2B8DCD81ECBF28C00977603 /* libRNFetchBlob.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -924,7 +959,11 @@
 				7F8E285A6B4946DCA60D42DA /* Times New Roman.ttf */,
 				F1E632A32B364466BCCB8F9A /* Zocial.ttf */,
 				8DCD6D2DF7234AB88CE260DB /* clingme_font.ttf */,
+<<<<<<< HEAD
+				2795A2E6C8FA4833A47C0547 /* SimpleLineIcons.ttf */,
+=======
 				FC78620AE92740D7A0BA3537 /* SimpleLineIcons.ttf */,
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1068,8 +1107,13 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+<<<<<<< HEAD
+					ProductGroup = C2B8DCB81ECBF28C00977603 /* Products */;
+					ProjectRef = EC2E2C6728A3423E8CBBB3A5 /* RNFetchBlob.xcodeproj */;
+=======
 					ProductGroup = 24DDD9681ECBF8FB00B391DF /* Products */;
 					ProjectRef = 5049ADE382544156B9E7B833 /* RNDeviceInfo.xcodeproj */;
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				},
 				{
 					ProductGroup = 24A09DF01EB202B100E72448 /* Products */;
@@ -1324,6 +1368,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C2B8DCD81ECBF28C00977603 /* libRNFetchBlob.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFetchBlob.a;
+			remoteRef = C2B8DCD71ECBF28C00977603 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1375,7 +1426,11 @@
 				E523666BFCE241D487F15361 /* Times New Roman.ttf in Resources */,
 				71ACE451B16D4C5BAA6B910B /* Zocial.ttf in Resources */,
 				D3E068BC2C754E958D6585EF /* clingme_font.ttf in Resources */,
+<<<<<<< HEAD
+				09DD1B4C41DB4B07B8BF4C5F /* SimpleLineIcons.ttf in Resources */,
+=======
 				8CF0E47B1D534F6B9B4D85DD /* SimpleLineIcons.ttf in Resources */,
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1534,10 +1589,14 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+=======
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1549,9 +1608,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1575,10 +1637,14 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
+<<<<<<< HEAD
+					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+=======
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1590,9 +1656,12 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
+=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1622,10 +1691,14 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+<<<<<<< HEAD
+					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+=======
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1663,10 +1736,14 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
+<<<<<<< HEAD
+					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
+=======
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1681,8 +1758,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
+<<<<<<< HEAD
+				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+=======
 				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
 				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+>>>>>>> 2615f6ce1a07fab88d839e9ebdc4c8f72ce208f4
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

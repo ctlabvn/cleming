@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { 
   Icon, 
   View,
+  Button
 } from 'native-base'
 
 import ImagePicker from 'react-native-image-picker'
@@ -35,9 +36,9 @@ export default class extends Component {
   render() {
     const {style} = this.props
     return (
-      <View style={{...styles.container, ...style}}>
-        <Icon name="photo-camera" style={styles.photoIcon} onPress={this._handleImagePickerOpen} />
-      </View>
+      <Button style={{...styles.container, ...style}} onPress={this._handleImagePickerOpen}>
+        <Icon name="photo-camera" style={styles.photoIcon}/>
+      </Button>
     )
   }
 }
