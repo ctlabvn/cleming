@@ -166,10 +166,10 @@ export default class MerchantOverview extends PureComponent {
         dropdownValues = [defaultSelected, ...dropdownValues]
         let mainContainer = null
         let topDropdown = null // fix break ui first time load
-        if (!place || !place.listPlace || !place.statistic) {
-            mainContainer = this.renderLoading()
-            topDropdown = <View style={styles.topDropdownPlaceHolder}><Text white>Đang tải địa điểm...</Text></View>
-        } else {
+        // if (!place || !place.listPlace || !place.statistic) {
+        //     mainContainer = this.renderLoading()
+        //     topDropdown = <View style={styles.topDropdownPlaceHolder}><Text white>Đang tải địa điểm...</Text></View>
+        // } else {
             topDropdown = (
                 <TopDropdown
                     ref='placeDropdown'
@@ -177,9 +177,12 @@ export default class MerchantOverview extends PureComponent {
                     onSelect={this._handleChangePlace.bind(this)}
                     selectedOption={defaultSelected} />
             )
-            mainContainer = this.renderMainContainer()
+            if (place && place.listPlace && place.statistic){
+                mainContainer = this.renderMainContainer()    
+            }
+            
         
-        }
+        // }
         // console.warn('Place from store: '+JSON.stringify(dropdownValues))
         return (
             <Container style={styles.container}>

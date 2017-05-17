@@ -6,9 +6,7 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import rootReducer from './reducers'
 import rootSaga from './sagas'
 
-const initialState = {
-  router:{route:'login', stack:[]},
-}
+const initialState = {}
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware()

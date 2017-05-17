@@ -32,7 +32,7 @@ import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 
-console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId())
+// console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId())
 
 const getPage = (url) => {  
   for(route in routes) {
@@ -111,7 +111,7 @@ export default class App extends Component {
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
-          console.warn( 'TOKEN:', token)
+          // console.warn( 'TOKEN:', token)
           this.pushToken = token.token
       },
 
