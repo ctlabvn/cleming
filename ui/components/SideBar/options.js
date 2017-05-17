@@ -12,6 +12,11 @@ export default {
       icon: 'setting'
     },
     {
+      name: 'Khách hàng tiềm năng',
+      route: 'report',
+      icon: 'setting'
+    },
+    {
       name: 'Danh sách giao dịch',
       route: 'transactionList',
       icon: 'setting'

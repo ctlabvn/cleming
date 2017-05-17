@@ -138,6 +138,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fetch-blob')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile ('com.google.android.gms:play-services-gcm:10.2.0') {

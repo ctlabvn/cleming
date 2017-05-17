@@ -55,6 +55,10 @@ export default {
   
   deleteEmployeeInfo(session, bizAccountId) {
     return apiPost('/merchantapp/delete-subaccount', {bizAccountId}, session)
+  },
+  
+  updateOwnerAvatar(session, avatarFile) {
+    return apiPost('/edit/avatar', avatarFile, session)
   }
 
 }

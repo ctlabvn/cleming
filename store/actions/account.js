@@ -61,3 +61,8 @@ export const deleteEmployeeInfo = (...args) => ({
   type: 'app/deleteEmployeeInfo',
   args
 })
+
+export const updateOwnerAvatar = (...args) => ({
+  type: 'app/updateOwnerAvatar',
+  args
+})

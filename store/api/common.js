@@ -29,7 +29,6 @@ export const fetchJson = (url, options = {}, base = API_BASE) => (
       // 'Content-Type':'application/x-www-form-urlencoded',   
       // Origin: API_BASE,      
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
       'X-VERSION': 1,
       'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
       'X-DATA-VERSION': 1,
@@ -60,7 +59,6 @@ export const apiCall = (url, options, token = null) =>
 
 // must have data to post, put should not return data
 export const apiPost = (url, data, token, method='POST') => {
-  console.log(data)
   return apiCall(url, { method, body: JSON.stringify(data) }, token)
 }
 

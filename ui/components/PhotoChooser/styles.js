@@ -1,10 +1,13 @@
 export default {
   container: {
     backgroundColor:'#fff',
-    padding:5,
+    paddingLeft: 0,
     width:30,
     height:30,
     borderRadius:15,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingTop: 0
   },
   photoIcon:{
     fontSize:20,
