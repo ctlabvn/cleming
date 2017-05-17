@@ -44,6 +44,9 @@ export default (variables = variable) => {
       },
       '.light': {
         color: 'lightgrey'
+      },
+      '.transparent': {
+        color: 'transparent'
       }
   };
 
