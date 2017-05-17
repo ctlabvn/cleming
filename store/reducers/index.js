@@ -13,6 +13,7 @@ import { transaction } from './transaction'
 import { place } from './place'
 import { order } from './order'
 import { booking } from './booking'
+import { report } from './report'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
   form,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   place,
   booking,
   order,
+  report
 })
 
 export default rootReducer
