@@ -30,6 +30,10 @@ import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
 import routes from './routes'
 
+import DeviceInfo from 'react-native-device-info'
+
+console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId())
+
 const getPage = (url) => {  
   for(route in routes) {
     const pathname = url.split('?')[0]

@@ -23,7 +23,7 @@ import Login from './containers/Login'
 // import Vault from './containers/Vault'
 // import Message from './containers/Message/ChatAvatarList'
 // import Interaction from './containers/Interaction'
-// import Calendar from './containers/Calendar'
+import Help from './containers/Help'
 import UserManagement from './containers/UserManagement'
 import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
@@ -230,10 +230,10 @@ export default {
         headerType: 'back',
         footerType: 'none',
     },
-    // calendar:{
-    //     title: 'Calendar',
-    //     Page: Calendar,
-    // },
+    help:{
+        title: 'Help',
+        Page: Help,
+    },
     listdeal: {
         title: 'List Deal',
         Page: ListDeal,

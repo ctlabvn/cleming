@@ -53,7 +53,7 @@ export default {
     },
     {
       name: 'Trợ giúp',
-      route: 'calendar',
+      route: 'help',
       // icon: 'help',    
     },
 
