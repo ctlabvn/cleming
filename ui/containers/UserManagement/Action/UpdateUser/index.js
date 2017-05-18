@@ -127,7 +127,7 @@ export default class UpdateUserContainer extends Component {
         source = {
           name: 'image[]',
           filename: `image_${(new Date()).getTime()}`,
-          data: RNFetchBlob.wrap(response.uri)
+          data: RNFetchBlob.wrap(response.origURL)
         };
       } else {
         source = {
