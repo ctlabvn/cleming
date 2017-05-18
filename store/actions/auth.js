@@ -51,3 +51,8 @@ export const setUserAvatar = (avatarUrl) => ({
   type: 'app/setUserAvatar',
   payload: avatarUrl,
 })
+
+export const setPushToken = (token) => ({
+  type: 'app/setPushToken',
+  payload: token
+})

@@ -28,11 +28,12 @@ import { SENDER_ID } from '~/store/constants/api'
 // should show error if not found
 import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
+import * as authActions from '~/store/actions/auth'
 import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
-
-// console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId())
+import md5 from 'md5'
+console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 
 const getPage = (url) => {  
   for(route in routes) {
@@ -55,7 +56,7 @@ const UIManager = NativeModules.UIManager
 @connect(state=>({
   router: getRouter(state),
   drawerState: getDrawerState(state),
-}), commonActions)
+}), {...commonActions, ...authActions})
 export default class App extends Component {    
 
   static configureScene(route) {
@@ -111,13 +112,21 @@ export default class App extends Component {
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
-          // console.warn( 'TOKEN:', token)
-          this.pushToken = token.token
+          this.props.setPushToken(token.token)
       },
 
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {
           console.log( 'NOTIFICATION:', notification )
+          // PushNotification.localNotification({
+          //   title: "Đã nhận Notification", 
+          //   message: 'Ahihi đồ chó'
+          // })
+          if (notification.userInteraction){
+
+          }else{
+
+          }
       },
 
       senderID: SENDER_ID,
