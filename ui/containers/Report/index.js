@@ -260,7 +260,7 @@ export default class Report extends Component {
                         </View>
                         <View style={styles.row}>
                             <Text small primary style={{ ...styles.rightText, width: distanceLevel1Length }}>&lt;2km</Text>
-                            <Text small primary style={{ ...styles.rightText, width: distanceLevel2Length }}>&lt;5km</Text>
+                            <Text small primary style={{ ...styles.rightText, width: distanceLevel2Length }}>&lt;   5km</Text>
                             <Text small transparent style={{ ...styles.rightText, width: distanceLevel3Length }}></Text>
                         </View>
                     </View>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, Platform } from 'react-native'
 import { 
   Container,   
   Form, 
@@ -23,19 +23,21 @@ import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
 import * as accountActions from '~/store/actions/account'
 import * as commonSelectors from '~/store/selectors/common'
-
+import * as authSelectors from '~/store/selectors/auth'
 import Content from '~/ui/components/Content'
 import Preload from '~/ui/containers/Preload'
 import { InputField } from '~/ui/elements/Form'
 import { validate } from './utils'
 import { logoSource, storeTransparent } from '~/assets'
-
+import md5 from 'md5'
+import DeviceInfo from 'react-native-device-info'
 @connect(state=>({  
   initialValues:{
     email: 'thao@clingme.vn',
     password: 'clingme',
   },
-  loginRequest: commonSelectors.getRequest(state, 'login'),    
+  loginRequest: commonSelectors.getRequest(state, 'login'),
+  pushToken: authSelectors.gePushToken(state)    
 }), {...commonActions, ...authActions, ...accountActions})
 @reduxForm({ form: 'LoginForm', validate})
 export default class extends Component {
@@ -49,8 +51,11 @@ export default class extends Component {
     }
   }
 
-  _handleLogin = ({email, password}) => {    
-    this.props.login(email, password)
+  _handleLogin = ({email, password}) => {
+    const {pushToken} = this.props    
+    let xDevice = Platform.OS.toUpperCase()+'_'+pushToken
+    let xUniqueDevice = md5(Platform.OS+'_'+DeviceInfo.getUniqueID())
+    this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
   _handleForgot = ({email})=>{    
@@ -115,7 +120,8 @@ export default class extends Component {
   }
 
   render() {    
-    const {forwardTo, loginRequest} = this.props          
+    const {forwardTo, loginRequest, pushToken} = this.props   
+    console.log('Playform', Platform.OS)  
     if(loginRequest.status === 'pending'){
       return (
         <Preload/>

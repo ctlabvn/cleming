@@ -5,17 +5,8 @@ import 'whatwg-fetch'
 export default {
 
 
-  login(username, password) {
-    // return apiPost(`/token`, {      
-    //   username,
-    //   password,
-    //   grant_type: 'password',
-    // })
-
-    // var crypto = require('crypto');
-    // var name = 'braitsch';
-    // var hash = crypto.createHash('md5').update(name).digest('hex');
-    // console.log(hash); //
+  login(username, password, xDevice, xUniqueDevice) {
+    console.log('Login API', username+'---'+password+'---'+xDevice+'---'+xUniqueDevice)
     return fetch(CLINGME_SERVER + 'login', {
       method: 'POST',
       headers: {
@@ -24,7 +15,9 @@ export default {
         'X-VERSION': 1,
         'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
         'X-DATA-VERSION': 1,
-        'X-AUTH': ''
+        'X-AUTH': '',
+        'X-DEVICE': xDevice,
+        'X-UNIQUE-DEVICE': xUniqueDevice
       },
       body: JSON.stringify({
         userName: username,

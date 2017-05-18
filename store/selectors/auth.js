@@ -11,3 +11,5 @@ export const getSession = state =>
 export const getUser = state => 
   state.auth.user || {}
   
+export const gePushToken = state => 
+  state.auth.push_token || ''
