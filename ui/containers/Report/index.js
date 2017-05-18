@@ -219,8 +219,8 @@ export default class Report extends Component {
                             <View style={{ ...styles.bar, ...styles.backgroundGrey, width: incomeLevel3Length }}></View>
                         </View>
                         <View style={styles.row}>
-                            <Text small primary style={{ ...styles.rightText, width: incomeLevel1Length }}>2tr</Text>
-                            <Text small primary style={{ ...styles.rightText, width: incomeLevel2Length }}>5tr</Text>
+                            <Text small primary style={{ ...styles.rightText, width: incomeLevel1Length }}>&lt;2tr</Text>
+                            <Text small primary style={{ ...styles.rightText, width: incomeLevel2Length }}>&lt;5tr</Text>
                             <Text small transparent style={{ ...styles.rightText, width: incomeLevel3Length }}>''</Text>
                         </View>
                     </View>
@@ -259,8 +259,8 @@ export default class Report extends Component {
                             <View style={{ ...styles.bar, ...styles.backgroundGrey, width: distanceLevel3Length }}></View>
                         </View>
                         <View style={styles.row}>
-                            <Text small primary style={{ ...styles.rightText, width: distanceLevel1Length }}>2km</Text>
-                            <Text small primary style={{ ...styles.rightText, width: distanceLevel2Length }}>5km</Text>
+                            <Text small primary style={{ ...styles.rightText, width: distanceLevel1Length }}>&lt;2km</Text>
+                            <Text small primary style={{ ...styles.rightText, width: distanceLevel2Length }}>&lt;5km</Text>
                             <Text small transparent style={{ ...styles.rightText, width: distanceLevel3Length }}></Text>
                         </View>
                     </View>

@@ -18,8 +18,9 @@ import { storeTransparent, storeFilled } from '~/assets'
 import { formatNumber } from '~/ui/shared/utils'
 import LinearGradient from 'react-native-linear-gradient'
 import Content from '~/ui/components/Content'
+import { getSession } from '~/store/selectors/auth'
 @connect(state => ({
-    user: state.auth.user,
+    xsession: getSession(state),
     place: state.place
 }), { ...commonActions, ...placeAction })
 export default class MerchantOverview extends PureComponent {
@@ -30,18 +31,18 @@ export default class MerchantOverview extends PureComponent {
 
     componentDidMount() {
         let dateFilterData = this.refs.dateFilter.getData()
-        this.props.getListPlace(this.props.user.xsession, (err, data) => {
+        this.props.getListPlace(this.props.xsession, (err, data) => {
             let toTime = moment(new Date())
             // console.warn('Place Data', data)
             if (data && data.updated && data.updated.listPlace) {
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
                 this.props.getPlaceStatistic(
-                    this.props.user.xsession,
+                    this.props.xsession,
                     allPlace,
                     dateFilterData.currentSelectValue.value.from,
                     dateFilterData.currentSelectValue.value.to)
                 this.props.getMerchantNews(
-                    this.props.user.xsession,
+                    this.props.xsession,
                     allPlace,
                     dateFilterData.currentSelectValue.value.from,
                     dateFilterData.currentSelectValue.value.to)
@@ -56,20 +57,20 @@ export default class MerchantOverview extends PureComponent {
     _handleChangePlace(item) {
         const { place } = this.props
         let dateFilterData = this.refs.dateFilter.getData()
-        this.props.getPlaceStatistic(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-        this.props.getMerchantNews(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        this.props.getMerchantNews(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
     }
 
     _handlePressFilter(item) {
         // this.setState({ loading: true })
         let currentPlace = this.refs.placeDropdown.getValue()
         this.props.getPlaceStatistic(
-            this.props.user.xsession,
+            this.props.xsession,
             currentPlace.id,
             item.currentSelectValue.value.from,
             item.currentSelectValue.value.to)
         this.props.getMerchantNews(
-            this.props.user.xsession,
+            this.props.xsession,
             currentPlace.id,
             item.currentSelectValue.value.from,
             item.currentSelectValue.value.to)
