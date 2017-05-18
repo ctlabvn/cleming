@@ -11,9 +11,9 @@ export default {
       icon: 'transaction',
     },
     {
-      name: 'Đặt chỗ',
-      route: 'placeOrderList',
-      icon: 'calendar-checked',
+      name: 'Khách hàng tiềm năng',
+      route: 'report',
+      icon: 'report2',
     },
     {
       name: 'Notification',

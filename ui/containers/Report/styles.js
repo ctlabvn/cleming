@@ -1,7 +1,9 @@
 import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
 export default{
     container: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingBottom: 50,
+        height: '100%'
     },
     mapPlaceholder: {
         width: '100%',
@@ -58,7 +60,25 @@ export default{
     textCenterBottom: {
         textAlign: 'center',
         textAlignVertical: 'bottom'
-    }
+    },
+    markerCustomer: {
+        width: 60,
+        height: 60,
+        backgroundColor: PRIMARY_COLOR,
+        borderRadius: 30,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    markerCustomerText: {
+        color: 'white',
+    },
+    markerMerchant: {
+        width: 30,
+        height: 30,
+        backgroundColor: 'tomato',
+        borderRadius: 15,
+    },
 
 
 }
