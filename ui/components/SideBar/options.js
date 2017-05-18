@@ -5,22 +5,6 @@ export default {
       route: 'deliveryList',
       icon: 'setting'
     },
-
-    {
-      name: 'Merchant Overview',
-      route: 'merchantOverview',
-      icon: 'setting'
-    },
-    {
-      name: 'Khách hàng tiềm năng',
-      route: 'report',
-      icon: 'setting'
-    },
-    {
-      name: 'Danh sách giao dịch',
-      route: 'transactionList',
-      icon: 'setting'
-    },
     {
       name: 'Quản lý thanh toán',
       route: 'network',

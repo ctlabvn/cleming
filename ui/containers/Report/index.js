@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, List, ListItem, Text, Button, Spinner } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
+import { Dimensions, View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -16,7 +16,8 @@ import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import Content from '~/ui/components/Content'
-// import MapView from 'react-native-maps'
+import geoViewport from '@mapbox/geo-viewport'
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
@@ -27,34 +28,111 @@ export default class Report extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            region: {
+                latitude: 21.0461027,
+                longitude: 105.7955732,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+            }
+        }
+    }
+    _requestMapData(placeIds, fromTime, toTime, callback) {
+        let minLa = this.state.region.latitude - this.state.region.latitudeDelta
+        let minLo = this.state.region.longitude - this.state.region.longitudeDelta
+        let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
+        let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
+        const { height, width } = Dimensions.get('window')
+
+        const bounds = [
+            minLo,
+            minLa,
+            maxLo,
+            maxLa
+        ]
+        let zoomLevel = geoViewport.viewport(bounds, [height, width]).zoom
+        console.log('Geo View Port', zoomLevel)
+        if (callback){
+            this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
+        }else{
+            this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
+        }
     }
     componentDidMount() {
-        let allPlace = this.props.place.listPlace.map(item => item.placeId).join(';')
-        console.log('All place report', allPlace)
-        this.props.getCustomerReport(this.props.user.xsession, allPlace)
+
+        let placeData = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+
+        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
+        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
     }
+    onRegionChange = (region) => {
+        this.setState({ region },
+            () => {
+                let placeData = this.refs.placeDropdown.getValue()
+                let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+                this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+            }
+        )
+
+    }
+    _handleTopDrowpdown = (item) => {
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        this.props.getCustomerReport(this.props.user.xsession, item.id, dateFilterData.from, dateFilterData.to)
+        this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
+            (err, data) => {
+                if (data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
+                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
+                    this.setState({
+                        region: {
+                            latitude: focusMechant.latitude,
+                            longitude: focusMechant.longitude,
+                            latitudeDelta: 0.1,
+                            longitudeDelta: 0.1,
+                        }
+                    })
+                }
+            }
+        )
+    }
+
+    _handlePressFilter = (item) => {
+        let placeData = this.refs.placeDropdown.getValue()
+        let dateFilterData = item.currentSelectValue.value
+        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+    }
+
     _sum(arr) {
         return arr.reduce((x1, x2) => x1 + x2, 0)
     }
-    _renderCusterStatistic() {
+    _renderCustomerStatistic() {
         const { report } = this.props
-        if (!report) {
+        if (!report || !report.customer) {
             return <Text>Loading statistic...</Text>
         }
         const userInfo = report.customer.userInfo
         const baseLength = 250
 
         //Caculate gender visual
-        const femaleRate = parseInt(userInfo.femaleNumber) / (parseInt(userInfo.femaleNumber) + parseInt(userInfo.maleNumber))
+        let femaleRate = 0.5
+        if (userInfo.total != 0) {
+            femaleRate = parseInt(userInfo.femaleNumber) / (parseInt(userInfo.femaleNumber) + parseInt(userInfo.maleNumber))
+        }
         const femalePercent = Math.floor(femaleRate * 100)
         const malePercent = 100 - femalePercent
         const femaleBarLength = Math.floor(femaleRate * baseLength)
         const maleBarLength = baseLength - femaleBarLength
 
+
         // Caculate IncomeLevel visual
         const totalIncomeLevel = this._sum(userInfo.incomeLevels)
-        const incomeLevel1Rate = userInfo.incomeLevels[0] / totalIncomeLevel
-        const incomeLevel2Rate = userInfo.incomeLevels[1] / totalIncomeLevel
+        let incomeLevel1Rate = 0.33, incomeLevel2Rate = 0.33
+        if (totalIncomeLevel != 0) {
+            incomeLevel1Rate = userInfo.incomeLevels[0] / totalIncomeLevel
+            incomeLevel2Rate = userInfo.incomeLevels[1] / totalIncomeLevel
+        }
         const incomeLevel1Percent = Math.floor(incomeLevel1Rate * 100)
         const incomeLevel2Percent = Math.floor(incomeLevel2Rate * 100)
         const incomeLevel3Percent = 100 - incomeLevel1Percent - incomeLevel2Percent
@@ -62,10 +140,14 @@ export default class Report extends Component {
         const incomeLevel2Length = Math.floor(incomeLevel2Rate * baseLength)
         const incomeLevel3Length = baseLength - incomeLevel1Length - incomeLevel2Length
 
+
         // Caculate distance visual
         const totalDistanceLevel = this._sum(userInfo.distanceLevels)
-        const distanceLevel1Rate = userInfo.distanceLevels[0] / totalDistanceLevel
-        const distanceLevel2Rate = userInfo.distanceLevels[1] / totalDistanceLevel
+        let distanceLevel1Rate = 0.33, distanceLevel2Rate = 0.33
+        if (totalDistanceLevel != 0) {
+            distanceLevel1Rate = userInfo.distanceLevels[0] / totalDistanceLevel
+            distanceLevel2Rate = userInfo.distanceLevels[1] / totalDistanceLevel
+        }
         const distanceLevel1Percent = Math.floor(distanceLevel1Rate * 100)
         const distanceLevel2Percent = Math.floor(distanceLevel2Rate * 100)
         const distanceLevel3Percent = 100 - distanceLevel1Percent - distanceLevel2Percent
@@ -73,6 +155,7 @@ export default class Report extends Component {
         const distanceLevel2Length = Math.floor(distanceLevel2Rate * baseLength)
         const distanceLevel3Length = baseLength - distanceLevel1Length - distanceLevel2Length
 
+        // Caculate visual view time linbe
         let viewFrom16to17Length
         let viewFrom8to10Length
         let viewRemainLength
@@ -82,7 +165,7 @@ export default class Report extends Component {
         let viewFrom16to17
         let viewFrom8to10
         let viewRemain
-        let totalTimeView = this._sum(userInfo.timeView)
+        let totalTimeView = userInfo.timeView ? this._sum(userInfo.timeView) : 0
         if (totalTimeView == 0) {
             viewFrom16to17Length = 0.33 * baseLength
             viewFrom8to10Length = 0.33 * baseLength
@@ -111,8 +194,8 @@ export default class Report extends Component {
                     <View style={styles.graphDraw}>
                         <View>
                             <View style={styles.row}>
-                                <Text small style={{ ...styles.textCenter, width: femaleBarLength }}>{femalePercent}%</Text>
-                                <Text small style={{ ...styles.textCenter, width: maleBarLength }}>{malePercent}%</Text>
+                                <Text small style={{ ...styles.textCenter, width: femaleBarLength }}>{femalePercent}% Nữ</Text>
+                                <Text small style={{ ...styles.textCenter, width: maleBarLength }}>{malePercent}% Nam</Text>
                             </View>
                             <View style={styles.graphDraw}>
                                 <View style={{ ...styles.bar, ...styles.backgroundBlue, width: femaleBarLength }}></View>
@@ -161,25 +244,6 @@ export default class Report extends Component {
                             <Text small transparent style={{ ...styles.textCenter, width: viewRemainLength }}>''</Text>
                         </View>
                     </View>
-
-
-                    {/*<View style={styles.graphDraw}>
-                        <View style={{ ...styles.graphDrawPart, width: viewFrom16to17Length }}>
-                            <Text small>{viewFrom16to17Percent}%</Text>
-                            <View style={{ ...styles.bar, ...styles.backgroundBlue }}></View>
-                            <Text small primary>16h-17h</Text>
-                        </View>
-                        <View style={{ ...styles.graphDrawPart, width: viewFrom8to10Length }}>
-                            <Text small>{viewFrom8to10Percent}%</Text>
-                            <View style={{ ...styles.bar, ...styles.backgroundPrimary }}></View>
-                            <Text small primary>8h-10h</Text>
-                        </View>
-                        <View style={{ ...styles.graphDrawPart, width: viewRemainLength }}>
-                            <Text small>{viewRemainPercent}%</Text>
-                            <View style={{ ...styles.bar, ...styles.backgroundGrey }}></View>
-                            <Text small transparent>""</Text>
-                        </View>
-                    </View>*/}
                 </View>
                 <View style={styles.graphRow}>
                     <Text small style={styles.graphLabel}>Khoảng cách</Text>
@@ -206,20 +270,58 @@ export default class Report extends Component {
         )
     }
     render() {
-        {/*<MapView
-            initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-            }}
-        />*/}
+        const { report, place } = this.props
+        let dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
+        let defaultSelected = dropdownValues[0]
+        if (dropdownValues.length > 1) {
+            defaultSelected = {
+                id: place.listPlace.map(item => item.placeId).join(';'),
+                name: 'Tất cả địa điểm'
+            }
+            dropdownValues = [defaultSelected, ...dropdownValues]
+        }
         return (
             <Container style={styles.container}>
-                <Content>
-                    <View style={styles.mapPlaceholder}></View>
-                    {this._renderCusterStatistic()}
-                </Content>
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
+                <View style={{ marginTop: 50, height: '100%' }}>
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+                    <MapView
+                        region={this.state.region}
+                        provider={PROVIDER_GOOGLE}
+                        style={{ width: '100%', height: 250 }}
+                        onRegionChangeComplete={this.onRegionChange}
+                        moveOnMarkerPress={false}
+                    >
+                        {report && report.map && report.map.locationDtos.map((marker, idx) => {
+                            return (
+                                <MapView.Marker key={idx}
+                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                >
+                                    <View style={styles.markerCustomer}>
+                                        <Text style={styles.markerCustomerText}>{marker.number}</Text>
+                                    </View>
+                                </MapView.Marker>
+                            )
+                        })}
+                        {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
+                            return (
+                                <MapView.Marker key={idx}
+                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                >
+                                    <View style={styles.markerMerchant}>
+                                    </View>
+                                </MapView.Marker>
+                            )
+
+                        })}
+                    </MapView>
+                    <Content>
+                        {this._renderCustomerStatistic()}
+                    </Content>
+                </View>
             </Container>
         )
     }
