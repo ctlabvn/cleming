@@ -34,6 +34,7 @@
     "react-native-responsive-image": "2.1.0",
     "react-native-svg": "5.1.7",
     "react-native-timeline-listview": "^0.2.0",
+    "react-native-uploader": "git+https://github.com/tranquangvu/react-native-uploader.git",
     "react-redux": "5.0.3",
     "react-router": "4.1.1",
     "redux": "3.6.0",
