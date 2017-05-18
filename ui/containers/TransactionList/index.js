@@ -15,12 +15,13 @@ import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
+import {getSession} from '~/store/selectors/auth'
 // import Perf from 'react-addons-perf';
 
 import options from './options'
 
 @connect(state => ({
-    user: state.auth.user,
+    xsession: getSession(state),
     place: state.place,
     transaction: state.transaction
 }), { ...commonAction, ...transactionAction, ...authActions })
@@ -39,14 +40,14 @@ export default class extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
                 }
             )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
+            this.props.getListTransaction(this.props.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -62,7 +63,7 @@ export default class extends Component {
         this.setState({ loading: true })
         if (item.tabID == 1) { // Trả qua Clingme
             this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -70,7 +71,7 @@ export default class extends Component {
             )
         } else { // Trả trực tiếp
             this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
+            this.props.getListTransaction(this.props.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -84,14 +85,14 @@ export default class extends Component {
         let dateFilter = this.refs.dateFilter.getData()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
                 }
             )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
+            this.props.getListTransaction(this.props.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -106,14 +107,14 @@ export default class extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
                 }
             )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
+            this.props.getListTransaction(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
                     this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -128,7 +129,7 @@ export default class extends Component {
         let transactionFilterComponent = this.refs.transactionFilter
         let transactionFilter = transactionFilterComponent.getCurrentValue()
         this.setState({ loading: true })
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
+        this.props.getListTransaction(this.props.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             () => {
                 this.setState({ loading: false })
                 transactionFilterComponent.updateIndicatorNumber(this.props.transaction.totalRecord)
@@ -149,13 +150,13 @@ export default class extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loadingMore: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value, transaction.pageNumber+1,
                 () => this.setState({ loadingMore: false })
             )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
+            this.props.getListTransaction(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value, transaction.pageNumber+1,
                 () => this.setState({ loadingMore: false })
@@ -170,13 +171,13 @@ export default class extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
+             this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value,
                 () => this.setState({ loading: false })
             )
         } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
+            this.props.getListTransaction(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value,
                 () => this.setState({ loading: false })
