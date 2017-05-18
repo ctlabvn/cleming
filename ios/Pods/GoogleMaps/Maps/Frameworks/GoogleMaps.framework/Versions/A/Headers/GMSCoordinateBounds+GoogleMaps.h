@@ -19,7 +19,7 @@
 
 @class GMSPath;
 
-NS_ASSUME_NONNULL_BEGIN
+GMS_ASSUME_NONNULL_BEGIN
 
 @interface GMSCoordinateBounds (GoogleMaps)
 
@@ -34,10 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)initWithPath:(GMSPath *)path;
 
 /**
- * Returns a GMSCoordinateBounds representing the current bounds extended to include |path|.
+ * Returns a GMSCoordinateBounds representing the current bounds extended to
+ * include |path|.
  */
 - (GMSCoordinateBounds *)includingPath:(GMSPath *)path;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

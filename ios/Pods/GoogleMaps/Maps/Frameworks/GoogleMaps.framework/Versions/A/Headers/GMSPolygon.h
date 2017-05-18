@@ -8,11 +8,14 @@
 //  Service: https://developers.google.com/maps/terms
 //
 
-#import <UIKit/UIKit.h>
-
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
 #import <GoogleMaps/GMSOverlay.h>
 
-NS_ASSUME_NONNULL_BEGIN
+GMS_ASSUME_NONNULL_BEGIN
 
 @class GMSPath;
 
@@ -24,22 +27,22 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GMSPolygon : GMSOverlay
 
 /** The path that describes this polygon. The coordinates composing the path must be valid. */
-@property(nonatomic, copy, nullable) GMSPath *path;
+@property(nonatomic, copy) GMSPath *GMS_NULLABLE_PTR path;
 
 /**
  * The array of GMSPath instances that describes any holes in this polygon. The coordinates
  * composing each path must be valid.
  */
-@property(nonatomic, copy, nullable) NSArray<GMSPath *> *holes;
+@property(nonatomic, copy) GMS_NSArrayOf(GMSPath *) * GMS_NULLABLE_PTR holes;
 
 /** The width of the polygon outline in screen points. Defaults to 1. */
 @property(nonatomic, assign) CGFloat strokeWidth;
 
 /** The color of the polygon outline. Defaults to nil. */
-@property(nonatomic, strong, nullable) UIColor *strokeColor;
+@property(nonatomic, strong) UIColor *GMS_NULLABLE_PTR strokeColor;
 
 /** The fill color. Defaults to blueColor. */
-@property(nonatomic, strong, nullable) UIColor *fillColor;
+@property(nonatomic, strong) UIColor *GMS_NULLABLE_PTR fillColor;
 
 /** Whether this polygon should be rendered with geodesic correction. */
 @property(nonatomic, assign) BOOL geodesic;
@@ -48,8 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
  * Convenience constructor for GMSPolygon for a particular path. Other properties will have default
  * values.
  */
-+ (instancetype)polygonWithPath:(nullable GMSPath *)path;
++ (instancetype)polygonWithPath:(GMSPath *GMS_NULLABLE_PTR)path;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

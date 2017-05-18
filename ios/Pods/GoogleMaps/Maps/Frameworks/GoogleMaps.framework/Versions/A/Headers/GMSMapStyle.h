@@ -10,7 +10,13 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
+
+GMS_ASSUME_NONNULL_BEGIN
 
 /**
  * GMSMapStyle holds details about a style which can be applied to a map.
@@ -30,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * Returns nil and populates |error| (if provided) if |style| is invalid.
  */
-+ (nullable instancetype)styleWithJSONString:(NSString *)style
-                                       error:(NSError *__autoreleasing _Nullable *)error;
++ (GMS_NULLABLE_INSTANCETYPE)styleWithJSONString:(NSString *)style
+                                           error:(NSError *__autoreleasing GMS_NULLABLE_PTR *)error;
 
 /**
  * Creates a style using a file containing JSON.
@@ -39,9 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
  * Returns nil and populates |error| (if provided) if |style| is invalid, the file cannot be read,
  * or the URL is not a file URL.
  */
-+ (nullable instancetype)styleWithContentsOfFileURL:(NSURL *)fileURL
-                                              error:(NSError *__autoreleasing _Nullable *)error;
++ (GMS_NULLABLE_INSTANCETYPE)
+    styleWithContentsOfFileURL:(NSURL *)fileURL
+                         error:(NSError *__autoreleasing GMS_NULLABLE_PTR *)error;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

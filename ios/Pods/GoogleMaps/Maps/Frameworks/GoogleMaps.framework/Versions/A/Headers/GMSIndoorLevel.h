@@ -11,22 +11,27 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
+
+GMS_ASSUME_NONNULL_BEGIN
 
 /**
  * Describes a single level in a building.
- *
- * Multiple buildings can share a level - in this case the level instances will compare as equal,
- * even though the level numbers/names may be different.
+ * Multiple buildings can share a level - in this case the level instances will
+ * compare as equal, even though the level numbers/names may be different.
  */
 @interface GMSIndoorLevel : NSObject
 
 /** Localized display name for the level, e.g. "Ground floor". */
-@property(nonatomic, copy, readonly, nullable) NSString *name;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR name;
 
 /** Localized short display name for the level, e.g. "1". */
-@property(nonatomic, copy, readonly, nullable) NSString *shortName;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR shortName;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

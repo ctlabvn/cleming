@@ -10,9 +10,15 @@
 
 #import <GoogleMaps/GMSOverlay.h>
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
+
+GMS_ASSUME_NONNULL_BEGIN
 
 /**
  * A circle on the Earth's surface (spherical cap).
@@ -26,29 +32,28 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, assign) CLLocationDistance radius;
 
 /**
- * The width of the circle's outline in screen points. Defaults to 1. As per GMSPolygon, the width
- * does not scale when the map is zoomed.
- *
+ * The width of the circle's outline in screen points. Defaults to 1. As per
+ * GMSPolygon, the width does not scale when the map is zoomed.
  * Setting strokeWidth to 0 results in no stroke.
  */
 @property(nonatomic, assign) CGFloat strokeWidth;
 
 /** The color of this circle's outline. The default value is black. */
-@property(nonatomic, strong, nullable) UIColor *strokeColor;
+@property(nonatomic, strong) UIColor *GMS_NULLABLE_PTR strokeColor;
 
 /**
- * The interior of the circle is painted with fillColor. The default value is nil, resulting in no
- * fill.
+ * The interior of the circle is painted with fillColor.
+ * The default value is nil, resulting in no fill.
  */
-@property(nonatomic, strong, nullable) UIColor *fillColor;
+@property(nonatomic, strong) UIColor *GMS_NULLABLE_PTR fillColor;
 
 /**
- * Convenience constructor for GMSCircle for a particular position and radius. Other properties will
- * have default values.
+ * Convenience constructor for GMSCircle for a particular position and radius.
+ * Other properties will have default values.
  */
 + (instancetype)circleWithPosition:(CLLocationCoordinate2D)position
                             radius:(CLLocationDistance)radius;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END
