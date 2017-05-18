@@ -25,6 +25,8 @@ import * as accountActions from '~/store/actions/account'
 import styles from './styles'
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
+import {profileCoverSource} from '~/assets'
+
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
   session: authSelectors.getSession(state),
@@ -46,28 +48,60 @@ export default class UpdateUserContainer extends Component {
     }
     
     handleChoosePhoto = (response)=>{
-      console.log(response)
-      let formData = new FormData()
-      formData.append("avatarFile", response.uri)
-      //formData.append('Content-Type', 'image/jpeg');
-      let xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
-      xhr.open('POST', 'http://dev.clingme.net:9099/edit/avatar');
-      xhr.setRequestHeader('X-SESSION', this.props.session)
-      xhr.setRequestHeader('X-VERSION', 1)
-      xhr.setRequestHeader('X-AUTH', '')
-      xhr.setRequestHeader('X-DATA-VERSION', 1)
-      xhr.setRequestHeader('X-TIMESTAMP', Math.floor((new Date().getTime()) / 1000))
-      xhr.setRequestHeader('Content-Type', 'multipart/form-data')
-      xhr.setRequestHeader("cache-control", "no-cache");
-      xhr.setRequestHeader('Accept', 'application/json')
-      xhr.addEventListener("readystatechange", function () {
-        console.log(xhr)
-      });
+      // console.log(response)
+      // let formData = new FormData()
+      // formData.append("avatarFile", response)
+      // //formData.append('Content-Type', 'image/jpeg');
+      // let xhr = new XMLHttpRequest();
+      // // xhr.withCredentials = true;
+      // xhr.open('POST', 'http://localhost:86/php/clingme.php');
+      // xhr.setRequestHeader('X-SESSION', this.props.session)
+      // xhr.setRequestHeader('X-VERSION', 1)
+      // xhr.setRequestHeader('X-AUTH', '')
+      // xhr.setRequestHeader('X-DATA-VERSION', 1)
+      // xhr.setRequestHeader('X-TIMESTAMP', Math.floor((new Date().getTime()) / 1000))
+      // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+      // xhr.setRequestHeader("cache-control", "no-cache");
+      // xhr.setRequestHeader('Accept', 'application/json')
+      // xhr.addEventListener("readystatechange", function () {
+      //   console.log(xhr)
+      // });
   
-      xhr.send(formData);
+      // xhr.send(formData);
       /*formData.append('avatarFile', uri.replace('file://', ''))
       this.props.updateOwnerAvatar(this.props.session, formData)*/
+
+
+          
+            // Create the form data object
+            var data = new FormData();
+            data.append('picture', profileCoverSource);
+
+            // Create the config object for the POST
+            // You typically have an OAuth2 token that you use for authentication
+            const config = {
+             method: 'POST',
+             headers: {
+               'Accept': 'application/json',
+               // 'Content-Type': 'application/octet-stream',
+               // 'Authorization': 'Bearer ' + 'SECRET_OAUTH2_TOKEN_IF_AUTH',
+             },
+             body: data,
+            }
+
+            fetch("http://localhost:86/php/clingme.php", config)
+              .then(res=>res.json())
+             .then((responseData) => {
+                 // Log the response form the server
+                 // Here we get what we sent to Postman back
+                 console.log(responseData);
+             })
+             .catch(err => {
+               console.log(err);
+             })
+      
+      
+
     }
     
     render() {
