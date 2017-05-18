@@ -11,15 +11,22 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
+
+GMS_ASSUME_NONNULL_BEGIN
 
 /**
- * GMSMarkerLayer is a custom subclass of CALayer, available on a per-marker basis, that allows
- * animation of several properties of its associated GMSMarker.
+ * GMSMarkerLayer is a custom subclass of CALayer, available on a per-marker
+ * basis, that allows animation of several properties of its associated
+ * GMSMarker.
  *
- * Note that this CALayer is never actually rendered directly, as GMSMapView is provided entirely
- * via an OpenGL layer. As such, adjustments or animations to 'default' properties of CALayer will
- * not have any effect.
+ * Note that this CALayer is never actually rendered directly, as GMSMapView is
+ * provided entirely via an OpenGL layer. As such, adjustments or animations to
+ * 'default' properties of CALayer will not have any effect.
  */
 @interface GMSMarkerLayer : CALayer
 
@@ -42,4 +49,4 @@ extern NSString *const kGMSMarkerLayerLongitude;
 extern NSString *const kGMSMarkerLayerRotation;
 extern NSString *const kGMSMarkerLayerOpacity;
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

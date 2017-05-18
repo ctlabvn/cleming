@@ -8,16 +8,14 @@
 //  Service: https://developers.google.com/maps/terms
 //
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <Foundation/Foundation.h>
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
 
-NS_ASSUME_NONNULL_BEGIN
+GMS_ASSUME_NONNULL_BEGIN
 
-/**
- * GMSPanoramaCameraUpdate represents an update that may be applied to a GMSPanoramaView.
- * It encapsulates some logic for modifying the current camera.
- * It should only be constructed using the factory helper methods below.
- */
 @interface GMSPanoramaCameraUpdate : NSObject
 
 /** Returns an update that increments the camera heading with |deltaHeading|. */
@@ -34,4 +32,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

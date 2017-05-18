@@ -11,7 +11,13 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
+
+GMS_ASSUME_NONNULL_BEGIN
 
 @class GMSIndoorLevel;
 
@@ -24,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Array of GMSIndoorLevel describing the levels which make up the building.
  * The levels are in 'display order' from top to bottom.
  */
-@property(nonatomic, strong, readonly) NSArray<GMSIndoorLevel *> *levels;
+@property(nonatomic, strong, readonly) GMS_NSArrayOf(GMSIndoorLevel *) * levels;
 
 /**
  * Index in the levels array of the default level.
@@ -38,4 +44,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

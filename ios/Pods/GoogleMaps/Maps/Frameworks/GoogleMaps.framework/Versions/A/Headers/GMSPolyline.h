@@ -8,13 +8,16 @@
 //  Service: https://developers.google.com/maps/terms
 //
 
-#import <UIKit/UIKIt.h>
-
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
 #import <GoogleMaps/GMSOverlay.h>
 
 @class GMSPath;
 
-NS_ASSUME_NONNULL_BEGIN
+GMS_ASSUME_NONNULL_BEGIN
 
 /** Describes the drawing style for one-dimensional entities such as polylines. */
 @interface GMSStrokeStyle : NSObject
@@ -71,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * The path that describes this polyline.
  */
-@property(nonatomic, copy, nullable) GMSPath *path;
+@property(nonatomic, copy) GMSPath *GMS_NULLABLE_PTR path;
 
 /**
  * The width of the line in screen points. Defaults to 1.
@@ -90,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Convenience constructor for GMSPolyline for a particular path. Other properties will have
  * default values.
  */
-+ (instancetype)polylineWithPath:(nullable GMSPath *)path;
++ (instancetype)polylineWithPath:(GMSPath *GMS_NULLABLE_PTR)path;
 
 /**
  * An array containing GMSStyleSpan, the spans used to render this polyline.
@@ -99,8 +102,8 @@ NS_ASSUME_NONNULL_BEGIN
  * over the remaining length. If this array is unset or empty, then |strokeColor| is used for the
  * entire line instead.
  */
-@property(nonatomic, copy, nullable) NSArray<GMSStyleSpan *> *spans;
+@property(nonatomic, copy) GMS_NSArrayOf(GMSStyleSpan *) * GMS_NULLABLE_PTR spans;
 
 @end
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END

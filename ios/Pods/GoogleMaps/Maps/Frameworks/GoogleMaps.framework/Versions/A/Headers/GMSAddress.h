@@ -10,9 +10,14 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#if __has_feature(modules)
+@import GoogleMapsBase;
+#else
+#import <GoogleMapsBase/GoogleMapsBase.h>
+#endif
 #import <GoogleMaps/GMSDeprecationMacros.h>
 
-NS_ASSUME_NONNULL_BEGIN
+GMS_ASSUME_NONNULL_BEGIN
 
 /**
  * A result from a reverse geocode request, containing a human-readable address. This class is
@@ -26,25 +31,25 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) CLLocationCoordinate2D coordinate;
 
 /** Street number and name. */
-@property(nonatomic, copy, readonly, nullable) NSString *thoroughfare;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR thoroughfare;
 
 /** Locality or city. */
-@property(nonatomic, copy, readonly, nullable) NSString *locality;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR locality;
 
 /** Subdivision of locality, district or park. */
-@property(nonatomic, copy, readonly, nullable) NSString *subLocality;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR subLocality;
 
 /** Region/State/Administrative area. */
-@property(nonatomic, copy, readonly, nullable) NSString *administrativeArea;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR administrativeArea;
 
 /** Postal/Zip code. */
-@property(nonatomic, copy, readonly, nullable) NSString *postalCode;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR postalCode;
 
 /** The country name. */
-@property(nonatomic, copy, readonly, nullable) NSString *country;
+@property(nonatomic, copy, readonly) NSString *GMS_NULLABLE_PTR country;
 
 /** An array of NSString containing formatted lines of the address. May be nil. */
-@property(nonatomic, copy, readonly, nullable) NSArray<NSString *> *lines;
+@property(nonatomic, copy, readonly) GMS_NSArrayOf(NSString *) *GMS_NULLABLE_PTR lines;
 
 /**
  * Returns the first line of the address.
@@ -52,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  * This method is obsolete and deprecated and will be removed in a future release.
  * Use the lines property instead.
  */
-- (nullable NSString *)addressLine1 __GMS_AVAILABLE_BUT_DEPRECATED;
+- (NSString *GMS_NULLABLE_PTR)addressLine1 __GMS_AVAILABLE_BUT_DEPRECATED;
 
 /**
  * Returns the second line of the address.
@@ -60,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  * This method is obsolete and deprecated and will be removed in a future release.
  * Use the lines property instead.
  */
-- (nullable NSString *)addressLine2 __GMS_AVAILABLE_BUT_DEPRECATED;
+- (NSString *GMS_NULLABLE_PTR)addressLine2 __GMS_AVAILABLE_BUT_DEPRECATED;
 
 @end
 
@@ -70,4 +75,4 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @compatibility_alias GMSReverseGeocodeResult GMSAddress;
 
-NS_ASSUME_NONNULL_END
+GMS_ASSUME_NONNULL_END
