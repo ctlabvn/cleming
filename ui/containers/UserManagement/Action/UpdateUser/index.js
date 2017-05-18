@@ -6,9 +6,11 @@ import {
     Button, List, ListItem, Switch, Spinner, CheckBox,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text } from 'react-native'
+import { Text, Platform } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
+var RNUploader = require('react-native-uploader');
+import RNFetchBlob from 'react-native-fetch-blob'
 
 import {
     InputField,
@@ -47,11 +49,11 @@ export default class UpdateUserContainer extends Component {
     
     handleChoosePhoto = (response)=>{
       console.log(response)
-      let formData = new FormData()
-      formData.append("avatarFile", response.uri)
+      /*let formData = new FormData()
+      formData.append("avatarFile", {...response, type: 'image/jpeg'})
       //formData.append('Content-Type', 'image/jpeg');
       let xhr = new XMLHttpRequest();
-      xhr.withCredentials = true;
+      
       xhr.open('POST', 'http://dev.clingme.net:9099/edit/avatar');
       xhr.setRequestHeader('X-SESSION', this.props.session)
       xhr.setRequestHeader('X-VERSION', 1)
@@ -65,7 +67,103 @@ export default class UpdateUserContainer extends Component {
         console.log(xhr)
       });
   
-      xhr.send(formData);
+      xhr.send(formData);*/
+      /*let source = {
+        name: '',
+        filename: '',
+        filepath: '',
+        isStatic: ''
+      };
+  
+      if (Platform.OS === 'ios') {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          filepath: response.uri.replace('file://', ''),
+          isStatic: true
+        };
+      } else {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          filepath: response.uri.replace('file://', ''),
+          isStatic: true
+        };
+      }
+      
+      let imageFiles = [source]
+      
+      let opts = {
+        url: 'http://dev.clingme.net:9099/edit/avatar', // not use localhost here for android. It must be a ip address.
+        files: imageFiles,
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          'X-VERSION': 1,
+          'X-SESSION': this.props.session,
+          'X-AUTH': '',
+          'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
+          'X-DATA-VERSION': 1
+        }
+      };
+  
+      RNUploader.upload(opts, (err, res) => {
+        if (err) {
+          console.log(err);
+          throw (err)
+        }
+  
+        if (res.status == 200 || res.status == 201) {
+          let responseString = res.data;
+          let json = JSON.parse(responseString);
+          console.log(json)
+        }
+      })*/
+  
+      let source = {};
+  
+      if (Platform.OS === 'ios') {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          data: RNFetchBlob.wrap(response.uri)
+        };
+      } else {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          data: RNFetchBlob.wrap(response.uri)
+        };
+      }
+  
+      let imageFiles = [source]
+  
+      RNFetchBlob.fetch('POST', 'http://dev.clingme.net:9099/edit/avatar', {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'X-VERSION': 1,
+        'X-SESSION': this.props.session,
+        'X-AUTH': '',
+        'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
+        'X-DATA-VERSION': 1
+      }, imageFiles)
+      // listen to upload progress event
+        .uploadProgress((written, total) => {
+          console.log('uploaded', written / total)
+        })
+        // listen to download progress event
+        .progress((received, total) => {
+          console.log('progress', received / total)
+        })
+        .then((resp) => {
+          console.log(resp)
+        })
+        .catch((err) => {
+          // ...
+        })
+      
+      
       /*formData.append('avatarFile', uri.replace('file://', ''))
       this.props.updateOwnerAvatar(this.props.session, formData)*/
     }
