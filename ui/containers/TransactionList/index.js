@@ -186,7 +186,7 @@ export default class extends Component {
     }
 
     _renderTransactionItem(item) {
-        var transactionNumberBlock;
+        /*var transactionNumberBlock;
         var statusText;
         switch (item.transactionStatus) {
             case 0: // chờ duyệt
@@ -209,6 +209,15 @@ export default class extends Component {
                         <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
                     </View>)
                 statusText = <Text success small>Thành công</Text>
+                transactionNumberBlock = (
+                    <View style={styles.row}>
+                        <View>
+                            <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
+                        </View>
+                        <View>
+                        </View>
+                    </View>
+                )
                 break
             case 2: // Bị từ chối
                 transactionNumberBlock = (
@@ -239,32 +248,68 @@ export default class extends Component {
         } else {
             payClingmeText = <Text small warning>Chưa trả phí Clingme</Text>
             payIndicator = <View style={styles.readIndicator} />
+        }*/
+
+        let iconBlock, statusText, transactionCode
+        switch (item.transactionStatus) {
+            case 0: //chờ duyệt
+            case 3:
+                iconBlock = (
+                    <View style={{...styles.iconBlock, ...styles.backgroundWarning}}>
+                        <Icon name='order-history' style={styles.icon} />
+                    </View>
+                )
+                statusText = <Text small warning>Chờ phê duyệt</Text>
+                transactionCode = <Text small bold warning>{item.dealTransactionIdDisplay}</Text>
+                break
+            case 1: // thành công
+                iconBlock = (
+                    <View style={{...styles.iconBlock, ...styles.backgroundSuccess}}>
+                        <Icon name='coin_mark' style={styles.icon} />
+                    </View>
+                )
+                statusText = <Text small success>Cashback thành công</Text>
+                transactionCode = <Text small bold success>{item.dealTransactionIdDisplay}</Text>
+                break
+            case 2: // bị từ chối
+                iconBlock = (
+                    <View style={{...styles.iconBlock, ...styles.backgroundError}}>
+                        <Icon name='unlike_s' style={styles.icon} />
+                    </View>
+                )
+                statusText = <Text small error>Bị từ chối</Text>
+                transactionCode = <Text small bold error>{item.dealTransactionIdDisplay}</Text>
+                break
+            default: 
+                iconBlock = (
+                    <View style={{...styles.iconBlock, ...styles.backgroundWarning}}>
+                        <Icon name='order-history' style={styles.icon} />
+                    </View>
+                )
+                statusText = <Text small warning>Chờ phê duyệt</Text>
+                transactionCode = <Text small bold warning>{item.dealTransactionIdDisplay}</Text>
         }
         return (
             <ListItem
-                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionIdDisplay)}
+                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionId)}
                 style={styles.listItem}
             >
                 <View style={styles.block}>
                     <View style={styles.row}>
-                        {transactionNumberBlock}
-                        <Text bold>{formatNumber(item.originPrice)}đ</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <View style={styles.row}>
-                            <View style={styles.placeholder} />
-                            <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
-                        </View>
-                        <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <View style={styles.row}>
-                            <View style={styles.placeholder}>
-                                {payIndicator}
+                        {iconBlock}
+                        <View style={{width: '100%', flex:1}}>
+                            <View style={styles.row}>
+                                {transactionCode}
+                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
                             </View>
-                            {statusText}
+                            <View style={styles.row}>
+                                <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
+                            </View>
+                            <View style={styles.row}>
+                                {statusText}
+                                <Text bold style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
+                            </View>
                         </View>
-                        {payClingmeText}
                     </View>
                 </View>
                 {

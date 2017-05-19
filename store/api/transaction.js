@@ -10,4 +10,9 @@ export default {
     listPayWithClingme(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0, pageNumber=1) {
         return apiGet('/transaction/merchantapp/list-clm', {placeId, fromTime, toTime, option}, xsession)
     },
+    // /merchantapp/transaction-detail
+    detail(xsession, dealTransactionId){
+        console.log('Trans Detail API', xsession+'---'+dealTransactionId)
+        return apiGet('/merchantapp/transaction-detail', {dealTransactionId}, xsession)
+    }
 }

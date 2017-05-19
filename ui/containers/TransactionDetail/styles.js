@@ -1,4 +1,4 @@
-import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR} from '~/ui/shared/constants'
+import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1} from '~/ui/shared/constants'
 export default {
     container:{
         flexDirection: 'column',
@@ -17,10 +17,14 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    topPart: {
+        backgroundColor: BACKGROUND_COLOR_1
+    },
     rowPadding: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10
+        padding: 10,
+        alignItems: 'center'
     },
 
     transactionContent:{
@@ -299,6 +303,28 @@ export default {
     },
     btnTxt: {
         fontSize: 12
-    }
+    },
+    feedbackButton: {
+        backgroundColor: WARNING_COLOR,
+        justifyContent: 'center',
+        width: '100%'
+    },
+      modalOverlay: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.7)' 
+    },
+    modalContainer: {
+        marginTop: '30%',
+        width: '80%',
+        minHeight: 200,
+        backgroundColor: 'white',
+        borderRadius: 4,
+        flexDirection: 'column',
+        alignSelf: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
 
 }
