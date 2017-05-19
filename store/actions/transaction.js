@@ -13,3 +13,8 @@ export const getListTransactionPayWithClingme= (...args) => ({
   type: 'transaction/listPayWithClingme',
   args
 })
+
+export const getTransactionDetail = (...args) => ({
+  type: 'transaction/detail',
+  args
+})
