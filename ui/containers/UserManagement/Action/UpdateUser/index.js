@@ -35,14 +35,21 @@ import {profileCoverSource} from '~/assets'
 
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
+  auth: state.auth,
   session: authSelectors.getSession(state),
-  user: authSelectors.getUser(state)
-}), { ...accountActions, ...commonActions }, (stateProps, dispatchProps, ownProps)=>({
+  user: authSelectors.getUser(state),
+  formValues: formSelector(state, 'name', 'email', 'phone')
+}), { ...accountActions, ...commonActions }, (stateProps, dispatchProps, ownProps)=>{
+  return ({
     initialValues: {
-        
+      enableReinitialize: true,
+      name: stateProps.auth.user.fullName,
+      email: stateProps.auth.user.email,
+      phone: stateProps.auth.user.phoneNumber
     },
     ...ownProps, ...stateProps, ...dispatchProps,
-}))
+  })
+})
 @reduxForm({ form: 'UpdateUserForm'})
 
 export default class UpdateUserContainer extends Component {
@@ -176,6 +183,16 @@ export default class UpdateUserContainer extends Component {
 
     }
     
+    onSubmitUserInfo() {
+      console.log(this.props.formValues)
+      let data = {
+        fullName: this.props.formValues.name,
+        email: this.props.formValues.email,
+        phoneNumber: this.props.formValues.phone
+      }
+      this.props.updateProfile(this.props.session, data)
+    }
+    
     changePasswordPress() {
       const { forwardTo } = this.props
       forwardTo('changePassword')
@@ -197,7 +214,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label="Nguyen Thi Bee"
+                                label="Họ và tên"
                                 name="name"
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
@@ -205,7 +222,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label="bee@company.com"
+                                label="Email"
                                 name="email"
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
@@ -213,7 +230,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label="1234556789"
+                                label="Số điện thoại"
                                 name="phone"
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
@@ -229,6 +246,18 @@ export default class UpdateUserContainer extends Component {
                                     </Button>
                                 </Col>
                             </Grid>
+                        </View>
+                        <View style={{marginTop: 20}}>
+                          <Grid>
+                            <Col>
+                              <Button
+                                onPress={this.onSubmitUserInfo.bind(this)}
+                                style={styles.updatePasswordButton}>
+                                <Icon name="pass_word"/>
+                                <Text style={styles.updatePasswordButtonText}>Thay đổi</Text>
+                              </Button>
+                            </Col>
+                          </Grid>
                         </View>
                     </View>
                 </Content>

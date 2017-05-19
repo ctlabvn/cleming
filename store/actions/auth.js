@@ -56,3 +56,8 @@ export const setPushToken = (token) => ({
   type: 'app/setPushToken',
   payload: token
 })
+
+export const updateProfileToRedux = (data) => ({
+  type: 'app/updateProfileToRedux',
+  payload: data
+})

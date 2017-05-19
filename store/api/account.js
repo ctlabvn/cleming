@@ -15,9 +15,9 @@ export default {
     return apiGet('/Api/AccountSettings/Profile', {}, accessToken)
   },
   
-  updateProfile (accessToken, updatedInfo) {
+  updateProfile (session, updatedInfo) {
     // return fetchJsonWithToken(token, `/logout`)
-    return apiPost('/edit/info', {updatedInfo}, accessToken)
+    return apiPost('/edit/info', updatedInfo, session)
   },
   
   updateAvatar (accessToken, avatarFile) {

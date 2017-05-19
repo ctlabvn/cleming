@@ -7,10 +7,7 @@
 export const account = (state = {
   generatedPassword: ''
 }, {type, payload}) => {
-  switch (type) {   
-    case 'app/replaceProfile':
-      // payload is access token
-      return {...state, profile: payload }
+  switch (type) {
     case 'app/setListEmployee':
       return {...state, listEmployee: payload.updated.data}
     case 'app/setGeneratedPassword':
