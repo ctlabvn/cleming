@@ -26,6 +26,7 @@ import CacheableImage from '~/ui/components/CacheableImage'
 
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountActions from '~/store/actions/account'
+import * as commonActions from '~/store/actions/common'
 
 import styles from './styles'
 const img = 'https://facebook.github.io/react/img/logo_og.png'
@@ -36,7 +37,7 @@ const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
   session: authSelectors.getSession(state),
   user: authSelectors.getUser(state)
-}), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>({
+}), { ...accountActions, ...commonActions }, (stateProps, dispatchProps, ownProps)=>({
     initialValues: {
         
     },
@@ -175,6 +176,11 @@ export default class UpdateUserContainer extends Component {
 
     }
     
+    changePasswordPress() {
+      const { forwardTo } = this.props
+      forwardTo('changePassword')
+    }
+    
     render() {
         return(
             <Container>
@@ -215,7 +221,9 @@ export default class UpdateUserContainer extends Component {
                         <View style={{marginTop: 20}}>
                             <Grid>
                                 <Col>
-                                    <Button style={styles.updatePasswordButton}>
+                                    <Button
+                                      onPress={this.changePasswordPress.bind(this)}
+                                      style={styles.updatePasswordButton}>
                                         <Icon name="pass_word"/>
                                         <Text style={styles.updatePasswordButtonText}>Thay đổi mật khẩu</Text>
                                     </Button>

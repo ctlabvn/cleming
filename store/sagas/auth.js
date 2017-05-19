@@ -76,7 +76,7 @@ export default [
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [            
             takeLatest('app/login', requestLogin),
-            takeLatest('app/logout', requestLogout),
+            takeLatest('app/logout', requestLogout)
         ]
     },
 ]

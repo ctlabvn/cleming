@@ -2,6 +2,7 @@
 import NotFound from './containers/NotFound'
 import Notification from './containers/Notification'
 import Login from './containers/Login'
+import PasswordModifier from './containers/PasswordModifier'
 // import SignUpStep1 from './containers/SignUp/Step1'
 // import SignUpStep2 from './containers/SignUp/Step2'
 // import SignUpStep3 from './containers/SignUp/Step3'
@@ -114,8 +115,14 @@ export default {
         Page: Login,        
         headerType: 'none',
         footerType: 'none',
-    },  
-    // signup1: {
+    },
+    changePassword: {
+        title: 'Change Password',
+        Page: PasswordModifier,
+        headerType: 'none',
+        footerType: 'none',
+    },
+  // signup1: {
     //     title: 'Sign Up',
     //     Page: SignUpStep1,        
     //     headerType: 'back',

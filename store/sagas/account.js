@@ -2,7 +2,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { setToast, noop, forwardTo, goBack } from '~/store/actions/common'
 
 import {
     replaceProfile,
@@ -30,6 +30,7 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
+        () => goBack(),
         () => setToast('Change password successfully!')
     ],
     failure: [
