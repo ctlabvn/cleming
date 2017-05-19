@@ -34,6 +34,7 @@ import ListDeal from './containers/ListDeal'
 import DealsOverview from './containers/DealsOverview'
 import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
+import DeliveryDetail from './containers/DeliveryDetail'
 import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
@@ -59,6 +60,10 @@ export default {
     deliveryList: {
         title: 'Danh sách giao hàng',
         Page: DeliveryList
+    },
+    'deliveryDetail/:id': {
+        title: 'Chi tiết giao hàng',
+        Page: DeliveryDetail
     },
     report: {
         title: 'Khách hàng tiềm năng',

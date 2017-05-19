@@ -262,7 +262,7 @@ export default class TransactionDetail extends Component {
 
                     <View style={styles.rowPadding}>
                         <Text small>Xem:</Text>
-                        <Text small>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <Text small>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                     </View>
                     <View style={styles.rowPadding}>
                         <Text small>Đánh dấu:</Text>
@@ -306,16 +306,14 @@ export default class TransactionDetail extends Component {
                                 </View>
                             </View>
                             }
-                        <View style={{ width: '100%', height: 120, backgroundColor: 'lightgrey', justifyContent: 'center' }}>
-                            <Image source={storeFilled} style={{ resizeMode: 'contain', height: 120, width: '100%' }} />
+                        <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
+                            <Image source={{uri: transactionInfo.invoidImage}} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
                         </View>
                     </View>
 
                     <View style={{ ...styles.rowPadding, ...styles.center }}>
                         {this._renderBottomAction(transactionInfo.transactionStatus)}
                     </View>
-                    {/*{this._renderBottomAction(transactionInfo.transactionStatus)}*/}
-
                     <View style={styles.navigateInvoiceBlock}>
                         {btnPrev}
                         {btnNext}
