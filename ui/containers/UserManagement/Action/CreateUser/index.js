@@ -6,7 +6,7 @@ import {
     Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text, Dimensions } from 'react-native'
+import { Text, Dimensions, Clipboard } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, getFormValues } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
@@ -180,6 +180,17 @@ export default class CreateUserContainer extends Component {
     onGeneratedPasswordPress() {
       this.props.getGeneratedPassword(this.props.session)
     }
+  
+    _setClipboardContent = async () => {
+      Clipboard.setString(this.props.generatedPassword);
+      try {
+        let content = await Clipboard.getString();
+        console.log(content)
+      } catch (e) {
+        console.log(e.message)
+      
+      }
+    }
     
     onSubmitUser() {
       this.setState({
@@ -347,13 +358,15 @@ export default class CreateUserContainer extends Component {
                 <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
               </Col>
               <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                <Col style={{alignItems: 'flex-end', width: '70%'}}>
+                <Col style={{alignItems: 'flex-end', width: '60%'}}>
                   <Icon
                     style={styles.copyIcon}
                     name="copy"/>
                 </Col>
-                <Col style={{justifyContent: 'center', width: '30%'}}>
-                  <Text style={styles.copyText}>Copy</Text>
+                <Col style={{justifyContent: 'center', width: '40%'}}>
+                  <Text
+                    onPress={this._setClipboardContent.bind(this)}
+                    style={styles.copyText}>Copy</Text>
                 </Col>
               </Col>
             </Grid>
