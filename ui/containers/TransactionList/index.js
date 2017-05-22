@@ -295,7 +295,7 @@ export default class extends Component {
                 style={styles.listItem}
             >
                 <View style={styles.block}>
-                    <View style={styles.row}>
+                    <View style={{...styles.row, alignItems:'flex-start'}}>
                         {iconBlock}
                         <View style={{width: '100%', flex:1}}>
                             <View style={styles.row}>

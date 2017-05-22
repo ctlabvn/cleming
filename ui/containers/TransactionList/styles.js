@@ -101,7 +101,9 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginLeft: 4,
         marginRight: 10,
+        marginTop: 4,
     },
     backgroundSuccess: {
         backgroundColor: SUCCESS_COLOR
