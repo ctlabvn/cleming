@@ -13,7 +13,13 @@ export default {
         justifyContent: 'space-between',
         paddingTop: 10,
         paddingBottom: 10, 
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    row: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     orderItem: {
         justifyContent: 'space-between', 

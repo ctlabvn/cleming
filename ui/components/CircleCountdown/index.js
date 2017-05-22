@@ -3,7 +3,7 @@ import styles from './styles'
 import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import { Text } from 'native-base'
-
+import {View} from 'react-native'
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -28,12 +28,16 @@ export default class extends Component {
     }
     startInterval() {
         if (this.intervalID != -1) return
+        if (this.state.countTo < moment().unix() || 
+            (this.state.countTo-moment().unix()) > this.state.baseMinute*60) return
         this.intervalID = setInterval(() => {
             let now = moment().unix()
             let countDownMinute = Math.floor((this.state.countTo - now)/60)
             console.log('Inteval Circle', countDownMinute)
             if (countDownMinute <= 0) {
                 console.log("Inteval ID", this.intervalID)
+                this.stopInterval()
+            }else if (countDownMinute > this.state.baseMinute){
                 this.stopInterval()
             }
             this.forceUpdate()
@@ -53,7 +57,13 @@ export default class extends Component {
     }
     render() {
         let now = moment().unix()
+        if (this.state.countTo < now){
+            return <View></View>
+        }
         let countDownMinute = Math.floor((this.state.countTo - now)/60)
+        if (countDownMinute > this.state.baseMinute){
+            return <View></View>
+        }
         return (
             <ProgressCircle
                 percent={Math.floor(countDownMinute / this.state.baseMinute * 100)}

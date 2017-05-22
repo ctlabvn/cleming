@@ -15,7 +15,9 @@ import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
 import { formatNumber } from '~/ui/shared/utils'
 import moment from 'moment'
-
+import ProgressCircle from 'react-native-progress-circle'
+import CircleCountdown from '~/ui/components/CircleCountdown'
+import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -25,7 +27,8 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            orderDetail: {}
+            orderDetail: {},
+            counting: false
         }
     }
     componentDidMount() {
@@ -40,6 +43,7 @@ export default class extends Component {
     componentWillFocus() {
         const { route, getOrderDetail, xsession } = this.props
         let deliveryId = route.params.id
+        this.setState({ counting: true })
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 if (data && data.updated) {
@@ -48,7 +52,9 @@ export default class extends Component {
             }
         )
     }
-
+    componentWillBlur() {
+        this.setState({ counting: false })
+    }
     render() {
         const { route } = this.props
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
@@ -61,10 +67,11 @@ export default class extends Component {
         }
         const orderDetail = this.state.orderDetail
         let totalItem = 0
-        if (orderDetail.orderRowList){
-            totalItem = orderDetail.orderRowList.map(x=>x.quantity).reduce((a,b)=>(a+b), 0)
+        if (orderDetail.orderRowList) {
+            totalItem = orderDetail.orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
         console.log('Order detail instate', orderDetail)
+        const countTo = orderDetail.orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary, width: '100%', justifyContent: 'center' }}>
@@ -74,7 +81,14 @@ export default class extends Component {
                 <Content padder>
                     <View style={styles.rowPadding}>
                         <Text success small>Đã thanh toán</Text>
-                        <Text small>{moment(orderDetail.orderInfo.clingmeCreatedTime).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <View style={styles.row}>
+                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <CircleCountdown
+                                baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                counting={this.state.counting}
+                                countTo={countTo}
+                            />
+                        </View>
                     </View>
                     <View style={styles.rowPadding}>
                         <Text small>Đặt hàng số</Text>
@@ -109,11 +123,11 @@ export default class extends Component {
                         renderRow={(item) => (
                             <ListItem style={styles.orderItem}>
                                 <Image style={{ width: 50, height: 50 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
-                                <View style={{justifyContent: 'flex-start'}}>
+                                <View style={{ justifyContent: 'flex-start' }}>
                                     <Text small>{item.itemName}</Text>
                                     <Text small light>Số lượng: {item.quantity}</Text>
                                 </View>
-                                <Text bold>{item.price/1000}k</Text>
+                                <Text bold>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
@@ -125,7 +139,7 @@ export default class extends Component {
                     </View>
                     <View style={styles.rowPadding}>
                         <Text small>Phí giao hàng:</Text>
-                        <Text bold>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal):0}đ</Text>
+                        <Text bold>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
                     </View>
                     <Border color='rgba(0,0,0,0.5)' size={1} />
                     <View style={styles.rowPadding}>

@@ -16,16 +16,17 @@ import Content from '~/ui/components/Content'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
-
 import options from './options'
 import { formatNumber } from '~/ui/shared/utils'
-
-
+import ProgressCircle from 'react-native-progress-circle'
+import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
+import CircleCountdown from '~/ui/components/CircleCountdown'
+import moment from 'moment'
 @connect(state => ({
     place: state.place,
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-}), {...orderActions, ...commonActions})
+}), { ...orderActions, ...commonActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
@@ -39,30 +40,34 @@ export default class extends Component {
         }
 
         this.selectedStatus = 0
+        this.interval = 0
     }
-
-    componentWillFocus() {
-
-        // make it like before    
+    _timerCallback = (beforeTime) => {
+        console.log('Call _timerCallback', beforeTime)
+        const now = (new Date()).getTime()
+        console.log('Now', now)
+        console.log('Now -Before', now-beforeTime)
+        if (now - beforeTime > 2000) {
+            console.log('Over 2 second')
+            requestAnimationFrame(this._timerCallback)
+        }
+        
+    }
+    componentWillFocus() { 
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
-        // if(!order.orderList.length) {
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-        // } 
-
-        this.setState({
-            refreshing: false,
-        })
-
+        this.setState({refreshing: false, counting: true})
     }
 
-    // componentWillMount(){
-    //     this.componentWillFocus()      
-    // }
     componentDidMount() {
         this.componentWillFocus()
     }
 
+    componentWillBlur(){
+        console.log('Delivery Will Blur')
+        this.setState({counting: false})
+    }
 
     loadPage(page = 1, from_time, to_time) {
         const { session, getOrderList } = this.props
@@ -108,12 +113,12 @@ export default class extends Component {
         this.loadPage(1, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
     }
     _renderRow({ orderInfo, orderRowList }) {
-        const {forwardTo} = this.props
+        const { forwardTo } = this.props
         var statusBlock = null;
         const status = this.selectedStatus
         var orderListBock = null
         if (orderRowList != null) {
-            orderListBock =(
+            orderListBock = (
                 <View>
                     <View style={styles.block}>
                         {orderRowList.map((subItem, index) =>
@@ -153,23 +158,30 @@ export default class extends Component {
                 </View>
             )
         }
+        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE*60
         return (
-            <ListItem style={styles.deliveryBlock} key={orderInfo.clingmeId} 
-                onPress={()=>{
+            <ListItem style={styles.deliveryBlock} key={orderInfo.clingmeId}
+                onPress={() => {
                     console.log('Forwarding: ', orderInfo.orderCode)
-                    forwardTo('deliveryDetail/'+orderInfo.orderCode)
-                    }
+                    forwardTo('deliveryDetail/' + orderInfo.orderCode)
+                }
                 }>
                 <View style={styles.block}>
-                    <View style={{...styles.row, width: '100%'}}>
+                    <View style={{ ...styles.row, width: '100%' }}>
                         {statusBlock}
-                        <Text style={styles.time}>17:30 14/03/2017</Text>
+                        <View style={styles.row}>
+                            <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE} 
+                                counting={this.state.counting}
+                                countTo={countTo}         
+                            />
+                        </View>
                     </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 {orderListBock}
                 <View style={styles.block}>
-                    <View style={{...styles.row, width: '100%'}}>
+                    <View style={{ ...styles.row, width: '100%' }}>
                         <Text style={{ fontWeight: 'bold' }}>Ghi chú: </Text>
                         <Text>{orderInfo.note}</Text>
                     </View>
@@ -228,7 +240,7 @@ export default class extends Component {
                     refreshing={this.state.refreshing}
                     style={styles.contentContainer}
                     padder
-                    >
+                >
                     {orderList && orderList.map(item => (
                         this._renderRow(item)
                     ))}
