@@ -10,6 +10,7 @@ export default class extends Component {
 
   static defaultProps = {
     onEndReachedThreshold: 10,
+    keyboardShouldPersistTaps: 'always',
   }
 
   render() {
