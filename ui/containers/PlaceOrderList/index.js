@@ -17,6 +17,8 @@ import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import Content from '~/ui/components/Content'
 import options from './options'
+import {BASE_COUNTDOWN_BOOKING_MINUTE} from '~/ui/shared/constants'
+import CircleCountdown from '~/ui/components/CircleCountdown'
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
@@ -28,7 +30,8 @@ export default class PlaceOrderList extends Component {
         super(props)
         this.state = {
             loadingMore: false,
-            loading: false
+            loading: false,
+            counting: true
         }
     }
 
@@ -36,14 +39,20 @@ export default class PlaceOrderList extends Component {
         const { forwardTo } = this.props
         forwardTo('placeOrderDetail')
     }
-    _renderBookingItem(item) {        
-        let totalQuantity = item.orderRowList ? item.orderRowList.map(x=>x.quantity).reduce((a,b)=>a+b, 0): 0
+    _renderBookingItem(item) {
+        let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
         return (
 
             <ListItem onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)} style={styles.listItem}>
                 <View style={styles.rowPadding}>
                     <Text primary bold>{item.orderCode}</Text>
-                    <Text small style={{ color: 'black' }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                    <View style={styles.row}> 
+                        <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
+                            counting={this.state.counting}
+                            countTo={item.bookDate}
+                        />
+                    </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.row}>
@@ -140,10 +149,16 @@ export default class PlaceOrderList extends Component {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
-        this.setState({ loading: true })
+        this.setState({ loading: true, counting: true })
         this.props.getBookingList(this.props.user.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
+    }
+    componentWillFocus(){
+        this.setState({counting: true})
+    }
+    componentWillBlur(){
+        this.setState({counting: false})
     }
     render() {
         const { booking, place } = this.props

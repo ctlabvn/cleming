@@ -25,7 +25,6 @@ export default class PopupPhotoView extends Component {
         this.setState({ uri: uri, modalVisible: true })
     }
     render() {
-        console.log(this.state.uri)
         return (
             <Modal
                 animationType={"slide"}
@@ -42,8 +41,9 @@ export default class PopupPhotoView extends Component {
                     <PhotoView
                         source={{ uri: this.state.uri }}
                         minimumZoomScale={0.5}
-                        maximumZoomScale={3}                        
-                        style={{ resizeMode: 'contain', width: '100%', height: material.deviceHeight }}
+                        maximumZoomScale={3}
+                        resizeMode = 'contain'                        
+                        style={{ width: '100%', height: material.deviceHeight }}
                     />
                 </View>
             </Modal>

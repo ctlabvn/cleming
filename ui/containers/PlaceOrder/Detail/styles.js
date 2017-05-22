@@ -96,7 +96,8 @@ export default {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
+    alignItems: 'center'
   },
   center: {
     justifyContent: 'center'

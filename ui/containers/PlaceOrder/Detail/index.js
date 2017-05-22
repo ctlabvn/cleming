@@ -12,6 +12,8 @@ import Icon from '~/ui/elements/Icon'
 import * as commonActions from '~/store/actions/common'
 import * as bookingActions from '~/store/actions/booking'
 import styles from './styles'
+import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
+import CircleCountdown from '~/ui/components/CircleCountdown'
 
 const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
   "before deactivating the button. Once deactivated, try moving it back and youll see that the button is once again " +
@@ -27,13 +29,15 @@ export default class PlaceOrderDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      bookingDetail: {}
+      bookingDetail: {},
+      counting: true
     }
   }
   componentDidMount() {
     const { getBookingDetail } = this.props
     let bookingId = this.props.route.params.id
     let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
+    this.setState({ counting: true })
     if (!bookingArr || bookingArr.length == 0) {
       // if not in store, load from API
       getBookingDetail(this.props.user.xsession, bookingId,
@@ -52,6 +56,7 @@ export default class PlaceOrderDetail extends Component {
   componentWillFocus() {
     let bookingId = this.props.route.params.id
     let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
+    this.setState({ counting: true })
     if (!bookingArr || bookingArr.length == 0) {
       //if not in store, load from API
       getBookingDetail(this.props.user.xsession, bookingId,
@@ -66,6 +71,9 @@ export default class PlaceOrderDetail extends Component {
       )
     }
     this.setState({ bookingDetail: bookingArr[0] })
+  }
+  componentWillBlur() {
+    this.setState({ counting: false })
   }
   render() {
     if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
@@ -100,6 +108,12 @@ export default class PlaceOrderDetail extends Component {
           <View style={styles.placeContainer}>
             <View style={{ ...styles.rowPaddingTB, ...styles.center }}>
               <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+              <View style={{right: 10, position: 'absolute'}}>
+                <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
+                  counting={this.state.counting}
+                  countTo={this.state.bookingDetail.bookDate}
+                />
+              </View>
             </View>
             <View>
               <Border color='rgba(0,0,0,0.5)' size={1} />
