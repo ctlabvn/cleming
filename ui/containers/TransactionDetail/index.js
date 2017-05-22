@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Thumbnail, Button, Content, Spinner, Radio, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Radio, Input } from 'native-base'
 import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -192,139 +192,142 @@ export default class TransactionDetail extends Component {
             )
         }
         return (
-            <Content ref='content'>
-                <Modal
-                    animationType={"none"}
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        this.setModalVisible(!this.state.modalVisible)
-                    }}
-                >
-                    <View style={styles.modalOverlay}>
-                        <View style={styles.modalContainer}>
-                            <View style={styles.rowPadding}>
-                                <Text small>Không đồng ý với giao dịch <Text small bold>{transactionInfo.dealTransactionIdDisplay}</Text></Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Radio selected={false} style={styles.marginRight} />
-                                <Text>Lí do 1</Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Radio selected={true} style={styles.marginRight} />
-                                <Text>Lí do 2</Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Input placeholder='Lí do khác...'
-                                    style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14 }}
-                                />
-                            </View>
-                            <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                                <Button transparent onPress={() => this.setModalVisible(false)}><Text light>Cancel</Text></Button>
-                                <Button transparent
-                                    onPress={() => this.setModalVisible(false)}
-                                ><Text primary>Ok</Text></Button>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-                <PopupPhotoView ref='popupPhotoView' />
-                <View style={styles.container}>
-                    <View style={styles.topPart}>
-                        <View style={styles.rowPadding}>
-                            <Text small>{transactionInfo.placeAddress}</Text>
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <View style={styles.transactionContent}>
-                                <Text small>Số giao dịch: </Text>
-                                <Text small primary>{transactionInfo.dealTransactionIdDisplay}</Text>
-                            </View>
-                            <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
-                        </View>
-                    </View>
-                    <View style={{ ...styles.rowPadding, justifyContent: 'center' }}>
-                        {this._renderStatus(transactionInfo.transactionStatus)}
-                    </View>
-                    <View style={styles.rowPadding}>
-                        <Text small style={styles.paymenMethodLabel}>Hình thức thanh toán:</Text>
-                        <View style={styles.row}>
-                            <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
-                            <Text small style={styles.primary}>Thanh toán trực tiếp</Text>
-                        </View>
-                    </View>
-                    <View style={styles.rowPadding}>
-                        <Text small style={styles.userLabel}>Khách hàng:</Text>
-                        <View style={styles.userContent}>
-                            <Text small bold>{transactionInfo.userName}</Text>
-                            {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
-                            <Icon style={styles.icon} name='account' />
-                        </View>
-                    </View>
-
-                    <View style={styles.rowPadding}>
-                        <Text small>Xem:</Text>
-                        <Text small>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
-                    </View>
-                    <View style={styles.rowPadding}>
-                        <Text small>Đánh dấu:</Text>
-                        <Text small>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
-                    </View>
-                    <View style={styles.rowPadding}>
-                        <Text small>Chụp hóa đơn:</Text>
-                        <Text small>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
-                    </View>
-
-                    <View style={styles.invoiceBlock}>
-                        <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
-                        <Text small style={styles.invoice}>000425</Text>
-                    </View>
-
-
-                    <View style={styles.borderBlock}>
-
-                        {(transactionInfo.transactionStatus != 2) &&
-                            <View style={styles.invoiceDetailBlock}>
-                                <View style={styles.rowSpaceAround}>
-                                    <View style={styles.gridItem}>
-                                        <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
-                                        <Text style={styles.labelInfo}>Tổng tiền hóa đơn</Text>
-                                    </View>
-                                    <View style={styles.gridItem}>
-                                        <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
-                                        <Text style={styles.labelInfo}>Tỷ lệ giảm giá</Text>
-                                    </View>
+            <Container style={{paddingBottom: 40}}>
+                <Content ref='content'>
+                    <Modal
+                        animationType={"none"}
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                        onRequestClose={() => {
+                            this.setModalVisible(!this.state.modalVisible)
+                        }}
+                    >
+                        <View style={styles.modalOverlay}>
+                            <View style={styles.modalContainer}>
+                                <View style={styles.rowPadding}>
+                                    <Text small>Không đồng ý với giao dịch <Text small bold>{transactionInfo.dealTransactionIdDisplay}</Text></Text>
                                 </View>
-                                <View style={styles.rowSpaceAround}>
-                                    <View style={styles.gridItem}>
-
-                                        <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                        <Text style={styles.labelInfo}>Tổng tiền Cashback</Text>
-                                    </View>
-                                    <View style={styles.gridItem}>
-                                        <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
-                                        <Text style={styles.labelInfo}>Phí Clingme</Text>
-                                    </View>
+                                <View style={styles.rowPadding}>
+                                    <Radio selected={false} style={styles.marginRight} />
+                                    <Text>Lí do 1</Text>
+                                </View>
+                                <View style={styles.rowPadding}>
+                                    <Radio selected={true} style={styles.marginRight} />
+                                    <Text>Lí do 2</Text>
+                                </View>
+                                <View style={styles.rowPadding}>
+                                    <Input placeholder='Lí do khác...'
+                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14 }}
+                                    />
+                                </View>
+                                <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
+                                    <Button transparent onPress={() => this.setModalVisible(false)}><Text light>Cancel</Text></Button>
+                                    <Button transparent
+                                        onPress={() => this.setModalVisible(false)}
+                                    ><Text primary>Ok</Text></Button>
                                 </View>
                             </View>
-                        }
-                        <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
-                            <TouchableOpacity onPress={() => {
+                        </View>
+                    </Modal>
+                    <PopupPhotoView ref='popupPhotoView' />
+                    <View style={styles.container}>
+                        <View style={styles.topPart}>
+                            <View style={styles.rowPadding}>
+                                <Text small>{transactionInfo.placeAddress}</Text>
+                            </View>
+                            <View style={styles.rowPadding}>
+                                <View style={styles.transactionContent}>
+                                    <Text small>Số giao dịch: </Text>
+                                    <Text small primary>{transactionInfo.dealTransactionIdDisplay}</Text>
+                                </View>
+                                <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
+                            </View>
+                        </View>
+                        <View style={{ ...styles.rowPadding, justifyContent: 'center' }}>
+                            {this._renderStatus(transactionInfo.transactionStatus)}
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <Text small style={styles.paymenMethodLabel}>Hình thức thanh toán:</Text>
+                            <View style={styles.row}>
+                                <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
+                                <Text small style={styles.primary}>Thanh toán trực tiếp</Text>
+                            </View>
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <Text small style={styles.userLabel}>Khách hàng:</Text>
+                            <View style={styles.userContent}>
+                                <Text small bold>{transactionInfo.userName}</Text>
+                                {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
+                                <Icon style={styles.icon} name='account' />
+                            </View>
+                        </View>
+
+                        <View style={styles.rowPadding}>
+                            <Text small>Xem:</Text>
+                            <Text small>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <Text small>Đánh dấu:</Text>
+                            <Text small>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <Text small>Chụp hóa đơn:</Text>
+                            <Text small>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        </View>
+
+                        <View style={styles.invoiceBlock}>
+                            <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                            <Text small style={styles.invoice}>000425</Text>
+                        </View>
+
+
+                        <View style={styles.borderBlock}>
+
+                            {(transactionInfo.transactionStatus != 2) &&
+                                <View style={styles.invoiceDetailBlock}>
+                                    <View style={styles.rowSpaceAround}>
+                                        <View style={styles.gridItem}>
+                                            <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
+                                            <Text style={styles.labelInfo}>Tổng tiền hóa đơn</Text>
+                                        </View>
+                                        <View style={styles.gridItem}>
+                                            <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
+                                            <Text style={styles.labelInfo}>Tỷ lệ giảm giá</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.rowSpaceAround}>
+                                        <View style={styles.gridItem}>
+
+                                            <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
+                                            <Text style={styles.labelInfo}>Tổng tiền Cashback</Text>
+                                        </View>
+                                        <View style={styles.gridItem}>
+                                            <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
+                                            <Text style={styles.labelInfo}>Phí Clingme</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            }
+                            <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
+                                <TouchableOpacity onPress={() => {
                                     this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
                                 }}>
-                                <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
-                            </TouchableOpacity>
+                                    <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={{ ...styles.rowPadding, ...styles.center }}>
+                            {this._renderBottomAction(transactionInfo.transactionStatus)}
                         </View>
                     </View>
-
-                    <View style={{ ...styles.rowPadding, ...styles.center }}>
-                        {this._renderBottomAction(transactionInfo.transactionStatus)}
-                    </View>
-                    <View style={styles.navigateInvoiceBlock}>
-                        {btnPrev}
-                        {btnNext}
-                    </View>
+                </Content>
+                <View style={styles.navigateInvoiceBlock}>
+                    {btnPrev}
+                    {btnNext}
                 </View>
-            </Content>
+            </Container>
+
         )
     }
 }

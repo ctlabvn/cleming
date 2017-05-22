@@ -233,8 +233,14 @@ export default {
     navigateInvoiceBlock: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
-        alignItems: 'center'
+        padding: 5,
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: 'white',
+        zIndex: 20,
+        elevation: 5,
+        width: '100%'
     },
     buttonLeft: {
         flexDirection: 'row',
