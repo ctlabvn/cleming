@@ -29,11 +29,12 @@ export default {
     confirmBlock: {
         flexDirection: 'row', 
         justifyContent: 'flex-end', 
-        width: '100%'
+        width: '100%',
+        paddingRight: 20,
     },
     confirmButton: {
-        // width: '45%', 
-        justifyContent: 'center'
+        marginRight: 25,
+        justifyContent: 'center',
     },
     listItem: {
     },
@@ -42,7 +43,6 @@ export default {
         flex: 1,
     },
     itemRadio: {
-
     },
 
 }
