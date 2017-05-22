@@ -47,6 +47,9 @@ export default (variables = variable) => {
       },
       '.transparent': {
         color: 'transparent'
+      },
+      '.center': {
+        justifyContent: 'center'
       }
   };
 

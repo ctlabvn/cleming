@@ -26,9 +26,23 @@ export const auth = (state = initialState, {type, payload}) => {
       // payload is access token
       return {...state, token: {...state.token, ...payload} }
     case 'app/setUserAvatar':
-      return {...state, user: {...state.user, avatar: (typeof payload.updated != 'undefined') ? payload.updated.url_new_avatar : img}}
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          avatar: (typeof payload.updated != 'undefined') ? payload.updated.url_new_avatar : img
+        }
+      }
     case 'app/setPushToken':
       return {...state, push_token: payload}
+    case 'app/updateProfileToRedux':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...payload.updated.mertchant_accout_info
+        }
+      }
     default:
       return state
   }

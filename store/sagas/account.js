@@ -2,7 +2,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { setToast, noop, forwardTo, goBack } from '~/store/actions/common'
 
 import {
     replaceProfile,
@@ -11,7 +11,8 @@ import {
 } from '~/store/actions/account'
 
 import {
-  setUserAvatar
+  setUserAvatar,
+  updateProfileToRedux
 } from '~/store/actions/auth'
 
 
@@ -30,6 +31,7 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
+        () => goBack(),
         () => setToast('Change password successfully!')
     ],
     failure: [
@@ -51,6 +53,18 @@ const requestResetPassword = createRequestSaga({
     failure: [
         () => setToast('Couldn\'t reset password', 'error')
     ]
+})
+
+const requestUpdateProfile = createRequestSaga({
+  request: api.account.updateProfile,
+  key: 'updateProfile',
+  success: [
+    (data) => updateProfileToRedux(data),
+    () => setToast('Update profile successfully!')
+  ],
+  failure: [
+    () => setToast('Couldn\'t update profile', 'error')
+  ],
 })
 
 const requestGetListEmployee = createRequestSaga({
@@ -136,7 +150,8 @@ export default [
           takeLatest('app/updateEmployeeInfo', requestUpdateEmployeeInfo),
           takeLatest('app/createEmployeeInfo', requestCreateEmployeeInfo),
           takeLatest('app/deleteEmployeeInfo', requestDeleteEmployeeInfo),
-          takeLatest('app/updateOwnerAvatar', requestUpdateOwnerAvatar)
+          takeLatest('app/updateOwnerAvatar', requestUpdateOwnerAvatar),
+          takeLatest('app/updateProfile', requestUpdateProfile)
         ]
     },
 ]

@@ -41,9 +41,6 @@ export default {
         marginRight: 7,
         fontSize: 20
     },
-    transactionCode: {
-        fontWeight: 'bold'
-    },
     block: {
         flexDirection: 'column',
         backgroundColor: 'white',
@@ -61,16 +58,14 @@ export default {
     icon: {
         fontSize: 17,
         width: 20,
-        color: 'grey'
+        color: 'white',
+        textAlign: 'center'
     },
     placeholder: {
         width: 30,
         marginRight: 5,
         flexDirection: 'row',
         justifyContent: 'center',
-    },
-    processing: {
-        color: WARNING_COLOR
     },
     success: {
         color: SUCCESS_COLOR
@@ -98,5 +93,26 @@ export default {
       marginRight: 0,
       borderBottomWidth: 0,
       paddingTop: 0
+    },
+    iconBlock: {
+        backgroundColor: PRIMARY_COLOR,
+        width: 40,
+        height: 40,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    backgroundSuccess: {
+        backgroundColor: SUCCESS_COLOR
+    },
+    backgroundWarning: {
+        backgroundColor: WARNING_COLOR
+    },
+    backgroundError: {
+        backgroundColor: ERROR_COLOR
+    },
+    moneyNumber: {
+        fontSize: 20
     }
 }

@@ -37,12 +37,21 @@ requestListTransactionPayWithClingme = createRequestSaga({
     failure: [
         () => setToast('Couldn\'t load list transaction Clingme', 'error')
     ],
+}),
+requestTransactionDetail = createRequestSaga({
+    request: api.transaction.detail,
+    key: 'transaction/detail',
+    cancel: 'app/logout',
+    failure: [
+        () => setToast('Couldn\'t load list transaction Clingme', 'error')
+    ],
 })
 export default [
     function* fetchWatcher() {
         yield [            
             takeLatest('transaction/list', requestListTransaction),
-            takeLatest('transaction/listPayWithClingme', requestListTransactionPayWithClingme)
+            takeLatest('transaction/listPayWithClingme', requestListTransactionPayWithClingme),
+            takeLatest('transaction/detail', requestTransactionDetail)
         ]
     },
 ]

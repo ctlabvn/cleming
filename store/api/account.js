@@ -15,9 +15,9 @@ export default {
     return apiGet('/Api/AccountSettings/Profile', {}, accessToken)
   },
   
-  updateProfile (accessToken, updatedInfo) {
+  updateProfile (session, updatedInfo) {
     // return fetchJsonWithToken(token, `/logout`)
-    return apiPost('/edit/info', {updatedInfo}, accessToken)
+    return apiPost('/edit/info', updatedInfo, session)
   },
   
   updateAvatar (accessToken, avatarFile) {
@@ -29,8 +29,8 @@ export default {
     return apiPost('/account/list')
   },
 
-  changePassword(session, oldPassword, password) {
-    return apiPost('/change/password', {oldPassword, password}, session)
+  changePassword(session, data) {
+    return apiPost('/change/password', data, session)
   },
 
   resetPassword(userName) {

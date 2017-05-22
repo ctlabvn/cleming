@@ -10,8 +10,18 @@ export default{
         flexDirection: 'column',
         backgroundColor: 'white',
         borderRadius: 2,
-        padding: 10,
-        marginBottom: 10
+        
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        
+        marginBottom: 10,
+        // padding: 10,
+        marginLeft: 0,
+        marginRight: 0,
+        alignSelf: 'center',
+        width: '100%'
     },
     row: {
         flexDirection: 'row',

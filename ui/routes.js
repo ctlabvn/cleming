@@ -2,6 +2,7 @@
 import NotFound from './containers/NotFound'
 import Notification from './containers/Notification'
 import Login from './containers/Login'
+import PasswordModifier from './containers/PasswordModifier'
 // import SignUpStep1 from './containers/SignUp/Step1'
 // import SignUpStep2 from './containers/SignUp/Step2'
 // import SignUpStep3 from './containers/SignUp/Step3'
@@ -33,6 +34,7 @@ import ListDeal from './containers/ListDeal'
 import DealsOverview from './containers/DealsOverview'
 import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
+import DeliveryDetail from './containers/DeliveryDetail'
 import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
@@ -58,6 +60,10 @@ export default {
     deliveryList: {
         title: 'Danh sách giao hàng',
         Page: DeliveryList
+    },
+    'deliveryDetail/:id': {
+        title: 'Chi tiết giao hàng',
+        Page: DeliveryDetail
     },
     report: {
         title: 'Khách hàng tiềm năng',
@@ -114,8 +120,14 @@ export default {
         Page: Login,        
         headerType: 'none',
         footerType: 'none',
-    },  
-    // signup1: {
+    },
+    changePassword: {
+        title: 'Change Password',
+        Page: PasswordModifier,
+        headerType: 'back',
+        footerType: 'none',
+    },
+  // signup1: {
     //     title: 'Sign Up',
     //     Page: SignUpStep1,        
     //     headerType: 'back',
@@ -214,7 +226,6 @@ export default {
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
-        headerType: 'back',
         footerType: 'none',
     },
     'userManagement/action/createUser': {

@@ -30,6 +30,7 @@
     "react-native-linear-gradient": "^2.0.0",
     "react-native-maps": "^0.15.0",
     "react-native-modal-datetime-picker": "^4.4.0",
+    "react-native-photo-view": "^1.2.0",
     "react-native-push-notification": "^3.0.0",
     "react-native-responsive-image": "2.1.0",
     "react-native-svg": "5.1.7",

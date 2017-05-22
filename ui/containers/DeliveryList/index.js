@@ -7,6 +7,7 @@ import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as orderActions from '~/store/actions/order'
+import * as commonActions from '~/store/actions/common'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
 import { InputField } from '~/ui/elements/Form'
@@ -24,7 +25,7 @@ import { formatNumber } from '~/ui/shared/utils'
     place: state.place,
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-}), orderActions)
+}), {...orderActions, ...commonActions})
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
@@ -107,8 +108,8 @@ export default class extends Component {
         this.loadPage(1, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
     }
     _renderRow({ orderInfo, orderRowList }) {
+        const {forwardTo} = this.props
         var statusBlock = null;
-        // var bottomBlock=null;
         const status = this.selectedStatus
         var orderListBock = null
         if (orderRowList != null) {
@@ -137,12 +138,6 @@ export default class extends Component {
                     <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
                 </View>
             )
-            // bottomBlock = (
-            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-            //         <Button transparent><Text style={styles.reject}>Từ chối</Text></Button>
-            //         <Button transparent><Text style={styles.confirm}>Xác nhận</Text></Button>
-            //     </View>
-            // )
         } else if (status === 1) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
@@ -150,12 +145,6 @@ export default class extends Component {
                     <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
                 </View>
             )
-            // bottomBlock = (
-            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-            //         <Button transparent><Text style={styles.reject}>Hủy</Text></Button>
-            //         <Button transparent><Text style={styles.confirm}>Đã giao thành công</Text></Button>
-            //     </View>
-            // )
         } else {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
@@ -165,9 +154,14 @@ export default class extends Component {
             )
         }
         return (
-            <View style={styles.deliveryBlock} key={orderInfo.clingmeId}>
+            <ListItem style={styles.deliveryBlock} key={orderInfo.clingmeId} 
+                onPress={()=>{
+                    console.log('Forwarding: ', orderInfo.orderCode)
+                    forwardTo('deliveryDetail/'+orderInfo.orderCode)
+                    }
+                }>
                 <View style={styles.block}>
-                    <View style={styles.row}>
+                    <View style={{...styles.row, width: '100%'}}>
                         {statusBlock}
                         <Text style={styles.time}>17:30 14/03/2017</Text>
                     </View>
@@ -175,10 +169,10 @@ export default class extends Component {
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 {orderListBock}
                 <View style={styles.block}>
-                    <Text>
+                    <View style={{...styles.row, width: '100%'}}>
                         <Text style={{ fontWeight: 'bold' }}>Ghi chú: </Text>
-                        {orderInfo.note}
-                    </Text>
+                        <Text>{orderInfo.note}</Text>
+                    </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
@@ -201,7 +195,7 @@ export default class extends Component {
                     </View>
                 </View>
 
-            </View>
+            </ListItem>
         )
     }
 
@@ -232,7 +226,9 @@ export default class extends Component {
                 <Content
                     onEndReached={this._loadMore} onRefresh={this._onRefresh}
                     refreshing={this.state.refreshing}
-                    style={styles.contentContainer}>
+                    style={styles.contentContainer}
+                    padder
+                    >
                     {orderList && orderList.map(item => (
                         this._renderRow(item)
                     ))}

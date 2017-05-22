@@ -27,7 +27,8 @@ export const fetchJson = (url, options = {}, base = API_BASE) => (
     headers: {
       ...options.headers,
       // 'Content-Type':'application/x-www-form-urlencoded',   
-      // Origin: API_BASE,      
+      // Origin: API_BASE,
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
       'X-VERSION': 1,
       'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
