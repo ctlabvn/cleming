@@ -68,5 +68,8 @@ export default{
     },
     confirm: {
         color: PRIMARY_COLOR
+    },
+    time: {
+        marginRight: 5
     }
 }
