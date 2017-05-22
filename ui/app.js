@@ -33,7 +33,20 @@ import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
+// console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
+import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
+
+const NoTransition = {
+  opacity: {
+    from: 1,
+    to: 1,
+    min: 1,
+    max: 1,
+    type: 'linear',
+    extrapolate: false,
+    round: 100,
+  },
+}
 
 const getPage = (url) => {  
   for(route in routes) {
@@ -61,14 +74,24 @@ export default class App extends Component {
 
   static configureScene(route) {
       const {animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight'} = routes[route.path] || {}
+      
       // return Navigator.SceneConfigs[animationType]
       // Navigator.SceneConfigs[animationType]
       // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-      return {
+      const sceneConfig =  {
         ...Navigator.SceneConfigs[animationType], 
         gestures: null,
-        defaultTransitionVelocity: 20,
+        defaultTransitionVelocity: 20,        
       }
+
+      if(material.platform === 'android'){
+        sceneConfig.animationInterpolators = {
+          into: buildStyleInterpolator(NoTransition),
+          out: buildStyleInterpolator(NoTransition),
+        }
+      }
+
+      return sceneConfig
   }
 
   initPushNotification(options) {
@@ -294,6 +317,9 @@ export default class App extends Component {
           open={drawerState === 'opened'}
           type="overlay"          
           side="right"  
+          negotiatePan={true}
+          tweenDuration={100}
+          useInteractionManager={true}
           tweenHandler={ratio => ({
             drawer:{
               top: 20,

@@ -69,7 +69,7 @@ export default class UpdateUserContainer extends Component {
         {
           name: response.fileName,
           filename: 'image1.png',
-          filepath: response.uri.replace('file://', ''),
+          filepath: response.origURL,
           filetype: 'image/jpeg',
         },
         // {
@@ -81,13 +81,15 @@ export default class UpdateUserContainer extends Component {
       ];
     
       let opts = {
-        url: 'http://dev.clingme.net:9099/edit/avatar',
+        url:
+          'http://localhost:86/php/clingme.php',
+         // 'http://dev.clingme.net:9099/edit/avatar',
         files: files,
         method: 'POST',                             // optional: POST or PUT
         headers: //{ 'Accept': 'application/json' },  // optional
         {
             'Accept': 'application/json',
-            'Content-Type': undefined,// 'multipart/form-data',
+            // 'Content-Type': undefined,// 'multipart/form-data',
             'X-VERSION': 1,
             'X-SESSION': this.props.session,
             'X-AUTH': '',
