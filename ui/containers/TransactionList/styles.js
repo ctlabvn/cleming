@@ -46,7 +46,9 @@ export default {
         backgroundColor: 'white',
         width: '100%',
         // borderRadius: 3,
-        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginTop: 10,
         marginBottom: 10
     },
     row: {
@@ -102,7 +104,7 @@ export default {
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 4,
-        marginRight: 10,
+        marginRight: 15,
         marginTop: 4,
     },
     backgroundSuccess: {

@@ -300,9 +300,9 @@ export default class extends Component {
                         <View style={{width: '100%', flex:1}}>
                             <View style={styles.row}>
                                 {transactionCode}
-                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
+                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
                             </View>
-                            <View style={styles.row}>
+                            <View style={{...styles.row, marginTop: 2}}>
                                 <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.row}>

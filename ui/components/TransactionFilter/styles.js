@@ -32,7 +32,7 @@ export default {
     numberRight: {
         color: PRIMARY_COLOR,
         fontWeight: 'bold',
-        marginRight: 10,
+        marginRight: 15,
     },
     transactionTypeIcon: {
         color: PRIMARY_COLOR,
