@@ -317,7 +317,7 @@ export default class TransactionDetail extends Component {
                             </View>
                         </View>
 
-                        <View style={{ ...styles.rowPadding, ...styles.center }}>
+                        <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
                             {this._renderBottomAction(transactionInfo.transactionStatus)}
                         </View>
                     </View>
