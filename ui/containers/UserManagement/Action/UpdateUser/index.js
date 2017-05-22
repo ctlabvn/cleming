@@ -61,7 +61,7 @@ export default class UpdateUserContainer extends Component {
     }
     
     handleChoosePhoto = (response)=>{
-      console.log(response)
+      // console.log(response)
       
       /*formData.append('avatarFile', uri.replace('file://', ''))
       this.props.updateOwnerAvatar(this.props.session, formData)*/

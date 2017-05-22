@@ -54,6 +54,10 @@ export default class MerchantOverview extends PureComponent {
         console.log('focus')
     }
 
+    componentWillBlur(){
+        console.log('blur')
+    }
+
     _handleChangePlace(item) {
         const { place } = this.props
         let dateFilterData = this.refs.dateFilter.getData()

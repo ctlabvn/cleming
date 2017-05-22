@@ -129,7 +129,8 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     // default is not found page, render must show error
-    this.page = getPage(props.router.route) || routes.notFound      
+    this.page = getPage(props.router.route) || routes.notFound    
+    this.prevPage = null  
     this.pageInstances = {}   
 
     this.initPushNotification({
@@ -160,6 +161,7 @@ export default class App extends Component {
   componentWillReceiveProps({router, drawerState}){
     // process for route change only
     if(router.route !== this.props.router.route){
+      const oldComponent = this.pageInstances[this.page.path]
       this.page = getPage(router.route)
       if(this.page){
         const {headerType, footerType, title, path} = this.page
@@ -177,6 +179,7 @@ export default class App extends Component {
         if(destIndex !==-1){          
           // trigger will focus, the first time should be did mount
           this.handlePageWillFocus(path)
+          oldComponent && this.handleFocusableComponent(oldComponent, false)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)          
         } else {                            
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
@@ -272,13 +275,14 @@ export default class App extends Component {
     })
   }
 
-  handleFocusableComponent(component) {
+  handleFocusableComponent(component, focus=true) {
     // do not loop forever
+    const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10    
     let ref = component
     // maybe connect, check name of constructor is _class means it is a component :D
     while(ref && whatdog > 0){
-      ref.componentWillFocus && ref.componentWillFocus()
+      ref[method] && ref[method]()
       ref = ref._reactInternalInstance._renderedComponent._instance
       whatdog--
     }    
