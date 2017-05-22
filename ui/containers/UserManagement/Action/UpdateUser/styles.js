@@ -40,5 +40,9 @@ export default {
       height: 120,
       backgroundColor: '#d9d9d9',
       borderRadius: 60
+    },
+    changePasswordText: {
+      color: '#9bd7ff',
+      alignSelf: 'center'
     }
 }

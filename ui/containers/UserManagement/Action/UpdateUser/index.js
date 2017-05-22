@@ -43,7 +43,7 @@ const formSelector = formValueSelector('UpdateUserForm')
   return ({
     initialValues: {
       enableReinitialize: true,
-      name: stateProps.auth.user.fullName,
+      name: stateProps.auth.user.fullName || '',
       email: stateProps.auth.user.email,
       phone: stateProps.auth.user.phoneNumber
     },
@@ -118,7 +118,7 @@ export default class UpdateUserContainer extends Component {
     onSubmitUserInfo() {
       console.log(this.props.formValues)
       let data = {
-        fullName: this.props.formValues.name,
+        fullName: this.props.formValues.name || '',
         email: this.props.formValues.email,
         phoneNumber: this.props.formValues.phone
       }
@@ -159,6 +159,7 @@ export default class UpdateUserContainer extends Component {
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
                             <Field
+                                editable={false}
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
@@ -168,26 +169,22 @@ export default class UpdateUserContainer extends Component {
                                 placeholderTextColor="#7e7e7e"/>
                         </View>
                         <View style={{marginTop: 20}}>
-                            <Grid>
-                                <Col>
-                                    <Button
-                                      onPress={this.changePasswordPress.bind(this)}
-                                      style={styles.updatePasswordButton}>
-                                        <Icon name="pass_word"/>
-                                        <Text style={styles.updatePasswordButtonText}>Thay đổi mật khẩu</Text>
-                                    </Button>
-                                </Col>
-                            </Grid>
-                        </View>
-                        <View style={{marginTop: 20}}>
                           <Grid>
                             <Col>
                               <Button
                                 onPress={this.onSubmitUserInfo.bind(this)}
                                 style={styles.updatePasswordButton}>
-                                <Icon name="pass_word"/>
-                                <Text style={styles.updatePasswordButtonText}>Thay đổi</Text>
+                                <Text style={styles.updatePasswordButtonText}>Đồng Ý</Text>
                               </Button>
+                            </Col>
+                          </Grid>
+                        </View>
+                        <View style={{marginTop: 20}}>
+                          <Grid>
+                            <Col>
+                              <Text
+                                onPress={this.changePasswordPress.bind(this)}
+                                style={styles.changePasswordText}>Thay đổi mật khẩu</Text>
                             </Col>
                           </Grid>
                         </View>
