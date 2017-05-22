@@ -70,7 +70,7 @@ export default class extends Component {
                 }
             )
         } else { // Trả trực tiếp
-            this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
+            this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
             this.props.getListTransaction(this.props.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
                 () => {
                     this.setState({ loading: false })
@@ -356,7 +356,7 @@ export default class extends Component {
                     <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDỉrect} ref='transactionFilter'
+                        listValue={options.transactionFilterListDirect} ref='transactionFilter'
                     />
                     <Content
                         padder

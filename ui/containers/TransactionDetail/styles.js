@@ -194,13 +194,13 @@ export default {
     },
     invoiceLabel: {
         backgroundColor: 'white',
-        paddingLeft: 5
+        paddingLeft: 25
     },
     invoice: {
         backgroundColor: 'white',
         fontWeight: 'bold',
         color: PRIMARY_COLOR,
-        paddingRight: 5
+        paddingRight: 25
     },
 
     invoiceDetailBlock: {
@@ -254,11 +254,11 @@ export default {
     },
     icon: {
         fontSize: 20,
-        marginLeft: 3,
+        marginLeft: 7,
         color: 'grey',
     },
     marginRight: {
-        marginRight: 3
+        marginRight: 10
     },
     center: {
         justifyContent: 'center'

@@ -1,12 +1,12 @@
 export default {
-  transactionFilterListDỉrect: [
+  transactionFilterListDirect: [
       {
           value: 0,
           display: 'Tất cả giao dịch'
       },
       {
           value: 1,
-          display: 'Clingme đã duyệt'
+          display: 'Chờ phê duyệt'
       },
       {
           value: 2,
