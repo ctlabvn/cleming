@@ -124,7 +124,7 @@ export default {
     changePassword: {
         title: 'Change Password',
         Page: PasswordModifier,
-        headerType: 'none',
+        headerType: 'back',
         footerType: 'none',
     },
   // signup1: {
@@ -226,7 +226,6 @@ export default {
     userManagement: {
         title: 'User Management',
         Page: UserManagement,
-        headerType: 'back',
         footerType: 'none',
     },
     'userManagement/action/createUser': {
