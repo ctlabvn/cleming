@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Thumbnail, Button, Content, Spinner, Radio, Input } from 'native-base'
-import { View, Modal, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
+import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
@@ -9,6 +9,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import * as transactionActions from '~/store/actions/transaction'
 import { getSession } from '~/store/selectors/auth'
 import { storeTransparent, storeFilled } from '~/assets'
+import PopupPhotoView from '~/ui/components/PopupPhotoView'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -46,7 +47,7 @@ export default class TransactionDetail extends Component {
                 return (<Text small transparent>Fake success</Text>)
             case 2:
                 return (<Text small error>*Hóa đơn không đúng chương trình khuyến mại</Text>)
-                    
+
             default:
                 return (<View key='bottomBlock'></View>)
         }
@@ -68,7 +69,7 @@ export default class TransactionDetail extends Component {
         let hasNext = (index == listTransaction.length - 1) ? false : true
         let transaction = listTransaction[index]
         console.log('Previous trans', transaction)
-        console.log('Has', hasNext+'--'+hasPrevious)
+        console.log('Has', hasNext + '--' + hasPrevious)
         getTransactionDetail(xsession, transaction.dealTransactionId,
             (err, data) => {
                 console.log('ErrData', data)
@@ -93,7 +94,7 @@ export default class TransactionDetail extends Component {
         let hasNext = (index == this.props.listTransaction.length - 1) ? false : true
         let transaction = listTransaction[index]
         console.log('Next trans', transaction)
-        console.log('Has', hasNext+'--'+hasPrevious)
+        console.log('Has', hasNext + '--' + hasPrevious)
         getTransactionDetail(xsession, transaction.dealTransactionId,
             (err, data) => {
                 console.log('ErrData', data)
@@ -214,20 +215,20 @@ export default class TransactionDetail extends Component {
                                 <Text>Lí do 2</Text>
                             </View>
                             <View style={styles.rowPadding}>
-                                <Input placeholder='Lí do khác...' 
-                                    style={{width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14}}
+                                <Input placeholder='Lí do khác...'
+                                    style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14 }}
                                 />
                             </View>
                             <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                                <Button transparent onPress={()=>this.setModalVisible(false)}><Text light>Cancel</Text></Button>
+                                <Button transparent onPress={() => this.setModalVisible(false)}><Text light>Cancel</Text></Button>
                                 <Button transparent
-                                    onPress={()=>this.setModalVisible(false)}
+                                    onPress={() => this.setModalVisible(false)}
                                 ><Text primary>Ok</Text></Button>
                             </View>
                         </View>
                     </View>
                 </Modal>
-
+                <PopupPhotoView ref='popupPhotoView' />
                 <View style={styles.container}>
                     <View style={styles.topPart}>
                         <View style={styles.rowPadding}>
@@ -305,9 +306,13 @@ export default class TransactionDetail extends Component {
                                     </View>
                                 </View>
                             </View>
-                            }
+                        }
                         <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
-                            <Image source={{uri: transactionInfo.invoidImage}} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
+                            <TouchableOpacity onPress={() => {
+                                    this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
+                                }}>
+                                <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
+                            </TouchableOpacity>
                         </View>
                     </View>
 
