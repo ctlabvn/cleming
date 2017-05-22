@@ -4,11 +4,12 @@ import {
     View,
     Image,
     Modal,
-    TouchableNativeFeedback
+    TouchableOpacity
 } from 'react-native'
 import Icon  from '~/ui/elements/Icon'
 import PhotoView from 'react-native-photo-view'
 import styles from './styles'
+import material from '~/theme/variables/material'
 export default class PopupPhotoView extends Component {
     constructor(props) {
         super(props)
@@ -24,6 +25,7 @@ export default class PopupPhotoView extends Component {
         this.setState({ uri: uri, modalVisible: true })
     }
     render() {
+        console.log(this.state.uri)
         return (
             <Modal
                 animationType={"slide"}
@@ -33,15 +35,15 @@ export default class PopupPhotoView extends Component {
             >
                 <View style={styles.imagePopupContainer}>
                     <View style={styles.controlBlock}>
-                        <TouchableNativeFeedback onPress={() => this.setModalVisible(false)}>
+                        <TouchableOpacity onPress={() => this.setModalVisible(false)}>
                             <Icon name='back' style={styles.backIcon} />
-                        </TouchableNativeFeedback>
+                        </TouchableOpacity>
                     </View>
                     <PhotoView
                         source={{ uri: this.state.uri }}
                         minimumZoomScale={0.5}
-                        maximumZoomScale={3}
-                        style={{ width: '100%', height: '100%' }}
+                        maximumZoomScale={3}                        
+                        style={{ resizeMode: 'contain', width: '100%', height: material.deviceHeight }}
                     />
                 </View>
             </Modal>
