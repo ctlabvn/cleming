@@ -260,7 +260,7 @@ export default {
     },
     icon: {
         fontSize: 20,
-        marginLeft: 7,
+        marginLeft: 5,
         color: 'grey',
     },
     marginRight: {
@@ -333,4 +333,11 @@ export default {
         padding: 10,
     },
 
+    textPrev: {
+      paddingBottom: 3,
+    },
+
+    textNext: {
+        paddingBottom: 3,
+    },
 }

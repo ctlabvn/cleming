@@ -164,14 +164,14 @@ export default class TransactionDetail extends Component {
                 <Button dark transparent style={styles.buttonLeft}
                     onPress={() => this.goPrevious()}>
                     <Icon name="keyboard-arrow-left" style={styles.icon} />
-                    <Text small>Giao dịch trước</Text>
+                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
                 </Button>
             )
         } else {
             btnPrev = (
                 <Button light disabled transparent style={styles.buttonLeft}>
                     <Icon name="keyboard-arrow-left" style={{ ...styles.icon, ...styles.disabled }} />
-                    <Text small>Giao dịch trước</Text>
+                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
                 </Button>
             )
         }
@@ -179,14 +179,14 @@ export default class TransactionDetail extends Component {
         if (this.state.hasNext) {
             btnNext = (
                 <Button dark transparent style={styles.buttonRight} onPress={() => this.goNext()}>
-                    <Text small>Giao dịch sau</Text>
+                    <Text small style={styles.textNext}>Giao dịch sau</Text>
                     <Icon name="keyboard-arrow-right" style={styles.icon} />
                 </Button>
             )
         } else {
             btnNext = (
                 <Button light disabled transparent style={styles.buttonRight}>
-                    <Text small>Giao dịch sau</Text>
+                    <Text small style={styles.textNext}>Giao dịch sau</Text>
                     <Icon name="keyboard-arrow-right" style={{ ...styles.icon, ...styles.disabled }} />
                 </Button>
             )
@@ -238,7 +238,7 @@ export default class TransactionDetail extends Component {
                             <View style={styles.rowPadding}>
                                 <View style={styles.transactionContent}>
                                     <Text small>Số giao dịch: </Text>
-                                    <Text small primary>{transactionInfo.dealTransactionIdDisplay}</Text>
+                                    <Text small primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                                 </View>
                                 <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
                             </View>
@@ -250,7 +250,7 @@ export default class TransactionDetail extends Component {
                             <Text small style={styles.paymenMethodLabel}>Hình thức thanh toán:</Text>
                             <View style={styles.row}>
                                 <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
-                                <Text small style={styles.primary}>Thanh toán trực tiếp</Text>
+                                <Text small bold style={styles.primary}>Thanh toán trực tiếp</Text>
                             </View>
                         </View>
                         <View style={styles.rowPadding}>
@@ -258,21 +258,21 @@ export default class TransactionDetail extends Component {
                             <View style={styles.userContent}>
                                 <Text small bold>{transactionInfo.userName}</Text>
                                 {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
-                                <Icon style={styles.icon} name='account' />
+                                <Icon style={{...styles.icon, marginLeft: 7}} name='account' />
                             </View>
                         </View>
 
                         <View style={styles.rowPadding}>
                             <Text small>Xem:</Text>
-                            <Text small>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Đánh dấu:</Text>
-                            <Text small>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Chụp hóa đơn:</Text>
-                            <Text small>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                         </View>
 
                         <View style={styles.invoiceBlock}>
