@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Spinner } from 'native-base'
+import { Container, List, ListItem, Text, Spinner, Button } from 'native-base'
 import { View, InteractionManager } from 'react-native'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -15,7 +15,7 @@ import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
-import {getSession} from '~/store/selectors/auth'
+import { getSession } from '~/store/selectors/auth'
 // import Perf from 'react-addons-perf';
 
 import options from './options'
@@ -43,7 +43,7 @@ export default class extends Component {
             this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
-                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
                 }
             )
         } else { // Trả trực tiếp
@@ -110,7 +110,7 @@ export default class extends Component {
             this.props.getListTransactionPayWithClingme(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
                 () => {
                     this.setState({ loading: false })
-                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)    
+                    this.refs.transactionFilter.updateIndicatorNumber(this.props.transaction.totalRecord)
                 }
             )
         } else { // Trả trực tiếp
@@ -137,11 +137,11 @@ export default class extends Component {
         )
     }
     // need care about currentPage
-    _loadMore = ()=>{
+    _loadMore = () => {
         console.log('Props', this.props)
-        const {transaction} = this.props
+        const { transaction } = this.props
         console.log('Trans load More', transaction)
-        if (transaction.pageNumber >= transaction.totalPage){
+        if (transaction.pageNumber >= transaction.totalPage) {
             return;
         }
         console.log('On loadMore trans', transaction)
@@ -152,26 +152,26 @@ export default class extends Component {
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
             this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value, transaction.pageNumber+1,
+                transactionFilter.value, transaction.pageNumber + 1,
                 () => this.setState({ loadingMore: false })
             )
         } else { // Trả trực tiếp
             this.props.getListTransaction(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value, transaction.pageNumber+1,
+                transactionFilter.value, transaction.pageNumber + 1,
                 () => this.setState({ loadingMore: false })
             )
         }
     }
 
-    _onRefresh= () => {
+    _onRefresh = () => {
         console.log('On refreshing trans')
         let dateFilterData = this.refs.dateFilter.getData()
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this.setState({ loading: true })
         if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-             this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id,
+            this.props.getListTransactionPayWithClingme(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 transactionFilter.value,
                 () => this.setState({ loading: false })
@@ -184,78 +184,40 @@ export default class extends Component {
             )
         }
     }
+    _renderTransactionPayWithClingmeItem(item) {
+        return (
+            <ListItem style={styles.listItem}>
+                <View style={styles.block}>
+                    <View style={styles.rowPadding}>
+                        <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
+                        <Text small bold>{item.userName}</Text>
+                    </View>
+                    <View style={styles.rowCenter}>
+                        <Text bold primary style={styles.transactionCodeClingme}>{item.dealTransactionIdDisplay}</Text>
+                    </View>
+                    <View style={styles.rowCenter}>
+                        <Text><Text bold style={styles.moneyNumberClingme}>{formatNumber(item.originPrice)}</Text>đ</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text small primary>Đã thanh toán</Text>
+                        <Button transparent style={styles.button}>
+                            <Text bold primary>Xác nhận giao dịch</Text>
+                            <Icon name='foward' style={styles.primary}/>
+                        </Button>
+                    </View>
+                </View>
+                <Border color='rgba(0,0,0,0.5)' size={1} />
+            </ListItem>
+        )
+    }
 
     _renderTransactionItem(item) {
-        /*var transactionNumberBlock;
-        var statusText;
-        switch (item.transactionStatus) {
-            case 0: // chờ duyệt
-            case 3:
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <View style={styles.placeholder}>
-                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        </View>
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text warning small>Clingme đã duyệt</Text>
-                break
-            case 1: // thành công
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <View style={styles.placeholder}>
-                            <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                        </View>
-                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text success small>Thành công</Text>
-                transactionNumberBlock = (
-                    <View style={styles.row}>
-                        <View>
-                            <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                        </View>
-                        <View>
-                        </View>
-                    </View>
-                )
-                break
-            case 2: // Bị từ chối
-                transactionNumberBlock = (
-                    <View style={styles.row}>
-                        <View style={styles.placeholder}>
-                            <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
-                        </View>
-                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>
-                )
-                statusText = <Text small error>Bị từ chối</Text>
-                break
-            default:
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <View style={styles.placeholder}>
-                            <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        </View>
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text warning small>Đang xử lí</Text>
-                break
-        }
-        var payClingmeText;
-        var payIndicator = null
-        if (parseInt(item.paymentStatus) > 0) {
-            payClingmeText = <Text small>Đã trả phí Clingme</Text>
-        } else {
-            payClingmeText = <Text small warning>Chưa trả phí Clingme</Text>
-            payIndicator = <View style={styles.readIndicator} />
-        }*/
-
         let iconBlock, statusText, transactionCode
         switch (item.transactionStatus) {
             case 0: //chờ duyệt
             case 3:
                 iconBlock = (
-                    <View style={{...styles.iconBlock, ...styles.backgroundWarning}}>
+                    <View style={{ ...styles.iconBlock, ...styles.backgroundWarning }}>
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
@@ -264,7 +226,7 @@ export default class extends Component {
                 break
             case 1: // thành công
                 iconBlock = (
-                    <View style={{...styles.iconBlock, ...styles.backgroundSuccess}}>
+                    <View style={{ ...styles.iconBlock, ...styles.backgroundSuccess }}>
                         <Icon name='coin_mark' style={styles.icon} />
                     </View>
                 )
@@ -273,16 +235,16 @@ export default class extends Component {
                 break
             case 2: // bị từ chối
                 iconBlock = (
-                    <View style={{...styles.iconBlock, ...styles.backgroundError}}>
+                    <View style={{ ...styles.iconBlock, ...styles.backgroundError }}>
                         <Icon name='unlike_s' style={styles.icon} />
                     </View>
                 )
                 statusText = <Text small error>Bị từ chối</Text>
                 transactionCode = <Text small bold error>{item.dealTransactionIdDisplay}</Text>
                 break
-            default: 
+            default:
                 iconBlock = (
-                    <View style={{...styles.iconBlock, ...styles.backgroundWarning}}>
+                    <View style={{ ...styles.iconBlock, ...styles.backgroundWarning }}>
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
@@ -295,14 +257,14 @@ export default class extends Component {
                 style={styles.listItem}
             >
                 <View style={styles.block}>
-                    <View style={{...styles.row, alignItems:'flex-start'}}>
+                    <View style={{ ...styles.row, alignItems: 'flex-start' }}>
                         {iconBlock}
-                        <View style={{width: '100%', flex:1}}>
+                        <View style={{ width: '100%', flex: 1 }}>
                             <View style={styles.row}>
                                 {transactionCode}
                                 <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
                             </View>
-                            <View style={{...styles.row, marginTop: 2}}>
+                            <View style={{ ...styles.row, marginTop: 2 }}>
                                 <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.row}>
@@ -346,8 +308,8 @@ export default class extends Component {
             noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
         }
         let moreData = null
-        if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0){
-            moreData = <View style={{flexDirection: 'row', justifyContent: 'center'}}><Text small>No more data</Text></View>
+        if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0) {
+            moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
         }
         return (
             <Container style={styles.container}>
@@ -363,8 +325,8 @@ export default class extends Component {
                         onEndReached={this._loadMore} onRefresh={this._onRefresh}
                         refreshing={this.state.loading}
                     >
-                        <List dataArray={transaction.listTransaction||[]}
-                            renderRow={(item) => this._renderTransactionItem(item)}
+                        <List dataArray={transaction.listTransaction || []}
+                            renderRow={(item) => this._renderTransactionPayWithClingmeItem(item)}
                             pageSize={10}
                         >
                         </List>

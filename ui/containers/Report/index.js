@@ -52,9 +52,9 @@ export default class Report extends Component {
         ]
         let zoomLevel = geoViewport.viewport(bounds, [height, width]).zoom
         console.log('Geo View Port', zoomLevel)
-        if (callback){
+        if (callback) {
             this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
-        }else{
+        } else {
             this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
         }
     }
@@ -288,37 +288,37 @@ export default class Report extends Component {
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
-                    <MapView
-                        region={this.state.region}
-                        provider={PROVIDER_GOOGLE}
-                        style={{ width: '100%', height: 250 }}
-                        onRegionChangeComplete={this.onRegionChange}
-                        moveOnMarkerPress={false}
-                    >
-                        {report && report.map && report.map.locationDtos.map((marker, idx) => {
-                            return (
-                                <MapView.Marker key={idx}
-                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                                >
-                                    <View style={styles.markerCustomer}>
-                                        <Text style={styles.markerCustomerText}>{marker.number}</Text>
-                                    </View>
-                                </MapView.Marker>
-                            )
-                        })}
-                        {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
-                            return (
-                                <MapView.Marker key={idx}
-                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                                >
-                                    <View style={styles.markerMerchant}>
-                                    </View>
-                                </MapView.Marker>
-                            )
-
-                        })}
-                    </MapView>
                     <Content>
+                        <MapView
+                            region={this.state.region}
+                            provider={PROVIDER_GOOGLE}
+                            style={{ width: '100%', height: 250 }}
+                            onRegionChangeComplete={this.onRegionChange}
+                            moveOnMarkerPress={false}
+                        >
+                            {report && report.map && report.map.locationDtos.map((marker, idx) => {
+                                return (
+                                    <MapView.Marker key={idx}
+                                        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                    >
+                                        <View style={styles.markerCustomer}>
+                                            <Text style={styles.markerCustomerText}>{marker.number}</Text>
+                                        </View>
+                                    </MapView.Marker>
+                                )
+                            })}
+                            {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
+                                return (
+                                    <MapView.Marker key={idx}
+                                        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                    >
+                                        <View style={styles.markerMerchant}>
+                                        </View>
+                                    </MapView.Marker>
+                                )
+
+                            })}
+                        </MapView>
                         {this._renderCustomerStatistic()}
                     </Content>
                 </View>
