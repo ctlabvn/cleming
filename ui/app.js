@@ -48,62 +48,62 @@ const NoTransition = {
   },
 }
 
-const getPage = (url) => {  
-  for(route in routes) {
+const getPage = (url) => {
+  for (route in routes) {
     const pathname = url.split('?')[0]
     const match = matchPath(pathname, {
-      path:route,
+      path: route,
       exact: true,
       strict: false,
     })
-    if(match) {      
+    if (match) {
       // update query and pathname
-      const {query} = new URL(url, null, true)      
-      return {...routes[route], ...match, url, pathname, query}
+      const { query } = new URL(url, null, true)
+      return { ...routes[route], ...match, url, pathname, query }
     }
-  }  
+  }
 }
 
 const UIManager = NativeModules.UIManager
 
-@connect(state=>({
+@connect(state => ({
   router: getRouter(state),
   drawerState: getDrawerState(state),
-}), {...commonActions, ...authActions})
-export default class App extends Component {    
+}), { ...commonActions, ...authActions })
+export default class App extends Component {
 
   static configureScene(route) {
-      const {animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight'} = routes[route.path] || {}
-      
-      // return Navigator.SceneConfigs[animationType]
-      // Navigator.SceneConfigs[animationType]
-      // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-      const sceneConfig =  {
-        ...Navigator.SceneConfigs[animationType], 
-        gestures: null,
-        defaultTransitionVelocity: 20,        
-      }
+    const { animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight' } = routes[route.path] || {}
 
-      if(material.platform === 'android'){
-        sceneConfig.animationInterpolators = {
-          into: buildStyleInterpolator(NoTransition),
-          out: buildStyleInterpolator(NoTransition),
-        }
-      }
+    // return Navigator.SceneConfigs[animationType]
+    // Navigator.SceneConfigs[animationType]
+    // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
+    const sceneConfig = {
+      ...Navigator.SceneConfigs[animationType],
+      gestures: null,
+      defaultTransitionVelocity: 20,
+    }
 
-      return sceneConfig
+    if (material.platform === 'android') {
+      sceneConfig.animationInterpolators = {
+        into: buildStyleInterpolator(NoTransition),
+        out: buildStyleInterpolator(NoTransition),
+      }
+    }
+
+    return sceneConfig
   }
 
   initPushNotification(options) {
-    PushNotification.configure({      
+    PushNotification.configure({
       // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications) 
       // senderID: "YOUR GCM SENDER ID",
 
       // IOS ONLY (optional): default: all - Permissions to register.
       permissions: {
-          alert: true,
-          badge: true,
-          sound: true
+        alert: true,
+        badge: true,
+        sound: true
       },
 
       // Should the initial notification be popped automatically
@@ -129,42 +129,48 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     // default is not found page, render must show error
-    this.page = getPage(props.router.route) || routes.notFound    
-    this.prevPage = null  
-    this.pageInstances = {}   
+    this.page = getPage(props.router.route) || routes.notFound
+    this.prevPage = null
+    this.pageInstances = {}
 
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
-          this.props.setPushToken(token.token)
+        this.props.setPushToken(token.token)
       },
 
       // (required) Called when a remote or local notification is opened or received
-      onNotification: function(notification) {
-          console.log( 'NOTIFICATION:', notification )
-          // PushNotification.localNotification({
-          //   title: "Đã nhận Notification", 
-          //   message: 'Ahihi đồ chó'
-          // })
-          if (notification.userInteraction){
-
-          }else{
-
+      onNotification: (notification) => {
+        console.log('NOTIFICATION:', notification)
+        if (notification.userInteraction) {
+          // New transaction
+          if (notification.type == 5) {
+            this.props.forwardTo('transactionDetail/' + notification.param1)
+          // New Place Order (Booking)
+          }else if (notification.type == 6){
+            this.props.forwardTo('placeOrderDetail/' + notification.param1)
+          // New Delivery Order
+          }else if (notification.type == 7){
+            this.props.forwardTo('deliveryDetail/'+notification.param1)
           }
+
+        } else {
+
+        }
       },
 
       senderID: SENDER_ID,
-    })      
+    })
   }
 
   // replace view from stack, hard code but have high performance
-  componentWillReceiveProps({router, drawerState}){
+  componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
-    if(router.route !== this.props.router.route){
+    if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
       this.page = getPage(router.route)
-      if(this.page){
-        const {headerType, footerType, title, path} = this.page
+      if (this.page) {
+        const { headerType, footerType, title, path } = this.page
         // show header and footer, and clear search string
         this.header.show(headerType, title)
         this.header._search('')
@@ -176,15 +182,15 @@ export default class App extends Component {
           .findIndex(route => route.path === this.page.path)
 
         // console.log(this.navigator.state)      
-        if(destIndex !==-1){          
+        if (destIndex !== -1) {
           // trigger will focus, the first time should be did mount
           this.handlePageWillFocus(path)
           oldComponent && this.handleFocusableComponent(oldComponent, false)
-          this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)          
-        } else {                            
+          this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
+        } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
-          this.navigator.push({title, path})                    
-        }  
+          this.navigator.push({ title, path })
+        }
       } else {
         // no need to push to route
         this.page = routes.notFound
@@ -193,79 +199,79 @@ export default class App extends Component {
     }
 
     // check drawer
-    if(drawerState !== this.props.drawerState){
+    if (drawerState !== this.props.drawerState) {
       this.drawer._root[drawerState === 'opened' ? 'open' : 'close']()
     }
   }
 
   // we handle manually to gain performance
-  shouldComponentUpdate(nextProps){
+  shouldComponentUpdate(nextProps) {
     return false
   }
 
   // render a component from current page, then pass the params to Page
-  renderComponentFromPage(page){
-    const {Page, ...route} = page
+  renderComponentFromPage(page) {
+    const { Page, ...route } = page
     return (
-      <Page ref={ref=>route.path && (this.pageInstances[route.path]=ref)} route={route} app={this}/>
+      <Page ref={ref => route.path && (this.pageInstances[route.path] = ref)} route={route} app={this} />
     )
   }
 
   // we can use events to pass between header and footer and page via App container or store
-  _renderPage = (route) => {   
-    if(this.page.path && route.path !== this.page.path) {
+  _renderPage = (route) => {
+    if (this.page.path && route.path !== this.page.path) {
       // console.log('will focus')
-    }  else {                
+    } else {
       // we only pass this.page, route and navigator is for mapping or some event like will focus ...
       // first time not show please waiting
-      if(!this.navigator) {
+      if (!this.navigator) {
         return this.renderComponentFromPage(this.page)
       }
-      return (                                           
-        <AfterInteractions placeholder={this.page.Preload || <Preload/>}>             
+      return (
+        <AfterInteractions placeholder={this.page.Preload || <Preload />}>
           {this.renderComponentFromPage(this.page)}
-        </AfterInteractions>            
+        </AfterInteractions>
       )
     }
   }
 
-  _onLeftClick=(type)=>{
-    const {goBack} = this.props
-    switch(type){
-      case 'none':      
-        return false      
+  _onLeftClick = (type) => {
+    const { goBack } = this.props
+    switch (type) {
+      case 'none':
+        return false
       default:
         return goBack()
-    }      
+    }
   }
-  
-  _onRightClick=(type)=>{
-    const {openDrawer} = this.props
-    switch(type){
+
+  _onRightClick = (type) => {
+    const { openDrawer } = this.props
+    switch (type) {
       default:
         return openDrawer()
     }
   }
 
-  _onTabClick=(type, route)=>{    
-    const {forwardTo} = this.props
-    switch(type){
-      case 'none':      
+  _onTabClick = (type, route) => {
+    const { forwardTo } = this.props
+    switch (type) {
+      case 'none':
         return false
       default:
         return forwardTo(route)
-    }    
+    }
   }
 
 
   componentWillMount() {
-      UIManager.setLayoutAnimationEnabledExperimental &&
-      UIManager.setLayoutAnimationEnabledExperimental(true)        
+    UIManager.setLayoutAnimationEnabledExperimental &&
+      UIManager.setLayoutAnimationEnabledExperimental(true)
   }
 
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      const {router, goBack} = this.props
+      const { router, goBack } = this.props
       if (router.route === 'merchantOverview') {
         return false
       }
@@ -275,88 +281,88 @@ export default class App extends Component {
     })
   }
 
-  handleFocusableComponent(component, focus=true) {
+  handleFocusableComponent(component, focus = true) {
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
-    let whatdog = 10    
+    let whatdog = 10
     let ref = component
     // maybe connect, check name of constructor is _class means it is a component :D
-    while(ref && whatdog > 0){
+    while (ref && whatdog > 0) {
       ref[method] && ref[method]()
       ref = ref._reactInternalInstance._renderedComponent._instance
       whatdog--
-    }    
+    }
   }
 
   // we need didFocus, it is like componentDidMount for the second time
-  handlePageWillFocus(path){    
+  handlePageWillFocus(path) {
     // currently we support only React.Component instead of check the existing method
     // when we extend the Component, it is still instanceof
-    const component = this.pageInstances[path]        
-    
+    const component = this.pageInstances[path]
+
     // check method
-    if(component){       
-      const {Page, ...route} = this.page
-      const propsChanged = !shallowEqual(route.params, component.props.route.params) 
-                      || !shallowEqual(route.query, component.props.route.query)
-      if(component.forceUpdate && propsChanged){
+    if (component) {
+      const { Page, ...route } = this.page
+      const propsChanged = !shallowEqual(route.params, component.props.route.params)
+        || !shallowEqual(route.query, component.props.route.query)
+      if (component.forceUpdate && propsChanged) {
         // only update prop value
         Object.assign(component.props.route, route)
         component.forceUpdate && component.forceUpdate()
-      }  
+      }
 
       // after update the content then focus on it, so we have new content
-      this.handleFocusableComponent(component)          
-    }     
+      this.handleFocusableComponent(component)
+    }
 
   }
 
-  render() {    
-    const {router, drawerState, closeDrawer} = this.props   
-    const {title, path, headerType, footerType} = this.page 
-    return (            
-      <StyleProvider style={getTheme(material)}>  
+  render() {
+    const { router, drawerState, closeDrawer } = this.props
+    const { title, path, headerType, footerType } = this.page
+    return (
+      <StyleProvider style={getTheme(material)}>
         <Drawer
           ref={ref => this.drawer = ref}
           open={drawerState === 'opened'}
-          type="overlay"          
-          side="right"  
+          type="overlay"
+          side="right"
           negotiatePan={true}
           tweenDuration={100}
           useInteractionManager={true}
           tweenHandler={ratio => ({
-            drawer:{
+            drawer: {
               top: 20,
               paddingBottom: 20,
             },
-              main: {
-              opacity: 1,              
-              },
-              mainOverlay: {
+            main: {
+              opacity: 1,
+            },
+            mainOverlay: {
               opacity: ratio / 2,
               backgroundColor: 'black',
-              },
-})}
+            },
+          })}
           openDrawerOffset={0.27}
           tweenDuration={200}
-          content={<SideBar/>}
+          content={<SideBar />}
           onClose={closeDrawer}
-        >           
+        >
           {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref=>this.header=ref} />
-          <Navigator ref={ref=>this.navigator=ref}
-              configureScene={this.constructor.configureScene}
-              initialRoute={{title, path}}
-              renderScene={this._renderPage}                           
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} />
+          <Navigator ref={ref => this.navigator = ref}
+            configureScene={this.constructor.configureScene}
+            initialRoute={{ title, path }}
+            renderScene={this._renderPage}
           />
-          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref=>this.footer=ref} />
-          <Toasts/>          
-          <Popover ref={ref=>this.popover=ref}/>          
-        </Drawer>           
-      </StyleProvider>          
+          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
+          <Toasts />
+          <Popover ref={ref => this.popover = ref} />
+        </Drawer>
+      </StyleProvider>
     )
   }
 }

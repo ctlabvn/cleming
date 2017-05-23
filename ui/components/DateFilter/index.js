@@ -12,8 +12,8 @@ export default class DateFilter extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            currentDateFilter: 'year',
-            currentSelectValue: this._getDefaultCurrnetSelectValue('year')
+            currentDateFilter: 'week',
+            currentSelectValue: this._getDefaultCurrnetSelectValue('week')
         };
         this.dateFilterListValue = [
             {

@@ -32,8 +32,8 @@ export default class Report extends Component {
             region: {
                 latitude: 21.0461027,
                 longitude: 105.7955732,
-                latitudeDelta: 0.1,
-                longitudeDelta: 0.1,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
             }
         }
     }
@@ -65,9 +65,54 @@ export default class Report extends Component {
 
         this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
         // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
-        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
+            (err, data) => {
+                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
+                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
+                    console.log('Did mount focusMerchant', focusMechant)
+                    this.setState({
+                        region: {
+                            latitude: focusMechant.latitude,
+                            longitude: focusMechant.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }
+                    }, () => {
+                        console.log('Set State Did Mount', this.state.region)
+                    })
+                }
+            }
+        )
+    }
+
+    componentWillFocus() {
+        console.log('Will focus map')
+        let placeData = this.refs.placeDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+
+        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
+        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
+            (err, data) => {
+                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
+                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
+                    console.log('Will focus focusMerchant', focusMechant)
+                    this.setState({
+                        region: {
+                            latitude: focusMechant.latitude,
+                            longitude: focusMechant.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }
+                    }, () => {
+                        console.log('Set State Did Mount', this.state.region)
+                    })
+                }
+            }
+        )
     }
     onRegionChange = (region) => {
+        console.log('Region change', region)
         this.setState({ region },
             () => {
                 let placeData = this.refs.placeDropdown.getValue()
@@ -82,7 +127,7 @@ export default class Report extends Component {
         this.props.getCustomerReport(this.props.user.xsession, item.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
-                if (data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
+                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
                     let focusMechant = data.updated.data.listPlaceLocationDtos[0]
                     this.setState({
                         region: {
@@ -288,39 +333,39 @@ export default class Report extends Component {
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
-                    <Content>
-                        <MapView
-                            region={this.state.region}
-                            provider={PROVIDER_GOOGLE}
-                            style={{ width: '100%', height: 250 }}
-                            onRegionChangeComplete={this.onRegionChange}
-                            moveOnMarkerPress={false}
-                        >
-                            {report && report.map && report.map.locationDtos.map((marker, idx) => {
-                                return (
-                                    <MapView.Marker key={idx}
-                                        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                                    >
-                                        <View style={styles.markerCustomer}>
-                                            <Text style={styles.markerCustomerText}>{marker.number}</Text>
-                                        </View>
-                                    </MapView.Marker>
-                                )
-                            })}
-                            {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
-                                return (
-                                    <MapView.Marker key={idx}
-                                        coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                                    >
-                                        <View style={styles.markerMerchant}>
-                                        </View>
-                                    </MapView.Marker>
-                                )
+                    {/*<Content>*/}
+                    <MapView
+                        region={this.state.region}
+                        provider={PROVIDER_GOOGLE}
+                        style={{ width: '100%', height: '100%' }}
+                        onRegionChangeComplete={this.onRegionChange}
+                        moveOnMarkerPress={false}
+                    >
+                        {report && report.map && report.map.locationDtos.map((marker, idx) => {
+                            return (
+                                <MapView.Marker key={idx}
+                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                >
+                                    <View style={styles.markerCustomer}>
+                                        <Text style={styles.markerCustomerText}>{marker.number}</Text>
+                                    </View>
+                                </MapView.Marker>
+                            )
+                        })}
+                        {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
+                            return (
+                                <MapView.Marker key={idx}
+                                    coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                                >
+                                    <View style={styles.markerMerchant}>
+                                    </View>
+                                </MapView.Marker>
+                            )
 
-                            })}
-                        </MapView>
-                        {this._renderCustomerStatistic()}
-                    </Content>
+                        })}
+                    </MapView>
+                    {/*{this._renderCustomerStatistic()}*/}
+                    {/*</Content>*/}
                 </View>
             </Container>
         )
