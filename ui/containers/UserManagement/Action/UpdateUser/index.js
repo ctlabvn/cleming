@@ -61,11 +61,11 @@ export default class UpdateUserContainer extends Component {
     }
     
     handleChoosePhoto = (response)=>{
-      // console.log(response)
+      console.log(response)
       
       /*formData.append('avatarFile', uri.replace('file://', ''))
       this.props.updateOwnerAvatar(this.props.session, formData)*/
-      let files = [
+      /*let files = [
         {
           name: response.fileName,
           filename: 'image1.png',
@@ -110,7 +110,51 @@ export default class UpdateUserContainer extends Component {
         let json = JSON.parse( responseString );
     
         console.log('upload complete with status ' + status, json);
-      });
+      });*/
+  
+      let source = {};
+  
+      if (Platform.OS === 'ios') {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          data: RNFetchBlob.wrap(response.uri)
+        };
+      } else {
+        source = {
+          name: 'image[]',
+          filename: `image_${(new Date()).getTime()}`,
+          data: RNFetchBlob.wrap(response.uri)
+        };
+      }
+  
+      let imageFiles = [source]
+  
+      RNFetchBlob.fetch('POST', 'http://dev.clingme.net:9099/edit/avatar', {
+        'Accept': 'application/json',
+    
+        'Content-Type': 'multipart/form-data',
+        'X-VERSION': 1,
+        'X-SESSION': this.props.session,
+        'X-AUTH': '',
+        'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
+        'X-DATA-VERSION': 1
+      }, imageFiles)
+      // listen to upload progress event
+        .uploadProgress((written, total) => {
+          console.log('uploaded', written / total)
+        })
+        // listen to download progress event
+        .progress((received, total) => {
+          console.log('progress', received / total)
+        })
+        .then((resp) => {
+          console.log(resp)
+        })
+        .catch((err) => {
+          // ...
+          console.log(err)
+        })
       
 
     }

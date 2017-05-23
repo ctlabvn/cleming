@@ -111,7 +111,23 @@ export default {
         paddingTop: 0,
         backgroundColor: 'white',
         borderRadius: 3,
-        marginBottom: 10
+        marginBottom: 10,
+        height: 170
+    },
+    listButton: {
+      backgroundColor: 'white',
+      flexDirection: 'column',
+      height: '100%',
+      elevation: 0,
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      paddingTop: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingBottom: 0,
+      shadowOpacity: 0
     },
   
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Button, Spinner } from 'native-base'
+import { List, ListItem, Text, Button, Spinner, Grid, Row, Col } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
@@ -19,6 +19,7 @@ import Content from '~/ui/components/Content'
 import options from './options'
 import {BASE_COUNTDOWN_BOOKING_MINUTE} from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
+import CallModal from '~/ui/components/CallModal'
 @connect(state => ({
     user: state.auth.user,
     place: state.place,
@@ -31,7 +32,9 @@ export default class PlaceOrderList extends Component {
         this.state = {
             loadingMore: false,
             loading: false,
-            counting: true
+            counting: true,
+            modalOpen: false,
+            phoneNumber: ''
         }
     }
 
@@ -39,54 +42,80 @@ export default class PlaceOrderList extends Component {
         const { forwardTo } = this.props
         forwardTo('placeOrderDetail')
     }
+    
+    onModalOpen(phoneNumber) {
+      this.setState({
+        modalOpen: true,
+        phoneNumber: phoneNumber
+      })
+    }
+    
+    onModalClose() {
+      this.setState({
+        modalOpen: false
+      })
+    }
+    
     _renderBookingItem(item) {
         let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
         return (
 
-            <ListItem onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)} style={styles.listItem}>
-                <View style={styles.rowPadding}>
-                    <Text primary bold>{item.orderCode}</Text>
-                    <View style={styles.row}> 
-                        <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
-                        <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
-                            counting={this.state.counting}
-                            countTo={item.bookDate}
-                        />
-                    </View>
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                <View style={styles.row}>
-                    <View style={styles.column}>
-                        <Icon name='calendar' style={styles.icon} />
-                        <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
-                    </View>
-                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                    <View style={styles.column}>
-                        <Icon name='history' style={styles.icon} />
-                        <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
-                    </View>
-                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                    <View style={styles.column}>
-                        <Icon name='friend' style={styles.icon} />
-                        <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
-                    </View>
-                    <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                    <View style={styles.column}>
-                        <Icon name='want-feed' style={styles.icon} />
-                        <Text style={{ color: 'black' }}>{totalQuantity}</Text>
-                    </View>
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                <View style={{ ...styles.rowPadding }}>
-                    <View style={styles.row}>
-                        <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                        <Text small style={{ color: 'black' }}>{item.userInfo.memberName}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                        <Text primary>{item.userInfo.phoneNumber}</Text>
-                    </View>
-                </View>
+            <ListItem style={styles.listItem}>
+                <Grid>
+                    <Row style={{height: '80%'}}>
+                        <Button
+                          onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
+                          style={styles.listButton}>
+                            <View style={styles.rowPadding}>
+                                <Text primary bold>{item.orderCode}</Text>
+                                <View style={styles.row}>
+                                    <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                                    <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
+                                                     counting={this.state.counting}
+                                                     countTo={item.bookDate}
+                                    />
+                                </View>
+                            </View>
+                            <Border color='rgba(0,0,0,0.5)' size={1} />
+                            <View style={styles.row}>
+                                <View style={styles.column}>
+                                    <Icon name='calendar' style={styles.icon} />
+                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
+                                </View>
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <View style={styles.column}>
+                                    <Icon name='history' style={styles.icon} />
+                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
+                                </View>
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <View style={styles.column}>
+                                    <Icon name='friend' style={styles.icon} />
+                                    <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
+                                </View>
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <View style={styles.column}>
+                                    <Icon name='want-feed' style={styles.icon} />
+                                    <Text style={{ color: 'black' }}>{totalQuantity}</Text>
+                                </View>
+                            </View>
+                            <Border color='rgba(0,0,0,0.5)' size={1} />
+                        </Button>
+                    </Row>
+                    <Row style={{flexDirection: 'column', height: '20%'}}>
+                        <View style={{ ...styles.rowPadding }}>
+                            <View style={styles.row}>
+                                <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
+                                <Text small style={{ color: 'black' }}>{item.userInfo.memberName}</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                                <Text
+                                  onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                                  primary>{item.userInfo.phoneNumber}</Text>
+                            </View>
+                        </View>
+                    </Row>
+                </Grid>
             </ListItem >
         )
     }
@@ -204,6 +233,10 @@ export default class PlaceOrderList extends Component {
                         {this.state.loadingMore && <Spinner color='red' />}
                     </Content>
                 </View>
+                <CallModal
+                  phoneNumber={this.state.phoneNumber}
+                  onCloseClick={this.onModalClose.bind(this)}
+                  open={this.state.modalOpen}/>
             </View >
         )
     }
