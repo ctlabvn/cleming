@@ -31,7 +31,7 @@ export default (variables = variable) => {
         color: '#00a9d4'
       },
       '.success': {
-        color: 'green'
+        color: '#90c63a'
       },
       '.warning': {
         color: 'orange'
