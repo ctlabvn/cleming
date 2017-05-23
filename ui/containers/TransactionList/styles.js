@@ -55,7 +55,18 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginRight: 5,
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 10
+    },
+    rowPadding: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 10,
     },
     icon: {
         fontSize: 17,
@@ -118,5 +129,21 @@ export default {
     },
     moneyNumber: {
         fontSize: 20
+    },
+    moneyNumberClingme: {
+        fontSize: 24
+    },
+    transactionCodeClingme: {
+        fontSize: 16
+    },
+    primary: {
+        color: PRIMARY_COLOR
+    },
+    button: {
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingTop: 0,
+        paddingBottom: 0
     }
+
 }

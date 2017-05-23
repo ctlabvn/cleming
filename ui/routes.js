@@ -39,6 +39,7 @@ import TransactionDetail from './containers/TransactionDetail'
 import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 import Report from './containers/Report'
+import TransactionConfirm from './containers/TransactionConfirm'
 // import TestAnimation from './containers/TestAnimation'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
@@ -57,6 +58,12 @@ export default {
         Page: TransactionDetail,
         headerType: 'back',
         footerType: 'none',
+    },
+    'transactionConfirm' : {
+        title: 'Xác nhận giao dịch',
+        Page: TransactionConfirm,
+        headerType: 'back',
+        footerType: 'none'
     },
     deliveryList: {
         title: 'Danh sách giao hàng',

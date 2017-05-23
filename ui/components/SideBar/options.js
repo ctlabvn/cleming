@@ -42,7 +42,7 @@ export default {
     },
     {
       name: 'Trợ giúp',
-      route: 'help',
+      route: 'transactionConfirm',
       // icon: 'help',    
     },
 
