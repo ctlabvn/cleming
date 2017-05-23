@@ -326,7 +326,7 @@ export default class extends Component {
                         refreshing={this.state.loading}
                     >
                         <List dataArray={transaction.listTransaction || []}
-                            renderRow={(item) => this._renderTransactionPayWithClingmeItem(item)}
+                            renderRow={(item) => this._renderTransactionItem(item)}
                             pageSize={10}
                         >
                         </List>
