@@ -22,45 +22,10 @@ export default class extends Component {
     }
   }
   
-  isCorrectType(expected, actual) {
-    return Object.prototype.toString.call(actual).slice(8, -1) === expected;
-  };
-  
-  onCall(phoneNumber, prompt) {
-    if(!this.isCorrectType('String', phoneNumber)) {
-      console.log('the phone number must be provided as a String value');
-      return;
-    }
-  
-    let url;
-  
-    if(Platform.OS !== 'android') {
-      url = prompt ? 'telprompt:' : 'tel:';
-    }
-    else {
-      url = 'tel:';
-    }
-  
-    url += '+1662952222';
-    
-    Linking.canOpenURL(url).then(supported => {
-      if (supported) {
-        Linking.openURL(url)
-          .catch(err => {
-            console.warn('openURL error', err)
-          });
-      } else {
-        console.log('Don\'t know how to open URI');
-      }
-    });
-  }
-  
   onCallAccepted() {
     const {onCloseClick, phoneNumber} = this.props
-    console.log(phoneNumber)
-    //Communications.phonecall('+' + '1662952222', true)
-    this.onCall(phoneNumber, true)
-    //onCloseClick()
+    Communications.phonecall('+' + phoneNumber, true)
+    onCloseClick()
   }
   
   render() {
@@ -75,7 +40,7 @@ export default class extends Component {
             <Row style={styles.headerContainer}>
               <Text style={{color: 'white'}}>Thông Báo</Text>
             </Row>
-            <Row style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Row style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 10, paddingRight: 10}}>
               <Text style={{color: 'black'}}>Bạn có chắc chắn muốn thực hiện cuộc gọi?</Text>
             </Row>
             <Row style={{height: '40%'}}>
