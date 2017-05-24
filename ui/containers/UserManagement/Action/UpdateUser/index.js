@@ -35,7 +35,6 @@ import {profileCoverSource} from '~/assets'
 
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
-  auth: state.auth,
   session: authSelectors.getSession(state),
   user: authSelectors.getUser(state),
   formValues: formSelector(state, 'name', 'email', 'phone')
@@ -43,9 +42,9 @@ const formSelector = formValueSelector('UpdateUserForm')
   return ({
     initialValues: {
       enableReinitialize: true,
-      name: stateProps.auth.user.fullName || '',
-      email: stateProps.auth.user.email,
-      phone: stateProps.auth.user.phoneNumber
+      name: stateProps.user.fullName || '',
+      email: stateProps.user.email,
+      phone: stateProps.user.phoneNumber
     },
     ...ownProps, ...stateProps, ...dispatchProps,
   })
