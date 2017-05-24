@@ -63,7 +63,7 @@ export default class PlaceOrderList extends Component {
 
             <ListItem style={styles.listItem}>
                 <Grid>
-                    <Row style={{height: '80%'}}>
+                    <Row style={{height: '70%'}}>
                         <Button
                           onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
                           style={styles.listButton}>
@@ -81,28 +81,28 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('DD/MM')}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('hh:mm')}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{item.numberOfPeople}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{totalQuantity}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
                         </Button>
                     </Row>
-                    <Row style={{flexDirection: 'column', height: '20%'}}>
+                    <Row style={{flexDirection: 'column', height: '30%'}}>
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
