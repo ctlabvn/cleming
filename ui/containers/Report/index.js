@@ -18,8 +18,9 @@ import moment from 'moment'
 import Content from '~/ui/components/Content'
 import geoViewport from '@mapbox/geo-viewport'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import { getSession } from '~/store/selectors/auth'
 @connect(state => ({
-    user: state.auth.user,
+    xsession: getSession(state),
     place: state.place,
     booking: state.booking,
     report: state.report
@@ -53,17 +54,17 @@ export default class Report extends Component {
         let zoomLevel = geoViewport.viewport(bounds, [height, width]).zoom
         console.log('Geo View Port', zoomLevel)
         if (callback) {
-            this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
+            this.props.getMapReport(this.props.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
         } else {
-            this.props.getMapReport(this.props.user.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
+            this.props.getMapReport(this.props.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
         }
     }
     componentDidMount() {
-
+        this.counter = 0
         let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
 
-        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
         // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
         this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
@@ -79,6 +80,7 @@ export default class Report extends Component {
                         }
                     }, () => {
                         console.log('Set State Did Mount', this.state.region)
+                        this.counter++
                     })
                 }
             }
@@ -90,7 +92,7 @@ export default class Report extends Component {
         let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
 
-        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
         // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
         this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
@@ -106,13 +108,16 @@ export default class Report extends Component {
                         }
                     }, () => {
                         console.log('Set State Did Mount', this.state.region)
+                        this.counter++
                     })
                 }
             }
         )
     }
-    onRegionChange = (region) => {
-        console.log('Region change', region)
+    componentWillBlur() {
+        this.counter = 0
+    }
+    _regionChange = (region) => {
         this.setState({ region },
             () => {
                 let placeData = this.refs.placeDropdown.getValue()
@@ -120,11 +125,25 @@ export default class Report extends Component {
                 this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
             }
         )
-
     }
+
+    onRegionChange = (region) => {
+        console.log('Region change xxx', this.counter)
+        if (this.counter == 0){
+            this._regionChange(region)
+        }
+    }
+
+    onRegionChangeComplete = (region) => {
+        console.log('Region change complete', this.counter)
+        if (this.counter > 0){
+            this._regionChange(region)
+        }
+    }
+
     _handleTopDrowpdown = (item) => {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this.props.getCustomerReport(this.props.user.xsession, item.id, dateFilterData.from, dateFilterData.to)
+        this.props.getCustomerReport(this.props.xsession, item.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
                 if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
@@ -145,7 +164,7 @@ export default class Report extends Component {
     _handlePressFilter = (item) => {
         let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        this.props.getCustomerReport(this.props.user.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
+        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
     }
 
@@ -338,7 +357,8 @@ export default class Report extends Component {
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}
-                        onRegionChangeComplete={this.onRegionChange}
+                        onRegionChange={this.onRegionChange}
+                        onRegionChangeComplete={this.onRegionChangeComplete}
                         moveOnMarkerPress={false}
                     >
                         {report && report.map && report.map.locationDtos.map((marker, idx) => {
