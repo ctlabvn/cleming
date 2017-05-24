@@ -1,4 +1,9 @@
+
+import { Dimensions } from 'react-native'
 import { PRIMARY_COLOR, SUCCESS_COLOR, BACKGROUND_COLOR_1, TEXT_COLOR_1 } from '~/ui/shared/constants'
+
+const {height, width} = Dimensions.get('window');
+
 export default {
     container: {
         backgroundColor: BACKGROUND_COLOR_1,
@@ -109,6 +114,13 @@ export default {
 
     textLabelRightImage: {
         color: TEXT_COLOR_1,
+    },
+    loadingContainer: {
+      backgroundColor: 'white',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: height - 120 - 76 - 50 - 50 - 50
     }
 
 }
