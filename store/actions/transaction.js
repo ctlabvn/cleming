@@ -18,3 +18,18 @@ export const getTransactionDetail = (...args) => ({
   type: 'transaction/detail',
   args
 })
+
+export const getListDenyReason = (...args) => ({
+  type: 'transaction/denyReason',
+  args
+})
+
+export const setDenyReason = (reason) => ({
+  type: 'transaction/setDenyReason',
+  payload: reason
+})
+
+export const sendDenyReason = (...args) => ({
+  type: 'transaction/sendDenyReason',
+  args
+})

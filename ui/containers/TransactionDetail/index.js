@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Text, Button, Content, Spinner, Radio, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Radio, Input, Toast } from 'native-base'
 import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import * as transactionActions from '~/store/actions/transaction'
+import * as commonActions from '~/store/actions/common'
 import { getSession } from '~/store/selectors/auth'
 import { storeTransparent, storeFilled } from '~/assets'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
+import FeedbackDialog from './FeedbackDialog'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    listTransaction: state.transaction.listTransaction
-}), transactionActions)
+    listTransaction: state.transaction.listTransaction,
+    denyReason: state.transaction.denyReason
+}), { ...transactionActions, ...commonActions })
 export default class TransactionDetail extends Component {
     constructor(props) {
         super(props)
@@ -43,6 +46,8 @@ export default class TransactionDetail extends Component {
             case 0:
             case 3:
                 return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
+            case 5:
+                return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case 1:
                 return (<Text small transparent>Fake success</Text>)
             case 2:
@@ -53,10 +58,9 @@ export default class TransactionDetail extends Component {
         }
     }
     _showReasonPopup = () => {
-        this.setState({ modalVisible: true })
-    }
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible })
+        // this.setState({ modalVisible: true })
+        console.log('Show reasion Popup', this.refs.feedBackDialog)
+        this.refs.feedBackDialog.setModalVisible(true)
     }
     goPrevious() {
         const { xsession, listTransaction, getTransactionDetail } = this.props
@@ -75,10 +79,8 @@ export default class TransactionDetail extends Component {
                 console.log('ErrData', data)
                 if (data.updated && data.updated.data) {
                     this.setState({ transactionInfo: data.updated.data, hasPrevious: hasPrevious, hasNext: hasNext })
-                    this.forceUpdate()
                 } else {
                     this.setState({ transactionInfo: transaction, hasPrevious: hasPrevious, hasNext: hasNext })
-                    this.forceUpdate()
                 }
             })
     }
@@ -108,7 +110,7 @@ export default class TransactionDetail extends Component {
             })
     }
     componentDidMount() {
-        const { xsession, listTransaction, getTransactionDetail, route } = this.props
+        const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason } = this.props
         let transactionId = route.params.id
         let index = listTransaction.findIndex(item => item.dealTransactionId == transactionId)
 
@@ -121,6 +123,8 @@ export default class TransactionDetail extends Component {
                     this.setState({ transactionInfo: data.updated.data, hasPrevious: hasPrevious, hasNext: hasNext })
                 }
             })
+        // No need frequently update, call one when component mount
+        getListDenyReason(xsession)
     }
     // Go to Page 
     componentWillFocus() {
@@ -135,6 +139,23 @@ export default class TransactionDetail extends Component {
                 console.log('ErrData', data)
                 if (data.updated && data.updated.data) {
                     this.setState({ transactionInfo: data.updated.data, hasPrevious: hasPrevious, hasNext: hasNext })
+                }
+            }
+        )
+    }
+
+    _handleFeedback = (dealTransactionId, reasonId, note) => {
+        const { xsession, sendDenyReason, setToast } = this.props
+        console.log('Feedback Handle', dealTransactionId + '---' + reasonId + '----' + note)
+        sendDenyReason(xsession, dealTransactionId, reasonId, note,
+            (err, data) => {
+                console.log('Send Deny Reason: ', data)
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    let updateTrans = Object.assign({}, this.state.transactionInfo)
+                    updateTrans.transactionStatus = 5
+                    this.setState({ transactionInfo: updateTrans })
+                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Đã ghi nhận phản hồi.</Text></View>
+                    setToast(message, 'info', 3000, 'bottom')
                 }
             }
         )
@@ -192,43 +213,13 @@ export default class TransactionDetail extends Component {
             )
         }
         return (
-            <Container style={{paddingBottom: 40}}>
+            <Container style={{ paddingBottom: 40 }}>
                 <Content ref='content'>
-                    <Modal
-                        animationType={"none"}
-                        transparent={true}
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {
-                            this.setModalVisible(!this.state.modalVisible)
-                        }}
-                    >
-                        <View style={styles.modalOverlay}>
-                            <View style={styles.modalContainer}>
-                                <View style={styles.rowPadding}>
-                                    <Text small>Không đồng ý với giao dịch <Text small bold>{transactionInfo.dealTransactionIdDisplay}</Text></Text>
-                                </View>
-                                <View style={styles.rowPadding}>
-                                    <Radio selected={false} style={styles.marginRight} />
-                                    <Text>Lí do 1</Text>
-                                </View>
-                                <View style={styles.rowPadding}>
-                                    <Radio selected={true} style={styles.marginRight} />
-                                    <Text>Lí do 2</Text>
-                                </View>
-                                <View style={styles.rowPadding}>
-                                    <Input placeholder='Lí do khác...'
-                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14 }}
-                                    />
-                                </View>
-                                <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                                    <Button transparent onPress={() => this.setModalVisible(false)}><Text light>Cancel</Text></Button>
-                                    <Button transparent
-                                        onPress={() => this.setModalVisible(false)}
-                                    ><Text primary>Ok</Text></Button>
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
+                    <FeedbackDialog ref='feedBackDialog' listValue={this.props.denyReason}
+                        transactionCode={transactionInfo.dealTransactionIdDisplay}
+                        onClickYes={this._handleFeedback}
+                        dealTransactionId={transactionInfo.dealTransactionId}
+                    />
                     <PopupPhotoView ref='popupPhotoView' />
                     <View style={styles.container}>
                         <View style={styles.topPart}>
@@ -258,7 +249,7 @@ export default class TransactionDetail extends Component {
                             <View style={styles.userContent}>
                                 <Text small bold>{transactionInfo.userName}</Text>
                                 {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
-                                <Icon style={{...styles.icon, marginLeft: 7}} name='account' />
+                                <Icon style={{ ...styles.icon, marginLeft: 7 }} name='account' />
                             </View>
                         </View>
 

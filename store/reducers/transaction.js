@@ -13,6 +13,8 @@ export const transaction = (state = initialState, {type, payload}) => {
         totalRecord: payload.totalRecord,
         listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect 
       }
+    case 'transaction/setDenyReason':
+      return {...state, denyReason: payload}
     default:
       return state
   }

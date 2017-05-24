@@ -315,6 +315,10 @@ export default {
         justifyContent: 'center',
         width: '100%'
     },
+    feedbackButtonDisable: {
+        justifyContent: 'center',
+        width: '100%'
+    },
       modalOverlay: {
         width: '100%',
         height: '100%',
