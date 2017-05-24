@@ -65,8 +65,7 @@ export default class TopDropdown extends PureComponent {
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: 'white'
-                        }}
-                        ></Icon>
+                        }}/>
                     </Button>
                 </View>
 
@@ -75,9 +74,13 @@ export default class TopDropdown extends PureComponent {
                     maxHeight,
                 }}
                     renderRow={(item) =>
-                        <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
+                        {
+                          return(
+                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
                             <Text style={styles.dropdownListItemText}>{item.name}</Text>
                         </ListItem>
+                          )
+                        }
                     }>
                 </List>
             </View>

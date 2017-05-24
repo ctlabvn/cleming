@@ -20,6 +20,7 @@ import options from './options'
 import { formatNumber } from '~/ui/shared/utils'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
+import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
 @connect(state => ({
     place: state.place,
@@ -36,6 +37,8 @@ export default class extends Component {
             selectedPlace: props.place.listPlace.map(item => item.placeId).join(','),
             refreshing: false,
             loading: false,
+            modalOpen: false,
+            phoneNumber: ''
         }
 
         this.selectedStatus = 0
@@ -77,6 +80,19 @@ export default class extends Component {
                 refreshing: false,
                 loading: false,
             }))
+    }
+  
+    onModalOpen(phoneNumber) {
+        this.setState({
+          modalOpen: true,
+          phoneNumber: phoneNumber
+        })
+    }
+  
+    onModalClose() {
+        this.setState({
+          modalOpen: false
+        })
     }
 
     _handleChangePlace = (item) => {
@@ -194,7 +210,9 @@ export default class extends Component {
                         </View>
                         <View style={styles.row}>
                             <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
-                            <Text style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
+                            <Text
+                              onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                              style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
                         </View>
                     </View>
                     <View style={styles.row}>
@@ -246,6 +264,10 @@ export default class extends Component {
 
 
                 </Content>
+                <CallModal
+                  phoneNumber={this.state.phoneNumber}
+                  onCloseClick={this.onModalClose.bind(this)}
+                  open={this.state.modalOpen}/>
             </Container>
         )
     }
