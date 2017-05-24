@@ -9,6 +9,9 @@ import {
   Text, 
   Thumbnail, 
   Label,
+  Grid,
+  Row,
+  Col
 } from 'native-base'
 import styles from './styles'
 import { connect } from 'react-redux'
@@ -58,12 +61,25 @@ export default class extends Component {
     this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
-  _handleForgot = ({email})=>{    
-    this.props.resetPassword(email, ()=>this.setState({showForgot: false}))    
+  _handleForgot = ({phone})=>{
+    this.props.resetPassword(phone, ()=>this.setState({showForgot: false}))
   }
 
   _handleShowForgot=(e)=>{
     this.setState({showForgot: true})
+  }
+  
+  _handleShowLogin=(e)=>{
+    this.setState({
+      showPassword: false,
+      showForgot: false
+    })
+  }
+  
+  _handleShowFirstTimeLogin=(e)=>{
+    this.setState({
+      showPassword: true
+    })
   }
 
   renderPasswordForm(){
@@ -76,10 +92,21 @@ export default class extends Component {
           <Field name="password" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />              
           <Field name="password" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />              
           <Field name="password" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />              
-          <Button onPress={e=>this.setState({showPassword:false})} 
-            style={styles.button}>
-            <Text>Cập nhật</Text>
-          </Button>
+          <Grid>
+            <Col style={{width: '34%'}}>
+              <Button onPress={this._handleShowLogin}
+                      style={{...styles.button, ...styles.cancelButton}}>
+                <Text>Cancel</Text>
+              </Button>
+            </Col>
+            <Col style={{width: '2%'}}/>
+            <Col style={{width: '64%'}}>
+              <Button onPress={e=>this.setState({showPassword:false})}
+                      style={styles.button}>
+                <Text>Cập nhật</Text>
+              </Button>
+            </Col>
+          </Grid>
                    
       </Form>
     )
@@ -90,11 +117,22 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
           <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>      
-          <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />          
-          <Button onPress={handleSubmit(this._handleForgot)} 
-            style={styles.button}>
-            <Text>Gửi</Text>
-          </Button>
+          <Field autoCapitalize="none" name="phone" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
+          <Grid>
+            <Col style={{width: '34%'}}>
+              <Button onPress={this._handleShowLogin}
+                      style={{...styles.button, ...styles.cancelButton}}>
+                <Text>Cancel</Text>
+              </Button>
+            </Col>
+            <Col style={{width: '2%'}}/>
+            <Col style={{width: '64%'}}>
+              <Button onPress={handleSubmit(this._handleForgot)}
+                      style={styles.button}>
+                <Text>Gửi</Text>
+              </Button>
+            </Col>
+          </Grid>
                    
       </Form>
     )
@@ -134,7 +172,7 @@ export default class extends Component {
           <Content>                 
                      
             {!this.state.showPassword &&
-              <Icon onPress={e=>this.setState({showPassword:true})} name="logo" style={styles.logoIcon} />
+              <Icon onPress={this._handleShowFirstTimeLogin} name="logo" style={styles.logoIcon} />
             }
             
             { this.state.showPassword 

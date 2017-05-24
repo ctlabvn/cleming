@@ -39,7 +39,7 @@ export default {
     backgroundColor: '#0086ac',        
     justifyContent: 'center',
     width: '100%',   
-    borderRadius: 5,
+    borderRadius: 3,
   },  
   margin: {
     flex: 1,
@@ -61,5 +61,11 @@ export default {
   whiteColor: {
     color: '#FFF',
     fontWeight: '500',
+  },
+  cancelButton: {
+    backgroundColor: '#33b5d7',
+  },
+  submitButton: {
+    
   }
 }
