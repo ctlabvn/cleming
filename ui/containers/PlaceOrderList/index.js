@@ -20,8 +20,9 @@ import options from './options'
 import {BASE_COUNTDOWN_BOOKING_MINUTE} from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
+import { getSession } from '~/store/selectors/auth'
 @connect(state => ({
-    user: state.auth.user,
+    xsession: getSession(state),
     place: state.place,
     booking: state.booking
 }), { ...commonActions, ...bookingActions })
@@ -128,7 +129,7 @@ export default class PlaceOrderList extends Component {
         // pageNumber: int, //số page tối đa có thể lấy,
         // resultNumber: int, //số lượng kết quả,
         // isLast: boolean, //có phải là trang cuối cùng hay không
-        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+        this.props.getBookingList(this.props.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
     }
@@ -140,7 +141,7 @@ export default class PlaceOrderList extends Component {
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
 
         if (!booking.isLast) {
-            this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+            this.props.getBookingList(this.props.xsession, currentPlace.id,
                 dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
                 status, booking.page + 1,
                 () => this.setState({ loadingMore: false }))
@@ -150,7 +151,7 @@ export default class PlaceOrderList extends Component {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
         let status = item == 1 ? 0 : 1
-        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+        this.props.getBookingList(this.props.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
     }
@@ -160,7 +161,7 @@ export default class PlaceOrderList extends Component {
         let dateFilterData = this.refs.dateFilter.getData()
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
         this.setState({ loading: true })
-        this.props.getBookingList(this.props.user.xsession, item.id,
+        this.props.getBookingList(this.props.xsession, item.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
 
@@ -170,7 +171,7 @@ export default class PlaceOrderList extends Component {
         let currentPlace = this.refs.placeDropdown.getValue()
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
         this.setState({ loading: true })
-        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+        this.props.getBookingList(this.props.xsession, currentPlace.id,
             item.currentSelectValue.value.from, item.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
     }
@@ -179,7 +180,7 @@ export default class PlaceOrderList extends Component {
         let dateFilterData = this.refs.dateFilter.getData()
         let status = this.refs.tabs.getActiveTab() == 1 ? 0 : 1
         this.setState({ loading: true, counting: true })
-        this.props.getBookingList(this.props.user.xsession, currentPlace.id,
+        this.props.getBookingList(this.props.xsession, currentPlace.id,
             dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
             status, () => this.setState({ loading: false }))
     }
