@@ -22,7 +22,7 @@ export const transaction = (state = initialState, { type, payload }) => {
           pageNumber: payload.pageNumber,
           totalPage: payload.totalPage,
           totalRecord: payload.totalRecord,
-          listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect
+          listTransaction: payload.pageNumber > 1 ? [...state.payDirect.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect
         }
       }
     case 'app/setListTransactionPayWithClingme':
@@ -32,7 +32,7 @@ export const transaction = (state = initialState, { type, payload }) => {
           pageNumber: payload.pageNumber,
           totalPage: payload.totalPage,
           totalRecord: payload.totalRecord,
-          listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listPayThroughClm] : payload.listPayThroughClm
+          listTransaction: payload.pageNumber > 1 ? [...state.payWithClingme.listTransaction, ...payload.listPayThroughClm] : payload.listPayThroughClm
         }
       }
     case 'transaction/setDenyReason':
