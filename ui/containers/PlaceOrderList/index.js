@@ -24,8 +24,9 @@ import { getSession } from '~/store/selectors/auth'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    booking: state.booking
-}), { ...commonActions, ...bookingActions })
+    booking: state.booking,
+    modal: state.modal.modal
+}), { ...commonActions, ...bookingActions }, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -214,7 +215,16 @@ export default class PlaceOrderList extends Component {
         dropdownValues = [defaultSelected, ...dropdownValues]
         return (
             <View style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
+                <TopDropdown
+                  modalOpen={this.props.modal}
+                  ref='placeDropdown'
+                  dropdownValues={dropdownValues}
+                  onSelect={this._handleTopDrowpdown.bind(this)}
+                  selectedOption={defaultSelected} />
+                <CallModal
+                  phoneNumber={this.state.phoneNumber}
+                  onCloseClick={this.onModalClose.bind(this)}
+                  open={this.state.modalOpen}/>
                 <View style={{ marginTop: 50, height: '100%' }}>
                     {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
@@ -234,10 +244,6 @@ export default class PlaceOrderList extends Component {
                         {this.state.loadingMore && <Spinner color='red' />}
                     </Content>
                 </View>
-                <CallModal
-                  phoneNumber={this.state.phoneNumber}
-                  onCloseClick={this.onModalClose.bind(this)}
-                  open={this.state.modalOpen}/>
             </View >
         )
     }

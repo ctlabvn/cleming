@@ -86,3 +86,11 @@ export const search = (payload) => ({
   payload,
 })
 
+export const openModal = () => ({
+  type: 'app/openModal'
+})
+
+export const closeModal = () => ({
+  type: 'app/closeModal',
+})
+

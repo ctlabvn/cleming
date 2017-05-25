@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform } from 'react-native'
+import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
+
 import styles from './styles'
 import Content from '~/ui/components/Content'
+import { PRIMARY_COLOR } from '~/ui/shared/constants'
 
+const {height, width} = Dimensions.get('window')
 
-export default class TopDropdown extends PureComponent {
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
+export default class TopDropdown extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -19,6 +19,18 @@ export default class TopDropdown extends PureComponent {
             selectedOption: props.selectedOption||{id: -1, name: ""},
             dropdownValues: props.dropdownValues||[],
         }
+    }
+    
+    /*componentWillReceiveProps(nextProps) {
+      if (this.props.modalOpen != nextProps.modalOpen) {
+        if (nextProps.modalOpen == "open" && this.state.openningDropdown == true) {
+          this.toggle()
+        }
+      }
+    }*/
+    
+    _handlePress(item) {
+        this.props.forwardTo(`notification/${item.user}`)
     }
     getValue(){
         return this.state.selectedOption;
@@ -53,13 +65,17 @@ export default class TopDropdown extends PureComponent {
 
     }
     render() {
-        const { notifications, getNotificationRequest, getNotification, dropdownValues } = this.props
+        const { notifications, getNotificationRequest, getNotification, dropdownValues} = this.props
         const { openningDropdown } = this.state
-        const maxHeight = openningDropdown ? 150 : 0
+        let maxHeight = openningDropdown ? 150 : 0
+        let fakeZIndex = (maxHeight == 150) ? {zIndex: 1000} : {zIndex: null}
         // console.log(this.props.dropdownValues)
         // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
+        const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
+        let containerStyleTopDown = {...containerStyle, ...fakeZIndex}
+        console.log(containerStyleTopDown)
         return (
-            <View style={(Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid}>
+            <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
                     <Text numberOfLines={1}  style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
@@ -69,10 +85,13 @@ export default class TopDropdown extends PureComponent {
                     </Button>
                 </View>
 
-                <List dataArray={dropdownValues} style={{
+                <List
+                  contentContainerStyle={{backgroundColor: PRIMARY_COLOR}}
+                  dataArray={dropdownValues}
+                  style={{
                     ...styles.dropdownList,
                     maxHeight,
-                }}
+                  }}
                     renderRow={(item) =>
                         {
                           return(

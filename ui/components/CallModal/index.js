@@ -10,9 +10,16 @@ import {
   Container, Text, View, Grid, Row, Col, Button
 } from 'native-base'
 import Communications from 'react-native-communications';
+import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
+
+import * as commonActions from '~/store/actions/common'
+
+@connect(state=>({
+  
+}), {...commonActions })
 
 export default class extends Component {
   constructor(props) {
@@ -22,17 +29,27 @@ export default class extends Component {
     }
   }
   
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open == true) {
+      this.props.openModal()
+    }
+  }
+  
   onCallAccepted() {
     const {onCloseClick, phoneNumber} = this.props
     Communications.phonecall('+' + phoneNumber, true)
+    closeModal()
     onCloseClick()
   }
   
   render() {
-    const {open, title, onCloseClick} = this.props
+    const {open, title, onCloseClick, closeModal} = this.props
     return(
       <Modal
-        onCloseClick={onCloseClick}
+        onCloseClick={() => {
+          closeModal()
+          onCloseClick()
+        }}
         title={title}
         open={open}>
         <View style={styles.container}>
@@ -46,7 +63,10 @@ export default class extends Component {
             <Row style={{height: '40%'}}>
               <Col style={{justifyContent: 'center'}}>
                 <Button
-                  onPress={onCloseClick}
+                  onPress={() => {
+                    closeModal()
+                    onCloseClick()
+                  }}
                   style={{...styles.button, ...styles.leftButton}}>
                   <Text>Huỷ</Text>
                 </Button>

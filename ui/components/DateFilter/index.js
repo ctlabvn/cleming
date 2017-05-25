@@ -184,9 +184,12 @@ export default class DateFilter extends Component {
                         <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
-                <ListView style={styles.dateFilterList} horizontal={true} showsHorizontalScrollIndicator={false}
-                    ref='dateFilterList' dataSource={data}
-                    renderRow={
+                <ListView
+                  style={styles.dateFilterList}
+                  horizontal={true} showsHorizontalScrollIndicator={false}
+                  ref='dateFilterList' dataSource={data}
+                  removeClippedSubviews={false}
+                  renderRow={
                         (rowData) => {
                             return (
                                 <TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
@@ -194,7 +197,7 @@ export default class DateFilter extends Component {
                                 </TouchableOpacity>
                             )
                         }
-                    }
+                  }
                 />
             </View >
         )

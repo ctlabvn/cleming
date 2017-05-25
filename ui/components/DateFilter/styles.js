@@ -28,9 +28,10 @@ export default {
 
     },
     dateFilterList: {
-        // padding: 50,
-        marginRight: 15,
-        flexDirection: 'row',
+      // padding: 50,
+      marginRight: 20,
+      flexDirection: 'row',
+      backgroundColor: 'white'
     },
     dateFilterListItemDeactive: {
         borderBottomColor: 'transparent',

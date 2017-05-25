@@ -35,7 +35,7 @@ export default {
         paddingRight: 10,
     },
     dropdownList:{
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: 'transparent',
         width: '100%',        
         zIndex: 1000,
     },
