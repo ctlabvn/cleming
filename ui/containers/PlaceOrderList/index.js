@@ -68,7 +68,7 @@ export default class PlaceOrderList extends Component {
                           onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
                           style={styles.listButton}>
                             <View style={styles.rowPadding}>
-                                <Text primary bold>{item.orderCode}</Text>
+                                <Text primary bold>#{item.orderCode}</Text>
                                 <View style={styles.row}>
                                     <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
@@ -83,17 +83,17 @@ export default class PlaceOrderList extends Component {
                                     <Icon name='calendar' style={styles.icon} />
                                     <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('DD/MM')}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
                                     <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('hh:mm')}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
                                     <Text style={{...styles.labelUnderImage}}>{item.numberOfPeople}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
                                     <Text style={{...styles.labelUnderImage}}>{totalQuantity}</Text>
