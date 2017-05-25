@@ -73,7 +73,6 @@ export default class TopDropdown extends Component {
         // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         let containerStyleTopDown = {...containerStyle, ...fakeZIndex}
-        console.log(containerStyleTopDown)
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>

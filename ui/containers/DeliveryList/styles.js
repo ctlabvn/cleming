@@ -6,6 +6,10 @@ export default{
     contentContainer: {
       padding: 10,
     },
+    contentContainerStyle: {
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     deliveryBlock: {
         flexDirection: 'column',
         backgroundColor: 'white',
