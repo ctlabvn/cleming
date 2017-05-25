@@ -29,19 +29,19 @@ export default {
     },
     dateFilterList: {
       // padding: 50,
-      marginRight: 20,
+      marginRight: 0,
       flexDirection: 'row',
       backgroundColor: 'white'
     },
     dateFilterListItemDeactive: {
         borderBottomColor: 'transparent',
-        marginRight: 25,
+        marginRight: 0,
         color: 'rgba(0,0,0,0.5)',
         padding: 5
     },
     dateFilterListItemActive: {
         borderBottomColor: 'transparent',
-        marginRight: 25,
+        marginRight: 0,
         color: PRIMARY_COLOR,
         fontWeight: 'bold',
         padding: 5

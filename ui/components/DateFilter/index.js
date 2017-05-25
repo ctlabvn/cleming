@@ -191,10 +191,20 @@ export default class DateFilter extends Component {
                   ref='dateFilterList' dataSource={data}
                   removeClippedSubviews={false}
                   renderRow={
-                        (rowData) => {
+                        (rowData, sectionID, rowID, highlightRow) => {
+                            let lastItemStyle = null
+                            if (rowID == _data.length - 1) {
+                                lastItemStyle = {
+                                    marginRight: 0
+                                }
+                            }
                             return (
-                                <TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
-                                    <Text small style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                <TouchableOpacity
+                                style={{marginRight: 20, ...lastItemStyle}}
+                                onPress={() => this._handlePressDateFilter(rowData)}>
+                                    <Text
+                                    small
+                                    style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
                                 </TouchableOpacity>
                             )
                         }
