@@ -201,9 +201,7 @@ export default class MerchantOverview extends PureComponent {
                         <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
                     </LinearGradient>
                     {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
-                    <View style={styles.dateFilterContainer}>
-                        <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
-                    </View>
+                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                 </View>
                 {mainContainer} 
                 
