@@ -351,7 +351,7 @@ export default class Report extends Component {
             <Container style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' />
                     {/*<Content>*/}
                     <MapView
                         region={this.state.region}
