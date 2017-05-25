@@ -38,7 +38,7 @@ export default class extends Component {
   onCallAccepted() {
     const {onCloseClick, phoneNumber} = this.props
     Communications.phonecall('+' + phoneNumber, true)
-    closeModal()
+    this.props.closeModal()
     onCloseClick()
   }
   
