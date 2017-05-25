@@ -15,8 +15,16 @@ export default {
         console.log('Trans Detail API', xsession+'---'+dealTransactionId)
         return apiGet('/merchantapp/transaction-detail', {dealTransactionId}, xsession)
     },
+    detailPayWithClingme(xsession, clingmeId){
+        console.log('Tras Detail Clingme', xsession+'---'+clingmeId)
+        return apiGet('/merchantapp/payclm-detail', {clingmeId}, xsession)
+    },
     getDenyReason(xsession){
         return apiGet('/merchantapp/transaction-reason', {}, xsession)
+    },
+    confirmTransaction(xsession, clingmeId, transactionType=1){
+        console.log('Transaction API Confirm', xsession+'---'+clingmeId+'---'+transactionType)
+        return apiPost('/merchantapp/payclm-confirm', {clingmeId, transactionType}, xsession)
     },
 
     //"dealTransactionId": long,	// id của giao dịch
