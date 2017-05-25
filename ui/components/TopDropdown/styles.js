@@ -1,12 +1,18 @@
 import material from '~/theme/variables/material'
 import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
-    dropdownContainer:{
+    dropdownContainerAndroid:{
+        position: 'absolute',
+        //zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        elevation: 5
+    },
+    dropdownContainerIos:{
         position: 'absolute',
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
-        elevation: 5
     },
     dropdownHeader:{
         justifyContent:'center',

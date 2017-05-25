@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation } from 'react-native'
+import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 
@@ -59,7 +59,7 @@ export default class TopDropdown extends PureComponent {
         // console.log(this.props.dropdownValues)
         // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
         return (
-            <View style={styles.dropdownContainer}>
+            <View style={(Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid}>
                 <View style={styles.dropdownHeader}>
                     <Text numberOfLines={1}  style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
