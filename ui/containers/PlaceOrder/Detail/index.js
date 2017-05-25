@@ -120,22 +120,22 @@ export default class PlaceOrderDetail extends Component {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Icon name='calendar' style={styles.icon} />
-                  <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('DD/MM')}</Text>
+                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format('DD/MM')}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                 <View style={styles.column}>
                   <Icon name='history' style={styles.icon} />
-                  <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('hh:mm')}</Text>
+                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format('hh:mm')}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                 <View style={styles.column}>
                   <Icon name='friend' style={styles.icon} />
-                  <Text style={{ color: 'black' }}>{this.state.bookingDetail.numberOfPeople}</Text>
+                  <Text style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                 <View style={styles.column}>
                   <Icon name='want-feed' style={styles.icon} />
-                  <Text style={{ color: 'black' }}>{totalQuantity}</Text>
+                  <Text style={styles.labelUnderImage}>{totalQuantity}</Text>
                 </View>
               </View>
               <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -264,7 +264,7 @@ export default class PlaceOrderDetail extends Component {
           </View>*/}
           <View style={styles.codeContainer}>
             <Text style={{ ...styles.normalText, ...styles.codeTitleText }}>Mã đặt chỗ: </Text>
-            <Text primary bold style={{ ...styles.codeText }}>{this.state.bookingDetail.orderCode}</Text>
+            <Text primary bold style={{ ...styles.codeText }}>#{this.state.bookingDetail.orderCode}</Text>
           </View>
         </View>
 

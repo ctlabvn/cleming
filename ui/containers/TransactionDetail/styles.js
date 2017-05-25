@@ -1,21 +1,22 @@
-import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1} from '~/ui/shared/constants'
+import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
 export default {
-    container:{
+    container: {
         flexDirection: 'column',
         backgroundColor: 'white'
     },
-    transactionBlock:{
+    transactionBlock: {
         backgroundColor: 'lavender',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,  
+        padding: 10,
     },
     block: {
         flexDirection: 'column'
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     topPart: {
         backgroundColor: BACKGROUND_COLOR_1
@@ -27,11 +28,11 @@ export default {
         alignItems: 'center'
     },
 
-    transactionContent:{
+    transactionContent: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    transactionLabel:{
+    transactionLabel: {
 
     },
     transactionID: {
@@ -48,14 +49,14 @@ export default {
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    userLabel:{
+    userLabel: {
 
     },
     userContent: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    username:{
+    username: {
         fontWeight: 'bold'
     },
     avatar: {
@@ -87,12 +88,12 @@ export default {
         alignItems: 'center',
         justifyContent: 'center'
     },
-    barOne:{
+    barOne: {
         backgroundColor: 'blue',
         width: '100%',
         height: 5,
     },
-     barTwo:{
+    barTwo: {
         backgroundColor: 'lightblue',
         width: '100%',
         height: 5
@@ -108,7 +109,7 @@ export default {
         backgroundColor: PRIMARY_COLOR
     },
 
-    arrowDown:{
+    arrowDown: {
         width: 0,
         height: 0,
         borderWidth: 5,
@@ -119,7 +120,7 @@ export default {
         alignSelf: 'center',
         bottom: -5
     },
-   
+
     arrowUp: {
         width: 0,
         height: 0,
@@ -129,7 +130,7 @@ export default {
         borderRightColor: 'transparent',
         // borderBottomColor: 'lightblue',
         alignSelf: 'center',
-        bottom:5
+        bottom: 5
     },
 
     barHiddenPartTop: {
@@ -141,9 +142,9 @@ export default {
         borderRightColor: 'transparent',
         borderBottomColor: 'transparent',
         alignSelf: 'center',
-        bottom:-5
+        bottom: -5
     },
-     barHiddenPartBottom: {
+    barHiddenPartBottom: {
         width: 0,
         height: 0,
         borderWidth: 5,
@@ -152,7 +153,7 @@ export default {
         borderRightColor: 'transparent',
         borderBottomColor: 'transparent',
         alignSelf: 'center',
-        bottom:5
+        bottom: 5
     },
     invoiceStatusBlock: {
         padding: 10,
@@ -319,10 +320,10 @@ export default {
         justifyContent: 'center',
         width: '100%'
     },
-      modalOverlay: {
+    modalOverlay: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.7)' 
+        backgroundColor: 'rgba(0,0,0,0.7)'
     },
     modalContainer: {
         marginTop: '30%',
@@ -338,10 +339,33 @@ export default {
     },
 
     textPrev: {
-      paddingBottom: 3,
+        paddingBottom: 3,
     },
 
     textNext: {
         paddingBottom: 3,
     },
+    blockCenter: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // marginBottom: 30
+
+    },
+    content: {
+        padding: 10,
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    contentRootChild: {
+        flexDirection: 'column',
+        flex: 1,
+        justifyContent: 'space-around',
+        height: '100%',
+        padding: 10,
+        backgroundColor: 'white'
+    }
 }

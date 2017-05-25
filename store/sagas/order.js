@@ -9,7 +9,12 @@ const requestGetOrderList = createRequestSaga({
     request: api.order.getOrderList,
     key: 'getOrderList',    
     success: [
-        (data) => replaceOrderList(data),               
+        (data) => {
+            if (data && data.updated){
+                return replaceOrderList(data)
+            }
+            return setToast('Load order fail: ', JSON.stringify(data))
+        },               
     ],
     failure: [
         (data) => setToast('Can not get order', 'error')

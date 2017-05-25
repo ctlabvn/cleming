@@ -106,5 +106,10 @@ export default {
     flexDirection: 'column',
     paddingTop: 10,
     paddingBottom: 10
-  }
+  },
+
+  labelUnderImage: {
+    color: 'black',
+    marginTop: 5,
+  },
 }

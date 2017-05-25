@@ -9,6 +9,11 @@ export const setListTransaction = (listTransaction) => ({
   payload: listTransaction, 
 })
 
+export const setListTransactionPayWithClingme = (listTransaction) => ({
+  type: 'app/setListTransactionPayWithClingme',
+  payload: listTransaction, 
+})
+
 export const getListTransactionPayWithClingme= (...args) => ({
   type: 'transaction/listPayWithClingme',
   args
@@ -16,6 +21,10 @@ export const getListTransactionPayWithClingme= (...args) => ({
 
 export const getTransactionDetail = (...args) => ({
   type: 'transaction/detail',
+  args
+})
+export const getTransactionDetailPayWithClingme = (...args) => ({
+  type: 'transaction/detailPayWithClingme',
   args
 })
 
@@ -31,5 +40,10 @@ export const setDenyReason = (reason) => ({
 
 export const sendDenyReason = (...args) => ({
   type: 'transaction/sendDenyReason',
+  args
+})
+
+export const confirmTransaction = (...args) => ({
+  type: 'transaction/confirm',
   args
 })
