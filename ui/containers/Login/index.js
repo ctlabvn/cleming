@@ -104,6 +104,7 @@ export default class extends Component {
   }
 
   renderPasswordForm(){
+    const {handleSubmit} = this.props
     return (
       <Form style={styles.formForgot}>
           <Text style={{...styles.label, marginTop: 50, marginBottom: 20}}>
@@ -122,7 +123,7 @@ export default class extends Component {
             </Col>
             <Col style={{width: '2%'}}/>
             <Col style={{width: '64%'}}>
-              <Button onPress={this._handleChangePassword.bind(this)}
+              <Button onPress={handleSubmit(this._handleChangePassword)}
                       style={styles.button}>
                 <Text>Cập nhật</Text>
               </Button>
@@ -192,7 +193,7 @@ export default class extends Component {
           <Content>                 
                      
             {!this.state.showPassword &&
-              <Icon onPress={this._handleShowFirstTimeLogin} name="logo" style={styles.logoIcon} />
+              <Icon name="logo" style={styles.logoIcon} />
             }
             
             { this.state.showPassword 
