@@ -367,5 +367,12 @@ export default {
         height: '100%',
         padding: 10,
         backgroundColor: 'white'
+    },
+    loadingContainer: { 
+        backgroundColor: 'white', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        flex: 1
     }
 }
