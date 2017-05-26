@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Text, Button, Content, Spinner, Radio, Input, Toast, Thumbnail } from 'native-base'
+import { Container, Text, Button, Spinner, Radio, Input, Toast, Thumbnail } from 'native-base'
 import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -12,7 +12,10 @@ import { getSession } from '~/store/selectors/auth'
 import { storeTransparent, storeFilled } from '~/assets'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import FeedbackDialog from './FeedbackDialog'
-import {TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT} from '~/store/constants/transaction'
+import FeedbackDialogClingme from './FeedbackDialogClingme'
+import PopupInfo from '~/ui/components/PopupInfo'
+import Content from '~/ui/components/Content'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/transaction'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -27,7 +30,22 @@ export default class TransactionDetail extends Component {
             transactionInfo: {},
             hasNext: false,
             hasPrevious: false,
+            loading: false
         }
+        this.denyReasonClingme = [
+            {
+                reason: 'Khách hàng trả thừa tiền',
+                reasonId: 1
+            },
+            {
+                reason: 'Khách hàng trả thiếu tiền',
+                reasonId: 2
+            },
+            {
+                reason: 'Khác',
+                reasonId: 3
+            },
+        ]
     }
     _renderStatus(status) {
         switch (status) {
@@ -60,19 +78,22 @@ export default class TransactionDetail extends Component {
     }
     _showReasonPopup = () => {
         console.log('Show reasion Popup', this.refs.feedBackDialog)
-        this.refs.feedBackDialog.setModalVisible(true)
+        this.refs.feedbackDialog.setModalVisible(true)
+    }
+    _showReasonPopupClingme = () => {
+        this.refs.feedbackDialogClingme.setModalVisible(true)
     }
     goPrevious() {
         const { xsession, transaction } = this.props
-        let index=0, transactionId
-        if (this.state.type == TRANSACTION_TYPE_CLINGME){
+        let index = 0, transactionId
+        if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.clingmeId
             index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
             if (index <= 0) return
-            index --
+            index--
             let preTrans = transaction.payWithClingme.listTransaction[index]
             this._load(preTrans.clingmeId)
-        }else if(this.state.type == TRANSACTION_TYPE_DIRECT){
+        } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
             index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
             if (index <= 0) return
@@ -83,20 +104,20 @@ export default class TransactionDetail extends Component {
     }
 
     goNext() {
-        const { xsession, transaction} = this.props
-        let transactionId, index=0
-        if (this.state.type == TRANSACTION_TYPE_CLINGME){
+        const { xsession, transaction } = this.props
+        let transactionId, index = 0
+        if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.clingmeId
             index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
-            if (index >= transaction.payWithClingme.listTransaction.length-1) return
-            index ++
+            if (index >= transaction.payWithClingme.listTransaction.length - 1) return
+            index++
             let nextTrans = transaction.payWithClingme.listTransaction[index]
             this._load(nextTrans.clingmeId)
 
-        }else if(this.state.type == TRANSACTION_TYPE_DIRECT){
+        } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
             index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
-            if (index >= transaction.payDirect.listTransaction.length-1) return
+            if (index >= transaction.payDirect.listTransaction.length - 1) return
             index++
             let nextTrans = transaction.payDirect.listTransaction[index]
             this._load(nextTrans.dealTransactionId)
@@ -112,7 +133,7 @@ export default class TransactionDetail extends Component {
         getListDenyReason(xsession)
     }
 
-      // Go to Page 
+    // Go to Page 
     componentWillFocus() {
         const { xsession, listTransaction, getTransactionDetail, route } = this.props
         let transactionId = route.params.id
@@ -125,17 +146,22 @@ export default class TransactionDetail extends Component {
         let transactionInfo = this.state.transactionInfo
         console.log('Render trans Info', transactionInfo)
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            let payStatus
+            let payStatusa
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
-            if (transactionInfo.transactionStatus == 1){
+            if (transactionInfo.transactionStatus == 1) {
                 payStatus = <Text success bold>Đã thanh toán</Text>
-            }else if (transactionInfo.transactionStatus == 2){
+            } else if (transactionInfo.transactionStatus == 2) {
                 payStatus = <Text success bold>Đã xác nhận</Text>
             }
             return (
                 <View style={styles.contentRootChild}>
+                    <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.denyReasonClingme}
+                        transactionCode={transactionInfo.transactionIdDisplay}
+                        onClickYes={this._handleFeedbackClingme}
+                        dealTransactionId={transactionInfo.clingmeId}
+                    />
                     <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                        <Text style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime*1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <Text style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                     </View>
                     <View style={styles.blockCenter}>
                         <Text>Số đơn hàng</Text>
@@ -153,17 +179,22 @@ export default class TransactionDetail extends Component {
                     <View style={styles.row}>
                         <Text>Khách hàng</Text>
                         <View style={styles.row}>
-                            <Text bold style={{marginRight: 5}}>{transactionInfo.userName}</Text>
+                            <Text bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
                             {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
-                            <Thumbnail size={80} source={{uri: transactionInfo.avatarUrl}} />
+                            <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                         </View>
+                    </View>
+                    <View style={styles.blockCenter}>
+                        <Button dark bordered style={{ alignSelf: 'center' }} onPress={() => this._showReasonPopupClingme()}>
+                            <Text>Số tiền không đúng</Text>
+                        </Button>
                     </View>
                 </View>
             )
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             return (
-                <Content ref='content'>
-                    <FeedbackDialog ref='feedBackDialog' listValue={this.props.denyReason}
+                <Content ref='content' refreshing={true}>
+                    <FeedbackDialog ref='feedbackDialog' listValue={this.props.denyReason}
                         transactionCode={transactionInfo.dealTransactionIdDisplay}
                         onClickYes={this._handleFeedback}
                         dealTransactionId={transactionInfo.dealTransactionId}
@@ -267,9 +298,11 @@ export default class TransactionDetail extends Component {
     _load(transactionId) {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route } = this.props
         let transactionType = route.params.type
+        // this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
+                    // this.setState({ loading: false })
                     console.log('ErrData', data)
                     if (data.updated && data.updated.data) {
                         let transInfo = data.updated.data
@@ -286,6 +319,7 @@ export default class TransactionDetail extends Component {
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
             getTransactionDetail(xsession, transactionId,
                 (err, data) => {
+                    // this.setState({ loading: false })
                     if (data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
@@ -317,7 +351,10 @@ export default class TransactionDetail extends Component {
             }
         )
     }
-
+    _handleFeedbackClingme = ()=>{
+        console.log('Handle feedback clm')
+        this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
+    }
     //  "transactionStatus": int,	
     // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý, 
     // 1 là thành công, 2 là bị từ chối
@@ -370,6 +407,7 @@ export default class TransactionDetail extends Component {
         }
         return (
             <Container style={{ paddingBottom: 40 }}>
+                <PopupInfo ref='popupInfo' />
                 {this._renderContent()}
                 <View style={styles.navigateInvoiceBlock}>
                     {btnPrev}

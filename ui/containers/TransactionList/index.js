@@ -71,7 +71,7 @@ export default class extends Component {
         confirmTransaction(xsession, clingmeId,
             (err, data) => {
                 if (data && data.updated && data.updated.data.success) {
-                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Đã ghi nhận phản hồi.</Text></View>
+                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
                     setToast(message, 'info', 3000, 'bottom')
                     this._onRefresh()
                 }
