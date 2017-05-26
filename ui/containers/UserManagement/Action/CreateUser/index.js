@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, getFormValues } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -43,16 +43,16 @@ const formSelector = formValueSelector('CreateUserForm')
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
-  formState: state.form.CreateUserForm
+  formState: state.form
 }), { ...accountActions, ...commonActions }, (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
         initialValues: {
           GroupAddress: stateProps.place.listPlace,
-          name: 'Clingme',
-          email: 'Abc@gmail.com',
-          phone: '1234567810',
+          name: '',
+          email: '',
+          phone: '',
           permission: {
             id: 1,
             name: "Nhân Viên"
@@ -140,6 +140,7 @@ export default class CreateUserContainer extends Component {
             name: "Nhân Viên"
           }
         })
+        stopSubmit('CreateUserForm', {})
       }
     }
     
@@ -260,6 +261,7 @@ export default class CreateUserContainer extends Component {
       } else {
         listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
       }
+      let formState = null
       let nameError = null
       let errorNameStyle = null
       let errorLongNameStyle = null
@@ -267,8 +269,13 @@ export default class CreateUserContainer extends Component {
       let errorPhoneStyle = null
       let emailError = null
       let errorEmailStyle = null
-      if (this.props.formState.syncErrors) {
-        let errors = this.props.formState.syncErrors
+      if (typeof this.props.route.params.id == 'undefined') {
+        formState = this.props.formState.CreateUserForm
+      } else {
+        formState = this.props.formState.CreateUserForm
+      }
+      if (formState.syncErrors) {
+        let errors = formState.syncErrors
         if (errors.name) {
           errorNameStyle = {borderColor: 'red', borderWidth: 1}
           if (errors.name.length > 30) {

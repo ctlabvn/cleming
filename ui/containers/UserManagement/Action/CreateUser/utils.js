@@ -19,7 +19,7 @@ import {
 import styles from './styles'
 
 
-const namePattern = /^[a-zA-Z]{0,2}$/
+const namePattern = /^[a-zA-Z]{0,1}$/
 const usernameConstraints = {
   username: {
     format: {
@@ -47,7 +47,6 @@ const emailConstraints = {
 
 // if long then seperate
 export const validateField = (values) => {
-  console.log(values)
   const errors = {}
   if(!values) return errors
   
