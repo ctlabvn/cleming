@@ -19,12 +19,12 @@ import {
 import styles from './styles'
 
 
-const namePattern = /^[a-zA-Z]{0,1}$/
+const namePattern = /^[a-zA-Z]{2,}$/
 const usernameConstraints = {
   username: {
     format: {
       pattern: namePattern,
-      flags: 'i'
+      flags: 'g'
     }
   }
 }
@@ -54,7 +54,7 @@ export const validateField = (values) => {
     errors.name = "Bạn phải nhập tên"
   }
   
-  if (_.isUndefined(validate({username: values.name}, usernameConstraints))) {
+  if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
     errors.name = "Tên phải có ít nhất 2 ký tự, không bao gồm các ký tự đặc biệt và số"
   }
   

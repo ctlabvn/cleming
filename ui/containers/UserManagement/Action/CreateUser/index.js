@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -44,7 +44,12 @@ const formSelector = formValueSelector('CreateUserForm')
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
   formState: state.form
-}), { ...accountActions, ...commonActions }, (stateProps, dispatchProps, ownProps)=>{
+}), dispatch => ({
+  ...accountActions,
+  ...commonActions,
+  destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
+  resetForm: () => dispatch(reset('CreateUserForm'))
+}), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
@@ -140,8 +145,13 @@ export default class CreateUserContainer extends Component {
             name: "Nhân Viên"
           }
         })
-        stopSubmit('CreateUserForm', {})
+        this.props.resetForm()
       }
+    }
+    
+    componentDidMount() {
+      //stopAsyncValidation('CreateUserForm', {})
+      this.props.resetForm()
     }
     
     onFromTimeFocus() {
@@ -318,7 +328,7 @@ export default class CreateUserContainer extends Component {
             <Field
               inputStyle={styles.inputText}
               style={styles.inputField}
-              label="Phone number"
+              label="Số điện thoại"
               name="phone"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
