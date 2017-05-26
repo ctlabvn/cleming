@@ -76,7 +76,9 @@ const formSelector = formValueSelector('CreateUserForm')
         permission: {
           id: employeeDetail.titleType,
           name: permission
-        }
+        },
+        fromTimeWork: employeeDetail.fromTimeWork,
+        toTimeWork: employeeDetail.toTimeWork
       },
       ...ownProps, ...stateProps, ...dispatchProps,
     })
@@ -85,13 +87,14 @@ const formSelector = formValueSelector('CreateUserForm')
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
+        console.log(props.initialValues)
         this.state = {
           jobModalOpen: false,
           permissionModalOpen: false,
           fromTimeVisible: false,
           toTimeVisible: false,
-          fromTime: moment(new Date()).format("HH:mm"),
-          toTime: moment(new Date()).format("HH:mm"),
+          fromTime: props.initialValues.fromTimeWork || moment(new Date()).format("HH:mm"),
+          toTime: props.initialValues.toTimeWork || moment(new Date()).format("HH:mm"),
           checkAll: false,
           employeeDetail: {},
           rowIDOfEmployee: 0,

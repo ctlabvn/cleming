@@ -130,9 +130,8 @@ export default {
         footerType: 'none',
     },
     changePassword: {
-        title: 'Change Password',
+        title: 'Đổi mật khẩu',
         Page: PasswordModifier,
-        headerType: 'back',
         footerType: 'none',
     },
   // signup1: {
@@ -232,26 +231,23 @@ export default {
     //     Page: Interaction,
     // },
     userManagement: {
-        title: 'User Management',
+        title: 'Quản lý tài khoản',
         Page: UserManagement,
         footerType: 'none',
     },
     'userManagement/action/createUser': {
-        title: 'Create User',
+        title: 'Thêm tài khoản',
         Page: CreateUserContainer,
-        headerType: 'back',
         footerType: 'none',
     },
     'userManagement/action/updateEmployeeInfo/:id': {
-        title: 'Update Employee',
+        title: 'Chỉnh sửa thông tin tài khoản',
         Page: CreateUserContainer,
-        headerType: 'back',
         footerType: 'none',
     },
     'userManagement/action/updateUser': {
-        title: 'User Info',
+        title: 'Thông tin tài khoản',
         Page: UpdateUserContainer,
-        headerType: 'back',
         footerType: 'none',
     },
     help:{
