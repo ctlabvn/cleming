@@ -12,12 +12,14 @@ export default class extends Component {
   
     this.state = {
       store: null,
-    }        
+    }
+
+    configureStore(store=> this.setState({store}))        
   }
 
-  componentDidMount(){
-    configureStore(store=> this.setState({store}))
-  }
+  // componentDidMount(){
+    
+  // }
 
   render() {    
     const {store} = this.state

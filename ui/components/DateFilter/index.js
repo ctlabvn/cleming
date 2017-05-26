@@ -60,7 +60,7 @@ export default class DateFilter extends Component {
     }
     componentDidMount() {
         setTimeout(() => {
-            this.refs.dateFilterList.scrollToEnd({ animated: false })
+            this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
         }, 0)
     }
     componentDidUpdate() {

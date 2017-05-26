@@ -811,6 +811,9 @@
 						DevelopmentTeam = 9CATQ2N2W2;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.InterAppAudio = {
 								enabled = 0;
 							};
@@ -1430,8 +1433,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1473,8 +1476,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
