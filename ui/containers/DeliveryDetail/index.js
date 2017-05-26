@@ -95,7 +95,7 @@ export default class extends Component {
                         <Text primary>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <Border color='rgba(0,0,0,0.5)' size={1} />
-                    <View>
+                    <View style={{paddingLeft: 10, paddingRight: 10}}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
