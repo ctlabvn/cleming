@@ -211,20 +211,13 @@ export default class UpdateUserContainer extends Component {
                                 component={InputField}
                                 placeholderTextColor="#7e7e7e"/>
                         </View>
-                        <View style={{marginTop: 20}}>
+                        <View style={{marginTop: 40}}>
                           <Grid>
-                            <Col>
-                              <Button
-                                onPress={this.onSubmitUserInfo.bind(this)}
-                                style={styles.updatePasswordButton}>
-                                <Text style={styles.updatePasswordButtonText}>Đồng Ý</Text>
-                              </Button>
-                            </Col>
-                          </Grid>
-                        </View>
-                        <View style={{marginTop: 20}}>
-                          <Grid>
-                            <Col>
+                            <Col style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                              <Icon
+                                style={styles.changePasswordText}
+                                name="pass_word"/>
+                              <View style={{width: 10}}/>
                               <Text
                                 onPress={this.changePasswordPress.bind(this)}
                                 style={styles.changePasswordText}>Thay đổi mật khẩu</Text>
@@ -233,6 +226,11 @@ export default class UpdateUserContainer extends Component {
                         </View>
                     </View>
                 </Content>
+                <Button
+                  onPress={this.onSubmitUserInfo.bind(this)}
+                  style={styles.updatePasswordButton}>
+                  <Text style={styles.updatePasswordButtonText}>Đồng Ý</Text>
+                </Button>
             </Container>
         )
     }

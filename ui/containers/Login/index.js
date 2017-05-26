@@ -42,14 +42,17 @@ const formSelector = formValueSelector('LoginForm')
     email: 'thao@clingme.vn',
     password: 'clingme',
   },
+
   currentValues: formSelector(state, 'email', 'password'),
   onSubmitFail: (errors, dispatch)=>{
     for(let k in errors){
       return dispatch(commonActions.setToast(errors[k], 'warning'))
     }
   },
+  session: authSelectors.getSession(state),
   loginRequest: commonSelectors.getRequest(state, 'login'),
-  pushToken: authSelectors.gePushToken(state)    
+  pushToken: authSelectors.gePushToken(state),
+  user: authSelectors.getUser(state)
 }), {...commonActions, ...authActions, ...accountActions})
 @reduxForm({ form: 'LoginForm', validate})
 export default class extends Component {
@@ -64,6 +67,12 @@ export default class extends Component {
       passwordFocus: false,
       emailSelection: {start:0,end:0},
       passwordSelection: {start:0, end:0},
+    }
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.firstLogin == 1) {
+      this._handleShowFirstTimeLogin()
     }
   }
 
@@ -86,6 +95,10 @@ export default class extends Component {
     this.setState({showForgot: true})
   }
   
+  _handleShowHome=(e)=>{
+    this.props.forwardTo('merchantOverview', true)
+  }
+
   _handleShowLogin=(e)=>{
     const length = this.props.currentValues.email.length
     this.setState({
@@ -101,27 +114,39 @@ export default class extends Component {
       showPassword: true
     })
   }
+  
+  _handleChangePassword = ({oldPassword, newPassword}) => {
+    if (oldPassword && newPassword) {
+      let data = {
+        oldPassword: md5(oldPassword),
+        password: md5(newPassword)
+      }
+      this.props.changePassword(this.props.session, data, () => {
+        this._handleShowHome()
+      })
+    }
+  }
 
   renderPasswordForm(){
     return (
       <Form style={styles.formForgot}>
           <Text style={{...styles.label, marginTop: 50, marginBottom: 20}}>
-            Đây là lần đầu đăng nhập của bạn{"\n"}
+            Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}
             Vui lòng tạo Mật khẩu riêng để bảo mật
           </Text>      
-          <Field name="password" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />              
-          <Field name="password" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />              
-          <Field name="password" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />              
+          <Field name="oldPassword" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />
+          <Field name="newPassword" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />
+          <Field name="reNewPassword" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />
           <Grid>
             <Col style={{width: '34%'}}>
-              <Button onPress={this._handleShowLogin}
+              <Button onPress={this._handleShowHome}
                       style={{...styles.button, ...styles.cancelButton}}>
                 <Text>Cancel</Text>
               </Button>
             </Col>
             <Col style={{width: '2%'}}/>
             <Col style={{width: '64%'}}>
-              <Button onPress={e=>this.setState({showPassword:false})}
+              <Button onPress={this._handleChangePassword.bind(this)}
                       style={styles.button}>
                 <Text>Cập nhật</Text>
               </Button>
@@ -184,8 +209,7 @@ export default class extends Component {
   }
 
   render() {    
-    const {forwardTo, loginRequest, pushToken} = this.props   
-    console.log('Playform', Platform.OS)  
+    const {forwardTo, loginRequest, pushToken} = this.props
     if(loginRequest.status === 'pending'){
       return (
         <Preload/>

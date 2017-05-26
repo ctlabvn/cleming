@@ -135,7 +135,7 @@ export default class extends Component {
         if (orderRowList != null) {
             orderListBock = (
                 <View>
-                    <View style={styles.block}>
+                    <View style={{...styles.block, paddingLeft: 10, paddingRight: 10}}>
                         {orderRowList.map((subItem, index) =>
                             (
                                 <View key={index} style={styles.row}>
@@ -182,7 +182,7 @@ export default class extends Component {
                 }
                 }>
                 <View style={styles.block}>
-                    <View style={{ ...styles.row, width: '100%' }}>
+                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5}}>
                         {statusBlock}
                         <View style={styles.row}>
                             <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
@@ -196,14 +196,14 @@ export default class extends Component {
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 {orderListBock}
                 <View style={styles.block}>
-                    <View style={{ ...styles.row, width: '100%' }}>
+                    <View style={{ ...styles.row, width: '100%', paddingLeft: 10, paddingRight: 10 }}>
                         <Text style={{ fontWeight: 'bold' }}>Ghi chú: </Text>
                         <Text>{orderInfo.note}</Text>
                     </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
-                    <View style={styles.row}>
+                    <View style={{...styles.row, marginBottom: 5}}>
                         <View style={styles.row}>
                             <Icon name='account' style={styles.icon} />
                             <Text>{orderInfo.userInfo.memberName}</Text>
@@ -215,7 +215,8 @@ export default class extends Component {
                               style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
                         </View>
                     </View>
-                    <View style={styles.row}>
+
+                    <View style={{...styles.row, marginBottom: 5}}>
                         <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>

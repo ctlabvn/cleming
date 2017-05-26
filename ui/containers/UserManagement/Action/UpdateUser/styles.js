@@ -17,10 +17,12 @@ export default {
     updatePasswordButton: {
         backgroundColor: '#00a9d7',
         alignSelf: 'center',
-        width: '80%',
-        borderRadius: 5,
+        width: '100%',
+        borderRadius: 0,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 0
     },
     updatePasswordButtonText: {
         color: 'white'
@@ -42,7 +44,7 @@ export default {
       borderRadius: 60
     },
     changePasswordText: {
-      color: '#9bd7ff',
+      color: '#00a9d7',
       alignSelf: 'center'
     }
 }

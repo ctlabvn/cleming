@@ -39,9 +39,15 @@ const requestLogin = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => setUserData(data),          
-        ()=>setAuthState(true),
-        () => forwardTo('merchantOverview', true), 
-        () => setToast('Logged successfully!!!'),            
+        (data)=>setAuthState(true),
+        (data) => {
+          if (data.firstLogin == 0) {
+            return forwardTo('merchantOverview', true)
+          } else {
+            return noop("nothing")
+          }
+        },
+        () => setToast('Logged successfully!!!')
     ],
     failure: [
         // code : 1201

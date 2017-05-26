@@ -26,6 +26,7 @@ import {
 @connect(state=>({
   session: authSelectors.getSession(state),
   profile: accountSelectors.getProfile(state),
+  user: authSelectors.getUser(state)
 }), {...authActions, ...commonActions})
 export default class extends Component {  
 
@@ -35,9 +36,16 @@ export default class extends Component {
   }
 
   navigateTo(route) {
-    const {forwardTo, closeDrawer} = this.props
-    closeDrawer()
-    forwardTo(route)
+    const {forwardTo, closeDrawer, user} = this.props
+    console.log(user.accTitle)
+    console.log(route)
+    if (user.accTitle != 1 && route == 'userManagement') {
+      closeDrawer()
+      forwardTo('userManagement/action/updateUser')
+    } else {
+      closeDrawer()
+      forwardTo(route)
+    }
   }
 
   render() {

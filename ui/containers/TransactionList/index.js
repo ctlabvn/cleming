@@ -42,15 +42,19 @@ export default class extends Component {
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        this.setState({ currentTab: item.tabID })
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        if (item.tabID == TRANSACTION_TYPE_CLINGME) { // Trả qua Clingme
-            this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
-        } else { // Trả trực tiếp
-            this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
-        }
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to)
+        this.setState({ currentTab: item.tabID },
+            () => {
+                let currentPlace = this.refs.placeDropdown.getValue()
+                let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+                if (item.tabID == TRANSACTION_TYPE_CLINGME) { // Trả qua Clingme
+                    this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
+                } else { // Trả trực tiếp
+                    this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
+                }
+                this._load(currentPlace.id, dateFilterData.from, dateFilterData.to)
+            }
+        )
+
     }
 
     _handleTransactionFilterChange(item) {
@@ -71,7 +75,7 @@ export default class extends Component {
         confirmTransaction(xsession, clingmeId,
             (err, data) => {
                 if (data && data.updated && data.updated.data.success) {
-                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Đã ghi nhận phản hồi.</Text></View>
+                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
                     setToast(message, 'info', 3000, 'bottom')
                     this._onRefresh()
                 }
@@ -85,27 +89,27 @@ export default class extends Component {
         let transactionFilter = transactionFilterComponent.getCurrentValue()
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to)
     }
-    _load(placeId, fromTime, toTime, filter=0, page = 1, isLoadMore=false) {
+    _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         const { xsession, getListTransaction, getListTransactionPayWithClingme } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
-        if (isLoadMore){
-            this.setState({loadingMore: true })
-        }else {
-            this.setState({loading: true})
+        if (isLoadMore) {
+            this.setState({ loadingMore: true })
+        } else {
+            this.setState({ loading: true })
         }
-        
+
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 () => {
-                    this.setState({ loading: false,  loadingMore: false})
-                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payDirect.totalRecord)
+                    this.setState({ loading: false, loadingMore: false })
+                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payWithClingme.totalRecord)
                 }
             )
         } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
             getListTransaction(xsession, placeId, fromTime, toTime, filter, page,
                 () => {
                     this.setState({ loading: false, loadingMore: false })
-                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payWithClingme.totalRecord)
+                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payDirect.totalRecord)
                 }
             )
         }
@@ -125,7 +129,7 @@ export default class extends Component {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let currentPlace = this.refs.placeDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber+1)
+        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1)
     }
 
     _onRefresh = () => {
