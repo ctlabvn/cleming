@@ -32,3 +32,12 @@ export const getTextParts = text => {
 export const formatNumber = str => {
   return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+
+export const isValidEmail = (email) => {
+  return email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null
+}
+
+export const isValidPhoneNumber = (phone) => {
+  return phone.match(/^\d{10,11}$/) !== null
+}

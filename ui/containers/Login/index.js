@@ -15,7 +15,7 @@ import {
 } from 'native-base'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import Icon from '~/ui/elements/Icon'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -34,10 +34,19 @@ import { validate } from './utils'
 import { logoSource, storeTransparent } from '~/assets'
 import md5 from 'md5'
 import DeviceInfo from 'react-native-device-info'
+
+const formSelector = formValueSelector('LoginForm')
+
 @connect(state=>({  
   initialValues:{
     email: 'thao@clingme.vn',
     password: 'clingme',
+  },
+  currentValues: formSelector(state, 'email', 'password'),
+  onSubmitFail: (errors, dispatch)=>{
+    for(let k in errors){
+      return dispatch(commonActions.setToast(errors[k], 'warning'))
+    }
   },
   loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state)    
@@ -51,6 +60,10 @@ export default class extends Component {
     this.state = {
       showForgot: false,
       showPassword: false,
+      emailFocus: false,
+      passwordFocus: false,
+      emailSelection: {start:0,end:0},
+      passwordSelection: {start:0, end:0},
     }
   }
 
@@ -61,8 +74,12 @@ export default class extends Component {
     this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
-  _handleForgot = ({phone})=>{
-    this.props.resetPassword(phone, ()=>this.setState({showForgot: false}))
+  _handleForgot = ({email})=>{
+    this.props.resetPassword(email, (err, data)=>{
+      if(!err) {        
+        this.setState({showForgot: false, passwordFocus: true})
+      } 
+    })
   }
 
   _handleShowForgot=(e)=>{
@@ -70,9 +87,12 @@ export default class extends Component {
   }
   
   _handleShowLogin=(e)=>{
+    const length = this.props.currentValues.email.length
     this.setState({
       showPassword: false,
-      showForgot: false
+      showForgot: false,
+      emailFocus: true,
+      emailSelection: {start:length, end:length}
     })
   }
   
@@ -117,7 +137,7 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
           <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>      
-          <Field autoCapitalize="none" name="phone" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
+          <Field autoCapitalize="none" name="email" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
           <Grid>
             <Col style={{width: '34%'}}>
               <Button onPress={this._handleShowLogin}
@@ -140,10 +160,16 @@ export default class extends Component {
 
   renderLoginForm(){
     const {handleSubmit} = this.props
+    const {passwordFocus, passwordSelection, emailFocus, emailSelection} = this.state
     return (
       <Form style={styles.form}>                
-          <Field autoCapitalize="none" name="email" label="Email/ Số điện thoại" component={InputField} />
-          <Field name="password" label="Mật khẩu" secureTextEntry={true} component={InputField} />              
+          <Field autoCapitalize="none" name="email" 
+            autoFocus={emailFocus} 
+            initialSelection={emailSelection} 
+            label="Email/ Số điện thoại" component={InputField} />
+          <Field name="password" 
+            autoFocus={passwordFocus} 
+            initialSelection={passwordSelection} label="Mật khẩu" secureTextEntry={true} component={InputField} />              
           <Button onPress={handleSubmit(this._handleLogin)} 
             style={styles.button}>
             <Text>Đăng nhập</Text>
