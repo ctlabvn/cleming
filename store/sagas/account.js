@@ -31,7 +31,6 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
-        () => goBack(),
         () => setToast('Change password successfully!')
     ],
     failure: [

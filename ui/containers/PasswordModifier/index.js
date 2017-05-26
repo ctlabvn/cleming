@@ -60,7 +60,9 @@ export default class extends Component {
         oldPassword: md5(oldPassword),
         password: md5(newPassword)
       }
-      this.props.changePassword(this.props.session, data)
+      this.props.changePassword(this.props.session, data, () => {
+        this.props.goBack()
+      })
     }
   }
   
