@@ -6,7 +6,8 @@ export default {
         //zIndex: 1000,
         flexDirection:'column',
         width: '100%',
-        elevation: 5
+        elevation: 100,
+        justifyContent: 'center',
     },
     dropdownContainerIos:{
         position: 'absolute',
