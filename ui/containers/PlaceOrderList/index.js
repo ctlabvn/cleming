@@ -24,8 +24,9 @@ import { getSession } from '~/store/selectors/auth'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    booking: state.booking
-}), { ...commonActions, ...bookingActions })
+    booking: state.booking,
+    modal: state.modal.modal
+}), { ...commonActions, ...bookingActions }, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -63,12 +64,12 @@ export default class PlaceOrderList extends Component {
 
             <ListItem style={styles.listItem}>
                 <Grid>
-                    <Row style={{height: '80%'}}>
+                    <Row style={{height: '70%'}}>
                         <Button
                           onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
                           style={styles.listButton}>
                             <View style={styles.rowPadding}>
-                                <Text primary bold>{item.orderCode}</Text>
+                                <Text primary bold>#{item.orderCode}</Text>
                                 <View style={styles.row}>
                                     <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
@@ -81,28 +82,28 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('DD/MM')}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('DD/MM')}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{moment(item.bookDate).format('hh:mm')}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{moment(item.bookDate).format('hh:mm')}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{item.numberOfPeople}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{item.numberOfPeople}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
+                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
-                                    <Text style={{ color: 'black' }}>{totalQuantity}</Text>
+                                    <Text style={{...styles.labelUnderImage}}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
                         </Button>
                     </Row>
-                    <Row style={{flexDirection: 'column', height: '20%'}}>
+                    <Row style={{flexDirection: 'column', height: '30%'}}>
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
@@ -214,7 +215,16 @@ export default class PlaceOrderList extends Component {
         dropdownValues = [defaultSelected, ...dropdownValues]
         return (
             <View style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
+                <TopDropdown
+                  modalOpen={this.props.modal}
+                  ref='placeDropdown'
+                  dropdownValues={dropdownValues}
+                  onSelect={this._handleTopDrowpdown.bind(this)}
+                  selectedOption={defaultSelected} />
+                <CallModal
+                  phoneNumber={this.state.phoneNumber}
+                  onCloseClick={this.onModalClose.bind(this)}
+                  open={this.state.modalOpen}/>
                 <View style={{ marginTop: 50, height: '100%' }}>
                     {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
@@ -234,10 +244,6 @@ export default class PlaceOrderList extends Component {
                         {this.state.loadingMore && <Spinner color='red' />}
                     </Content>
                 </View>
-                <CallModal
-                  phoneNumber={this.state.phoneNumber}
-                  onCloseClick={this.onModalClose.bind(this)}
-                  open={this.state.modalOpen}/>
             </View >
         )
     }

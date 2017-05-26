@@ -251,12 +251,15 @@ export default class extends Component {
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
-
+                <CallModal
+                  phoneNumber={this.state.phoneNumber}
+                  onCloseClick={this.onModalClose.bind(this)}
+                  open={this.state.modalOpen}/>
                 <Content
+                    contentContainerStyle={styles.contentContainerStyle}
                     onEndReached={this._loadMore} onRefresh={this._onRefresh}
                     refreshing={this.state.refreshing}
                     style={styles.contentContainer}
-                    padder
                 >
                     {orderList && orderList.map(item => (
                         this._renderRow(item)
@@ -264,10 +267,6 @@ export default class extends Component {
 
 
                 </Content>
-                <CallModal
-                  phoneNumber={this.state.phoneNumber}
-                  onCloseClick={this.onModalClose.bind(this)}
-                  open={this.state.modalOpen}/>
             </Container>
         )
     }

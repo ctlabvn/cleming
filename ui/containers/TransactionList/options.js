@@ -35,12 +35,10 @@ export default {
       {
           tabID: 1,
           text: 'Trả qua Clingme',
-          number: 4
       },
       {
           tabID: 2,
           text: 'Trả trực tiếp',
-          number: 50
       }
   ]
 }

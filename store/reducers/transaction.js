@@ -1,18 +1,42 @@
-const initialState = {  
+const initialState = {
+  payDirect: {
     totalPage: 1,
     pageNumber: 2,
     listTransaction: [],
     totalRecord: 10
+  },
+  payWithClingme: {
+    totalPage: 1,
+    pageNumber: 2,
+    listTransaction: [],
+    totalRecord: 10
+  }
+
 }
-export const transaction = (state = initialState, {type, payload}) => {
-  switch (type) {   
+export const transaction = (state = initialState, { type, payload }) => {
+  switch (type) {
     case 'app/setListTransaction':
       return {
-        pageNumber: payload.pageNumber,
-        totalPage: payload.totalPage,
-        totalRecord: payload.totalRecord,
-        listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect 
+        ...state,
+        payDirect: {
+          pageNumber: payload.pageNumber,
+          totalPage: payload.totalPage,
+          totalRecord: payload.totalRecord,
+          listTransaction: payload.pageNumber > 1 ? [...state.payDirect.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect
+        }
       }
+    case 'app/setListTransactionPayWithClingme':
+      return {
+        ...state,
+        payWithClingme: {
+          pageNumber: payload.pageNumber,
+          totalPage: payload.totalPage,
+          totalRecord: payload.totalRecord,
+          listTransaction: payload.pageNumber > 1 ? [...state.payWithClingme.listTransaction, ...payload.listPayThroughClm] : payload.listPayThroughClm
+        }
+      }
+    case 'transaction/setDenyReason':
+      return { ...state, denyReason: payload }
     default:
       return state
   }

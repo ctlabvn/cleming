@@ -1,13 +1,19 @@
 import material from '~/theme/variables/material'
 import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
-    dropdownContainer:{
+    dropdownContainerAndroid:{
         position: 'absolute',
-        zIndex: 1000,
+        //zIndex: 1000,
         flexDirection:'column',
         width: '100%',
         elevation: 100,
         justifyContent: 'center',
+    },
+    dropdownContainerIos:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
     },
     dropdownHeader:{
         justifyContent:'center',
@@ -30,7 +36,7 @@ export default {
         paddingRight: 10,
     },
     dropdownList:{
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: 'transparent',
         width: '100%',        
         zIndex: 1000,
     },

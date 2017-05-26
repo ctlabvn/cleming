@@ -61,7 +61,7 @@ export const search = (state = null, { type, payload }) => {
 }
 
 // should always be payload for faster copy and paste
-// we write our own route, only replace, do not use speacial function like jumpTo, it can be replaced by modal
+// we write our own route, only replace, do not use special function like jumpTo, it can be replaced by modal
 export const router = (state = {route:'login', stack:[]}, { type, payload }) => {  
   switch(type) {
     case 'navigate/push':      
@@ -77,4 +77,15 @@ export const router = (state = {route:'login', stack:[]}, { type, payload }) => 
     default:
       return state
   }  
+}
+
+export const modal = (state = { modal: 'close' }, { type, payload }) => {
+  switch(type){
+    case 'app/openModal':
+      return {...state, modal: 'open'}
+    case 'app/closeModal':
+      return {...state, modal: 'close'}
+    default:
+      return state
+  }
 }

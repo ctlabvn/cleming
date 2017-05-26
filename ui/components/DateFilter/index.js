@@ -11,9 +11,10 @@ export default class DateFilter extends Component {
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+        let defaultFilter = props.defaultFilter || 'year'
         this.state = {
-            currentDateFilter: 'week',
-            currentSelectValue: this._getDefaultCurrnetSelectValue('week')
+            currentDateFilter: defaultFilter,
+            currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter)
         };
         this.dateFilterListValue = [
             {
@@ -184,17 +185,30 @@ export default class DateFilter extends Component {
                         <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
-                <ListView style={styles.dateFilterList} horizontal={true} showsHorizontalScrollIndicator={false}
-                    ref='dateFilterList' dataSource={data}
-                    renderRow={
-                        (rowData) => {
+                <ListView
+                  style={styles.dateFilterList}
+                  horizontal={true} showsHorizontalScrollIndicator={false}
+                  ref='dateFilterList' dataSource={data}
+                  removeClippedSubviews={false}
+                  renderRow={
+                        (rowData, sectionID, rowID, highlightRow) => {
+                            let lastItemStyle = null
+                            if (rowID == _data.length - 1) {
+                                lastItemStyle = {
+                                    marginRight: 0
+                                }
+                            }
                             return (
-                                <TouchableOpacity onPress={() => this._handlePressDateFilter(rowData)}>
-                                    <Text small style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                <TouchableOpacity
+                                style={{marginRight: 20, ...lastItemStyle}}
+                                onPress={() => this._handlePressDateFilter(rowData)}>
+                                    <Text
+                                    small
+                                    style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
                                 </TouchableOpacity>
                             )
                         }
-                    }
+                  }
                 />
             </View >
         )
