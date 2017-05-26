@@ -72,7 +72,7 @@ export default class extends Component {
       <Form style={styles.formForgot}>
         <Text style={{...styles.label, marginTop: 50, marginBottom: 20}}>
           Đây là mục đổi mật khẩu cá nhân{"\n"}
-          Vui lòng thay đổi Mật khẩu riêng để bảo mật
+          Bạn có thể thay đổi mật khẩu riêng để bảo mật
         </Text>
         <Field name="oldPassword" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />
         <Field name="newPassword" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />

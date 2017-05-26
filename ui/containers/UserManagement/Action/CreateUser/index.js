@@ -87,7 +87,6 @@ const formSelector = formValueSelector('CreateUserForm')
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
-        console.log(props.initialValues)
         this.state = {
           jobModalOpen: false,
           permissionModalOpen: false,
@@ -203,7 +202,7 @@ export default class CreateUserContainer extends Component {
       let listPlaceId = this.state.chosenListPlaceID.join(";")
       userInfo.fullName = this.props.formValues.name
       userInfo.phoneNumber = this.props.formValues.phone
-      userInfo.password = md5(this.props.generatedPassword)
+      userInfo.password = this.props.generatedPassword
       userInfo.email = this.props.formValues.email
       userInfo.titleType = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
