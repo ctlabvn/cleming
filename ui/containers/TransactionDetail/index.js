@@ -14,7 +14,9 @@ import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import FeedbackDialog from './FeedbackDialog'
 import FeedbackDialogClingme from './FeedbackDialogClingme'
 import PopupInfo from '~/ui/components/PopupInfo'
+import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/transaction'
 @connect(state => ({
     xsession: getSession(state),
@@ -295,16 +297,16 @@ export default class TransactionDetail extends Component {
             )
         }
     }
-    _load(transactionId) {
+    _load = (transactionId) => {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route } = this.props
         let transactionType = route.params.type
-        // this.setState({ loading: true })
+        this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
-                    // this.setState({ loading: false })
+                    this.setState({ loading: false })
                     console.log('ErrData', data)
-                    if (data.updated && data.updated.data) {
+                    if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payWithClingme) {
@@ -319,8 +321,8 @@ export default class TransactionDetail extends Component {
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
             getTransactionDetail(xsession, transactionId,
                 (err, data) => {
-                    // this.setState({ loading: false })
-                    if (data.updated && data.updated.data) {
+                    this.setState({ loading: false })
+                    if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payDirect) {
@@ -351,7 +353,7 @@ export default class TransactionDetail extends Component {
             }
         )
     }
-    _handleFeedbackClingme = ()=>{
+    _handleFeedbackClingme = () => {
         console.log('Handle feedback clm')
         this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
     }
@@ -363,10 +365,7 @@ export default class TransactionDetail extends Component {
         const { route } = this.props
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner color='red' />
-                    <Text small>Loading...</Text>
-                </View>
+                <LoadingModal loading={true} />
             )
         }
         let transactionInfo = this.state.transactionInfo
@@ -405,10 +404,25 @@ export default class TransactionDetail extends Component {
                 </Button>
             )
         }
+        const config = {
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 100
+        }
         return (
             <Container style={{ paddingBottom: 40 }}>
                 <PopupInfo ref='popupInfo' />
-                {this._renderContent()}
+                <LoadingModal loading={this.state.loading}/>
+                <GestureRecognizer
+                    onSwipeLeft={(state) => { this.goNext() }}
+                    onSwipeRight={(state) => { this.goPrevious() }}
+                    config={config}
+                    style={{
+                        flex: 1
+                    }}
+                >
+                    {this._renderContent()}
+                </GestureRecognizer>
+
                 <View style={styles.navigateInvoiceBlock}>
                     {btnPrev}
                     {btnNext}

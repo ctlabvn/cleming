@@ -29,7 +29,7 @@ import { closeDrawer } from '~/store/actions/common'
 //         () => setToast('Logged successfully!!!'),            
 //     ],
 //     failure: [
-//         () => setToast('Couldn\'t login', 'error')
+//         () => setToast('Couldn\'t login', 'danger')
 //     ],
 // })
 
@@ -50,7 +50,8 @@ const requestLogin = createRequestSaga({
         () => setToast('Logged successfully!!!')
     ],
     failure: [
-        (data) => setToast('Couldn\'t login: '+JSON.stringify(data), 'error')
+        // code : 1201
+        (data) => setToast('Email/SDT hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
     ],
 })
 
@@ -66,7 +67,7 @@ const requestLogout = createRequestSaga({
         () => setToast('Logout successfully!!!'),    
     ],
     failure: [
-        () => setToast('Couldn\'t logout', 'error')
+        () => setToast('Couldn\'t logout', 'danger')
     ],
 })
 

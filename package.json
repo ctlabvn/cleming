@@ -36,6 +36,7 @@
     "react-native-push-notification": "^3.0.0",
     "react-native-responsive-image": "2.1.0",
     "react-native-svg": "5.1.7",
+    "react-native-swipe-gestures": "^1.0.2",
     "react-native-timeline-listview": "^0.2.0",
     "react-native-uploader": "git+https://github.com/tranquangvu/react-native-uploader.git",
     "react-redux": "5.0.3",

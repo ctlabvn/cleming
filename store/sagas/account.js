@@ -23,7 +23,7 @@ const requestGetProfile = createRequestSaga({
         (data) => replaceProfile(data),       
     ],
     failure: [
-        () => setToast('Couldn\'t get profile', 'error')
+        () => setToast('Couldn\'t get profile', 'danger')
     ],
 })
 
@@ -34,7 +34,7 @@ const requestChangePassword = createRequestSaga({
         () => setToast('Change password successfully!')
     ],
     failure: [
-        () => setToast('Couldn\'t change password', 'error')
+        () => setToast('Couldn\'t change password', 'danger')
     ]
 })
 
@@ -50,7 +50,7 @@ const requestResetPassword = createRequestSaga({
         } 
     ],
     failure: [
-        () => setToast('Couldn\'t reset password', 'error')
+        () => setToast('Số điện thoại không tồn tại, vui lòng liên hệ chủ cửa hàng để kiểm tra.', 'danger')
     ]
 })
 
@@ -62,7 +62,7 @@ const requestUpdateProfile = createRequestSaga({
     () => setToast('Update profile successfully!')
   ],
   failure: [
-    () => setToast('Couldn\'t update profile', 'error')
+    () => setToast('Couldn\'t update profile', 'danger')
   ],
 })
 
@@ -73,7 +73,7 @@ const requestGetListEmployee = createRequestSaga({
     (data) => setListEmployee(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get employee list', 'error')
+    () => setToast('Couldn\'t get employee list', 'danger')
   ],
 })
 
@@ -84,7 +84,7 @@ const requestGetGeneratedPassword = createRequestSaga({
     (data) => setGeneratedPassword(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get password', 'error')
+    () => setToast('Couldn\'t get password', 'danger')
   ],
 })
 
@@ -95,7 +95,7 @@ const requestUpdateEmployeeInfo = createRequestSaga({
     
   ],
   failure: [
-    () => setToast('Couldn\'t update employee', 'error')
+    () => setToast('Couldn\'t update employee', 'danger')
   ],
 })
 
@@ -106,7 +106,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   
   ],
   failure: [
-    () => setToast('Couldn\'t create employee', 'error')
+    () => setToast('Couldn\'t create employee', 'danger')
   ],
 })
 
@@ -117,7 +117,7 @@ const requestDeleteEmployeeInfo = createRequestSaga({
   
   ],
   failure: [
-    () => setToast('Couldn\'t delete employee', 'error')
+    () => setToast('Couldn\'t delete employee', 'danger')
   ],
 })
 
@@ -128,7 +128,7 @@ const requestUpdateOwnerAvatar = createRequestSaga({
     (data) => setUserAvatar(data),
   ],
   failure: [
-    () => setToast('Couldn\'t upload avatar', 'error')
+    () => setToast('Couldn\'t upload avatar', 'danger')
   ],
 })
 
