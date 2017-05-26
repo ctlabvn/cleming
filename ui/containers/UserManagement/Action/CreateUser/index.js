@@ -199,7 +199,9 @@ export default class CreateUserContainer extends Component {
     onSubmitUser() {
       let userInfo = {}
       if (this.state.chosenListPlaceID.length == 0) {
-        
+        this.props.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
+      } else if (this.props.generatedPassword.trim() == '') {
+        this.props.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
       } else {
         this.setState({
           isLoading: true
