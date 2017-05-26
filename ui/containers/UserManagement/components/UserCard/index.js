@@ -26,11 +26,11 @@ export default class UserCard extends Component {
                     <CacheableImage style={styles.avatar} source={{uri: data.avatar}} />
                 </Col>
                 <Col style={{width: '80%'}}>
-                    <Row style={{ height: '50%', alignItems: 'flex-end'}}>
-                        <Text numberOfLines={1} style={styles.nameText}>{data.email} / {data.phoneNumber}</Text>
+                    <Row style={{ height: '50%', alignItems: 'flex-start'}}>
+                        <Text numberOfLines={1} style={styles.nameText}>{data.userName}</Text>
                     </Row>
-                    <Row style={{ height: '50%'}}>
-                        <Text style={styles.subTitleText}>{jobTitle} - {data.userName}</Text>
+                    <Row style={{ height: '50%', alignItems: 'flex-end'}}>
+                        <Text style={styles.nameText}>{data.phoneNumber}</Text>
                     </Row>
                 </Col>
             </Grid>

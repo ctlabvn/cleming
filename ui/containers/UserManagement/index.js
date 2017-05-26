@@ -19,6 +19,8 @@ import * as accountActions from '~/store/actions/account'
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 
+import { PRIMARY_COLOR } from '~/ui/shared/constants'
+
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 @connect(state=>({
@@ -245,8 +247,10 @@ class UserManagement extends Component {
             <View style={styles.modalContainer}>
                 <Grid>
                     <Col>
-                        <Row style={{height: '30%', width: '90%', alignSelf: 'center'}}>
-                            <UserCard data={this.state.employeeData}/>
+                        <Row style={{height: '30%', width: '90%', alignSelf: 'center', alignItems: 'center'}}>
+                            <View style={{height: 35}}>
+                              <UserCard data={this.state.employeeData}/>
+                            </View>
                         </Row>
                         <Row style={{height: '50%'}}>
                             <Col style={{width: '70%'}}>
@@ -302,7 +306,11 @@ class UserManagement extends Component {
     
     render() {
         if (this.state.isFetchingData) {
-            return <Spinner/>
+          return (
+            <View style={{backgroundColor: 'white', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+              <Spinner color={PRIMARY_COLOR}/>
+            </View>
+          )
         }
         return (
             <Container>

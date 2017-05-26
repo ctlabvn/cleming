@@ -80,7 +80,8 @@ export default {
         borderWidth: 0,
         shadowColor: 'white',
         padding: 0,
-        elevation: 0
+        elevation: 0,
+        height: 45
     },
     ownerButton: {
         backgroundColor: 'white',
