@@ -9,3 +9,8 @@ export const ORDER_CANCEL = 3
 export const BOOKING_WAITING_CONFIRM = 0
 export const BOOKING_CONFIRMED = 1
 export const BOOKING_CANCEL = 2
+
+export const DEFAULT_DATE_FORMAT = 'DD/MM/YYYY'
+export const DEFAULT_MONTH_FORMAT = 'MM/YYYY'
+export const DEFAULT_YEAR_FORMAT = 'YYYY'
+export const DEFAULT_TIME_FORMAT = 'hh:mm:ss DD/MM/YYYY'

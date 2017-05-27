@@ -7,7 +7,7 @@ import styles from './styles'
 import Content from '~/ui/components/Content'
 import { PRIMARY_COLOR } from '~/ui/shared/constants'
 
-const {height, width} = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
     constructor(props) {
@@ -16,11 +16,11 @@ export default class TopDropdown extends Component {
             openningDropdown: false,
             zIndex: 0,
             // fadeAnim: new Animated.Value(0),
-            selectedOption: props.selectedOption||{id: -1, name: ""},
-            dropdownValues: props.dropdownValues||[],
+            selectedOption: props.selectedOption || props.dropdownValues[0],
+            dropdownValues: props.dropdownValues || [],
         }
     }
-    
+
     /*componentWillReceiveProps(nextProps) {
       if (this.props.modalOpen != nextProps.modalOpen) {
         if (nextProps.modalOpen == "open" && this.state.openningDropdown == true) {
@@ -28,11 +28,11 @@ export default class TopDropdown extends Component {
         }
       }
     }*/
-    
+
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)
     }
-    getValue(){
+    getValue() {
         return this.state.selectedOption;
     }
     toggle() {
@@ -57,7 +57,7 @@ export default class TopDropdown extends Component {
         this.toggle()
     }
     _handlePress(item) {
-        this.setState({ selectedOption: item })        
+        this.setState({ selectedOption: item })
         this.props.onSelect && this.props.onSelect(item)
         this.toggle()
     }
@@ -65,40 +65,48 @@ export default class TopDropdown extends Component {
 
     }
     render() {
-        const { notifications, getNotificationRequest, getNotification, dropdownValues} = this.props
+        const { notifications, getNotificationRequest, getNotification } = this.props
+        let {dropdownValues} = this.props
         const { openningDropdown } = this.state
         let maxHeight = openningDropdown ? 150 : 0
-        let fakeZIndex = (maxHeight == 150) ? {zIndex: 1000} : {zIndex: null}
-        // console.log(this.props.dropdownValues)
-        // const height = Animated.multiply(this.state.fadeAnim, new Animated.Value(150))
+        let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
-        let containerStyleTopDown = {...containerStyle, ...fakeZIndex}
+        let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
+        if (dropdownValues.length == 1) {
+            return (
+                <View style={containerStyleTopDown}>
+                    <View style={styles.dropdownHeader}>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                    </View>
+                </View>
+            )
+        }
+        dropdownValues = dropdownValues.filter(item=>item.id!=this.state.selectedOption.id)
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
-                    <Text numberOfLines={1}  style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                    <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: 'white'
-                        }}/>
+                        }} />
                     </Button>
                 </View>
 
                 <List
-                  contentContainerStyle={{backgroundColor: PRIMARY_COLOR}}
-                  dataArray={dropdownValues}
-                  style={{
-                    ...styles.dropdownList,
-                    maxHeight,
-                  }}
-                    renderRow={(item) =>
-                        {
-                          return(
+                    contentContainerStyle={{ backgroundColor: PRIMARY_COLOR }}
+                    dataArray={dropdownValues}
+                    style={{
+                        ...styles.dropdownList,
+                        maxHeight,
+                    }}
+                    renderRow={(item) => {
+                        return (
                             <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
-                            <Text style={styles.dropdownListItemText}>{item.name}</Text>
-                        </ListItem>
-                          )
-                        }
+                                <Text style={styles.dropdownListItemText}>{item.name}</Text>
+                            </ListItem>
+                        )
+                    }
                     }>
                 </List>
             </View>

@@ -202,24 +202,26 @@ export default class PlaceOrderList extends Component {
         }
 
         // GET PLACE LIST
-        let allPlace = place.listPlace.map(item => item.placeId).join(',')
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
         }))
-        let defaultSelected = {
-            id: allPlace,
-            name: "Tất cả địa điểm"
+        if (dropdownValues.length > 1) {
+            let allPlace = place.listPlace.map(item => item.placeId).join(',')
+            let allPlaceOption = {
+                id: allPlace,
+                name: "Tất cả địa điểm"
+            }
+            dropdownValues = [allPlaceOption, ...dropdownValues]
         }
-        dropdownValues = [defaultSelected, ...dropdownValues]
+
         return (
             <View style={styles.container}>
                 <TopDropdown
                     modalOpen={this.props.modal}
                     ref='placeDropdown'
                     dropdownValues={dropdownValues}
-                    onSelect={this._handleTopDrowpdown.bind(this)}
-                    selectedOption={defaultSelected} />
+                    onSelect={this._handleTopDrowpdown.bind(this)} />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}

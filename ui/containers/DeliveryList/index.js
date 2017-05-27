@@ -22,8 +22,8 @@ import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
-import {formatPhoneNumber} from '~/ui/shared/utils'
-import {ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL} 
+import { formatPhoneNumber } from '~/ui/shared/utils'
+import { ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL }
     from '~/store/constants/app'
 @connect(state => ({
     place: state.place,
@@ -51,27 +51,27 @@ export default class extends Component {
         console.log('Call _timerCallback', beforeTime)
         const now = (new Date()).getTime()
         console.log('Now', now)
-        console.log('Now -Before', now-beforeTime)
+        console.log('Now -Before', now - beforeTime)
         if (now - beforeTime > 2000) {
             console.log('Over 2 second')
             requestAnimationFrame(this._timerCallback)
         }
-        
+
     }
-    componentWillFocus() { 
+    componentWillFocus() {
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-        this.setState({refreshing: false, counting: true})
+        this.setState({ refreshing: false, counting: true })
     }
 
     componentDidMount() {
         this.componentWillFocus()
     }
 
-    componentWillBlur(){
+    componentWillBlur() {
         console.log('Delivery Will Blur')
-        this.setState({counting: false})
+        this.setState({ counting: false })
     }
 
     loadPage(page = 1, from_time, to_time) {
@@ -84,17 +84,17 @@ export default class extends Component {
                 loading: false,
             }))
     }
-  
+
     onModalOpen(phoneNumber) {
         this.setState({
-          modalOpen: true,
-          phoneNumber: phoneNumber
+            modalOpen: true,
+            phoneNumber: phoneNumber
         })
     }
-  
+
     onModalClose() {
         this.setState({
-          modalOpen: false
+            modalOpen: false
         })
     }
 
@@ -138,7 +138,7 @@ export default class extends Component {
         if (orderRowList != null) {
             orderListBock = (
                 <View>
-                    <View style={{...styles.block, paddingLeft: 10, paddingRight: 10}}>
+                    <View style={{ ...styles.block, paddingLeft: 10, paddingRight: 10 }}>
                         {orderRowList.map((subItem, index) =>
                             (
                                 <View key={index} style={styles.row}>
@@ -176,7 +176,7 @@ export default class extends Component {
                 </View>
             )
         }
-        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE*60
+        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
         return (
             <ListItem style={styles.deliveryBlock} key={orderInfo.clingmeId}
                 onPress={() => {
@@ -185,13 +185,13 @@ export default class extends Component {
                 }
                 }>
                 <View style={styles.block}>
-                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5}}>
+                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
                             <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
-                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE} 
+                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
                                 counting={this.state.counting}
-                                countTo={countTo}         
+                                countTo={countTo}
                             />
                         </View>
                     </View>
@@ -206,7 +206,7 @@ export default class extends Component {
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
-                    <View style={{...styles.row, marginBottom: 5}}>
+                    <View style={{ ...styles.row, marginBottom: 5 }}>
                         <View style={styles.row}>
                             <Icon name='account' style={styles.icon} />
                             <Text>{orderInfo.userInfo.memberName}</Text>
@@ -214,12 +214,12 @@ export default class extends Component {
                         <View style={styles.row}>
                             <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
                             <Text
-                              onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                              style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+                                onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                                style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                         </View>
                     </View>
 
-                    <View style={{...styles.row, marginBottom: 5}}>
+                    <View style={{ ...styles.row, marginBottom: 5 }}>
                         <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>
@@ -235,30 +235,34 @@ export default class extends Component {
     render() {
         const { handleSubmit, submitting, place } = this.props
 
-        let defaultSelected = {
-            id: this.state.selectedPlace,
-            name: "Tất cả địa điểm"
-        }
+
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
         }))
-        dropdownValues = [defaultSelected, ...dropdownValues]
+        if (dropdownValues.length > 1) {
+            let defaultSelected = {
+                id: this.state.selectedPlace,
+                name: "Tất cả địa điểm"
+            }
+            dropdownValues = [defaultSelected, ...dropdownValues]
+        }
+
 
         const { orderList } = this.props.order
 
 
         return (
             <Container style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} selectedOption={defaultSelected} />
+                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} />
 
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
                 <CallModal
-                  phoneNumber={this.state.phoneNumber}
-                  onCloseClick={this.onModalClose.bind(this)}
-                  open={this.state.modalOpen}/>
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={this.onModalClose.bind(this)}
+                    open={this.state.modalOpen} />
                 <Content
                     contentContainerStyle={styles.contentContainerStyle}
                     onEndReached={this._loadMore} onRefresh={this._onRefresh}

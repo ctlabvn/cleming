@@ -55,7 +55,7 @@ export default class MerchantOverview extends PureComponent {
         console.log('focus')
     }
 
-    componentWillBlur(){
+    componentWillBlur() {
         console.log('blur')
     }
 
@@ -88,7 +88,7 @@ export default class MerchantOverview extends PureComponent {
                     size="large"
                     color={PRIMARY_COLOR}
                 />
-                <Text style={{color: PRIMARY_COLOR, marginTop: 10}}>Đang tải dữ liệu ...</Text>
+                <Text style={{ color: PRIMARY_COLOR, marginTop: 10 }}>Đang tải dữ liệu ...</Text>
             </View>
         )
     }
@@ -96,7 +96,7 @@ export default class MerchantOverview extends PureComponent {
     renderMainContainer() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
         return (
-            <Content style={{width: '100%', height: '100%'}}>
+            <Content style={{ width: '100%', height: '100%' }}>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
 
@@ -161,38 +161,32 @@ export default class MerchantOverview extends PureComponent {
 
     render() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
-        let allPlace = place.listPlace.map(item => item.placeId).join(';')
-        let defaultSelected = {
-            id: allPlace,
-            name: "Tất cả địa điểm"
-        }
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
         }))
-        dropdownValues = [defaultSelected, ...dropdownValues]
+        if (dropdownValues.length > 1) {
+            let allPlaceId = place.listPlace.map(item => item.placeId).join(';')
+            let allPlaceOption = {
+                id: allPlaceId,
+                name: "Tất cả địa điểm"
+            }
+            dropdownValues = [allPlaceOption, ...dropdownValues]
+        }
+
         let mainContainer = null
         let topDropdown = null // fix break ui first time load
-        // if (!place || !place.listPlace || !place.statistic) {
-        //     mainContainer = this.renderLoading()
-        //     topDropdown = <View style={styles.topDropdownPlaceHolder}><Text white>Đang tải địa điểm...</Text></View>
-        // } else {
-            topDropdown = (
-                <TopDropdown
-                    ref='placeDropdown'
-                    dropdownValues={dropdownValues}
-                    onSelect={this._handleChangePlace.bind(this)}
-                    selectedOption={defaultSelected} />
-            )
-            if (place && place.listPlace && place.statistic){
-                mainContainer = this.renderMainContainer()
-            } else {
-                mainContainer = this.renderLoading()
-            }
-            
-        
-        // }
-        // console.warn('Place from store: '+JSON.stringify(dropdownValues))
+        topDropdown = (
+            <TopDropdown
+                ref='placeDropdown'
+                dropdownValues={dropdownValues}
+                onSelect={this._handleChangePlace.bind(this)} />
+        )
+        if (place && place.listPlace && place.statistic) {
+            mainContainer = this.renderMainContainer()
+        } else {
+            mainContainer = this.renderLoading()
+        }
         return (
             <Container style={styles.container}>
                 {topDropdown}
@@ -203,8 +197,8 @@ export default class MerchantOverview extends PureComponent {
                     {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                 </View>
-                {mainContainer} 
-                
+                {mainContainer}
+
             </Container>
         )
     }
