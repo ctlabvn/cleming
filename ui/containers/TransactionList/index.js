@@ -17,7 +17,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
 import options from './options'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/transaction'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
 
 @connect(state => ({
     xsession: getSession(state),

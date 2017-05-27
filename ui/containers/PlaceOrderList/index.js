@@ -21,6 +21,7 @@ import {BASE_COUNTDOWN_BOOKING_MINUTE} from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import { getSession } from '~/store/selectors/auth'
+import {formatPhoneNumber} from '~/ui/shared/utils' 
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -113,7 +114,7 @@ export default class PlaceOrderList extends Component {
                                 <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
                                 <Text
                                   onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                                  primary>{item.userInfo.phoneNumber}</Text>
+                                  primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
                             </View>
                         </View>
                     </Row>

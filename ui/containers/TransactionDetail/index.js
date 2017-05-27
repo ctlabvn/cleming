@@ -17,7 +17,7 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/transaction'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager';
 @connect(state => ({
     xsession: getSession(state),

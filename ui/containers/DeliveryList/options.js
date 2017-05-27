@@ -1,17 +1,23 @@
+import {ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL} 
+    from '~/store/constants/app'
 export default {
   tabData : [
       {
-          tabID: 0,
+          tabID: ORDER_WAITING_CONFIRM,
           text: 'Chờ xác nhận'
       },
       {
-          tabID: 1,
+          tabID: ORDER_WAITING_DELIVERY,
           text: 'Chờ giao hàng'
       },
       {
-          tabID: 2,
+          tabID: ORDER_SUCCESS,
           text: 'Thành công'
       },
+      {
+          tabID: ORDER_CANCEL,
+          text: 'Đã hủy'
+      }
   ],
     
 }

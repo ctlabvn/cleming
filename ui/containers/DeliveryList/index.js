@@ -22,6 +22,9 @@ import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
+import {formatPhoneNumber} from '~/ui/shared/utils'
+import {ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL} 
+    from '~/store/constants/app'
 @connect(state => ({
     place: state.place,
     order: orderSelectors.getOrder(state),
@@ -151,14 +154,14 @@ export default class extends Component {
         }
 
 
-        if (status === 0) {
+        if (status === ORDER_WAITING_CONFIRM) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
                     <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
                 </View>
             )
-        } else if (status === 1) {
+        } else if (status === ORDER_WAITING_DELIVERY) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
@@ -212,7 +215,7 @@ export default class extends Component {
                             <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
                             <Text
                               onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                              style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
+                              style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                         </View>
                     </View>
 
@@ -265,8 +268,6 @@ export default class extends Component {
                     {orderList && orderList.map(item => (
                         this._renderRow(item)
                     ))}
-
-
                 </Content>
             </Container>
         )

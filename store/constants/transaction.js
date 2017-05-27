@@ -1,2 +1,0 @@
-export const TRANSACTION_TYPE_CLINGME = 1
-export const TRANSACTION_TYPE_DIRECT = 2
