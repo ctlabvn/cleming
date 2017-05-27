@@ -45,12 +45,15 @@ export default (variables = variable) => {
       '.light': {
         color: 'lightgrey'
       },
+      '.gray': {
+          color: '#808080'
+      },
       '.transparent': {
         color: 'transparent'
       },
       '.center': {
         justifyContent: 'center'
-      }
+      },
   };
 
   return textTheme;
