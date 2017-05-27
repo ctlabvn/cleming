@@ -5,11 +5,16 @@ export default {
     inputField: {
         borderRadius: 5,
         backgroundColor: '#d9d9d9',
-        height: 50
+        height: 48,
+        marginTop: 0
     },
     inputContainer: {
         marginBottom: 15,
-        minHeight: 50,
+        height: 50,
+        borderRadius: 5,
+        marginTop: 10,
+        paddingTop: 0
+        
     },
     inputIcon: {
         fontSize: 20,
@@ -59,7 +64,7 @@ export default {
     },
     passwordText: {
         color: '#00a9d7',
-        fontSize: 16,
+        fontSize: 24,
         fontWeight: 'bold'
     },
     copyText: {

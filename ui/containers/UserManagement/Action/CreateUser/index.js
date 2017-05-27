@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, getFormValues } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -27,8 +27,9 @@ import Modal from '~/ui/components/Modal'
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
+import * as commonActions from '~/store/actions/common'
 
-import { validate, renderGroup } from './utils'
+import { validateField, renderGroup } from './utils'
 import styles from './styles'
 
 const {height, width} = Dimensions.get('window');
@@ -41,16 +42,22 @@ const formSelector = formValueSelector('CreateUserForm')
   listEmployee: accountSelectors.getListEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
-  formValues: formSelector(state, 'name', 'email', 'phone', 'permission')
-}), { ...accountActions }, (stateProps, dispatchProps, ownProps)=>{
+  formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
+  formState: state.form
+}), dispatch => ({
+  ...accountActions,
+  ...commonActions,
+  destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
+  resetForm: () => dispatch(reset('CreateUserForm'))
+}), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
         initialValues: {
           GroupAddress: stateProps.place.listPlace,
-          name: 'Clingme',
-          email: 'Abc@gmail.com',
-          phone: '1234567810',
+          name: '',
+          email: '',
+          phone: '',
           permission: {
             id: 1,
             name: "Nhân Viên"
@@ -83,7 +90,7 @@ const formSelector = formValueSelector('CreateUserForm')
       ...ownProps, ...stateProps, ...dispatchProps,
     })
 })
-@reduxForm({ form: 'CreateUserForm'})
+@reduxForm({ form: 'CreateUserForm', validate: validateField})
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
@@ -138,7 +145,13 @@ export default class CreateUserContainer extends Component {
             name: "Nhân Viên"
           }
         })
+        this.props.resetForm()
       }
+    }
+    
+    componentDidMount() {
+      //stopAsyncValidation('CreateUserForm', {})
+      this.props.resetForm()
     }
     
     onFromTimeFocus() {
@@ -195,36 +208,42 @@ export default class CreateUserContainer extends Component {
     }
     
     onSubmitUser() {
-      this.setState({
-        isLoading: true
-      })
       let userInfo = {}
-      let listPlaceId = this.state.chosenListPlaceID.join(";")
-      userInfo.fullName = this.props.formValues.name
-      userInfo.phoneNumber = this.props.formValues.phone
-      userInfo.password = this.props.generatedPassword
-      userInfo.email = this.props.formValues.email
-      userInfo.titleType = this.state.currentJob.id
-      userInfo.fromTimeWork = this.state.fromTime
-      userInfo.toTimeWork = this.state.toTime
-      userInfo.listPlaceId = listPlaceId
-      if (typeof this.props.route.params.id == 'undefined') {
-        this.props.createEmployeeInfo(this.props.session, userInfo, () => {
-          this.props.getListEmployee(this.props.session, () => {
-            this.setState({
-              isLoading: false
-            })
-          })
-        })
+      if (this.state.chosenListPlaceID.length == 0) {
+        this.props.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
+      } else if (this.props.generatedPassword.trim() == '') {
+        this.props.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
       } else {
-        userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
-        this.props.updateEmployeeInfo(this.props.session, userInfo, () => {
-          this.props.getListEmployee(this.props.session, () => {
-            this.setState({
-              isLoading: false
+        this.setState({
+          isLoading: true
+        })
+        let listPlaceId = this.state.chosenListPlaceID.join(";")
+        userInfo.fullName = this.props.formValues.name
+        userInfo.phoneNumber = this.props.formValues.phone
+        userInfo.password = this.props.generatedPassword
+        userInfo.email = this.props.formValues.email
+        userInfo.titleType = this.state.currentJob.id
+        userInfo.fromTimeWork = this.state.fromTime
+        userInfo.toTimeWork = this.state.toTime
+        userInfo.listPlaceId = listPlaceId
+        if (typeof this.props.route.params.id == 'undefined') {
+          this.props.createEmployeeInfo(this.props.session, userInfo, () => {
+            this.props.getListEmployee(this.props.session, () => {
+              this.setState({
+                isLoading: false
+              })
             })
           })
-        })
+        } else {
+          userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
+          this.props.updateEmployeeInfo(this.props.session, userInfo, () => {
+            this.props.getListEmployee(this.props.session, () => {
+              this.setState({
+                isLoading: false
+              })
+            })
+          })
+        }
       }
     }
     
@@ -252,18 +271,50 @@ export default class CreateUserContainer extends Component {
       } else {
         listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
       }
+      let formState = null
+      let nameError = null
+      let errorNameStyle = null
+      let errorLongNameStyle = null
+      let phoneError = null
+      let errorPhoneStyle = null
+      let emailError = null
+      let errorEmailStyle = null
+      if (typeof this.props.route.params.id == 'undefined') {
+        formState = this.props.formState.CreateUserForm
+      } else {
+        formState = this.props.formState.CreateUserForm
+      }
+      if (formState.syncErrors) {
+        let errors = formState.syncErrors
+        if (errors.name) {
+          errorNameStyle = {borderColor: 'red', borderWidth: 1}
+          if (errors.name.length > 30) {
+            errorLongNameStyle = {marginBottom: 30}
+          }
+          nameError = <Text style={{color: 'red', marginTop: 5}}>{errors.name}</Text>
+        }
+        if (errors.phone) {
+          errorPhoneStyle = {borderColor: 'red', borderWidth: 1}
+          phoneError = <Text style={{color: 'red', marginTop: 5}}>{errors.phone}</Text>
+        }
+        if (errors.email) {
+          errorEmailStyle = {borderColor: 'red', borderWidth: 1}
+          emailError = <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
+        }
+      }
       return (
         <View style={{paddingLeft: 15, paddingRight: 15}}>
-          <View style={styles.inputContainer}>
+          <View style={{...styles.inputContainer, ...errorNameStyle, ...errorLongNameStyle}}>
             <Field
               inputStyle={styles.inputText}
-              style={styles.inputField}
+              style={{...styles.inputField}}
               label="Họ và tên"
               name="name"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
+            {nameError}
           </View>
-          <View style={styles.inputContainer}>
+          <View style={{...styles.inputContainer, ...errorEmailStyle}}>
             <Field
               inputStyle={styles.inputText}
               style={styles.inputField}
@@ -271,22 +322,24 @@ export default class CreateUserContainer extends Component {
               name="email"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
+            {emailError}
           </View>
-          <View style={styles.inputContainer}>
+          <View style={{...styles.inputContainer, ...errorPhoneStyle}}>
             <Field
               inputStyle={styles.inputText}
               style={styles.inputField}
-              label="Phone number"
+              label="Số điện thoại"
               name="phone"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
+            {phoneError}
           </View>
           <View style={{...styles.inputContainer, zIndex: 100}}>
             <TopDropdown
               ref='placeDropdown'
               dropdownValues={[
                                 {id: 1, name: "Nhân Viên"},
-                                {id: 2, name: "Admin"}
+                                //{id: 2, name: "Admin"}
                               ]}
               onSelect={this.handleChangePlace.bind(this)}
               selectedOption={this.state.currentJob} />
@@ -357,7 +410,7 @@ export default class CreateUserContainer extends Component {
             <Grid>
               <Col/>
               <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+                <Text style={styles.passwordText}>*****</Text>
               </Col>
               <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
                 <Col style={{alignItems: 'flex-end', width: '60%'}}>
