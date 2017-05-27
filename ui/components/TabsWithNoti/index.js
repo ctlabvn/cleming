@@ -11,6 +11,7 @@ export default class TabsWithNoti extends Component {
         super(props)
         this.state = {
             activeTab: props.activeTab || props.tabData[0].tabID,
+            tabData: props.tabData
         }
     }
     _handlePressTab(item) {
@@ -22,10 +23,16 @@ export default class TabsWithNoti extends Component {
     getActiveTab(){
         return this.state.activeTab
     }
+    updateNumber(tabID, number){
+        let tabData = this.state.tabData.slice()
+        let index = tabData.findIndex(item=>item.tabID == tabID)
+        tabData[index].number = number
+        this.setState({tabData: tabData})
+    }
     render() {
         return (
             <View style={styles.tabBar}>
-                {this.props.tabData.map((tabItem) => {
+                {this.state.tabData.map((tabItem) => {
                     let isActive = (tabItem.tabID == this.state.activeTab)
                     return (
 
@@ -48,28 +55,3 @@ export default class TabsWithNoti extends Component {
         )
     }
 }
-
-
-
-{/*<View style={styles.tabBar}>
-            <View style={styles.tabActive}>
-                <Text style={styles.tabTextActive}>
-                    Trả qua Clingme
-                            </Text>
-                <View style={styles.tabNumberContainer}>
-                    <Text style={styles.tabNumberActive}>
-                        4
-                            </Text>
-                </View>
-            </View>
-            <View style={styles.tab}>
-                <Text style={styles.tabTextDeactive}>
-                    Trả trực tiếp
-                            </Text>
-                <View style={styles.tabNumberContainer}>
-                    <Text style={styles.tabNumberDeactive}>
-                        50
-                            </Text>
-                </View>
-            </View>
-        </View>*/}
