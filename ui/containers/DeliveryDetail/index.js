@@ -36,7 +36,9 @@ export default class extends Component {
         let deliveryId = route.params.id
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
-                this.setState({ orderDetail: data.updated })
+                if (data && data.updated){
+                    this.setState({ orderDetail: data.updated })
+                }
             }
         )
     }
@@ -94,8 +96,8 @@ export default class extends Component {
                         <Text small>Đặt hàng số</Text>
                         <Text primary>{orderDetail.orderInfo.tranId}</Text>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                    <View style={{paddingLeft: 10, paddingRight: 10}}>
+                    <View style={styles.line} />
+                    <View style={styles.block}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
@@ -111,28 +113,31 @@ export default class extends Component {
                         <Text small>Yêu cầu nhận hàng trong</Text>
                         <Text bold>45'</Text>
                     </View>
-                    <View style={styles.rowPadding}>
+                    <View style={styles.block}>
                         <Text small>Yêu cầu khác</Text>
                         <Text bold>{orderDetail.orderInfo.note}</Text>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                   <View style={styles.line} />
                     <View style={styles.rowPadding}>
                         <Text small bold>Giỏ hàng: {totalItem}</Text>
                     </View>
                     <List dataArray={orderDetail.orderRowList}
                         renderRow={(item) => (
                             <ListItem style={styles.orderItem}>
-                                <Image style={{ width: 50, height: 50 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
-                                <View style={{ justifyContent: 'flex-start' }}>
-                                    <Text small>{item.itemName}</Text>
-                                    <Text small light>Số lượng: {item.quantity}</Text>
+                                <View style={styles.cartLeft}>
+                                    <Image style={{ width: 60, height: 60 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
+                                    <View style={styles.cartContent}>
+                                        <Text small style={styles.textLeft}>{item.itemName}</Text>
+                                        <Text small light style={styles.textLeft}>Số lượng: {item.quantity}</Text>
+                                    </View>
                                 </View>
                                 <Text bold>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
                     </List>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                </Content>
+                <View style={styles.fixBottom}>
                     <View style={styles.rowPadding}>
                         <Text small>Tiền hàng:</Text>
                         <Text bold>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
@@ -141,12 +146,12 @@ export default class extends Component {
                         <Text small>Phí giao hàng:</Text>
                         <Text bold>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                    <View style={styles.line} />
                     <View style={styles.rowPadding}>
                         <Text small>Tổng tiền thanh toán: </Text>
                         <Text bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                     </View>
-                </Content>
+                </View>
             </Container>
         )
     }
