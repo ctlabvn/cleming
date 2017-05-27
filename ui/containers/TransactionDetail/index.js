@@ -18,6 +18,7 @@ import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/transaction'
+import { ViewPager } from 'rn-viewpager';
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -32,8 +33,10 @@ export default class TransactionDetail extends Component {
             transactionInfo: {},
             hasNext: false,
             hasPrevious: false,
-            loading: false
+            loading: false,
+            page: 0
         }
+        this.swiping = false
         this.denyReasonClingme = [
             {
                 reason: 'Khách hàng trả thừa tiền',
@@ -85,7 +88,7 @@ export default class TransactionDetail extends Component {
     _showReasonPopupClingme = () => {
         this.refs.feedbackDialogClingme.setModalVisible(true)
     }
-    goPrevious() {
+    goPrevious = () => {
         const { xsession, transaction } = this.props
         let index = 0, transactionId
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
@@ -105,7 +108,7 @@ export default class TransactionDetail extends Component {
         }
     }
 
-    goNext() {
+    goNext = () => {
         const { xsession, transaction } = this.props
         let transactionId, index = 0
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
@@ -133,6 +136,7 @@ export default class TransactionDetail extends Component {
         this._load(transactionId)
         // No need frequently update, call one when component mount
         getListDenyReason(xsession)
+        console.log('Did Mount')
     }
 
     // Go to Page 
@@ -141,12 +145,12 @@ export default class TransactionDetail extends Component {
         let transactionId = route.params.id
         let transactionType = route.params.type
         this.setState({ type: transactionType })
+        console.log('Will Focus')
         this._load(transactionId)
     }
 
     _renderContent() {
         let transactionInfo = this.state.transactionInfo
-        console.log('Render trans Info', transactionInfo)
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             let payStatusa
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
@@ -297,6 +301,9 @@ export default class TransactionDetail extends Component {
             )
         }
     }
+    _getPage = (hasPrevious, hasNext) => {
+        return !hasPrevious ? 0 : 1
+    }
     _load = (transactionId) => {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route } = this.props
         let transactionType = route.params.type
@@ -315,7 +322,17 @@ export default class TransactionDetail extends Component {
                             hasPrevious = (index == 0) ? false : true
                             hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
                         }
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext })
+                        // console.log('Start Set State/')
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, page: this._getPage(hasPrevious, hasNext) },
+
+                            () => {
+                                this.swiping = true
+                                // setTimeout(()=>{
+                                //     this.refs.viewPager.setPageWithoutAnimation(this.state.page)
+                                // }, 0)
+
+                            }
+                        )
                     }
                 })
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
@@ -330,13 +347,17 @@ export default class TransactionDetail extends Component {
                             hasPrevious = (index == 0) ? false : true
                             hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
                         }
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext })
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, page: this._getPage(hasPrevious, hasNext) },
+                            () => {
+                                this.swiping = true
+                                this.refs.viewPager.setPageWithoutAnimation(this.state.page)
+                            }
+                        )
                     }
                 }
             )
         }
     }
-
     _handleFeedback = (dealTransactionId, reasonId, note) => {
         const { xsession, sendDenyReason, setToast } = this.props
         console.log('Feedback Handle', dealTransactionId + '---' + reasonId + '----' + note)
@@ -354,8 +375,27 @@ export default class TransactionDetail extends Component {
         )
     }
     _handleFeedbackClingme = () => {
-        console.log('Handle feedback clm')
         this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
+    }
+    onSwipeViewPager(event) {
+        console.log('Go Swipe Viewpager', event)
+        console.log('Swiping', this.swiping)
+        if (this.swiping) {
+            console.log('GO Swiping reset')
+            this.swiping = false
+            return
+        } else {
+            console.log('Pass swipe')
+            console.log('Position Page', event.position + '---' + this.state.page)
+            if (event.position < this.state.page) {
+                console.log('Swipe Left')
+                this.goPrevious()
+            } else if (event.position > this.state.page) {
+                console.log('Swipe Right')
+                this.goNext()
+            }
+        }
+
     }
     //  "transactionStatus": int,	
     // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý, 
@@ -404,25 +444,24 @@ export default class TransactionDetail extends Component {
                 </Button>
             )
         }
-        const config = {
-            velocityThreshold: 0.3,
-            directionalOffsetThreshold: 100
-        }
         return (
             <Container style={{ paddingBottom: 40 }}>
                 <PopupInfo ref='popupInfo' />
-                <LoadingModal loading={this.state.loading}/>
-                <GestureRecognizer
-                    onSwipeLeft={(state) => { this.goNext() }}
-                    onSwipeRight={(state) => { this.goPrevious() }}
-                    config={config}
-                    style={{
-                        flex: 1
-                    }}
+                <LoadingModal loading={this.state.loading} />
+                <ViewPager style={{ flex: 1 }}
+                    onPageSelected={(event) => this.onSwipeViewPager(event)}
+                    onPageScrollStateChanged={(event)=>{console.log('Scroll State Change: ', event)}}
+                    ref='viewPager'
+                    initialPage={1}
                 >
-                    {this._renderContent()}
-                </GestureRecognizer>
-
+                    {this.state.hasPrevious && (<View>
+                    </View>)}
+                    <View>
+                        {this._renderContent()}
+                    </View>
+                    {this.state.hasNext && (<View>
+                    </View>)}
+                </ViewPager>
                 <View style={styles.navigateInvoiceBlock}>
                     {btnPrev}
                     {btnNext}

@@ -79,6 +79,7 @@ export default class FeedbackDialogClingme extends Component {
                                 value={this.state.note}
                                 onChangeText={(text) => this.setState({ note: text })}
                                 keyboardType={this.state.keyboardType}
+                                underlineColorAndroid={'transparent'}
                             />
                         </View>
 
