@@ -5,7 +5,8 @@ export default{
     },
     contentContainer: {
       padding: 0,
-      margin: 10,
+      marginLeft: 10,
+      marginRight: 10,
     },
     contentContainerStyle: {
       justifyContent: 'center',
@@ -20,8 +21,10 @@ export default{
         paddingTop: 10,
         paddingLeft: 10,
         paddingBottom: 10,
-        
-        marginBottom: 10,
+
+        marginTop: 5,
+        marginBottom: 5,
+        // marginBottom: 10,
         // padding: 10,
         marginLeft: 0,
         marginRight: 0,

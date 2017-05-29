@@ -80,6 +80,7 @@ export default {
     'deliveryDetail/:id': {
         title: 'Chi tiết giao hàng',
         Page: DeliveryDetail,
+        footerType: 'none'
     },
     report: {
         title: 'Khách hàng tiềm năng',

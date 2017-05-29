@@ -26,8 +26,7 @@ const requestPlaceStatistic = createRequestSaga({
     key: 'placeStatistic',
     cancel: 'app/logout',
     success: [
-        (data) => {            
-            console.log('data', data)
+        (data) => {
             return setPlaceStatistic(data.updated.data)
         }          
     ],

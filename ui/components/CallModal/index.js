@@ -14,8 +14,9 @@ import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
-
 import * as commonActions from '~/store/actions/common'
+import {formatPhoneNumber} from '~/ui/shared/utils'
+
 
 @connect(state=>({
   
@@ -43,7 +44,7 @@ export default class extends Component {
   }
   
   render() {
-    const {open, title, onCloseClick, closeModal} = this.props
+    const {open, title, onCloseClick, closeModal, phoneNumber} = this.props
     return(
       <Modal
         onCloseClick={() => {
@@ -58,7 +59,7 @@ export default class extends Component {
               <Text style={{color: 'white'}}>Thông Báo</Text>
             </Row>
             <Row style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 10, paddingRight: 10}}>
-              <Text style={{color: 'black'}}>Bạn có chắc chắn muốn thực hiện cuộc gọi?</Text>
+              <Text style={{color: 'black'}}>Bạn có muốn gọi đến số {formatPhoneNumber(phoneNumber)}?</Text>
             </Row>
             <Row style={{height: '40%'}}>
               <Col style={{justifyContent: 'center'}}>
@@ -75,7 +76,7 @@ export default class extends Component {
                 <Button
                   onPress={this.onCallAccepted.bind(this)}
                   style={{...styles.button, ...styles.rightButton}}>
-                  <Text>Đồng ý</Text>
+                  <Text>Call</Text>
                 </Button>
               </Col>
             </Row>

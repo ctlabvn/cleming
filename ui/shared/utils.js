@@ -41,3 +41,17 @@ export const isValidEmail = (email) => {
 export const isValidPhoneNumber = (phone) => {
   return phone.match(/^\d{10,11}$/) !== null
 }
+
+export const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber) return ''
+  // 10 number style
+  if (phoneNumber.length == 10){
+    let m = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/)
+    return (m[1]+" "+m[2]+" "+m[3])
+  //11 number style
+  }else{
+    let m = phoneNumber.match(/^(\d{4})(\d{3})(\d{4,})$/)
+    return (m[1]+" "+m[2]+" "+m[3])
+  }
+
+  }

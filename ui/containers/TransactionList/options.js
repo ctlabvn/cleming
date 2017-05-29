@@ -1,3 +1,5 @@
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
+
 export default {
   transactionFilterListDirect: [
       {
@@ -33,11 +35,11 @@ export default {
   ],
   tabData: [
       {
-          tabID: 1,
+          tabID: TRANSACTION_TYPE_CLINGME,
           text: 'Trả qua Clingme',
       },
       {
-          tabID: 2,
+          tabID: TRANSACTION_TYPE_DIRECT,
           text: 'Trả trực tiếp',
       }
   ]
