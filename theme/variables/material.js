@@ -137,6 +137,25 @@ export default {
   gray300: '#E8E8E8',
   gray200: '#F2F2F2',
 
+  get primaryColor(){
+    return this.blue400;
+  },
+  get warningColor(){
+    return this.orange500;
+  },
+  get errorColor(){
+    return this.red500;
+  },
+  get successColor(){
+    return this.green400;
+  },
+  get backgroundColor1(){
+    return this.gray300;
+  },
+  get textColor1(){
+    return this.gray500;
+  },
+
     // Font
   fontFamily: 'Roboto',
   fontSizeBase: 15,
