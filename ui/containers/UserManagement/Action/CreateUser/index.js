@@ -327,7 +327,7 @@ export default class CreateUserContainer extends Component {
             <Field
               inputStyle={styles.inputText}
               style={styles.inputField}
-              label="Email"
+              label="Email *"
               name="email"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
@@ -404,37 +404,6 @@ export default class CreateUserContainer extends Component {
             employeeListPlace={listPlace}
             name="GroupAddress"
             component={renderGroup}/>
-          <View style={{marginTop: 15}}>
-            <Grid>
-              <Col>
-                <Button
-                  onPress={this.onGeneratedPasswordPress.bind(this)}
-                  style={styles.createPasswordButton}>
-                  <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
-                </Button>
-              </Col>
-            </Grid>
-          </View>
-          <View style={{marginTop: 40}}>
-            <Grid>
-              <Col/>
-              <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={styles.passwordText}>*****</Text>
-              </Col>
-              <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                <Col style={{alignItems: 'flex-end', width: '60%'}}>
-                  <Icon
-                    style={styles.copyIcon}
-                    name="copy"/>
-                </Col>
-                <Col style={{justifyContent: 'center', width: '40%'}}>
-                  <Text
-                    onPress={this._setClipboardContent.bind(this)}
-                    style={styles.copyText}>Copy</Text>
-                </Col>
-              </Col>
-            </Grid>
-          </View>
         </View>
       )
     }
@@ -457,38 +426,63 @@ export default class CreateUserContainer extends Component {
         
         return (
             <Container>
-                <Content style={{backgroundColor: 'white'}}>
-                  {mainContainer}
-                    <View style={{marginTop: 40}}>
-                        <Grid>
-                            <Col>
-                                <Button
-                                  onPress={this.onSubmitUser.bind(this)}
-                                  style={{...styles.submitButton}}>
-                                    <Text style={styles.createPasswordButtonText}>OK</Text>
-                                </Button>
-                            </Col>
-                        </Grid>
-                    </View>
-                    <DateTimePicker
-                        mode="time"
-                        titleIOS="Chọn thời gian"
-                        confirmTextIOS="Ok"
-                        cancelTextIOS="Cancel"
-                        isVisible={this.state.fromTimeVisible}
-                        onConfirm={this.setFromTime.bind(this)}
-                        onCancel={this.onFromTimeCancel.bind(this)}
-                    />
-                    <DateTimePicker
-                        mode="time"
-                        titleIOS="Chọn thời gian"
-                        confirmTextIOS="Ok"
-                        cancelTextIOS="Cancel"
-                        isVisible={this.state.toTimeVisible}
-                        onConfirm={this.setToTime.bind(this)}
-                        onCancel={this.onToTimeCancel.bind(this)}
-                    />
-                </Content>
+              <Content style={{backgroundColor: 'white', marginBottom: 170}}>
+                {mainContainer}
+              </Content>
+              <View style={styles.absoluteContainer}>
+                <Grid>
+                  <Row style={{justifyContent: 'center', height: 40}}>
+                    <Button
+                      onPress={this.onGeneratedPasswordPress.bind(this)}
+                      style={styles.createPasswordButton}>
+                      <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
+                    </Button>
+                  </Row>
+                  <Row style={{alignItems: 'center'}}>
+                    <Col/>
+                    <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                      <Text style={styles.passwordText}>*****</Text>
+                    </Col>
+                    <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                      <Col style={{alignItems: 'flex-end', width: '60%'}}>
+                        <Icon
+                          style={styles.copyIcon}
+                          name="copy"/>
+                      </Col>
+                      <Col style={{justifyContent: 'center', width: '40%'}}>
+                        <Text
+                          onPress={this._setClipboardContent.bind(this)}
+                          style={styles.copyText}>Copy</Text>
+                      </Col>
+                    </Col>
+                  </Row>
+                  <Row style={{justifyContent: 'flex-end', height: 40}}>
+                    <Button
+                      onPress={this.onSubmitUser.bind(this)}
+                      style={{...styles.submitButton}}>
+                      <Text style={styles.createPasswordButtonText}>OK</Text>
+                    </Button>
+                  </Row>
+                </Grid>
+              </View>
+              <DateTimePicker
+                mode="time"
+                titleIOS="Chọn thời gian"
+                confirmTextIOS="Ok"
+                cancelTextIOS="Cancel"
+                isVisible={this.state.fromTimeVisible}
+                onConfirm={this.setFromTime.bind(this)}
+                onCancel={this.onFromTimeCancel.bind(this)}
+              />
+              <DateTimePicker
+                mode="time"
+                titleIOS="Chọn thời gian"
+                confirmTextIOS="Ok"
+                cancelTextIOS="Cancel"
+                isVisible={this.state.toTimeVisible}
+                onConfirm={this.setToTime.bind(this)}
+                onCancel={this.onToTimeCancel.bind(this)}
+              />
             </Container>
         )
     }

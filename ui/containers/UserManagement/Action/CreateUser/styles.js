@@ -73,7 +73,7 @@ export default {
     },
     submitButton: {
         backgroundColor: '#00a9d7',
-        alignSelf: 'center',
+        alignSelf: 'flex-end',
         width: '100%',
         borderRadius: 0,
         alignItems: 'center',
@@ -91,4 +91,12 @@ export default {
         minHeight: 50,
         justifyContent: 'center'
     },
+    absoluteContainer: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: 170,
+      backgroundColor: 'white'
+    }
 }
