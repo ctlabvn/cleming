@@ -223,7 +223,7 @@ export default class extends Component {
           <Content>                 
                      
             {!this.state.showPassword &&
-              <Icon onPress={()=>forwardTo('changePassword')} name="logo" style={styles.logoIcon} />
+              <Icon name="logo" style={styles.logoIcon} />
             }
             
             { this.state.showPassword 
