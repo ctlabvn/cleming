@@ -282,7 +282,7 @@ export default {
   textColor: '#000',
   inverseTextColor: '#fff',
   noteFontSize: 14,
-  noteTextColor: '#a7a7a7',
+  noteTextColor: '#a8a8a8',
   linkTextColor: '#448ccb',
 
     // Title

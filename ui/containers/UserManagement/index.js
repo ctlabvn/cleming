@@ -326,7 +326,7 @@ class UserManagement extends Component {
                 <Button
                     onPress={this.onCreateUserPress.bind(this)}
                     style={styles.addUserButton}>
-                    <Text style={styles.addUserText}>Add User</Text>
+                    <Text style={styles.addUserText}>Thêm tài khoản</Text>
                 </Button>
             </Container>
         )

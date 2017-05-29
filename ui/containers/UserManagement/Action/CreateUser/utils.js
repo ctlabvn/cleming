@@ -51,23 +51,25 @@ export const validateField = (values) => {
   if(!values) return errors
   
   if (values.name.trim() == '') {
-    errors.name = "Bạn phải nhập tên"
-  }
-  
-  if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
-    errors.name = "Tên phải có ít nhất 2 ký tự, không bao gồm các ký tự đặc biệt và số"
+    errors.name = "Bạn cần nhập tên"
+  } else {
+    if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
+      errors.name = "Tên cần có ít nhất 2 ký tự, không bao gồm các ký tự đặc biệt và số"
+    }
   }
   
   if (values.phone.trim() == '') {
-    errors.phone = "Bạn phải nhập số điện thoại"
+    errors.phone = "Bạn cần nhập số điện thoại"
+  } else {
+    if (!_.isUndefined(validate({phone: values.phone}, phoneConstraints))) {
+      errors.phone = "Bạn nhập chưa đúng định dạng số điện thoại"
+    }
   }
   
-  if (!_.isUndefined(validate({phone: values.phone}, phoneConstraints))) {
-    errors.phone = "Bạn nhập chưa đúng định dạng số điện thoại"
-  }
-  
-  if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
-    errors.email = "Bạn nhập chưa đúng định dạng email"
+  if (values.email.trim() != '') {
+    if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
+      errors.email = "Bạn nhập chưa đúng định dạng email"
+    }
   }
   
   return errors
@@ -181,6 +183,7 @@ export class renderGroup extends Component {
             )
           }
         )}
+        <View style={{height: 10}}/>
       </View>
     )
   }

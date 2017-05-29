@@ -57,7 +57,8 @@ export default {
         width: '80%',
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowOpacity: 0
     },
     createPasswordButtonText: {
         color: 'white'
@@ -66,6 +67,10 @@ export default {
         color: '#00a9d7',
         fontSize: 24,
         fontWeight: 'bold'
+    },
+    passwordTextWarning: {
+        color: '#00a9d7',
+        fontSize: 14
     },
     copyText: {
         color: '#00a9d7',
@@ -92,11 +97,15 @@ export default {
         justifyContent: 'center'
     },
     absoluteContainer: {
-      position: 'absolute',
       bottom: 0,
       left: 0,
       width: '100%',
       height: 170,
       backgroundColor: 'white'
+    },
+    subText: {
+      color: 'gray',
+      marginLeft: 20,
+      fontStyle: 'italic'
     }
 }
