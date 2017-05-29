@@ -30,7 +30,7 @@ export default class extends Component {
         this.state = {
             loading: false,
             loadingMore: false,
-            currentTab: TRANSACTION_TYPE_DIRECT
+            currentTab: TRANSACTION_TYPE_CLINGME
         }
     }
     // need filter transaction type
@@ -201,39 +201,39 @@ export default class extends Component {
             case 0: //chờ duyệt
             case 3:
                 iconBlock = (
-                    <View style={{ ...styles.iconBlock, ...styles.backgroundWarning }}>
-                        <Icon name='order-history' style={styles.icon} />
+                    <View style={styles.iconBlock}>
+                        <Icon name='order-history' style={{...styles.icon, ...styles.warning}} />
                     </View>
                 )
                 statusText = <Text small warning>Chờ phê duyệt</Text>
-                transactionCode = <Text small bold warning>{item.dealTransactionIdDisplay}</Text>
+                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 break
             case 1: // thành công
                 iconBlock = (
-                    <View style={{ ...styles.iconBlock, ...styles.backgroundSuccess }}>
-                        <Icon name='coin_mark' style={styles.icon} />
+                    <View style={styles.iconBlock}>
+                        <Icon name='coin_mark' style={{...styles.icon, ...styles.success}} />
                     </View>
                 )
-                statusText = <Text small success>Cashback thành công</Text>
-                transactionCode = <Text small bold success>{item.dealTransactionIdDisplay}</Text>
+                statusText = <Text small>Cashback thành công</Text>
+                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 break
             case 2: // bị từ chối
                 iconBlock = (
-                    <View style={{ ...styles.iconBlock, ...styles.backgroundError }}>
-                        <Icon name='unlike_s' style={styles.icon} />
+                    <View style={styles.iconBlock}>
+                        <Icon name='unlike_s' style={{...styles.icon, ...styles.reject}} />
                     </View>
                 )
                 statusText = <Text small error>Bị từ chối</Text>
-                transactionCode = <Text small bold error>{item.dealTransactionIdDisplay}</Text>
+                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 break
             default:
                 iconBlock = (
-                    <View style={{ ...styles.iconBlock, ...styles.backgroundWarning }}>
+                    <View style={styles.iconBlock}>
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
                 statusText = <Text small warning>Chờ phê duyệt</Text>
-                transactionCode = <Text small bold warning>{item.dealTransactionIdDisplay}</Text>
+                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
         }
         return (
             <ListItem
@@ -248,9 +248,9 @@ export default class extends Component {
                                 {transactionCode}
                                 <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
                             </View>
-                            <View style={{ ...styles.row, marginTop: 2 }}>
+                            {/*<View style={{ ...styles.row, marginTop: 2 }}>
                                 <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
-                            </View>
+                            </View>*/}
                             <View style={styles.row}>
                                 {statusText}
                                 <Text bold style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
@@ -326,7 +326,7 @@ export default class extends Component {
             <Container style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilterListDirect} ref='transactionFilter'

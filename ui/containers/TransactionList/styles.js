@@ -69,8 +69,8 @@ export default {
         paddingTop: 10,
     },
     icon: {
-        fontSize: 17,
-        width: 20,
+        fontSize: 30,
+        // width: 20,
         color: 'white',
         textAlign: 'center'
     },
@@ -85,6 +85,12 @@ export default {
     },
     reject: {
         color: ERROR_COLOR
+    },
+    primary: {
+        color: PRIMARY_COLOR
+    },
+    warning: {
+        color: WARNING_COLOR
     },
     notPayIcon: {
         color: PRIMARY_COLOR
@@ -108,7 +114,6 @@ export default {
       paddingTop: 0
     },
     iconBlock: {
-        backgroundColor: PRIMARY_COLOR,
         width: 40,
         height: 40,
         flexDirection: 'row',
@@ -135,9 +140,6 @@ export default {
     },
     transactionCodeClingme: {
         fontSize: 16
-    },
-    primary: {
-        color: PRIMARY_COLOR
     },
     button: {
         paddingLeft: 0,

@@ -11,6 +11,7 @@ const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
     constructor(props) {
+        console.log('Go to constructor')
         super(props)
         this.state = {
             openningDropdown: false,
@@ -21,13 +22,11 @@ export default class TopDropdown extends Component {
         }
     }
 
-    /*componentWillReceiveProps(nextProps) {
-      if (this.props.modalOpen != nextProps.modalOpen) {
-        if (nextProps.modalOpen == "open" && this.state.openningDropdown == true) {
-          this.toggle()
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0){
+            this.setState({selectedOption: nextProps.dropdownValues[0]})
         }
-      }
-    }*/
+    }
 
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)
@@ -72,6 +71,15 @@ export default class TopDropdown extends Component {
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
+        if (!dropdownValues || dropdownValues.length == 0){
+            return (
+                <View style={containerStyleTopDown}>
+                    <View style={styles.dropdownHeader}>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>Đang tải địa điểm...</Text>
+                    </View>
+                </View>
+            )
+        }
         if (dropdownValues.length == 1) {
             return (
                 <View style={containerStyleTopDown}>
