@@ -329,7 +329,7 @@ export default class extends Component {
                     <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDirect} ref='transactionFilter'
+                        listValue={options.transactionFilterListClingme} ref='transactionFilter'
                     />
                     <Content
                         padder
