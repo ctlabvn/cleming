@@ -467,6 +467,9 @@ export default class CreateUserContainer extends Component {
                       </Col>
                     </Col>
                   </Row>
+                  <Row style={{height: '15%'}}>
+                    <Text style={styles.subText}>* Email không bắt buộc </Text>
+                  </Row>
                   <Row style={{justifyContent: 'flex-end', height: 40}}>
                     <Button
                       onPress={this.onSubmitUser.bind(this)}

@@ -57,7 +57,8 @@ export default {
         width: '80%',
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowOpacity: 0
     },
     createPasswordButtonText: {
         color: 'white'
@@ -101,5 +102,10 @@ export default {
       width: '100%',
       height: 170,
       backgroundColor: 'white'
+    },
+    subText: {
+      color: 'gray',
+      marginLeft: 20,
+      fontStyle: 'italic'
     }
 }
