@@ -8,7 +8,13 @@ export const order = (state = {hasMore:true, page:1, orderList:[]}, {type, paylo
         page: payload.updated.page || 1,         
         orderList: payload.updated.page > 1 ? [...state.orderList, ...list] : list, 
         hasMore: list.length >0 
-      }                
+      } 
+    case 'app/clearOrderList':
+      return {
+        page: 1,
+        hasMore: false,
+        orderList: []
+      }               
     default:
       return state
   }

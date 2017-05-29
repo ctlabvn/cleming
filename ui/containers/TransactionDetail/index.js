@@ -17,7 +17,15 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
+// export const TRANSACTION_STATUS = {
+//     WAITING_CLINGME_PROCESS_1: 0,
+//     WAITING_CLINGME_PROCESS_2: 3,
+//     SUCCESS: 1,
+//     REJECT: 2,
+//     WAITING_MERCHANT_CHECK: 4,
+//     MERCHANT_CHECKED: 5
+// }
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager';
 @connect(state => ({
     xsession: getSession(state),
@@ -54,12 +62,12 @@ export default class TransactionDetail extends Component {
     }
     _renderStatus(status) {
         switch (status) {
-            case 0:
-            case 3:
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1:
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
                 return <Text bold warning>Giao dịch chờ phê duyệt</Text>
-            case 1:
+            case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return <Text bold success>Giao dịch thành công</Text>
-            case 2:
+            case TRANSACTION_DIRECT_STATUS.REJECT:
                 return <Text bold error>Giao dịch bị từ chối</Text>
             default:
                 return <Text bold warning>Giao dịch chờ phê duyệt</Text>
@@ -67,19 +75,35 @@ export default class TransactionDetail extends Component {
     }
     _renderBottomAction(status) {
         switch (status) {
-            case 0:
-            case 3:
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1:
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
                 return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
-            case 5:
+            case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
-            case 1:
+            case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return (<Text small transparent>Fake success</Text>)
-            case 2:
+            case TRANSACTION_DIRECT_STATUS.REJECT:
                 return (<Text small error>*Hóa đơn không đúng chương trình khuyến mại</Text>)
 
             default:
                 return (<View key='bottomBlock'></View>)
         }
+    }
+    _renderInvoiceBlock(transactionInfo) {
+        if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
+            return(
+                <View style={styles.invoiceBlock}>
+                    <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                    <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
+                </View>)
+        } else {
+            return(
+                <View style={styles.invoiceBlock}>
+                    <Text small transparent style={{...styles.invoiceLabel, ...styles.backgroundTransparent}}>Số hóa đơn: </Text>
+                    <Text small transparent style={{...styles.invoice, ...styles.backgroundTransparent}}>{transactionInfo.invoiceNumber}</Text>
+                </View>)
+        }
+
     }
     _showReasonPopup = () => {
         console.log('Show reasion Popup', this.refs.feedBackDialog)
@@ -152,7 +176,7 @@ export default class TransactionDetail extends Component {
     _renderContent() {
         let transactionInfo = this.state.transactionInfo
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            let payStatusa
+            let payStatus
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
                 payStatus = <Text success bold>Đã thanh toán</Text>
@@ -250,16 +274,10 @@ export default class TransactionDetail extends Component {
                             <Text small>Chụp hóa đơn:</Text>
                             <Text small bold>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
                         </View>
-
-                        <View style={styles.invoiceBlock}>
-                            <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
-                            <Text small style={styles.invoice}>000425</Text>
-                        </View>
-
-
+                        {this._renderInvoiceBlock(transactionInfo)}
                         <View style={styles.borderBlock}>
 
-                            {(transactionInfo.transactionStatus != 2) &&
+                            {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                                 <View style={styles.invoiceDetailBlock}>
                                     <View style={styles.rowSpaceAround}>
                                         <View style={styles.gridItem}>
@@ -320,7 +338,7 @@ export default class TransactionDetail extends Component {
                             hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
                         }
                         // console.log('Start Set State/')
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext},
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
 
                             () => {
                                 this.swiping = true
@@ -342,7 +360,7 @@ export default class TransactionDetail extends Component {
                             hasPrevious = (index == 0) ? false : true
                             hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
                         }
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext},
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -383,16 +401,16 @@ export default class TransactionDetail extends Component {
             return
         } else {
             if (event.position < this.state.page) {
-                if (this.state.hasPrevious){
+                if (this.state.hasPrevious) {
                     this.goPrevious()
-                }else{
+                } else {
                     this._goToMiddlePage()
                 }
-                
+
             } else if (event.position > this.state.page) {
-                if (this.state.hasNext){
+                if (this.state.hasNext) {
                     this.goNext()
-                }else{
+                } else {
                     this._goToMiddlePage()
                 }
             }

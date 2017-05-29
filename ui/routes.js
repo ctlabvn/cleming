@@ -47,7 +47,7 @@ export default {
     merchantOverview: {
         title: 'Merchant Name',
         Page: MerchantOverview,
-        headerType: 'noBack'
+        headerType: 'home'
     },
     transactionList: {
         title: 'Danh sách giao dịch',

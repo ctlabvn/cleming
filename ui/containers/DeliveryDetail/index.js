@@ -62,7 +62,7 @@ export default class extends Component {
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                    <Spinner color='red' />
+                    <Spinner />
                     <Text small>Loading...</Text>
                 </View>
             )

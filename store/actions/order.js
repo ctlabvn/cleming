@@ -15,3 +15,8 @@ export const replaceOrderList = (data) => ({
   type: 'app/replaceOrderList',
   payload: data,
 })
+
+export const clearOrderList = (...args)=>({
+  type: 'app/clearOrderList',
+  args
+})
