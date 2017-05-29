@@ -34,7 +34,7 @@ export default class TransactionDetail extends Component {
             hasNext: false,
             hasPrevious: false,
             loading: false,
-            page: 0
+            page: 1 // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading
         }
         this.swiping = false
         this.denyReasonClingme = [
@@ -130,22 +130,22 @@ export default class TransactionDetail extends Component {
     }
     componentDidMount() {
         const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason } = this.props
+        // this._goToMiddlePage()
         let transactionId = route.params.id
         let transactionType = route.params.type
         this.setState({ type: transactionType })
         this._load(transactionId)
         // No need frequently update, call one when component mount
         getListDenyReason(xsession)
-        console.log('Did Mount')
     }
 
     // Go to Page 
     componentWillFocus() {
+        this._goToMiddlePage()
         const { xsession, listTransaction, getTransactionDetail, route } = this.props
         let transactionId = route.params.id
         let transactionType = route.params.type
         this.setState({ type: transactionType })
-        console.log('Will Focus')
         this._load(transactionId)
     }
 
@@ -301,9 +301,6 @@ export default class TransactionDetail extends Component {
             )
         }
     }
-    _getPage = (hasPrevious, hasNext) => {
-        return !hasPrevious ? 0 : 1
-    }
     _load = (transactionId) => {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route } = this.props
         let transactionType = route.params.type
@@ -323,13 +320,11 @@ export default class TransactionDetail extends Component {
                             hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
                         }
                         // console.log('Start Set State/')
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, page: this._getPage(hasPrevious, hasNext) },
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext},
 
                             () => {
                                 this.swiping = true
-                                // setTimeout(()=>{
-                                //     this.refs.viewPager.setPageWithoutAnimation(this.state.page)
-                                // }, 0)
+                                this.refs.viewPager.setPageWithoutAnimation(this.state.page)
 
                             }
                         )
@@ -347,7 +342,7 @@ export default class TransactionDetail extends Component {
                             hasPrevious = (index == 0) ? false : true
                             hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
                         }
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, page: this._getPage(hasPrevious, hasNext) },
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext},
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -377,22 +372,29 @@ export default class TransactionDetail extends Component {
     _handleFeedbackClingme = () => {
         this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
     }
+    _goToMiddlePage = () => {
+        this.swiping = true
+        this.refs.viewPager.setPageWithoutAnimation(1)
+    }
     onSwipeViewPager(event) {
-        console.log('Go Swipe Viewpager', event)
-        console.log('Swiping', this.swiping)
         if (this.swiping) {
             console.log('GO Swiping reset')
             this.swiping = false
             return
         } else {
-            console.log('Pass swipe')
-            console.log('Position Page', event.position + '---' + this.state.page)
             if (event.position < this.state.page) {
-                console.log('Swipe Left')
-                this.goPrevious()
+                if (this.state.hasPrevious){
+                    this.goPrevious()
+                }else{
+                    this._goToMiddlePage()
+                }
+                
             } else if (event.position > this.state.page) {
-                console.log('Swipe Right')
-                this.goNext()
+                if (this.state.hasNext){
+                    this.goNext()
+                }else{
+                    this._goToMiddlePage()
+                }
             }
         }
 
@@ -450,17 +452,16 @@ export default class TransactionDetail extends Component {
                 <LoadingModal loading={this.state.loading} />
                 <ViewPager style={{ flex: 1 }}
                     onPageSelected={(event) => this.onSwipeViewPager(event)}
-                    onPageScrollStateChanged={(event)=>{console.log('Scroll State Change: ', event)}}
                     ref='viewPager'
                     initialPage={1}
                 >
-                    {this.state.hasPrevious && (<View>
-                    </View>)}
+                    {/*{this.state.hasPrevious && (<View></View>)}*/}
+                    <View></View>
                     <View>
                         {this._renderContent()}
                     </View>
-                    {this.state.hasNext && (<View>
-                    </View>)}
+                    <View></View>
+                    {this.state.hasNext && (<View></View>)}
                 </ViewPager>
                 <View style={styles.navigateInvoiceBlock}>
                     {btnPrev}
