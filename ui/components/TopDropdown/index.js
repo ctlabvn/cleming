@@ -23,7 +23,7 @@ export default class TopDropdown extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0){
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0 && !this.state.selectedOption){
             this.setState({selectedOption: nextProps.dropdownValues[0]})
         }
     }

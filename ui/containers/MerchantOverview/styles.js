@@ -33,6 +33,13 @@ export default {
         fontSize: 13,
         marginTop: 10
     },
+    funnyToday: {
+        color: 'rgba(0,0,0,0.5)',
+        marginBottom: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 10
+    },
     infoContainer: {
         flexDirection: 'row',
         width: '100%',
@@ -68,9 +75,10 @@ export default {
         alignItems: 'center',
         backgroundColor: 'white',
         borderRadius: 2,
-        width: '98%',
         padding: 10,
-        marginBottom: 7
+        marginBottom: 10,
+        height: 60, 
+        width: '100%'
     },
     leftBlock: {
         flexDirection: 'row',
@@ -121,6 +129,13 @@ export default {
       alignItems: 'center',
       justifyContent: 'center',
       height: height - 120 - 76 - 50 - 50 - 50
+    },
+    menuContainer: {
+        alignItems: 'center', 
+        flex: 1, 
+        flexDirection: 'column', 
+        justifyContent: 'flex-start',
+        padding: 5
     }
 
 }

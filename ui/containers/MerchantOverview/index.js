@@ -31,22 +31,20 @@ export default class MerchantOverview extends PureComponent {
     }
 
     componentDidMount() {
-        let dateFilterData = this.refs.dateFilter.getData()
+        // let dateFilterData = this.refs.dateFilter.getData()
         this.props.getListPlace(this.props.xsession, (err, data) => {
             let toTime = moment(new Date())
             // console.warn('Place Data', data)
             if (data && data.updated && data.updated.listPlace) {
                 var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
-                this.props.getPlaceStatistic(
-                    this.props.xsession,
-                    allPlace,
-                    dateFilterData.currentSelectValue.value.from,
-                    dateFilterData.currentSelectValue.value.to)
+                // this.props.getPlaceStatistic(
+                //     this.props.xsession,
+                //     allPlace,
+                //     dateFilterData.currentSelectValue.value.from,
+                //     dateFilterData.currentSelectValue.value.to)
                 this.props.getMerchantNews(
                     this.props.xsession,
-                    allPlace,
-                    dateFilterData.currentSelectValue.value.from,
-                    dateFilterData.currentSelectValue.value.to)
+                    allPlace)
             }
         })
     }
@@ -61,9 +59,9 @@ export default class MerchantOverview extends PureComponent {
 
     _handleChangePlace(item) {
         const { place } = this.props
-        let dateFilterData = this.refs.dateFilter.getData()
-        this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-        this.props.getMerchantNews(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        // let dateFilterData = this.refs.dateFilter.getData()
+        // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        this.props.getMerchantNews(this.props.xsession, item.id)
     }
 
     _handlePressFilter(item) {
@@ -96,10 +94,11 @@ export default class MerchantOverview extends PureComponent {
     renderMainContainer() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
         return (
-            <Content style={{ width: '100%', height: '100%' }}>
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
-
+            // <Content style={{ width: '100%', height: '100%' }}>
+            <View style={styles.menuContainer}>
+                <Text style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
+                <View style={styles.menuContainer}>
+                    {/*<Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
                     <View style={styles.infoContainer}>
                         <View style={styles.infoItemBorderRight}>
                             <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeReach)}</Text>
@@ -117,7 +116,7 @@ export default class MerchantOverview extends PureComponent {
                             <Text style={{ ...styles.infoItemNumber, ...styles.success }}>{formatNumber(place.statistic.placeBought)}</Text>
                             <Text style={styles.infoItemLabel}>Mua</Text>
                         </View>
-                    </View>
+                    </View>*/}  
                     <TouchableOpacity onPress={() => forwardTo('transactionList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
@@ -155,7 +154,8 @@ export default class MerchantOverview extends PureComponent {
                         </View>
                     </TouchableOpacity>
                 </View>
-            </Content>
+            </View>
+            // </Content>
         )
     }
 
@@ -182,7 +182,7 @@ export default class MerchantOverview extends PureComponent {
                 dropdownValues={dropdownValues}
                 onSelect={this._handleChangePlace.bind(this)} />
         )
-        if (place && place.listPlace && place.statistic) {
+        if (place && place.listPlace) {
             mainContainer = this.renderMainContainer()
         } else {
             mainContainer = this.renderLoading()
@@ -195,7 +195,7 @@ export default class MerchantOverview extends PureComponent {
                         <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
                     </LinearGradient>
                     {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
-                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
+                    {/*<DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />*/}
                 </View>
                 {mainContainer}
 
