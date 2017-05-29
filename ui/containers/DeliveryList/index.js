@@ -212,7 +212,7 @@ export default class extends Component {
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
                     {orderInfo.userInfo &&
-                        (<View style={{ ...styles.row, marginBottom: 5 }}>
+                        (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={styles.icon} />
                                 <Text>{orderInfo.userInfo.memberName}</Text>

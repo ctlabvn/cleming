@@ -134,6 +134,7 @@ export default class CreateUserContainer extends Component {
           }
         })
       } else {
+        this.props.resetForm()
         this.props.change('GroupAddress', this.props.place.listPlace)
         this.props.change('name', '')
         this.props.change('email', '')
@@ -147,7 +148,6 @@ export default class CreateUserContainer extends Component {
           fromTime: "07:00",
           toTime: "20:00"
         })
-        this.props.resetForm()
       }
     }
     
@@ -200,7 +200,6 @@ export default class CreateUserContainer extends Component {
     }
     
     onGeneratedPasswordPress() {
-      console.log("Change password")
       this.props.actions.getGeneratedPassword(this.props.session)
     }
   
@@ -355,7 +354,7 @@ export default class CreateUserContainer extends Component {
                                 //{id: 2, name: "Admin"}
                               ]}
               onSelect={this.handleChangePlace.bind(this)}
-              selectedOption={this.state.currentJob} />
+              selectedOption={this.state.currentJob || {id: 1, name: "Nhân Viên"}} />
           </View>
           <Dash
             dashLength={2}

@@ -34,7 +34,7 @@ const requestChangePassword = createRequestSaga({
         () => setToast('Change password successfully!')
     ],
     failure: [
-        () => setToast('Couldn\'t change password', 'danger')
+        () => setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
     ]
 })
 
