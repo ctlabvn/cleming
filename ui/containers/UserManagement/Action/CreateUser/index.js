@@ -132,7 +132,6 @@ export default class CreateUserContainer extends Component {
           }
         })
       } else {
-        this.props.resetForm()
         this.props.change('GroupAddress', this.props.place.listPlace)
         this.props.change('name', '')
         this.props.change('email', '')
