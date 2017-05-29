@@ -163,7 +163,7 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
           <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>      
-          <Field autoCapitalize="none" name="email" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
+          <Field autoCapitalize="none" icon="close" name="email" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
           <Grid>
             <Col style={{width: '34%'}}>
               <Button onPress={this._handleShowLogin}
@@ -192,6 +192,8 @@ export default class extends Component {
           <Field autoCapitalize="none" name="email" 
             autoFocus={emailFocus} 
             initialSelection={emailSelection} 
+            icon={input=>input.value ? 'close' : false}
+            onIconPress={input=>input.onChange('')}
             label="Email/ Số điện thoại" component={InputField} />
           <Field name="password" 
             autoFocus={passwordFocus} 
