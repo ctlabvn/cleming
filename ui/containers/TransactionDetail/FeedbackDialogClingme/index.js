@@ -60,8 +60,6 @@ export default class FeedbackDialogClingme extends Component {
                         </View>
                         {this.state.listValue && this.state.listValue.map((item) => 
                         {
-                            console.log('Loop Item ReasonID', item.reasonId)
-                            console.log('Selected Value', this.state.selectedValue)
                             return (
                             <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
                                 <View style={styles.rowPadding}>

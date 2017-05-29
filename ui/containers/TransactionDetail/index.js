@@ -17,14 +17,6 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-// export const TRANSACTION_STATUS = {
-//     WAITING_CLINGME_PROCESS_1: 0,
-//     WAITING_CLINGME_PROCESS_2: 3,
-//     SUCCESS: 1,
-//     REJECT: 2,
-//     WAITING_MERCHANT_CHECK: 4,
-//     MERCHANT_CHECKED: 5
-// }
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager';
 @connect(state => ({
@@ -91,16 +83,16 @@ export default class TransactionDetail extends Component {
     }
     _renderInvoiceBlock(transactionInfo) {
         if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
-            return(
+            return (
                 <View style={styles.invoiceBlock}>
                     <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
                     <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         } else {
-            return(
+            return (
                 <View style={styles.invoiceBlock}>
-                    <Text small transparent style={{...styles.invoiceLabel, ...styles.backgroundTransparent}}>Số hóa đơn: </Text>
-                    <Text small transparent style={{...styles.invoice, ...styles.backgroundTransparent}}>{transactionInfo.invoiceNumber}</Text>
+                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent }}>Số hóa đơn: </Text>
+                    <Text small transparent style={{ ...styles.invoice, ...styles.backgroundTransparent }}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         }
 
@@ -111,6 +103,21 @@ export default class TransactionDetail extends Component {
     }
     _showReasonPopupClingme = () => {
         this.refs.feedbackDialogClingme.setModalVisible(true)
+    }
+    _confirmTransaction = () => {
+        // console.log('Confirming', clingmeId)
+        const {xsession, confirmTransaction, transaction, setToast} = this.props
+        console.log("trans", transaction)
+        confirmTransaction(xsession, this.state.transactionInfo.clingmeId,
+            (err, data) => {
+                if (data && data.updated && data.updated.data.success) {
+                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
+                    setToast(message, 'info', 3000, 'bottom')
+                    // forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
+                    this._load(this.state.transactionInfo.clingmeId)
+                }
+            }
+        )
     }
     goPrevious = () => {
         const { xsession, transaction } = this.props
@@ -214,9 +221,12 @@ export default class TransactionDetail extends Component {
                             <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                         </View>
                     </View>
-                    <View style={styles.blockCenter}>
-                        <Button dark bordered style={{ alignSelf: 'center' }} onPress={() => this._showReasonPopupClingme()}>
-                            <Text>Số tiền không đúng</Text>
+                    <View style={styles.row}>
+                        <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._confirmTransaction()}>
+                            <Text>Đồng ý</Text>
+                        </Button>
+                        <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                            <Text>Trợ giúp</Text>
                         </Button>
                     </View>
                 </View>
@@ -333,13 +343,11 @@ export default class TransactionDetail extends Component {
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payWithClingme) {
                             let index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
-                            console.log('Index PayWith Clm', index)
                             hasPrevious = (index == 0) ? false : true
                             hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
                         }
                         // console.log('Start Set State/')
                         this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
-
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)

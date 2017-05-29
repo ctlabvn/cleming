@@ -376,5 +376,11 @@ export default {
         alignItems: 'center', 
         justifyContent: 'center', 
         flex: 1
+    },
+    feedbackClmTransaction: {
+        width: '40%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 }

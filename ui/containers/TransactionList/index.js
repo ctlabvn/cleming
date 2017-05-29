@@ -71,16 +71,7 @@ export default class extends Component {
     }
     confirmTransaction = (clingmeId) => {
         const { confirmTransaction, xsession, setToast, forwardTo } = this.props
-        console.log('Confirming', clingmeId)
-        confirmTransaction(xsession, clingmeId,
-            (err, data) => {
-                if (data && data.updated && data.updated.data.success) {
-                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
-                    setToast(message, 'info', 3000, 'bottom')
-                    forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
-                }
-            }
-        )
+        forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
     }
     componentDidMount() {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -162,7 +153,7 @@ export default class extends Component {
                             <View style={styles.row}>
                                 <Text small primary>Đã thanh toán</Text>
                                 <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
-                                    <Text bold primary>Xác nhận giao dịch</Text>
+                                    <Text bold primary>Xác nhận</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
                             </View>
