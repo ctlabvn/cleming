@@ -141,6 +141,7 @@ export default {
     changePassword: {
         title: 'Đổi mật khẩu',
         Page: PasswordModifier,
+        headerType: 'none',
         footerType: 'none',
     },
   // signup1: {
