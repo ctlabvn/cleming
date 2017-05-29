@@ -13,25 +13,31 @@ export default {
     paddingBottom:0,    
   },
   listItemRow:{
-    // width: '100%',
+    // width: '100%',   
+    height: 50,    
     marginLeft: 15,
     flexDirection: 'row',
+    justifyContent: 'space-between',    
+  },
+  titleContainer:{
+    height: '100%',
     justifyContent: 'space-between',
   },
   circle: {
     width: 6,
     height: 6,
     marginLeft: 17,
+    marginTop: 20,
     borderRadius: 3,
     backgroundColor: material.toolbarDefaultBg,
   },
   icon:{
-    color: '#7e7e7e',
+    color: '#808080',
     alignSelf:'flex-start',
     fontSize: 18,    
     marginLeft:10,    
   },
   textGray: {
-    color: '#838383'
+    color: '#808080'
   },
 }

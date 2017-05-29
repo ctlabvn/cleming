@@ -1,3 +1,5 @@
+import material from '~/theme/variables/material'
+
 export default {
     block: {
         flexDirection: 'column',
@@ -8,7 +10,8 @@ export default {
     },
     container: { 
         paddingBottom: 40, 
-        backgroundColor: 'white' 
+        backgroundColor: 'white',
+        flexDirection: 'row',        
     },
     content: {
         padding: 10,
@@ -35,6 +38,9 @@ export default {
         flex: 1,
         justifyContent: 'space-around',
         height: '100%',
+        position: 'absolute',
+        top: 0,
+        width: material.deviceWidth,
         padding: 10
     }
     

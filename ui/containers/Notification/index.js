@@ -22,18 +22,10 @@ import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
 
-import { getTextParts } from '~/ui/shared/utils'
+import { NOTIFY_TYPE } from '~/store/constants/api'
 
-const renderTextParts = text => {
-  const parts = getTextParts(text)
-  return (
-    <Text small>
-      {parts[0]}
-      {parts[1] && <Text small bold>{parts[1]}</Text>}
-      {parts[2]}
-    </Text>  
-  )
-}
+import { formatNumber } from '~/ui/shared/utils'
+
 
 @connect(state=>({
   session: authSelectors.getSession(state),
@@ -92,124 +84,129 @@ export default class extends Component {
     })
   }
 
-  renderNotificationContent({title, notifyType, createdTime, content}){    
+  renderNotificationIcon({notifyType}){
+    switch(notifyType){      
+      case NOTIFY_TYPE.WAITING:
+        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
+      case NOTIFY_TYPE.BOOKING:
+        return <Icon name="calendar" style={styles.icon}/>
+      case NOTIFY_TYPE.SUCCESS:
+        return <Icon name="clingme-wallet" style={styles.icon}/>
+    }
+  }
+
+  renderNotificationContent({title, notifyType, paramLong2, content, paramDouble1}){    
+    const border = <Border style={{
+              marginLeft: 15,
+              marginTop: 10,
+            }} color='rgba(0,0,0,0.5)' size={1} />
+
     switch(notifyType){
-      case 1:
+
+      case NOTIFY_TYPE.WAITING:
         return (
           <Body>
             <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#08a7ce'
-                }}>{content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end'
-              }}>
-                2 khách
-              </Text>                        
-            </View>
-
-            <View style={styles.listItemRow}>                        
-              
-              <Text note small>{title}</Text>                        
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
-            </View>
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
-          </Body>
-        )
-
-      case 2:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#838383'
-                }}>{content}</Text>
-              </View>
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>
-                Số hóa đơn: <Text small bold style={{
-                  color: '#08a7ce',
-                }}>00456</Text>
-              </Text>                        
-            </View>
-
-            <View style={styles.listItemRow}>                        
-              
-              <Text note small>Khách hàng: <Text small bold style={{
-                color: '#838383'
-              }}>Username</Text></Text>                        
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>                          
-            </View>
-              
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-                color: '#0388b5',
-              }}>
-                <Text style={{
-                fontWeight: '900',
-                color: '#0388b5',
-                fontSize: 20,
-              }}>560.000</Text>đ
-              </Text>
-            
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
-          </Body>
-        )
-
-      default:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#f7ae3b'
-                }}>{content}</Text>
+              <View style={styles.titleContainer}>
+                <Text note>{title}</Text>
+                <Text bold style={styles.textGray}>{content}</Text>
               </View>
               <Text note style={{
                 alignSelf: 'flex-end'
               }}>
                 <Text style={{
                   color: '#838383',
-                }} bold>400.000</Text>đ
+                }} bold>{formatNumber(paramDouble1)}</Text>đ
               </Text>                        
             </View>
 
-            <View style={styles.listItemRow}>                        
+            
+            {border}
+          </Body>
+        )  
+
+      case NOTIFY_TYPE.BOOKING:
+        const minutesRemain = Math.round((paramLong2 - Date.now()/1000)/60)
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View style={styles.titleContainer}>                
+                <Text note>{title} </Text>                                
+                <Text bold style={styles.textGray}>{content}                  
+                </Text>
+              </View>
               
-              <Text note small>Khách hàng: <Text small bold style={{
-                color: '#838383'
-              }}>Username</Text></Text>                        
+              {minutesRemain > 0 && <Text small style={{
+                  color: '#e36356',
+                  alignSelf: 'flex-end',
+                  position: 'absolute',
+                  top:0,
+                  right:0,
+                }}>Còn {minutesRemain}'</Text>
+              }
+
               <Text note small style={{
                 alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
+              }}>{moment(paramLong2*1000).format('hh:mm     DD/M/YY')}</Text>                      
             </View>
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
+            
+            {border}
+
           </Body>
         )
 
-        
+      case NOTIFY_TYPE.SUCCESS:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View style={styles.titleContainer}>
+                <Text note>{title}</Text>
+                <Text bold style={styles.textGray}>{content}                  
+                </Text>
+              </View>                      
+
+              <Text style={{
+                    alignSelf: 'flex-end',
+                    marginRight: 0,
+                    color: '#0388b5',
+                  }}>
+                    <Text style={{
+                    fontWeight: '900',
+                    color: '#0388b5',
+                    fontSize: 22,
+                  }}>{formatNumber(paramDouble1)}</Text>đ
+                  </Text>
+
+            </View>
+
+            
+              
+              
+            
+              {border}
+          </Body>
+        )
+
+            
                       
+    }
+  }
+
+  handleNotiClick(notification){
+    const {notifyType, paramLong3} = notification
+    // console.log(type, notification)
+    switch(notifyType){
+      case NOTIFY_TYPE.WAITING:
+        this.props.forwardTo('transactionDetail/' + paramLong3)
+        break
+      case NOTIFY_TYPE.BOOKING:
+        this.props.forwardTo('placeOrderDetail/' + paramLong3)
+        break
+      case NOTIFY_TYPE.SUCCESS:
+        this.props.forwardTo('deliveryDetail/'+paramLong3)
+        break
+      default:
+        break
     }
   }
 
@@ -230,12 +227,13 @@ export default class extends Component {
     return (          
        
         <Container>
-
-            <Button onPress={this._handleNotiRead} noPadder style={{
-              alignSelf:'flex-end',              
-              marginRight: 10,              
-            }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
-            </Button>
+          {
+            // <Button onPress={this._handleNotiRead} noPadder style={{
+            //   alignSelf:'flex-end',              
+            //   marginRight: 10,              
+            // }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
+            // </Button>
+          }
                     
             <Content               
               onEndReached={this._loadMore} onRefresh={this._onRefresh}             
@@ -246,13 +244,12 @@ export default class extends Component {
                   removeClippedSubviews={false}       
                   pageSize={10}                                           
                   dataArray={notifications.data} renderRow={(item) =>
-                    <ListItem noBorder style={styles.listItemContainer}>   
+                    <ListItem noBorder style={styles.listItemContainer} onPress={()=>this.handleNotiClick(item)}>   
                       <View style={{
                         justifyContent: 'space-between',   
-                        alignSelf:'flex-start',
-                        height: 47,                     
-                      }}>
-                        <Icon name={options.iconMap[item.notifyType] || 'clingme-wallet'} style={styles.icon}/>                    
+                        alignSelf:'flex-start',                                             
+                      }}>                          
+                        {this.renderNotificationIcon(item)}                  
                         <View style={styles.circle}/>
                       </View>                      
                       {this.renderNotificationContent(item)}

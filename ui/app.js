@@ -224,7 +224,7 @@ export default class App extends Component {
     } else {
       // we only pass this.page, route and navigator is for mapping or some event like will focus ...
       // first time not show please waiting
-      if (!this.navigator) {
+      if (!this.navigator || this.page.Preload === false) {
         return this.renderComponentFromPage(this.page)
       }
       return (
