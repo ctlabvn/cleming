@@ -84,7 +84,7 @@ export default class extends Component {
                     <View style={styles.rowPadding}>
                         <Text success small>Đã thanh toán</Text>
                         <View style={styles.row}>
-                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                             <CircleCountdown
                                 baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
                                 counting={this.state.counting}
@@ -94,22 +94,22 @@ export default class extends Component {
                     </View>
                     <View style={styles.rowPadding}>
                         <Text small>Đặt hàng số</Text>
-                        <Text primary>{orderDetail.orderInfo.tranId}</Text>
+                        <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.block}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
-                    <View style={styles.rowPadding}>
+                    <View style={styles.rowPaddingTopLarge}>
                         <Text small>Người nhận</Text>
                         <Text bold>{orderDetail.orderInfo.userInfo.memberName}</Text>
                     </View>
-                    <View style={styles.rowPadding}>
+                    <View style={styles.rowPaddingTopMedium}>
                         <Text small>Số điện thoại</Text>
                         <Text bold>{orderDetail.orderInfo.userInfo.phoneNumber}</Text>
                     </View>
-                    <View style={styles.rowPadding}>
+                    <View style={styles.rowPaddingTopMedium}>
                         <Text small>Yêu cầu nhận hàng trong</Text>
                         <Text bold>45'</Text>
                     </View>

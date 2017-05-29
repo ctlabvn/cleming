@@ -107,7 +107,7 @@ export default class PlaceOrderDetail extends Component {
         <View style={{ backgroundColor: 'white', height: '100%' }}>
           <View style={styles.placeContainer}>
             <View style={{ ...styles.rowPaddingTB, ...styles.center }}>
-              <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+              <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
               <View style={{right: 10, position: 'absolute'}}>
                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                   counting={this.state.counting}
