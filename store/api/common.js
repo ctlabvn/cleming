@@ -10,13 +10,12 @@ const urlEncode = data => data
 
 export const rejectErrors = (res) => {
   const { status } = res
-  console.log(status)
   if (status >= 200 && status < 300) {
     return res
   }
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
-  return Promise.reject({ message: res.statusText, status })
+  return Promise.reject({ message: res.statusText, status, code: JSON.parse(res._bodyText).code })
 }
 
 // try invoke callback for refresh token here

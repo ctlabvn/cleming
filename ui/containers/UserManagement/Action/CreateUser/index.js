@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset, startAsyncValidation } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import Dash from 'react-native-dash';
@@ -48,11 +48,13 @@ const formSelector = formValueSelector('CreateUserForm')
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch),
   destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
-  resetForm: () => dispatch(reset('CreateUserForm'))
+  resetForm: () => dispatch(reset('CreateUserForm')),
+  startValidate: () => dispatch(stopAsyncValidation('CreateUserForm'))
 }), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
         enableReinitialize: true,
+        persistentSubmitErrors: true,
         initialValues: {
           GroupAddress: stateProps.place.listPlace,
           name: '',
@@ -104,7 +106,7 @@ export default class CreateUserContainer extends Component {
           checkAll: false,
           employeeDetail: {},
           rowIDOfEmployee: 0,
-          chosenListPlaceID: [],
+          chosenListPlace: [],
           currentJob: props.formValues.permission,
           isLoading: false
         }
@@ -115,7 +117,6 @@ export default class CreateUserContainer extends Component {
       if (typeof this.props.route.params.id != "undefined") {
         let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
         let permission = null
-        let listPlaceID = []
         switch (employeeDetail.titleType) {
           case 1: permission = "Nhân Viên"
         }
@@ -123,11 +124,8 @@ export default class CreateUserContainer extends Component {
         this.props.change('name', employeeDetail.userName)
         this.props.change('email', employeeDetail.email)
         this.props.change('phone', employeeDetail.phoneNumber)
-        employeeDetail.listPlace.map((place, index) => {
-          listPlaceID.push(place.placeId)
-        })
         this.setState({
-          chosenListPlaceID: listPlaceID,
+          chosenListPlace: employeeDetail.listPlace,
           currentJob: {
             id: employeeDetail.titleType,
             name: permission
@@ -140,7 +138,7 @@ export default class CreateUserContainer extends Component {
         this.props.change('email', '')
         this.props.change('phone', '')
         this.setState({
-          chosenListPlaceID: [],
+          chosenListPlace: [],
           currentJob: {
             id: 1,
             name: "Nhân Viên"
@@ -158,7 +156,6 @@ export default class CreateUserContainer extends Component {
           toTime: "20:00"
         })
       }
-      this.props.resetForm()
     }
     
     onFromTimeFocus() {
@@ -214,19 +211,35 @@ export default class CreateUserContainer extends Component {
       }
     }
     
+    getListEmployeeAfterSuccess(error) {
+      if (error.status > 399) {
+        this.setState({
+          isLoading: false
+        })
+      } else {
+        this.props.actions.getListEmployee(this.props.session, () => {
+          this.setState({
+            isLoading: false
+          }, () => {
+            this.props.actions.goBack()
+          })
+        })
+      }
+    }
+    
     onSubmitUser() {
       let userInfo = {}
-      if (this.state.chosenListPlaceID.length == 0) {
-        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
+      if (this.state.chosenListPlace.length == 0) {
+        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
       } else if (this.props.generatedPassword.trim() == '') {
-        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
+        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
       } else if (this.props.formState.CreateUserForm.syncErrors) {
-        this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại")
+        this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
       } else {
         this.setState({
           isLoading: true
         })
-        let listPlaceId = this.state.chosenListPlaceID.join(";")
+        let listPlaceId = this.state.chosenListPlace.map(c=>c.placeId).join(";")
         userInfo.fullName = this.props.formValues.name
         userInfo.phoneNumber = this.props.formValues.phone
         userInfo.password = this.props.generatedPassword
@@ -236,22 +249,13 @@ export default class CreateUserContainer extends Component {
         userInfo.toTimeWork = this.state.toTime
         userInfo.listPlaceId = listPlaceId
         if (typeof this.props.route.params.id == 'undefined') {
-          this.props.actions.createEmployeeInfo(this.props.session, userInfo, () => {
-            this.props.actions.getListEmployee(this.props.session, () => {
-              this.setState({
-                isLoading: false
-              })
-            })
+          this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
+            this.getListEmployeeAfterSuccess(error)
           })
         } else {
           userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
-          console.log(this.props)
-          this.props.actions.updateEmployeeInfo(this.props.session, userInfo, () => {
-            this.props.actions.getListEmployee(this.props.session, () => {
-              this.setState({
-                isLoading: false
-              })
-            })
+          this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
+            this.getListEmployeeAfterSuccess(error)
           })
         }
       }
@@ -259,7 +263,7 @@ export default class CreateUserContainer extends Component {
     
     handleGetListPlaceFromArrayField(data) {
       this.setState({
-        chosenListPlaceID: data
+        chosenListPlace: data
       })
     }
   
@@ -275,9 +279,9 @@ export default class CreateUserContainer extends Component {
     renderMainContainer() {
       let fromTime = this.state.fromTime
       let toTime = this.state.toTime
-      let listPlace = null
+      let listPlace = []
       if (typeof this.props.route.params.id == "undefined") {
-        listPlace = []
+        listPlace = this.state.chosenListPlace
       } else {
         listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
       }

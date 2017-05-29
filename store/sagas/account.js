@@ -95,9 +95,13 @@ const requestUpdateEmployeeInfo = createRequestSaga({
     
   ],
   failure: [
-    (data) => {
-      console.log(data)
-      return setToast('Couldn\'t update employee', 'danger')
+    (error) => {
+      if (error.code == 1207) {
+        return setToast('Số điện thoại đã tồn tại', 'danger')
+      } else if (error.code == 1206) {
+        return setToast('Địa chỉ email đã tồn tại', 'danger')
+      }
+      return setToast('Không có kết nối đến máy chủ', 'danger')
     }
   ],
 })
@@ -109,7 +113,14 @@ const requestCreateEmployeeInfo = createRequestSaga({
   
   ],
   failure: [
-    () => setToast('Couldn\'t create employee', 'danger')
+    (error) => {
+      if (error.code == 1207) {
+        return setToast('Số điện thoại đã tồn tại', 'danger')
+      } else if (error.code == 1206) {
+        return setToast('Địa chỉ email đã tồn tại', 'danger')
+      }
+      return setToast('Không có kết nối đến máy chủ', 'danger')
+    }
   ],
 })
 

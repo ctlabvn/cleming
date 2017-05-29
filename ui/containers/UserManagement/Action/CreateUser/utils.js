@@ -128,7 +128,7 @@ export class renderGroup extends Component {
   }
   
   getSelected(){
-    return this.state.fields.filter(c=>c.checked).map(c=>c.placeId)
+    return this.state.fields.filter(c=>c.checked).map(c=>c)
   }
   
   handleCheck(index){
