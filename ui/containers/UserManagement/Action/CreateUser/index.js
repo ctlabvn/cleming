@@ -143,14 +143,21 @@ export default class CreateUserContainer extends Component {
           currentJob: {
             id: 1,
             name: "Nhân Viên"
-          }
+          },
+          fromTime: "07:00",
+          toTime: "20:00"
         })
         this.props.resetForm()
       }
     }
     
     componentDidMount() {
-      //stopAsyncValidation('CreateUserForm', {})
+      if (typeof this.props.route.params.id == "undefined") {
+        this.setState({
+          fromTime: "07:00",
+          toTime: "20:00"
+        })
+      }
       this.props.resetForm()
     }
     
@@ -213,6 +220,8 @@ export default class CreateUserContainer extends Component {
         this.props.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
       } else if (this.props.generatedPassword.trim() == '') {
         this.props.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
+      } else if (this.props.formState.CreateUserForm.syncErrors) {
+        this.props.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại")
       } else {
         this.setState({
           isLoading: true
