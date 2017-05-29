@@ -67,13 +67,17 @@ export default {
         fontSize: 24,
         fontWeight: 'bold'
     },
+    passwordTextWarning: {
+        color: '#00a9d7',
+        fontSize: 14
+    },
     copyText: {
         color: '#00a9d7',
         fontSize: 14,
     },
     submitButton: {
         backgroundColor: '#00a9d7',
-        alignSelf: 'center',
+        alignSelf: 'flex-end',
         width: '100%',
         borderRadius: 0,
         alignItems: 'center',
@@ -91,4 +95,11 @@ export default {
         minHeight: 50,
         justifyContent: 'center'
     },
+    absoluteContainer: {
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: 170,
+      backgroundColor: 'white'
+    }
 }

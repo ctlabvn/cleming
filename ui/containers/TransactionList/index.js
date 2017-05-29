@@ -30,7 +30,7 @@ export default class extends Component {
         this.state = {
             loading: false,
             loadingMore: false,
-            currentTab: TRANSACTION_TYPE_DIRECT
+            currentTab: TRANSACTION_TYPE_CLINGME
         }
     }
     // need filter transaction type
@@ -326,7 +326,7 @@ export default class extends Component {
             <Container style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilterListDirect} ref='transactionFilter'

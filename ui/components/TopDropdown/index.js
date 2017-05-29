@@ -11,6 +11,7 @@ const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
     constructor(props) {
+        console.log('Go to constructor')
         super(props)
         this.state = {
             openningDropdown: false,
@@ -21,13 +22,11 @@ export default class TopDropdown extends Component {
         }
     }
 
-    /*componentWillReceiveProps(nextProps) {
-      if (this.props.modalOpen != nextProps.modalOpen) {
-        if (nextProps.modalOpen == "open" && this.state.openningDropdown == true) {
-          this.toggle()
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0){
+            this.setState({selectedOption: nextProps.dropdownValues[0]})
         }
-      }
-    }*/
+    }
 
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)

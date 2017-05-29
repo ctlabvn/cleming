@@ -188,7 +188,7 @@ export default class extends Component {
                     <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                             <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
                                 counting={this.state.counting}
                                 countTo={countTo}

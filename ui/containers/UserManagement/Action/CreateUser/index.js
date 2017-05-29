@@ -9,6 +9,7 @@ import {
 import { Text, Dimensions, Clipboard } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset } from 'redux-form'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -45,8 +46,7 @@ const formSelector = formValueSelector('CreateUserForm')
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
   formState: state.form
 }), dispatch => ({
-  ...accountActions,
-  ...commonActions,
+  actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch),
   destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
   resetForm: () => dispatch(reset('CreateUserForm'))
 }), (stateProps, dispatchProps, ownProps)=>{
@@ -200,7 +200,8 @@ export default class CreateUserContainer extends Component {
     }
     
     onGeneratedPasswordPress() {
-      this.props.getGeneratedPassword(this.props.session)
+      console.log("Change password")
+      this.props.actions.getGeneratedPassword(this.props.session)
     }
   
     _setClipboardContent = async () => {
@@ -217,11 +218,11 @@ export default class CreateUserContainer extends Component {
     onSubmitUser() {
       let userInfo = {}
       if (this.state.chosenListPlaceID.length == 0) {
-        this.props.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
+        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ")
       } else if (this.props.generatedPassword.trim() == '') {
-        this.props.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
+        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập")
       } else if (this.props.formState.CreateUserForm.syncErrors) {
-        this.props.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại")
+        this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại")
       } else {
         this.setState({
           isLoading: true
@@ -236,8 +237,8 @@ export default class CreateUserContainer extends Component {
         userInfo.toTimeWork = this.state.toTime
         userInfo.listPlaceId = listPlaceId
         if (typeof this.props.route.params.id == 'undefined') {
-          this.props.createEmployeeInfo(this.props.session, userInfo, () => {
-            this.props.getListEmployee(this.props.session, () => {
+          this.props.actions.createEmployeeInfo(this.props.session, userInfo, () => {
+            this.props.actions.getListEmployee(this.props.session, () => {
               this.setState({
                 isLoading: false
               })
@@ -245,8 +246,9 @@ export default class CreateUserContainer extends Component {
           })
         } else {
           userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
-          this.props.updateEmployeeInfo(this.props.session, userInfo, () => {
-            this.props.getListEmployee(this.props.session, () => {
+          console.log(this.props)
+          this.props.actions.updateEmployeeInfo(this.props.session, userInfo, () => {
+            this.props.actions.getListEmployee(this.props.session, () => {
               this.setState({
                 isLoading: false
               })
@@ -293,22 +295,24 @@ export default class CreateUserContainer extends Component {
       } else {
         formState = this.props.formState.CreateUserForm
       }
-      if (formState.syncErrors) {
-        let errors = formState.syncErrors
-        if (errors.name) {
-          errorNameStyle = {borderColor: 'red', borderWidth: 1}
-          if (errors.name.length > 30) {
-            errorLongNameStyle = {marginBottom: 30}
+      if (typeof formState != "undefined") {
+        if (typeof formState.syncErrors != 'undefined') {
+          let errors = formState.syncErrors
+          if (errors.name) {
+            errorNameStyle = {borderColor: 'red', borderWidth: 1}
+            if (errors.name.length > 30) {
+              errorLongNameStyle = {marginBottom: 30}
+            }
+            nameError = <Text style={{color: 'red', marginTop: 5}}>{errors.name}</Text>
           }
-          nameError = <Text style={{color: 'red', marginTop: 5}}>{errors.name}</Text>
-        }
-        if (errors.phone) {
-          errorPhoneStyle = {borderColor: 'red', borderWidth: 1}
-          phoneError = <Text style={{color: 'red', marginTop: 5}}>{errors.phone}</Text>
-        }
-        if (errors.email) {
-          errorEmailStyle = {borderColor: 'red', borderWidth: 1}
-          emailError = <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
+          if (errors.phone) {
+            errorPhoneStyle = {borderColor: 'red', borderWidth: 1}
+            phoneError = <Text style={{color: 'red', marginTop: 5}}>{errors.phone}</Text>
+          }
+          if (errors.email) {
+            errorEmailStyle = {borderColor: 'red', borderWidth: 1}
+            emailError = <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
+          }
         }
       }
       return (
@@ -327,7 +331,7 @@ export default class CreateUserContainer extends Component {
             <Field
               inputStyle={styles.inputText}
               style={styles.inputField}
-              label="Email"
+              label="Email *"
               name="email"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
@@ -404,37 +408,6 @@ export default class CreateUserContainer extends Component {
             employeeListPlace={listPlace}
             name="GroupAddress"
             component={renderGroup}/>
-          <View style={{marginTop: 15}}>
-            <Grid>
-              <Col>
-                <Button
-                  onPress={this.onGeneratedPasswordPress.bind(this)}
-                  style={styles.createPasswordButton}>
-                  <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
-                </Button>
-              </Col>
-            </Grid>
-          </View>
-          <View style={{marginTop: 40}}>
-            <Grid>
-              <Col/>
-              <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={styles.passwordText}>*****</Text>
-              </Col>
-              <Col style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                <Col style={{alignItems: 'flex-end', width: '60%'}}>
-                  <Icon
-                    style={styles.copyIcon}
-                    name="copy"/>
-                </Col>
-                <Col style={{justifyContent: 'center', width: '40%'}}>
-                  <Text
-                    onPress={this._setClipboardContent.bind(this)}
-                    style={styles.copyText}>Copy</Text>
-                </Col>
-              </Col>
-            </Grid>
-          </View>
         </View>
       )
     }
@@ -455,40 +428,72 @@ export default class CreateUserContainer extends Component {
           mainContainer = this.renderMainContainer()
         }
         
+        let passwordText = null
+        if (this.props.generatedPassword == '') {
+          passwordText = <Text style={styles.passwordTextWarning}>{'Bạn cần tạo 1 mật khẩu'}</Text>
+        } else {
+          passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
+        }
+        
         return (
             <Container>
-                <Content style={{backgroundColor: 'white'}}>
-                  {mainContainer}
-                    <View style={{marginTop: 40}}>
-                        <Grid>
-                            <Col>
-                                <Button
-                                  onPress={this.onSubmitUser.bind(this)}
-                                  style={{...styles.submitButton}}>
-                                    <Text style={styles.createPasswordButtonText}>OK</Text>
-                                </Button>
-                            </Col>
-                        </Grid>
-                    </View>
-                    <DateTimePicker
-                        mode="time"
-                        titleIOS="Chọn thời gian"
-                        confirmTextIOS="Ok"
-                        cancelTextIOS="Cancel"
-                        isVisible={this.state.fromTimeVisible}
-                        onConfirm={this.setFromTime.bind(this)}
-                        onCancel={this.onFromTimeCancel.bind(this)}
-                    />
-                    <DateTimePicker
-                        mode="time"
-                        titleIOS="Chọn thời gian"
-                        confirmTextIOS="Ok"
-                        cancelTextIOS="Cancel"
-                        isVisible={this.state.toTimeVisible}
-                        onConfirm={this.setToTime.bind(this)}
-                        onCancel={this.onToTimeCancel.bind(this)}
-                    />
-                </Content>
+              <Content style={{backgroundColor: 'white'}}>
+                {mainContainer}
+              </Content>
+              <View style={styles.absoluteContainer}>
+                <Grid>
+                  <Row style={{justifyContent: 'center', height: 40}}>
+                    <Button
+                      onPress={this.onGeneratedPasswordPress.bind(this)}
+                      style={styles.createPasswordButton}>
+                      <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
+                    </Button>
+                  </Row>
+                  <Row style={{alignItems: 'center'}}>
+                    <Col style={{width: '25%'}}/>
+                    <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                      {passwordText}
+                    </Col>
+                    <Col style={{ justifyContent: 'center', flexDirection: 'row', width: '25%'}}>
+                      <Col style={{alignItems: 'flex-end', width: '50%'}}>
+                        <Icon
+                          style={styles.copyIcon}
+                          name="copy"/>
+                      </Col>
+                      <Col style={{justifyContent: 'center', width: '50%'}}>
+                        <Text
+                          onPress={this._setClipboardContent.bind(this)}
+                          style={styles.copyText}>Copy</Text>
+                      </Col>
+                    </Col>
+                  </Row>
+                  <Row style={{justifyContent: 'flex-end', height: 40}}>
+                    <Button
+                      onPress={this.onSubmitUser.bind(this)}
+                      style={{...styles.submitButton}}>
+                      <Text style={styles.createPasswordButtonText}>OK</Text>
+                    </Button>
+                  </Row>
+                </Grid>
+              </View>
+              <DateTimePicker
+                mode="time"
+                titleIOS="Chọn thời gian"
+                confirmTextIOS="Ok"
+                cancelTextIOS="Cancel"
+                isVisible={this.state.fromTimeVisible}
+                onConfirm={this.setFromTime.bind(this)}
+                onCancel={this.onFromTimeCancel.bind(this)}
+              />
+              <DateTimePicker
+                mode="time"
+                titleIOS="Chọn thời gian"
+                confirmTextIOS="Ok"
+                cancelTextIOS="Cancel"
+                isVisible={this.state.toTimeVisible}
+                onConfirm={this.setToTime.bind(this)}
+                onCancel={this.onToTimeCancel.bind(this)}
+              />
             </Container>
         )
     }

@@ -73,7 +73,7 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.rowPadding}>
                                 <Text primary bold>#{item.orderCode}</Text>
                                 <View style={styles.row}>
-                                    <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                                    <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.state.counting}
                                         countTo={item.bookDate}

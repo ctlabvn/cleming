@@ -95,7 +95,10 @@ const requestUpdateEmployeeInfo = createRequestSaga({
     
   ],
   failure: [
-    () => setToast('Couldn\'t update employee', 'danger')
+    (data) => {
+      console.log(data)
+      return setToast('Couldn\'t update employee', 'danger')
+    }
   ],
 })
 

@@ -46,6 +46,7 @@ export default {
   },
   
   updateEmployeeInfo(session, updatedData) {
+    console.log(updatedData)
     return apiPost('/merchantapp/edit-subaccount', updatedData, session)
   },
   
