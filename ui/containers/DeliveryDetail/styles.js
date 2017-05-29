@@ -47,27 +47,38 @@ export default {
         alignItems: 'center'
     },
     orderItem: {
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         borderBottomColor: 'transparent',
-        padding: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
         marginLeft: 0,
         marginRight: 0,
-        marginBottom: 10
+        marginBottom: 10,
     },
     cartLeft: {
         flexDirection: 'row',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
     },
     cartContent: {
         marginLeft: 10,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         alignItems: 'flex-start',
+    },
+    textLeftFlex: {
+        textAlign: 'left',
+        alignSelf: 'flex-start',
+        flex: 1,
     },
     textLeft: {
         textAlign: 'left',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
     },
+
+    itemCash: {
+    },
+
     fixBottom: {
         position: 'absolute',
         bottom: 0,
