@@ -120,6 +120,15 @@ export default {
   brandWarning: '#f26522',
   brandSidebar: '#252932',
 
+  blue600 : '#0085AC',
+  blue400 : '#00A9D3',
+  green400 : '#8CC63F',
+  orange500 : '#F7931E',
+  gray600 : '#4D4D4D',
+  gray500 : '#808080',
+  gray400 : '#B3B3B3',
+  gray300 : '#E8E8E8',
+  gray200 : '#F2F2F2',
 
     // Font
   fontFamily: 'Roboto',
