@@ -229,7 +229,7 @@ export default class UpdateUserContainer extends Component {
                 <Button
                   onPress={this.onSubmitUserInfo.bind(this)}
                   style={styles.updatePasswordButton}>
-                  <Text style={styles.updatePasswordButtonText}>Đồng Ý</Text>
+                  <Text style={styles.updatePasswordButtonText}>Đồng ý</Text>
                 </Button>
             </Container>
         )
