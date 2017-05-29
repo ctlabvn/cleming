@@ -30,16 +30,17 @@ export default {
         justifyContent: 'space-between',
         paddingLeft: 10,
         paddingRight: 10,
-        paddingTop: 5,
+        paddingTop: 3,
         flexDirection: 'row',
         alignItems: 'center',
     },
 
+    paddingTopMedium: {
+        paddingTop: 3,
+    },
+
     block: {
-        paddingTop: 5,
-        paddingBottom: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
+        padding: 10,
     },
     row: {
         justifyContent: 'space-between',

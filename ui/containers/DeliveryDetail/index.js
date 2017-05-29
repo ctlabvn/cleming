@@ -97,7 +97,7 @@ export default class extends Component {
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <View style={styles.line} />
-                    <View style={styles.block}>
+                    <View style={{...styles.block, paddingBottom: 0}}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
@@ -113,7 +113,7 @@ export default class extends Component {
                         <Text small>Yêu cầu nhận hàng trong</Text>
                         <Text bold>45'</Text>
                     </View>
-                    <View style={styles.block}>
+                    <View style={{...styles.block, ...styles.paddingTopMedium}}>
                         <Text small>Yêu cầu khác</Text>
                         <Text bold>{orderDetail.orderInfo.note}</Text>
                     </View>
