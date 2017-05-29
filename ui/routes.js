@@ -57,13 +57,21 @@ export default {
         title: 'Chi tiết giao dịch',
         Page: TransactionDetail,
         headerType: 'back',
-        footerType: 'none',
+        footerType: 'none',        
     },
     'transactionConfirm' : {
         title: 'Xác nhận giao dịch',
         Page: TransactionConfirm,
         headerType: 'back',
-        footerType: 'none'
+        footerType: 'none',
+        PreLoad: false,
+    },
+    'transactionConfirmRight' : {
+        title: 'Xác nhận giao dịch',
+        Page: TransactionConfirm,
+        headerType: 'back',
+        footerType: 'none',
+        PreLoad: false,
     },
     deliveryList: {
         title: 'Danh sách giao hàng',

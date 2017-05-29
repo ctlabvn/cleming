@@ -127,6 +127,13 @@
 			remoteGlobalIDString = 3C86DF461ADF2C930047B81A;
 			remoteInfo = RCTWebSocket;
 		};
+		240CB2B11ED8398200B79303 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2AC3B851ECDA46100611367 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
+		};
 		241BBA331EBC3F0B00DDD67C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C3013A559B744690BBA98ED1 /* BVLinearGradient.xcodeproj */;
@@ -787,6 +794,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				240CB2B21ED8398200B79303 /* PBXTargetDependency */,
 			);
 			name = MerchantApp;
 			productName = "Hello World";
@@ -1305,6 +1313,11 @@
 			target = 13B07F861A680F5B00A75B9A /* MerchantApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		240CB2B21ED8398200B79303 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			targetProxy = 240CB2B11ED8398200B79303 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1433,8 +1446,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1476,8 +1489,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "b22e76f3-289b-4813-9898-6658b0499a37";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

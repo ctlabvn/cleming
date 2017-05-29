@@ -92,7 +92,7 @@ export default class extends Component {
     })
   }
 
-  renderNotificationContent({title, notifyType, createdTime, content}){    
+  renderNotificationContent({title, notifyType, createdTime, content, paramStr1}){    
     switch(notifyType){
       case 1:
         return (
@@ -148,7 +148,7 @@ export default class extends Component {
               
               <Text note small>Khách hàng: <Text small bold style={{
                 color: '#838383'
-              }}>Username</Text></Text>                        
+              }}>{paramStr1}</Text></Text>                        
               <Text note small style={{
                 alignSelf: 'flex-end'
               }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>                          
@@ -196,7 +196,7 @@ export default class extends Component {
               
               <Text note small>Khách hàng: <Text small bold style={{
                 color: '#838383'
-              }}>Username</Text></Text>                        
+              }}>{paramStr1}</Text></Text>                        
               <Text note small style={{
                 alignSelf: 'flex-end'
               }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
