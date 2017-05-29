@@ -16,8 +16,30 @@ export default {
         flexDirection: 'row',
         alignItems: 'center',
     },
+
+    rowPaddingTopLarge: {
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    rowPaddingTopMedium: {
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
     block: {
-        padding: 10
+        paddingTop: 5,
+        paddingBottom: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     row: {
         justifyContent: 'space-between',
