@@ -72,6 +72,15 @@ export default class TopDropdown extends Component {
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
+        if (!dropdownValues || dropdownValues.length == 0){
+            return (
+                <View style={containerStyleTopDown}>
+                    <View style={styles.dropdownHeader}>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>Đang tải địa điểm...</Text>
+                    </View>
+                </View>
+            )
+        }
         if (dropdownValues.length == 1) {
             return (
                 <View style={containerStyleTopDown}>
