@@ -67,6 +67,10 @@ export default {
         fontSize: 24,
         fontWeight: 'bold'
     },
+    passwordTextWarning: {
+        color: '#00a9d7',
+        fontSize: 14
+    },
     copyText: {
         color: '#00a9d7',
         fontSize: 14,
@@ -92,7 +96,6 @@ export default {
         justifyContent: 'center'
     },
     absoluteContainer: {
-      position: 'absolute',
       bottom: 0,
       left: 0,
       width: '100%',
