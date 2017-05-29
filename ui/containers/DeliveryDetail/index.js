@@ -127,11 +127,11 @@ export default class extends Component {
                                 <View style={styles.cartLeft}>
                                     <Image style={{ width: 60, height: 60 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
                                     <View style={styles.cartContent}>
-                                        <Text small style={styles.textLeft}>{item.itemName}</Text>
-                                        <Text small light style={styles.textLeft}>Số lượng: {item.quantity}</Text>
+                                        <Text small style={styles.textLeftFlex}>{item.itemName}</Text>
+                                        <Text small style={styles.textLeft}>Số lượng: {item.quantity}</Text>
                                     </View>
                                 </View>
-                                <Text bold>{item.price / 1000}k</Text>
+                                <Text bold style={{...styles.itemCash}}>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
