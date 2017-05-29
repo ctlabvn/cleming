@@ -44,8 +44,11 @@ export default class PlaceOrderDetail extends Component {
         (error, data) => {
           console.log('Err Booking detail', error)
           console.log('Booking Detail', data)
-          if (data.updated) {
+          if (data && data.updated) {
             this.setState({ bookingDetail: data.updated.bookingInfo })
+            return
+          }else{
+            this.props.forwardTo('merchantOverview')
             return
           }
         }
@@ -63,8 +66,11 @@ export default class PlaceOrderDetail extends Component {
         (error, data) => {
           console.log('Err Booking Detail', error)
           console.log('Booking Detail', data)
-          if (data.updated) {
+          if (data && data.updated) {
             this.setState({ bookingDetail: data.updated.bookingInfo })
+            return
+          }else{
+            this.props.forwardTo('merchantOverview')
             return
           }
         }
@@ -78,8 +84,8 @@ export default class PlaceOrderDetail extends Component {
   render() {
     if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
       return (
-        <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Spinner color='red' />
+        <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Spinner />
           <Text small>Loading...</Text>
         </View>
       )

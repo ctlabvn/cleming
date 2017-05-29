@@ -1,7 +1,8 @@
-import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR} from '~/ui/shared/constants'
+import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR, GRAY600, GRAY400, GRAY200} from '~/ui/shared/constants'
 export default{
     container: {
-        paddingTop: 50, 
+        paddingTop: 50,
+        backgroundColor: GRAY200 
     },
     contentContainer: {
       padding: 0,
@@ -16,19 +17,28 @@ export default{
         flexDirection: 'column',
         backgroundColor: 'white',
         borderRadius: 2,
-        
         paddingRight: 10,
         paddingTop: 10,
         paddingLeft: 10,
         paddingBottom: 10,
-
         marginTop: 5,
         marginBottom: 5,
-        // marginBottom: 10,
-        // padding: 10,
         marginLeft: 0,
         marginRight: 0,
-        alignSelf: 'center',
+        width: '100%'
+    },
+    deliveryBlockCacel: {
+        flexDirection: 'column',
+        backgroundColor: GRAY400,
+        borderRadius: 2,
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 0,
+        marginRight: 0,
         width: '100%'
     },
     row: {
@@ -36,13 +46,27 @@ export default{
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    rowLeft: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '100%',
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
     block: {
         flexDirection: 'column',
-        // borderStyle: 'dotted',
-        // borderBottomWidth: 0.5,
-        // borderBottomColor: 'rgba(0,0,0,0.5)',
         marginTop: 5,
         marginBottom: 5
+    },
+    subBlock: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start'
+    },
+    textLeft: {
+        alignSelf: 'flex-start',
+        textAlign: 'left'
     },
     deliveryCodeBlock: {
         flexDirection: 'row',
@@ -56,6 +80,9 @@ export default{
     },
     deliveryCodeSuccess: {
         color: SUCCESS_COLOR
+    },
+    grey: {
+        color: GRAY600
     },
     icon: {
         fontSize: 20,

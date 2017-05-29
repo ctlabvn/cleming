@@ -62,7 +62,7 @@ export default class extends Component {
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
             return (
                 <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                    <Spinner color='red' />
+                    <Spinner />
                     <Text small>Loading...</Text>
                 </View>
             )
@@ -97,7 +97,7 @@ export default class extends Component {
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <View style={styles.line} />
-                    <View style={styles.block}>
+                    <View style={{...styles.block, paddingBottom: 0}}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
@@ -113,7 +113,7 @@ export default class extends Component {
                         <Text small>Yêu cầu nhận hàng trong</Text>
                         <Text bold>45'</Text>
                     </View>
-                    <View style={styles.block}>
+                    <View style={{...styles.block, ...styles.paddingTopMedium}}>
                         <Text small>Yêu cầu khác</Text>
                         <Text bold>{orderDetail.orderInfo.note}</Text>
                     </View>
@@ -127,11 +127,11 @@ export default class extends Component {
                                 <View style={styles.cartLeft}>
                                     <Image style={{ width: 60, height: 60 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
                                     <View style={styles.cartContent}>
-                                        <Text small style={styles.textLeft}>{item.itemName}</Text>
-                                        <Text small light style={styles.textLeft}>Số lượng: {item.quantity}</Text>
+                                        <Text small style={styles.textLeftFlex}>{item.itemName}</Text>
+                                        <Text small style={styles.textLeft}>Số lượng: {item.quantity}</Text>
                                     </View>
                                 </View>
-                                <Text bold>{item.price / 1000}k</Text>
+                                <Text bold style={{...styles.itemCash}}>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
