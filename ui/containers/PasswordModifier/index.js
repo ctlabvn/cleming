@@ -32,17 +32,25 @@ import Preload from '~/ui/containers/Preload'
 import { InputField } from '~/ui/elements/Form'
 import { logoSource, storeTransparent } from '~/assets'
 import md5 from 'md5'
-import DeviceInfo from 'react-native-device-info'
+// import DeviceInfo from 'react-native-device-info'
+
+import { validate } from './utils'
+
 @connect(state=>({
   session: authSelectors.getSession(state),
   initialValues:{
     email: 'thao@clingme.vn',
     password: 'clingme',
   },
+  onSubmitFail: (errors, dispatch)=>{
+    for(let k in errors){
+      return dispatch(commonActions.setToast(errors[k], 'warning'))
+    }
+  },
   loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state)
 }), {...commonActions, ...authActions, ...accountActions})
-@reduxForm({ form: 'ModifyPasswordForm'})
+@reduxForm({ form: 'ModifyPasswordForm', validate})
 export default class extends Component {
   
   constructor(props) {
@@ -55,15 +63,16 @@ export default class extends Component {
   }
   
   _handleChangePassword = ({oldPassword, newPassword}) => {
-    if (oldPassword && newPassword) {
-      let data = {
-        oldPassword: md5(oldPassword),
-        password: md5(newPassword)
-      }
-      this.props.changePassword(this.props.session, data, () => {
-        this.props.goBack()
-      })
+    
+    const data = {
+      oldPassword: md5(oldPassword),
+      password: md5(newPassword)
     }
+    this.props.changePassword(this.props.session, data, (err, data) => {
+      if(!err)
+        this.props.goBack()
+    })
+    
   }
   
   renderPasswordForm(){
