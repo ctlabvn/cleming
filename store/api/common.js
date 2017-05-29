@@ -9,7 +9,8 @@ const urlEncode = data => data
 : ''
 
 export const rejectErrors = (res) => {
-  const { status } = res  
+  const { status } = res
+  console.log(status)
   if (status >= 200 && status < 300) {
     return res
   }
