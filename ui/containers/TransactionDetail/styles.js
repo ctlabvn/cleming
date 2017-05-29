@@ -203,7 +203,9 @@ export default {
         color: PRIMARY_COLOR,
         paddingRight: 25
     },
-
+    backgroundTransparent: {
+        backgroundColor: 'transparent'
+    },
     invoiceDetailBlock: {
         flexDirection: 'column',
         // flexWrap: 'wrap'
