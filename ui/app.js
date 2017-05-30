@@ -363,7 +363,6 @@ export default class App extends Component {
           type="overlay"
           side="right"
           negotiatePan={true}
-          tweenDuration={100}
           useInteractionManager={true}
           tweenHandler={ratio => ({
             drawer: {

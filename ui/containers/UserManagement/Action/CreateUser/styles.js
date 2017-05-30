@@ -13,8 +13,8 @@ export default {
         height: 50,
         borderRadius: 5,
         marginTop: 10,
-        paddingTop: 0
-        
+        paddingTop: 0,
+        overflow: 'hidden'
     },
     inputIcon: {
         fontSize: 20,
@@ -31,7 +31,7 @@ export default {
         paddingRight:10,
         height:40,
         borderBottomWidth: 0,
-        paddingBottom: 0
+        paddingBottom: 10
     },
     right: {
         flexDirection:'row',
@@ -46,7 +46,7 @@ export default {
     leftAddressTitleText: {
         fontSize: 15,
         color: '#7e7e7e',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     rightAddressTitleText: {
         fontSize: 15,

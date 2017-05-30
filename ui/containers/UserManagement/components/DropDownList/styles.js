@@ -8,9 +8,10 @@ export default {
     position: 'absolute',
     flexDirection:'column',
     width: '100%',
-    elevation: 5,
+    elevation: 0,
     borderRadius: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    zIndex: 100
   },
   dropdownHeader:{
     justifyContent:'flex-start',
@@ -19,7 +20,8 @@ export default {
     paddingLeft: 15,
     paddingRight: 0,
     height: 50,
-    alignItems: 'center'
+    borderRadius: 5,
+    alignItems: 'center',
   },
   dropdownSelectedValue:{
     color: '#7e7e7e',

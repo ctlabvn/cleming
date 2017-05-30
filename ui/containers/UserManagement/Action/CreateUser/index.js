@@ -15,6 +15,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
 import TopDropdown from '../../components/DropDownList'
+import Border from '~/ui/elements/Border'
 
 import {
     InputField,
@@ -376,18 +377,9 @@ export default class CreateUserContainer extends Component {
               onSelect={this.handleChangePlace.bind(this)}
               selectedOption={this.state.currentJob || {id: 1, name: "Nhân Viên"}} />
           </View>
-          <Dash
-            dashLength={2}
-            dashColor={'#a2a2a2'}
-            dashThickness={1}
-            style={{flex: 1, marginBottom: 10}}/>
-          <View>
-            <Grid>
-              <Col style={{alignItems: 'center'}}>
-                <Text style={styles.leftAddressTitleText}>Thời gian làm việc</Text>
-              </Col>
-              <Col/>
-            </Grid>
+          <Border color='rgba(0,0,0,0.5)' size={2} />
+          <View style={{marginLeft: 30, marginTop: 10}}>
+            <Text style={styles.leftAddressTitleText}>Thời gian làm việc</Text>
           </View>
           <View>
             <Grid>
@@ -417,11 +409,7 @@ export default class CreateUserContainer extends Component {
               </Col>
             </Grid>
           </View>
-          <Dash
-            dashLength={2}
-            dashColor={'#a2a2a2'}
-            dashThickness={1}
-            style={{flex: 1, marginBottom: 10}}/>
+          <Border color='rgba(0,0,0,0.5)' size={2} />
           <FieldArray
             handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
             employeeListPlace={listPlace}

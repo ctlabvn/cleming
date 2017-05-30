@@ -154,24 +154,25 @@ export class renderGroup extends Component {
   
   render() {
     return (
-      <View>
+      <View style={{marginTop: 10}}>
         <Grid>
             <Col style={{alignItems: 'center'}}>
-                  <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
-              </Col>
-              <Col style={{alignItems: 'center'}}>
-                  <Text
-                    style={styles.rightAddressTitleText}
-                    onPress={this.handleCheckAll.bind(this)}>
-                      Đánh dấu tất cả
-                  </Text>
+              <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
+            </Col>
+            <Col style={{alignItems: 'center'}}>
+              <Text
+                style={styles.rightAddressTitleText}
+                onPress={this.handleCheckAll.bind(this)}>
+                  Đánh dấu tất cả
+              </Text>
             </Col>
         </Grid>
+        <View style={{height: 10}}/>
         {this.state.fields.map((address, index) =>
           {
             return (
               <ListItem key={index} last={index===this.state.fields.length-1} style={styles.listItem}>
-                  <Text small style={styles.left}>{address.address}</Text>
+                  <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                     <CheckBox
                       checked={address.checked}
