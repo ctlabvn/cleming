@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset, startAsyncValidation } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset, touch } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import Dash from 'react-native-dash';
@@ -49,7 +49,8 @@ const formSelector = formValueSelector('CreateUserForm')
   actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch),
   destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
   resetForm: () => dispatch(reset('CreateUserForm')),
-  startValidate: () => dispatch(stopAsyncValidation('CreateUserForm'))
+  startValidate: () => dispatch(stopAsyncValidation('CreateUserForm')),
+  touchAllFields: () => dispatch(touch('CreateUserForm', ['name', 'email', 'phone']))
 }), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
@@ -92,7 +93,7 @@ const formSelector = formValueSelector('CreateUserForm')
       ...ownProps, ...stateProps, ...dispatchProps,
     })
 })
-@reduxForm({ form: 'CreateUserForm', validate: validateField})
+@reduxForm({ form: 'CreateUserForm', fields: ['name', 'email', 'phone'], validate: validateField})
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
@@ -226,7 +227,7 @@ export default class CreateUserContainer extends Component {
       }
     }
     
-    onSubmitUser() {
+    onSubmitUser=()=> {
       let userInfo = {}
       if (this.state.chosenListPlace.length == 0) {
         this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
@@ -286,32 +287,40 @@ export default class CreateUserContainer extends Component {
       }
       let formState = null
       let nameError = null
+      let nameTouched = false
       let errorNameStyle = null
       let errorLongNameStyle = null
       let phoneError = null
+      let phoneTouched = false
       let errorPhoneStyle = null
       let emailError = null
       let errorEmailStyle = null
+      let emailTouched = false
+      let fields = null
       if (typeof this.props.route.params.id == 'undefined') {
         formState = this.props.formState.CreateUserForm
       } else {
         formState = this.props.formState.CreateUserForm
       }
       if (typeof formState != "undefined") {
-        if (typeof formState.syncErrors != 'undefined') {
+        fields = formState.fields
+        if (typeof formState.syncErrors != 'undefined' && typeof fields != "undefined") {
           let errors = formState.syncErrors
-          if (errors.name) {
+          if (errors.name && typeof fields.name != 'undefined' && fields.name.touched) {
+            nameTouched = true
             errorNameStyle = {borderColor: 'red', borderWidth: 1}
             if (errors.name.length > 30) {
               errorLongNameStyle = {marginBottom: 30}
             }
             nameError = <Text style={{color: 'red', marginTop: 5}}>{errors.name}</Text>
           }
-          if (errors.phone) {
+          if (errors.phone &&  typeof fields.phone != 'undefined' && fields.phone.touched) {
+            phoneTouched = true
             errorPhoneStyle = {borderColor: 'red', borderWidth: 1}
             phoneError = <Text style={{color: 'red', marginTop: 5}}>{errors.phone}</Text>
           }
-          if (errors.email) {
+          if (errors.email && typeof fields.email != 'undefined' && fields.email.touched) {
+            emailTouched = true
             errorEmailStyle = {borderColor: 'red', borderWidth: 1}
             emailError = <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
           }
@@ -327,7 +336,7 @@ export default class CreateUserContainer extends Component {
               name="name"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {nameError}
+            {nameTouched && nameError}
           </View>
           <View style={{...styles.inputContainer, ...errorEmailStyle}}>
             <Field
@@ -337,7 +346,7 @@ export default class CreateUserContainer extends Component {
               name="email"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {emailError}
+            {emailTouched && emailError}
           </View>
           <View style={{...styles.inputContainer, ...errorPhoneStyle}}>
             <Field
@@ -347,7 +356,7 @@ export default class CreateUserContainer extends Component {
               name="phone"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {phoneError}
+            {phoneTouched && phoneError}
           </View>
           <View style={{...styles.inputContainer, zIndex: 100}}>
             <TopDropdown
@@ -423,6 +432,7 @@ export default class CreateUserContainer extends Component {
     }
   
     render() {
+        const {handleSubmit} = this.props;
         let mainContainer = null
         if (this.state.isLoading) {
           mainContainer = this.renderIndicator()
@@ -474,7 +484,7 @@ export default class CreateUserContainer extends Component {
                   </Row>
                   <Row style={{justifyContent: 'flex-end', height: 40}}>
                     <Button
-                      onPress={this.onSubmitUser.bind(this)}
+                      onPress={handleSubmit(this.onSubmitUser)}
                       style={{...styles.submitButton}}>
                       <Text style={styles.createPasswordButtonText}>OK</Text>
                     </Button>
