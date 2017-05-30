@@ -1,12 +1,12 @@
 
 import { Dimensions } from 'react-native'
-import { PRIMARY_COLOR, SUCCESS_COLOR, BACKGROUND_COLOR_1, TEXT_COLOR_1 } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 
 const {height, width} = Dimensions.get('window');
 
 export default {
     container: {
-        backgroundColor: BACKGROUND_COLOR_1,
+        backgroundColor: material.backgroundColor1,
         height: '100%',
         width: '100%',
         // paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
@@ -20,7 +20,7 @@ export default {
     topDropdownPlaceHolder: {
         height: 50, 
         width: '100%',
-        backgroundColor: '#00a9d4',  
+        backgroundColor: material.primaryColor,
         zIndex: 1000, 
         top: 0, 
         position: 'absolute',
@@ -63,10 +63,10 @@ export default {
     },
     infoItemNumber: {
         fontSize: 20,
-        color: PRIMARY_COLOR
+        color: material.primaryColor,
     },
     infoItemLabel: {
-        color: TEXT_COLOR_1,
+        color: material.textColor1,
         fontSize: 13
     },
     menuItem: {
@@ -92,7 +92,7 @@ export default {
         width: 25,
         height: 25,
         borderRadius: 20,
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -111,7 +111,7 @@ export default {
         color: 'grey'
     },
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     dateFilterContainer: {
         backgroundColor: 'white',
@@ -121,7 +121,7 @@ export default {
     },
 
     textLabelRightImage: {
-        color: TEXT_COLOR_1,
+        color: material.textColor1,
     },
     loadingContainer: {
       backgroundColor: 'white',
