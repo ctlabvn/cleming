@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Text, Button, Spinner, Radio, Input, Toast, Thumbnail } from 'native-base'
-import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput } from 'react-native'
+import { View, Modal, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
@@ -18,7 +18,8 @@ import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
-import { ViewPager } from 'rn-viewpager';
+import { ViewPager } from 'rn-viewpager'
+import material from '~/theme/variables/material'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -106,7 +107,7 @@ export default class TransactionDetail extends Component {
     }
     _confirmTransaction = () => {
         // console.log('Confirming', clingmeId)
-        const {xsession, confirmTransaction, transaction, setToast} = this.props
+        const { xsession, confirmTransaction, transaction, setToast } = this.props
         console.log("trans", transaction)
         confirmTransaction(xsession, this.state.transactionInfo.clingmeId,
             (err, data) => {
@@ -313,11 +314,11 @@ export default class TransactionDetail extends Component {
                                 </View>
                             }
                             <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableWithoutFeedback onPress={() => {
                                     this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
                                 }}>
                                     <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
-                                </TouchableOpacity>
+                                </TouchableWithoutFeedback>
                             </View>
                         </View>
 
@@ -402,6 +403,12 @@ export default class TransactionDetail extends Component {
         this.swiping = true
         this.refs.viewPager.setPageWithoutAnimation(1)
     }
+    goNextViewPager(){
+        this.refs.viewPager.setPage(2)
+    }
+    goPreviousViewPager(){
+        this.refs.viewPager.setPage(0)
+    }
     onSwipeViewPager(event) {
         if (this.swiping) {
             console.log('GO Swiping reset')
@@ -433,7 +440,11 @@ export default class TransactionDetail extends Component {
         const { route } = this.props
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return (
-                <LoadingModal loading={true} />
+                // <LoadingModal loading={true} />
+                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                    <Spinner />
+                    <Text>Loading...</Text>
+                </View>
             )
         }
         let transactionInfo = this.state.transactionInfo
@@ -443,7 +454,7 @@ export default class TransactionDetail extends Component {
         if (this.state.hasPrevious) {
             btnPrev = (
                 <Button dark transparent style={styles.buttonLeft}
-                    onPress={() => this.goPrevious()}>
+                    onPress={() => this.goPreviousViewPager()}>
                     <Icon name="keyboard-arrow-left" style={styles.icon} />
                     <Text small style={styles.textPrev}>Giao dịch trước</Text>
                 </Button>
@@ -459,7 +470,7 @@ export default class TransactionDetail extends Component {
 
         if (this.state.hasNext) {
             btnNext = (
-                <Button dark transparent style={styles.buttonRight} onPress={() => this.goNext()}>
+                <Button dark transparent style={styles.buttonRight} onPress={() => this.goNextViewPager()}>
                     <Text small style={styles.textNext}>Giao dịch sau</Text>
                     <Icon name="keyboard-arrow-right" style={styles.icon} />
                 </Button>
@@ -475,19 +486,21 @@ export default class TransactionDetail extends Component {
         return (
             <Container style={{ paddingBottom: 40 }}>
                 <PopupInfo ref='popupInfo' />
-                <LoadingModal loading={this.state.loading} />
+                {/*<LoadingModal loading={this.state.loading} />*/}
                 <ViewPager style={{ flex: 1 }}
                     onPageSelected={(event) => this.onSwipeViewPager(event)}
                     ref='viewPager'
                     initialPage={1}
                 >
-                    {/*{this.state.hasPrevious && (<View></View>)}*/}
-                    <View></View>
+                    <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                        <Spinner />
+                    </View>
                     <View>
                         {this._renderContent()}
                     </View>
-                    <View></View>
-                    {this.state.hasNext && (<View></View>)}
+                    <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                        <Spinner />
+                    </View>
                 </ViewPager>
                 <View style={styles.navigateInvoiceBlock}>
                     {btnPrev}
