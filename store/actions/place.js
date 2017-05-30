@@ -27,3 +27,8 @@ export const setMerchantNews = (news) => ({
   type: 'place/setNews',
   payload: news
 })
+
+export const saveCurrentLocation = (location)=>({
+  type: 'app/saveCurrentLocation',
+  payload: location
+})
