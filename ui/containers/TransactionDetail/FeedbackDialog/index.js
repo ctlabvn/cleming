@@ -6,6 +6,7 @@ import styles from './styles'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
+import material from '~/theme/variables/material.js'
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
@@ -66,7 +67,7 @@ export default class FeedbackDialog extends Component {
                         ))}
                         <View style={styles.rowPadding}>
                             <Input placeholder='Lí do khác...'
-                                style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: 'lightgrey', height: 40, fontSize: 14 }}
+                                style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
                                 value={this.state.note}
                                 onFocus={() => {
                                     console.log('On Focus')

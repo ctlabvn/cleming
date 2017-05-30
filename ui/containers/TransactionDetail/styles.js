@@ -1,8 +1,8 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
     container: {
         flexDirection: 'column',
-        backgroundColor: 'white'
+        backgroundColor: material.white500,
     },
     transactionBlock: {
         backgroundColor: 'lavender',
@@ -19,7 +19,7 @@ export default {
         alignItems: 'center'
     },
     topPart: {
-        backgroundColor: BACKGROUND_COLOR_1
+        backgroundColor: material.backgroundColor1,
     },
     rowPadding: {
         flexDirection: 'row',
@@ -36,12 +36,13 @@ export default {
 
     },
     transactionID: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold',
         fontSize: 14
     },
     transactionIcon: {
-        color: 'limegreen',
+        // color: 'limegreen',
+        color: material.green400
     },
     userBlock: {
         padding: 10,
@@ -73,7 +74,7 @@ export default {
     },
     statusTextWaiting: {
         fontWeight: 'bold',
-        color: 'orange'
+        color: material.orange500,
     },
 
     bar: {
@@ -89,7 +90,7 @@ export default {
         justifyContent: 'center'
     },
     barOne: {
-        backgroundColor: 'blue',
+        backgroundColor: material.blue500,
         width: '100%',
         height: 5,
     },
@@ -99,14 +100,14 @@ export default {
         height: 5
     },
     barThree: {
-        backgroundColor: 'orange',
+        backgroundColor: material.orange500,
         width: '100%',
         height: 5
     },
     barMain: {
         width: '100%',
         height: 5,
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
 
     arrowDown: {
@@ -182,7 +183,7 @@ export default {
         borderWidth: 1,
         margin: 10,
         padding: 10,
-        borderColor: PRIMARY_COLOR,
+        borderColor: material.primaryColor,
         flexDirection: 'column',
         // height: 300
     },
@@ -194,13 +195,13 @@ export default {
         zIndex: 20
     },
     invoiceLabel: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingLeft: 25
     },
     invoice: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         fontWeight: 'bold',
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         paddingRight: 25
     },
     backgroundTransparent: {
@@ -240,7 +241,7 @@ export default {
         alignItems: 'center',
         position: 'absolute',
         bottom: 0,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         zIndex: 20,
         elevation: 5,
         width: '100%'
@@ -264,7 +265,7 @@ export default {
     icon: {
         fontSize: 20,
         marginLeft: 5,
-        color: 'grey',
+        color: material.gray500,
     },
     marginRight: {
         marginRight: 10
@@ -274,38 +275,39 @@ export default {
     },
 
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     primary: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     warning: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     disabled: {
-        color: '#f4f4f4'
+        // color: '#f4f4f4'
+        color: material.gray200
     },
     backgroundBlue: {
-        backgroundColor: 'blue'
+        backgroundColor: material.blue500
     },
     backgroundPrimary: {
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     backgroundWarning: {
-        backgroundColor: WARNING_COLOR
+        backgroundColor: material.warningColor
     },
     backgroundError: {
-        backgroundColor: ERROR_COLOR
+        backgroundColor: material.errorColor
     },
     backgroundSuccess: {
-        backgroundColor: SUCCESS_COLOR
+        backgroundColor: material.successColor
     },
 
     borderTopBlue: {
         borderTopColor: 'blue'
     },
     borderBottomPrimary: {
-        borderBottomColor: PRIMARY_COLOR
+        borderBottomColor: material.primaryColor
     },
     lineThrough: {
         textDecorationLine: 'line-through'
@@ -314,7 +316,7 @@ export default {
         fontSize: 12
     },
     feedbackButton: {
-        backgroundColor: WARNING_COLOR,
+        backgroundColor: material.warningColor,
         justifyContent: 'center',
         width: '100%'
     },
@@ -331,7 +333,7 @@ export default {
         marginTop: '30%',
         width: '80%',
         minHeight: 200,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 4,
         flexDirection: 'column',
         alignSelf: 'center',
@@ -368,10 +370,10 @@ export default {
         justifyContent: 'space-around',
         height: '100%',
         padding: 10,
-        backgroundColor: 'white'
+        backgroundColor: material.white500
     },
     loadingContainer: { 
-        backgroundColor: 'white', 
+        backgroundColor: material.white500,
         flexDirection: 'column', 
         alignItems: 'center', 
         justifyContent: 'center', 
