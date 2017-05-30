@@ -6,15 +6,16 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setListPlace, setPlaceStatistic, setMerchantNews } from '~/store/actions/place'
 
 const requestListPlace = createRequestSaga({
-    request: api.place.list,
+    request: api.place.listPlace,
     key: 'listPlace',
     cancel: 'app/logout',
     success: [
         (data) => {
-            // if (data.code && data.msg == 'session_expired'){
-            //     return forwardTo('login')
-            // }
-            return setListPlace(data.updated.listPlace)
+            if (data && data.updated){
+                return setListPlace(data.updated.data)
+            }
+            return setToast('Load place fail', 'error')
+            
         }          
     ],
     failure: [
