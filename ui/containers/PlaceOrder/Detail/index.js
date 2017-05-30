@@ -14,6 +14,7 @@ import * as bookingActions from '~/store/actions/booking'
 import styles from './styles'
 import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
+import material from '~/theme/variables/material.js'
 
 const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
   "before deactivating the button. Once deactivated, try moving it back and youll see that the button is once again " +
@@ -84,7 +85,7 @@ export default class PlaceOrderDetail extends Component {
   render() {
     if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
       return (
-        <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
           <Spinner />
           <Text small>Loading...</Text>
         </View>
@@ -110,7 +111,7 @@ export default class PlaceOrderDetail extends Component {
           <Text small white>{this.state.bookingDetail.placeInfo.address}</Text>
         </View>
 
-        <View style={{ backgroundColor: 'white', height: '100%' }}>
+        <View style={{ backgroundColor: material.white500, height: '100%' }}>
           <View style={styles.placeContainer}>
             <View style={{ ...styles.rowPaddingTB, ...styles.center }}>
               <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
