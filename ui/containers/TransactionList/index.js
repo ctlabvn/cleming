@@ -17,6 +17,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
 import options from './options'
+import material from '~/theme/variables/material.js'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
 
 @connect(state => ({
@@ -286,8 +287,8 @@ export default class extends Component {
         const { handleSubmit, submitting, forwardTo, transaction, place } = this.props
         if (!transaction) {
             return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner color='red' />
+                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Spinner color={material.red500} />
                     <Text>Loading...</Text>
                 </View>
             )
@@ -328,7 +329,7 @@ export default class extends Component {
                         refreshing={this.state.loading}
                     >
                         {this._renderList()}
-                        {this.state.loadingMore && <Spinner color='red' />}
+                        {this.state.loadingMore && <Spinner color={material.red500} />}
                         {noData}
                         {moreData}
                     </Content>
