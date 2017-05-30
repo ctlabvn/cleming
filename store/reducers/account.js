@@ -12,6 +12,8 @@ export const account = (state = {
       return {...state, listEmployee: payload.updated.data}
     case 'app/setGeneratedPassword':
       return {...state, generatedPassword: payload.updated.data.password}
+    case 'app/deleteGeneratedPassword':
+      return {...state, generatedPassword: ''}
     default:
       return state
   }
