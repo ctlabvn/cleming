@@ -36,6 +36,7 @@ export default {
   dropdownList:{
     backgroundColor: PRIMARY_COLOR,
     width: '100%',
+    marginTop:-2,
     zIndex: 1000,
   },
   dropdownListItem:{
