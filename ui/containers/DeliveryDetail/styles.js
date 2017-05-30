@@ -1,14 +1,14 @@
-import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR} from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
     container: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingBottom: 100
     },
     content: {
 
     },
     backgroundPrimary: {
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     rowPadding: {
         justifyContent: 'space-between',
@@ -86,7 +86,7 @@ export default {
         width: '100%',
         elevation: 5,
         zIndex: 20,
-        backgroundColor: 'white'
+        backgroundColor: material.white500
     },
     line: {
         height: 1,
