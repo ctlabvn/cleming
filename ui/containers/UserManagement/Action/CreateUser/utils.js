@@ -19,7 +19,7 @@ import {
 import styles from './styles'
 
 
-const namePattern = /^[a-zA-Z]{2,}$/
+const namePattern = /^[a-zA-Z_ ]{2,}$/
 const usernameConstraints = {
   username: {
     format: {

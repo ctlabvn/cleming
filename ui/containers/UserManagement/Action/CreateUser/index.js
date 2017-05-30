@@ -104,7 +104,8 @@ export default class CreateUserContainer extends Component {
           rowIDOfEmployee: 0,
           chosenListPlace: [],
           currentJob: props.formValues.permission,
-          isLoading: false
+          isLoading: false,
+          firstTimeResetPassword: false
         }
         
     }
@@ -125,7 +126,8 @@ export default class CreateUserContainer extends Component {
           currentJob: {
             id: employeeDetail.titleType,
             name: permission
-          }
+          },
+          firstTimeResetPassword: false
         })
       } else {
         this.props.actions.deleteGeneratedPassword()
@@ -153,7 +155,8 @@ export default class CreateUserContainer extends Component {
       if (typeof this.props.route.params.id == "undefined") {
         this.setState({
           fromTime: "07:00",
-          toTime: "20:00"
+          toTime: "20:00",
+          firstTimeResetPassword: false
         })
       }
     }
@@ -197,7 +200,11 @@ export default class CreateUserContainer extends Component {
     }
     
     onGeneratedPasswordPress() {
-      this.props.actions.getGeneratedPassword(this.props.session)
+      this.props.actions.getGeneratedPassword(this.props.session, () => {
+        this.setState({
+          firstTimeResetPassword: true
+        })
+      })
     }
   
     _setClipboardContent = async () => {
@@ -212,7 +219,7 @@ export default class CreateUserContainer extends Component {
     }
     
     getListEmployeeAfterSuccess(error) {
-      if (error.status > 399) {
+      if (error != null && error.status > 399) {
         this.setState({
           isLoading: false
         })
@@ -231,7 +238,7 @@ export default class CreateUserContainer extends Component {
       let userInfo = {}
       if (this.state.chosenListPlace.length == 0) {
         this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
-      } else if (this.props.generatedPassword.trim() == '') {
+      } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
         this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
       } else if (this.props.formState.CreateUserForm.syncErrors) {
         this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
@@ -310,19 +317,20 @@ export default class CreateUserContainer extends Component {
             nameTouched = true
             errorNameStyle = {borderColor: 'red', borderWidth: 1}
             if (errors.name.length > 30) {
-              errorLongNameStyle = {marginBottom: 30}
+              errorLongNameStyle = {marginBottom: 5}
             }
-            nameError = <Text style={{color: 'red', marginTop: 5}}>{errors.name}</Text>
+            console.log(errors.name)
+            nameError = <Text style={{color: 'red'}}>{errors.name}</Text>
           }
           if (errors.phone &&  typeof fields.phone != 'undefined' && fields.phone.touched) {
             phoneTouched = true
             errorPhoneStyle = {borderColor: 'red', borderWidth: 1}
-            phoneError = <Text style={{color: 'red', marginTop: 5}}>{errors.phone}</Text>
+            phoneError = <Text style={{color: 'red'}}>{errors.phone}</Text>
           }
           if (errors.email && typeof fields.email != 'undefined' && fields.email.touched) {
             emailTouched = true
             errorEmailStyle = {borderColor: 'red', borderWidth: 1}
-            emailError = <Text style={{color: 'red', marginTop: 5}}>{errors.email}</Text>
+            emailError = <Text style={{color: 'red'}}>{errors.email}</Text>
           }
         }
       }
@@ -339,8 +347,8 @@ export default class CreateUserContainer extends Component {
               name="name"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {nameTouched && nameError}
           </View>
+          {nameTouched && nameError}
           <View style={{...styles.inputContainer, ...errorEmailStyle}}>
             <Field
               iconStyle={styles.closeIcon}
@@ -352,8 +360,8 @@ export default class CreateUserContainer extends Component {
               name="email"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {emailTouched && emailError}
           </View>
+          {emailTouched && emailError}
           <View style={{...styles.inputContainer, ...errorPhoneStyle}}>
             <Field
               iconStyle={styles.closeIcon}
@@ -365,9 +373,9 @@ export default class CreateUserContainer extends Component {
               name="phone"
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
-            {phoneTouched && phoneError}
           </View>
-          <View style={{...styles.inputContainer, zIndex: 100}}>
+          {phoneTouched && phoneError}
+          <View style={{...styles.inputContainer, zIndex: 100, marginBottom: 10}}>
             <TopDropdown
               ref='placeDropdown'
               dropdownValues={[
@@ -381,7 +389,7 @@ export default class CreateUserContainer extends Component {
           <View style={{marginLeft: 30, marginTop: 10}}>
             <Text style={styles.leftAddressTitleText}>Thời gian làm việc</Text>
           </View>
-          <View>
+          <View style={{marginBottom: 10}}>
             <Grid>
               <Col style={{alignItems: 'center'}}>
                 <View style={{...styles.inputContainer, marginRight: 10}}>
@@ -443,6 +451,8 @@ export default class CreateUserContainer extends Component {
           } else {
             passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
           }
+        } else if (this.state.firstTimeResetPassword) {
+          passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
         } else {
           passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
         }
