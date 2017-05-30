@@ -35,19 +35,19 @@ import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
-import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
+// import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
-const NoTransition = {
-  opacity: {
-    from: 1,
-    to: 1,
-    min: 1,
-    max: 1,
-    type: 'linear',
-    extrapolate: false,
-    round: 100,
-  },
-}
+// const NoTransition = {
+//   opacity: {
+//     from: 1,
+//     to: 1,
+//     min: 1,
+//     max: 1,
+//     type: 'linear',
+//     extrapolate: false,
+//     round: 100,
+//   },
+// }
 
 const getPage = (url) => {
   for (route in routes) {
@@ -73,26 +73,38 @@ const UIManager = NativeModules.UIManager
 }), { ...commonActions, ...authActions, ...placeActions })
 export default class App extends Component {
 
+  // static configureScene(route) {
+  //   // const { animationType = material.platform === 'android' ? 'PushFromRight' : 'PushFromRight' } = routes[route.path] || {}
+  //   const animationType = routes[route.path] || 'PushFromRight'
+  //   // return Navigator.SceneConfigs[animationType]
+  //   // Navigator.SceneConfigs[animationType]
+  //   // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
+  //   const sceneConfig = {
+  //     ...Navigator.SceneConfigs[animationType],
+  //     gestures: null,
+  //     defaultTransitionVelocity: 20,
+  //   }
+
+  //   // if (material.platform === 'android') {
+  //   //   sceneConfig.animationInterpolators = {
+  //   //     into: buildStyleInterpolator(NoTransition),
+  //   //     out: buildStyleInterpolator(NoTransition),
+  //   //   }
+  //   // }
+
+  //   return sceneConfig
+  // }
+
   static configureScene(route) {
-    const { animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight' } = routes[route.path] || {}
-
-    // return Navigator.SceneConfigs[animationType]
-    // Navigator.SceneConfigs[animationType]
-    // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-    const sceneConfig = {
-      ...Navigator.SceneConfigs[animationType],
-      gestures: null,
-      defaultTransitionVelocity: 20,
-    }
-
-    if (material.platform === 'android') {
-      sceneConfig.animationInterpolators = {
-        into: buildStyleInterpolator(NoTransition),
-        out: buildStyleInterpolator(NoTransition),
+      const {animationType = 'PushFromRight'} = routes[route.path] || {}
+            
+      // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
+      return {
+        ...Navigator.SceneConfigs[animationType], 
+        gestures: null,
+        defaultTransitionVelocity: 20,
       }
-    }
-
-    return sceneConfig
+      // return Navigator.SceneConfigs[animationType]
   }
 
   initPushNotification(options) {
@@ -131,9 +143,10 @@ export default class App extends Component {
     super(props)
     // default is not found page, render must show error
     this.page = getPage(props.router.route) || routes.notFound
-    this.prevPage = null
+    // this.prevPage = null
     this.pageInstances = {}
     this.watchID = 0
+    this.firstTime = true
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
@@ -225,14 +238,18 @@ export default class App extends Component {
     } else {
       // we only pass this.page, route and navigator is for mapping or some event like will focus ...
       // first time not show please waiting
-      if (!this.navigator || this.page.Preload === false) {
-        return this.renderComponentFromPage(this.page)
-      }
-      return (
-        <AfterInteractions placeholder={this.page.Preload || <Preload />}>
+      // if (!this.navigator || this.page.Preload === false) {
+      //   return this.renderComponentFromPage(this.page)
+      // }
+
+      const component = (
+        <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
           {this.renderComponentFromPage(this.page)}
         </AfterInteractions>
       )
+
+      this.firstTime = false
+      return component
     }
   }
 

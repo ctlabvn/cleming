@@ -1,8 +1,8 @@
-import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR, GRAY600, GRAY400, GRAY200} from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default{
     container: {
         paddingTop: 50,
-        backgroundColor: GRAY200 
+        backgroundColor: material.gray200 
     },
     contentContainer: {
       padding: 0,
@@ -15,7 +15,7 @@ export default{
     },
     deliveryBlock: {
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 2,
         paddingRight: 10,
         paddingTop: 10,
@@ -29,7 +29,7 @@ export default{
     },
     deliveryBlockCacel: {
         flexDirection: 'column',
-        backgroundColor: GRAY400,
+        backgroundColor: material.gray400,
         borderRadius: 2,
         paddingRight: 10,
         paddingTop: 10,
@@ -73,16 +73,16 @@ export default{
         alignItems: 'center'
     },
     deliveryCodeWaitingConfirm: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     deliveryCodeWaitingDelivery: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     deliveryCodeSuccess: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     grey: {
-        color: GRAY600
+        color: material.gray600
     },
     icon: {
         fontSize: 20,
@@ -93,16 +93,16 @@ export default{
         height: 40
     },
     phoneNumber: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     phoneIcon: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     reject: {
         color: 'rgba(0,0,0,0.5)'
     },
     confirm: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     time: {
         marginRight: 5

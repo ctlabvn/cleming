@@ -19,6 +19,7 @@ import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager';
+import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -274,15 +275,15 @@ export default class TransactionDetail extends Component {
 
                         <View style={styles.rowPadding}>
                             <Text small>Xem:</Text>
-                            <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Đánh dấu:</Text>
-                            <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Chụp hóa đơn:</Text>
-                            <Text small bold>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                         </View>
                         {this._renderInvoiceBlock(transactionInfo)}
                         <View style={styles.borderBlock}>
@@ -312,7 +313,7 @@ export default class TransactionDetail extends Component {
                                     </View>
                                 </View>
                             }
-                            <View style={{ width: '100%', backgroundColor: 'lightgrey', justifyContent: 'center' }}>
+                            <View style={{ width: '100%', backgroundColor: material.gray300, justifyContent: 'center' }}>
                                 <TouchableOpacity onPress={() => {
                                     this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
                                 }}>

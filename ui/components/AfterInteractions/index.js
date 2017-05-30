@@ -26,10 +26,10 @@ export default class extends PureComponent {
     this.interactionHandle = InteractionManager.runAfterInteractions(() => {
       clearTimeout(this.timer)
       this.interactionHandle = null
-      // if(Platform.OS === 'android')
+      if(Platform.OS === 'android' && !this.props.firstTime)
         setTimeout(()=> this.setState({interactionsComplete: true}), 300)
-      // else
-        // this.setState({interactionsComplete: true})
+      else
+        this.setState({interactionsComplete: true})
     })
   }
 
