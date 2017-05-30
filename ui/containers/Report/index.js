@@ -339,17 +339,10 @@ export default class Report extends Component {
             id: item.placeId,
             name: item.address
         }))
-        let defaultSelected = dropdownValues[0]
-        if (dropdownValues.length > 1) {
-            defaultSelected = {
-                id: place.listPlace.map(item => item.placeId).join(';'),
-                name: 'Tất cả địa điểm'
-            }
-            dropdownValues = [defaultSelected, ...dropdownValues]
-        }
+
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} selectedOption={defaultSelected} />
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' />
                     {/*<Content>*/}
