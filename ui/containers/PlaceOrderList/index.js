@@ -207,14 +207,6 @@ export default class PlaceOrderList extends Component {
             id: item.placeId,
             name: item.address
         }))
-        if (dropdownValues.length > 1) {
-            let allPlace = place.listPlace.map(item => item.placeId).join(',')
-            let allPlaceOption = {
-                id: allPlace,
-                name: "Tất cả địa điểm"
-            }
-            dropdownValues = [allPlaceOption, ...dropdownValues]
-        }
 
         return (
             <View style={styles.container}>

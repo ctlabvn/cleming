@@ -34,25 +34,32 @@ export default class MerchantOverview extends PureComponent {
 
     componentDidMount() {
         // let dateFilterData = this.refs.dateFilter.getData()
-        const { user } = this.props
+        const { user, place } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
-        this.props.getListPlace(this.props.xsession, (err, data) => {
-            let toTime = moment(new Date())
-            // console.warn('Place Data', data)
-            if (data && data.updated && data.updated.listPlace) {
-                var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
-                // this.props.getPlaceStatistic(
-                //     this.props.xsession,
-                //     allPlace,
-                //     dateFilterData.currentSelectValue.value.from,
-                //     dateFilterData.currentSelectValue.value.to)
-                this.props.getMerchantNews(
-                    this.props.xsession,
-                    allPlace)
-            }
-        })
+        let lat = 0, long = 0
+        if (place && place.location) {
+            lat = place.location.latitude
+            long = place.location.longitude
+        }
+        console.log('Lat Long', lat+'---'+long)
+        this.props.getListPlace(this.props.xsession, lat, long,
+            (err, data) => {
+                let toTime = moment(new Date())
+                // console.warn('Place Data', data)
+                if (data && data.updated && data.updated.listPlace) {
+                    var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
+                    // this.props.getPlaceStatistic(
+                    //     this.props.xsession,
+                    //     allPlace,
+                    //     dateFilterData.currentSelectValue.value.from,
+                    //     dateFilterData.currentSelectValue.value.to)
+                    this.props.getMerchantNews(
+                        this.props.xsession,
+                        allPlace)
+                }
+            })
     }
 
     componentWillFocus() {
@@ -174,14 +181,6 @@ export default class MerchantOverview extends PureComponent {
             id: item.placeId,
             name: item.address
         }))
-        if (dropdownValues.length > 1) {
-            let allPlaceId = place.listPlace.map(item => item.placeId).join(';')
-            let allPlaceOption = {
-                id: allPlaceId,
-                name: "Tất cả địa điểm"
-            }
-            dropdownValues = [allPlaceOption, ...dropdownValues]
-        }
 
         let mainContainer = null
         let topDropdown = null // fix break ui first time load

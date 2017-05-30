@@ -246,14 +246,6 @@ export default class extends Component {
             id: item.placeId,
             name: item.address
         }))
-        if (dropdownValues.length > 1) {
-            let defaultSelected = {
-                id: this.state.selectedPlace,
-                name: "Tất cả địa điểm"
-            }
-            dropdownValues = [defaultSelected, ...dropdownValues]
-        }
-
 
         const { orderList } = this.props.order
         console.log('Order List', orderList)
