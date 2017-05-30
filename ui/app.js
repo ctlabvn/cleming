@@ -233,14 +233,14 @@ export default class App extends Component {
 
   // we can use events to pass between header and footer and page via App container or store
   _renderPage = (route) => {
-    if (this.page.path && route.path !== this.page.path) {
-      // console.log('will focus')
-    } else {
-      // we only pass this.page, route and navigator is for mapping or some event like will focus ...
-      // first time not show please waiting
-      // if (!this.navigator || this.page.Preload === false) {
-      //   return this.renderComponentFromPage(this.page)
-      // }
+    // if (this.page.path && route.path !== this.page.path) {
+    //   // console.log('will focus')
+    // } else {
+    //   // we only pass this.page, route and navigator is for mapping or some event like will focus ...
+    //   // first time not show please waiting
+    //   // if (!this.navigator || this.page.Preload === false) {
+    //   //   return this.renderComponentFromPage(this.page)
+    //   // }
 
       const component = (
         <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
@@ -250,7 +250,7 @@ export default class App extends Component {
 
       this.firstTime = false
       return component
-    }
+    // }
   }
 
   _onLeftClick = (type) => {
