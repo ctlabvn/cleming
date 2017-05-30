@@ -19,9 +19,10 @@ import { storeTransparent, storeFilled } from '~/assets'
 import { formatNumber } from '~/ui/shared/utils'
 import LinearGradient from 'react-native-linear-gradient'
 import Content from '~/ui/components/Content'
-import { getSession } from '~/store/selectors/auth'
+import { getSession, getUser } from '~/store/selectors/auth'
 @connect(state => ({
     xsession: getSession(state),
+    user: getUser(state),
     place: state.place
 }), { ...commonActions, ...placeAction })
 export default class MerchantOverview extends PureComponent {
@@ -32,6 +33,10 @@ export default class MerchantOverview extends PureComponent {
 
     componentDidMount() {
         // let dateFilterData = this.refs.dateFilter.getData()
+        const { user } = this.props
+        if (user) {
+            this.props.app.header.show('home', user.fullName, user.avatar)
+        }
         this.props.getListPlace(this.props.xsession, (err, data) => {
             let toTime = moment(new Date())
             // console.warn('Place Data', data)
@@ -50,7 +55,10 @@ export default class MerchantOverview extends PureComponent {
     }
 
     componentWillFocus() {
-        console.log('focus')
+        const { user } = this.props
+        if (user) {
+            this.props.app.header.show('home', user.fullName, user.avatar)
+        }
     }
 
     componentWillBlur() {
@@ -116,7 +124,7 @@ export default class MerchantOverview extends PureComponent {
                             <Text style={{ ...styles.infoItemNumber, ...styles.success }}>{formatNumber(place.statistic.placeBought)}</Text>
                             <Text style={styles.infoItemLabel}>Mua</Text>
                         </View>
-                    </View>*/}  
+                    </View>*/}
                     <TouchableOpacity onPress={() => forwardTo('transactionList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
