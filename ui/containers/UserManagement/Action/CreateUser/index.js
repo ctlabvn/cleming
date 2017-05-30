@@ -374,8 +374,9 @@ export default class CreateUserContainer extends Component {
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
           </View>
+
           {phoneTouched && phoneError}
-          <View style={{...styles.inputContainer, zIndex: 100, marginBottom: 10}}>
+          <View style={{...styles.inputContainer, zIndex: 100, marginBottom: 10,overflow:null}}>
             <TopDropdown
               ref='placeDropdown'
               dropdownValues={[
