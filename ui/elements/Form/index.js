@@ -14,8 +14,8 @@ import Toggle from '~/ui/components/Toggle'
 import material from '~/theme/variables/material'
 import styles from './styles'
 
-export const InputField = ({ input, label, meta: { touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
-  const iconName = (typeof icon === 'function' ? icon(input) : icon)
+export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
   return (
     <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
       {addon}
@@ -27,7 +27,7 @@ export const InputField = ({ input, label, meta: { touched, error, warning }, ic
         style={{...styles.input, ...inputStyle}}     
       />    
       {iconName && <Icon
-        onPress={e=>onIconPress && onIconPress(input)}
+        onPress={e=>onIconPress && onIconPress(input, active)}
         style={{...styles.inputIcon, ...iconStyle}}
         name={iconName}
       />}

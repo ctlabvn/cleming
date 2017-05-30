@@ -192,7 +192,8 @@ export default class extends Component {
           <Field autoCapitalize="none" name="email" 
             autoFocus={emailFocus} 
             initialSelection={emailSelection} 
-            icon={input=>input.value ? 'close' : false}
+            icon={(input, active)=>input.value && active ? 'close' : false}
+            iconStyle={{color:'#000'}}
             onIconPress={input=>input.onChange('')}
             label="Email/ Số điện thoại" component={InputField} />
           <Field name="password" 

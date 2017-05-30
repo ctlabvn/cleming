@@ -85,13 +85,14 @@ export default class extends Component {
   }
 
   renderNotificationIcon({notifyType}){
-    switch(notifyType){      
-      case NOTIFY_TYPE.WAITING:
-        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
+    switch(notifyType){            
       case NOTIFY_TYPE.BOOKING:
         return <Icon name="calendar" style={styles.icon}/>
       case NOTIFY_TYPE.SUCCESS:
         return <Icon name="clingme-wallet" style={styles.icon}/>
+      // case NOTIFY_TYPE.WAITING:
+      default:
+        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
     }
   }
 
@@ -101,29 +102,7 @@ export default class extends Component {
               marginTop: 10,
             }} color='rgba(0,0,0,0.5)' size={1} />
 
-    switch(notifyType){
-
-      case NOTIFY_TYPE.WAITING:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View style={styles.titleContainer}>
-                <Text note>{title}</Text>
-                <Text bold style={styles.textGray}>{content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end'
-              }}>
-                <Text style={{
-                  color: '#838383',
-                }} bold>{formatNumber(paramDouble1)}</Text>đ
-              </Text>                        
-            </View>
-
-            
-            {border}
-          </Body>
-        )  
+    switch(notifyType){      
 
       case NOTIFY_TYPE.BOOKING:
         const minutesRemain = Math.round((paramLong2 - Date.now()/1000)/60)
@@ -178,15 +157,32 @@ export default class extends Component {
                   </Text>
 
             </View>
-
-            
-              
-              
-            
               {border}
           </Body>
         )
 
+        // case NOTIFY_TYPE.WAITING:
+      default:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>                                         
+              <View style={styles.titleContainer}>
+                <Text note>{title}</Text>
+                <Text bold style={styles.textGray}>{content}</Text>
+              </View>
+              <Text note style={{
+                alignSelf: 'flex-end'
+              }}>
+                <Text style={{
+                  color: '#838383',
+                }} bold>{formatNumber(paramDouble1)}</Text>đ
+              </Text>                        
+            </View>
+
+            
+            {border}
+          </Body>
+        )  
             
                       
     }

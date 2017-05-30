@@ -85,7 +85,7 @@ export default class extends Component {
       </Button>
     )*/
     const left = (
-      <Thumbnail source={{uri: leftIcon}} style={{width: 40, height: 40}}/>
+      <Thumbnail source={{uri: leftIcon}} style={{width: 40, height: 40, borderRadius: 20}}/>
     )
     return this.renderHeaderTitle(title, left)
   }
