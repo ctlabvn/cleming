@@ -122,6 +122,8 @@ export default {
 
   red500: 'red',
 
+  white500: 'white',
+
   blue600: '#0085AC',
   blue500: 'blue',
   blue400: '#00A9D3',
