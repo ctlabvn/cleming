@@ -20,6 +20,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import LinearGradient from 'react-native-linear-gradient'
 import Content from '~/ui/components/Content'
 import { getSession, getUser } from '~/store/selectors/auth'
+import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
@@ -199,7 +200,7 @@ export default class MerchantOverview extends PureComponent {
             <Container style={styles.container}>
                 {topDropdown}
                 <View style={styles.contentContainer}>
-                    <LinearGradient style={{ paddingTop: 15 }} colors={['#00a9d4', '#007dad']}>
+                    <LinearGradient style={{ paddingTop: 15 }} colors={[material.blue400, material.blue600]}>
                         <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
                     </LinearGradient>
                     {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
