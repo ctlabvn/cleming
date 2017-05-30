@@ -175,6 +175,7 @@ export class renderGroup extends Component {
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                     <CheckBox
+                      style={{borderWidth: 1}}
                       checked={address.checked}
                       onPress={e=>this.handleCheck(index)}
                     />
