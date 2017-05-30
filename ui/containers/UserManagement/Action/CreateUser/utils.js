@@ -17,7 +17,7 @@ import {
 } from '~/ui/elements/Form'
 
 import styles from './styles'
-
+import { convertVn } from '~/ui/shared/utils'
 
 const namePattern = /^(\w{2,}\s)*\w{2,}$/
 const usernameConstraints = {
@@ -53,7 +53,11 @@ export const validateField = (values) => {
   if (values.name.trim() == '') {
     errors.name = "Bạn cần nhập tên"
   } else {
-    if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
+    // if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
+    //   errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
+    // }
+
+    if(!convertVn('Phạm Hoàng Nam').match(namePattern)){
       errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
     }
   }

@@ -54,4 +54,15 @@ export const formatPhoneNumber = (phoneNumber) => {
     return (m[1]+" "+m[2]+" "+m[3])
   }
 
-  }
+}
+
+
+export const convertVn = (str) => {
+  return str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/gi, 'a')
+      .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/gi, 'e')
+      .replace(/ì|í|ị|ỉ|ĩ/gi, 'i')
+      .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/gi, 'o')
+      .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/gi, 'u')
+      .replace(/ỳ|ý|ỵ|ỷ|ỹ/gi, 'y')
+      .replace(/đ/gi, 'd');
+}
