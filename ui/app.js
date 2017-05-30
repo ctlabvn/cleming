@@ -29,6 +29,7 @@ import { SENDER_ID } from '~/store/constants/api'
 import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
+import * as placeActions from '~/store/actions/place'
 import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
@@ -69,7 +70,7 @@ const UIManager = NativeModules.UIManager
 @connect(state => ({
   router: getRouter(state),
   drawerState: getDrawerState(state),
-}), { ...commonActions, ...authActions })
+}), { ...commonActions, ...authActions, ...placeActions })
 export default class App extends Component {
 
   static configureScene(route) {
@@ -132,7 +133,7 @@ export default class App extends Component {
     this.page = getPage(props.router.route) || routes.notFound
     this.prevPage = null
     this.pageInstances = {}
-
+    this.watchID = 0
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
@@ -146,12 +147,12 @@ export default class App extends Component {
           // New transaction
           if (notification.type == 5) {
             this.props.forwardTo('transactionDetail/' + notification.param1)
-          // New Place Order (Booking)
-          }else if (notification.type == 6){
+            // New Place Order (Booking)
+          } else if (notification.type == 6) {
             this.props.forwardTo('placeOrderDetail/' + notification.param1)
-          // New Delivery Order
-          }else if (notification.type == 7){
-            this.props.forwardTo('deliveryDetail/'+notification.param1)
+            // New Delivery Order
+          } else if (notification.type == 7) {
+            this.props.forwardTo('deliveryDetail/' + notification.param1)
           }
 
         } else {
@@ -270,6 +271,21 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    const { saveCurrentLocation } = this.props
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log('Position', position)
+        saveCurrentLocation(position.coords)
+      },
+      (error) => {
+      },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+    )
+
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      console.log('Position Change', position)
+      saveCurrentLocation(position.coords)
+    })
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const { router, goBack } = this.props
       if (router.route === 'merchantOverview') {
@@ -280,7 +296,9 @@ export default class App extends Component {
       return true
     })
   }
-
+  componentWillUnmount(){
+    navigator.geolocation.clearWatch(this.watchID)
+  }
   handleFocusableComponent(component, focus = true) {
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'

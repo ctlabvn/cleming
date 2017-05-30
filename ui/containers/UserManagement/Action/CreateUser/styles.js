@@ -21,7 +21,8 @@ export default {
         color: '#7e7e7e'
     },
     inputText: {
-      color: "#7e7e7e"
+      color: "#7e7e7e",
+      top: 0
     },
     listItem:{
         marginLeft:10,
@@ -107,5 +108,9 @@ export default {
       color: 'gray',
       marginLeft: 20,
       fontStyle: 'italic'
+    },
+    closeIcon: {
+      color: '#7e7e7e',
+      fontSize: 18
     }
 }

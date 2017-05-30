@@ -1,26 +1,25 @@
-import material from '~/theme/variables/material'
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
     container: {
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
         height: '100%',
         paddingBottom: 50
     },
     picker: {
-        color: 'white',
-        backgroundColor: PRIMARY_COLOR
+        color: material.white500,
+        backgroundColor: material.primaryColor
     },
     pickerItem: {
-        color: 'white',
-        backgroundColor: PRIMARY_COLOR
+        color: material.white500,
+        backgroundColor: material.primaryColor
     },
     filterByTransactionType: {
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: PRIMARY_COLOR,
+        borderBottomColor: material.primaryColor,
         justifyContent: 'space-between',
         padding: 10,
     },
@@ -32,18 +31,18 @@ export default {
 
     },
     numberRight: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold',
         marginRight: 10,
     },
     transactionTypeIcon: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         marginRight: 7,
         fontSize: 20
     },
     block: {
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         width: '100%',
         // borderRadius: 3,
         paddingLeft: 10,
@@ -71,7 +70,7 @@ export default {
     icon: {
         fontSize: 30,
         // width: 20,
-        color: 'white',
+        color: material.white500,
         textAlign: 'center'
     },
     placeholder: {
@@ -81,25 +80,25 @@ export default {
         justifyContent: 'center',
     },
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     reject: {
-        color: ERROR_COLOR
+        color: material.errorColor
     },
     primary: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     warning: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     notPayIcon: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     smallText: {
         fontSize: 13,
     },
     readIndicator: {
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         width: 7,
         height: 7,
         borderRadius: 7
@@ -124,13 +123,13 @@ export default {
         marginTop: 4,
     },
     backgroundSuccess: {
-        backgroundColor: SUCCESS_COLOR
+        backgroundColor: material.successColor
     },
     backgroundWarning: {
-        backgroundColor: WARNING_COLOR
+        backgroundColor: material.warningColor
     },
     backgroundError: {
-        backgroundColor: ERROR_COLOR
+        backgroundColor: material.errorColor
     },
     moneyNumber: {
         fontSize: 20
