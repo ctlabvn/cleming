@@ -85,13 +85,14 @@ export default class extends Component {
   }
 
   renderNotificationIcon({notifyType}){
-    switch(notifyType){      
-      case NOTIFY_TYPE.WAITING:
-        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
+    switch(notifyType){            
       case NOTIFY_TYPE.BOOKING:
         return <Icon name="calendar" style={styles.icon}/>
       case NOTIFY_TYPE.SUCCESS:
         return <Icon name="clingme-wallet" style={styles.icon}/>
+      // case NOTIFY_TYPE.WAITING:
+      default:
+        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
     }
   }
 
