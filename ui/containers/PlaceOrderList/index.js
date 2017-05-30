@@ -23,6 +23,7 @@ import CallModal from '~/ui/components/CallModal'
 import { getSession } from '~/store/selectors/auth'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import { BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL } from '~/store/constants/app'
+import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -73,7 +74,7 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.rowPadding}>
                                 <Text primary bold>#{item.orderCode}</Text>
                                 <View style={styles.row}>
-                                    <Text small style={{ color: 'black', marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+                                    <Text small style={{ color: material.black500, marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.state.counting}
                                         countTo={item.bookDate}
@@ -109,7 +110,7 @@ export default class PlaceOrderList extends Component {
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text small style={{ color: 'black' }}>{item.userInfo.memberName}</Text>
+                                <Text small style={{ color: material.black500 }}>{item.userInfo.memberName}</Text>
                             </View>
                             <View style={styles.row}>
                                 <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
@@ -194,8 +195,8 @@ export default class PlaceOrderList extends Component {
         const { booking, place } = this.props
         if (!booking) {
             return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner color='red' />
+                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Spinner color={material.red500} />
                     <Text>Loading...</Text>
                 </View>
             )
@@ -242,7 +243,7 @@ export default class PlaceOrderList extends Component {
                             renderRow={(item) => this._renderBookingItem(item)}
                             pageSize={10}
                         />
-                        {this.state.loadingMore && <Spinner color='red' />}
+                        {this.state.loadingMore && <Spinner color={material.red500} />}
                     </Content>
                 </View>
             </View >
