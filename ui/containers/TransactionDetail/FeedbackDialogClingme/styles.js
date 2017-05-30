@@ -1,3 +1,4 @@
+import material from '~/theme/variables/material.js'
 export default {
     modalOverlay: {
         width: '100%',
@@ -8,7 +9,7 @@ export default {
         marginTop: '30%',
         width: '90%',
         minHeight: 200,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 4,
         flexDirection: 'column',
         alignSelf: 'center',
@@ -31,7 +32,7 @@ export default {
     input: { 
         width: '100%', 
         borderBottomWidth: 0.5, 
-        borderBottomColor: 'lightgrey', 
+        borderBottomColor: material.gray300,
         height: 40, 
         fontSize: 14 
     }

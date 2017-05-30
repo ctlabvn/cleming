@@ -127,6 +127,7 @@ export default class CreateUserContainer extends Component {
           }
         })
       } else {
+        this.props.actions.deleteGeneratedPassword()
         this.props.change('GroupAddress', this.props.place.listPlace)
         this.props.change('name', '')
         this.props.change('email', '')
@@ -141,6 +142,10 @@ export default class CreateUserContainer extends Component {
           toTime: "20:00"
         })
       }
+    }
+    
+    componentWillMount() {
+      this.props.actions.deleteGeneratedPassword()
     }
     
     componentDidMount() {
@@ -444,8 +449,12 @@ export default class CreateUserContainer extends Component {
         }
         
         let passwordText = null
-        if (this.props.generatedPassword == '') {
-          passwordText = <Text style={styles.passwordTextWarning}>{'Bạn cần tạo 1 mật khẩu'}</Text>
+        if (typeof this.props.route.params.id == 'undefined') {
+          if (this.props.generatedPassword == '') {
+            passwordText = <Text style={styles.passwordTextWarning}>{'Bạn cần tạo 1 mật khẩu'}</Text>
+          } else {
+            passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+          }
         } else {
           passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
         }

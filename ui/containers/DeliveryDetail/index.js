@@ -18,6 +18,7 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -61,7 +62,7 @@ export default class extends Component {
         const { route } = this.props
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
             return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                     <Spinner />
                     <Text small>Loading...</Text>
                 </View>
