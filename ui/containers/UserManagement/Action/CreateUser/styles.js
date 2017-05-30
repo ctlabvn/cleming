@@ -9,7 +9,7 @@ export default {
         marginTop: 0
     },
     inputContainer: {
-        marginBottom: 15,
+        marginBottom: 5,
         height: 50,
         borderRadius: 5,
         marginTop: 10,
