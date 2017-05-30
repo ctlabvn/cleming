@@ -14,8 +14,6 @@ export default class extends PureComponent {
     renderPlaceholder: null
   }
 
-  static firstTime = true
-
   constructor(props) {
     super(props)
     this.interactionHandle = null
@@ -28,11 +26,10 @@ export default class extends PureComponent {
     this.interactionHandle = InteractionManager.runAfterInteractions(() => {
       clearTimeout(this.timer)
       this.interactionHandle = null
-      if(Platform.OS === 'android' && !this.constructor.firstTime)
+      if(Platform.OS === 'android' && !this.props.firstTime)
         setTimeout(()=> this.setState({interactionsComplete: true}), 300)
       else
         this.setState({interactionsComplete: true})
-      this.constructor.firstTime = false
     })
   }
 
