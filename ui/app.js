@@ -74,7 +74,7 @@ const UIManager = NativeModules.UIManager
 export default class App extends Component {
 
   static configureScene(route) {
-    const { animationType = material.platform === 'android' ? 'FadeAndroid' : 'PushFromRight' } = routes[route.path] || {}
+    const { animationType = material.platform === 'android' ? 'PushFromRight' : 'PushFromRight' } = routes[route.path] || {}
 
     // return Navigator.SceneConfigs[animationType]
     // Navigator.SceneConfigs[animationType]
@@ -85,12 +85,12 @@ export default class App extends Component {
       defaultTransitionVelocity: 20,
     }
 
-    if (material.platform === 'android') {
-      sceneConfig.animationInterpolators = {
-        into: buildStyleInterpolator(NoTransition),
-        out: buildStyleInterpolator(NoTransition),
-      }
-    }
+    // if (material.platform === 'android') {
+    //   sceneConfig.animationInterpolators = {
+    //     into: buildStyleInterpolator(NoTransition),
+    //     out: buildStyleInterpolator(NoTransition),
+    //   }
+    // }
 
     return sceneConfig
   }
@@ -225,9 +225,9 @@ export default class App extends Component {
     } else {
       // we only pass this.page, route and navigator is for mapping or some event like will focus ...
       // first time not show please waiting
-      if (!this.navigator || this.page.Preload === false) {
-        return this.renderComponentFromPage(this.page)
-      }
+      // if (!this.navigator || this.page.Preload === false) {
+      //   return this.renderComponentFromPage(this.page)
+      // }
       return (
         <AfterInteractions placeholder={this.page.Preload || <Preload />}>
           {this.renderComponentFromPage(this.page)}
