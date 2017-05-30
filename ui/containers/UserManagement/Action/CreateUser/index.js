@@ -7,13 +7,12 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector, stopSubmit, stopAsyncValidation, reset, touch } from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector} from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import md5 from 'md5'
 
 import TopDropdown from '../../components/DropDownList'
 
@@ -23,7 +22,6 @@ import {
     DateField,
 } from '~/ui/elements/Form'
 import Icon from '~/ui/elements/Icon'
-import Modal from '~/ui/components/Modal'
 
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
@@ -46,11 +44,7 @@ const formSelector = formValueSelector('CreateUserForm')
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
   formState: state.form
 }), dispatch => ({
-  actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch),
-  destroyError: () => dispatch(stopSubmit('CreateUserForm', {})),
-  resetForm: () => dispatch(reset('CreateUserForm')),
-  startValidate: () => dispatch(stopAsyncValidation('CreateUserForm')),
-  touchAllFields: () => dispatch(touch('CreateUserForm', ['name', 'email', 'phone']))
+  actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch)
 }), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
@@ -330,6 +324,9 @@ export default class CreateUserContainer extends Component {
         <View style={{paddingLeft: 15, paddingRight: 15}}>
           <View style={{...styles.inputContainer, ...errorNameStyle, ...errorLongNameStyle}}>
             <Field
+              iconStyle={styles.closeIcon}
+              icon={input=>input.value ? 'close' : false}
+              onIconPress={input=>input.onChange('')}
               inputStyle={styles.inputText}
               style={{...styles.inputField}}
               label="Họ và tên"
@@ -340,6 +337,9 @@ export default class CreateUserContainer extends Component {
           </View>
           <View style={{...styles.inputContainer, ...errorEmailStyle}}>
             <Field
+              iconStyle={styles.closeIcon}
+              icon={input=>input.value ? 'close' : false}
+              onIconPress={input=>input.onChange('')}
               inputStyle={styles.inputText}
               style={styles.inputField}
               label="Email *"
@@ -350,6 +350,9 @@ export default class CreateUserContainer extends Component {
           </View>
           <View style={{...styles.inputContainer, ...errorPhoneStyle}}>
             <Field
+              iconStyle={styles.closeIcon}
+              icon={input=>input.value ? 'close' : false}
+              onIconPress={input=>input.onChange('')}
               inputStyle={styles.inputText}
               style={styles.inputField}
               label="Số điện thoại"
@@ -449,7 +452,7 @@ export default class CreateUserContainer extends Component {
         
         return (
             <Container>
-              <Content style={{backgroundColor: 'white'}}>
+              <Content style={{backgroundColor: 'white'}} keyboardShouldPersistTaps={'handled'}>
                 {mainContainer}
               </Content>
               <View style={styles.absoluteContainer}>
