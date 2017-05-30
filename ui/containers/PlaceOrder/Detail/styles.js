@@ -1,7 +1,7 @@
 /**
  * Created by vjtc0n on 5/8/17.
  */
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 import { Dimensions } from 'react-native'
 
 const {height, width} = Dimensions.get('window');
@@ -11,14 +11,14 @@ export default {
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: PRIMARY_COLOR
+    backgroundColor: material.primaryColor
   },
   codeContainer: {
     height: '10%',
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: material.white500,
     width: '55%',
     alignSelf: 'center',
     flexDirection: 'row'
@@ -26,7 +26,7 @@ export default {
   placeContainer: {
     height: '80%',
     borderWidth: 2,
-    borderColor: PRIMARY_COLOR,
+    borderColor: material.primaryColor,
     marginTop: '7.5%',
     marginLeft: 15,
     marginRight: 15,
@@ -34,7 +34,7 @@ export default {
     paddingBottom: '3%'
   },
   normalText: {
-    color: '#595959'
+    color: material.gray600
   },
   boldText: {
     fontWeight: 'bold'
@@ -60,7 +60,7 @@ export default {
   },
   icon: {
     fontSize: 20,
-    color: 'grey'
+    color: material.gray500
   },
   leftText: {
     marginLeft: 15
@@ -71,7 +71,7 @@ export default {
   submitContainer: {
     marginLeft: 15,
     marginRight: 15,
-    backgroundColor: 'white',
+    backgroundColor: material.white500,
     paddingTop: 7,
     height: '10%'
   },
@@ -84,13 +84,13 @@ export default {
     elevation: 0
   },
   declineButton: {
-    backgroundColor: '#d9d9d9'
+    backgroundColor: material.gray400
   },
   acceptButton: {
-    backgroundColor: PRIMARY_COLOR
+    backgroundColor: material.primaryColor
   },
   declineText: {
-    color: '#7e7e7e'
+    color: material.gray500
   },
   rowPaddingTB: {
     flexDirection: 'row',
@@ -109,7 +109,7 @@ export default {
   },
 
   labelUnderImage: {
-    color: 'black',
+    color: material.black500,
     marginTop: 5,
   },
 }
