@@ -1,14 +1,14 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 export default{
     container: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingBottom: 50,
         height: '100%'
     },
     mapPlaceholder: {
         width: '100%',
         height: 200,
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     graphBlock: {
         flexDirection: 'column'
@@ -41,7 +41,7 @@ export default{
         width: '100%'
     },
     backgroundPrimary: {
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     backgroundGrey: {
         backgroundColor: 'lightgrey'
@@ -64,19 +64,19 @@ export default{
     markerCustomer: {
         width: 60,
         height: 60,
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         borderRadius: 30,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     markerCustomerText: {
-        color: 'white',
+        color: material.white500,
     },
     markerMerchant: {
         width: 30,
         height: 30,
-        backgroundColor: 'tomato',
+        backgroundColor: material.orange500,
         borderRadius: 15,
     },
 
