@@ -34,6 +34,7 @@ import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
+import {NOTIFY_TYPE, TRANSACTION_TYPE} from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 // import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
@@ -156,20 +157,19 @@ export default class App extends Component {
       // (required) Called when a remote or local notification is opened or received
       onNotification: (notification) => {
         console.log('NOTIFICATION:', notification)
+        let notificationData = notification.data
         if (notification.userInteraction) {
           // New transaction
-          if (notification.type == 5) {
-            this.props.forwardTo('transactionDetail/' + notification.param1)
+          if (notificationData.type == NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING) {
+            this.props.forwardTo('transactionDetail/' + notificationData.param1+'/'+TRANSACTION_TYPE.DIRECT)
             // New Place Order (Booking)
-          } else if (notification.type == 6) {
-            this.props.forwardTo('placeOrderDetail/' + notification.param1)
-            // New Delivery Order
-          } else if (notification.type == 7) {
-            this.props.forwardTo('deliveryDetail/' + notification.param1)
-          }
-
-        } else {
-
+          } else if (notificationData.type == NOTIFY_TYPE.NEW_BOOKING) {
+            this.props.forwardTo('placeOrderDetail/' + notificationData.param1) 
+          } 
+          // New Delivery Order
+          // else if (notificationData.type == 7) {
+          //   this.props.forwardTo('deliveryDetail/' + notificationData.param1)
+          // }
         }
       },
 
