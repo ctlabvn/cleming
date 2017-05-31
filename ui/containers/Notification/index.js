@@ -26,7 +26,6 @@ import { NOTIFY_TYPE } from '~/store/constants/api'
 
 import { formatNumber } from '~/ui/shared/utils'
 
-
 @connect(state=>({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
@@ -92,7 +91,7 @@ export default class extends Component {
         return <Icon name="clingme-wallet" style={styles.icon}/>
       // case NOTIFY_TYPE.WAITING:
       default:
-        return <Icon name="order-history" style={{...styles.icon,color:'#f7ae3b'}}/>
+        return <Icon name="order-history" style={{...styles.icon,color:material.orange500}}/>
     }
   }
 
@@ -110,13 +109,13 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>                                         
               <View style={styles.titleContainer}>                
-                <Text note>{title} </Text>                                
+                <Text note style={styles.textGray}>{title} </Text>
                 <Text bold style={styles.textGray}>{content}                  
                 </Text>
               </View>
               
               {minutesRemain > 0 && <Text small style={{
-                  color: '#e36356',
+                  color: material.red500,
                   alignSelf: 'flex-end',
                   position: 'absolute',
                   top:0,
@@ -137,21 +136,21 @@ export default class extends Component {
       case NOTIFY_TYPE.SUCCESS:
         return (
           <Body>
-            <View style={styles.listItemRow}>                                         
+            <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note>{title}</Text>
-                <Text bold style={styles.textGray}>{content}                  
+                <Text note style={styles.textGray}>{title}</Text>
+                <Text bold style={styles.textGray}>{content}
                 </Text>
-              </View>                      
+              </View>
 
               <Text style={{
                     alignSelf: 'flex-end',
                     marginRight: 0,
-                    color: '#0388b5',
+                    color: material.blue600,
                   }}>
                     <Text style={{
                     fontWeight: '900',
-                    color: '#0388b5',
+                    color: material.blue600,
                     fontSize: 22,
                   }}>{formatNumber(paramDouble1)}</Text>đ
                   </Text>
@@ -165,24 +164,25 @@ export default class extends Component {
       default:
         return (
           <Body>
-            <View style={styles.listItemRow}>                                         
+            <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note>{title}</Text>
+                <Text note style={styles.textGray}>{title}</Text>
                 <Text bold style={styles.textGray}>{content}</Text>
               </View>
               <Text note style={{
-                alignSelf: 'flex-end'
+                alignSelf: 'flex-end',
+                ...styles.textGray
               }}>
                 <Text style={{
-                  color: '#838383',
+                    ...styles.textGray
                 }} bold>{formatNumber(paramDouble1)}</Text>đ
-              </Text>                        
+              </Text>
             </View>
 
-            
+
             {border}
           </Body>
-        )  
+        )
             
                       
     }
@@ -199,7 +199,7 @@ export default class extends Component {
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
         break
       case NOTIFY_TYPE.SUCCESS:
-        this.props.forwardTo('deliveryDetail/'+paramLong3)
+        this.props.forwardTo('deliveryDetail/' + paramLong3)
         break
       default:
         break

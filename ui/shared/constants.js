@@ -1,3 +1,8 @@
+/** This file is out of date from 31/05/2017
+ *  Try not to use it anymore
+ */
+
+
 export const BLUE600 = '#0085AC'
 export const BLUE400 = '#00A9D3'
 export const GREEN400 = '#8CC63F'
