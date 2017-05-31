@@ -20,7 +20,7 @@ import { getSession } from '~/store/selectors/auth'
 import {getSelectedPlace} from '~/store/selectors/place'
 import options from './options'
 import material from '~/theme/variables/material.js'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -192,12 +192,13 @@ export default class extends Component {
                 )
         }
     }
-
+    
     _renderTransactionItem(item) {
         let iconBlock, statusText, transactionCode
+        let moneyText = <Text bold style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
         switch (item.transactionStatus) {
-            case 0: //chờ duyệt
-            case 3:
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1: //chờ duyệt
+            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='order-history' style={{...styles.icon, ...styles.warning}} />
@@ -206,7 +207,7 @@ export default class extends Component {
                 statusText = <Text small warning>Chờ phê duyệt</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 break
-            case 1: // thành công
+            case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='coin_mark' style={{...styles.icon, ...styles.success}} />
@@ -215,7 +216,7 @@ export default class extends Component {
                 statusText = <Text small>Cashback thành công</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 break
-            case 2: // bị từ chối
+            case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='unlike_s' style={{...styles.icon, ...styles.reject}} />
@@ -223,6 +224,7 @@ export default class extends Component {
                 )
                 statusText = <Text small error>Bị từ chối</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
+                moneyText = <Text bold style={styles.moneyNumber}></Text>
                 break
             default:
                 iconBlock = (
@@ -246,12 +248,9 @@ export default class extends Component {
                                 {transactionCode}
                                 <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
                             </View>
-                            {/*<View style={{ ...styles.row, marginTop: 2 }}>
-                                <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
-                            </View>*/}
                             <View style={styles.row}>
                                 {statusText}
-                                <Text bold style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
+                                {moneyText}
                             </View>
                         </View>
                     </View>
