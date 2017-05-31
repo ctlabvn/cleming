@@ -8,6 +8,7 @@ import DateFilter from '~/ui/components/DateFilter'
 import * as commonAction from '~/store/actions/common'
 import * as transactionAction from '~/store/actions/transaction'
 import * as authActions from '~/store/actions/auth'
+import * as placeActions from '~/store/actions/place'
 import TransactionFilter from '~/ui/components/TransactionFilter'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
@@ -16,6 +17,7 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
+import {getSelectedPlace} from '~/store/selectors/place'
 import options from './options'
 import material from '~/theme/variables/material.js'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
@@ -23,8 +25,9 @@ import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/const
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
+    selectedPlace: getSelectedPlace(state),
     transaction: state.transaction
-}), { ...commonAction, ...transactionAction, ...authActions })
+}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -66,6 +69,9 @@ export default class extends Component {
 
     // Need Filter transaction type
     _handleTopDrowpdown(item) {
+        const {setSelectedOption} = this.props
+        setSelectedOption(item)
+
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(item.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
@@ -284,7 +290,8 @@ export default class extends Component {
         }
     }
     render() {
-        const { handleSubmit, submitting, forwardTo, transaction, place } = this.props
+        const { handleSubmit, submitting, forwardTo, transaction, place, selectedPlace } = this.props
+        console.log('Selected Place', selectedPlace)
         if (!transaction) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -308,7 +315,9 @@ export default class extends Component {
         }
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} />
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} 
+                    selectedOption={selectedPlace}
+                    onSelect={this._handleTopDrowpdown.bind(this)} />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />

@@ -11,19 +11,27 @@ const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
     constructor(props) {
-        console.log('Go to constructor')
         super(props)
+        let selectedOption
+        if (props.selectedOption && Object.keys(props.selectedOption).length>0){
+            selectedOption = props.selectedOption
+        }else{
+            selectedOption = props.dropdownValues[0]
+        }
         this.state = {
             openningDropdown: false,
             zIndex: 0,
             // fadeAnim: new Animated.Value(0),
-            selectedOption: props.selectedOption || props.dropdownValues[0],
+            selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0 && !this.state.selectedOption){
+        if (nextProps.selectedOption.id != this.state.selectedOption.id){
+            this.setState({selectedOption: nextProps.selectedOption})
+        }
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0 && Object.keys(this.state.selectedOption).length==0){
             this.setState({selectedOption: nextProps.dropdownValues[0]})
         }
     }
@@ -35,17 +43,7 @@ export default class TopDropdown extends Component {
         return this.state.selectedOption;
     }
     toggle() {
-        // Animated.timing(this.state.fadeAnim, {
-        //     toValue: this.state.openningDropdown ? 0 : 1,
-        //     duration: this.state.openningDropdown ? 300 : 300,
-        //     easing: Easing.inOut(Easing.quad)
-        // }).start(() => {
-        //     // console.log('Open/Closing drop down');
-        //     this.props.onSelect && this.props.onSelect(this.state.selectedOption)
-        // });
-
         LayoutAnimation.easeInEaseOut()
-
         this.setState({ openningDropdown: !this.state.openningDropdown })
     }
 

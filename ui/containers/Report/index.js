@@ -9,6 +9,7 @@ import DateFilter from '~/ui/components/DateFilter'
 import * as authAction from '~/store/actions/auth'
 import * as commonActions from '~/store/actions/common'
 import * as reportActions from '~/store/actions/report'
+import * as placeActions from '~/store/actions/place'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
@@ -19,12 +20,14 @@ import Content from '~/ui/components/Content'
 import geoViewport from '@mapbox/geo-viewport'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { getSession } from '~/store/selectors/auth'
+import {getSelectedPlace} from '~/store/selectors/place'
 @connect(state => ({
     xsession: getSession(state),
+    selectedPlace: getSelectedPlace(state),
     place: state.place,
     booking: state.booking,
     report: state.report
-}), { ...commonActions, ...reportActions })
+}), { ...commonActions, ...reportActions, ...placeActions })
 export default class Report extends Component {
 
     constructor(props) {
@@ -142,6 +145,8 @@ export default class Report extends Component {
     }
 
     _handleTopDrowpdown = (item) => {
+        const { setSelectedOption } = this.props
+        setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this.props.getCustomerReport(this.props.xsession, item.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
@@ -334,7 +339,7 @@ export default class Report extends Component {
         )
     }
     render() {
-        const { report, place } = this.props
+        const { report, place, selectedPlace } = this.props
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
@@ -342,7 +347,10 @@ export default class Report extends Component {
 
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown} />
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} 
+                    onSelect={this._handleTopDrowpdown}
+                    selectedOption={selectedPlace}
+                />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' />
                     {/*<Content>*/}
