@@ -1,27 +1,27 @@
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 export default {
     dateFilter: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
-        backgroundColor: 'white'
+        backgroundColor: material.white500
     },
     stickPart: {
         paddingRight: 15,
-        borderRightColor: PRIMARY_COLOR,
+        borderRightColor: material.primaryColor,
         borderRightWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
         marginRight: 5
     },
     calendarIcon: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontSize: 20,
         marginRight: 9,
         marginLeft: 10,
     },
     filterIntevalLabel: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold'
     },
     intevalValue: {
@@ -31,7 +31,7 @@ export default {
       // padding: 50,
       marginRight: 0,
       flexDirection: 'row',
-      backgroundColor: 'white'
+      backgroundColor: material.white500
     },
     dateFilterListItemDeactive: {
         borderBottomColor: 'transparent',
@@ -42,7 +42,7 @@ export default {
     dateFilterListItemActive: {
         borderBottomColor: 'transparent',
         marginRight: 0,
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold',
         padding: 5
     }
