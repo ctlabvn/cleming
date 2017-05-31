@@ -1,6 +1,9 @@
 /**
  * Created by vjtc0n on 5/4/17.
  */
+
+import material from '~/theme/variables/material.js'
+
 export default {
     listItem: {
         marginLeft: 0,
@@ -30,19 +33,19 @@ export default {
     },
     nameText: {
         fontWeight: '900',
-        color: '#7e7e7e'
+        color: material.gray500
     },
     subTitleText: {
-        color: '#bcbcbc',
+        color: material.gray400,
         height: 20
     },
     topLeftGrid: {
         borderRightWidth: 1,
-        borderColor: '#00a9d7'
+        borderColor: material.blue400
     },
     bottomLeftGrid: {
         borderRightWidth: 1,
-        borderColor: '#00a9d7',
+        borderColor: material.blue400,
         width: '100%'
     },
     bottomLeftGridContainer: {
@@ -50,44 +53,44 @@ export default {
     },
     topRightGrid: {
         borderLeftWidth: 1,
-        borderColor: '#00a9d7',
+        borderColor: material.blue400,
       //backgroundColor: 'red'
     },
     bottomRightGrid: {
         borderLeftWidth: 1,
-        borderColor: '#00a9d7',
+        borderColor: material.blue400,
         width: '100%'
     },
     bottomRightGridContainer: {
       borderTopWidth: 1,
-      borderColor: '#00a9d7'
+      borderColor: material.blue400
     },
     addUserButton: {
         position: 'absolute',
         bottom: 0,
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: '#00a9d4',
+        backgroundColor: material.blue400,
         borderRadius: 0
     },
     addUserText: {
         fontWeight: 'bold',
-        color: 'white'
+        color: material.white500
     },
     accountButton: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingLeft: 0,
         borderWidth: 0,
-        shadowColor: 'white',
+        shadowColor: material.white500,
         padding: 0,
         elevation: 0,
         height: 45
     },
     ownerButton: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingLeft: 0,
         borderWidth: 0,
-        shadowColor: 'white',
+        shadowColor: material.white500,
         paddingRight: 0,
         height: 40,
         elevation: 0
@@ -95,24 +98,24 @@ export default {
     modalContainer: {
         height: 200,
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 10,
         overflow: 'hidden'
     },
     modalButton: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         paddingLeft: 0,
         borderWidth: 0,
-        shadowColor: 'white',
+        shadowColor: material.white500,
         paddingRight: 0,
         elevation: 0
     },
     modalCancelButtonText: {
-        color: 'gray',
+        color: material.gray500,
         fontWeight: 'bold'
     },
     modalOkButtonText: {
-        color: '#00a9d7',
+        color: material.blue400,
         fontWeight: 'bold'
     },
     rowCheckBox: {
@@ -121,7 +124,8 @@ export default {
         marginRight: 25
     },
     rowText: {
-        color: '#7e7e7e',
+        // color: material.gray500,
+        color: material.gray500,
         marginLeft: 15
     }
 }
