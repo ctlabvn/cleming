@@ -13,7 +13,6 @@ import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
 import moment from 'moment'
 import { storeTransparent, storeFilled } from '~/assets'
 import { formatNumber } from '~/ui/shared/utils'
@@ -99,9 +98,9 @@ export default class MerchantOverview extends PureComponent {
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color={PRIMARY_COLOR}
+                    color={material.primaryColor}
                 />
-                <Text style={{ color: PRIMARY_COLOR, marginTop: 10 }}>Đang tải dữ liệu ...</Text>
+                <Text style={{ color: material.primaryColor, marginTop: 10 }}>Đang tải dữ liệu ...</Text>
             </View>
         )
     }
