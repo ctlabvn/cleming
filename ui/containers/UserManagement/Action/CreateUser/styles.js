@@ -1,10 +1,13 @@
 /**
  * Created by vjtc0n on 5/5/17.
  */
+import material from '~/theme/variables/material.js'
+
 export default {
     inputField: {
         borderRadius: 5,
-        backgroundColor: '#d9d9d9',
+        // backgroundColor: '#d9d9d9',
+        backgroundColor: material.gray300,
         height: 48,
         marginTop: 0
     },
@@ -14,14 +17,14 @@ export default {
         borderRadius: 5,
         marginTop: 10,
         paddingTop: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     inputIcon: {
         fontSize: 20,
-        color: '#7e7e7e'
+        color: material.gray500
     },
     inputText: {
-      color: "#7e7e7e",
+      color: material.gray500,
       top: 0
     },
     listItem:{
@@ -41,19 +44,20 @@ export default {
     },
     left: {
         flex: 1,
-        color: '#a2a2a2'
+        // color: '#a2a2a2',
+        color: material.gray400
     },
     leftAddressTitleText: {
         fontSize: 15,
-        color: '#7e7e7e',
+        color: material.gray500,
         fontWeight: 'bold',
     },
     rightAddressTitleText: {
         fontSize: 15,
-        color: '#00a9d7'
+        color: material.blue400
     },
     createPasswordButton: {
-        backgroundColor: '#00a9d7',
+        backgroundColor: material.blue400,
         alignSelf: 'center',
         width: '80%',
         borderRadius: 5,
@@ -62,23 +66,23 @@ export default {
         shadowOpacity: 0
     },
     createPasswordButtonText: {
-        color: 'white'
+        color: material.white500
     },
     passwordText: {
-        color: '#00a9d7',
+        color: material.blue400,
         fontSize: 24,
         fontWeight: 'bold'
     },
     passwordTextWarning: {
-        color: '#00a9d7',
+        color: material.blue400,
         fontSize: 14
     },
     copyText: {
-        color: '#00a9d7',
+        color: material.blue400,
         fontSize: 14,
     },
     submitButton: {
-        backgroundColor: '#00a9d7',
+        backgroundColor: material.blue400,
         alignSelf: 'flex-end',
         width: '100%',
         borderRadius: 0,
@@ -86,12 +90,12 @@ export default {
         justifyContent: 'center'
     },
     copyIcon: {
-        color: '#00a9d7',
+        color: material.blue400,
         marginRight: 5
     },
     modalContainer: {
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 10,
         overflow: 'hidden',
         minHeight: 50,
@@ -102,15 +106,15 @@ export default {
       left: 0,
       width: '100%',
       height: 170,
-      backgroundColor: 'white'
+      backgroundColor: material.white500
     },
     subText: {
-      color: 'gray',
+      color: material.gray500,
       marginLeft: 20,
       fontStyle: 'italic'
     },
     closeIcon: {
-      color: '#7e7e7e',
+      color: material.gray500,
       fontSize: 18
     }
 }
