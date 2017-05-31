@@ -1,10 +1,10 @@
 /**
  * Created by vjtc0n on 5/23/17.
  */
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 export default {
   container: {
-    backgroundColor: 'white',
+    backgroundColor: material.white500,
     width: '80%',
     height: 130,
     borderRadius: 5,
@@ -19,17 +19,17 @@ export default {
     justifyContent: 'center'
   },
   headerContainer: {
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: material.primaryColor,
     justifyContent: 'center',
     alignItems: 'center'
   },
   leftButton: {
-    backgroundColor: '#b5b5b5',
+    backgroundColor: material.gray400,
     alignSelf: 'flex-end',
     marginRight: 2
   },
   rightButton: {
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: material.primaryColor,
     alignSelf: 'flex-start',
     marginLeft: 2
   }
