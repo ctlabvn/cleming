@@ -48,8 +48,7 @@ export default class MerchantOverview extends PureComponent {
         this.props.getListPlace(this.props.xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
-                // console.warn('Place Data', data)
-                if (data && data.updated && data.updated.listPlace) {
+                if (data && data.updated && data.updated.data) {
                     let currentPlace = this.refs.placeDropdown.getValue()
                     // this.props.getPlaceStatistic(
                     //     this.props.xsession,

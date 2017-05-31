@@ -13,9 +13,9 @@ export default class TopDropdown extends Component {
     constructor(props) {
         super(props)
         let selectedOption
-        if (props.selectedOption && Object.keys(props.selectedOption).length>0){
+        if (props.selectedOption && Object.keys(props.selectedOption).length > 0) {
             selectedOption = props.selectedOption
-        }else{
+        } else {
             selectedOption = props.dropdownValues[0]
         }
         this.state = {
@@ -28,11 +28,19 @@ export default class TopDropdown extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedOption.id != this.state.selectedOption.id){
-            this.setState({selectedOption: nextProps.selectedOption})
+        // If selectedPlace from store change, all TopDropdown will change follow
+        if (nextProps.selectedOption && this.state.selectedOption
+            && Object.keys(nextProps.selectedOption).length > 0
+            && Object.keys(this.state.selectedOption).length > 0
+            && nextProps.selectedOption.id != this.state.selectedOption.id
+        ) {
+            this.setState({ selectedOption: nextProps.selectedOption })
         }
-        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0 && Object.keys(this.state.selectedOption).length==0){
-            this.setState({selectedOption: nextProps.dropdownValues[0]})
+        // If state.selectedOption empty, set value
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0) {
+            if ((!this.state.selectedOption) || Object.keys(this.state.selectedOption).length == 0) {
+                this.setState({ selectedOption: nextProps.dropdownValues[0] })
+            }
         }
     }
 
@@ -63,13 +71,13 @@ export default class TopDropdown extends Component {
     }
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
-        let {dropdownValues} = this.props
+        let { dropdownValues } = this.props
         const { openningDropdown } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
-        if (!dropdownValues || dropdownValues.length == 0){
+        if (!dropdownValues || dropdownValues.length == 0) {
             return (
                 <View style={containerStyleTopDown}>
                     <View style={styles.dropdownHeader}>
@@ -87,7 +95,7 @@ export default class TopDropdown extends Component {
                 </View>
             )
         }
-        dropdownValues = dropdownValues.filter(item=>item.id!=this.state.selectedOption.id)
+        dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
