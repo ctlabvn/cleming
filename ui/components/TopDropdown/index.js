@@ -5,7 +5,7 @@ import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Plat
 
 import styles from './styles'
 import Content from '~/ui/components/Content'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 
 const { height, width } = Dimensions.get('window')
 
@@ -102,13 +102,13 @@ export default class TopDropdown extends Component {
                     <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
-                            color: 'white'
+                            color: material.white500
                         }} />
                     </Button>
                 </View>
 
                 <List
-                    contentContainerStyle={{ backgroundColor: PRIMARY_COLOR }}
+                    contentContainerStyle={{ backgroundColor: material.primaryColor }}
                     dataArray={dropdownValues}
                     style={{
                         ...styles.dropdownList,

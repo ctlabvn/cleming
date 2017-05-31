@@ -1,5 +1,4 @@
 import material from '~/theme/variables/material'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
     dropdownContainerAndroid:{
         position: 'absolute',
@@ -17,7 +16,7 @@ export default {
     },
     dropdownHeader:{
         justifyContent:'center',
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,
@@ -27,7 +26,7 @@ export default {
     },
     dropdownSelectedValue:{
         alignSelf: 'center',
-        color: 'white',
+        color: material.white500,
         fontWeight: 'bold'
     },
     dropdownIcon:{
@@ -45,7 +44,7 @@ export default {
         justifyContent: 'center',
     },
     dropdownListItemText:{
-        color: 'white',
+        color: material.white500,
         fontWeight: '100'
     },
     content:{
