@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import Icon from '~/ui/elements/Icon'
 import LinearGradient from 'react-native-linear-gradient'
+import material from '~/theme/variables/material.js'
 
 import routes from '~/ui/routes'
 
@@ -193,7 +194,7 @@ export default class extends Component {
             autoFocus={emailFocus} 
             initialSelection={emailSelection} 
             icon={(input, active)=>input.value && active ? 'close' : false}
-            iconStyle={{color:'#000'}}
+            iconStyle={{color:material.black500}}
             onIconPress={input=>input.onChange('')}
             label="Email/ Số điện thoại" component={InputField} />
           <Field name="password" 

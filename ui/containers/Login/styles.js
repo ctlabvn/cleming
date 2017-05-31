@@ -1,6 +1,7 @@
+import material from '~/theme/variables/material.js'
 export default {
   container: {
-    backgroundColor: '#00b5f1', 
+    backgroundColor: material.blue400,
     flex: 1,
     alignItems: 'center',  
     justifyContent: 'center',   
@@ -16,7 +17,7 @@ export default {
     return {...this.form, marginBottom: 20}
   },
   logoIcon:{
-    color: '#fff',
+    color: material.white500,
     fontSize: 60,
     alignSelf: 'center',
     marginTop: 50,
@@ -31,12 +32,12 @@ export default {
   },
   logoText:{
     backgroundColor: 'transparent',
-    color: '#fff',
+    color: material.white500,
     textAlign: 'center',
   },
   button: {
     marginTop: 15,    
-    backgroundColor: '#0086ac',        
+    backgroundColor: material.blue600,
     justifyContent: 'center',
     width: '100%',   
     borderRadius: 3,
@@ -45,13 +46,13 @@ export default {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: '#FFF',
+    borderColor: material.white500,
   },  
   label: {
     marginTop: 20,
     backgroundColor: 'transparent',
     width: '100%',
-    color: '#FFF',
+    color: material.white500,
     textAlign: 'center',
     fontWeight: '500',
   },
@@ -59,11 +60,12 @@ export default {
     return {...this.label, textAlign:'left',margin:10}
   },
   whiteColor: {
-    color: '#FFF',
+    color: material.white500,
     fontWeight: '500',
   },
   cancelButton: {
-    backgroundColor: '#33b5d7',
+    // backgroundColor: '#33b5d7',
+    backgroundColor: material.blue400,
   },
   submitButton: {
     
