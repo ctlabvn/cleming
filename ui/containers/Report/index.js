@@ -352,7 +352,7 @@ export default class Report extends Component {
                     selectedOption={selectedPlace}
                 />
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' />
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite'/>
                     {/*<Content>*/}
                     <MapView
                         region={this.state.region}
