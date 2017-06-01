@@ -305,7 +305,7 @@ export default class App extends Component {
     })
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const { router, goBack } = this.props
-      if (router.route === 'merchantOverview') {
+      if (router.route === 'merchantOverview' || router.route === 'login') {
         return false
       }
       // go back
