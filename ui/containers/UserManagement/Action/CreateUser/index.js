@@ -92,6 +92,13 @@ const formSelector = formValueSelector('CreateUserForm')
 export default class CreateUserContainer extends Component {
     constructor(props) {
         super(props)
+        let currentJob = {
+          id : 1,
+          name : "Nhân Viên"
+        }
+        if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission){
+          currentJob = props.formValues.permission
+        }
         this.state = {
           jobModalOpen: false,
           permissionModalOpen: false,
@@ -103,10 +110,11 @@ export default class CreateUserContainer extends Component {
           employeeDetail: {},
           rowIDOfEmployee: 0,
           chosenListPlace: [],
-          currentJob: props.formValues.permission,
+          currentJob: currentJob,
           isLoading: false,
           firstTimeResetPassword: false
         }
+        console.log('Props FormValue Construcotr', props.formValues)
         
     }
   
@@ -235,6 +243,8 @@ export default class CreateUserContainer extends Component {
     }
     
     onSubmitUser=()=> {
+      console.log('State in User', this.state)
+      console.log('Form Value', this.props.formValues)
       let userInfo = {}
       if (this.state.chosenListPlace.length == 0) {
         this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
