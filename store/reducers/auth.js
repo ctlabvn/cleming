@@ -43,6 +43,14 @@ export const auth = (state = initialState, {type, payload}) => {
           ...payload.updated.mertchant_accout_info
         }
       }
+    case 'app/updateFirstTimeLogin':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          firstLogin: 0
+        }
+      }
     default:
       return state
   }

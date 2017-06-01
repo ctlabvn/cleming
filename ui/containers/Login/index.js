@@ -136,16 +136,24 @@ export default class extends Component {
     return true
   }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
-    const {setToast} = this.props
-    console.log('Changing Pass', oldPassword + '---' + newPassword + '---' + reNewPassword)
+    const {setToast, updateFirstTimeLogin} = this.props
     if (!this._checkChangePassword(oldPassword, newPassword, reNewPassword)) return
     let data = {
       oldPassword: md5(oldPassword),
       password: md5(newPassword)
     }
-    this.props.changePassword(this.props.session, data)
+    this.props.changePassword(this.props.session, data,
+      (err, dataR)=>{
+        if (dataR && dataR.updated && dataR.updated.isSent){
+          updateFirstTimeLogin()
+          this._handleShowLogin()
+        }
+      }
+    )
   }
-
+  componentWillFocus(){
+    // this.forceUpdate()
+  }
   renderPasswordForm() {
     const { handleSubmit } = this.props
     return (
@@ -238,7 +246,6 @@ export default class extends Component {
         <Preload />
       )
     }
-
     return (
       <Container style={styles.container}>
         <LinearGradient colors={['#14b3dd', '#019ecb', '#007dad']}>
