@@ -228,7 +228,7 @@ export default class PlaceOrderList extends Component {
                     {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
                 </View>*/}
-                    <TabsWithNoti tabData={options.tabData} activeTab={1} ref='tabs'
+                    <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab.bind(this)} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <Content
