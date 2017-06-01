@@ -13,9 +13,14 @@ export const rejectErrors = (res) => {
   if (status >= 200 && status < 300) {
     return res
   }
+  console.log('Res', res)
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
-  return Promise.reject({ message: res.statusText, status, code: JSON.parse(res._bodyText).code })
+  let code = status
+  if (res._bodyText){
+    code = JSON.parse(res._bodyText).code ? JSON.parse(res._bodyText).code:code
+  }
+  return Promise.reject({ message: res.statusText, status, code })
 }
 
 // try invoke callback for refresh token here
