@@ -108,7 +108,7 @@ export default {
         fontSize: 20,
         marginRight: 10,
         marginLeft: 5,
-        color: 'grey'
+        color: material.gray500
     },
     success: {
         color: material.successColor
