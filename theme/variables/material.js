@@ -153,7 +153,7 @@ export default {
     return this.green400;
   },
   get backgroundColor1(){
-    return this.gray300;
+    return this.gray200;
   },
   get textColor1(){
     return this.gray500;
