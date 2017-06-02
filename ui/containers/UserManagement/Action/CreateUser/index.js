@@ -114,7 +114,6 @@ export default class CreateUserContainer extends Component {
           isLoading: false,
           firstTimeResetPassword: false
         }
-        console.log('Props FormValue Construcotr', props.formValues)
         
     }
 
@@ -336,7 +335,6 @@ export default class CreateUserContainer extends Component {
             if (errors.name.length > 30) {
               errorLongNameStyle = {marginBottom: 5}
             }
-            console.log(errors.name)
             nameError = <Text style={{color: 'red'}}>{errors.name}</Text>
           }
           if (errors.phone &&  typeof fields.phone != 'undefined' && fields.phone.touched) {
@@ -527,6 +525,7 @@ export default class CreateUserContainer extends Component {
                 isVisible={this.state.fromTimeVisible}
                 onConfirm={this.setFromTime.bind(this)}
                 onCancel={this.onFromTimeCancel.bind(this)}
+                date={new Date(this.state.fromTime+':00 01-01-2000')}
               />
               <DateTimePicker
                 mode="time"
@@ -536,6 +535,7 @@ export default class CreateUserContainer extends Component {
                 isVisible={this.state.toTimeVisible}
                 onConfirm={this.setToTime.bind(this)}
                 onCancel={this.onToTimeCancel.bind(this)}
+                date={new Date(this.state.toTime+':00 01-01-2000')}
               />
             </Container>
         )
