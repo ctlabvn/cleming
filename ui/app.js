@@ -164,10 +164,13 @@ export default class App extends Component {
             case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
             case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
               this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
+              break
             case NOTIFY_TYPE.NEW_BOOKING:
               this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
+              break
             case NOTIFY_TYPE.NEW_ORDER:
               this.props.forwardTo('deliveryDetail/'+notificationData.param1)
+              break
           }
         }
       },
