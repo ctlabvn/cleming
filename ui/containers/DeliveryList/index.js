@@ -39,7 +39,7 @@ export default class extends Component {
     constructor(props) {
         super(props)
         let selectedPlace
-        if (props.selectedPlace && Object.keys(props.selectedPlace)>0){
+        if (props.selectedPlace && Object.keys(props.selectedPlace).length>0){
             selectedPlace = props.selectedPlace.id
         }else{
             selectedPlace = props.place.listPlace[0].id
@@ -119,7 +119,6 @@ export default class extends Component {
         if (this.state.loading || this.state.loadingMore)
             return
         const { order } = this.props
-        console.log('Has More', order)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value
         if (order.hasMore) {
             this.loadPage(order.page + 1, dateFilter.from, dateFilter.to, true)
@@ -194,7 +193,6 @@ export default class extends Component {
         return (
             <ListItem style= {listItemStyle} key={orderInfo.clingmeId}
                 onPress={() => {
-                    console.log('Forwarding: ', orderInfo.orderCode)
                     forwardTo('deliveryDetail/' + orderInfo.orderCode)
                 }
                 }>
@@ -258,7 +256,6 @@ export default class extends Component {
         }))
 
         const { orderList } = this.props.order
-        console.log('Order List', orderList)
 
         return (
             <Container style={styles.container}>
