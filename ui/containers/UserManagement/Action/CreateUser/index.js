@@ -65,7 +65,6 @@ const formSelector = formValueSelector('CreateUserForm')
       })
     }
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
-    console.log('Employee detail', employeeDetail)
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
@@ -115,7 +114,6 @@ export default class CreateUserContainer extends Component {
           isLoading: false,
           firstTimeResetPassword: false
         }
-        console.log('Props FormValue Construcotr', props.formValues)
         
     }
 
@@ -337,7 +335,6 @@ export default class CreateUserContainer extends Component {
             if (errors.name.length > 30) {
               errorLongNameStyle = {marginBottom: 5}
             }
-            console.log(errors.name)
             nameError = <Text style={{color: 'red'}}>{errors.name}</Text>
           }
           if (errors.phone &&  typeof fields.phone != 'undefined' && fields.phone.touched) {
