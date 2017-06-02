@@ -4,7 +4,7 @@ export const validate = (values) => {
   if (!values) return errors
   // validate email
   if (!values.oldPassword || !values.oldPassword.match(/^[\w\d]{4,12}$/)) {
-    errors.oldPassword = 'Mật khẩu không hợp lệ. Mật khẩu có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường'
+    errors.oldPassword = 'Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại'
   }
 
   if (!values.newPassword) {

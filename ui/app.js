@@ -34,7 +34,7 @@ import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import {NOTIFY_TYPE, TRANSACTION_TYPE} from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 // import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
@@ -97,15 +97,15 @@ export default class App extends Component {
   // }
 
   static configureScene(route) {
-      const {animationType = 'PushFromRight'} = routes[route.path] || {}
-            
-      // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-      return {
-        ...Navigator.SceneConfigs[animationType], 
-        gestures: null,
-        defaultTransitionVelocity: 20,
-      }
-      // return Navigator.SceneConfigs[animationType]
+    const { animationType = 'PushFromRight' } = routes[route.path] || {}
+
+    // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
+    return {
+      ...Navigator.SceneConfigs[animationType],
+      gestures: null,
+      defaultTransitionVelocity: 20,
+    }
+    // return Navigator.SceneConfigs[animationType]
   }
 
   initPushNotification(options) {
@@ -160,16 +160,15 @@ export default class App extends Component {
         let notificationData = notification.data
         if (notification.userInteraction) {
           // New transaction
-          if (notificationData.type == NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING) {
-            this.props.forwardTo('transactionDetail/' + notificationData.param1+'/'+TRANSACTION_TYPE.DIRECT)
-            // New Place Order (Booking)
-          } else if (notificationData.type == NOTIFY_TYPE.NEW_BOOKING) {
-            this.props.forwardTo('placeOrderDetail/' + notificationData.param1) 
-          } 
-          // New Delivery Order
-          // else if (notificationData.type == 7) {
-          //   this.props.forwardTo('deliveryDetail/' + notificationData.param1)
-          // }
+          switch (notificationData.type) {
+            case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+            case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
+              this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
+            case NOTIFY_TYPE.NEW_BOOKING:
+              this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
+            case NOTIFY_TYPE.NEW_ORDER:
+              this.props.forwardTo('deliveryDetail/'+notificationData.param1)
+          }
         }
       },
 
@@ -242,14 +241,14 @@ export default class App extends Component {
     //   //   return this.renderComponentFromPage(this.page)
     //   // }
 
-      const component = (
-        <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
-          {this.renderComponentFromPage(this.page)}
-        </AfterInteractions>
-      )
+    const component = (
+      <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
+        {this.renderComponentFromPage(this.page)}
+      </AfterInteractions>
+    )
 
-      this.firstTime = false
-      return component
+    this.firstTime = false
+    return component
     // }
   }
 
@@ -313,7 +312,7 @@ export default class App extends Component {
       return true
     })
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
   }
   handleFocusableComponent(component, focus = true) {
