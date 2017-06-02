@@ -65,6 +65,7 @@ const formSelector = formValueSelector('CreateUserForm')
       })
     }
     let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+    console.log('Employee detail', employeeDetail)
     let permission = null
     switch (employeeDetail.titleType) {
       case 1: permission = "Nhân Viên"
@@ -527,6 +528,7 @@ export default class CreateUserContainer extends Component {
                 isVisible={this.state.fromTimeVisible}
                 onConfirm={this.setFromTime.bind(this)}
                 onCancel={this.onFromTimeCancel.bind(this)}
+                date={new Date(this.state.fromTime+':00 01-01-2000')}
               />
               <DateTimePicker
                 mode="time"
@@ -536,6 +538,7 @@ export default class CreateUserContainer extends Component {
                 isVisible={this.state.toTimeVisible}
                 onConfirm={this.setToTime.bind(this)}
                 onCancel={this.onToTimeCancel.bind(this)}
+                date={new Date(this.state.toTime+':00 01-01-2000')}
               />
             </Container>
         )
