@@ -31,8 +31,13 @@ import {
 export default class extends Component {  
 
   _handleLogout = (e) => {    
-    this.props.closeDrawer()
-    this.props.logout(this.props.session)       
+
+    const { closeDrawer, setAuthState, forwardTo, removeLoggedUser, session, logout } = this.props
+    closeDrawer()
+    removeLoggedUser()
+    setAuthState(false)        
+    forwardTo('login', true)
+    logout(session)       
   }
 
   navigateTo(route) {

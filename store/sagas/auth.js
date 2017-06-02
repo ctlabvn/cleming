@@ -60,16 +60,16 @@ const requestLogout = createRequestSaga({
     request: api.auth.logout,   
     key: 'logout',
     success: [
-        () => removeLoggedUser(),
-        () => setAuthState(false),
-        () => closeDrawer(),
-        () => forwardTo('login', true)
+        // () => removeLoggedUser(),
+        // () => setAuthState(false),
+        // () => closeDrawer(),
+        // () => forwardTo('login', true)
     ],
     failure: [
-        () => removeLoggedUser(),
-        () => setAuthState(false),
-        () => closeDrawer(),
-        () => forwardTo('login', true)
+        // () => removeLoggedUser(),
+        // () => setAuthState(false),
+        // () => closeDrawer(),
+        // () => forwardTo('login', true)
     ],
 })
 

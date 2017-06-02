@@ -183,7 +183,8 @@ export default class UpdateUserContainer extends Component {
                         <View style={styles.avatarContainer}>
                             <CacheableImage
                               style={styles.avatar}
-                              source={{uri: this.props.user.avatar || img}} />
+                              defaultSource={{uri:img}}
+                              source={{uri: this.props.user.avatar}} />
                             <PhotoChooser style={styles.photoIcon} onSuccess={this.handleChoosePhoto}/>
                         </View>
                         <View style={styles.inputContainer}>

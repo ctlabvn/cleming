@@ -298,7 +298,7 @@ export default class DateFilter extends Component {
                         }
                     }
                 />
-            </View >
+            </View>
         )
     }
 }

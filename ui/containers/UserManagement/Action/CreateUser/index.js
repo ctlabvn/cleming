@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Dimensions, Clipboard } from 'react-native'
-import { Field, FieldArray, reduxForm, formValueSelector} from 'redux-form'
+import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import Dash from 'react-native-dash';
@@ -45,7 +45,7 @@ const formSelector = formValueSelector('CreateUserForm')
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
   formState: state.form
 }), dispatch => ({
-  actions: bindActionCreators({ ...accountActions, ...commonActions}, dispatch)
+  actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset}, dispatch)
 }), (stateProps, dispatchProps, ownProps)=>{
     if (typeof ownProps.route.params.id == 'undefined') {        
       return ({
@@ -116,6 +116,10 @@ export default class CreateUserContainer extends Component {
         }
         console.log('Props FormValue Construcotr', props.formValues)
         
+    }
+
+    componentWillBlur(){
+      this.props.actions.resetForm('CreateUserForm')
     }
   
     componentWillFocus(){
@@ -349,7 +353,7 @@ export default class CreateUserContainer extends Component {
           <View style={{...styles.inputContainer, ...errorNameStyle, ...errorLongNameStyle}}>
             <Field
               iconStyle={styles.closeIcon}
-              icon={input=>input.value ? 'close' : false}
+              icon={(input, active) => input.value && active ? 'close' : false}
               onIconPress={input=>input.onChange('')}
               inputStyle={styles.inputText}
               style={{...styles.inputField}}
