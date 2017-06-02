@@ -52,6 +52,7 @@ export default {
     transactionList: {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
+        headerType: 'back'
     },
     'transactionDetail/:id/:type': {
         title: 'Chi tiết giao dịch',
@@ -75,7 +76,8 @@ export default {
     },
     deliveryList: {
         title: 'Danh sách giao hàng',
-        Page: DeliveryList
+        Page: DeliveryList,
+        headerType: 'back'
     },
     'deliveryDetail/:id': {
         title: 'Chi tiết giao hàng',
