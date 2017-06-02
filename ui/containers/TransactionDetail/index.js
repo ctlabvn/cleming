@@ -17,7 +17,7 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, DEFAULT_TIME_FORMAT } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager'
 import material from '~/theme/variables/material'
 @connect(state => ({
@@ -199,7 +199,7 @@ export default class TransactionDetail extends Component {
                         dealTransactionId={transactionInfo.clingmeId}
                     />
                     <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                        <Text style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format('hh:mm:ss DD/MM/YYYY')}</Text>
+                        <Text style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
                         <Text>Số đơn hàng</Text>
@@ -275,15 +275,15 @@ export default class TransactionDetail extends Component {
 
                         <View style={styles.rowPadding}>
                             <Text small>Xem:</Text>
-                            <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Đánh dấu:</Text>
-                            <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
                             <Text small>Chụp hóa đơn:</Text>
-                            <Text small bold>{moment(transactionInfo.boughtTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+                            <Text small bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         {this._renderInvoiceBlock(transactionInfo)}
                         <View style={styles.borderBlock}>

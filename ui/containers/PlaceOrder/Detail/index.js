@@ -15,7 +15,7 @@ import styles from './styles'
 import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import material from '~/theme/variables/material.js'
-
+import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR } from '~/store/constants/app' 
 const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
   "before deactivating the button. Once deactivated, try moving it back and youll see that the button is once again " +
   "reactivated! Move it back and forth several times while the scroll view is disabled. Ensure you pass in a " +
@@ -114,7 +114,7 @@ export default class PlaceOrderDetail extends Component {
         <View style={{ backgroundColor: material.white500, height: '100%' }}>
           <View style={styles.placeContainer}>
             <View style={{ ...styles.rowPaddingTB, ...styles.center }}>
-              <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+              <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
               <View style={{right: 10, position: 'absolute'}}>
                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                   counting={this.state.counting}
@@ -127,12 +127,12 @@ export default class PlaceOrderDetail extends Component {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Icon name='calendar' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format('DD/MM')}</Text>
+                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                 <View style={styles.column}>
                   <Icon name='history' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format('hh:mm')}</Text>
+                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                 <View style={styles.column}>
