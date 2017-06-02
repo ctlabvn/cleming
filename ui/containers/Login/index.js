@@ -142,7 +142,7 @@ export default class extends Component {
     return true
   }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
-    const {setToast, updateFirstTimeLogin} = this.props
+    const {setToast, updateFirstTimeLogin, forwardTo} = this.props
     if (!this._checkChangePassword(oldPassword, newPassword, reNewPassword)) return
     let data = {
       oldPassword: md5(oldPassword),
@@ -153,6 +153,7 @@ export default class extends Component {
         if (dataR && dataR.updated && dataR.updated.isSent){
           updateFirstTimeLogin()
           this._handleShowLogin()
+          forwardTo('merchantOverview', true)
         }
       }
     )

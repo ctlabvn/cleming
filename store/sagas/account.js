@@ -32,13 +32,10 @@ const requestChangePassword = createRequestSaga({
     key: 'changePassword',    
     success: [
         () => setToast('Thay đổi Mật khẩu thành công.'),
-        () => forwardTo('merchantOverview')
+        // () => forwardTo('merchantOverview')
     ],
     failure: [
-
-        () => {
-          setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
-        }
+        () => setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
     ]
 })
 
