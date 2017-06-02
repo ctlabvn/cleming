@@ -18,6 +18,7 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
+ 
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
@@ -85,7 +86,7 @@ export default class extends Component {
                     <View style={styles.rowPadding}>
                         <Text success small>Đã thanh toán</Text>
                         <View style={styles.row}>
-                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format('hh:mm:ss   DD/MM/YYYY')}</Text>
+                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             <CircleCountdown
                                 baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
                                 counting={this.state.counting}

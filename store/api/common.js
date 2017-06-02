@@ -13,7 +13,6 @@ export const rejectErrors = (res) => {
   if (status >= 200 && status < 300) {
     return res
   }
-  console.log('Res', res)
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
   let code = status

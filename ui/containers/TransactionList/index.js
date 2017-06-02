@@ -20,7 +20,7 @@ import { getSession } from '~/store/selectors/auth'
 import {getSelectedPlace} from '~/store/selectors/place'
 import options from './options'
 import material from '~/theme/variables/material.js'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS } from '~/store/constants/app'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, TIME_FORMAT_WITHOUT_SECOND } from '~/store/constants/app'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -148,7 +148,7 @@ export default class extends Component {
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
+                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                                 <Text small bold>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
@@ -175,7 +175,7 @@ export default class extends Component {
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
+                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                                 <Text bold primary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
 
                             </View>
@@ -246,7 +246,7 @@ export default class extends Component {
                         <View style={{ width: '100%', flex: 1 }}>
                             <View style={styles.row}>
                                 {transactionCode}
-                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm   DD/MM/YYYY')}</Text>
+                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             </View>
                             <View style={styles.row}>
                                 {statusText}

@@ -31,7 +31,7 @@ import * as commonActions from '~/store/actions/common'
 
 import { validateField, renderGroup } from './utils'
 import styles from './styles'
-
+import md5 from 'md5'
 const {height, width} = Dimensions.get('window');
 
 const formSelector = formValueSelector('CreateUserForm')
@@ -247,8 +247,7 @@ export default class CreateUserContainer extends Component {
     }
     
     onSubmitUser=()=> {
-      console.log('State in User', this.state)
-      console.log('Form Value', this.props.formValues)
+      
       let userInfo = {}
       if (this.state.chosenListPlace.length == 0) {
         this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
@@ -264,6 +263,10 @@ export default class CreateUserContainer extends Component {
         userInfo.fullName = this.props.formValues.name
         userInfo.phoneNumber = this.props.formValues.phone
         userInfo.password = this.props.generatedPassword
+        // If edit create account, not encrypt password; if editing, encrypt password
+        if (typeof this.props.route.params.id != 'undefined'){
+          userInfo.password = md5(this.props.generatedPassword)
+        }
         userInfo.email = this.props.formValues.email
         userInfo.titleType = this.state.currentJob.id
         userInfo.fromTimeWork = this.state.fromTime
