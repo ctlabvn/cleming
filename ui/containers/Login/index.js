@@ -65,6 +65,7 @@ export default class extends Component {
       showForgot: false,
       showPassword: false,
       emailFocus: false,
+      // emailForgotFocus: false,
       passwordFocus: false,
       emailSelection: { start: 0, end: 0 },
       passwordSelection: { start: 0, end: 0 },
@@ -93,7 +94,13 @@ export default class extends Component {
   }
 
   _handleShowForgot = (e) => {
-    this.setState({ showForgot: true })
+    // const length = this.props.currentValues.email.length
+    this.props.change('forgotEmail', this.props.currentValues.email)
+    this.setState({ 
+      showForgot: true,
+      // emailForgotFocus: true,
+      // emailSelection: { start: length, end: length } 
+    })
   }
 
   _handleShowHome = (e) => {
@@ -194,10 +201,16 @@ export default class extends Component {
 
   renderForgotForm() {
     const { handleSubmit } = this.props
+    // const { emailForgotFocus, emailSelection } = this.state
     return (
       <Form style={styles.formForgot}>
         <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>
-        <Field autoCapitalize="none" icon="close" name="email" label="Nhập số điện thoại để lấy lại mật khẩu" component={InputField} />
+        <Field autoCapitalize="none" icon="close" name="forgotEmail"                     
+          icon={(input, active) => input.value && active ? 'close' : false}
+          iconStyle={{ color: material.black500 }}
+          onIconPress={input => input.onChange('')}
+          label="Nhập số điện thoại để lấy lại mật khẩu" 
+          component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
             <Button onPress={this._handleShowLogin}
