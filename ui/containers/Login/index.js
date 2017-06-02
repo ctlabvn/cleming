@@ -133,6 +133,11 @@ export default class extends Component {
       setToast('Mật khẩu mới không được giống mật khẩu hiện tại', 'danger')
       return false
     }
+    // New password must 4-12 characters
+    if (!newPassword.match(/^(\S){4-12}&/)){
+      setToast('Mật khẩu có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường', 'danger')
+      return false
+    }
     return true
   }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
