@@ -61,3 +61,8 @@ export const updateProfileToRedux = (data) => ({
   type: 'app/updateProfileToRedux',
   payload: data
 })
+
+export const updateFirstTimeLogin = (data)=>({
+  type: 'app/updateFirstTimeLogin',
+  payload: data
+})

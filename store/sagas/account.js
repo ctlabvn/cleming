@@ -31,10 +31,14 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
-        () => setToast('Change password successfully!')
+        () => setToast('Thay đổi Mật khẩu thành công.'),
+        () => forwardTo('merchantOverview')
     ],
     failure: [
-        () => setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
+
+        () => {
+          setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
+        }
     ]
 })
 
@@ -114,6 +118,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
+      console.log('Error', error)
       if (error.code == 1207) {
         return setToast('Số điện thoại đã tồn tại', 'danger')
       } else if (error.code == 1206) {

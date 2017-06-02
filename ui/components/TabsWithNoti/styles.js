@@ -1,8 +1,8 @@
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 export default {
     tabBar: {
         flexDirection: 'row',
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         justifyContent: 'space-around'
     },
     tabDeactive: {
@@ -20,14 +20,14 @@ export default {
         alignItems: 'center',
         padding: 10,
         // borderBottomWidth: 2,
-        // borderColor: 'white'
+        // borderColor: material.white500
     },
     tab: {
         flexDirection: 'row',
         alignItems: 'center'
     },
     tabTextActive: {
-        color: 'white',
+        color: material.white500,
         marginRight: 6,
         fontWeight: '900',
         fontSize: 14
@@ -44,7 +44,7 @@ export default {
         width: 20,
         height: 20,
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: material.white500,
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center'
@@ -59,7 +59,7 @@ export default {
         alignItems: 'center'
     },
     tabNumberActive: {
-        color: 'white',
+        color: material.white500,
         fontSize: 10
     },
     tabNumberDeactive: {

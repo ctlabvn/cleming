@@ -13,17 +13,18 @@ import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
 import moment from 'moment'
 import { storeTransparent, storeFilled } from '~/assets'
 import { formatNumber } from '~/ui/shared/utils'
 import LinearGradient from 'react-native-linear-gradient'
 import Content from '~/ui/components/Content'
 import { getSession, getUser } from '~/store/selectors/auth'
+import {getSelectedPlace} from '~/store/selectors/place'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
+    selectedPlace: getSelectedPlace(state),
     place: state.place
 }), { ...commonActions, ...placeAction })
 export default class MerchantOverview extends PureComponent {
@@ -43,13 +44,11 @@ export default class MerchantOverview extends PureComponent {
             lat = place.location.latitude
             long = place.location.longitude
         }
-        console.log('Lat Long', lat+'---'+long)
         this.props.getListPlace(this.props.xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
-                // console.warn('Place Data', data)
-                if (data && data.updated && data.updated.listPlace) {
-                    var allPlace = data.updated.listPlace.map(item => item.placeId).join(';')
+                if (data && data.updated && data.updated.data) {
+                    let currentPlace = this.refs.placeDropdown.getValue()
                     // this.props.getPlaceStatistic(
                     //     this.props.xsession,
                     //     allPlace,
@@ -57,7 +56,7 @@ export default class MerchantOverview extends PureComponent {
                     //     dateFilterData.currentSelectValue.value.to)
                     this.props.getMerchantNews(
                         this.props.xsession,
-                        allPlace)
+                        currentPlace.id)
                 }
             })
     }
@@ -67,16 +66,15 @@ export default class MerchantOverview extends PureComponent {
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
-    }
-
-    componentWillBlur() {
-        console.log('blur')
+        console.log('Will Focus')
+        this.forceUpdate()
     }
 
     _handleChangePlace(item) {
-        const { place } = this.props
+        const { place, setSelectedOption} = this.props
         // let dateFilterData = this.refs.dateFilter.getData()
         // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
+        setSelectedOption(item)
         this.props.getMerchantNews(this.props.xsession, item.id)
     }
 
@@ -100,9 +98,9 @@ export default class MerchantOverview extends PureComponent {
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color={PRIMARY_COLOR}
+                    color={material.primaryColor}
                 />
-                <Text style={{ color: PRIMARY_COLOR, marginTop: 10 }}>Đang tải dữ liệu ...</Text>
+                <Text style={{ color: material.primaryColor, marginTop: 10 }}>Đang tải dữ liệu ...</Text>
             </View>
         )
     }
@@ -176,7 +174,8 @@ export default class MerchantOverview extends PureComponent {
     }
 
     render() {
-        const { handleSubmit, submitting, forwardTo, place } = this.props
+        console.log('Re render MerchantOverview')
+        const { handleSubmit, submitting, forwardTo, place, selectedPlace } = this.props
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
             name: item.address
@@ -188,6 +187,7 @@ export default class MerchantOverview extends PureComponent {
             <TopDropdown
                 ref='placeDropdown'
                 dropdownValues={dropdownValues}
+                selectedOption={selectedPlace}
                 onSelect={this._handleChangePlace.bind(this)} />
         )
         if (place && place.listPlace) {

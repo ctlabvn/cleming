@@ -9,6 +9,7 @@ import DateFilter from '~/ui/components/DateFilter'
 import * as authAction from '~/store/actions/auth'
 import * as commonActions from '~/store/actions/common'
 import * as bookingActions from '~/store/actions/booking'
+import * as placeActions from '~/store/actions/place'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
@@ -21,15 +22,17 @@ import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import { getSession } from '~/store/selectors/auth'
+import {getSelectedPlace} from '~/store/selectors/place'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import { BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
+    selectedPlace: getSelectedPlace(state),
     place: state.place,
     booking: state.booking,
     modal: state.modal.modal
-}), { ...commonActions, ...bookingActions }, null, { withRef: true })
+}), { ...commonActions, ...bookingActions, ...placeActions}, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -145,7 +148,8 @@ export default class PlaceOrderList extends Component {
     }
 
     _handleTopDrowpdown(item) {
-        const { booking } = this.props
+        const { booking, setSelectedOption } = this.props
+        setSelectedOption(item)
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
@@ -192,7 +196,7 @@ export default class PlaceOrderList extends Component {
         this.setState({ counting: false })
     }
     render() {
-        const { booking, place } = this.props
+        const { booking, place, selectedPlace } = this.props
         if (!booking) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -214,6 +218,7 @@ export default class PlaceOrderList extends Component {
                     modalOpen={this.props.modal}
                     ref='placeDropdown'
                     dropdownValues={dropdownValues}
+                    selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
@@ -223,7 +228,7 @@ export default class PlaceOrderList extends Component {
                     {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
                 </View>*/}
-                    <TabsWithNoti tabData={options.tabData} activeTab={1} ref='tabs'
+                    <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab.bind(this)} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <Content

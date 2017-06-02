@@ -33,6 +33,8 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 import {profileCoverSource} from '~/assets'
 
+import material from '~/theme/variables/material.js'
+
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
   session: authSelectors.getSession(state),
@@ -176,7 +178,7 @@ export default class UpdateUserContainer extends Component {
     render() {
         return(
             <Container>
-                <Content style={{backgroundColor: 'white'}}>
+                <Content style={{backgroundColor: material.white500}}>
                     <View style={{paddingLeft: 15, paddingRight: 15}}>
                         <View style={styles.avatarContainer}>
                             <CacheableImage
@@ -192,7 +194,7 @@ export default class UpdateUserContainer extends Component {
                                 label="Họ và tên"
                                 name="name"
                                 component={InputField}
-                                placeholderTextColor="#7e7e7e"/>
+                                placeholderTextColor={material.gray500}/>
                             <Field
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
@@ -200,7 +202,7 @@ export default class UpdateUserContainer extends Component {
                                 label="Email"
                                 name="email"
                                 component={InputField}
-                                placeholderTextColor="#7e7e7e"/>
+                                placeholderTextColor={material.gray500}/>
                             <Field
                                 editable={false}
                                 iconStyle={styles.inputIcon}
@@ -209,7 +211,7 @@ export default class UpdateUserContainer extends Component {
                                 label="Số điện thoại"
                                 name="phone"
                                 component={InputField}
-                                placeholderTextColor="#7e7e7e"/>
+                                placeholderTextColor={material.gray500}/>
                         </View>
                         <View style={{marginTop: 40}}>
                           <Grid>

@@ -5,26 +5,42 @@ import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Plat
 
 import styles from './styles'
 import Content from '~/ui/components/Content'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material'
 
 const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
     constructor(props) {
-        console.log('Go to constructor')
         super(props)
+        let selectedOption
+        if (props.selectedOption && Object.keys(props.selectedOption).length > 0) {
+            selectedOption = props.selectedOption
+        } else {
+            selectedOption = props.dropdownValues[0]
+        }
         this.state = {
             openningDropdown: false,
             zIndex: 0,
             // fadeAnim: new Animated.Value(0),
-            selectedOption: props.selectedOption || props.dropdownValues[0],
+            selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0 && !this.state.selectedOption){
-            this.setState({selectedOption: nextProps.dropdownValues[0]})
+        // If selectedPlace from store change, all TopDropdown will change follow
+        if (nextProps.selectedOption && this.state.selectedOption
+            && Object.keys(nextProps.selectedOption).length > 0
+            && Object.keys(this.state.selectedOption).length > 0
+            && nextProps.selectedOption.id != this.state.selectedOption.id
+        ) {
+            this.setState({ selectedOption: nextProps.selectedOption })
+        }
+        // If state.selectedOption empty, set value
+        if (nextProps.dropdownValues && nextProps.dropdownValues.length > 0) {
+            if ((!this.state.selectedOption) || Object.keys(this.state.selectedOption).length == 0) {
+                this.setState({ selectedOption: nextProps.dropdownValues[0] })
+            }
         }
     }
 
@@ -35,17 +51,7 @@ export default class TopDropdown extends Component {
         return this.state.selectedOption;
     }
     toggle() {
-        // Animated.timing(this.state.fadeAnim, {
-        //     toValue: this.state.openningDropdown ? 0 : 1,
-        //     duration: this.state.openningDropdown ? 300 : 300,
-        //     easing: Easing.inOut(Easing.quad)
-        // }).start(() => {
-        //     // console.log('Open/Closing drop down');
-        //     this.props.onSelect && this.props.onSelect(this.state.selectedOption)
-        // });
-
-        LayoutAnimation.easeInEaseOut()
-
+        // LayoutAnimation.easeInEaseOut()
         this.setState({ openningDropdown: !this.state.openningDropdown })
     }
 
@@ -65,13 +71,13 @@ export default class TopDropdown extends Component {
     }
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
-        let {dropdownValues} = this.props
+        let { dropdownValues } = this.props
         const { openningDropdown } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
-        if (!dropdownValues || dropdownValues.length == 0){
+        if (!dropdownValues || dropdownValues.length == 0) {
             return (
                 <View style={containerStyleTopDown}>
                     <View style={styles.dropdownHeader}>
@@ -89,20 +95,20 @@ export default class TopDropdown extends Component {
                 </View>
             )
         }
-        dropdownValues = dropdownValues.filter(item=>item.id!=this.state.selectedOption.id)
+        dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
                     <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
-                            color: 'white'
+                            color: material.white500
                         }} />
                     </Button>
                 </View>
 
                 <List
-                    contentContainerStyle={{ backgroundColor: PRIMARY_COLOR }}
+                    contentContainerStyle={{ backgroundColor: material.primaryColor }}
                     dataArray={dropdownValues}
                     style={{
                         ...styles.dropdownList,

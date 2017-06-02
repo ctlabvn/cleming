@@ -120,16 +120,16 @@ export default {
   brandWarning: '#f26522',
   brandSidebar: '#252932',
 
-  red500: 'red',
+  red500: '#F44336',
 
-  white500: 'white',
-  black500: 'black',
+  white500: '#ffffff',
+  black500: '#000000',
 
   blue600: '#0085AC',
-  blue500: 'blue',
+  blue500: '#2196F3',
   blue400: '#00A9D3',
 
-  green500: 'green',
+  green500: '#4CAF50',
   green400: '#8CC63F',
 
   orange500: '#F7931E',
@@ -153,7 +153,7 @@ export default {
     return this.green400;
   },
   get backgroundColor1(){
-    return this.gray300;
+    return this.gray200;
   },
   get textColor1(){
     return this.gray500;

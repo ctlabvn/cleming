@@ -1,21 +1,22 @@
 /**
  * Created by vjtc0n on 5/5/17.
  */
+import material from '~/theme/variables/material.js'
 export default {
     inputContainer: {
         marginBottom: 15
     },
     inputField: {
         borderRadius: 5,
-        backgroundColor: '#d9d9d9',
+        backgroundColor: material.gray300,
         height: 50
     },
     inputIcon: {
         fontSize: 20,
-        color: '#7e7e7e'
+        color: material.gray500
     },
     updatePasswordButton: {
-        backgroundColor: '#00a9d7',
+        backgroundColor: material.blue400,
         alignSelf: 'center',
         width: '100%',
         borderRadius: 0,
@@ -25,7 +26,7 @@ export default {
         bottom: 0
     },
     updatePasswordButtonText: {
-        color: 'white'
+        color: material.white500
     },
     photoIcon:{
         position:'absolute',
@@ -40,11 +41,11 @@ export default {
     avatar: {
       width: 120,
       height: 120,
-      backgroundColor: '#d9d9d9',
+      backgroundColor: material.gray300,
       borderRadius: 60
     },
     changePasswordText: {
-      color: '#00a9d7',
+      color: material.blue400,
       alignSelf: 'center'
     }
 }

@@ -2,7 +2,7 @@ import material from '~/theme/variables/material'
 
 export default {
   container:{
-    backgroundColor:'#FFF',    
+    backgroundColor: material.white500,
   },
   listItemContainer:{
     // borderBottomWidth:0.5,
@@ -32,12 +32,12 @@ export default {
     backgroundColor: material.toolbarDefaultBg,
   },
   icon:{
-    color: '#808080',
+    color: material.gray500,
     alignSelf:'flex-start',
     fontSize: 18,    
     marginLeft:10,    
   },
   textGray: {
-    color: '#808080'
+    color: material.gray500
   },
 }

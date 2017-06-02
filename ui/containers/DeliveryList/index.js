@@ -8,8 +8,10 @@ import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as orderActions from '~/store/actions/order'
 import * as commonActions from '~/store/actions/common'
+import * as placeActions from '~/store/actions/place'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
+import {getSelectedPlace} from '~/store/selectors/place'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import Content from '~/ui/components/Content'
@@ -27,17 +29,23 @@ import { ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CAN
     from '~/store/constants/app'
 @connect(state => ({
     place: state.place,
+    selectedPlace: getSelectedPlace(state),
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-}), { ...orderActions, ...commonActions })
+}), { ...orderActions, ...commonActions, ...placeActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
     constructor(props) {
         super(props)
-
+        let selectedPlace
+        if (props.selectedPlace && Object.keys(props.selectedPlace)>0){
+            selectedPlace = props.selectedPlace.id
+        }else{
+            selectedPlace = props.place.listPlace[0].id
+        }
         this.state = {
-            selectedPlace: props.place.listPlace.map(item => item.placeId).join(','),
+            selectedPlace: selectedPlace,
             loading: false,
             loadingMore: false,
             modalOpen: false,
@@ -94,6 +102,8 @@ export default class extends Component {
     }
 
     _handleChangePlace = (item) => {
+        const { setSelectedOption } = this.props
+        setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
         this.setState({
             selectedPlace: item.id,
@@ -239,7 +249,7 @@ export default class extends Component {
     }
 
     render() {
-        const { handleSubmit, submitting, place } = this.props
+        const { handleSubmit, submitting, place, selectedPlace } = this.props
 
 
         let dropdownValues = place.listPlace.map(item => ({
@@ -252,7 +262,9 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} />
+                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} 
+                    selectedOption={selectedPlace}
+                />
 
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} />

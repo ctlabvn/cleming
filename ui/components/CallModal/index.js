@@ -16,7 +16,7 @@ import Modal from '~/ui/components/Modal'
 import styles from './styles'
 import * as commonActions from '~/store/actions/common'
 import {formatPhoneNumber} from '~/ui/shared/utils'
-
+import material from '~/theme/variables/material'
 
 @connect(state=>({
   
@@ -56,10 +56,10 @@ export default class extends Component {
         <View style={styles.container}>
           <Grid>
             <Row style={styles.headerContainer}>
-              <Text style={{color: 'white'}}>Thông Báo</Text>
+              <Text style={{color: material.white500}}>Thông Báo</Text>
             </Row>
             <Row style={{justifyContent: 'center', alignItems: 'center', paddingLeft: 10, paddingRight: 10}}>
-              <Text style={{color: 'black'}}>Bạn có muốn gọi đến số {formatPhoneNumber(phoneNumber)}?</Text>
+              <Text style={{color: material.black500}}>Bạn có muốn gọi đến số {formatPhoneNumber(phoneNumber)}?</Text>
             </Row>
             <Row style={{height: '40%'}}>
               <Col style={{justifyContent: 'center'}}>

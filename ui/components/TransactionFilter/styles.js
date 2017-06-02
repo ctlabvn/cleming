@@ -1,24 +1,24 @@
 import material from '~/theme/variables/material'
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR } from '~/ui/shared/constants'
+
 export default {
     container: {
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
     },
     picker: {
-        color: 'white',
-        backgroundColor: PRIMARY_COLOR
+        color: material.white500,
+        backgroundColor: material.primaryColor
     },
     pickerItem: {
-        color: 'white',
-        backgroundColor: PRIMARY_COLOR
+        color: material.white500,
+        backgroundColor: material.primaryColor
     },
     filterByTransactionType: {
         flexDirection: 'row',
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: PRIMARY_COLOR,
+        borderBottomColor: material.primaryColor,
         justifyContent: 'space-between',
         padding: 10,
     },
@@ -30,12 +30,12 @@ export default {
 
     },
     numberRight: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold',
         marginRight: 15,
     },
     transactionTypeIcon: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         marginRight: 7,
         fontSize: 20
     },
@@ -44,7 +44,7 @@ export default {
     },
     block: {
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         width: '100%',
         // borderRadius: 3,
         padding: 10,
@@ -67,22 +67,22 @@ export default {
         justifyContent: 'center'
     },
     processing: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     reject: {
-        color: ERROR_COLOR
+        color: material.errorColor
     },
     notPayIcon: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     smallText: {
         fontSize: 13,
     },
     readIndicator: {
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         width: 7,
         height: 7,
         borderRadius: 7

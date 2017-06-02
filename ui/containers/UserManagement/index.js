@@ -19,7 +19,7 @@ import * as accountActions from '~/store/actions/account'
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
@@ -307,14 +307,14 @@ class UserManagement extends Component {
     render() {
         if (this.state.isFetchingData) {
           return (
-            <View style={{backgroundColor: 'white', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-              <Spinner color={PRIMARY_COLOR}/>
+            <View style={{backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+              <Spinner color={material.primaryColor}/>
             </View>
           )
         }
         return (
             <Container>
-                <Content style={{backgroundColor: 'white'}}>
+                <Content style={{backgroundColor: material.white500}}>
                     <List
                         style={{marginBottom: 50, marginTop: 20}}
                         dataArray={this.state.data}

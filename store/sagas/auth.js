@@ -38,14 +38,14 @@ const requestLogin = createRequestSaga({
     key: 'login',
     cancel: 'app/logout',
     success: [
-        (data) => setUserData(data),          
-        (data)=>setAuthState(true),
+        (data) => setUserData(data),
+        (data) => setAuthState(true),
         (data) => {
-          if (data.firstLogin == 0) {
-            return forwardTo('merchantOverview', true)
-          } else {
-            return noop("nothing")
-          }
+            if (data.firstLogin == 0) {
+                return forwardTo('merchantOverview', true)
+            } else {
+                return noop("nothing")
+            }
         },
         () => setToast('Logged successfully!!!')
     ],
@@ -57,17 +57,19 @@ const requestLogin = createRequestSaga({
 
 
 const requestLogout = createRequestSaga({
-    request: api.auth.logout,
+    request: api.auth.logout,   
     key: 'logout',
     success: [
         () => removeLoggedUser(),
-        () => setAuthState(false),           
+        () => setAuthState(false),
         () => closeDrawer(),
-        () => forwardTo('login'),
-        () => setToast('Logout successfully!!!'),    
+        () => forwardTo('login', true)
     ],
     failure: [
-        () => setToast('Couldn\'t logout', 'danger')
+        () => removeLoggedUser(),
+        () => setAuthState(false),
+        () => closeDrawer(),
+        () => forwardTo('login', true)
     ],
 })
 
@@ -81,7 +83,7 @@ export default [
     // other watcher may be background workers
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
-        yield [            
+        yield [
             takeLatest('app/login', requestLogin),
             takeLatest('app/logout', requestLogout)
         ]

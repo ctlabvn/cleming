@@ -44,6 +44,26 @@ export default class DateFilter extends Component {
                 display: '1 năm'
             }
         ]
+        if (props.type == 'lite') {
+            this.dateFilterListValue = [
+                {
+                    value: 'day',
+                    display: '1 ngày'
+                },
+                {
+                    value: 'week',
+                    display: '7 ngày'
+                },
+                {
+                    value: 'month',
+                    display: '1 tháng'
+                },
+                {
+                    value: 'quarter',
+                    display: '3 tháng'
+                }
+            ]
+        }
         this.dateFilterHeight = 0
         this.contentWidth = 0
     }
@@ -140,7 +160,7 @@ export default class DateFilter extends Component {
             return [3, 1].map(item => {
                 let currentQuarter = moment().subtract(item, 'quarters')
                 let startQuarter = moment().subtract(item, 'quarters').startOf('quarter')
-                let endQuarter = moment().subtract(item-1, 'quarters').endOf('quarters')
+                let endQuarter = moment().subtract(item - 1, 'quarters').endOf('quarters')
                 if (endQuarter > moment()) {
                     endQuarter = moment().endOf('day')
                 }
@@ -186,7 +206,7 @@ export default class DateFilter extends Component {
         } else if (filterType == 'week') {
             let startWeek = moment().subtract(6, 'days').startOf('day')
             let endWeek = moment().endOf('day')
-            console.log('Default Week', startWeek+'---'+endWeek)
+            console.log('Default Week', startWeek + '---' + endWeek)
             return {
                 value: {
                     from: startWeek.unix(),
@@ -224,7 +244,7 @@ export default class DateFilter extends Component {
                     from: startHalfYear.unix(),
                     to: current.endOf('day').unix()
                 },
-                display: startHalfYear.format(DEFAULT_DATE_FORMAT)+' đến '+current.format(DEFAULT_YEAR_FORMAT)
+                display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ' đến ' + current.format(DEFAULT_YEAR_FORMAT)
             }
         } else if (filterType == 'year') {
             let current = moment()

@@ -73,7 +73,7 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 2,
         padding: 10,
         marginBottom: 10,
@@ -98,7 +98,7 @@ export default {
     },
     numberRight: {
         fontWeight: 'bold',
-        color: 'white',
+        color: material.white500,
         textAlign: 'center'
     },
     rightIcon: {
@@ -108,13 +108,13 @@ export default {
         fontSize: 20,
         marginRight: 10,
         marginLeft: 5,
-        color: 'grey'
+        color: material.gray500
     },
     success: {
         color: material.successColor
     },
     dateFilterContainer: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
         marginLeft: 45,
         marginRight: 20
@@ -124,7 +124,7 @@ export default {
         color: material.textColor1,
     },
     loadingContainer: {
-      backgroundColor: 'white',
+      backgroundColor: material.white500,
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',

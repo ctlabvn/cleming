@@ -29,7 +29,7 @@ const usernameConstraints = {
   }
 }
 
-const phonePattern = /^\d{9,10}$/
+const phonePattern = /^\d{9,11}$/
 const phoneConstraints = {
   phone: {
     format: {
