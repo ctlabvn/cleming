@@ -21,7 +21,7 @@ import GradientBackground from '~/ui/elements/GradientBackground'
 
 import Content from '~/ui/components/Content'
 import { getSession, getUser } from '~/store/selectors/auth'
-import {getSelectedPlace} from '~/store/selectors/place'
+import { getSelectedPlace } from '~/store/selectors/place'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
@@ -35,8 +35,7 @@ export default class MerchantOverview extends PureComponent {
         super(props)
     }
 
-    componentDidMount() {
-        // let dateFilterData = this.refs.dateFilter.getData()
+    _load() {
         const { user, place } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
@@ -46,34 +45,31 @@ export default class MerchantOverview extends PureComponent {
             lat = place.location.latitude
             long = place.location.longitude
         }
-        this.props.getListPlace(this.props.xsession, lat, long,
-            (err, data) => {
-                let toTime = moment(new Date())
-                if (data && data.updated && data.updated.data) {
-                    let currentPlace = this.refs.placeDropdown.getValue()
-                    // this.props.getPlaceStatistic(
-                    //     this.props.xsession,
-                    //     allPlace,
-                    //     dateFilterData.currentSelectValue.value.from,
-                    //     dateFilterData.currentSelectValue.value.to)
-                    this.props.getMerchantNews(
-                        this.props.xsession,
-                        currentPlace.id)
-                }
-            })
+        setTimeout(() => {
+            this.props.getListPlace(this.props.xsession, lat, long,
+                (err, data) => {
+                    let toTime = moment(new Date())
+                    if (data && data.updated && data.updated.data) {
+                        let currentPlace = this.refs.placeDropdown.getValue()
+                        this.props.getMerchantNews(
+                            this.props.xsession,
+                            currentPlace.id)
+                    }
+                })
+        }, 2000)
+
+    }
+
+    componentDidMount() {
+        this._load()
     }
 
     componentWillFocus() {
-        const { user } = this.props
-        if (user) {
-            this.props.app.header.show('home', user.fullName, user.avatar)
-        }
-        console.log('Will Focus')
-        this.forceUpdate()
+        this._load()
     }
 
     _handleChangePlace(item) {
-        const { place, setSelectedOption} = this.props
+        const { place, setSelectedOption } = this.props
         // let dateFilterData = this.refs.dateFilter.getData()
         // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
         setSelectedOption(item)

@@ -28,7 +28,7 @@ import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
 import * as commonActions from '~/store/actions/common'
-
+import { getSelectedPlace } from '~/store/selectors/place'
 import { validateField, renderGroup } from './utils'
 import styles from './styles'
 import md5 from 'md5'
@@ -43,7 +43,8 @@ const formSelector = formValueSelector('CreateUserForm')
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
-  formState: state.form
+  formState: state.form,
+  selectedPlace: getSelectedPlace(state)
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset}, dispatch)
 }), (stateProps, dispatchProps, ownProps)=>{
@@ -238,7 +239,7 @@ export default class CreateUserContainer extends Component {
           isLoading: false
         })
       } else {
-        this.props.actions.getListEmployee(this.props.session, () => {
+        this.props.actions.getListEmployee(this.props.session, this.props.selectedPlace.id,() => {
           this.setState({
             isLoading: false
           }, () => {

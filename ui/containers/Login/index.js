@@ -172,6 +172,7 @@ export default class extends Component {
     )
   }
   componentWillFocus(){
+    this._handleShowLogin()
     // this.forceUpdate()
   }
   renderPasswordForm() {

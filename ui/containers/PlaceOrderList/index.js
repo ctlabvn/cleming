@@ -22,10 +22,12 @@ import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import { getSession } from '~/store/selectors/auth'
-import {getSelectedPlace} from '~/store/selectors/place'
+import { getSelectedPlace } from '~/store/selectors/place'
 import { formatPhoneNumber } from '~/ui/shared/utils'
-import { BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT, 
-    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR } from '~/store/constants/app'
+import {
+    BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT,
+    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR
+} from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
@@ -33,7 +35,7 @@ import material from '~/theme/variables/material.js'
     place: state.place,
     booking: state.booking,
     modal: state.modal.modal
-}), { ...commonActions, ...bookingActions, ...placeActions}, null, { withRef: true })
+}), { ...commonActions, ...bookingActions, ...placeActions }, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -45,6 +47,7 @@ export default class PlaceOrderList extends Component {
             modalOpen: false,
             phoneNumber: ''
         }
+        this.isLoadingPlace = false
     }
 
     onDetailPlacePress() {
@@ -132,7 +135,9 @@ export default class PlaceOrderList extends Component {
         this.setState({ loading: true })
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        if (currentPlace) {
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        }
     }
     _loadMore = () => {
         const { booking } = this.props
@@ -141,11 +146,15 @@ export default class PlaceOrderList extends Component {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to,
             this.refs.tabs.getActiveTab(), true, booking.page + 1)
+
     }
     _handlePressTab(item) {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, item.tabID)
+        if (currentPlace) {
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, item.tabID)
+        }
+
     }
 
     _handleTopDrowpdown(item) {
@@ -160,7 +169,10 @@ export default class PlaceOrderList extends Component {
         const { booking } = this.props
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        if (currentPlace) {
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        }
+
     }
 
     // page: int, //page hiện tại muốn lấy,
@@ -188,13 +200,29 @@ export default class PlaceOrderList extends Component {
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this.setState({ counting: true })
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        if (currentPlace) {
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        } else {
+            this.isLoadingPlace = true
+        }
+
     }
     componentWillFocus() {
         this.setState({ counting: true })
     }
     componentWillBlur() {
         this.setState({ counting: false })
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+            this.isLoadingPlace = false
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let currentPlace = nextProps.place.listPlace.map(item => ({
+                id: item.placeId,
+                name: item.address
+            }))[0]
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        }
     }
     render() {
         const { booking, place, selectedPlace } = this.props

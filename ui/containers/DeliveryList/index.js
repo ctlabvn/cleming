@@ -11,7 +11,7 @@ import * as commonActions from '~/store/actions/common'
 import * as placeActions from '~/store/actions/place'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
-import {getSelectedPlace} from '~/store/selectors/place'
+import { getSelectedPlace } from '~/store/selectors/place'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import Content from '~/ui/components/Content'
@@ -39,10 +39,14 @@ export default class extends Component {
     constructor(props) {
         super(props)
         let selectedPlace
-        if (props.selectedPlace && Object.keys(props.selectedPlace).length>0){
+        if (props.selectedPlace && Object.keys(props.selectedPlace).length > 0) {
             selectedPlace = props.selectedPlace.id
-        }else{
-            selectedPlace = props.place.listPlace[0].id
+        } else {
+            if (props.place && props.listPlace) {
+                selectedPlace = props.place.listPlace[0].id
+            } else {
+                selectedPlace = null
+            }
         }
         this.state = {
             selectedPlace: selectedPlace,
@@ -54,13 +58,18 @@ export default class extends Component {
 
         this.selectedStatus = 0
         this.interval = 0
+        this.isLoadingPlace = false
     }
 
     componentWillFocus() {
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
+        if (!this.state.selectedPlace) {
+            console.log('Go to set ')
+            this.isLoadingPlace = true
+        }
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-        this.setState({counting: true })
+        this.setState({ counting: true })
     }
 
     componentDidMount() {
@@ -71,14 +80,29 @@ export default class extends Component {
         this.setState({ counting: false })
     }
 
-    loadPage(page = 1, from_time, to_time, isLoadMore=false) {
+    componentWillReceiveProps(nextProps) {
+        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+            this.isLoadingPlace = false
+            let selectedPlace = nextProps.place.listPlace[0].placeId
+            this.setState({ selectedPlace: selectedPlace },
+                () => {
+                    let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
+                    this.loadPage(1, dateFilterData.from, dateFilterData.to)
+                }
+            )
+
+        }
+    }
+
+    loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList } = this.props
         const { selectedPlace } = this.state
-        if (isLoadMore){
-            this.setState({loadingMore: true})
-        }else{
+        if (!selectedPlace) return
+        if (isLoadMore) {
+            this.setState({ loadingMore: true })
+        } else {
             clearOrderList()
-            this.setState({loading: true})
+            this.setState({ loading: true })
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
@@ -171,7 +195,7 @@ export default class extends Component {
                     <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
                 </View>
             )
-        } else if (status == ORDER_SUCCESS){
+        } else if (status == ORDER_SUCCESS) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
@@ -179,7 +203,7 @@ export default class extends Component {
                     <Text style={styles.deliveryCodeSuccess}>{orderInfo.orderCode}</Text>
                 </View>
             )
-        }else{
+        } else {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
@@ -189,9 +213,9 @@ export default class extends Component {
             )
         }
         const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
-        let listItemStyle = (status!=ORDER_CANCEL) ? styles.deliveryBlock:styles.deliveryBlockCacel
+        let listItemStyle = (status != ORDER_CANCEL) ? styles.deliveryBlock : styles.deliveryBlockCacel
         return (
-            <ListItem style= {listItemStyle} key={orderInfo.clingmeId}
+            <ListItem style={listItemStyle} key={orderInfo.clingmeId}
                 onPress={() => {
                     forwardTo('deliveryDetail/' + orderInfo.orderCode)
                 }
@@ -259,7 +283,7 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} 
+                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace}
                     selectedOption={selectedPlace}
                 />
 
