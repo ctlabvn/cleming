@@ -17,7 +17,8 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, DEFAULT_TIME_FORMAT } from '~/store/constants/app'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, 
+        DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION} from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager'
 import material from '~/theme/variables/material'
 @connect(state => ({
@@ -40,11 +41,11 @@ export default class TransactionDetail extends Component {
         this.swiping = false
         this.denyReasonClingme = [
             {
-                reason: 'Khách hàng trả thừa tiền',
+                reason: 'Trả thừa tiền',
                 reasonId: 1
             },
             {
-                reason: 'Khách hàng trả thiếu tiền',
+                reason: 'Trả thiếu tiền',
                 reasonId: 2
             },
             {
@@ -223,12 +224,13 @@ export default class TransactionDetail extends Component {
                         </View>
                     </View>
                     <View style={styles.row}>
-                        <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._confirmTransaction()}>
-                            <Text>Đồng ý</Text>
-                        </Button>
                         <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                             <Text>Trợ giúp</Text>
                         </Button>
+                        <Button dark style={{...styles.feedbackClmTransaction, ...styles.confirmButton}} onPress={() => this._confirmTransaction()}>
+                            <Text>Đồng ý</Text>
+                        </Button>
+                        
                     </View>
                 </View>
             )
@@ -396,8 +398,14 @@ export default class TransactionDetail extends Component {
             }
         )
     }
-    _handleFeedbackClingme = () => {
-        this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
+    _handleFeedbackClingme = (dealID, selectedValue, note) => {
+        console.log('Deal ID zzz', dealID+'---'+selectedValue+'---'+note)
+        const {forwardTo} = this.props
+        if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT){
+            forwardTo('transactionInputFeedback/'+dealID+'/'+selectedValue)     
+        }else{
+            this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
+        }
     }
     _goToMiddlePage = () => {
         this.swiping = true

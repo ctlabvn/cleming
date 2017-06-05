@@ -230,10 +230,6 @@ export default {
     labelInfo: {
         color: 'grey'
     },
-    confirmButton: {
-        width: '45%',
-        justifyContent: 'center'
-    },
     navigateInvoiceBlock: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -384,5 +380,8 @@ export default {
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    confirmButton: {
+        backgroundColor: material.primaryColor
+    },
 }

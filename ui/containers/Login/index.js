@@ -104,6 +104,7 @@ export default class extends Component {
   }
 
   _handleShowHome = (e) => {
+    this._handleShowLogin(e)
     this.props.forwardTo('merchantOverview', true)
   }
 
@@ -209,6 +210,7 @@ export default class extends Component {
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
+          secureTextEntry={false}
           label="Nhập số điện thoại để lấy lại mật khẩu" 
           component={InputField} />
         <Grid>
