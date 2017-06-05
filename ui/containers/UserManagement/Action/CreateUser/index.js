@@ -119,6 +119,9 @@ export default class CreateUserContainer extends Component {
 
     componentWillBlur(){
       this.props.actions.resetForm('CreateUserForm')
+      // console.log(this.props.initialValues.GroupAddress)
+      this.placeDropdown.clearAll()
+
     }
   
     componentWillFocus(){
@@ -438,6 +441,7 @@ export default class CreateUserContainer extends Component {
             handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
             employeeListPlace={listPlace}
             name="GroupAddress"
+            onReady={ref=>this.placeDropdown = ref}
             component={renderGroup}/>
         </View>
       )

@@ -95,11 +95,22 @@ export class renderGroup extends Component {
   componentWillMount() {
     
   }
+
+  clearAll(){
+    const newState = this.state.fields.slice(0)  
+    newState.map((c, index) => {
+      c.checked = false         
+    })
+    this.setState({
+      fields: newState
+    })
+  }
   
   componentWillReceiveProps(nextProps) {
+
     if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
       if (this.props.employeeListPlace != nextProps.employeeListPlace) {
-        const newState = this.state.fields.slice(0)
+        const newState = this.state.fields.slice(0)        
         newState.map((c, index) => {
           newState[index].checked = false
           nextProps.employeeListPlace.map((place, placeIndex) => {
@@ -129,6 +140,8 @@ export class renderGroup extends Component {
     }, () => {
       this.props.handleGetListPlaceFromArrayField(this.getSelected())
     })
+
+    this.props.onReady && this.props.onReady(this)
   }
   
   getSelected(){
