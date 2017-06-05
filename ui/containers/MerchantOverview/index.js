@@ -45,18 +45,16 @@ export default class MerchantOverview extends PureComponent {
             lat = place.location.latitude
             long = place.location.longitude
         }
-        setTimeout(() => {
-            this.props.getListPlace(this.props.xsession, lat, long,
-                (err, data) => {
-                    let toTime = moment(new Date())
-                    if (data && data.updated && data.updated.data) {
-                        let currentPlace = this.refs.placeDropdown.getValue()
-                        this.props.getMerchantNews(
-                            this.props.xsession,
-                            currentPlace.id)
-                    }
-                })
-        }, 2000)
+        this.props.getListPlace(this.props.xsession, lat, long,
+            (err, data) => {
+                let toTime = moment(new Date())
+                if (data && data.updated && data.updated.data) {
+                    let currentPlace = this.refs.placeDropdown.getValue()
+                    this.props.getMerchantNews(
+                        this.props.xsession,
+                        currentPlace.id)
+                }
+            })
 
     }
 
@@ -172,7 +170,6 @@ export default class MerchantOverview extends PureComponent {
     }
 
     render() {
-        console.log('Re render MerchantOverview')
         const { handleSubmit, submitting, forwardTo, place, selectedPlace } = this.props
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
@@ -197,8 +194,8 @@ export default class MerchantOverview extends PureComponent {
             <Container style={styles.container}>
                 {topDropdown}
                 <View style={styles.contentContainer}>
-                    <GradientBackground colors={[material.blue400, material.blue600]} />                    
-                    <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />                    
+                    <GradientBackground colors={[material.blue400, material.blue600]} />
+                    <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
                     {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
                     {/*<DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />*/}
                 </View>
