@@ -13,7 +13,7 @@ var RNUploader = require('react-native-uploader');
 
 // var RNUploader = NativeModules.RNUploader
 
-import RNFetchBlob from 'react-native-fetch-blob'
+// import RNFetchBlob from 'react-native-fetch-blob'
 
 import {
     InputField,
