@@ -156,7 +156,7 @@ export default {
     return this.gray200;
   },
   get textColor1(){
-    return this.gray500;
+    return this.gray600;
   },
 
     // Font
