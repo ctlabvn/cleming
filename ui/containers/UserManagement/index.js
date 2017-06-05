@@ -17,73 +17,81 @@ import OwnerCard from './components/OwnerCard'
 import * as commonActions from '~/store/actions/common'
 import * as accountActions from '~/store/actions/account'
 import * as authSelectors from '~/store/selectors/auth'
+import * as placeAction from '~/store/actions/place'
 import * as accountSelectors from '~/store/selectors/account'
-
+import { getSelectedPlace } from '~/store/selectors/place'
+import TopDropdown from '~/ui/components/TopDropdown'
 import material from '~/theme/variables/material.js'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
-@connect(state=>({
-  session: authSelectors.getSession(state),
-  listEmployee: accountSelectors.getListEmployee(state),
-  user: authSelectors.getUser(state)
-}), {...commonActions, ...accountActions})
+@connect(state => ({
+    session: authSelectors.getSession(state),
+    listEmployee: accountSelectors.getListEmployee(state),
+    user: authSelectors.getUser(state),
+    place: state.place,
+    selectedPlace: getSelectedPlace(state),
+}), { ...commonActions, ...accountActions, ...placeAction })
 
 class UserManagement extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          modalOpen: false,
-          updateInfoChecked: false,
-          deleteAccountChecked: false,
-          isFetchingData: false,
-          data: [],
-          rowIDOfEmployee: 0
+            modalOpen: false,
+            updateInfoChecked: false,
+            deleteAccountChecked: false,
+            isFetchingData: false,
+            data: [],
+            rowIDOfEmployee: 0
         }
     }
-    
+
     componentWillReceiveProps(nextProps) {
-      if (this.props.listEmployee != nextProps.listEmployee || this.props.user != nextProps.user) {
-        let data = []
-        for (let i = 0; i < 1; i++) {
-          data.push({
-            owner: nextProps.user,
-            employeeList: nextProps.listEmployee
-          })
-        }
-        this.setState({
-          data: data
-        }, () => {
-          this.setState({
-            isFetchingData: false
-          })
-        })
-      }
-    }
-    
-    componentDidMount() {
-      this.setState({
-          isFetchingData: true
-      })
-      let { getListEmployee, session, user } = this.props
-      getListEmployee(session, () => {
-        let data = []
-        for (let i = 0; i < 1; i++) {
-          data.push({
-            owner: user,
-            employeeList: this.props.listEmployee
-          })
-        }
-        this.setState({
-            data: data
-        }, () => {
+        if (this.props.listEmployee != nextProps.listEmployee || this.props.user != nextProps.user) {
+            let data = []
+            for (let i = 0; i < 1; i++) {
+                data.push({
+                    owner: nextProps.user,
+                    employeeList: nextProps.listEmployee
+                })
+            }
             this.setState({
-                isFetchingData: false
+                data: data
+            }, () => {
+                this.setState({
+                    isFetchingData: false
+                })
             })
-          })
-      })
+        }
     }
-    
+    _loadListEmployee(placeId) {
+        const { getListEmployee, session, user } = this.props
+        
+        this.setState({
+            isFetchingData: true
+        })
+        getListEmployee(session, placeId, () => {
+            let data = []
+            for (let i = 0; i < 1; i++) {
+                data.push({
+                    owner: user,
+                    employeeList: this.props.listEmployee
+                })
+            }
+            this.setState({
+                data: data
+            }, () => {
+                this.setState({
+                    isFetchingData: false
+                })
+            })
+        })
+    }
+    componentDidMount() {
+        let currentPlace = this.refs.placeDropdown.getValue()
+        this._loadListEmployee(currentPlace.id)
+    }
+
     onAccountPress(data, rowID) {
         this.setState({
             employeeData: data,
@@ -94,71 +102,71 @@ class UserManagement extends Component {
             })
         })
     }
-    
+
     renderEmployeeRow(data, sectionID, rowID, highlightRow) {
         let lastLeftVerticalBlueLineLength = null
         let lastRightVerticalBlueLineLength = null
         if (rowID == (this.props.listEmployee.length - 1)) {
-          lastLeftVerticalBlueLineLength = 1
-          lastRightVerticalBlueLineLength = 0
+            lastLeftVerticalBlueLineLength = 1
+            lastRightVerticalBlueLineLength = 0
         } else {
-          lastLeftVerticalBlueLineLength = '100%'
-          lastRightVerticalBlueLineLength = '100%'
+            lastLeftVerticalBlueLineLength = '100%'
+            lastRightVerticalBlueLineLength = '100%'
         }
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
-                    <Col style={{width: '20%', flexDirection: 'row'}}>
+                    <Col style={{ width: '20%', flexDirection: 'row' }}>
                         <Col>
-                          <Row style={styles.topLeftGrid}/>
-                          <Row style={{...styles.bottomLeftGridContainer}}>
-                            <View style={{...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength}}/>
-                          </Row>
+                            <Row style={styles.topLeftGrid} />
+                            <Row style={{ ...styles.bottomLeftGridContainer }}>
+                                <View style={{ ...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength }} />
+                            </Row>
                         </Col>
                         <Col>
-                          <Row style={{...styles.topRightGrid, borderBottomWidth: 1}}/>
-                          <Row style={styles.bottomRightGridContainer}>
-                            <View style={{height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid}}/>
-                          </Row>
+                            <Row style={{ ...styles.topRightGrid, borderBottomWidth: 1 }} />
+                            <Row style={styles.bottomRightGridContainer}>
+                                <View style={{ height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid }} />
+                            </Row>
                         </Col>
                     </Col>
-                    <Col style={{width: '80%', justifyContent: 'center'}}>
+                    <Col style={{ width: '80%', justifyContent: 'center' }}>
                         <Button
                             onPress={this.onAccountPress.bind(this, data, rowID)}
                             style={styles.accountButton}>
-                            <UserCard data={data}/>
+                            <UserCard data={data} />
                         </Button>
                     </Col>
                 </Grid>
             </ListItem>
         )
     }
-    
+
     renderBlueLineBelowOwner() {
         return (
-            <View style={{height: 20}}>
+            <View style={{ height: 20 }}>
                 <Grid>
-                    <Col style={{width: '20%', flexDirection: 'row'}}>
+                    <Col style={{ width: '20%', flexDirection: 'row' }}>
                         <Col>
-                            <Row style={styles.topLeftGrid}/>
-                            <Row style={styles.bottomLeftGrid}/>
+                            <Row style={styles.topLeftGrid} />
+                            <Row style={styles.bottomLeftGrid} />
                         </Col>
                         <Col>
-                            <Row style={styles.topRightGrid}/>
-                            <Row style={styles.bottomRightGrid}/>
+                            <Row style={styles.topRightGrid} />
+                            <Row style={styles.bottomRightGrid} />
                         </Col>
                     </Col>
-                    <Col style={{width: '80%'}}/>
+                    <Col style={{ width: '80%' }} />
                 </Grid>
             </View>
         )
     }
-    
+
     onUpdateUserPress() {
         const { forwardTo } = this.props
         forwardTo('userManagement/action/updateUser')
     }
-    
+
     renderRow(data) {
         blueLineBelowOwner = null
         console.log()
@@ -172,123 +180,110 @@ class UserManagement extends Component {
                         <Button
                             onPress={this.onUpdateUserPress.bind(this)}
                             style={styles.ownerButton}>
-                            <OwnerCard data={data.owner}/>
+                            <OwnerCard data={data.owner} />
                         </Button>
                         {blueLineBelowOwner}
                         <List
                             dataArray={data.employeeList}
-                            renderRow={this.renderEmployeeRow.bind(this)}/>
+                            renderRow={this.renderEmployeeRow.bind(this)} />
                     </Col>
                 </Grid>
             </ListItem>
         )
     }
-    
+
     onUpdateInfoPress() {
         this.setState({
             updateInfoChecked: !this.state.updateInfoChecked,
             deleteAccountChecked: false
         })
     }
-    
+
     onDeleteAccountPress() {
         this.setState({
             deleteAccountChecked: !this.state.deleteAccountChecked,
             updateInfoChecked: false
         })
     }
-    
+
     onCancelModal() {
-      this.setState({
-        modalOpen: false
-      })
+        this.setState({
+            modalOpen: false
+        })
     }
-    
+
     onSubmitModal() {
-      const {forwardTo} = this.props
-      if (this.state.updateInfoChecked) {
-        this.setState({
-          updateInfoChecked: !this.state.updateInfoChecked
-        })
-        forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
-      } else if (this.state.deleteAccountChecked) {
-        this.setState({
-          isFetchingData: true
-        })
-        this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.state.rowIDOfEmployee].bizAccountId, () => {
-          this.props.getListEmployee(this.props.session, () => {
-            let data = []
-            for (let i = 0; i < 1; i++) {
-              data.push({
-                owner: this.props.user,
-                employeeList: this.props.listEmployee
-              })
-            }
+        const { forwardTo, selectedPlace } = this.props
+        if (this.state.updateInfoChecked) {
             this.setState({
-              data: data
-            }, () => {
-              this.setState({
-                isFetchingData: false
-              })
+                updateInfoChecked: !this.state.updateInfoChecked
             })
-          })
-        })
+            forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
+        } else if (this.state.deleteAccountChecked) {
+            this.setState({
+                isFetchingData: true
+            })
+            let currentPlace = this.refs.placeDropdown.getValue()
+            this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.state.rowIDOfEmployee].bizAccountId, () => {
+                console.log('Selected Place', selectedPlace)
+                this._loadListEmployee(selectedPlace.id)
+            })
+            this.setState({
+                deleteAccountChecked: !this.state.deleteAccountChecked
+            })
+        }
         this.setState({
-          deleteAccountChecked: !this.state.deleteAccountChecked
+            modalOpen: false
         })
-      }
-      this.setState({
-        modalOpen: false
-      })
     }
-    
+
     renderModal() {
-        return(
+        return (
             <View style={styles.modalContainer}>
                 <Grid>
                     <Col>
-                        <Row style={{height: '30%', width: '90%', alignSelf: 'center', alignItems: 'center'}}>
-                            <View style={{height: 35}}>
-                              <UserCard data={this.state.employeeData}/>
+                        <Row style={{ height: '30%', width: '90%', alignSelf: 'center', alignItems: 'center' }}>
+                            <View style={{ height: 35 }}>
+                                <UserCard data={this.state.employeeData} />
                             </View>
                         </Row>
-                        <Row style={{height: '50%'}}>
-                            <Col style={{width: '70%'}}>
-                                <Row style={{alignItems: 'center'}}>
+                        <Row style={{ height: '50%' }}>
+                            <Col style={{ width: '70%' }}>
+                                <Row style={{ alignItems: 'center' }}>
                                     <Text style={styles.rowText}>Thay đổi thông tin</Text>
                                 </Row>
-                                <Row style={{alignItems: 'center'}}>
+                                <Row style={{ alignItems: 'center' }}>
                                     <Text style={styles.rowText}>Xoá tài khoản khỏi danh sách</Text>
                                 </Row>
                             </Col>
-                            <Col style={{width: '30%'}}>
+                            <Col style={{ width: '30%' }}>
                                 <Row style={styles.rowCheckBox}>
                                     <CheckBox
-                                        style={{borderWidth: 2}}
+                                        style={{ borderWidth: 2 }}
                                         onPress={this.onUpdateInfoPress.bind(this)}
-                                        checked={this.state.updateInfoChecked}/>
+                                        checked={this.state.updateInfoChecked} />
                                 </Row>
                                 <Row style={styles.rowCheckBox}>
                                     <CheckBox
-                                        style={{borderWidth: 2}}
+                                        style={{ borderWidth: 2 }}
                                         onPress={this.onDeleteAccountPress.bind(this)}
-                                        checked={this.state.deleteAccountChecked}/>
+                                        checked={this.state.deleteAccountChecked} />
                                 </Row>
                             </Col>
                         </Row>
-                        <Row style={{height: '20%'}}>
-                            <Col style={{width: '50%'}}/>
-                            <Col style={{width: '25%'}}>
+                        <Row style={{ height: '20%' }}>
+                            <Col style={{ width: '50%' }} />
+                            <Col style={{ width: '25%' }}>
                                 <Button
-                                  onPress={this.onCancelModal.bind(this)}
-                                  style={styles.modalButton}>
+                                    onPress={this.onCancelModal.bind(this)}
+                                    style={styles.modalButton}>
                                     <Text style={styles.modalCancelButtonText}>Cancel</Text>
                                 </Button>
                             </Col>
-                            <Col style={{width: '25%'}}>
+                            <Col style={{ width: '25%' }}>
                                 <Button
-                                  onPress={this.onSubmitModal.bind(this)}
-                                  style={styles.modalButton}>
+                                    onPress={this.onSubmitModal.bind(this)}
+                                    style={styles.modalButton}>
                                     <Text style={styles.modalOkButtonText}>OK</Text>
                                 </Button>
                             </Col>
@@ -298,29 +293,43 @@ class UserManagement extends Component {
             </View>
         )
     }
-    
+
     onCreateUserPress() {
         const { forwardTo } = this.props
         forwardTo('userManagement/action/createUser')
     }
-    
+    _handleChangePlace = (item) => {
+        const {setSelectedOption} = this.props
+        setSelectedOption(item)
+        this._loadListEmployee(item.id)
+    }
     render() {
+        const { place, selectedPlace } = this.props
         if (this.state.isFetchingData) {
-          return (
-            <View style={{backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-              <Spinner color={material.primaryColor}/>
-            </View>
-          )
+            return (
+                <View style={{ backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Spinner color={material.primaryColor} />
+                </View>
+            )
         }
+        let dropdownValues = place.listPlace.map(item => ({
+            id: item.placeId,
+            name: item.address
+        }))
         return (
-            <Container>
-                <Content style={{backgroundColor: material.white500}}>
+            <Container style={{ paddingTop: 50 }}>
+                <TopDropdown
+                    ref='placeDropdown'
+                    dropdownValues={dropdownValues}
+                    selectedOption={selectedPlace}
+                    onSelect={this._handleChangePlace.bind(this)} />
+                <Content style={{ backgroundColor: material.white500 }}>
                     <List
-                        style={{marginBottom: 50, marginTop: 20}}
+                        style={{ marginBottom: 50, marginTop: 20 }}
                         dataArray={this.state.data}
-                        renderRow={this.renderRow.bind(this)}/>
+                        renderRow={this.renderRow.bind(this)} />
                 </Content>
-                <Modal onCloseClick={e=>this.setState({modalOpen:false})} open={this.state.modalOpen}>
+                <Modal onCloseClick={e => this.setState({ modalOpen: false })} open={this.state.modalOpen}>
                     {this.renderModal()}
                 </Modal>
                 <Button
