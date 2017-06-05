@@ -36,7 +36,7 @@ export default class MerchantOverview extends PureComponent {
     }
 
     _load() {
-        const { user, place } = this.props
+        const { user, place, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
@@ -45,14 +45,18 @@ export default class MerchantOverview extends PureComponent {
             lat = place.location.latitude
             long = place.location.longitude
         }
-        this.props.getListPlace(this.props.xsession, lat, long,
+        getListPlace(this.props.xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
+                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                        let selectedOption = {}
+                        selectedOption.id = data.updated.data[0].placeId
+                        selectedOption.name = data.updated.data[0].address
+                        setSelectedOption(selectedOption)
+                    }
                     let currentPlace = this.refs.placeDropdown.getValue()
-                    this.props.getMerchantNews(
-                        this.props.xsession,
-                        currentPlace.id)
+                    getMerchantNews(xsession, currentPlace.id)
                 }
             })
 
