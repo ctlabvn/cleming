@@ -41,8 +41,8 @@ export default {
     avatar: {
       width: 120,
       height: 120,
-      backgroundColor: material.gray300,
-      borderRadius: 60
+      // backgroundColor: material.gray300,
+      borderRadius: 60,
     },
     changePasswordText: {
       color: material.blue400,

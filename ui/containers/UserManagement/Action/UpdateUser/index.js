@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import {
-    Button, List, ListItem, Switch, Spinner, CheckBox,
+    Button, List, ListItem, Switch, Spinner, CheckBox, Thumbnail,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text, Platform } from 'react-native'
@@ -27,7 +27,7 @@ import * as accountActions from '~/store/actions/account'
 import * as commonActions from '~/store/actions/common'
 
 import styles from './styles'
-const img = 'https://facebook.github.io/react/img/logo_og.png'
+// const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 import {profileCoverSource} from '~/assets'
 
@@ -181,9 +181,12 @@ export default class UpdateUserContainer extends Component {
                         <View style={styles.avatarContainer}>
                             <CacheableImage
                               style={styles.avatar}
-                              defaultSource={{uri:img}}
+                              placeholder={<Icon name="image" style={{width: 120, height: 120}} />}
                               source={{uri: this.props.user.avatar}} />
-                            <PhotoChooser style={styles.photoIcon} onSuccess={this.handleChoosePhoto}/>
+                            {
+                            // <PhotoChooser style={styles.photoIcon} onSuccess={this.handleChoosePhoto}/>  
+                            }
+                            
                         </View>
                         <View style={styles.inputContainer}>
                             <Field
