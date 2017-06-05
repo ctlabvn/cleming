@@ -155,7 +155,7 @@ export default class extends Component {
                                 <Text bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
                                 <Text small primary>Đã thanh toán</Text>
@@ -184,7 +184,7 @@ export default class extends Component {
                             </View>
                             <View style={styles.rowPadding}>
                                 <Text success small>Đã xác nhận</Text>
-                                <Text><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -195,7 +195,7 @@ export default class extends Component {
     
     _renderTransactionItem(item) {
         let iconBlock, statusText, transactionCode
-        let moneyText = <Text bold style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
+        let moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
         switch (item.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1: //chờ duyệt
             case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
@@ -205,7 +205,7 @@ export default class extends Component {
                     </View>
                 )
                 statusText = <Text small warning>Chờ phê duyệt</Text>
-                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
                 iconBlock = (
@@ -213,8 +213,8 @@ export default class extends Component {
                         <Icon name='coin_mark' style={{...styles.icon, ...styles.success}} />
                     </View>
                 )
-                statusText = <Text small>Cashback thành công</Text>
-                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
+                statusText = <Text small grayDark>Cashback thành công</Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
                 iconBlock = (
@@ -223,8 +223,8 @@ export default class extends Component {
                     </View>
                 )
                 statusText = <Text small error>Bị từ chối</Text>
-                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
-                moneyText = <Text bold style={styles.moneyNumber}></Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                moneyText = <Text bold gray style={styles.moneyNumber}></Text>
                 break
             default:
                 iconBlock = (
@@ -246,7 +246,7 @@ export default class extends Component {
                         <View style={{ width: '100%', flex: 1 }}>
                             <View style={styles.row}>
                                 {transactionCode}
-                                <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             </View>
                             <View style={styles.row}>
                                 {statusText}
