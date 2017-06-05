@@ -239,6 +239,7 @@ export default class CreateUserContainer extends Component {
           isLoading: false
         })
       } else {
+        console.log('Selected Place Create User', this.props.selectedPlace)
         this.props.actions.getListEmployee(this.props.session, this.props.selectedPlace.id,() => {
           this.setState({
             isLoading: false
