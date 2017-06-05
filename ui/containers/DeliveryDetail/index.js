@@ -18,7 +18,7 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
- 
+import {DEFAULT_TIME_FORMAT} from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
