@@ -312,9 +312,9 @@ export default class extends Component {
     renderDefaultSource() {
         const { children, defaultSource, checkNetwork, networkAvailable, ...props } = this.props        
         return (
-            <CacheableImage {...props} source={defaultSource} checkNetwork={false} networkAvailable={this.networkAvailable} >
+            <ResponsiveImage {...props} source={defaultSource} checkNetwork={false} networkAvailable={this.networkAvailable} >
             {children}
-            </CacheableImage>
+            </ResponsiveImage>
         )
     }
 }
