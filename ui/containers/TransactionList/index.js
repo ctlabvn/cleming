@@ -148,14 +148,14 @@ export default class extends Component {
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text small bold>{item.userName}</Text>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text small bold grayDark>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text bold primary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text><Text bold style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
                                 <Text small primary>Đã thanh toán</Text>
@@ -173,18 +173,18 @@ export default class extends Component {
                     <ListItem style={styles.listItem}
                         onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
                     >
-                        <View style={styles.block}>
+                        <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text bold primary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
 
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text small>Khách hàng: <Text small bold>{item.userName}</Text></Text>
+                                <Text small grayDark>Khách hàng: <Text small bold grayDark>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.rowPadding}>
                                 <Text success small>Đã xác nhận</Text>
-                                <Text><Text bold style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />

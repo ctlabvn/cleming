@@ -50,6 +50,16 @@ export default {
         marginTop: 10,
         marginBottom: 10
     },
+    blockConfirmed: {
+        flexDirection: 'column',
+        backgroundColor: material.backgroundColor1,
+        width: '100%',
+        // borderRadius: 3,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
