@@ -3,7 +3,6 @@ package com.gigatum.merchantapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.burlap.filetransfer.FileTransferPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -33,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFetchBlobPackage(),
             new PhotoViewPackage(),
             new FileTransferPackage(),
             new RNDeviceInfo(),
