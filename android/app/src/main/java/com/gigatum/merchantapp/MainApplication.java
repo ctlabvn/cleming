@@ -7,7 +7,6 @@ import com.reactnative.photoview.PhotoViewPackage;
 import com.burlap.filetransfer.FileTransferPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
 import com.gigatum.merchantapp.BuildConfig;
 import com.rnfs.RNFSPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -36,7 +35,6 @@ public class MainApplication extends Application implements ReactApplication {
             new FileTransferPackage(),
             new RNDeviceInfo(),
             new ReactNativePushNotificationPackage(),
-            new LinearGradientPackage(),
             new RNFSPackage(),
             new ImagePickerPackage(),
             new SvgPackage(),

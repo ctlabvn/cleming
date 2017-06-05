@@ -17,7 +17,8 @@ import styles from './styles'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import Icon from '~/ui/elements/Icon'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
+import GradientBackground from '~/ui/elements/GradientBackground'
 
 import routes from '~/ui/routes'
 
@@ -115,7 +116,8 @@ export default class extends Component {
     
     return (
       <Container style={styles.container}>
-        <LinearGradient colors={['#14b3dd', '#019ecb', '#007dad']}>
+        
+        <GradientBackground colors={['#14b3dd', '#019ecb', '#007dad']} />                    
           <Content>
             
             {!this.state.showPassword &&
@@ -131,7 +133,7 @@ export default class extends Component {
             <Text style={styles.logoText}>FOR BUSINESS</Text>
           
           </Content>
-        </LinearGradient>
+        
       </Container>
     )
   }

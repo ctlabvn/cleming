@@ -17,7 +17,7 @@ import styles from './styles'
 import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import Icon from '~/ui/elements/Icon'
-import LinearGradient from 'react-native-linear-gradient'
+// import LinearGradient from 'react-native-linear-gradient'
 import material from '~/theme/variables/material.js'
 
 import routes from '~/ui/routes'
@@ -35,6 +35,9 @@ import { validate } from './utils'
 import { logoSource, storeTransparent } from '~/assets'
 import md5 from 'md5'
 import DeviceInfo from 'react-native-device-info'
+
+import GradientBackground from '~/ui/elements/GradientBackground'
+
 
 const formSelector = formValueSelector('LoginForm')
 
@@ -70,6 +73,8 @@ export default class extends Component {
       emailSelection: { start: 0, end: 0 },
       passwordSelection: { start: 0, end: 0 },
     }
+
+    
   }
 
   componentWillReceiveProps(nextProps) {
@@ -270,23 +275,24 @@ export default class extends Component {
     }
     return (
       <Container style={styles.container}>
-        <LinearGradient colors={['#14b3dd', '#019ecb', '#007dad']}>
-          <Content>
 
-            {!this.state.showPassword &&
-              <Icon name="logo" style={styles.logoIcon} />
-            }
+        <GradientBackground colors={['#14b3dd', '#007dad']}/>
+        
+        <Content>
+          {!this.state.showPassword &&
+            <Icon name="logo" style={styles.logoIcon} />
+          }
 
-            {this.state.showPassword
-              ? this.renderPasswordForm()
-              : (this.state.showForgot ? this.renderForgotForm() : this.renderLoginForm())
-            }
+          {this.state.showPassword
+            ? this.renderPasswordForm()
+            : (this.state.showForgot ? this.renderForgotForm() : this.renderLoginForm())
+          }
 
-            <Thumbnail square style={styles.logo} source={storeTransparent} />
-            <Text style={styles.logoText}>FOR BUSINESS</Text>
+          <Thumbnail square style={styles.logo} source={storeTransparent} />
+          <Text style={styles.logoText}>FOR BUSINESS</Text>
 
-          </Content>
-        </LinearGradient>
+        </Content>
+        
       </Container>
     )
   }

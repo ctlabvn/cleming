@@ -41,7 +41,8 @@ import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 import Report from './containers/Report'
 import TransactionConfirm from './containers/TransactionConfirm'
 import TransactionInputFeedback from './containers/TransactionInputFeedback'
-// import TestAnimation from './containers/TestAnimation'
+
+import ChartDemo from './containers/ChartDemo'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -286,10 +287,11 @@ export default {
         Page: DealDetail,
         footerType: 'none',
     },
-    // testAnimation: {
-    //     title: 'Test Animation',
-    //     Page: TestAnimation,
-    //     headerType: 'back',
-    //     footerType: 'none',
-    // },
+   
+    chartDemo: {
+        title: 'Chart Demo',
+        Page: ChartDemo,
+        headerType: 'back',
+        footerType: 'none',
+    },
 }
