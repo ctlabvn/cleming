@@ -143,6 +143,9 @@ export default {
   get primaryColor(){
     return this.blue400;
   },
+  get secondaryColor(){
+      return this.blue600;
+  },
   get warningColor(){
     return this.orange500;
   },

@@ -30,7 +30,6 @@ export default {
 
     },
     numberRight: {
-        color: material.primaryColor,
         fontWeight: 'bold',
         marginRight: 15,
     },

@@ -51,10 +51,10 @@ export default class TransactionFilter extends Component {
                     <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                         <View style={styles.leftContainer}>
                             <Icon name='filter' style={styles.transactionTypeIcon} />
-                            <Text small>{this.state.selectValue.display}</Text>
+                            <Text small grayDark>{this.state.selectValue.display}</Text>
                         </View>
                     </TouchableOpacity>
-                    <Text small style={styles.numberRight}>{this.state.indicatorNumber}</Text>
+                    <Text small grayDark style={styles.numberRight}>{this.state.indicatorNumber}</Text>
                 </View>
 
 
