@@ -104,6 +104,7 @@ export default class extends Component {
   }
 
   _handleShowHome = (e) => {
+    this._handleShowLogin(e)
     this.props.forwardTo('merchantOverview', true)
   }
 
