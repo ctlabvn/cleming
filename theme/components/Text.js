@@ -31,6 +31,9 @@ export default (variables = variable) => {
       '.primary': {
         color: material.primaryColor
       },
+      '.secondary': {
+          color: material.secondaryColor
+      },
       '.success': {
         color: material.successColor
       },

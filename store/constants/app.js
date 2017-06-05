@@ -45,3 +45,7 @@ export const TRANSACTION_TYPE={
     CLINGME: 1,
     DIRECT: 2
 }
+export const FEEDBACK_CLM_TRANSACTION = {
+    MISS: 2,
+    REDUNDANT: 1
+}

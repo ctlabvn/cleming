@@ -40,6 +40,7 @@ import PlaceOrderList from './containers/PlaceOrderList'
 import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 import Report from './containers/Report'
 import TransactionConfirm from './containers/TransactionConfirm'
+import TransactionInputFeedback from './containers/TransactionInputFeedback'
 // import TestAnimation from './containers/TestAnimation'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
@@ -73,6 +74,12 @@ export default {
         headerType: 'back',
         footerType: 'none',
         PreLoad: false,
+    },
+    'transactionInputFeedback/:dealID/:reasonID': {
+        title: 'Giao dịch trả thiếu tiền',
+        Page: TransactionInputFeedback,
+        headerType: 'back',
+        footerType: 'none'
     },
     deliveryList: {
         title: 'Danh sách giao hàng',
