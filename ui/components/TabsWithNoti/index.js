@@ -20,14 +20,14 @@ export default class TabsWithNoti extends Component {
             this.props.onPressTab(item)
         }
     }
-    getActiveTab(){
+    getActiveTab() {
         return this.state.activeTab
     }
-    updateNumber(tabID, number){
+    updateNumber(tabID, number) {
         let tabData = this.state.tabData.slice()
-        let index = tabData.findIndex(item=>item.tabID == tabID)
+        let index = tabData.findIndex(item => item.tabID == tabID)
         tabData[index].number = number
-        this.setState({tabData: tabData})
+        this.setState({ tabData: tabData })
     }
     render() {
         return (
@@ -35,12 +35,11 @@ export default class TabsWithNoti extends Component {
                 {this.state.tabData.map((tabItem) => {
                     let isActive = (tabItem.tabID == this.state.activeTab)
                     return (
-
                         <View style={isActive ? styles.tabActive : styles.tabDeactive} key={tabItem.tabID}>
                             <TouchableOpacity onPress={() => this._handlePressTab(tabItem)}>
                                 <View style={styles.tab}>
-                                    <Text style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
-                                    {tabItem.number && <View style={isActive?styles.tabNumberContainerActive:styles.tabNumberContainerDeactive}>
+                                    <Text small style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
+                                    {(typeof tabItem.number != 'undefined') && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>
                                         <Text style={isActive ? styles.tabNumberActive : styles.tabNumberDeactive}>
                                             {tabItem.number}
                                         </Text>
@@ -48,7 +47,6 @@ export default class TabsWithNoti extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-
                     )
                 })}
             </View>

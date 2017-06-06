@@ -28,17 +28,17 @@ export default {
     },
     tabTextActive: {
         color: material.white500,
-        marginRight: 6,
+        marginRight: 2,
         fontWeight: '900',
-        fontSize: 14
+        // fontSize: 12
 
 
     },
     tabTextDeactive: {
         color: 'rgba(255,255,255,0.5)',
-        marginRight: 6,
+        marginRight: 2,
         fontWeight: '100',
-        fontSize: 14
+        // fontSize: 12
     },
     tabNumberContainerActive: {
         width: 20,

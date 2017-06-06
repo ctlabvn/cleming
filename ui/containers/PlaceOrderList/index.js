@@ -230,6 +230,7 @@ export default class PlaceOrderList extends Component {
         this.props.getBookingList(this.props.xsession, placeId,
             fromTime, toTime, status, page,
             (err, data) => {
+                console.log('Load Order', data)
                 this.setState({ loading: false, loadingMore: false })
                 if (data && data.updated && data.updated.resultNumber) {
                     this.refs.tabs.updateNumber(this.refs.tabs.getActiveTab(), data.updated.resultNumber)

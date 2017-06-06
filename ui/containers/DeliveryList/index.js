@@ -109,10 +109,16 @@ export default class extends Component {
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
-            () => this.setState({
-                loading: false,
-                loadingMore: false,
-            }))
+            (err, data) => {
+                console.log('Load Delivery List', data)
+                this.setState({
+                    loading: false,
+                    loadingMore: false,
+                })
+                if (data && data.updated){
+                    this.refs.tabs.updateNumber(this.selectedStatus, data.updated.resultNumber)
+                }
+            })
     }
 
     onModalOpen(phoneNumber) {
@@ -292,7 +298,7 @@ export default class extends Component {
                 />
 
                 <TabsWithNoti tabData={options.tabData}
-                    activeTab={0} onPressTab={this._handlePressTab} />
+                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs'/>
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
