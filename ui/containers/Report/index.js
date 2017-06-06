@@ -20,7 +20,7 @@ import Content from '~/ui/components/Content'
 import geoViewport from '@mapbox/geo-viewport'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { getSession } from '~/store/selectors/auth'
-import {getSelectedPlace} from '~/store/selectors/place'
+import { getSelectedPlace } from '~/store/selectors/place'
 @connect(state => ({
     xsession: getSession(state),
     selectedPlace: getSelectedPlace(state),
@@ -40,8 +40,10 @@ export default class Report extends Component {
                 longitudeDelta: 0.05,
             }
         }
+        this.isLoadingPlace = false
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
+        const { xsession, getMapReport } = this.props
         let minLa = this.state.region.latitude - this.state.region.latitudeDelta
         let minLo = this.state.region.longitude - this.state.region.longitudeDelta
         let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
@@ -57,65 +59,61 @@ export default class Report extends Component {
         let zoomLevel = geoViewport.viewport(bounds, [height, width]).zoom
         console.log('Geo View Port', zoomLevel)
         if (callback) {
-            this.props.getMapReport(this.props.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
+            getMapReport(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
         } else {
-            this.props.getMapReport(this.props.xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
+            getMapReport(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime)
+        }
+    }
+    _loadAndFocus(placeId, fromTime, toTime) {
+        this.counter = 0
+        this._requestMapData(placeId, fromTime, toTime,
+            (err, data) => {
+                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
+                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
+                    this.setState({
+                        region: {
+                            latitude: focusMechant.latitude,
+                            longitude: focusMechant.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }
+                    }, () => {
+                        this.counter++
+                    })
+                }
+            }
+        )
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+            this.isLoadingPlace = false
+
+            let selectedPlace = {}
+            selectedPlace.id = nextProps.place.listPlace[0].placeId
+            selectedPlace.name = nextProps.place.listPlace[0].address
+
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
         }
     }
     componentDidMount() {
-        this.counter = 0
-        let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-
-        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
-        // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
-        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
-            (err, data) => {
-                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
-                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
-                    console.log('Did mount focusMerchant', focusMechant)
-                    this.setState({
-                        region: {
-                            latitude: focusMechant.latitude,
-                            longitude: focusMechant.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }
-                    }, () => {
-                        console.log('Set State Did Mount', this.state.region)
-                        this.counter++
-                    })
-                }
-            }
-        )
+        const { selectedPlace } = this.props
+        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+            this.isLoadingPlace = true
+            return
+        }
+        this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
     }
 
     componentWillFocus() {
-        console.log('Will focus map')
-        let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-
-        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
-        // getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel=5, fromTime=1448038800, toTime=1448038800)
-        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to,
-            (err, data) => {
-                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
-                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
-                    console.log('Will focus focusMerchant', focusMechant)
-                    this.setState({
-                        region: {
-                            latitude: focusMechant.latitude,
-                            longitude: focusMechant.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }
-                    }, () => {
-                        console.log('Set State Did Mount', this.state.region)
-                        this.counter++
-                    })
-                }
-            }
-        )
+        const { selectedPlace } = this.props
+        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+            this.isLoadingPlace = true
+            return
+        }
+        this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
     }
     componentWillBlur() {
         this.counter = 0
@@ -131,15 +129,14 @@ export default class Report extends Component {
     }
 
     onRegionChange = (region) => {
-        console.log('Region change xxx', this.counter)
-        if (this.counter == 0){
+        if (this.counter == 0) {
             this._regionChange(region)
         }
     }
 
     onRegionChangeComplete = (region) => {
         console.log('Region change complete', this.counter)
-        if (this.counter > 0){
+        if (this.counter > 0) {
             this._regionChange(region)
         }
     }
@@ -148,7 +145,6 @@ export default class Report extends Component {
         const { setSelectedOption } = this.props
         setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this.props.getCustomerReport(this.props.xsession, item.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
                 if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
@@ -169,7 +165,6 @@ export default class Report extends Component {
     _handlePressFilter = (item) => {
         let placeData = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        this.props.getCustomerReport(this.props.xsession, placeData.id, dateFilterData.from, dateFilterData.to)
         this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
     }
 
@@ -347,12 +342,12 @@ export default class Report extends Component {
 
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} 
+                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
                     onSelect={this._handleTopDrowpdown}
                     selectedOption={selectedPlace}
                 />
                 <View style={{ marginTop: 50, height: '100%' }}>
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite'/>
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
                     {/*<Content>*/}
                     <MapView
                         region={this.state.region}
