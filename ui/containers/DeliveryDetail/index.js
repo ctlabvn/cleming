@@ -86,7 +86,7 @@ export default class extends Component {
                     <View style={styles.rowPadding}>
                         <Text success small>Đã thanh toán</Text>
                         <View style={styles.row}>
-                            <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text small grayDark style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
                                 <CircleCountdown
                                     baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
@@ -96,33 +96,33 @@ export default class extends Component {
                         </View>
                     </View>
                     <View style={styles.rowPadding}>
-                        <Text small>Đặt hàng số</Text>
-                        <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
+                        <Text small grayDark >Đặt hàng số</Text>
+                        <Text primary bold grayDark>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
-                        <Text small>Địa chỉ giao hàng</Text>
-                        <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
+                        <Text small grayDark>Địa chỉ giao hàng</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.rowPaddingTopLarge}>
-                        <Text small>Người nhận</Text>
-                        <Text bold>{orderDetail.orderInfo.userInfo.memberName}</Text>
+                        <Text small grayDark>Người nhận</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.userInfo.memberName}</Text>
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
-                        <Text small>Số điện thoại</Text>
-                        <Text bold>{orderDetail.orderInfo.userInfo.phoneNumber}</Text>
+                        <Text small grayDark>Số điện thoại</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.userInfo.phoneNumber}</Text>
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
-                        <Text small>Yêu cầu nhận hàng trong</Text>
-                        <Text bold>45'</Text>
+                        <Text small grayDark>Yêu cầu nhận hàng trong</Text>
+                        <Text bold grayDark>45'</Text>
                     </View>
                     <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                        <Text small>Yêu cầu khác</Text>
-                        <Text bold>{orderDetail.orderInfo.note}</Text>
+                        <Text small grayDark>Yêu cầu khác</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.note}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.rowPadding}>
-                        <Text small bold>Giỏ hàng: {totalItem}</Text>
+                        <Text small bold grayDark>Giỏ hàng: {totalItem}</Text>
                     </View>
                     <List dataArray={orderDetail.orderRowList}
                         renderRow={(item) => (
@@ -130,11 +130,11 @@ export default class extends Component {
                                 <View style={styles.cartLeft}>
                                     <Image style={{ width: 60, height: 60 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
                                     <View style={styles.cartContent}>
-                                        <Text small style={styles.textLeftFlex}>{item.itemName}</Text>
-                                        <Text small style={styles.textLeft}>Số lượng: {item.quantity}</Text>
+                                        <Text small grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
+                                        <Text small grayDark style={styles.textLeft}>Số lượng: {item.quantity}</Text>
                                     </View>
                                 </View>
-                                <Text bold style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
+                                <Text bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
@@ -142,16 +142,16 @@ export default class extends Component {
                 </Content>
                 <View style={styles.fixBottom}>
                     <View style={styles.rowPadding}>
-                        <Text small>Tiền hàng:</Text>
-                        <Text bold>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                        <Text small grayDark>Tiền hàng:</Text>
+                        <Text bold grayDark>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                     </View>
                     <View style={styles.rowPadding}>
-                        <Text small>Phí giao hàng:</Text>
-                        <Text bold>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
+                        <Text small grayDark>Phí giao hàng:</Text>
+                        <Text bold grayDark>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.rowPadding}>
-                        <Text small>Tổng tiền thanh toán: </Text>
+                        <Text small grayDark>Tổng tiền thanh toán: </Text>
                         <Text bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                     </View>
                 </View>
