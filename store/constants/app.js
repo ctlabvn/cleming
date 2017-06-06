@@ -49,3 +49,5 @@ export const FEEDBACK_CLM_TRANSACTION = {
     MISS: 2,
     REDUNDANT: 1
 }
+
+export const DIFF_COORD = 0.1

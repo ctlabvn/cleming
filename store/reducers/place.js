@@ -1,7 +1,8 @@
 const initialState = {  
   listPlace: [],
   news: {},
-  selectedOption: {}
+  selectedOption: {},
+  location: {}
 }
 export const place = (state = initialState, {type, payload}) => {
   switch (type) {   
