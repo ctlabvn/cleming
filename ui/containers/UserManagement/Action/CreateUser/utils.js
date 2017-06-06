@@ -149,7 +149,10 @@ export class renderGroup extends Component {
   }
   
   handleCheck(index){
-    const newState = this.state.fields.slice(0)
+    // const newState = this.state.fields.slice(0)
+    let newState = this.state.fields.map((item)=>{
+      return {...item, checked : false}
+    })
     newState[index].checked = !newState[index].checked
     this.setState({fields: newState}, () => {
       this.props.handleGetListPlaceFromArrayField(this.getSelected())
@@ -177,11 +180,11 @@ export class renderGroup extends Component {
               <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
             </Col>
             <Col style={{alignItems: 'center'}}>
-              <Text
+              {/*<Text
                 style={styles.rightAddressTitleText}
                 onPress={this.handleCheckAll.bind(this)}>
                   Đánh dấu tất cả
-              </Text>
+              </Text>*/}
             </Col>
         </Grid>
         <View style={{height: 10}}/>

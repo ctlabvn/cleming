@@ -8,18 +8,15 @@ const urlEncode = data => data
 ? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
 : ''
 
-export const rejectErrors = (res) => {
+export const rejectErrors = async(res) => {
   const { status } = res
   if (status >= 200 && status < 300) {
     return res
   }
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
-  let code = status
-  if (res._bodyText){
-    code = JSON.parse(res._bodyText).code ? JSON.parse(res._bodyText).code:code
-  }
-  return Promise.reject({ message: res.statusText, status, code })
+  let errorBody = await(res.json())
+  return Promise.reject({message: res.statusText, status,...errorBody})
 }
 
 // try invoke callback for refresh token here
