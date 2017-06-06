@@ -81,7 +81,7 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.rowPadding}>
                                 <Text primary bold>#{item.orderCode}</Text>
                                 <View style={styles.row}>
-                                    <Text small style={{ color: material.black500, marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                                    <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.state.counting}
                                         countTo={item.bookDate}
@@ -92,22 +92,22 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DAY_WITHOUT_YEAR)}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
-                                    <Text style={{ ...styles.labelUnderImage }}>{item.numberOfPeople}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{item.numberOfPeople}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
-                                    <Text style={{ ...styles.labelUnderImage }}>{totalQuantity}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -117,7 +117,7 @@ export default class PlaceOrderList extends Component {
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text small style={{ color: material.black500 }}>{item.userInfo.memberName}</Text>
+                                <Text grayDark small>{item.userInfo.memberName}</Text>
                             </View>
                             <View style={styles.row}>
                                 <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />

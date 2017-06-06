@@ -98,7 +98,6 @@ export default {
     },
 
     labelUnderImage: {
-        color: material.black500,
         marginTop: 5,
     },
     listItem: {
