@@ -169,8 +169,8 @@ export default class extends Component {
                         {orderRowList.map((subItem, index) =>
                             (
                                 <View key={index} style={styles.row}>
-                                    <Text bold>{subItem.itemName}</Text>
-                                    <Text>SL: <Text bold>{subItem.quantity}</Text></Text>
+                                    <Text bold grayDark>{subItem.itemName}</Text>
+                                    <Text grayDark>SL: <Text bold grayDark>{subItem.quantity}</Text></Text>
                                 </View>
                             )
                         )}
@@ -224,7 +224,7 @@ export default class extends Component {
                     <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text style={styles.time} grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(status == ORDER_SUCCESS) && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
@@ -238,8 +238,8 @@ export default class extends Component {
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 {orderListBock}
                 <View>
-                    <View style={styles.rowLeft}><Text bold style={styles.textLeft}>Ghi chú: </Text></View>
-                    <View style={styles.rowLeft}><Text style={styles.textLeft}>{orderInfo.note}</Text></View>
+                    <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                    <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
@@ -247,7 +247,7 @@ export default class extends Component {
                         (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={styles.icon} />
-                                <Text>{orderInfo.userInfo.memberName}</Text>
+                                <Text grayDark>{orderInfo.userInfo.memberName}</Text>
                             </View>
                             <View style={styles.row}>
                                 <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
@@ -258,11 +258,11 @@ export default class extends Component {
                         </View>)}
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
+                        <Text grayDark>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text>Đã thanh toán</Text>
-                        <Text bold>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
+                        <Text warning>Đã thanh toán</Text>
+                        <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
 
