@@ -73,7 +73,7 @@ export default class extends Component {
                 shadowColor="#999"
                 bgColor="#fff"
             >
-                <Text style={{ fontSize: 18 }}>{countDownMinute}'</Text>
+                <Text style={{ fontSize: 18, color: 'red' }}>{countDownMinute}'</Text>
             </ProgressCircle>
         )
 
