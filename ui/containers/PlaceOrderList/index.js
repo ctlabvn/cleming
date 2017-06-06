@@ -26,7 +26,7 @@ import { getSelectedPlace } from '~/store/selectors/place'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import {
     BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT,
-    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR
+    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT
 } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
@@ -72,6 +72,12 @@ export default class PlaceOrderList extends Component {
     _renderBookingItem(item) {
         let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
         let orderCodeBlock, phoneNumberBlock, listItemStyle = styles.listItem, listButtonStyle=styles.listButton
+        
+        let minute = item.deliveryMinute < 10 ? '0'.concat(item.deliveryMinute):item.deliveryMinute
+        let hourMinute = item.deliveryHour + ':' + minute
+        let bookTimeStr = hourMinute+':00'+' '+moment(item.bookDate*1000).format(DEFAULT_DATE_FORMAT)
+        let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
+
         if (this.selectTab == BOOKING_WAITING_CONFIRM) {
             orderCodeBlock = (<View style={styles.row}>
                 <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
@@ -118,11 +124,11 @@ export default class PlaceOrderList extends Component {
                             style={listButtonStyle}>
                             <View style={styles.rowPadding}>
                                 {orderCodeBlock}
-                                <View style={styles.row}>
+                                <View style={styles.rowCenter}>
                                     <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.state.counting}
-                                        countTo={item.bookDate}
+                                        countTo={bookTime}
                                     />
                                 </View>
                             </View>
@@ -130,12 +136,12 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DAY_WITHOUT_YEAR)}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate*1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{hourMinute}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>

@@ -3,7 +3,7 @@ export default {
     container: {
         backgroundColor: material.backgroundColor1,
         height: '100%',
-        paddingBottom: 10
+        paddingBottom: 50
     },
     content: {
         padding: 10,
@@ -26,7 +26,11 @@ export default {
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // alignItems: 'center'
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     rowRight: {
         padding: 10,

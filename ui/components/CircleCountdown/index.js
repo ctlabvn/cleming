@@ -35,6 +35,7 @@ export default class extends Component {
             let countDownMinute = Math.floor((this.state.countTo - now)/60)
             console.log('Inteval Circle', countDownMinute)
             if (countDownMinute <= 0) {
+                console.log('Case <=0 ')
                 console.log("Inteval ID", this.intervalID)
                 this.stopInterval()
             }else if (countDownMinute > this.state.baseMinute){
@@ -56,11 +57,12 @@ export default class extends Component {
         }
     }
     render() {
+        console.log('Rerender Circle')
         let now = moment().unix()
-        if (this.state.countTo < now){
+        let countDownMinute = Math.floor((this.state.countTo - now)/60)
+        if (countDownMinute <= 0){
             return <View></View>
         }
-        let countDownMinute = Math.floor((this.state.countTo - now)/60)
         if (countDownMinute > this.state.baseMinute){
             return <View></View>
         }
