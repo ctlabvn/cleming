@@ -48,6 +48,7 @@ export default class PlaceOrderList extends Component {
             phoneNumber: ''
         }
         this.isLoadingPlace = false
+        this.selectTab = BOOKING_WAITING_CONFIRM
     }
 
     onDetailPlacePress() {
@@ -70,16 +71,53 @@ export default class PlaceOrderList extends Component {
 
     _renderBookingItem(item) {
         let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
+        let orderCodeBlock, phoneNumberBlock, listItemStyle = styles.listItem, listButtonStyle=styles.listButton
+        if (this.selectTab == BOOKING_WAITING_CONFIRM) {
+            orderCodeBlock = (<View style={styles.row}>
+                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                <Text warning bold>#{item.orderCode}</Text>
+            </View >)
+            phoneNumberBlock = (<View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                    warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+            </View>)
+        } else if (this.selectTab == BOOKING_CONFIRMED) {
+            orderCodeBlock = (<View style={styles.row}>
+                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                <Text primary bold>#{item.orderCode}</Text>
+            </View >)
+            phoneNumberBlock = (<View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                    primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+            </View>)
+        } else if (this.selectTab == BOOKING_CANCEL) {
+            orderCodeBlock = (<View style={styles.row}>
+                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                <Text bold style={styles.gray}>#{item.orderCode}</Text>
+            </View >)
+            phoneNumberBlock = (<View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                    style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+            </View>)
+            listItemStyle = {...listItemStyle, ...styles.listItemGray}
+            listButtonStyle = {...listButtonStyle, ...styles.listItemGray}
+        }
         return (
 
-            <ListItem style={styles.listItem}>
+            <ListItem style={listItemStyle}>
                 <Grid>
                     <Row style={{ height: '70%' }}>
                         <Button
                             onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
-                            style={styles.listButton}>
+                            style={listButtonStyle}>
                             <View style={styles.rowPadding}>
-                                <Text primary bold>#{item.orderCode}</Text>
+                                {orderCodeBlock}
                                 <View style={styles.row}>
                                     <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                     <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
@@ -119,12 +157,7 @@ export default class PlaceOrderList extends Component {
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
                                 <Text grayDark small>{item.userInfo.memberName}</Text>
                             </View>
-                            <View style={styles.row}>
-                                <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                                <Text
-                                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                                    primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-                            </View>
+                            {phoneNumberBlock}
                         </View>
                     </Row>
                 </Grid>
@@ -149,6 +182,7 @@ export default class PlaceOrderList extends Component {
 
     }
     _handlePressTab(item) {
+        this.selectTab = item.tabID
         let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (currentPlace) {
@@ -180,10 +214,11 @@ export default class PlaceOrderList extends Component {
     // resultNumber: int, //số lượng kết quả,
     // isLast: boolean, //có phải là trang cuối cùng hay không
     _load(placeId, fromTime, toTime, status, isLoadMore = false, page = 0) {
-        const { xsession } = this.props
+        const { xsession, clearBookingList } = this.props
         if (isLoadMore) {
             this.setState({ loadingMore: true })
         } else {
+            clearBookingList()
             this.setState({ loading: true })
         }
         this.props.getBookingList(this.props.xsession, placeId,

@@ -70,8 +70,14 @@ export default {
     primary: {
         color: material.primaryColor
     },
+    warning: {
+        color: material.orange500
+    },
     success: {
         color: material.successColor
+    },
+    gray: {
+        color: material.gray500
     },
     button: {
         justifyContent: 'center',
@@ -112,6 +118,9 @@ export default {
         borderRadius: 3,
         marginBottom: 10,
         height: 170
+    },
+    listItemGray: {
+        backgroundColor: material.gray400 
     },
     listButton: {
       backgroundColor: material.white500,

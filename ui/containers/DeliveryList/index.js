@@ -25,7 +25,10 @@ import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
 import { formatPhoneNumber } from '~/ui/shared/utils'
-import { ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL, DEFAULT_TIME_FORMAT }
+import {
+    ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
+    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY
+}
     from '~/store/constants/app'
 @connect(state => ({
     place: state.place,
@@ -228,10 +231,11 @@ export default class extends Component {
                             {(status == ORDER_SUCCESS) && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
-                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                counting={this.state.counting}
-                                countTo={countTo}
-                            />
+                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
+                                <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                    counting={this.state.counting}
+                                    countTo={countTo}
+                                />}
                         </View>
                     </View>
                 </View>

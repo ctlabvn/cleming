@@ -312,7 +312,6 @@ export default class App extends Component {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
-        console.log('Previous Location', place)
         if (!place.location || Object.keys(place.location).length == 0) {
           this.updatePlaceList(position.coords.latitude, position.coords.longitude)
         }
@@ -325,9 +324,7 @@ export default class App extends Component {
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log('Position Change', position)
-      console.log('Previous Location 2', place)
       if (!place.location || Object.keys(place.location).length == 0) {
-        console.log('Go to Update')
         this.updatePlaceList(position.coords.latitude, position.coords.longitude)
       }
       saveCurrentLocation(position.coords)

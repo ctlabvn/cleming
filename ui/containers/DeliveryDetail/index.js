@@ -18,7 +18,7 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
-import {DEFAULT_TIME_FORMAT} from '~/store/constants/app'
+import { DEFAULT_TIME_FORMAT, FAST_DELIVERY } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
@@ -38,7 +38,7 @@ export default class extends Component {
         let deliveryId = route.params.id
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
-                if (data && data.updated){
+                if (data && data.updated) {
                     this.setState({ orderDetail: data.updated })
                 }
             }
@@ -87,11 +87,12 @@ export default class extends Component {
                         <Text success small>Đã thanh toán</Text>
                         <View style={styles.row}>
                             <Text small style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            <CircleCountdown
-                                baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                counting={this.state.counting}
-                                countTo={countTo}
-                            />
+                            {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
+                                <CircleCountdown
+                                    baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                    counting={this.state.counting}
+                                    countTo={countTo}
+                                />}
                         </View>
                     </View>
                     <View style={styles.rowPadding}>
@@ -99,7 +100,7 @@ export default class extends Component {
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     <View style={styles.line} />
-                    <View style={{...styles.block, paddingBottom: 0}}>
+                    <View style={{ ...styles.block, paddingBottom: 0 }}>
                         <Text small>Địa chỉ giao hàng</Text>
                         <Text bold>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
@@ -115,11 +116,11 @@ export default class extends Component {
                         <Text small>Yêu cầu nhận hàng trong</Text>
                         <Text bold>45'</Text>
                     </View>
-                    <View style={{...styles.block, ...styles.paddingTopMedium}}>
+                    <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
                         <Text small>Yêu cầu khác</Text>
                         <Text bold>{orderDetail.orderInfo.note}</Text>
                     </View>
-                   <View style={styles.line} />
+                    <View style={styles.line} />
                     <View style={styles.rowPadding}>
                         <Text small bold>Giỏ hàng: {totalItem}</Text>
                     </View>
@@ -133,7 +134,7 @@ export default class extends Component {
                                         <Text small style={styles.textLeft}>Số lượng: {item.quantity}</Text>
                                     </View>
                                 </View>
-                                <Text bold style={{...styles.itemCash}}>{item.price / 1000}k</Text>
+                                <Text bold style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>
