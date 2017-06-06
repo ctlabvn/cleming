@@ -56,8 +56,7 @@ export default class TransactionDetail extends Component {
     }
     _renderStatus(status) {
         switch (status) {
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1:
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
+            case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
                 return <Text bold warning>Giao dịch chờ phê duyệt</Text>
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return <Text bold success>Giao dịch thành công</Text>
@@ -69,8 +68,7 @@ export default class TransactionDetail extends Component {
     }
     _renderBottomAction(status) {
         switch (status) {
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1:
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
+            case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
                 return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
