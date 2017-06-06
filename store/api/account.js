@@ -37,8 +37,8 @@ export default {
     return apiPost('/reset/password', {userName})
   },
   
-  getListEmployee(session) {
-    return apiGet('/merchantapp/list-subaccount', {}, session)
+  getListEmployee(session, placeId) {
+    return apiGet('/merchantapp/list-subaccount', {placeId}, session)
   },
   
   getGeneratedPassword(session) {

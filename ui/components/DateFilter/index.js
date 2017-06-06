@@ -47,10 +47,6 @@ export default class DateFilter extends Component {
         if (props.type == 'lite') {
             this.dateFilterListValue = [
                 {
-                    value: 'day',
-                    display: '1 ngày'
-                },
-                {
                     value: 'week',
                     display: '7 ngày'
                 },
