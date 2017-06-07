@@ -15,11 +15,9 @@ export default class extends Component {
         this.intervalID = -1
     }
     componentDidMount() {
-        console.log('Did Mount Circle Countdown')
         this.startInterval()
     }
     componentWillBlur() {
-        console.log('Circle Will Blur')
         this.startInterval()
     }
     stopInterval() {
@@ -33,10 +31,7 @@ export default class extends Component {
         this.intervalID = setInterval(() => {
             let now = moment().unix()
             let countDownMinute = Math.floor((this.state.countTo - now)/60)
-            console.log('Inteval Circle', countDownMinute)
             if (countDownMinute <= 0) {
-                console.log('Case <=0 ')
-                console.log("Inteval ID", this.intervalID)
                 this.stopInterval()
             }else if (countDownMinute > this.state.baseMinute){
                 this.stopInterval()
@@ -47,7 +42,10 @@ export default class extends Component {
     componentWillUnmount() {
         this.stopInterval()
     }
-    componentWillReceiveProps({ counting }) {
+    componentWillReceiveProps({ countTo, counting }) {
+        if (countTo != this.state.countTo){
+            this.setState({countTo: countTo})
+        }
         if (!counting) {
             console.log('Stopping Interval')
             this.stopInterval()
@@ -57,7 +55,6 @@ export default class extends Component {
         }
     }
     render() {
-        console.log('Rerender Circle')
         let now = moment().unix()
         let countDownMinute = Math.floor((this.state.countTo - now)/60)
         if (countDownMinute <= 0){
