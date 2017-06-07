@@ -5,6 +5,7 @@ import { View, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import * as orderActions from '~/store/actions/order'
+import * as commonActions from '~/store/actions/common'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
 import { InputField } from '~/ui/elements/Form'
@@ -23,7 +24,7 @@ import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
-}), orderActions)
+}), { ...orderActions, ...commonActions })
 
 export default class extends Component {
     constructor(props) {
@@ -33,28 +34,35 @@ export default class extends Component {
             counting: false
         }
     }
-    componentDidMount() {
-        const { route, getOrderDetail, xsession } = this.props
+    _load() {
+        const { route, getOrderDetail, xsession, setToast, forwardTo } = this.props
         let deliveryId = route.params.id
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
+                if (err) {
+                    if (err.code == 1522) {
+                        setToast('Đơn hàng không tồn tại', 'danger')
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    forwardTo('merchantOverview', true)
+                    return
+                }
                 if (data && data.updated) {
                     this.setState({ orderDetail: data.updated })
                 }
+
             }
         )
     }
+
+    componentDidMount() {
+        this._load()
+    }
     componentWillFocus() {
-        const { route, getOrderDetail, xsession } = this.props
-        let deliveryId = route.params.id
         this.setState({ counting: true })
-        getOrderDetail(xsession, deliveryId,
-            (err, data) => {
-                if (data && data.updated) {
-                    this.setState({ orderDetail: data.updated })
-                }
-            }
-        )
+        this._load()
     }
     componentWillBlur() {
         this.setState({ counting: false })

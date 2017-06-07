@@ -17,8 +17,10 @@ import PopupInfo from '~/ui/components/PopupInfo'
 import LoadingModal from '~/ui/components/LoadingModal'
 import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, 
-        DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION} from '~/store/constants/app'
+import {
+    TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS,
+    DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION
+} from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager'
 import material from '~/theme/variables/material'
 @connect(state => ({
@@ -225,10 +227,10 @@ export default class TransactionDetail extends Component {
                         <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                             <Text>Trợ giúp</Text>
                         </Button>
-                        <Button dark style={{...styles.feedbackClmTransaction, ...styles.confirmButton}} onPress={() => this._confirmTransaction()}>
+                        <Button dark style={{ ...styles.feedbackClmTransaction, ...styles.confirmButton }} onPress={() => this._confirmTransaction()}>
                             <Text>Đồng ý</Text>
                         </Button>
-                        
+
                     </View>
                 </View>
             )
@@ -331,7 +333,7 @@ export default class TransactionDetail extends Component {
         }
     }
     _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo } = this.props
         let transactionType = route.params.type
         this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
@@ -339,13 +341,21 @@ export default class TransactionDetail extends Component {
                 (err, data) => {
                     this.setState({ loading: false })
                     console.log('ErrData', data)
+                    if (err) {
+                        setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payWithClingme) {
                             let index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
-                            hasPrevious = (index == 0) ? false : true
-                            hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
+                            if (index != -1) {
+                                hasPrevious = (index == 0) ? false : true
+                                hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
+                            }
                         }
                         // console.log('Start Set State/')
                         this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
@@ -361,13 +371,27 @@ export default class TransactionDetail extends Component {
             getTransactionDetail(xsession, transactionId,
                 (err, data) => {
                     this.setState({ loading: false })
+                    if (err) {
+                        if (err.code == 1811 || err.code == 1812) {
+                            setToast('Giao dịch không tồn tại', 'danger')
+                            forwardTo('merchantOverview', true)
+                            return
+                        }
+                        setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payDirect) {
                             let index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
-                            hasPrevious = (index == 0) ? false : true
-                            hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
+                            // console.log('Index DIRECT', index)
+                            if (index != -1) {
+                                hasPrevious = (index == 0) ? false : true
+                                hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
+                            }
+
                         }
                         this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
                             () => {
@@ -397,11 +421,11 @@ export default class TransactionDetail extends Component {
         )
     }
     _handleFeedbackClingme = (dealID, selectedValue, note) => {
-        console.log('Deal ID zzz', dealID+'---'+selectedValue+'---'+note)
-        const {forwardTo} = this.props
-        if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT){
-            forwardTo('transactionInputFeedback/'+dealID+'/'+selectedValue)     
-        }else{
+        console.log('Deal ID zzz', dealID + '---' + selectedValue + '---' + note)
+        const { forwardTo } = this.props
+        if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT) {
+            forwardTo('transactionInputFeedback/' + dealID + '/' + selectedValue)
+        } else {
             this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
         }
     }
@@ -409,15 +433,14 @@ export default class TransactionDetail extends Component {
         this.swiping = true
         this.refs.viewPager.setPageWithoutAnimation(1)
     }
-    goNextViewPager(){
+    goNextViewPager() {
         this.refs.viewPager.setPage(2)
     }
-    goPreviousViewPager(){
+    goPreviousViewPager() {
         this.refs.viewPager.setPage(0)
     }
     onSwipeViewPager(event) {
         if (this.swiping) {
-            console.log('GO Swiping reset')
             this.swiping = false
             return
         } else {
