@@ -82,10 +82,13 @@ export default {
         fontSize: 14,
     },
     submitButton: {
+        position: 'absolute',
+        bottom: 0,
         backgroundColor: material.blue400,
-        alignSelf: 'flex-end',
+        height: 40,
         width: '100%',
         borderRadius: 0,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -108,6 +111,9 @@ export default {
       height: 170,
       backgroundColor: material.white500
     },
+    createPassBlock: {
+        marginTop: 10
+    },
     subText: {
       color: material.gray500,
       marginLeft: 20,
@@ -116,5 +122,9 @@ export default {
     closeIcon: {
       color: material.gray500,
       fontSize: 18
+    },
+    container: {
+        paddingBottom: 40,
+        backgroundColor: 'white'
     }
 }
