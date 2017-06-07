@@ -16,10 +16,7 @@ import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import material from '~/theme/variables/material.js'
 import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT } from '~/store/constants/app'
-const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
-  "before deactivating the button. Once deactivated, try moving it back and youll see that the button is once again " +
-  "reactivated! Move it back and forth several times while the scroll view is disabled. Ensure you pass in a " +
-  "constant to reduce memory allocations."
+import {formatPhoneNumber} from '~/ui/shared/utils'
 @connect(state => ({
   user: state.auth.user,
   place: state.place,
@@ -160,7 +157,7 @@ export default class PlaceOrderDetail extends Component {
             </View>
             <View style={styles.rowPaddingTB}>
               <Text style={{ ...styles.normalText, ...styles.leftText }}>Số điện thoại:</Text>
-              <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.phoneNumber}</Text>
+              <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{formatPhoneNumber(this.state.bookingDetail.userInfo.phoneNumber)}</Text>
             </View>
             <View style={styles.block}>
               <Text style={{ ...styles.normalText, ...styles.leftText }}>Yêu cầu riêng:</Text>
