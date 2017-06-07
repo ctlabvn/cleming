@@ -30,7 +30,11 @@ export const getTextParts = text => {
 }
 
 export const formatNumber = str => {
-  return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  if (!str) return str
+  if (!isNaN(str)){
+    return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
+  return str.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 }
 
 
