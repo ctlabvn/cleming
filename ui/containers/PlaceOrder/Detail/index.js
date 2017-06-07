@@ -131,12 +131,12 @@ export default class PlaceOrderDetail extends Component {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Icon name='calendar' style={styles.icon} />
-                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DAY_WITHOUT_YEAR)}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate*1000).format(DAY_WITHOUT_YEAR)}</Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>
                   <Icon name='history' style={styles.icon} />
-                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>

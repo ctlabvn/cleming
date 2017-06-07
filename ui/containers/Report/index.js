@@ -65,11 +65,11 @@ export default class Report extends Component {
         }
     }
     _loadAndFocus(placeId, fromTime, toTime) {
-        this.counter = 0
         this._requestMapData(placeId, fromTime, toTime,
             (err, data) => {
                 if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
                     let focusMechant = data.updated.data.listPlaceLocationDtos[0]
+                    console.log('Focus Merchant', focusMechant)
                     this.setState({
                         region: {
                             latitude: focusMechant.latitude,
@@ -77,8 +77,6 @@ export default class Report extends Component {
                             latitudeDelta: 0.05,
                             longitudeDelta: 0.05,
                         }
-                    }, () => {
-                        this.counter++
                     })
                 }
             }
@@ -115,9 +113,6 @@ export default class Report extends Component {
         }
         this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
     }
-    componentWillBlur() {
-        this.counter = 0
-    }
     _regionChange = (region) => {
         this.setState({ region },
             () => {
@@ -128,17 +123,11 @@ export default class Report extends Component {
         )
     }
 
-    onRegionChange = (region) => {
-        if (this.counter == 0) {
-            this._regionChange(region)
-        }
-    }
-
     onRegionChangeComplete = (region) => {
-        console.log('Region change complete', this.counter)
-        if (this.counter > 0) {
-            this._regionChange(region)
-        }
+        // when load first time at componentDidMount map show at Equator longitude: 0, latitude: 0 (may be a bug)
+        // This tricky solution to skip that case
+        if (region.longitude == 0 && region.longitude == 0) return
+        this._regionChange(region)
     }
 
     _handleTopDrowpdown = (item) => {
@@ -348,12 +337,10 @@ export default class Report extends Component {
                 />
                 <View style={{ marginTop: 50, height: '100%' }}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
-                    {/*<Content>*/}
                     <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}
-                        onRegionChange={this.onRegionChange}
                         onRegionChangeComplete={this.onRegionChangeComplete}
                         moveOnMarkerPress={false}
                     >
@@ -380,8 +367,6 @@ export default class Report extends Component {
 
                         })}
                     </MapView>
-                    {/*{this._renderCustomerStatistic()}*/}
-                    {/*</Content>*/}
                 </View>
             </Container>
         )
