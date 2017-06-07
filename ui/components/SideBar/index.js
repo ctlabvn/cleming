@@ -42,8 +42,6 @@ export default class extends Component {
 
   navigateTo(route) {
     const {forwardTo, closeDrawer, user} = this.props
-    console.log(user.accTitle)
-    console.log(route)
     if (user.accTitle != 1 && route == 'userManagement') {
       closeDrawer()
       forwardTo('userManagement/action/updateUser')

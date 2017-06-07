@@ -202,7 +202,6 @@ export default class DateFilter extends Component {
         } else if (filterType == 'week') {
             let startWeek = moment().subtract(6, 'days').startOf('day')
             let endWeek = moment().endOf('day')
-            console.log('Default Week', startWeek + '---' + endWeek)
             return {
                 value: {
                     from: startWeek.unix(),

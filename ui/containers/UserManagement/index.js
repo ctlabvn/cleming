@@ -225,7 +225,6 @@ class UserManagement extends Component {
             })
             let currentPlace = this.refs.placeDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.state.rowIDOfEmployee].bizAccountId, () => {
-                console.log('Selected Place', selectedPlace)
                 this._loadListEmployee(selectedPlace.id)
             })
             this.setState({

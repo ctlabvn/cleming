@@ -52,7 +52,7 @@ export const formatPhoneNumber = (phoneNumber) => {
     phoneNumber = phoneNumber.toString()
   }
   if ((m = phoneNumber.match(/^(84)(\d{2})(\d{3})(\d{4})$/))
-    || (m = phoneNumber.match(/^(84)(\d{2})(\d{4})(\d{4})$/))) {
+    || (m = phoneNumber.match(/^(84)(\d{3})(\d{3})(\d{4})$/))) {
     return `(${m[1]})${m[2]} ${m[3]} ${m[4]}`
   } else if ((m = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/))
     || (m = phoneNumber.match(/^(\d{4})(\d{3})(\d{4})$/))) {

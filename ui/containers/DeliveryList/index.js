@@ -68,7 +68,6 @@ export default class extends Component {
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
         if (!this.state.selectedPlace) {
-            console.log('Go to set ')
             this.isLoadingPlace = true
         }
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
