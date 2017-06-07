@@ -369,19 +369,9 @@ export default class CreateUserContainer extends Component {
               placeholderTextColor="#7e7e7e"/>
           </View>
           {nameTouched && nameError}
-          <View style={{...styles.inputContainer, ...errorEmailStyle}}>
-            <Field
-              iconStyle={styles.closeIcon}
-              icon={input=>input.value ? 'close' : false}
-              onIconPress={input=>input.onChange('')}
-              inputStyle={styles.inputText}
-              style={styles.inputField}
-              label="Email *"
-              name="email"
-              component={InputField}
-              placeholderTextColor="#7e7e7e"/>
-          </View>
-          {emailTouched && emailError}
+          
+          
+          
           <View style={{...styles.inputContainer, ...errorPhoneStyle}}>
             <Field
               iconStyle={styles.closeIcon}
@@ -394,8 +384,22 @@ export default class CreateUserContainer extends Component {
               component={InputField}
               placeholderTextColor="#7e7e7e"/>
           </View>
-
           {phoneTouched && phoneError}
+          
+          <View style={{...styles.inputContainer, ...errorEmailStyle}}>
+            <Field
+              iconStyle={styles.closeIcon}
+              icon={input=>input.value ? 'close' : false}
+              onIconPress={input=>input.onChange('')}
+              inputStyle={styles.inputText}
+              style={styles.inputField}
+              label="Email"
+              name="email"
+              component={InputField}
+              placeholderTextColor="#7e7e7e"/>
+          </View>
+          {emailTouched && emailError}
+
           <View style={{...styles.inputContainer, zIndex: 100, marginBottom: 10,overflow:null}}>
             <TopDropdown
               ref='placeDropdown'
@@ -511,9 +515,9 @@ export default class CreateUserContainer extends Component {
                       </Col>
                     </Col>
                   </Row>
-                  <Row style={{height: '15%'}}>
+                  {/*<Row style={{height: '15%'}}>
                     <Text style={styles.subText}>* Email không bắt buộc </Text>
-                  </Row>
+                  </Row>*/}
                   <Row style={{justifyContent: 'flex-end', height: 40}}>
                     <Button
                       onPress={handleSubmit(this.onSubmitUser)}
