@@ -113,7 +113,7 @@ export default class extends Component {
                     loading: false,
                     loadingMore: false,
                 })
-                if (data && data.updated){
+                if (data && data.updated) {
                     this.refs.tabs.updateNumber(this.selectedStatus, data.updated.resultNumber)
                 }
             })
@@ -168,37 +168,21 @@ export default class extends Component {
         const { forwardTo } = this.props
         var statusBlock = null;
         const status = this.selectedStatus
-        var orderListBock = null
-        if (orderRowList != null) {
-            orderListBock = (
-                <View>
-                    <View style={{ ...styles.block, paddingLeft: 10, paddingRight: 10 }}>
-                        {orderRowList.map((subItem, index) =>
-                            (
-                                <View key={index} style={styles.row}>
-                                    <Text bold grayDark>{subItem.itemName}</Text>
-                                    <Text grayDark>SL: <Text bold grayDark>{subItem.quantity}</Text></Text>
-                                </View>
-                            )
-                        )}
-                    </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                </View>
-            )
+        let totalItem = 0
+        if (orderRowList) {
+            totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
-
-
         if (status === ORDER_WAITING_CONFIRM) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
                     <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else if (status === ORDER_WAITING_DELIVERY) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
                     <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
                 </View>
             )
@@ -206,7 +190,7 @@ export default class extends Component {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
                     <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
                 </View>
             )
@@ -214,7 +198,7 @@ export default class extends Component {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.grey, ...styles.icon }} />
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
                     <Text style={styles.grey}>{orderInfo.tranId}</Text>
                 </View>
             )
@@ -244,12 +228,24 @@ export default class extends Component {
                     </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
-                {orderListBock}
-                <View>
-                    <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
-                    <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
+                <View style={styles.block}>
+                    <View style={{ width: '100%' }}>
+                        <View style={styles.row}>
+                            <Text bold grayDark>Số món đặt giao hàng</Text>
+                            <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
+                        </View>
+                    </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
+                {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
+                    <View>
+                        <View>
+                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                            <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                    </View>
+                }
                 <View style={styles.block}>
                     {orderInfo.userInfo &&
                         (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
@@ -296,7 +292,7 @@ export default class extends Component {
                 />
 
                 <TabsWithNoti tabData={options.tabData}
-                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs'/>
+                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}

@@ -86,7 +86,8 @@ export default{
     },
     icon: {
         fontSize: 20,
-        marginRight: 5
+        marginRight: 5,
+        color: material.gray600
     },
     avatar: {
         width: 40,
