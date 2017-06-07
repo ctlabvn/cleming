@@ -109,7 +109,6 @@ export default class extends Component {
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
             (err, data) => {
-                console.log('Load Delivery List', data)
                 this.setState({
                     loading: false,
                     loadingMore: false,
@@ -193,14 +192,14 @@ export default class extends Component {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
+                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else if (status === ORDER_WAITING_DELIVERY) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
+                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else if (status == ORDER_SUCCESS) {
@@ -208,7 +207,7 @@ export default class extends Component {
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                     <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.orderCode}</Text>
+                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else {
@@ -216,7 +215,7 @@ export default class extends Component {
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                     <Icon name='shiping-bike2' style={{ ...styles.grey, ...styles.icon }} />
-                    <Text style={styles.grey}>{orderInfo.orderCode}</Text>
+                    <Text style={styles.grey}>{orderInfo.tranId}</Text>
                 </View>
             )
         }
