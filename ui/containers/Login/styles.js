@@ -1,7 +1,7 @@
 import material from '~/theme/variables/material.js'
 export default {
   container: {
-    backgroundColor: material.blue400,
+    backgroundColor: '#007dad',
     flex: 1,
     alignItems: 'center',  
     justifyContent: 'center',   

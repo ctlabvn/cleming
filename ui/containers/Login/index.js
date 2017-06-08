@@ -274,11 +274,10 @@ export default class extends Component {
       )
     }
     return (
-      <Container style={styles.container}>
+      <Container style={styles.container}>        
+        <GradientBackground colors={['#14b3dd', styles.container.backgroundColor]} />
+        <Content>          
 
-        <GradientBackground colors={['#14b3dd', '#007dad']}/>
-        
-        <Content>
           {!this.state.showPassword &&
             <Icon name="logo" style={styles.logoIcon} />
           }
@@ -292,6 +291,8 @@ export default class extends Component {
           <Text style={styles.logoText}>FOR BUSINESS</Text>
 
         </Content>
+
+
         
       </Container>
     )
