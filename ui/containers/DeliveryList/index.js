@@ -172,6 +172,14 @@ export default class extends Component {
         if (orderRowList) {
             totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
+        let phoneNumberBlock = (
+            <View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+            </View>
+        )
         if (status === ORDER_WAITING_CONFIRM) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
@@ -200,6 +208,14 @@ export default class extends Component {
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                     <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
                     <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                </View>
+            )
+            phoneNumberBlock = (
+                <View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                        style={{...styles.phoneNumber, ...styles.grey}}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                 </View>
             )
         }
@@ -253,19 +269,14 @@ export default class extends Component {
                                 <Icon name='account' style={styles.icon} />
                                 <Text grayDark>{orderInfo.userInfo.memberName}</Text>
                             </View>
-                            <View style={styles.row}>
-                                <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
-                                <Text
-                                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
-                            </View>
+                            {phoneNumberBlock}
                         </View>)}
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
                         <Text grayDark>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text warning>Đã thanh toán</Text>
+                        <Text success>Đã thanh toán</Text>
                         <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>

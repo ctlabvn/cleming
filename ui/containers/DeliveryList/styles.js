@@ -29,7 +29,7 @@ export default{
     },
     deliveryBlockCacel: {
         flexDirection: 'column',
-        backgroundColor: material.gray400,
+        backgroundColor: material.gray300,
         borderRadius: 2,
         paddingRight: 10,
         paddingTop: 10,
