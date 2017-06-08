@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache-2.0
 
 import React,{Component} from 'react'
 import {Text as ReactText}  from 'react-native'
-import Svg,{ G, Path, Rect, Text, Defs, LinearGradient, Stop } from 'react-native-svg'
+import Svg,{ G, Path, Rect, Text, Defs, LinearGradient, Stop, Circle } from 'react-native-svg'
 import { Colors, Options, cyclic, fontAdapt } from './util'
 import Axis from './Axis'
 import _ from 'lodash'
@@ -98,6 +98,7 @@ export default class LineChart extends Component {
       return <Path key={'lines' + i} d={ c.line.path.print() } 
       stroke={this.props.options.stroke} strokeWidth={strokeWidth} fill="none"/>
     }.bind(this))
+
     let areas = null
 
     if(showAreas){
@@ -161,6 +162,25 @@ export default class LineChart extends Component {
       }.bind(this))
     }
 
+    let points
+    if(this.props.options.point){
+      const {size:pointSize=4, strokeWidth:pointStrokeWidth=1, 
+        color:pointColor, opactiy: pointOpacity=1, fill:pointFill='transparent'
+      } = this.props.options.point
+      points = _.map(chart.curves, function (c) {
+        return _.map(c.line.path.points(),function(p,j) {
+          let render = <G key={'k' + j} x={p[0]} y={p[1]}>
+                  <Circle stroke={pointColor} cx={0} cy={0} 
+                      fill={pointFill}
+                      strokeWidth={pointStrokeWidth}
+                      r={pointSize} fillOpacity={pointOpacity} />
+                  </G>
+
+          return render
+        },this)
+      },this)
+    }
+    
     return (
       <Svg width={options.width} height={options.height}>
         {this.props.options.colors && 
@@ -178,11 +198,13 @@ export default class LineChart extends Component {
         <G x={options.margin.left} y={options.margin.top}>
               { regions }
               { areas }
-              { lines }
+              { lines }              
             <Axis key="x" scale={chart.xscale} options={options.axisX} 
             chartArea={chartArea} />
             <Axis key="y" scale={chart.yscale} options={options.axisY} 
             chartArea={chartArea} />
+            { points }
+            { this.props.custom }
         </G>
       </Svg>
     )

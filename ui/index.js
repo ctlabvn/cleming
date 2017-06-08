@@ -13,19 +13,19 @@ export default class extends Component {
   }
 
   componentDidMount(){
-    configureStore(store=> {
-      if(!__DEV__){
-        const firstRoute = store.getState().auth.loggedIn ? 'merchantOverview' : 'login'
-        store.dispatch(forwardTo(firstRoute, true))
-      }
-      this.store = store
-      this.forceUpdate()
-    })  
+    // configureStore(store=> {
+    //   if(!__DEV__){
+    //     const firstRoute = store.getState().auth.loggedIn ? 'merchantOverview' : 'login'
+    //     store.dispatch(forwardTo(firstRoute, true))
+    //   }
+    //   this.store = store
+    //   this.forceUpdate()
+    // })  
   }
 
-  shouldComponentUpdate(){
-    return false
-  }
+  // shouldComponentUpdate(){
+  //   return false
+  // }
 
   render() {        
     // should have a pre-load page

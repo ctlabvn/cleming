@@ -73,7 +73,8 @@ export default class MerchantOverview extends PureComponent {
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            this._load()
+            setTimeout(()=>this._load(), 1000)
+            // this._load()
         })
     }
 
