@@ -3,6 +3,7 @@ import { Animated } from 'react-native'
 import { Container, Spinner, Text } from 'native-base'
 import material from '~/theme/variables/material'
 import styles from './styles'
+// import AnimatedImplementation from 'AnimatedImplementation'
 
 export default class extends Component {
   
@@ -31,6 +32,10 @@ export default class extends Component {
 //      this.state = {
 //        pan: new Animated.Value(0), // inits to zero
 //      };
+
+//      this.state.pan.addListener(({value}) => {
+//         console.log(this.linear)
+//      })
 //    }
 
 //   componentDidMount(){
@@ -47,7 +52,7 @@ export default class extends Component {
 
 //       <Svg style={styles.container}>
 //           <Defs>
-//               <LinearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0">            
+//               <LinearGradient ref={ref=>this.linear=ref} id="grad" x1="0%" y1="0%" x2="100%" y2="0">            
 //                   <Stop offset="0%" stopColor="#ff0000" stopOpacity="1"/>
 //                   <Stop offset="100%" stopColor="#ffffff" stopOpacity="1"/>              
 //               </LinearGradient>
