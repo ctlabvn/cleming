@@ -534,6 +534,9 @@ export default class CreateUserContainer extends Component {
         console.log("state.isLoading: ", "renderMainContainer");
     }
 
+    const [hour, minute] = this.state.fromTime.split(":")
+    const [hour1, minute1] = this.state.toTime.split(":")
+
     return (
       <Container style={styles.container}>
         <Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'}>
@@ -554,7 +557,7 @@ export default class CreateUserContainer extends Component {
           isVisible={this.state.fromTimeVisible}
           onConfirm={this.setFromTime.bind(this)}
           onCancel={this.onFromTimeCancel.bind(this)}
-          date={new Date(this.state.fromTime + ':00 01-01-2000')}
+          date={new Date(2000, 1, 1, +hour, +minute)}
         />
         <DateTimePicker
           mode="time"
@@ -564,7 +567,7 @@ export default class CreateUserContainer extends Component {
           isVisible={this.state.toTimeVisible}
           onConfirm={this.setToTime.bind(this)}
           onCancel={this.onToTimeCancel.bind(this)}
-          date={new Date(this.state.toTime + ':00 01-01-2000')}
+          date={new Date(2000, 1, 1, +hour1, +minute1)}
         />
       </Container>
     )
