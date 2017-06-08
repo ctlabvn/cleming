@@ -253,16 +253,19 @@ export default {
         title: 'Quản lý tài khoản',
         Page: UserManagement,
         footerType: 'none',
+        headerType: 'back',
     },
     'userManagement/action/createUser': {
         title: 'Thêm tài khoản',
         Page: CreateUserContainer,
         footerType: 'none',
+        headerType: 'back',
     },
     'userManagement/action/updateEmployeeInfo/:id': {
         title: 'Chỉnh sửa thông tin tài khoản',
         Page: CreateUserContainer,
         footerType: 'none',
+        headerType: 'back',
     },
     'userManagement/action/updateUser': {
         title: 'Thông tin tài khoản',
