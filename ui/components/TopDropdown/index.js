@@ -29,7 +29,6 @@ export default class TopDropdown extends Component {
 
     componentWillReceiveProps(nextProps) {
         // If selectedPlace from store change, all TopDropdown will change follow
-        console.log('Next Props Top Drop down', nextProps)
         if (nextProps.selectedOption && this.state.selectedOption
             && Object.keys(nextProps.selectedOption).length > 0
             && Object.keys(this.state.selectedOption).length > 0

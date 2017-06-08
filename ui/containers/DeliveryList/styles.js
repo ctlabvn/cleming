@@ -51,8 +51,8 @@ export default{
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        paddingLeft: 10,
-        paddingRight: 10,
+        // paddingLeft: 10,
+        // paddingRight: 10,
     },
     block: {
         flexDirection: 'column',

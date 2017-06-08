@@ -3,7 +3,7 @@ import styles from './styles'
 import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import { Text } from 'native-base'
-import {View} from 'react-native'
+import { View } from 'react-native'
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -26,14 +26,14 @@ export default class extends Component {
     }
     startInterval() {
         if (this.intervalID != -1) return
-        if (this.state.countTo < moment().unix() || 
-            (this.state.countTo-moment().unix()) > this.state.baseMinute*60) return
+        if (this.state.countTo < moment().unix() ||
+            (this.state.countTo - moment().unix()) > this.state.baseMinute * 60) return
         this.intervalID = setInterval(() => {
             let now = moment().unix()
-            let countDownMinute = Math.floor((this.state.countTo - now)/60)
+            let countDownMinute = Math.floor((this.state.countTo - now) / 60)
             if (countDownMinute <= 0) {
                 this.stopInterval()
-            }else if (countDownMinute > this.state.baseMinute){
+            } else if (countDownMinute > this.state.baseMinute) {
                 this.stopInterval()
             }
             this.forceUpdate()
@@ -43,24 +43,22 @@ export default class extends Component {
         this.stopInterval()
     }
     componentWillReceiveProps({ countTo, counting }) {
-        if (countTo != this.state.countTo){
-            this.setState({countTo: countTo})
+        if (countTo != this.state.countTo) {
+            this.setState({ countTo: countTo })
         }
         if (!counting) {
-            console.log('Stopping Interval')
             this.stopInterval()
         } else {
-            console.log('Resuming Interval')
             this.startInterval()
         }
     }
     render() {
         let now = moment().unix()
-        let countDownMinute = Math.floor((this.state.countTo - now)/60)
-        if (countDownMinute <= 0){
+        let countDownMinute = Math.floor((this.state.countTo - now) / 60)
+        if (countDownMinute <= 0) {
             return <View></View>
         }
-        if (countDownMinute > this.state.baseMinute){
+        if (countDownMinute > this.state.baseMinute) {
             return <View></View>
         }
         return (
