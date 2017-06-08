@@ -34,7 +34,7 @@ export default {
   },
 
   resetPassword(userName) {
-    return apiPost('/reset/password', {userName})
+    return apiPost('/merchantapp/reset-password', {userName})
   },
   
   getListEmployee(session, placeId) {
