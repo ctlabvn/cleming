@@ -13,6 +13,8 @@ import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import { storeTransparent, storeFilled } from '~/assets'
 
+import {Keyboard} from 'react-native'
+
 @connect(state=>({
   searchString: commonSelectors.getSearchString(state),
 }), commonActions)
@@ -39,6 +41,7 @@ export default class extends Component {
   _leftClick = (e)=>{
     const {onLeftClick} = this.props
     onLeftClick && onLeftClick(this.state.type)
+    Keyboard.dismiss()
   }
 
   _search = (value, force=false)=>{
