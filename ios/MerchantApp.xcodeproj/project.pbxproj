@@ -45,7 +45,6 @@
 		71ACE451B16D4C5BAA6B910B /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1E632A32B364466BCCB8F9A /* Zocial.ttf */; };
 		728492914F2F4635937C7EC1 /* Rubik-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B65AAF966454A409B9D1CD5 /* Rubik-MediumItalic.ttf */; };
 		7332826F1DCB437083596DA1 /* Rubik-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68C2F007E7AE4CFB8D8FA0D5 /* Rubik-BoldItalic.ttf */; };
-		75664E8995E046448702C0D6 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DD79AEFF2FA945CBA6646FF2 /* SimpleLineIcons.ttf */; };
 		7DD56966285E47C3B668130F /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2294767123CF43F08093C6E7 /* Rubik-Light.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		88CC502734BA4F609AB2AF7A /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0B9740FD8E14FCC9F853392 /* Foundation.ttf */; };
@@ -125,19 +124,19 @@
 			remoteGlobalIDString = 3C86DF461ADF2C930047B81A;
 			remoteInfo = RCTWebSocket;
 		};
-		240CB2B11ED8398200B79303 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C2AC3B851ECDA46100611367 /* React.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
-			remoteInfo = React;
-		};
 		2463CA441E9508D900C2DAC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F32476BA77CB4914933C9E90 /* RNSVG.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = RNSVG;
+		};
+		2479E2A51EE8F4D000E65C1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2AC3B851ECDA46100611367 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
 		};
 		247A6AC81EC9593F004F9790 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -376,7 +375,6 @@
 		D09B4B7E6C2D4A6BA8C06089 /* Arial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Arial.ttf; path = "../node_modules/native-base/Fonts/Arial.ttf"; sourceTree = "<group>"; };
 		D09CB33138E448C69B1CE674 /* Courier New.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Courier New.ttf"; path = "../node_modules/native-base/Fonts/Courier New.ttf"; sourceTree = "<group>"; };
 		DB1C8A16F51647DAA85F6CDE /* Andale Mono.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Andale Mono.ttf"; path = "../node_modules/native-base/Fonts/Andale Mono.ttf"; sourceTree = "<group>"; };
-		DD79AEFF2FA945CBA6646FF2 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		E0F7C67B10C74F29A00B6EC6 /* Skia.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Skia.ttf; path = "../node_modules/native-base/Fonts/Skia.ttf"; sourceTree = "<group>"; };
 		E17357FCC68340F9851F18DC /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E51D8B9E474E4884BAFF7E6F /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
@@ -713,7 +711,6 @@
 				7F8E285A6B4946DCA60D42DA /* Times New Roman.ttf */,
 				F1E632A32B364466BCCB8F9A /* Zocial.ttf */,
 				8DCD6D2DF7234AB88CE260DB /* clingme_font.ttf */,
-				DD79AEFF2FA945CBA6646FF2 /* SimpleLineIcons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -754,7 +751,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				240CB2B21ED8398200B79303 /* PBXTargetDependency */,
+				2479E2A61EE8F4D000E65C1A /* PBXTargetDependency */,
 			);
 			name = MerchantApp;
 			productName = "Hello World";
@@ -1157,7 +1154,6 @@
 				E523666BFCE241D487F15361 /* Times New Roman.ttf in Resources */,
 				71ACE451B16D4C5BAA6B910B /* Zocial.ttf in Resources */,
 				D3E068BC2C754E958D6585EF /* clingme_font.ttf in Resources */,
-				75664E8995E046448702C0D6 /* SimpleLineIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,7 +1186,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		60A5B3D52678B576ED8D953C /* [CP] Copy Pods Resources */ = {
@@ -1251,10 +1247,10 @@
 			target = 13B07F861A680F5B00A75B9A /* MerchantApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
-		240CB2B21ED8398200B79303 /* PBXTargetDependency */ = {
+		2479E2A61EE8F4D000E65C1A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = React;
-			targetProxy = 240CB2B11ED8398200B79303 /* PBXContainerItemProxy */;
+			targetProxy = 2479E2A51EE8F4D000E65C1A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1349,6 +1345,7 @@
 				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
@@ -1372,8 +1369,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "43f517e6-b18b-45d7-a061-9463e83906ef";
-				PROVISIONING_PROFILE_SPECIFIER = Clingme_Dev3;
+				PROVISIONING_PROFILE = "e083ae90-1cc4-4c38-b116-0f799a263d4c";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1391,6 +1388,7 @@
 				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",

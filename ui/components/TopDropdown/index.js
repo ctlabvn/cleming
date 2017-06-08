@@ -29,6 +29,7 @@ export default class TopDropdown extends Component {
 
     componentWillReceiveProps(nextProps) {
         // If selectedPlace from store change, all TopDropdown will change follow
+        console.log('Next Props Top Drop down', nextProps)
         if (nextProps.selectedOption && this.state.selectedOption
             && Object.keys(nextProps.selectedOption).length > 0
             && Object.keys(this.state.selectedOption).length > 0
@@ -42,6 +43,10 @@ export default class TopDropdown extends Component {
                 this.setState({ selectedOption: nextProps.dropdownValues[0] })
             }
         }
+        if (this.state.openningDropdown){
+            this.setState({openningDropdown: false})
+        }
+
     }
 
     _handlePress(item) {

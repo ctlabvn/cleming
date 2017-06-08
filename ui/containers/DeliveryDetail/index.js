@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Spinner, Container, List, ListItem, Text } from 'native-base'
-import { View, Image } from 'react-native'
+import { View, Image, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import * as orderActions from '~/store/actions/order'
@@ -62,7 +62,9 @@ export default class extends Component {
     }
     componentWillFocus() {
         this.setState({ counting: true })
-        this._load()
+        InteractionManager.runAfterInteractions(()=>{
+            this._load()
+        })
     }
     componentWillBlur() {
         this.setState({ counting: false })

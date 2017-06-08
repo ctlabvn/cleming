@@ -2,7 +2,7 @@ import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
 import { ScrollView } from 'react-native'
 import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Container } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
+import { View, Modal, TouchableOpacity, Image, ActivityIndicator, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -67,7 +67,9 @@ export default class MerchantOverview extends PureComponent {
     }
 
     componentWillFocus() {
-        this._load()
+        InteractionManager.runAfterInteractions(() => {
+            this._load()
+        })
     }
 
     _handleChangePlace(item) {
