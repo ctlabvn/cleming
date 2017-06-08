@@ -6,6 +6,7 @@ import {
 import Content from '~/ui/components/Content'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
+import { InteractionManager } from 'react-native'
 import moment from 'moment';
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
@@ -16,7 +17,7 @@ import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import material from '~/theme/variables/material.js'
 import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT } from '~/store/constants/app'
-import {formatPhoneNumber} from '~/ui/shared/utils'
+import { formatPhoneNumber } from '~/ui/shared/utils'
 @connect(state => ({
   user: state.auth.user,
   place: state.place,
@@ -55,26 +56,28 @@ export default class PlaceOrderDetail extends Component {
     this.setState({ bookingDetail: bookingArr[0] })
   }
   componentWillFocus() {
-    let bookingId = this.props.route.params.id
-    let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
-    this.setState({ counting: true })
-    if (!bookingArr || bookingArr.length == 0) {
-      //if not in store, load from API
-      getBookingDetail(this.props.user.xsession, bookingId,
-        (error, data) => {
-          console.log('Err Booking Detail', error)
-          console.log('Booking Detail', data)
-          if (data && data.updated) {
-            this.setState({ bookingDetail: data.updated.bookingInfo })
-            return
-          } else {
-            this.props.forwardTo('merchantOverview')
-            return
+    InteractionManager.runAfterInteractions(() => {
+      let bookingId = this.props.route.params.id
+      let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
+      this.setState({ counting: true })
+      if (!bookingArr || bookingArr.length == 0) {
+        //if not in store, load from API
+        getBookingDetail(this.props.user.xsession, bookingId,
+          (error, data) => {
+            console.log('Err Booking Detail', error)
+            console.log('Booking Detail', data)
+            if (data && data.updated) {
+              this.setState({ bookingDetail: data.updated.bookingInfo })
+              return
+            } else {
+              this.props.forwardTo('merchantOverview')
+              return
+            }
           }
-        }
-      )
-    }
-    this.setState({ bookingDetail: bookingArr[0] })
+        )
+      }
+      this.setState({ bookingDetail: bookingArr[0] })
+    })
   }
   componentWillBlur() {
     this.setState({ counting: false })
@@ -88,7 +91,7 @@ export default class PlaceOrderDetail extends Component {
         </View>
       )
     }
-    const {bookingDetail} = this.state
+    const { bookingDetail } = this.state
     let orderRow = null
     let totalQuantity = this.state.bookingDetail.orderRowList ? this.state.bookingDetail.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
     if (this.state.bookingDetail.orderRowList && this.state.bookingDetail.orderRowList.length > 0) {
@@ -131,7 +134,7 @@ export default class PlaceOrderDetail extends Component {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Icon name='calendar' style={styles.icon} />
-                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate*1000).format(DAY_WITHOUT_YEAR)}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>
