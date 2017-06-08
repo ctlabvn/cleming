@@ -120,7 +120,7 @@ export default {
         headerType: 'back',
     },
     'userManagement/action/updateEmployeeInfo/:id': {
-        title: 'Chỉnh sửa thông tin tài khoản',
+        title: 'Thay đổi thông tin',
         Page: CreateUserContainer,
         footerType: 'none',
         headerType: 'back',
