@@ -410,6 +410,7 @@ export default class CreateUserContainer extends Component {
             icon={input => input.value ? 'close' : false}
             onIconPress={input => input.onChange('')}
             inputStyle={styles.inputText}
+            keyboardType="numeric"
             style={styles.inputField}
             label="Số điện thoại"
             name="phone"
