@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, List, ListItem, Text, Thumbnail, Button, Spinner } from 'native-base'
-import { View, Modal } from 'react-native'
+import { View, Modal, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -63,19 +63,24 @@ export default class extends Component {
         this.interval = 0
         this.isLoadingPlace = false
     }
-
+    _load() {
+        InteractionManager.runAfterInteractions(() => {
+            const { order } = this.props
+            let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
+            if (!this.state.selectedPlace) {
+                this.isLoadingPlace = true
+            }
+            this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+            this.setState({ counting: true })
+        })
+    }
     componentWillFocus() {
-        const { order } = this.props
-        let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
-        if (!this.state.selectedPlace) {
-            this.isLoadingPlace = true
-        }
-        this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-        this.setState({ counting: true })
+
+
     }
 
     componentDidMount() {
-        this.componentWillFocus()
+        this._load()
     }
 
     componentWillBlur() {
@@ -215,7 +220,7 @@ export default class extends Component {
                     <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
                     <Text
                         onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                        style={{...styles.phoneNumber, ...styles.grey}}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+                        style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                 </View>
             )
         }
@@ -254,7 +259,7 @@ export default class extends Component {
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
-                    <View>
+                    <View style={styles.block}>
                         <View>
                             <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
                             <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>

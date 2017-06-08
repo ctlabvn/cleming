@@ -56,7 +56,12 @@ export default class MerchantOverview extends PureComponent {
                         setSelectedOption(selectedOption)
                     }
                     let currentPlace = this.refs.placeDropdown.getValue()
-                    getMerchantNews(xsession, currentPlace.id)
+                    if (!currentPlace){
+                        getMerchantNews(xsession, currentPlace.id)
+                    }else{
+                        getMerchantNews(xsession, data.updated.data[0].placeId)
+                    }
+                    
                 }
             })
 

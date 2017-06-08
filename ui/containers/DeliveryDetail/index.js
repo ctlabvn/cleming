@@ -21,6 +21,7 @@ import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 import { DEFAULT_TIME_FORMAT, FAST_DELIVERY } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
+import {formatPhoneNumber} from '~/ui/shared/utils'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -120,7 +121,7 @@ export default class extends Component {
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
                         <Text small grayDark>Số điện thoại</Text>
-                        <Text bold grayDark>{orderDetail.orderInfo.userInfo.phoneNumber}</Text>
+                        <Text bold grayDark>{formatPhoneNumber(orderDetail.orderInfo.userInfo.phoneNumber)}</Text>
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
                         <Text small grayDark>Yêu cầu nhận hàng trong</Text>
