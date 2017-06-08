@@ -25,7 +25,10 @@ import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
 import { formatPhoneNumber } from '~/ui/shared/utils'
-import { ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS, ORDER_CANCEL, DEFAULT_TIME_FORMAT }
+import {
+    ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
+    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY
+}
     from '~/store/constants/app'
 @connect(state => ({
     place: state.place,
@@ -65,7 +68,6 @@ export default class extends Component {
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
         if (!this.state.selectedPlace) {
-            console.log('Go to set ')
             this.isLoadingPlace = true
         }
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
@@ -106,10 +108,15 @@ export default class extends Component {
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
-            () => this.setState({
-                loading: false,
-                loadingMore: false,
-            }))
+            (err, data) => {
+                this.setState({
+                    loading: false,
+                    loadingMore: false,
+                })
+                if (data && data.updated) {
+                    this.refs.tabs.updateNumber(this.selectedStatus, data.updated.resultNumber)
+                }
+            })
     }
 
     onModalOpen(phoneNumber) {
@@ -161,54 +168,54 @@ export default class extends Component {
         const { forwardTo } = this.props
         var statusBlock = null;
         const status = this.selectedStatus
-        var orderListBock = null
-        if (orderRowList != null) {
-            orderListBock = (
-                <View>
-                    <View style={{ ...styles.block, paddingLeft: 10, paddingRight: 10 }}>
-                        {orderRowList.map((subItem, index) =>
-                            (
-                                <View key={index} style={styles.row}>
-                                    <Text bold>{subItem.itemName}</Text>
-                                    <Text>SL: <Text bold>{subItem.quantity}</Text></Text>
-                                </View>
-                            )
-                        )}
-                    </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                </View>
-            )
+        let totalItem = 0
+        if (orderRowList) {
+            totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
-
-
+        let phoneNumberBlock = (
+            <View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+            </View>
+        )
         if (status === ORDER_WAITING_CONFIRM) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
+                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else if (status === ORDER_WAITING_DELIVERY) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
+                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else if (status == ORDER_SUCCESS) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
+                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
                 </View>
             )
         } else {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
                     {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.grey, ...styles.icon }} />
-                    <Text style={styles.grey}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
+                    <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                </View>
+            )
+            phoneNumberBlock = (
+                <View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                        style={{...styles.phoneNumber, ...styles.grey}}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                 </View>
             )
         }
@@ -224,45 +231,53 @@ export default class extends Component {
                     <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time}>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text style={styles.time} grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(status == ORDER_SUCCESS) && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
-                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                counting={this.state.counting}
-                                countTo={countTo}
-                            />
+                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
+                                <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                    counting={this.state.counting}
+                                    countTo={countTo}
+                                />}
                         </View>
                     </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
-                {orderListBock}
-                <View>
-                    <View style={styles.rowLeft}><Text bold style={styles.textLeft}>Ghi chú: </Text></View>
-                    <View style={styles.rowLeft}><Text style={styles.textLeft}>{orderInfo.note}</Text></View>
+                <View style={styles.block}>
+                    <View style={{ width: '100%' }}>
+                        <View style={styles.row}>
+                            <Text bold grayDark>Số món đặt giao hàng</Text>
+                            <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
+                        </View>
+                    </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
+                {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
+                    <View>
+                        <View>
+                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                            <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                    </View>
+                }
                 <View style={styles.block}>
                     {orderInfo.userInfo &&
                         (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={styles.icon} />
-                                <Text>{orderInfo.userInfo.memberName}</Text>
+                                <Text grayDark>{orderInfo.userInfo.memberName}</Text>
                             </View>
-                            <View style={styles.row}>
-                                <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
-                                <Text
-                                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
-                            </View>
+                            {phoneNumberBlock}
                         </View>)}
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
+                        <Text grayDark>Địa chỉ: {orderInfo.placeInfo.address}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text>Đã thanh toán</Text>
-                        <Text bold>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
+                        <Text success>Đã thanh toán</Text>
+                        <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
 
@@ -288,7 +303,7 @@ export default class extends Component {
                 />
 
                 <TabsWithNoti tabData={options.tabData}
-                    activeTab={0} onPressTab={this._handlePressTab} />
+                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}

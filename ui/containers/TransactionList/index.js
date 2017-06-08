@@ -100,7 +100,6 @@ export default class extends Component {
 
             let transactionFilterComponent = this.refs.transactionFilter
             let transactionFilter = transactionFilterComponent.getCurrentValue()
-            console.log('Current Place', currentPlace)
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to)
         }
     }
@@ -226,8 +225,7 @@ export default class extends Component {
         let iconBlock, statusText, transactionCode
         let moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
         switch (item.transactionStatus) {
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_1: //chờ duyệt
-            case TRANSACTION_DIRECT_STATUS.WAITING_CLINGME_PROCESS_2:
+            case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK: //chờ duyệt
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
@@ -319,7 +317,6 @@ export default class extends Component {
     }
     render() {
         const { handleSubmit, submitting, forwardTo, transaction, place, selectedPlace } = this.props
-        console.log('Selected Place', selectedPlace)
         if (!transaction) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>

@@ -12,8 +12,6 @@ export default class FeedbackDialog extends Component {
         super(props)
         let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
         let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
-        console.log('Other value', otherValue)
-        console.log('List Value', listValue)
         this.state = {
             modalVisible: false,
             selectedValue: listValue[0].reasonId,
@@ -23,7 +21,6 @@ export default class FeedbackDialog extends Component {
         }
     }
     setModalVisible(visible) {
-        console.log('Props Modal', this.props)
         this.setState({ modalVisible: visible })
     }
     _handlePressRadio(item) {
@@ -70,7 +67,6 @@ export default class FeedbackDialog extends Component {
                                 style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
                                 value={this.state.note}
                                 onFocus={() => {
-                                    console.log('On Focus')
                                     this.setState({ selectedValue: this.state.otherValue.reasonId })
                                 }}
                                 onChangeText={(text) => this.setState({ note: text })}

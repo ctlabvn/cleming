@@ -15,19 +15,32 @@ export default class FeedbackDialogClingme extends Component {
         }
     }
     _handlePressOk = () => {
-        const {goBack} = this.props
+        const { goBack } = this.props
         goBack()
 
+    }
+    componentWillMount() {
+        const { route, app } = this.props
+        if (route.params.reasonID == FEEDBACK_CLM_TRANSACTION.MISS) {
+            app.header.show('back', 'Giao dịch trả thiếu tiền')
+        } else {
+            app.header.show('back', 'Giao dịch trả thừa tiền')
+        }
+    }
+    componentWillFocus() {
+        const { route, app } = this.props
+        if (route.params.reasonID == FEEDBACK_CLM_TRANSACTION.MISS) {
+            app.header.show('back', 'Giao dịch trả thiếu tiền')
+        } else {
+            app.header.show('back', 'Giao dịch trả thừa tiền')
+        }
     }
     render() {
         const { route, app } = this.props
         let text = 'Nhập số tiền thừa'
-        
+
         if (route.params.reasonID == FEEDBACK_CLM_TRANSACTION.MISS) {
             text = 'Nhập số tiền còn thiếu'
-            app.header.show('back', 'Giao dịch trả thiếu tiền')
-        }else{
-            app.header.show('back', 'Giao dịch trả thừa tiền')
         }
 
         return (

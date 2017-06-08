@@ -3,7 +3,7 @@ export default {
     container: {
         backgroundColor: material.backgroundColor1,
         height: '100%',
-        paddingBottom: 10
+        paddingBottom: 50
     },
     content: {
         padding: 10,
@@ -26,7 +26,11 @@ export default {
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // alignItems: 'center'
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     rowRight: {
         padding: 10,
@@ -70,8 +74,14 @@ export default {
     primary: {
         color: material.primaryColor
     },
+    warning: {
+        color: material.orange500
+    },
     success: {
         color: material.successColor
+    },
+    gray: {
+        color: material.gray500
     },
     button: {
         justifyContent: 'center',
@@ -98,7 +108,6 @@ export default {
     },
 
     labelUnderImage: {
-        color: material.black500,
         marginTop: 5,
     },
     listItem: {
@@ -113,6 +122,9 @@ export default {
         borderRadius: 3,
         marginBottom: 10,
         height: 170
+    },
+    listItemGray: {
+        backgroundColor: material.gray400 
     },
     listButton: {
       backgroundColor: material.white500,

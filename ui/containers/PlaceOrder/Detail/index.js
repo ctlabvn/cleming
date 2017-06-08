@@ -15,11 +15,8 @@ import styles from './styles'
 import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import material from '~/theme/variables/material.js'
-import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR } from '~/store/constants/app' 
-const longText = "When the scroll view is disabled, this defines how far your touch may move off of the button," +
-  "before deactivating the button. Once deactivated, try moving it back and youll see that the button is once again " +
-  "reactivated! Move it back and forth several times while the scroll view is disabled. Ensure you pass in a " +
-  "constant to reduce memory allocations."
+import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT } from '~/store/constants/app'
+import {formatPhoneNumber} from '~/ui/shared/utils'
 @connect(state => ({
   user: state.auth.user,
   place: state.place,
@@ -48,7 +45,7 @@ export default class PlaceOrderDetail extends Component {
           if (data && data.updated) {
             this.setState({ bookingDetail: data.updated.bookingInfo })
             return
-          }else{
+          } else {
             this.props.forwardTo('merchantOverview')
             return
           }
@@ -70,7 +67,7 @@ export default class PlaceOrderDetail extends Component {
           if (data && data.updated) {
             this.setState({ bookingDetail: data.updated.bookingInfo })
             return
-          }else{
+          } else {
             this.props.forwardTo('merchantOverview')
             return
           }
@@ -85,12 +82,13 @@ export default class PlaceOrderDetail extends Component {
   render() {
     if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
       return (
-        <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
           <Spinner />
           <Text small>Loading...</Text>
         </View>
       )
     }
+    const {bookingDetail} = this.state
     let orderRow = null
     let totalQuantity = this.state.bookingDetail.orderRowList ? this.state.bookingDetail.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
     if (this.state.bookingDetail.orderRowList && this.state.bookingDetail.orderRowList.length > 0) {
@@ -104,6 +102,12 @@ export default class PlaceOrderDetail extends Component {
         </View>
       ))
     }
+    let minute = bookingDetail.deliveryMinute < 10 ? '0'.concat(bookingDetail.deliveryMinute) : bookingDetail.deliveryMinute
+    let hourMinute = bookingDetail.deliveryHour + ':' + minute
+    let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
+    let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
+
+
     return (
       <Container>
 
@@ -114,11 +118,11 @@ export default class PlaceOrderDetail extends Component {
         <View style={{ backgroundColor: material.white500, height: '100%' }}>
           <View style={styles.placeContainer}>
             <View style={{ ...styles.rowPaddingTB, ...styles.center }}>
-              <Text>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-              <View style={{right: 10, position: 'absolute'}}>
+              <Text grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+              <View style={{ right: 10, position: 'absolute' }}>
                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                   counting={this.state.counting}
-                  countTo={this.state.bookingDetail.bookDate}
+                  countTo={bookTime}
                 />
               </View>
             </View>
@@ -127,22 +131,22 @@ export default class PlaceOrderDetail extends Component {
               <View style={styles.row}>
                 <View style={styles.column}>
                   <Icon name='calendar' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DAY_WITHOUT_YEAR)}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate*1000).format(DAY_WITHOUT_YEAR)}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>
                   <Icon name='history' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate).format(DEFAULT_HOUR_FORMAT)}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>
                   <Icon name='friend' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                 <View style={styles.column}>
                   <Icon name='want-feed' style={styles.icon} />
-                  <Text style={styles.labelUnderImage}>{totalQuantity}</Text>
+                  <Text grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
                 </View>
               </View>
               <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -153,7 +157,7 @@ export default class PlaceOrderDetail extends Component {
             </View>
             <View style={styles.rowPaddingTB}>
               <Text style={{ ...styles.normalText, ...styles.leftText }}>Số điện thoại:</Text>
-              <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.phoneNumber}</Text>
+              <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{formatPhoneNumber(this.state.bookingDetail.userInfo.phoneNumber)}</Text>
             </View>
             <View style={styles.block}>
               <Text style={{ ...styles.normalText, ...styles.leftText }}>Yêu cầu riêng:</Text>

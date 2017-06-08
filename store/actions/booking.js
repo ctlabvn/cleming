@@ -10,3 +10,8 @@ export const getBookingDetail = (...args)=>({
     type: 'booking/detail',
     args
 })
+
+export const clearBookingList = (...args)=>({
+    type: 'booking/clear',
+    args
+})

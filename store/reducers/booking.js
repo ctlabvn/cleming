@@ -17,6 +17,8 @@ export const booking = (state=initialState, { type, payload }) => {
         isLast: payload.isLast,
         bookingList: payload.page > 1 ? [...state.bookingList, ...payload.bookingList] : payload.bookingList
       }
+    case 'booking/clear':
+      return {...state, ...initialState}
     default:
       return state
   }

@@ -1,15 +1,15 @@
 const initialState = {
   payDirect: {
     totalPage: 1,
-    pageNumber: 2,
+    pageNumber: 1,
     listTransaction: [],
-    totalRecord: 10
+    totalRecord: 0
   },
   payWithClingme: {
     totalPage: 1,
-    pageNumber: 2,
+    pageNumber: 1,
     listTransaction: [],
-    totalRecord: 10
+    totalRecord: 0
   }
 
 }

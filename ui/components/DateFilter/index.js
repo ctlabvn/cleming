@@ -13,7 +13,7 @@ export default class DateFilter extends Component {
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        let defaultFilter = props.defaultFilter || 'year'
+        let defaultFilter = props.defaultFilter || 'week'
         this.state = {
             currentDateFilter: defaultFilter,
             currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter)
@@ -46,10 +46,6 @@ export default class DateFilter extends Component {
         ]
         if (props.type == 'lite') {
             this.dateFilterListValue = [
-                {
-                    value: 'day',
-                    display: '1 ngày'
-                },
                 {
                     value: 'week',
                     display: '7 ngày'
@@ -206,7 +202,6 @@ export default class DateFilter extends Component {
         } else if (filterType == 'week') {
             let startWeek = moment().subtract(6, 'days').startOf('day')
             let endWeek = moment().endOf('day')
-            console.log('Default Week', startWeek + '---' + endWeek)
             return {
                 value: {
                     from: startWeek.unix(),

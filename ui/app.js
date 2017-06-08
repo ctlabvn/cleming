@@ -30,11 +30,13 @@ import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
 import * as placeActions from '~/store/actions/place'
+import { getSession } from '~/store/selectors/auth'
+import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, DIFF_COORD } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 // import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
@@ -71,6 +73,9 @@ const UIManager = NativeModules.UIManager
 @connect(state => ({
   router: getRouter(state),
   drawerState: getDrawerState(state),
+  place: state.place,
+  selectedPlace: getSelectedPlace(state),
+  xsession: getSession(state)
 }), { ...commonActions, ...authActions, ...placeActions })
 export default class App extends Component {
 
@@ -169,7 +174,7 @@ export default class App extends Component {
               this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
               break
             case NOTIFY_TYPE.NEW_ORDER:
-              this.props.forwardTo('deliveryDetail/'+notificationData.param1)
+              this.props.forwardTo('deliveryDetail/' + notificationData.param1)
               break
           }
         }
@@ -288,12 +293,28 @@ export default class App extends Component {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true)
   }
+  updatePlaceList(lat, long) {
+    const { place, setSelectedOption, selectedPlace, getListPlace, xsession } = this.props
 
+    if (!xsession) return
+    getListPlace(xsession, lat, long,
+      (err, data) => {
+        if (data && data.updated && data.updated.data) {
+          let selectedOption = {}
+          selectedOption.id = data.updated.data[0].placeId
+          selectedOption.name = data.updated.data[0].address
+          setSelectedOption(selectedOption)
+        }
+      })
+  }
   componentDidMount() {
-    const { saveCurrentLocation } = this.props
+    const { saveCurrentLocation, place } = this.props
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
+        if (!place.location || Object.keys(place.location).length == 0) {
+          this.updatePlaceList(position.coords.latitude, position.coords.longitude)
+        }
         saveCurrentLocation(position.coords)
       },
       (error) => {
@@ -303,6 +324,9 @@ export default class App extends Component {
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log('Position Change', position)
+      if (!place.location || Object.keys(place.location).length == 0) {
+        this.updatePlaceList(position.coords.latitude, position.coords.longitude)
+      }
       saveCurrentLocation(position.coords)
     })
     BackAndroid.addEventListener('hardwareBackPress', () => {

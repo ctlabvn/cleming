@@ -29,7 +29,7 @@ export default{
     },
     deliveryBlockCacel: {
         flexDirection: 'column',
-        backgroundColor: material.gray400,
+        backgroundColor: material.gray300,
         borderRadius: 2,
         paddingRight: 10,
         paddingTop: 10,
@@ -86,7 +86,8 @@ export default{
     },
     icon: {
         fontSize: 20,
-        marginRight: 5
+        marginRight: 5,
+        color: material.gray600
     },
     avatar: {
         width: 40,

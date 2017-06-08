@@ -30,7 +30,11 @@ export const getTextParts = text => {
 }
 
 export const formatNumber = str => {
-  return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  if (!str) return str
+  if (!isNaN(str)){
+    return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
+  return str.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 }
 
 
@@ -44,25 +48,28 @@ export const isValidPhoneNumber = (phone) => {
 
 export const formatPhoneNumber = (phoneNumber) => {
   if (!phoneNumber) return ''
-  // 10 number style
-  if (phoneNumber.length == 10){
-    let m = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/)
-    return (m[1]+" "+m[2]+" "+m[3])
-  //11 number style
-  }else{
-    let m = phoneNumber.match(/^(\d{4})(\d{3})(\d{4,})$/)
-    return (m[1]+" "+m[2]+" "+m[3])
+  if (!isNaN(phoneNumber)) {
+    phoneNumber = phoneNumber.toString()
   }
-
+  if ((m = phoneNumber.match(/^(84)(\d{2})(\d{3})(\d{4})$/))
+    || (m = phoneNumber.match(/^(84)(\d{3})(\d{3})(\d{4})$/))) {
+    return `(${m[1]})${m[2]} ${m[3]} ${m[4]}`
+  } else if ((m = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/))
+    || (m = phoneNumber.match(/^(\d{4})(\d{3})(\d{4})$/))) {
+    return `${m[1]} ${m[2]} ${m[3]}`
+  } else {
+    m = phoneNumber.match(/^(\d{4})(\d{4})(\d{4,})$/)
+    return `${m[1]} ${m[2]} ${m[3]}`
+  }
 }
 
 
 export const convertVn = (str) => {
   return str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/gi, 'a')
-      .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/gi, 'e')
-      .replace(/ì|í|ị|ỉ|ĩ/gi, 'i')
-      .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/gi, 'o')
-      .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/gi, 'u')
-      .replace(/ỳ|ý|ỵ|ỷ|ỹ/gi, 'y')
-      .replace(/đ/gi, 'd');
+    .replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/gi, 'e')
+    .replace(/ì|í|ị|ỉ|ĩ/gi, 'i')
+    .replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/gi, 'o')
+    .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/gi, 'u')
+    .replace(/ỳ|ý|ỵ|ỷ|ỹ/gi, 'y')
+    .replace(/đ/gi, 'd');
 }
