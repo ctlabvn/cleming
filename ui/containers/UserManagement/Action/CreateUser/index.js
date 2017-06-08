@@ -315,12 +315,12 @@ export default class CreateUserContainer extends Component {
 
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
-      if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
-        if (this.state.fromTime != this.props.initialValues.fromTimeWork
-            && this.state.toTime != this.props.initialValues.toTimeWork) {
-          this.state.fromTime = this.props.initialValues.fromTimeWork
-          this.state.toTime = this.props.initialValues.toTimeWork
-        }
+    //   if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
+    //     if (this.state.fromTime != this.props.initialValues.fromTimeWork
+    //         && this.state.toTime != this.props.initialValues.toTimeWork) {
+    //       this.state.fromTime = this.props.initialValues.fromTimeWork
+    //       this.state.toTime = this.props.initialValues.toTimeWork
+    //     }
     let fromTime = this.state.fromTime
     let toTime = this.state.toTime
         
@@ -401,8 +401,6 @@ export default class CreateUserContainer extends Component {
             placeholderTextColor= {material.gray500} />
         </View>
         {nameTouched && nameError}
-
-
 
         <View style={{ ...styles.inputContainer, ...errorPhoneStyle }}>
           <Field
