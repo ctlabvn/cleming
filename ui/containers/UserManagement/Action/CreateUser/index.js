@@ -32,6 +32,8 @@ import { getSelectedPlace } from '~/store/selectors/place'
 import { validateField, renderGroup } from './utils'
 import styles from './styles'
 import md5 from 'md5'
+import material from '~/theme/variables/material'
+
 const { height, width } = Dimensions.get('window');
 
 const formSelector = formValueSelector('CreateUserForm')
@@ -66,6 +68,8 @@ const formSelector = formValueSelector('CreateUserForm')
     })
   }
   let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+    console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
+
   let permission = null
   switch (employeeDetail.titleType) {
     case 1: permission = "Nhân Viên"
@@ -92,6 +96,7 @@ const formSelector = formValueSelector('CreateUserForm')
 @reduxForm({ form: 'CreateUserForm', fields: ['name', 'email', 'phone'], validate: validateField })
 export default class CreateUserContainer extends Component {
   constructor(props) {
+      console.log('step', 'constructor');
     super(props)
     let currentJob = {
       id: 1,
@@ -100,6 +105,7 @@ export default class CreateUserContainer extends Component {
     if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission) {
       currentJob = props.formValues.permission
     }
+
     this.state = {
       jobModalOpen: false,
       permissionModalOpen: false,
@@ -119,6 +125,7 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillBlur() {
+      console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
     // console.log(this.props.initialValues.GroupAddress)
     this.placeDropdown.clearAll()
@@ -126,6 +133,7 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillFocus() {
+      console.log('step', 'componentWillFocus');
     if (typeof this.props.route.params.id != "undefined") {
       let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
       let permission = null
@@ -136,6 +144,7 @@ export default class CreateUserContainer extends Component {
       this.props.change('name', employeeDetail.userName)
       this.props.change('email', employeeDetail.email)
       this.props.change('phone', employeeDetail.phoneNumber)
+
       this.setState({
         chosenListPlace: employeeDetail.listPlace,
         currentJob: {
@@ -163,7 +172,7 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.actions.deleteGeneratedPassword()
+    this.props.actions.deleteGeneratedPassword();
   }
 
   componentDidMount() {
@@ -305,8 +314,17 @@ export default class CreateUserContainer extends Component {
   }
 
   renderMainContainer() {
+    // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
+    //   if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
+    //     if (this.state.fromTime != this.props.initialValues.fromTimeWork
+    //         && this.state.toTime != this.props.initialValues.toTimeWork) {
+    //       this.state.fromTime = this.props.initialValues.fromTimeWork
+    //       this.state.toTime = this.props.initialValues.toTimeWork
+    //     }
     let fromTime = this.state.fromTime
     let toTime = this.state.toTime
+        
+        
     let listPlace = []
     if (typeof this.props.route.params.id == "undefined") {
       listPlace = this.state.chosenListPlace
@@ -336,21 +354,21 @@ export default class CreateUserContainer extends Component {
         let errors = formState.syncErrors
         if (errors.name && typeof fields.name != 'undefined' && fields.name.touched) {
           nameTouched = true
-          errorNameStyle = { borderColor: 'red', borderWidth: 1 }
+          errorNameStyle = { borderColor: material.red500, borderWidth: 1 }
           if (errors.name.length > 30) {
             errorLongNameStyle = { marginBottom: 5 }
           }
-          nameError = <Text style={{ color: 'red' }}>{errors.name}</Text>
+          nameError = <Text style={{ color: material.red500 }}>{errors.name}</Text>
         }
         if (errors.phone && typeof fields.phone != 'undefined' && fields.phone.touched) {
           phoneTouched = true
-          errorPhoneStyle = { borderColor: 'red', borderWidth: 1 }
-          phoneError = <Text style={{ color: 'red' }}>{errors.phone}</Text>
+          errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
+          phoneError = <Text style={{ color: material.red500 }}>{errors.phone}</Text>
         }
         if (errors.email && typeof fields.email != 'undefined' && fields.email.touched) {
           emailTouched = true
-          errorEmailStyle = { borderColor: 'red', borderWidth: 1 }
-          emailError = <Text style={{ color: 'red' }}>{errors.email}</Text>
+          errorEmailStyle = { borderColor: material.red500, borderWidth: 1 }
+          emailError = <Text style={{ color: material.red500 }}>{errors.email}</Text>
         }
       }
     }
@@ -380,11 +398,9 @@ export default class CreateUserContainer extends Component {
             label="Họ và tên"
             name="name"
             component={InputField}
-            placeholderTextColor="#7e7e7e" />
+            placeholderTextColor= {material.gray500} />
         </View>
         {nameTouched && nameError}
-
-
 
         <View style={{ ...styles.inputContainer, ...errorPhoneStyle }}>
           <Field
@@ -397,7 +413,7 @@ export default class CreateUserContainer extends Component {
             label="Số điện thoại"
             name="phone"
             component={InputField}
-            placeholderTextColor="#7e7e7e" />
+            placeholderTextColor={material.gray500} />
         </View>
         {phoneTouched && phoneError}
 
@@ -411,7 +427,7 @@ export default class CreateUserContainer extends Component {
             label="Email"
             name="email"
             component={InputField}
-            placeholderTextColor="#7e7e7e" />
+            placeholderTextColor={material.gray500} />
         </View>
         {emailTouched && emailError}
 
@@ -440,7 +456,7 @@ export default class CreateUserContainer extends Component {
                   label={fromTime}
                   name="fromDate"
                   component={InputField}
-                  placeholderTextColor="#7e7e7e" />
+                  placeholderTextColor={material.gray500} />
               </View>
             </Col>
             <Col style={{ alignItems: 'center' }}>
@@ -452,7 +468,7 @@ export default class CreateUserContainer extends Component {
                   label={toTime}
                   name="toDate"
                   component={InputField}
-                  placeholderTextColor="#7e7e7e" />
+                  placeholderTextColor={material.gray500} />
               </View>
             </Col>
           </Grid>
@@ -506,12 +522,16 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
+    // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
+    //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
     const { handleSubmit } = this.props;
     let mainContainer = null
     if (this.state.isLoading) {
       mainContainer = this.renderIndicator()
+        console.log("state.isLoading: ", "renderIndiCator");
     } else {
       mainContainer = this.renderMainContainer()
+        console.log("state.isLoading: ", "renderMainContainer");
     }
 
     const [hour, minute] = this.state.fromTime.split(":")
@@ -519,7 +539,7 @@ export default class CreateUserContainer extends Component {
 
     return (
       <Container style={styles.container}>
-        <Content style={{ backgroundColor: 'white' }} keyboardShouldPersistTaps={'handled'}>
+        <Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'}>
           {mainContainer}
 
           {/*style={styles.absoluteContainer}*/}
