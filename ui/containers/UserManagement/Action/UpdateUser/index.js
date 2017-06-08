@@ -210,6 +210,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
+                                keyboardType="numeric"
                                 label="Số điện thoại"
                                 name="phone"
                                 component={InputField}
