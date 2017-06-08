@@ -36,13 +36,18 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
 class UserManagement extends Component {
     constructor(props) {
         super(props)
+
+        this.data = []
+        this.rowIDOfEmployee = 0
+        this.employeeData = []
+
         this.state = {
             modalOpen: false,
             updateInfoChecked: false,
             deleteAccountChecked: false,
             isFetchingData: false,
-            data: [],
-            rowIDOfEmployee: 0
+            // data: [],
+            // rowIDOfEmployee: 0
         }
     }
 
@@ -55,13 +60,18 @@ class UserManagement extends Component {
                     employeeList: nextProps.listEmployee
                 })
             }
+
+            this.data = data
             this.setState({
-                data: data
-            }, () => {
-                this.setState({
-                    isFetchingData: false
-                })
+                isFetchingData: false
             })
+            // this.setState({
+            //     data: data
+            // }, () => {
+            //     this.setState({
+            //         isFetchingData: false
+            //     })
+            // })
         }
     }
     _loadListEmployee(placeId) {
@@ -78,13 +88,17 @@ class UserManagement extends Component {
                     employeeList: this.props.listEmployee
                 })
             }
+            this.data = data
             this.setState({
-                data: data
-            }, () => {
-                this.setState({
-                    isFetchingData: false
-                })
+                isFetchingData: false
             })
+            // this.setState({
+            //     data: data
+            // }, () => {
+            //     this.setState({
+            //         isFetchingData: false
+            //     })
+            // })
         })
     }
     componentDidMount() {
@@ -93,13 +107,20 @@ class UserManagement extends Component {
     }
 
     onAccountPress(data, rowID) {
+        // this.setState({
+        //     employeeData: data,
+        //     rowIDOfEmployee: rowID
+        // }, () => {
+        //     this.setState({
+        //         modalOpen: true
+        //     })
+        // })
+
+
+        this.employeeData = data
+        this.rowIDOfEmployee = rowID
         this.setState({
-            employeeData: data,
-            rowIDOfEmployee: rowID
-        }, () => {
-            this.setState({
-                modalOpen: true
-            })
+            modalOpen: true
         })
     }
 
@@ -218,13 +239,13 @@ class UserManagement extends Component {
             this.setState({
                 updateInfoChecked: !this.state.updateInfoChecked
             })
-            forwardTo(`userManagement/action/updateEmployeeInfo/${this.state.rowIDOfEmployee}`)
+            forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
         } else if (this.state.deleteAccountChecked) {
             this.setState({
                 isFetchingData: true
             })
             let currentPlace = this.refs.placeDropdown.getValue()
-            this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.state.rowIDOfEmployee].bizAccountId, () => {
+            this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
             })
             this.setState({
@@ -243,7 +264,7 @@ class UserManagement extends Component {
                     <Col>
                         <Row style={{ height: '30%', width: '90%', alignSelf: 'center', alignItems: 'center' }}>
                             <View style={{ height: 35 }}>
-                                <UserCard data={this.state.employeeData} />
+                                <UserCard data={this.employeeData} />
                             </View>
                         </Row>
                         <Row style={{ height: '50%' }}>
@@ -325,7 +346,7 @@ class UserManagement extends Component {
                 <Content style={{ backgroundColor: material.white500 }}>
                     <List
                         style={{ marginBottom: 50, marginTop: 20 }}
-                        dataArray={this.state.data}
+                        dataArray={this.data}
                         renderRow={this.renderRow.bind(this)} />
                 </Content>
                 <Modal onCloseClick={e => this.setState({ modalOpen: false })} open={this.state.modalOpen}>
