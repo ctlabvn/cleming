@@ -211,7 +211,7 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
         <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>
-        <Field autoCapitalize="none" icon="close" name="forgotEmail"                     
+        <Field autoCapitalize="none" name="forgotEmail"
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
