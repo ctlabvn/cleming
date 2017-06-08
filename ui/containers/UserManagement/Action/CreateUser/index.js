@@ -319,9 +319,14 @@ export default class CreateUserContainer extends Component {
       if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
         if (this.state.fromTime != this.props.initialValues.fromTimeWork
             && this.state.toTime != this.props.initialValues.toTimeWork && this.state.firstTimeResetTime) {
-          this.state.fromTime = this.props.initialValues.fromTimeWork
-          this.state.toTime = this.props.initialValues.toTimeWork
-          this.state.firstTimeResetTime = false
+        this.setState({
+            fromTime: this.props.initialValues.fromTimeWork,
+            toTime: this.props.initialValues.toTimeWork,
+            // firstTimeResetTime: false,
+        })
+          // this.state.fromTime = this.props.initialValues.fromTimeWork
+          // this.state.toTime = this.props.initialValues.toTimeWork
+          // this.state.firstTimeResetTime = false
         }
     let fromTime = this.state.fromTime
     let toTime = this.state.toTime
