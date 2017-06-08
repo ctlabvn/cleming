@@ -32,12 +32,12 @@ export default {
     backgroundColor: material.toolbarDefaultBg,
   },
   icon:{
-    color: material.gray500,
+    color: material.gray600,
     alignSelf:'flex-start',
     fontSize: 18,    
     marginLeft:10,    
   },
   textGray: {
-    color: material.gray500
+    color: material.gray600
   },
 }
