@@ -97,6 +97,7 @@ const formSelector = formValueSelector('CreateUserForm')
 export default class CreateUserContainer extends Component {
   constructor(props) {
       console.log('step', 'constructor');
+      let selectedPlace = props.selectedPlace.id
     super(props)
     let currentJob = {
       id: 1,
@@ -121,6 +122,7 @@ export default class CreateUserContainer extends Component {
       isLoading: false,
       firstTimeResetPassword: false,
       firstTimeResetTime: true,
+      selectedPlace: selectedPlace,
     }
 
   }
@@ -486,6 +488,7 @@ export default class CreateUserContainer extends Component {
           employeeListPlace={listPlace}
           name="GroupAddress"
           onReady={ref => this.placeDropdown = ref}
+          selectedPlace = {this.state.selectedPlace}
           component={renderGroup} />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
