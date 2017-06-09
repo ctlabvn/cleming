@@ -34,7 +34,8 @@ export default {
         paddingRight:10,
         height:40,
         borderBottomWidth: 0,
-        paddingBottom: 10
+        paddingBottom: 10,
+        height: 50,
     },
     right: {
         flexDirection:'row',

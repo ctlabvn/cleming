@@ -488,8 +488,9 @@ export default class CreateUserContainer extends Component {
           onReady={ref => this.placeDropdown = ref}
           component={renderGroup} />
         <View style={styles.createPassBlock}>
+          <Border color='rgba(0,0,0,0.5)' size={2} />
           <Grid>
-            <Row style={{ justifyContent: 'center', height: 40, paddingBottom: 15 }}>
+            <Row style={{ justifyContent: 'center', height: 40, paddingBottom: 15, marginTop: 15 }}>
               <Button
                 onPress={this.onGeneratedPasswordPress.bind(this)}
                 style={styles.createPasswordButton}>
