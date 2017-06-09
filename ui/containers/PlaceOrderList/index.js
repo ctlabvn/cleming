@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Button, Spinner, Grid, Row, Col } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
+import { View, InteractionManager, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -43,9 +43,9 @@ export default class PlaceOrderList extends Component {
         this.state = {
             loadingMore: false,
             loading: false,
-            counting: true,
             modalOpen: false,
-            phoneNumber: ''
+            phoneNumber: '',
+            counting: true
         }
         this.isLoadingPlace = false
         this.selectTab = BOOKING_WAITING_CONFIRM
@@ -71,11 +71,11 @@ export default class PlaceOrderList extends Component {
 
     _renderBookingItem(item) {
         let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
-        let orderCodeBlock, phoneNumberBlock, listItemStyle = styles.listItem, listButtonStyle=styles.listButton
-        
-        let minute = item.deliveryMinute < 10 ? '0'.concat(item.deliveryMinute):item.deliveryMinute
+        let orderCodeBlock, phoneNumberBlock, listItemStyle = styles.listItem, listButtonStyle = styles.listButton
+
+        let minute = item.deliveryMinute < 10 ? '0'.concat(item.deliveryMinute) : item.deliveryMinute
         let hourMinute = item.deliveryHour + ':' + minute
-        let bookTimeStr = hourMinute+':00'+' '+moment(item.bookDate*1000).format(DEFAULT_DATE_FORMAT)
+        let bookTimeStr = hourMinute + ':00' + ' ' + moment(item.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
 
         if (this.selectTab == BOOKING_WAITING_CONFIRM) {
@@ -111,8 +111,8 @@ export default class PlaceOrderList extends Component {
                     onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
                     style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
             </View>)
-            listItemStyle = {...listItemStyle, ...styles.listItemGray}
-            listButtonStyle = {...listButtonStyle, ...styles.listItemGray}
+            listItemStyle = { ...listItemStyle, ...styles.listItemGray }
+            listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
         }
         return (
 
@@ -136,7 +136,7 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate*1000).format(DAY_WITHOUT_YEAR)}</Text>
+                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
@@ -239,21 +239,26 @@ export default class PlaceOrderList extends Component {
         )
     }
     componentDidMount() {
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this.setState({ counting: true })
-        if (currentPlace) {
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        } else {
-            this.isLoadingPlace = true
-        }
-
+        InteractionManager.runAfterInteractions(() => {
+            let currentPlace = this.refs.placeDropdown.getValue()
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // this.counting = true
+            if (currentPlace) {
+                this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+            } else {
+                this.isLoadingPlace = true
+            }
+        })
     }
     componentWillFocus() {
-        this.setState({ counting: true })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: true })
+        })
     }
     componentWillBlur() {
-        this.setState({ counting: false })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: false })
+        })
     }
     componentWillReceiveProps(nextProps) {
         if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {

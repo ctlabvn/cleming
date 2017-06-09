@@ -17,26 +17,36 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
+import {getListTransactionDirect, getListTransactionCLM} from '~/store/selectors/transaction'
 import { getSelectedPlace } from '~/store/selectors/place'
 import options from './options'
 import material from '~/theme/variables/material.js'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, TIME_FORMAT_WITHOUT_SECOND } from '~/store/constants/app'
 
+// export const getListTransactionDirect = state => state.place.transaction.payDirect || []
+
+// export const getListTransactionCLM = state => state.place.transaction.payWithClingme || []
+
+// payDirect
+// payWithClingme
+
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
     selectedPlace: getSelectedPlace(state),
-    transaction: state.transaction
+    payDirect: getListTransactionDirect(state),
+    payWithClingme: getListTransactionCLM(state)
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
 export default class extends Component {
     constructor(props) {
-        super(props)
+        super(props)    
         this.state = {
+            currentTab: TRANSACTION_TYPE_CLINGME,
             loading: false,
-            loadingMore: false,
-            currentTab: TRANSACTION_TYPE_CLINGME
+            loadingMore: false
         }
         this.isLoadingPlace = false
+        
     }
     // need filter transaction type
     _handlePressFilter(item) {
@@ -116,40 +126,40 @@ export default class extends Component {
 
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
-        const { xsession, getListTransaction, getListTransactionPayWithClingme } = this.props
+        const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {
-            this.setState({ loadingMore: true })
+            this.setState({loadingMore: true})
         } else {
-            this.setState({ loading: true })
+            this.setState({loading:true})
         }
 
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 () => {
-                    this.setState({ loading: false, loadingMore: false })
-                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payWithClingme.totalRecord)
+                    this.setState({loading: false, loadingMore: false})
+                    transactionFilterComponent.updateIndicatorNumber(payWithClingme.totalRecord)
                 }
             )
         } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
             getListTransaction(xsession, placeId, fromTime, toTime, filter, page,
                 () => {
-                    this.setState({ loading: false, loadingMore: false })
-                    transactionFilterComponent.updateIndicatorNumber(this.props.transaction.payDirect.totalRecord)
+                    this.setState({loading: false, loadingMore: false})
+                    transactionFilterComponent.updateIndicatorNumber(payDirect.totalRecord)
                 }
             )
         }
     }
     // need care about currentPage
     _loadMore = () => {
-        const { transaction } = this.props
+        const { transaction, payWithClingme, payDirect } = this.props
         let pageNumber, totalPage
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
-            pageNumber = transaction.payWithClingme.pageNumber
-            totalPage = transaction.payWithClingme.totalPage
+            pageNumber = payWithClingme.pageNumber
+            totalPage = payWithClingme.totalPage
         } else {
-            pageNumber = transaction.payDirect.pageNumber
-            totalPage = transaction.payDirect.totalPage
+            pageNumber = payDirect.pageNumber
+            totalPage = payDirect.totalPage
         }
         if (pageNumber >= totalPage) return
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -297,9 +307,9 @@ export default class extends Component {
         }
     }
     _renderList() {
-        const { transaction } = this.props
+        const { transaction, payWithClingme, payDirect } = this.props
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
-            return (<List dataArray={transaction.payWithClingme.listTransaction}
+            return (<List dataArray={payWithClingme.listTransaction}
                 renderRow={(item) => {
                     return this._renderRow(item)
                 }}
@@ -307,7 +317,7 @@ export default class extends Component {
             ></List>)
         } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
             return (
-                <List dataArray={transaction.payDirect.listTransaction}
+                <List dataArray={payDirect.listTransaction}
                     renderRow={(item) => {
                         return this._renderRow(item)
                     }}
@@ -316,8 +326,9 @@ export default class extends Component {
         }
     }
     render() {
-        const { handleSubmit, submitting, forwardTo, transaction, place, selectedPlace } = this.props
-        if (!transaction) {
+        console.log('Render TransactionList')
+        const {forwardTo, place, selectedPlace, payDirect, payWithClingme } = this.props
+        if (!payDirect && !payWithClingme) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color={material.red500} />
@@ -330,14 +341,14 @@ export default class extends Component {
             name: item.address
         }))
 
-        let noData = null
-        if (transaction.listTransaction && transaction.listTransaction.length == 0) {
-            noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
-        }
-        let moreData = null
-        if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0) {
-            moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
-        }
+        // let noData = null
+        // if (transaction.listTransaction && transaction.listTransaction.length == 0) {
+        //     noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
+        // }
+        // let moreData = null
+        // if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0) {
+        //     moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
+        // }
         return (
             <Container style={styles.container}>
                 <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
@@ -356,8 +367,8 @@ export default class extends Component {
                     >
                         {this._renderList()}
                         {this.state.loadingMore && <Spinner color={material.red500} />}
-                        {noData}
-                        {moreData}
+                        {/*{noData}
+                        {moreData}*/}
                     </Content>
 
                 </View>

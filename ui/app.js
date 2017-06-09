@@ -30,6 +30,7 @@ import { getDrawerState, getRouter } from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
 import * as placeActions from '~/store/actions/place'
+import * as locationActions from '~/store/actions/location'
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
@@ -74,9 +75,10 @@ const UIManager = NativeModules.UIManager
   router: getRouter(state),
   drawerState: getDrawerState(state),
   place: state.place,
+  location: state.location,
   selectedPlace: getSelectedPlace(state),
   xsession: getSession(state)
-}), { ...commonActions, ...authActions, ...placeActions })
+}), { ...commonActions, ...authActions, ...placeActions, ...locationActions })
 export default class App extends Component {
 
   // static configureScene(route) {
@@ -308,11 +310,11 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place } = this.props
+    const { saveCurrentLocation, place, location } = this.props
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
-        if (!place.location || Object.keys(place.location).length == 0) {
+        if (!location || Object.keys(location).length == 0) {
           this.updatePlaceList(position.coords.latitude, position.coords.longitude)
         }
         saveCurrentLocation(position.coords)
@@ -324,7 +326,7 @@ export default class App extends Component {
 
     this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log('Position Change', position)
-      if (!place.location || Object.keys(place.location).length == 0) {
+      if (!location || Object.keys(location).length == 0) {
         this.updatePlaceList(position.coords.latitude, position.coords.longitude)
       }
       saveCurrentLocation(position.coords)

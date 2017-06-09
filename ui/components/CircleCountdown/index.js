@@ -21,6 +21,7 @@ export default class extends Component {
         this.startInterval()
     }
     stopInterval() {
+        console.log('Go to clear Interval')
         clearInterval(this.intervalID)
         this.intervalID = -1
     }
@@ -43,6 +44,8 @@ export default class extends Component {
         this.stopInterval()
     }
     componentWillReceiveProps({ countTo, counting }) {
+        // console.log('Will receive props', counting)
+        // console.log('Will receive props', countTo)
         if (countTo != this.state.countTo) {
             this.setState({ countTo: countTo })
         }

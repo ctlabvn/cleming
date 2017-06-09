@@ -56,9 +56,10 @@ export default class extends Component {
             loading: false,
             loadingMore: false,
             modalOpen: false,
+            counting: true,
             phoneNumber: ''
         }
-
+        // this.counting = true
         this.selectedStatus = 0
         this.interval = 0
         this.isLoadingPlace = false
@@ -71,12 +72,13 @@ export default class extends Component {
                 this.isLoadingPlace = true
             }
             this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-            this.setState({ counting: true })
         })
     }
     componentWillFocus() {
-
-
+        // this.counting = true
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: true })
+        })
     }
 
     componentDidMount() {
@@ -84,7 +86,11 @@ export default class extends Component {
     }
 
     componentWillBlur() {
-        this.setState({ counting: false })
+        // this.counting = false
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: false })
+        })
+
     }
 
     componentWillReceiveProps(nextProps) {

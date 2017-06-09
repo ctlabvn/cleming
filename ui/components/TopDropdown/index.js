@@ -16,7 +16,9 @@ export default class TopDropdown extends Component {
         if (props.selectedOption && Object.keys(props.selectedOption).length > 0) {
             selectedOption = props.selectedOption
         } else {
-            selectedOption = props.dropdownValues[0]
+            if (props.dropdownValues && props.dropdownValues.length > 0){
+                selectedOption = props.dropdownValues[0]
+            }
         }
         this.state = {
             openningDropdown: false,
@@ -50,6 +52,12 @@ export default class TopDropdown extends Component {
 
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)
+    }
+    updateDropdownValues(dropdownValues){
+        this.setState({dropdownValues: dropdownValues})
+    }
+    updateSelectedOption(selectedOption){
+        this.setState({selectedOption: selectedOption})
     }
     getValue() {
         return this.state.selectedOption;
