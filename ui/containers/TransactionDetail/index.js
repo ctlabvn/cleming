@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Text, Button, Spinner, Radio, Input, Toast, Thumbnail } from 'native-base'
-import { View, Modal, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
+import { View, Modal, InteractionManager, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
@@ -162,24 +162,30 @@ export default class TransactionDetail extends Component {
         }
     }
     componentDidMount() {
-        const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason } = this.props
-        // this._goToMiddlePage()
-        let transactionId = route.params.id
-        let transactionType = route.params.type
-        this.setState({ type: transactionType })
-        this._load(transactionId)
-        // No need frequently update, call one when component mount
-        getListDenyReason(xsession)
+        InteractionManager.runAfterInteractions(() => {
+            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason } = this.props
+            // this._goToMiddlePage()
+            let transactionId = route.params.id
+            let transactionType = route.params.type
+            this.setState({ type: transactionType })
+            this._load(transactionId)
+            // No need frequently update, call one when component mount
+            getListDenyReason(xsession)
+        })
+
     }
 
     // Go to Page 
     componentWillFocus() {
-        this._goToMiddlePage()
-        const { xsession, listTransaction, getTransactionDetail, route } = this.props
-        let transactionId = route.params.id
-        let transactionType = route.params.type
-        this.setState({ type: transactionType })
-        this._load(transactionId)
+        InteractionManager.runAfterInteractions(() => {
+            this._goToMiddlePage()
+            const { xsession, listTransaction, getTransactionDetail, route } = this.props
+            let transactionId = route.params.id
+            let transactionType = route.params.type
+            this.setState({ type: transactionType })
+            this._load(transactionId)
+        })
+
     }
 
     _renderContent() {
@@ -466,6 +472,7 @@ export default class TransactionDetail extends Component {
     // 1 là thành công, 2 là bị từ chối
 
     render() {
+        console.log('Render TransactionDetail')
         const { route } = this.props
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return (

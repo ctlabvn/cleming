@@ -33,27 +33,30 @@ export default class PlaceOrderDetail extends Component {
     }
   }
   componentDidMount() {
-    const { getBookingDetail } = this.props
-    let bookingId = this.props.route.params.id
-    let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
-    this.setState({ counting: true })
-    if (!bookingArr || bookingArr.length == 0) {
-      // if not in store, load from API
-      getBookingDetail(this.props.user.xsession, bookingId,
-        (error, data) => {
-          console.log('Err Booking detail', error)
-          console.log('Booking Detail', data)
-          if (data && data.updated) {
-            this.setState({ bookingDetail: data.updated.bookingInfo })
-            return
-          } else {
-            this.props.forwardTo('merchantOverview')
-            return
+    InteractionManager.runAfterInteractions(() => {
+      const { getBookingDetail } = this.props
+      let bookingId = this.props.route.params.id
+      let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
+      this.setState({ counting: true })
+      if (!bookingArr || bookingArr.length == 0) {
+        // if not in store, load from API
+        getBookingDetail(this.props.user.xsession, bookingId,
+          (error, data) => {
+            console.log('Err Booking detail', error)
+            console.log('Booking Detail', data)
+            if (data && data.updated) {
+              this.setState({ bookingDetail: data.updated.bookingInfo })
+              return
+            } else {
+              this.props.forwardTo('merchantOverview')
+              return
+            }
           }
-        }
-      )
-    }
-    this.setState({ bookingDetail: bookingArr[0] })
+        )
+      }
+      this.setState({ bookingDetail: bookingArr[0] })
+    })
+
   }
   componentWillFocus() {
     InteractionManager.runAfterInteractions(() => {
@@ -80,9 +83,13 @@ export default class PlaceOrderDetail extends Component {
     })
   }
   componentWillBlur() {
-    this.setState({ counting: false })
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({ counting: false })
+    })
+
   }
   render() {
+    console.log('Render Booking Detail')
     if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
       return (
         <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>

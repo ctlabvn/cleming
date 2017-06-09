@@ -59,18 +59,23 @@ export default class extends Component {
     }
 
     componentDidMount() {
-        this._load()
+        InteractionManager.runAfterInteractions(()=>{
+            this._load()    
+        })
     }
     componentWillFocus() {
-        this.setState({ counting: true })
         InteractionManager.runAfterInteractions(()=>{
+            this.setState({ counting: true })
             this._load()
         })
     }
     componentWillBlur() {
-        this.setState({ counting: false })
+        InteractionManager.runAfterInteractions(()=>{
+            this.setState({ counting: false })    
+        })
     }
     render() {
+        console.log('Render DeliveryDetail')
         const { route } = this.props
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
             return (

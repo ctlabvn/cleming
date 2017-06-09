@@ -1,8 +1,7 @@
 const initialState = {  
   listPlace: [],
   news: {},
-  selectedOption: {},
-  location: {}
+  selectedOption: {}
 }
 export const place = (state = initialState, {type, payload}) => {
   switch (type) {   
@@ -12,8 +11,6 @@ export const place = (state = initialState, {type, payload}) => {
       return {...state, statistic: payload}
     case 'place/setNews':
       return {...state, news: payload}
-    case 'app/saveCurrentLocation':
-      return {...state, location: payload}
     case 'place/setSelectedOption': 
       return {...state, selectedOption: payload}
     case 'app/logout':

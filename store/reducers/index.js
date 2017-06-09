@@ -14,6 +14,7 @@ import { place } from './place'
 import { order } from './order'
 import { booking } from './booking'
 import { report } from './report'
+import { location } from './location'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
   form,
@@ -27,17 +28,13 @@ const rootReducer = combineReducers({
   router,
   auth,
   account,
-  // data,
   notification,
-  // campaign,
-  // network,
-  // delegation,
-  // vault,
   transaction,
   place,
   booking,
   order,
   report,
+  location,
   modal
 })
 

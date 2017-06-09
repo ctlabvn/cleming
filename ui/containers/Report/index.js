@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, List, ListItem, Text, Button, Spinner } from 'native-base'
-import { Dimensions, View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
+import { Dimensions, View, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -95,23 +95,29 @@ export default class Report extends Component {
         }
     }
     componentDidMount() {
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        const { selectedPlace } = this.props
-        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-            this.isLoadingPlace = true
-            return
-        }
-        this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        InteractionManager.runAfterInteractions(() => {
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            const { selectedPlace } = this.props
+            if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                this.isLoadingPlace = true
+                return
+            }
+            this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        })
+
     }
 
     componentWillFocus() {
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        const { selectedPlace } = this.props
-        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-            this.isLoadingPlace = true
-            return
-        }
-        this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        InteractionManager.runAfterInteractions(() => {
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            const { selectedPlace } = this.props
+            if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                this.isLoadingPlace = true
+                return
+            }
+            this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        })
+
     }
     _regionChange = (region) => {
         this.setState({ region },

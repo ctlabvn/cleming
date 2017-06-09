@@ -27,23 +27,24 @@ import material from '~/theme/variables/material.js'
     xsession: getSession(state),
     user: getUser(state),
     selectedPlace: getSelectedPlace(state),
-    place: state.place
+    place: state.place,
+    location: state.location
 }), { ...commonActions, ...placeAction })
-export default class MerchantOverview extends PureComponent {
+export default class MerchantOverview extends Component {
 
     constructor(props) {
         super(props)
     }
 
     _load() {
-        const { user, place, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
+        const { user, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
         let lat = 0, long = 0
-        if (place && place.location) {
-            lat = place.location.latitude
-            long = place.location.longitude
+        if (location && Object.keys(location).length > 1) {
+            lat = location.latitude
+            long = location.longitude
         }
         getListPlace(this.props.xsession, lat, long,
             (err, data) => {
@@ -56,25 +57,26 @@ export default class MerchantOverview extends PureComponent {
                         setSelectedOption(selectedOption)
                     }
                     let currentPlace = this.refs.placeDropdown.getValue()
-                    if (!currentPlace){
+                    if (!currentPlace) {
                         getMerchantNews(xsession, currentPlace.id)
-                    }else{
+                    } else {
                         getMerchantNews(xsession, data.updated.data[0].placeId)
                     }
-                    
+
                 }
             })
 
     }
 
     componentDidMount() {
-        this._load()
+        InteractionManager.runAfterInteractions(() => {
+            this._load()
+        })
     }
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            setTimeout(()=>this._load(), 1000)
-            // this._load()
+            this._load()
         })
     }
 
@@ -182,6 +184,7 @@ export default class MerchantOverview extends PureComponent {
     }
 
     render() {
+        console.log('Rendering MerchantOverview')
         const { handleSubmit, submitting, forwardTo, place, selectedPlace } = this.props
         let dropdownValues = place.listPlace.map(item => ({
             id: item.placeId,
