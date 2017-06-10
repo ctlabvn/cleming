@@ -46,60 +46,65 @@ export default class MerchantOverview extends Component {
             lat = location.latitude
             long = location.longitude
         }
-        getListPlace(this.props.xsession, lat, long,
-            (err, data) => {
-                let toTime = moment(new Date())
-                if (data && data.updated && data.updated.data) {
+        setTimeout(() => {
+            getListPlace(this.props.xsession, lat, long,
+                (err, data) => {
+                    let toTime = moment(new Date())
+                    if (data && data.updated && data.updated.data) {
+                        let listPLace = data.updated.data.map(item => ({
+                            id: item.placeId,
+                            name: item.address
+                        }))
 
+                        app.topDropdown.updateDropdownValues(listPLace)
+                        app.topDropdownListValue.updateDropdownValues(listPLace)
 
-                    // updateDropdownValues(dropdownValues)
-                    // updateSelectedOption(selectedOption)
-                    let listPLace = data.updated.data.map(item => ({
-                        id: item.placeId,
-                        name: item.address
-                    }))
-                    
-                    app.topDropdown.updateDropdownValues(listPLace)
-                    app.topDropdown.updateSelectedOption(listPLace[0])
-                    app.topDropdownListValue.updateDropdownValues(listPLace)
-                    app.topDropdownListValue.updateSelectedOption(listPLace[0])
-                    
-                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                        let selectedOption = {}
-                        selectedOption.id = data.updated.data[0].placeId
-                        selectedOption.name = data.updated.data[0].address
-                        setSelectedOption(selectedOption)
+                        console.log('Selected Place Merchant Overview', selectedPlace)
+                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                            let selectedOption = {}
+                            selectedOption.id = data.updated.data[0].placeId
+                            selectedOption.name = data.updated.data[0].address
+                            setSelectedOption(selectedOption)
+                            app.topDropdown.updateSelectedOption(selectedOption)
+                            app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        }
+
+                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                            getMerchantNews(xsession, selectedPlace.id)
+                        } else {
+                            getMerchantNews(xsession, data.updated.data[0].placeId)
+                        }
+
                     }
-                    // let currentPlace = this.refs.placeDropdown.getValue()
-
-                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                        getMerchantNews(xsession, selectedPlace.id)
-                    } else {
-                        getMerchantNews(xsession, data.updated.data[0].placeId)
-                    }
-
-                }
-            })
-
+                })
+        }, 3000)
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            app.topDropdown.show(true)
             this._load()
         })
     }
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            app.topDropdown.show(true)
+
             this._load()
         })
     }
 
-    _handleChangePlace(item) {
+    _handleChangePlace = (item) => {
+        console.log('Call callback handle place change', item)
         const { place, setSelectedOption } = this.props
         // let dateFilterData = this.refs.dateFilter.getData()
         // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-        setSelectedOption(item)
+        // setSelectedOption(item)
         this.props.getMerchantNews(this.props.xsession, item.id)
     }
 

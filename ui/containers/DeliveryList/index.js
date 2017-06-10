@@ -77,12 +77,21 @@ export default class extends Component {
     componentWillFocus() {
         // this.counting = true
         InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            app.topDropdown.show(true)
             this.setState({ counting: true })
         })
     }
 
     componentDidMount() {
-        this._load()
+        InteractionManager.runAfterInteractions(() => {
+            const {app} = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            app.topDropdown.show(true)
+            this._load()
+        })
+
     }
 
     componentWillBlur() {
@@ -145,7 +154,7 @@ export default class extends Component {
 
     _handleChangePlace = (item) => {
         const { setSelectedOption } = this.props
-        setSelectedOption(item)
+        // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
         this.setState({
             selectedPlace: item.id,
@@ -300,18 +309,18 @@ export default class extends Component {
         const { handleSubmit, submitting, place, selectedPlace } = this.props
 
 
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
+        // let dropdownValues = place.listPlace.map(item => ({
+        //     id: item.placeId,
+        //     name: item.address
+        // }))
 
         const { orderList } = this.props.order
 
         return (
             <Container style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace}
+                {/*<TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace}
                     selectedOption={selectedPlace}
-                />
+                />*/}
 
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />

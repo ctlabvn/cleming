@@ -26,6 +26,7 @@ export default class TopDropdown extends Component {
             // fadeAnim: new Animated.Value(0),
             selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
+            show: false
         }
     }
 
@@ -58,12 +59,16 @@ export default class TopDropdown extends Component {
     }
     updateSelectedOption(selectedOption) {
         this.setState({ selectedOption: selectedOption, openningDropdown: false })
-        this.state.callback && this.state.callback()
+        console.log('Updating selected option', selectedOption)
+        this.state.callback && this.state.callback(selectedOption)
     }
     setCallbackPlaceChange(callback){
+        console.log('Setting Callback')
         this.setState({callback: callback})
     }
-
+    show(showState){
+        this.setState({show:showState})
+    }
 
     getValue() {
         return this.state.selectedOption;
@@ -101,6 +106,9 @@ export default class TopDropdown extends Component {
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
+        if (!this.state.show){
+            return <View />
+        }
         if (!dropdownValues || dropdownValues.length == 0 || !selectedOption ||
                 Object.keys(selectedOption).length == 0){
             return (

@@ -163,7 +163,8 @@ export default class TransactionDetail extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason } = this.props
+            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, app } = this.props
+            app.topDropdown.show(false)
             // this._goToMiddlePage()
             let transactionId = route.params.id
             let transactionType = route.params.type
@@ -178,6 +179,8 @@ export default class TransactionDetail extends Component {
     // Go to Page 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
+            const {app} = this.props
+            app.topDropdown.show(false)
             this._goToMiddlePage()
             const { xsession, listTransaction, getTransactionDetail, route } = this.props
             let transactionId = route.params.id

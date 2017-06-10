@@ -5,7 +5,7 @@ export default {
         backgroundColor: material.white500,
         flexDirection: 'column',
         height: '100%',
-        paddingBottom: 50
+        // paddingBottom:rr 50
     },
     picker: {
         color: material.white500,

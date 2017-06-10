@@ -311,7 +311,13 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, location } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location } = this.props
+    if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+      this.topDropdown.updateDropdownValues(place.listPlace)
+      this.topDropdown.updateSelectedOption(selectedPlace)
+      this.topDropdownListValue.updateDropdownValues(place.listPLace)
+      this.topDropdownListValue.updateSelectedOption(selectedPlace)
+    }
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
@@ -382,37 +388,26 @@ export default class App extends Component {
   }
 
   _handleChangePlace = (item) => {
-    console.log('Place change', item)
+    const { setSelectedOption } = this.props
+    console.log('Place change APPJS', item)
     this.topDropdown.updateSelectedOption(item)
+    setSelectedOption(item)
   }
-  _handlePressIcon = (openning)=>{
-    if (openning){
+  _handlePressIcon = (openning) => {
+    console.log('Handle Press Icon APPJS')
+    if (openning) {
       this.topDropdownListValue.close()
-    }else{
+    } else {
       this.topDropdownListValue.open()
-    }  
+    }
   }
-  _handlePressOverlay = ()=>{
+  _handlePressOverlay = () => {
+    console.log('Handle Press Overlay APPJS')
     this.topDropdown.close()
   }
   render() {
     const { router, drawerState, closeDrawer } = this.props
     const { title, path, headerType, footerType } = this.page
-    let dropdownValues = [
-      {
-        id: 1,
-        name: '94 Hoang Quoc Viet'
-      },
-      {
-        id: 2,
-        name: '94 Hoang Quoc Viet'
-      },
-      {
-        id: 3,
-        name: 'Xuan Thuy, Cau Giay'
-      }
-
-    ]
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -447,9 +442,9 @@ export default class App extends Component {
           <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} />
 
           <TopDropdown
-            ref={ref=>this.topDropdown=ref}
+            ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
-             />
+          />
 
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
@@ -458,9 +453,9 @@ export default class App extends Component {
           />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
-            onPressOverlay = {this._handlePressOverlay}
-            ref={ref=>this.topDropdownListValue=ref}
-             />
+            onPressOverlay={this._handlePressOverlay}
+            ref={ref => this.topDropdownListValue = ref}
+          />
 
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
