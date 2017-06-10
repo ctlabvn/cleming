@@ -256,6 +256,8 @@ export default class DateFilter extends Component {
     render() {
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
+            
+
         const data = this.ds.cloneWithRows(_data)
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
 
@@ -269,7 +271,8 @@ export default class DateFilter extends Component {
                     </View>
                 </TouchableOpacity>
                 <ListView
-                    style={styles.dateFilterList}
+                    enableEmptySections={true}
+                    style={styles.dateFilterList}                    
                     horizontal={true} showsHorizontalScrollIndicator={false}
                     ref='dateFilterList' dataSource={data}
                     removeClippedSubviews={false}

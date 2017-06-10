@@ -234,7 +234,7 @@ export default class App extends Component {
 
   // will assign visible props for page, and only render when it is visible
   initializePage(ref, route){    
-    if(route.path){
+    if(ref && route.path){
       this.pageInstances[route.path] = ref
       ref.visible = true
       const fn = ref.shouldComponentUpdate
@@ -351,9 +351,11 @@ export default class App extends Component {
       return true
     })
   }
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
   }
+
   handleFocusableComponent(component, focus = true) {
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
