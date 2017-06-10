@@ -35,7 +35,7 @@ export default class PlaceOrderDetail extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       const { getBookingDetail, app } = this.props
-      app.topDropdown.show(false)
+      // app.topDropdown.show(false)
       let bookingId = this.props.route.params.id
       let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
       this.setState({ counting: true })
@@ -62,7 +62,7 @@ export default class PlaceOrderDetail extends Component {
   componentWillFocus() {
     InteractionManager.runAfterInteractions(() => {
       const {app} = this.props
-      app.topDropdown.show(false)
+      // app.topDropdown.show(false)
       let bookingId = this.props.route.params.id
       let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
       this.setState({ counting: true })

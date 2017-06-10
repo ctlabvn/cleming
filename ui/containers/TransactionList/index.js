@@ -120,7 +120,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
             const {app, selectedPlace} = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            app.topDropdown.show(true)
+            // app.topDropdown.show(true)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             // let currentPlace = this.refs.placeDropdown.getValue()
             let transactionFilterComponent = this.refs.transactionFilter
@@ -136,7 +136,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(()=>{
             const {app} = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            app.topDropdown.show(true)
+            // app.topDropdown.show(true)
         })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {

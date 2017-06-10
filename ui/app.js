@@ -190,11 +190,14 @@ export default class App extends Component {
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
+    console.log('Route will receive props', getPage(router.route))
+    this.page = getPage(router.route)
+    const { headerType, footerType, title, path, showTopDropdown } = this.page
+    this.topDropdown.show(showTopDropdown)
+    
     if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
-      this.page = getPage(router.route)
       if (this.page) {
-        const { headerType, footerType, title, path } = this.page
         // show header and footer, and clear search string
         this.header.show(headerType, title)
         this.header._search('')
@@ -213,7 +216,7 @@ export default class App extends Component {
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
-          this.navigator.push({ title, path })
+          this.navigator.push({ title, path, showTopDropdown })
         }
       } else {
         // no need to push to route
@@ -251,7 +254,16 @@ export default class App extends Component {
     //   // if (!this.navigator || this.page.Preload === false) {
     //   //   return this.renderComponentFromPage(this.page)
     //   // }
-
+    // console.log('Page', route)
+    // console.log('APJS Topdopdpwm', this.topDropdown)
+    // if (this.topDropdown){
+    //   if (route.showTopDropdown){
+    //     this.topDropdown.show(true)
+    //   }else{
+    //     this.topDropdown.show(false)
+    //   }
+    // }
+    
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
         {this.renderComponentFromPage(this.page)}
@@ -407,7 +419,7 @@ export default class App extends Component {
   }
   render() {
     const { router, drawerState, closeDrawer } = this.props
-    const { title, path, headerType, footerType } = this.page
+    const { title, path,headerType, footerType, showTopDropdown } = this.page
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -448,7 +460,7 @@ export default class App extends Component {
 
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
-            initialRoute={{ title, path }}
+            initialRoute={{ title, path, showTopDropdown }}
             renderScene={this._renderPage}
           />
           <TopDropdownListValue

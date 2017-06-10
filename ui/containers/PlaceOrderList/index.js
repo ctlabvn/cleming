@@ -243,7 +243,7 @@ export default class PlaceOrderList extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app, selectedPlace } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            app.topDropdown.show(true)
+            // app.topDropdown.show(true)
 
             // let currentPlace = this.refs.placeDropdown.getValue()
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -259,7 +259,7 @@ export default class PlaceOrderList extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            app.topDropdown.show(true)
+            // app.topDropdown.show(true)
             this.setState({ counting: true })
         })
     }

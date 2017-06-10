@@ -45,7 +45,7 @@ export default class extends Component {
   componentWillFocus() {
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
-    app.topDropdown.show(false)
+    // app.topDropdown.show(false)
 
     if (!notifications.data.length) {
       getNotification(session, 1, () => getNotification(session, 2))
