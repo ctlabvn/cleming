@@ -103,7 +103,7 @@ class UserManagement extends Component {
     }
     componentDidMount() {
         let currentPlace = this.refs.placeDropdown.getValue()
-        this._loadListEmployee(currentPlace.id)
+        currentPlace && this._loadListEmployee(currentPlace.id)
     }
 
     onAccountPress(data, rowID) {
