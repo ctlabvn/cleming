@@ -166,10 +166,12 @@ export class renderGroup extends Component {
     let newState = this.state.fields.map((item)=>{
       return {...item, checked : false}
     })
-    newState[index].checked = !newState[index].checked
-    this.setState({fields: newState}, () => {
-      this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    })
+    if(newState[index]){
+      newState[index].checked = !newState[index].checked
+      this.setState({fields: newState}, () => {
+        this.props.handleGetListPlaceFromArrayField(this.getSelected())
+      })
+    }
   }
   
   handleCheckAll() {
