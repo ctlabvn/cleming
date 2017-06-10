@@ -16,7 +16,7 @@ export default class TopDropdown extends Component {
         if (props.selectedOption && Object.keys(props.selectedOption).length > 0) {
             selectedOption = props.selectedOption
         } else {
-            if (props.dropdownValues && props.dropdownValues.length > 0){
+            if (props.dropdownValues && props.dropdownValues.length > 0) {
                 selectedOption = props.dropdownValues[0]
             }
         }
@@ -44,8 +44,8 @@ export default class TopDropdown extends Component {
                 this.setState({ selectedOption: nextProps.dropdownValues[0] })
             }
         }
-        if (this.state.openningDropdown){
-            this.setState({openningDropdown: false})
+        if (this.state.openningDropdown) {
+            this.setState({ openningDropdown: false })
         }
 
     }
@@ -53,11 +53,11 @@ export default class TopDropdown extends Component {
     _handlePress(item) {
         this.props.forwardTo(`notification/${item.user}`)
     }
-    updateDropdownValues(dropdownValues){
-        this.setState({dropdownValues: dropdownValues})
+    updateDropdownValues(dropdownValues) {
+        this.setState({ dropdownValues: dropdownValues })
     }
-    updateSelectedOption(selectedOption){
-        this.setState({selectedOption: selectedOption})
+    updateSelectedOption(selectedOption) {
+        this.setState({ selectedOption: selectedOption })
     }
     getValue() {
         return this.state.selectedOption;
@@ -66,7 +66,9 @@ export default class TopDropdown extends Component {
         // LayoutAnimation.easeInEaseOut()
         this.setState({ openningDropdown: !this.state.openningDropdown })
     }
-
+    close() {
+        this.setState({ openningDropdown: false })
+    }
     componentWillMount() {
 
     }
@@ -76,11 +78,13 @@ export default class TopDropdown extends Component {
     _handlePress(item) {
         this.setState({ selectedOption: item })
         this.props.onSelect && this.props.onSelect(item)
-        this.toggle()
+        // this.toggle()
+        this.setState({ openningDropdown: false })
     }
-    _handlePressDropdown() {
+    _handlePressOverlay = () => {
+        this.close()
+    }
 
-    }
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { dropdownValues } = this.props
@@ -88,7 +92,8 @@ export default class TopDropdown extends Component {
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
-        let containerStyleTopDown = { ...containerStyle, ...fakeZIndex }
+        const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
+        let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         if (!dropdownValues || dropdownValues.length == 0) {
             return (
                 <View style={containerStyleTopDown}>
@@ -135,6 +140,9 @@ export default class TopDropdown extends Component {
                     }
                     }>
                 </List>
+                <TouchableWithoutFeedback onPress={() => this._handlePressOverlay()}>
+                    <View style={styles.overlay} />
+                </TouchableWithoutFeedback>
             </View>
         )
     }

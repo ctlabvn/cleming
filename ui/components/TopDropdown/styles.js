@@ -2,18 +2,40 @@ import material from '~/theme/variables/material'
 export default {
     dropdownContainerAndroid:{
         position: 'absolute',
-        //zIndex: 1000,
+        zIndex: 1000,
         flexDirection:'column',
         width: '100%',
         elevation: 100,
         justifyContent: 'center',
+        flex: 1,
     },
     dropdownContainerIos:{
         position: 'absolute',
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
+        flex: 1,
     },
+
+    dropdownContainerAndroidFull:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        elevation: 100,
+        justifyContent: 'center',
+        flex: 1,
+        height: material.deviceHeight
+    },
+    dropdownContainerIosFull:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        flex: 1,
+        height: material.deviceHeight
+    },
+
     dropdownHeader:{
         justifyContent:'center',
         backgroundColor: material.primaryColor,
@@ -42,7 +64,8 @@ export default {
     dropdownListItem:{
         borderBottomWidth: 0,
         justifyContent: 'center',
-    },
+        zIndex: 1000
+    },  
     dropdownListItemText:{
         color: material.white500,
         fontWeight: '100'
@@ -50,6 +73,12 @@ export default {
     content:{
         position: 'absolute',
         top: 75
+    },
+    overlay: {
+        flex: 1, 
+        // backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: 1000,
+        elevation: 10
     },
     backdrop:{
         position: 'absolute',
