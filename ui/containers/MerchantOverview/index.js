@@ -57,7 +57,7 @@ export default class MerchantOverview extends Component {
                         setSelectedOption(selectedOption)
                     }
                     let currentPlace = this.refs.placeDropdown.getValue()
-                    if (!currentPlace) {
+                    if (currentPlace) {
                         getMerchantNews(xsession, currentPlace.id)
                     } else {
                         getMerchantNews(xsession, data.updated.data[0].placeId)
@@ -75,9 +75,9 @@ export default class MerchantOverview extends Component {
     }
 
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
-            this._load()
-        })
+        // InteractionManager.runAfterInteractions(() => {
+        //     this._load()
+        // })
     }
 
     _handleChangePlace(item) {
