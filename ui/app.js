@@ -232,11 +232,21 @@ export default class App extends Component {
     return false
   }
 
+  // will assign visible props for page, and only render when it is visible
+  initializePage(ref, route){    
+    if(route.path){
+      this.pageInstances[route.path] = ref
+      ref.visible = true
+      const fn = ref.shouldComponentUpdate
+      ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible      
+    }
+  }
+
   // render a component from current page, then pass the params to Page
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <Page ref={ref => route.path && (this.pageInstances[route.path] = ref)} route={route} app={this} />
+      <Page ref={ref=>this.initializePage(ref, route)} route={route} app={this} />
     )
   }
 
@@ -349,6 +359,7 @@ export default class App extends Component {
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10
     let ref = component
+    ref.visible = focus
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
       ref[method] && ref[method]()
