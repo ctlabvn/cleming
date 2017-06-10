@@ -58,7 +58,13 @@ export default class TopDropdown extends Component {
     }
     updateSelectedOption(selectedOption) {
         this.setState({ selectedOption: selectedOption, openningDropdown: false })
+        this.state.callback && this.state.callback()
     }
+    setCallbackPlaceChange(callback){
+        this.setState({callback: callback})
+    }
+
+
     getValue() {
         return this.state.selectedOption;
     }
@@ -89,14 +95,14 @@ export default class TopDropdown extends Component {
 
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
-        let { dropdownValues } = this.props
-        const { openningDropdown } = this.state
+        let { openningDropdown, dropdownValues, selectedOption } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
-        if (!dropdownValues || dropdownValues.length == 0) {
+        if (!dropdownValues || dropdownValues.length == 0 || !selectedOption ||
+                Object.keys(selectedOption).length == 0){
             return (
                 <View style={containerStyleTopDown}>
                     <View style={styles.dropdownHeader}>
@@ -109,16 +115,15 @@ export default class TopDropdown extends Component {
             return (
                 <View style={containerStyleTopDown}>
                     <View style={styles.dropdownHeader}>
-                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>
                     </View>
                 </View>
             )
         }
-        dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
-                    <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                    <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: material.white500

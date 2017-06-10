@@ -23,7 +23,6 @@ export default class TopDropdownListValue extends Component {
         this.state = {
             openningDropdown: false,
             zIndex: 0,
-            // fadeAnim: new Animated.Value(0),
             selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
         }
@@ -85,11 +84,14 @@ export default class TopDropdownListValue extends Component {
 
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
-        let { dropdownValues } = this.props
-        const { openningDropdown } = this.state
+        let { openningDropdown, selectedOption, dropdownValues } = this.state
         let maxHeight = openningDropdown ? 150 : 0
-
-        dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
+        if (!dropdownValues || dropdownValues.length == 0){
+            return <View />
+        }
+        if (selectedOption && Object.keys(selectedOption).length > 0){
+            dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
+        }
         let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen:styles.ovarlayContainerClose
         return (
             <View style={overlayStyle}>
