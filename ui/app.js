@@ -18,7 +18,8 @@ import Preload from './containers/Preload'
 import Header from '~/ui/components/Header'
 import Footer from '~/ui/components/Footer'
 import Popover from '~/ui/components/Popover'
-
+import TopDropdown from '~/ui/components/TopDropdownSeperate'
+import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 // router => render component base on url
 // history.push => location match => return component using navigator push
 import { matchPath } from 'react-router'
@@ -380,9 +381,38 @@ export default class App extends Component {
 
   }
 
+  _handleChangePlace = (item) => {
+    console.log('Place change', item)
+    this.topDropdown.updateSelectedOption(item)
+  }
+  _handlePressIcon = (openning)=>{
+    if (openning){
+      this.topDropdownListValue.close()
+    }else{
+      this.topDropdownListValue.open()
+    }  
+  }
+  _handlePressOverlay = ()=>{
+    this.topDropdown.close()
+  }
   render() {
     const { router, drawerState, closeDrawer } = this.props
     const { title, path, headerType, footerType } = this.page
+    let dropdownValues = [
+      {
+        id: 1,
+        name: '94 Hoang Quoc Viet'
+      },
+      {
+        id: 2,
+        name: '94 Hoang Quoc Viet'
+      },
+      {
+        id: 3,
+        name: 'Xuan Thuy, Cau Giay'
+      }
+
+    ]
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -415,11 +445,23 @@ export default class App extends Component {
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
           <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} />
+
+          <TopDropdown
+            ref={ref=>this.topDropdown=ref}
+            onPressIcon={this._handlePressIcon}
+             />
+
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
             initialRoute={{ title, path }}
             renderScene={this._renderPage}
           />
+          <TopDropdownListValue
+            onSelect={this._handleChangePlace}
+            onPressOverlay = {this._handlePressOverlay}
+            ref={ref=>this.topDropdownListValue=ref}
+             />
+
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />

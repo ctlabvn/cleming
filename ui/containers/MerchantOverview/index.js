@@ -37,7 +37,7 @@ export default class MerchantOverview extends Component {
     }
 
     _load() {
-        const { user, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
+        const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
@@ -50,14 +50,25 @@ export default class MerchantOverview extends Component {
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
+
+
+                    // updateDropdownValues(dropdownValues)
+                    // updateSelectedOption(selectedOption)
+                    let listPLace = data.updated.value.map(item => ({
+                        id: item.placeId,
+                        name: item.address
+                    }))
+                    app.topDropdown.updateDropdownValues(listPLace)
+                    
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
                         selectedOption.id = data.updated.data[0].placeId
                         selectedOption.name = data.updated.data[0].address
                         setSelectedOption(selectedOption)
                     }
-                    let currentPlace = this.refs.placeDropdown.getValue()
-                    if (!currentPlace) {
+                    // let currentPlace = this.refs.placeDropdown.getValue()
+
+                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         getMerchantNews(xsession, currentPlace.id)
                     } else {
                         getMerchantNews(xsession, data.updated.data[0].placeId)
@@ -207,7 +218,7 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                {topDropdown}
+                {/*{topDropdown}*/}
                 <View style={styles.contentContainer}>
                     <GradientBackground colors={[material.blue400, material.blue600]} />
                     <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
