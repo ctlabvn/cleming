@@ -103,7 +103,11 @@ export default class Report extends Component {
                 return
             }
             this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+
+            // setTimeout(()=>this.setState({showMap:true}), 500)
         })
+
+
 
     }
 
@@ -341,9 +345,11 @@ export default class Report extends Component {
                     onSelect={this._handleTopDrowpdown}
                     selectedOption={selectedPlace}
                 />
-                <View style={{ marginTop: 50, height: '100%' }}>
+                <View style={{ marginTop: 50, height: '100%' }}
+                onLayout={e=>this.setState({showMap:true})}
+                >
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
-                    <MapView
+                    {this.state.showMap && <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}
@@ -373,6 +379,7 @@ export default class Report extends Component {
 
                         })}
                     </MapView>
+                }
                 </View>
             </Container>
         )
