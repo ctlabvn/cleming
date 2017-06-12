@@ -59,7 +59,6 @@ export default class TopDropdown extends Component {
     }
     updateSelectedOption(selectedOption) {
         this.setState({ selectedOption: selectedOption, openningDropdown: false })
-        console.log('Updating selected option', selectedOption)
         this.state.callback && this.state.callback(selectedOption)
     }
     setCallbackPlaceChange(callback){
@@ -106,10 +105,8 @@ export default class TopDropdown extends Component {
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         if (!this.state.show){
-            console.log('Case TopDropdown hide')
             return <View />
         }
-        console.log('Case Topdropdown showrr')
         if (!dropdownValues || dropdownValues.length == 0 || !selectedOption ||
                 Object.keys(selectedOption).length == 0){
             return (

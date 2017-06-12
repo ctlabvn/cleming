@@ -9,6 +9,7 @@ import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as commonActions from '~/store/actions/common'
 import * as placeAction from '~/store/actions/place'
+import * as locationAction from '~/store/actions/location'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
@@ -29,7 +30,7 @@ import material from '~/theme/variables/material.js'
     selectedPlace: getSelectedPlace(state),
     place: state.place,
     location: state.location
-}), { ...commonActions, ...placeAction })
+}), { ...commonActions, ...placeAction, ...locationAction })
 export default class MerchantOverview extends Component {
 
     constructor(props) {
@@ -37,7 +38,7 @@ export default class MerchantOverview extends Component {
     }
 
     _load() {
-        const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
+        const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession, alreadyGotLocation } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
@@ -46,36 +47,42 @@ export default class MerchantOverview extends Component {
             lat = location.latitude
             long = location.longitude
         }
-            getListPlace(this.props.xsession, lat, long,
-                (err, data) => {
-                    let toTime = moment(new Date())
-                    if (data && data.updated && data.updated.data) {
-                        let listPLace = data.updated.data.map(item => ({
-                            id: item.placeId,
-                            name: item.address
-                        }))
 
-                        app.topDropdown.updateDropdownValues(listPLace)
-                        app.topDropdownListValue.updateDropdownValues(listPLace)
+        getListPlace(this.props.xsession, lat, long,
+            (err, data) => {
+                let toTime = moment(new Date())
+                if (data && data.updated && data.updated.data) {
+                    let listPLace = data.updated.data.map(item => ({
+                        id: item.placeId,
+                        name: item.address
+                    }))
 
-                        console.log('Selected Place Merchant Overview', selectedPlace)
-                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                            let selectedOption = {}
-                            selectedOption.id = data.updated.data[0].placeId
-                            selectedOption.name = data.updated.data[0].address
-                            setSelectedOption(selectedOption)
-                            app.topDropdown.updateSelectedOption(selectedOption)
-                            app.topDropdownListValue.updateSelectedOption(selectedOption)
+                    app.topDropdown.updateDropdownValues(listPLace)
+                    app.topDropdownListValue.updateDropdownValues(listPLace)
+
+                    if (!selectedPlace || Object.keys(selectedPlace).length == 0
+                        || !location.alreadyGotLocation
+                    ) {
+                        let selectedOption = {}
+                        selectedOption.id = data.updated.data[0].placeId
+                        selectedOption.name = data.updated.data[0].address
+                        setSelectedOption(selectedOption)
+                        app.topDropdown.updateSelectedOption(selectedOption)
+                        app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        if ((lat !=0 || long != 0)&& !location.alreadyGotLocation){
+                            alreadyGotLocation()
                         }
-
-                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                            getMerchantNews(xsession, selectedPlace.id)
-                        } else {
-                            getMerchantNews(xsession, data.updated.data[0].placeId)
-                        }
-
                     }
-                })
+
+                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                        getMerchantNews(xsession, selectedPlace.id)
+                    } else {
+                        getMerchantNews(xsession, data.updated.data[0].placeId)
+                    }
+
+                }
+            }
+        )
         
     }
 
