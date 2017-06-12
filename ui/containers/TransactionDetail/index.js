@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Text, Button, Spinner, Radio, Input, Toast, Thumbnail } from 'native-base'
+import { Container, Text, Button, Spinner, Input, Toast, Thumbnail } from 'native-base'
 import { View, Modal, InteractionManager, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'

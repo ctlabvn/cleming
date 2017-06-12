@@ -36,9 +36,11 @@ export default {
   CheckboxIconMarginTop: (platform === 'ios') ? undefined : 1,
   CheckboxFontSize: (platform === 'ios') ? 21 : 18,
   DefaultFontSize: 17,
-  checkboxBgColor: '#039BE5',
-  checkboxSize: 20,
-  checkboxTickColor: 'transparent',
+  checkboxBgColor: 'transparent',
+  checkboxSize: 24,
+  get checkboxTickColor(){
+    return this.gray400
+  },
   get checkboxSizeLarge(){
     return this.checkboxSize * 1.5
   },
@@ -203,7 +205,9 @@ export default {
 
     // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#00a9d4',
+  get toolbarDefaultBg() {
+    return this.blue400
+  },
   toolbarHeight: (platform === 'ios') ? 76 : 56,
   toolbarIconSize: (platform === 'ios') ? 20 : 22,
   toolbarSearchIconSize: (platform === 'ios') ? 20 : 23,

@@ -38,6 +38,7 @@ export const InputField = ({ input, label, meta: { active, touched, error, warni
 export const CheckBoxField = ({ input, label, meta: { touched, error, warning }, style, checkboxStyle, labelStyle, ...custom }) => (  
   <View style={{...styles.checkboxContainer, ...style}} >      
     <CheckBox
+      color="transparent"
       checked={!!input.value}
       {...custom}      
       style={{...styles.checkbox, ...checkboxStyle}}     

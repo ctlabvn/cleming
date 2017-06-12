@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Text, Button, Content, Spinner, Radio, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
 import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput, KeyboardAvoidingView } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -7,6 +7,7 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import material from '~/theme/variables/material.js'
+import CheckBox from '~/ui/elements/CheckBox'
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
@@ -57,7 +58,7 @@ export default class FeedbackDialog extends Component {
                         {this.state.listValue && this.state.listValue.map((item) => (
                             <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
                                 <View style={styles.rowPadding}>
-                                    <Radio selected={this.state.selectedValue == item.reasonId} style={styles.marginRight} />
+                                    <CheckBox type="radio" checked={this.state.selectedValue == item.reasonId} style={styles.marginRight} />
                                     <Text>{item.reason}</Text>
                                 </View>
                             </TouchableOpacity>
