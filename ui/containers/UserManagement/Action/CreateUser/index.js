@@ -6,7 +6,7 @@ import {
   Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
   Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text, Dimensions, Clipboard } from 'react-native'
+import { Text, Dimensions, Clipboard, Keyboard } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -199,6 +199,7 @@ export default class CreateUserContainer extends Component {
   }
 
   onFromTimeFocus() {
+    Keyboard.dismiss();
     this.setState({
       fromTimeVisible: true
     })
@@ -218,6 +219,7 @@ export default class CreateUserContainer extends Component {
   }
 
   onToTimeFocus() {
+    Keyboard.dismiss();
     this.setState({
       toTimeVisible: true
     })
