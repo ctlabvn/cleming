@@ -116,7 +116,6 @@ export default {
         title: 'Quản lý tài khoản',
         Page: UserManagement,
         footerType: 'none',
-        headerType: 'back',
         showTopDropdown: true
     },
     'userManagement/action/createUser': {
