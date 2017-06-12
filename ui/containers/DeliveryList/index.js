@@ -4,14 +4,12 @@ import { Container, List, ListItem, Text, Thumbnail, Button, Spinner } from 'nat
 import { View, Modal, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as orderActions from '~/store/actions/order'
 import * as commonActions from '~/store/actions/common'
 import * as placeActions from '~/store/actions/place'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
-import { getSelectedPlace } from '~/store/selectors/place'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
 import Content from '~/ui/components/Content'
@@ -31,8 +29,6 @@ import {
 }
     from '~/store/constants/app'
 @connect(state => ({
-    place: state.place,
-    selectedPlace: getSelectedPlace(state),
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
 }), { ...orderActions, ...commonActions, ...placeActions })
@@ -41,15 +37,11 @@ export default class extends Component {
 
     constructor(props) {
         super(props)
-        let selectedPlace
-        if (props.selectedPlace && Object.keys(props.selectedPlace).length > 0) {
-            selectedPlace = props.selectedPlace.id
-        } else {
-            if (props.place && props.listPlace) {
-                selectedPlace = props.place.listPlace[0].id
-            } else {
-                selectedPlace = null
-            }
+        const {app} = props
+        let placeDropdownValue = app.topDropdown.getValue()
+        let selectedPlace = null
+        if (placeDropdownValue && Object.keys(placeDropdownValue).length>0){
+            selectedPlace = placeDropdownValue.id
         }
         this.state = {
             selectedPlace: selectedPlace,
@@ -79,7 +71,6 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            app.topDropdown.show(true)
             this.setState({ counting: true })
         })
     }
@@ -88,7 +79,6 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
             const {app} = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            app.topDropdown.show(true)
             this._load()
         })
 
@@ -102,19 +92,19 @@ export default class extends Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-            this.isLoadingPlace = false
-            let selectedPlace = nextProps.place.listPlace[0].placeId
-            this.setState({ selectedPlace: selectedPlace },
-                () => {
-                    let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
-                    this.loadPage(1, dateFilterData.from, dateFilterData.to)
-                }
-            )
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+    //         this.isLoadingPlace = false
+    //         let selectedPlace = nextProps.place.listPlace[0].placeId
+    //         this.setState({ selectedPlace: selectedPlace },
+    //             () => {
+    //                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
+    //                 this.loadPage(1, dateFilterData.from, dateFilterData.to)
+    //             }
+    //         )
 
-        }
-    }
+    //     }
+    // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList } = this.props
@@ -306,7 +296,7 @@ export default class extends Component {
     }
 
     render() {
-        const { handleSubmit, submitting, place, selectedPlace } = this.props
+        const { handleSubmit, submitting, place } = this.props
 
 
         // let dropdownValues = place.listPlace.map(item => ({
@@ -318,10 +308,6 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                {/*<TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace}
-                    selectedOption={selectedPlace}
-                />*/}
-
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />

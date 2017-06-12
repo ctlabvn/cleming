@@ -46,7 +46,6 @@ export default class MerchantOverview extends Component {
             lat = location.latitude
             long = location.longitude
         }
-        setTimeout(() => {
             getListPlace(this.props.xsession, lat, long,
                 (err, data) => {
                     let toTime = moment(new Date())
@@ -77,14 +76,13 @@ export default class MerchantOverview extends Component {
 
                     }
                 })
-        }, 3000)
+        
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            // app.topDropdown.show(true)
             this._load()
         })
     }
@@ -93,8 +91,6 @@ export default class MerchantOverview extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            // app.topDropdown.show(true)
-
             this._load()
         })
     }
@@ -212,14 +208,6 @@ export default class MerchantOverview extends Component {
         }))
 
         let mainContainer = null
-        let topDropdown = null // fix break ui first time load
-        topDropdown = (
-            <TopDropdown
-                ref='placeDropdown'
-                dropdownValues={dropdownValues}
-                selectedOption={selectedPlace}
-                onSelect={this._handleChangePlace.bind(this)} />
-        )
         if (place && place.listPlace) {
             mainContainer = this.renderMainContainer()
         } else {
@@ -227,7 +215,6 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                {/*{topDropdown}*/}
                 <View style={styles.contentContainer}>
                     <GradientBackground colors={[material.blue400, material.blue600]} />
                     <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />

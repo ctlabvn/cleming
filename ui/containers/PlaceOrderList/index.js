@@ -31,8 +31,8 @@ import {
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
-    selectedPlace: getSelectedPlace(state),
-    place: state.place,
+    // selectedPlace: getSelectedPlace(state),
+    // place: state.place,
     booking: state.booking,
     modal: state.modal.modal
 }), { ...commonActions, ...bookingActions, ...placeActions }, null, { withRef: true })
@@ -172,7 +172,8 @@ export default class PlaceOrderList extends Component {
     }
     _onRefresh = () => {
         this.setState({ loading: true })
-        let {selectedPlace} = this.props
+        let {app} = this.props
+        let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -180,16 +181,18 @@ export default class PlaceOrderList extends Component {
         }
     }
     _loadMore = () => {
-        const { booking, selectedPlace } = this.props
+        const { booking, app } = this.props
         if (booking.isLast) return
         // let currentPlace = this.refs.placeDropdown.getValue()
+        let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to,
             this.refs.tabs.getActiveTab(), true, booking.page + 1)
 
     }
     _handlePressTab = (item) => {
-        let {selectedPlace} = this.props
+        const {app} = this.props
+        let selectedPlace = app.topDropdown.getValue()
         this.selectTab = item.tabID
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -207,7 +210,8 @@ export default class PlaceOrderList extends Component {
 
     }
     _handlePressFilter(item) {
-        const { booking, selectedPlace } = this.props
+        const { booking, app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length>0) {
@@ -241,9 +245,9 @@ export default class PlaceOrderList extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { app, selectedPlace } = this.props
+            const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            // app.topDropdown.show(true)
+            selectedPlace = app.topDropdown.getValue()
 
             // let currentPlace = this.refs.placeDropdown.getValue()
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -259,7 +263,6 @@ export default class PlaceOrderList extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            // app.topDropdown.show(true)
             this.setState({ counting: true })
         })
     }
@@ -280,7 +283,7 @@ export default class PlaceOrderList extends Component {
     //     }
     // }
     render() {
-        const { booking, place, selectedPlace } = this.props
+        const { booking, place } = this.props
         if (!booking) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -291,10 +294,10 @@ export default class PlaceOrderList extends Component {
         }
 
         // GET PLACE LIST
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
+        // let dropdownValues = place.listPlace.map(item => ({
+        //     id: item.placeId,
+        //     name: item.address
+        // }))
 
         return (
             <View style={styles.container}>

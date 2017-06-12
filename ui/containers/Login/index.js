@@ -173,14 +173,12 @@ export default class extends Component {
   componentWillFocus() {
     InteractionManager.runAfterInteractions(() => {
       const { app } = this.props
-      // app.topDropdown.show(false)
       this._handleShowLogin()
     })
     // this.forceUpdate()
   }
   componentWillMount() {
     const { app } = this.props
-    // app.topDropdown.show(false)
   }
   renderPasswordForm() {
     const { handleSubmit } = this.props

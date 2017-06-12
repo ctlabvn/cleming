@@ -107,6 +107,7 @@ export default class TopDropdown extends Component {
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         if (!this.state.show){
+            console.log('Case TopDropdown hide')
             return <View />
         }
         if (!dropdownValues || dropdownValues.length == 0 || !selectedOption ||

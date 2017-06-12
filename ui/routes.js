@@ -117,6 +117,7 @@ export default {
         Page: UserManagement,
         footerType: 'none',
         headerType: 'back',
+        showTopDropdown: true
     },
     'userManagement/action/createUser': {
         title: 'Thêm tài khoản',

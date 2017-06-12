@@ -61,14 +61,12 @@ export default class extends Component {
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
-            // app.topDropdown.show(false)
             this._load()
         })
     }
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
-            // app.topDropdown.show(false)
             this.setState({ counting: true })
             this._load()
         })

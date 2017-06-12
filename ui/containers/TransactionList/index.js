@@ -18,7 +18,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
 import { getListTransactionDirect, getListTransactionCLM } from '~/store/selectors/transaction'
-import { getSelectedPlace } from '~/store/selectors/place'
+// import { getSelectedPlace } from '~/store/selectors/place'
 import options from './options'
 import material from '~/theme/variables/material.js'
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, TIME_FORMAT_WITHOUT_SECOND } from '~/store/constants/app'
@@ -33,7 +33,7 @@ import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_S
 @connect(state => ({
     xsession: getSession(state),
     // place: state.place,
-    selectedPlace: getSelectedPlace(state),
+    // selectedPlace: getSelectedPlace(state),
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state)
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
@@ -51,16 +51,18 @@ export default class extends Component {
     // need filter transaction type
     _handlePressFilter(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
-        const {selectedPlace}  = this.props
+        const {app} = this.props
+        let selectedPlace  = app.topDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        if (currentPlace) {
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         }
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        const {selectedPlace} = this.props
+        const {app} = this.props
+        let selectedPlace = app.topDropdown.getValue()
         this.setState({ currentTab: item.tabID },
             () => {
                 // let currentPlace = this.refs.placeDropdown.getValue()
@@ -81,7 +83,8 @@ export default class extends Component {
 
     _handleTransactionFilterChange(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
-        const {selectedPlace} = this.props
+        const {app} = this.props
+        let {selectedPlace} = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, item.value)
@@ -91,7 +94,6 @@ export default class extends Component {
 
     // Need Filter transaction type
     _handleTopDrowpdown = (item) => {
-        const { setSelectedOption } = this.props
         // setSelectedOption(item)
         console.log('Handle Change TopDropdown', item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -102,25 +104,12 @@ export default class extends Component {
         const { confirmTransaction, xsession, setToast, forwardTo } = this.props
         forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
     }
-    componentWillReceiveProps(nextProps) {
-        // if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-        //     this.isLoadingPlace = false
-        //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        //     let currentPlace = nextProps.place.listPlace.map(item => ({
-        //         id: item.placeId,
-        //         name: item.address
-        //     }))[0]
 
-        //     let transactionFilterComponent = this.refs.transactionFilter
-        //     let transactionFilter = transactionFilterComponent.getCurrentValue()
-        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to)
-        // }
-    }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const {app, selectedPlace} = this.props
+            const {app} = this.props
+            let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            // app.topDropdown.show(true)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             // let currentPlace = this.refs.placeDropdown.getValue()
             let transactionFilterComponent = this.refs.transactionFilter
@@ -136,7 +125,6 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(()=>{
             const {app} = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            // app.topDropdown.show(true)
         })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
@@ -341,7 +329,7 @@ export default class extends Component {
     }
     render() {
         console.log('Render TransactionList')
-        const { forwardTo, selectedPlace, payDirect, payWithClingme } = this.props
+        const { forwardTo, payDirect, payWithClingme } = this.props
         if (!payDirect && !payWithClingme) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
