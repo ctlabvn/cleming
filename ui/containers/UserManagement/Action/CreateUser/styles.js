@@ -29,7 +29,7 @@ export default {
     },
     listItem:{
         marginLeft:10,
-        marginRight:10,
+        marginRight:-5,
         paddingLeft:10,
         paddingRight:10,
         height:40,

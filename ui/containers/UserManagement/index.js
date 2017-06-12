@@ -345,6 +345,7 @@ class UserManagement extends Component {
                     onSelect={this._handleChangePlace.bind(this)} />
                 <Content style={{ backgroundColor: material.white500 }}>
                     <List
+                        removeClippedSubviews={false}
                         style={{ marginBottom: 50, marginTop: 20 }}
                         dataArray={this.data}
                         renderRow={this.renderRow.bind(this)} />

@@ -3,10 +3,10 @@
  */
 import React, {Component} from 'react'
 import {
-    ListItem, Text, View, Grid, Col, CheckBox, List
+    ListItem, Text, View, Grid, Col, List
 } from 'native-base'
 import shallowCompare from 'react-addons-shallow-compare'
-
+import CheckBox from '~/ui/elements/CheckBox'
 import validate from 'validate.js'
 import _ from 'underscore'
 
@@ -210,8 +210,8 @@ export class renderGroup extends Component {
               <ListItem key={index} last={index===this.state.fields.length-1} style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
-                    <CheckBox
-                      style={{borderWidth: 1}}
+                    <CheckBox           
+                      type="radio"                                 
                       checked={address.checked}
                       onPress={e=>this.handleCheck(index)}
                     />
