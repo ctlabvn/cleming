@@ -127,7 +127,7 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
           yield put(removeLoggedUser())
           yield put(setAuthState(false))       
           yield put(forwardTo('login'))
-          yield put(logout())   
+          yield put(logout(token))
         }
       }
       // anyway, we should treat this as error to log

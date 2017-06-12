@@ -488,15 +488,14 @@ export default class App extends Component {
             initialRoute={{ title, path, showTopDropdown }}
             renderScene={this._renderPage}
           />
+          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
+          <Toasts />
+          <Popover ref={ref => this.popover = ref} />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
           />
-
-          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
-          <Toasts />
-          <Popover ref={ref => this.popover = ref} />
         </Drawer>
       </StyleProvider>
     )
