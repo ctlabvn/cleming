@@ -181,6 +181,7 @@ export default class CreateUserContainer extends Component {
           firstTimeResetTime: true,
       });
       this.setDefaultTimeWork();
+      this.setDefaultPlace();
   }
 
   componentWillMount() {
@@ -336,7 +337,6 @@ export default class CreateUserContainer extends Component {
                   toTime: this.props.initialValues.toTimeWork,
                   firstTimeResetTime: false,
               })
-              this.setDefaultPlace();
           }
   }
 
