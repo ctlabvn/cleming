@@ -110,6 +110,7 @@ export default class TopDropdown extends Component {
             console.log('Case TopDropdown hide')
             return <View />
         }
+        console.log('Case Topdropdown showrr')
         if (!dropdownValues || dropdownValues.length == 0 || !selectedOption ||
                 Object.keys(selectedOption).length == 0){
             return (

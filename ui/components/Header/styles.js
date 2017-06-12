@@ -42,5 +42,13 @@ export default {
   searchInput:{
     height: material.platform === 'ios' ? 30 : 50,    
     color:'#fff'
+  },
+  overlay: {
+    position: 'absolute', 
+    // backgroundColor: 'rgba(0,0,0,0.5)', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0
   }
 }

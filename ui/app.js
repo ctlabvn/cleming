@@ -403,19 +403,29 @@ export default class App extends Component {
     const { setSelectedOption } = this.props
     console.log('Place change APPJS', item)
     this.topDropdown.updateSelectedOption(item)
+    this.header.showOverlay(false)
     setSelectedOption(item)
   }
   _handlePressIcon = (openning) => {
     console.log('Handle Press Icon APPJS')
     if (openning) {
       this.topDropdownListValue.close()
+      this.header.showOverlay(false)
     } else {
       this.topDropdownListValue.open()
+      this.header.showOverlay(true)
     }
   }
   _handlePressOverlay = () => {
     console.log('Handle Press Overlay APPJS')
     this.topDropdown.close()
+    this.header.showOverlay(false)
+  }
+  _handlePressHeaderOverlay = () => {
+    console.log('Press header overlay')
+    this.topDropdown.close()
+    this.topDropdownListValue.close()
+    this.header.showOverlay(false)
   }
   render() {
     const { router, drawerState, closeDrawer } = this.props
@@ -451,7 +461,9 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} />
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} 
+            onPressOverlay = {this._handlePressHeaderOverlay}
+            />
 
           <TopDropdown
             ref={ref => this.topDropdown = ref}
