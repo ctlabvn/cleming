@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import {
-    Button, List, ListItem, Switch, Spinner, CheckBox,
+    Button, List, ListItem, Switch, Spinner,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import { Text } from 'react-native'
@@ -21,9 +21,8 @@ import * as placeAction from '~/store/actions/place'
 import * as accountSelectors from '~/store/selectors/account'
 import { getSelectedPlace } from '~/store/selectors/place'
 import TopDropdown from '~/ui/components/TopDropdown'
+import CheckBox from '~/ui/elements/CheckBox'
 import material from '~/theme/variables/material.js'
-
-const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 @connect(state => ({
     session: authSelectors.getSession(state),
@@ -278,14 +277,14 @@ class UserManagement extends Component {
                             </Col>
                             <Col style={{ width: '30%' }}>
                                 <Row style={styles.rowCheckBox}>
-                                    <CheckBox
-                                        style={{ borderWidth: 2 }}
+                                    <CheckBox   
+                                        type="radio"                                     
                                         onPress={this.onUpdateInfoPress.bind(this)}
                                         checked={this.state.updateInfoChecked} />
                                 </Row>
                                 <Row style={styles.rowCheckBox}>
-                                    <CheckBox
-                                        style={{ borderWidth: 2 }}
+                                    <CheckBox     
+                                        type="radio"                                   
                                         onPress={this.onDeleteAccountPress.bind(this)}
                                         checked={this.state.deleteAccountChecked} />
                                 </Row>
