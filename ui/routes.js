@@ -129,6 +129,7 @@ export default {
         title: 'Thông tin tài khoản',
         Page: UpdateUserContainer,
         footerType: 'none',
+        headerType: 'back',
     },
     help:{
         title: 'Help',
