@@ -14,5 +14,8 @@ export default {
     // return fetchJsonWithToken(token, `/logout`)
     return apiGet('/notify/list', {page}, session)
   },
-
+  updateReadNotification(session, notifyId){
+    console.log('Update read noty', session+ '---'+notifyId)
+    return apiPost('/notify/update-read', {notifyId}, session)
+  }
 }

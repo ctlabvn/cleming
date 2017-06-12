@@ -20,7 +20,10 @@ const requestGetNotification = createRequestSaga({
     ],
 })
 
-
+const requestUpdateReadStatus = createRequestSaga({
+    request: api.notification.updateReadNotification,
+    key: 'notification/updateReadStatus',
+})
 
 // root saga reducer
 export default [
@@ -30,7 +33,8 @@ export default [
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [
-            takeLatest('app/getNotification', requestGetNotification),            
+            takeLatest('app/getNotification', requestGetNotification),
+            takeLatest('notification/updateReadStatus', requestUpdateReadStatus)            
         ]
     },
 ]

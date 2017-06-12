@@ -12,6 +12,8 @@ import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
 import * as commonActions from '~/store/actions/common'
 import * as bookingActions from '~/store/actions/booking'
+import * as notificationActions from '~/store/actions/notification'
+import { getSession } from '~/store/selectors/auth'
 import styles from './styles'
 import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
@@ -19,10 +21,11 @@ import material from '~/theme/variables/material.js'
 import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT } from '~/store/constants/app'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 @connect(state => ({
+  xsession: getSession(state),
   user: state.auth.user,
   place: state.place,
   booking: state.booking
-}), { ...commonActions, ...bookingActions })
+}), { ...commonActions, ...bookingActions, ...notificationActions })
 
 export default class PlaceOrderDetail extends Component {
   constructor(props) {
@@ -34,53 +37,57 @@ export default class PlaceOrderDetail extends Component {
   }
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      const { getBookingDetail, app } = this.props
+      const { getBookingDetail, app, xsession, updateRead, setToast } = this.props
       let bookingId = this.props.route.params.id
       let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
       this.setState({ counting: true })
-      if (!bookingArr || bookingArr.length == 0) {
-        // if not in store, load from API
-        getBookingDetail(this.props.user.xsession, bookingId,
+     getBookingDetail(xsession, bookingId,
           (error, data) => {
             console.log('Err Booking detail', error)
             console.log('Booking Detail', data)
             if (data && data.updated) {
-              this.setState({ bookingDetail: data.updated.bookingInfo })
+              let bookingDetail = data.updated.bookingInfo
+              if (!bookingDetail.isReadCorrespond && bookingDetail.notifyIdCorrespond){
+                updateRead(xsession, bookingDetail.notifyIdCorrespond)
+              }
+              this.setState({ bookingDetail: bookingDetail })
               return
             } else {
+              setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
               this.props.forwardTo('merchantOverview')
               return
             }
           }
         )
-      }
-      this.setState({ bookingDetail: bookingArr[0] })
+      // this.setState({ bookingDetail: bookingArr[0] })
     })
 
   }
   componentWillFocus() {
     InteractionManager.runAfterInteractions(() => {
-      const {app} = this.props
+      const {app, getBookingDetail, updateRead, xsession, setToast} = this.props
       let bookingId = this.props.route.params.id
       let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
       this.setState({ counting: true })
-      if (!bookingArr || bookingArr.length == 0) {
-        //if not in store, load from API
-        getBookingDetail(this.props.user.xsession, bookingId,
+        getBookingDetail(xsession, bookingId,
           (error, data) => {
             console.log('Err Booking Detail', error)
             console.log('Booking Detail', data)
+            let bookingDetail = data.updated.bookingInfo
+            if (!bookingDetail.isReadCorrespond && bookingDetail.notifyIdCorrespond){
+              updateRead(xsession, bookingDetail.notifyIdCorrespond)
+            }
             if (data && data.updated) {
               this.setState({ bookingDetail: data.updated.bookingInfo })
               return
             } else {
+              setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
               this.props.forwardTo('merchantOverview')
               return
             }
           }
         )
-      }
-      this.setState({ bookingDetail: bookingArr[0] })
+      // this.setState({ bookingDetail: bookingArr[0] })
     })
   }
   componentWillBlur() {

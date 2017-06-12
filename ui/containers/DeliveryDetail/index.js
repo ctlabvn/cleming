@@ -7,6 +7,7 @@ import styles from './styles'
 import * as orderActions from '~/store/actions/order'
 import * as commonActions from '~/store/actions/common'
 import * as orderSelectors from '~/store/selectors/order'
+import * as notificationActions from '~/store/actions/notification'
 import * as authSelectors from '~/store/selectors/auth'
 import { InputField } from '~/ui/elements/Form'
 import RadioPopup from '~/ui/components/RadioPopup'
@@ -25,7 +26,7 @@ import { formatPhoneNumber } from '~/ui/shared/utils'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
-}), { ...orderActions, ...commonActions })
+}), { ...orderActions, ...commonActions, ...notificationActions })
 
 export default class extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ export default class extends Component {
         }
     }
     _load() {
-        const { route, getOrderDetail, xsession, setToast, forwardTo } = this.props
+        const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead } = this.props
         let deliveryId = route.params.id
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
@@ -52,6 +53,10 @@ export default class extends Component {
                 }
                 if (data && data.updated) {
                     this.setState({ orderDetail: data.updated })
+                    if (data.updated.orderInfo && !data.updated.orderInfo.isReadCorrespond
+                        && data.updated.orderInfo.notifyIdCorrespond){
+                            updateRead(xsession, data.updated.orderInfo.notifyIdCorrespond)
+                    }
                 }
 
             }

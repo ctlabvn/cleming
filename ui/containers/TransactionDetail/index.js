@@ -8,6 +8,7 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import * as transactionActions from '~/store/actions/transaction'
 import * as commonActions from '~/store/actions/common'
+import * as notificationActions from '~/store/actions/notification'
 import { getSession } from '~/store/selectors/auth'
 import { storeTransparent, storeFilled } from '~/assets'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
@@ -28,7 +29,7 @@ import material from '~/theme/variables/material'
     place: state.place,
     transaction: state.transaction,
     denyReason: state.transaction.denyReason
-}), { ...transactionActions, ...commonActions })
+}), { ...transactionActions, ...commonActions, ...notificationActions })
 export default class TransactionDetail extends Component {
     constructor(props) {
         super(props)
@@ -340,7 +341,7 @@ export default class TransactionDetail extends Component {
         }
     }
     _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead } = this.props
         let transactionType = route.params.type
         this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
@@ -400,6 +401,10 @@ export default class TransactionDetail extends Component {
                             }
 
                         }
+                        if (!transInfo.isReadCorrespond && transInfo.notifyIdCorrespond){
+                            updateRead(xsession, transInfo.notifyIdCorrespond)
+                        }
+
                         this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
                             () => {
                                 this.swiping = true

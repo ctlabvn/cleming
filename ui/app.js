@@ -190,7 +190,7 @@ export default class App extends Component {
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
-    console.log('Route will receive props', getPage(router.route))
+    // console.log('Route will receive props', getPage(router.route))
     this.page = getPage(router.route)
     const { headerType, footerType, title, path, showTopDropdown } = this.page
     this.topDropdown.show(showTopDropdown)

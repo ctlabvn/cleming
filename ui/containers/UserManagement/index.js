@@ -102,8 +102,17 @@ class UserManagement extends Component {
         })
     }
     componentDidMount() {
-        let currentPlace = this.refs.placeDropdown.getValue()
-        currentPlace && this._loadListEmployee(currentPlace.id)
+        const {app} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        let currentPlace = app.topDropdown.getValue()
+        if (currentPlace && Object.keys(currentPlace).length>0){
+            this._loadListEmployee(currentPlace.id)
+        }
+    }
+
+    componentWillFocus(){
+        const {app} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
     }
 
     onAccountPress(data, rowID) {
@@ -330,17 +339,8 @@ class UserManagement extends Component {
                 </View>
             )
         }
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
         return (
-            <Container style={{ paddingTop: 50 }}>
-                <TopDropdown
-                    ref='placeDropdown'
-                    dropdownValues={dropdownValues}
-                    selectedOption={selectedPlace}
-                    onSelect={this._handleChangePlace.bind(this)} />
+            <Container>
                 <Content style={{ backgroundColor: material.white500 }}>
                     <List
                         removeClippedSubviews={false}

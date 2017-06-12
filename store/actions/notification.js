@@ -11,3 +11,8 @@ export const replaceNotification = (data) => ({
   type: 'app/replaceNotification',
   payload: data,
 })
+
+export const updateRead = (...args) => ({
+  type: 'notification/updateReadStatus',
+  args
+})
