@@ -19,15 +19,11 @@ export default (variables = variable) => {
         height: variables.checkboxSizeLarge,        
       },
       'NativeBase.Icon': {
-        color: variables.gray400,
-        lineHeight: variables.CheckboxIconSize,
-        marginTop: variables.CheckboxIconMarginTop,
+        color: variables.gray400,                
         fontSize: variables.CheckboxFontSize,        
       },
       'NativeBase.IconNB': {
-        color: variables.gray400,
-        lineHeight: variables.CheckboxIconSize,
-        marginTop: variables.CheckboxIconMarginTop,
+        color: variables.gray400,                
         fontSize: variables.CheckboxFontSize,        
       },            
       paddingLeft: 0,

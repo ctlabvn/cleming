@@ -1,28 +1,24 @@
 import React, { Component } from 'react'
 import Icon from '~/ui/elements/Icon'
-import { mapPropsToStyleNames, connectStyle, Button } from 'native-base'
+import { TouchableOpacity } from 'react-native'
+import { mapPropsToStyleNames, connectStyle } from 'native-base'
 import material from '~/theme/variables/material'
 
+// do not connect to Button to remove redundant connected style
 @connectStyle('NativeBase.CheckBox', {}, mapPropsToStyleNames)
 export default class CheckBox extends Component {
   render() {
     const {type='checkbox', ...props} = this.props    
     return (
-      <Button transparent {...props}>
+      <TouchableOpacity {...props}>
         <Icon
-          style={{            
-            fontSize: material.CheckboxFontSize,
-            lineHeight: material.CheckboxIconSize,
-            marginLeft: 0,
-            marginRight: 0,
-          }}
           name={
             this.props.checked 
               ? (type === 'checkbox' ? 'checked' : 'option_check')
               : 'option_uncheck'
           }
         />
-      </Button>
+      </TouchableOpacity>
     )
   }
 }
