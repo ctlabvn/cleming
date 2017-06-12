@@ -76,7 +76,7 @@ class UserManagement extends Component {
     }
     _loadListEmployee(placeId) {
         const { getListEmployee, session, user } = this.props
-        
+
         this.setState({
             isFetchingData: true
         })
@@ -319,9 +319,6 @@ class UserManagement extends Component {
         forwardTo('userManagement/action/createUser')
     }
     _handleChangePlace = (item) => {
-        const {setSelectedOption} = this.props
-        setSelectedOption(item)
-
         this._loadListEmployee(item.id)
     }
     render() {

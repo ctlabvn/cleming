@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { 
   Item, Input, Text, Label,    
-  View, CheckBox,
+  View,
 } from 'native-base'
 
 import Icon from '~/ui/elements/Icon'
@@ -12,6 +12,7 @@ import DatePicker from '~/ui/components/DatePicker'
 import Dropdown from '~/ui/components/Dropdown'
 import Toggle from '~/ui/components/Toggle'
 import material from '~/theme/variables/material'
+import CheckBox from '~/ui/elements/CheckBox'
 import styles from './styles'
 
 export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {

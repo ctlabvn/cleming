@@ -3,7 +3,6 @@ export default {
     container: {
         backgroundColor: material.backgroundColor1,
         height: '100%',
-        paddingBottom: 50
     },
     content: {
         padding: 10,

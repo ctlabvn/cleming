@@ -37,7 +37,7 @@ export default class MerchantOverview extends Component {
     }
 
     _load() {
-        const { user, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
+        const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
@@ -46,45 +46,61 @@ export default class MerchantOverview extends Component {
             lat = location.latitude
             long = location.longitude
         }
-        getListPlace(this.props.xsession, lat, long,
-            (err, data) => {
-                let toTime = moment(new Date())
-                if (data && data.updated && data.updated.data) {
-                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                        let selectedOption = {}
-                        selectedOption.id = data.updated.data[0].placeId
-                        selectedOption.name = data.updated.data[0].address
-                        setSelectedOption(selectedOption)
-                    }
-                    let currentPlace = this.refs.placeDropdown.getValue()
-                    if (currentPlace) {
-                        getMerchantNews(xsession, currentPlace.id)
-                    } else {
-                        getMerchantNews(xsession, data.updated.data[0].placeId)
-                    }
+            getListPlace(this.props.xsession, lat, long,
+                (err, data) => {
+                    let toTime = moment(new Date())
+                    if (data && data.updated && data.updated.data) {
+                        let listPLace = data.updated.data.map(item => ({
+                            id: item.placeId,
+                            name: item.address
+                        }))
 
-                }
-            })
+                        app.topDropdown.updateDropdownValues(listPLace)
+                        app.topDropdownListValue.updateDropdownValues(listPLace)
 
+                        console.log('Selected Place Merchant Overview', selectedPlace)
+                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                            let selectedOption = {}
+                            selectedOption.id = data.updated.data[0].placeId
+                            selectedOption.name = data.updated.data[0].address
+                            setSelectedOption(selectedOption)
+                            app.topDropdown.updateSelectedOption(selectedOption)
+                            app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        }
+
+                        if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                            getMerchantNews(xsession, selectedPlace.id)
+                        } else {
+                            getMerchantNews(xsession, data.updated.data[0].placeId)
+                        }
+
+                    }
+                })
+        
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             this._load()
         })
     }
 
     componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
-        //     this._load()
-        // })
+        InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            this._load()
+        })
     }
 
-    _handleChangePlace(item) {
+    _handleChangePlace = (item) => {
+        console.log('Call callback handle place change', item)
         const { place, setSelectedOption } = this.props
         // let dateFilterData = this.refs.dateFilter.getData()
         // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-        setSelectedOption(item)
+        // setSelectedOption(item)
         this.props.getMerchantNews(this.props.xsession, item.id)
     }
 
@@ -192,14 +208,6 @@ export default class MerchantOverview extends Component {
         }))
 
         let mainContainer = null
-        let topDropdown = null // fix break ui first time load
-        topDropdown = (
-            <TopDropdown
-                ref='placeDropdown'
-                dropdownValues={dropdownValues}
-                selectedOption={selectedPlace}
-                onSelect={this._handleChangePlace.bind(this)} />
-        )
         if (place && place.listPlace) {
             mainContainer = this.renderMainContainer()
         } else {
@@ -207,7 +215,6 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                {topDropdown}
                 <View style={styles.contentContainer}>
                     <GradientBackground colors={[material.blue400, material.blue600]} />
                     <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />

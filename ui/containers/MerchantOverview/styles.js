@@ -12,7 +12,7 @@ export default {
         // paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
     },
     contentContainer: {
-        marginTop: 50,
+        // marginTop: 50,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
