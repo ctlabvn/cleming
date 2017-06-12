@@ -44,7 +44,8 @@ export default class extends Component {
 
   componentWillFocus() {
     // make it like before    
-    const { session, notifications, getNotification } = this.props
+    const { session, notifications, getNotification, app } = this.props
+
     if (!notifications.data.length) {
       getNotification(session, 1, () => getNotification(session, 2))
     }

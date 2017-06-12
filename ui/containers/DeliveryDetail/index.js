@@ -21,7 +21,7 @@ import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
 import { DEFAULT_TIME_FORMAT, FAST_DELIVERY } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
-import {formatPhoneNumber} from '~/ui/shared/utils'
+import { formatPhoneNumber } from '~/ui/shared/utils'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -59,19 +59,21 @@ export default class extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(()=>{
-            this._load()    
+        InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            this._load()
         })
     }
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(()=>{
+        InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
             this.setState({ counting: true })
             this._load()
         })
     }
     componentWillBlur() {
-        InteractionManager.runAfterInteractions(()=>{
-            this.setState({ counting: false })    
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: false })
         })
     }
     render() {

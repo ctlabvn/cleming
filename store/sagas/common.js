@@ -15,7 +15,8 @@ import {
 import {
   saveRefreshToken,
   setAuthState,     
-  removeLoggedUser, 
+  removeLoggedUser,
+  logout 
 } from '~/store/actions/auth'
 
 import api from '~/store/api'
@@ -125,7 +126,8 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
           // call logout user because we do not have refresh token
           yield put(removeLoggedUser())
           yield put(setAuthState(false))       
-          yield put(forwardTo('login'))   
+          yield put(forwardTo('login'))
+          yield put(logout())   
         }
       }
       // anyway, we should treat this as error to log

@@ -20,10 +20,8 @@ import Content from '~/ui/components/Content'
 import geoViewport from '@mapbox/geo-viewport'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { getSession } from '~/store/selectors/auth'
-import { getSelectedPlace } from '~/store/selectors/place'
 @connect(state => ({
     xsession: getSession(state),
-    selectedPlace: getSelectedPlace(state),
     place: state.place,
     booking: state.booking,
     report: state.report
@@ -83,22 +81,25 @@ export default class Report extends Component {
             }
         )
     }
-    componentWillReceiveProps(nextProps) {
-        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-            this.isLoadingPlace = false
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+    //         this.isLoadingPlace = false
 
-            let selectedPlace = {}
-            selectedPlace.id = nextProps.place.listPlace[0].placeId
-            selectedPlace.name = nextProps.place.listPlace[0].address
+    //         let selectedPlace = {}
+    //         selectedPlace.id = nextProps.place.listPlace[0].placeId
+    //         selectedPlace.name = nextProps.place.listPlace[0].address
 
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-        }
-    }
+    //         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+    //         this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+    //     }
+    // }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
+            const {app} = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            const { selectedPlace } = this.props
+            let selectedPlace = app.topDropdown.getValue()
+            console.log('Select Place Did Mount report', selectedPlace)
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
@@ -112,8 +113,10 @@ export default class Report extends Component {
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
+            const {app} = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            const { selectedPlace } = this.props
+            let selectedPlace = app.topDropdown.getValue()
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
@@ -125,7 +128,8 @@ export default class Report extends Component {
     _regionChange = (region) => {
         this.setState({ region },
             () => {
-                let placeData = this.refs.placeDropdown.getValue()
+                const {app} = this.props
+                let placeData = app.topDropdown.getValue()
                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
                 this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
             }
@@ -139,9 +143,8 @@ export default class Report extends Component {
         this._regionChange(region)
     }
 
-    _handleTopDrowpdown = (item) => {
-        const { setSelectedOption } = this.props
-        setSelectedOption(item)
+    _handleTopDropdown = (item) => {
+        console.log('Report dropdown change', item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
             (err, data) => {
@@ -161,7 +164,8 @@ export default class Report extends Component {
     }
 
     _handlePressFilter = (item) => {
-        let placeData = this.refs.placeDropdown.getValue()
+        const {app} = this.props
+        let placeData = app.topDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
         this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
     }
@@ -332,21 +336,15 @@ export default class Report extends Component {
         )
     }
     render() {
-        const { report, place, selectedPlace } = this.props
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
+        const { report, place } = this.props
+        // let dropdownValues = place.listPlace.map(item => ({
+        //     id: item.placeId,
+        //     name: item.address
+        // }))
 
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
-                    onSelect={this._handleTopDrowpdown}
-                    selectedOption={selectedPlace}
-                />
-                <View style={{ marginTop: 50, height: '100%' }}
-                onLayout={e=>this.showMap = true}
-                >
+                <View style={{height: '100%'}} onLayout={e=>this.showMap = true}>
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
                     {this.showMap && <MapView
                         region={this.state.region}
@@ -354,7 +352,7 @@ export default class Report extends Component {
                         style={{ width: '100%', height: '100%' }}
                         onRegionChangeComplete={this.onRegionChangeComplete}
                         moveOnMarkerPress={false}
-                    >
+                        >
                         {report && report.map && report.map.locationDtos.map((marker, idx) => {
                             return (
                                 <MapView.Marker key={idx}
@@ -378,7 +376,7 @@ export default class Report extends Component {
 
                         })}
                     </MapView>
-                }
+                    }
                 </View>
             </Container>
         )

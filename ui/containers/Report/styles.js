@@ -2,7 +2,6 @@ import material from '~/theme/variables/material'
 export default{
     container: {
         backgroundColor: material.white500,
-        paddingBottom: 50,
         height: '100%'
     },
     mapPlaceholder: {

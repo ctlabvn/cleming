@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, Platform, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, View, InteractionManager } from 'react-native'
 import {
   Container,
   Form,
@@ -74,7 +74,7 @@ export default class extends Component {
       passwordSelection: { start: 0, end: 0 },
     }
 
-    
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,7 +101,7 @@ export default class extends Component {
   _handleShowForgot = (e) => {
     // const length = this.props.currentValues.email.length
     this.props.change('forgotEmail', this.props.currentValues.email)
-    this.setState({ 
+    this.setState({
       showForgot: true,
       // emailForgotFocus: true,
       // emailSelection: { start: length, end: length } 
@@ -147,22 +147,22 @@ export default class extends Component {
       return false
     }
     // New password must 4-12 characters
-    if (!newPassword.match(/^(\S){4,12}$/)){
+    if (!newPassword.match(/^(\S){4,12}$/)) {
       setToast('Mật khẩu có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường', 'danger')
       return false
     }
     return true
   }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
-    const {setToast, updateFirstTimeLogin, forwardTo} = this.props
+    const { setToast, updateFirstTimeLogin, forwardTo } = this.props
     if (!this._checkChangePassword(oldPassword, newPassword, reNewPassword)) return
     let data = {
       oldPassword: md5(oldPassword),
       password: md5(newPassword)
     }
     this.props.changePassword(this.props.session, data,
-      (err, dataR)=>{
-        if (dataR && dataR.updated && dataR.updated.isSent){
+      (err, dataR) => {
+        if (dataR && dataR.updated && dataR.updated.isSent) {
           updateFirstTimeLogin()
           this._handleShowLogin()
           forwardTo('merchantOverview', true)
@@ -170,9 +170,15 @@ export default class extends Component {
       }
     )
   }
-  componentWillFocus(){
-    this._handleShowLogin()
+  componentWillFocus() {
+    InteractionManager.runAfterInteractions(() => {
+      const { app } = this.props
+      this._handleShowLogin()
+    })
     // this.forceUpdate()
+  }
+  componentWillMount() {
+    const { app } = this.props
   }
   renderPasswordForm() {
     const { handleSubmit } = this.props
@@ -216,7 +222,7 @@ export default class extends Component {
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
           secureTextEntry={false}
-          label="Nhập số điện thoại để lấy lại mật khẩu" 
+          label="Nhập số điện thoại để lấy lại mật khẩu"
           component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
@@ -274,9 +280,9 @@ export default class extends Component {
       )
     }
     return (
-      <Container style={styles.container}>        
+      <Container style={styles.container}>
         <GradientBackground colors={['#14b3dd', styles.container.backgroundColor]} />
-        <Content>          
+        <Content>
 
           {!this.state.showPassword &&
             <Icon name="logo" style={styles.logoIcon} />
@@ -293,7 +299,7 @@ export default class extends Component {
         </Content>
 
 
-        
+
       </Container>
     )
   }

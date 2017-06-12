@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {         
     Header, Left, Right, Body,           
     Text, Title, Button, Item, Input,
-    Thumbnail
+    Thumbnail, View
 } from 'native-base'
 
 import * as commonSelectors from '~/store/selectors/common'
@@ -13,7 +13,7 @@ import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import { storeTransparent, storeFilled } from '~/assets'
 
-import {Keyboard} from 'react-native'
+import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 @connect(state=>({
   searchString: commonSelectors.getSearchString(state),
@@ -26,7 +26,8 @@ export default class extends Component {
     this.state = {
       type: props.type,
       title: props.title,
-      icon: props.icon
+      icon: props.icon,
+      showOverlay: false
     }
   }
 
@@ -37,7 +38,9 @@ export default class extends Component {
   show(type, title, icon){
     this.setState({type, title, icon})
   } 
-
+  showOverlay(showStatus){
+    this.setState({showOverlay: showStatus})
+  }
   _leftClick = (e)=>{
     const {onLeftClick} = this.props
     onLeftClick && onLeftClick(this.state.type)
@@ -110,13 +113,20 @@ export default class extends Component {
     )
     return this.renderHeader(left, center, right) 
   }
-
+  _handlePressOverlay = ()=>{
+    this.props.onPressOverlay && this.props.onPressOverlay()
+  }
   renderHeader(left, center, right, props) {    
     return (                             
       <Header noShadow {...props} style={styles.container}>          
         <Left>{left}</Left>
         <Body>{center}</Body>
         <Right>{right}</Right>
+        {this.state.showOverlay && 
+          <TouchableWithoutFeedback onPress={()=>this._handlePressOverlay()}>
+            <View style={styles.overlay}/>
+          </TouchableWithoutFeedback>
+        }
       </Header>     
     )
   }

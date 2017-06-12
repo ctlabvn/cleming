@@ -1,7 +1,7 @@
 import material from '~/theme/variables/material.js'
 export default{
     container: {
-        paddingTop: 50,
+        // paddingTop: 50,
         backgroundColor: material.gray200 
     },
     contentContainer: {

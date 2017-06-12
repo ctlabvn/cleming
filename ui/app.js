@@ -18,7 +18,8 @@ import Preload from './containers/Preload'
 import Header from '~/ui/components/Header'
 import Footer from '~/ui/components/Footer'
 import Popover from '~/ui/components/Popover'
-
+import TopDropdown from '~/ui/components/TopDropdownSeperate'
+import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 // router => render component base on url
 // history.push => location match => return component using navigator push
 import { matchPath } from 'react-router'
@@ -189,11 +190,14 @@ export default class App extends Component {
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
+    console.log('Route will receive props', getPage(router.route))
+    this.page = getPage(router.route)
+    const { headerType, footerType, title, path, showTopDropdown } = this.page
+    this.topDropdown.show(showTopDropdown)
+    
     if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
-      this.page = getPage(router.route)
       if (this.page) {
-        const { headerType, footerType, title, path } = this.page
         // show header and footer, and clear search string
         this.header.show(headerType, title)
         this.header._search('')
@@ -212,7 +216,7 @@ export default class App extends Component {
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
-          this.navigator.push({ title, path })
+          this.navigator.push({ title, path, showTopDropdown })
         }
       } else {
         // no need to push to route
@@ -260,7 +264,16 @@ export default class App extends Component {
     //   // if (!this.navigator || this.page.Preload === false) {
     //   //   return this.renderComponentFromPage(this.page)
     //   // }
-
+    // console.log('Page', route)
+    // console.log('APJS Topdopdpwm', this.topDropdown)
+    // if (this.topDropdown){
+    //   if (route.showTopDropdown){
+    //     this.topDropdown.show(true)
+    //   }else{
+    //     this.topDropdown.show(false)
+    //   }
+    // }
+    
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
         {this.renderComponentFromPage(this.page)}
@@ -320,7 +333,13 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, location } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location } = this.props
+    if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+      this.topDropdown.updateDropdownValues(place.listPlace)
+      this.topDropdown.updateSelectedOption(selectedPlace)
+      this.topDropdownListValue.updateDropdownValues(place.listPLace)
+      this.topDropdownListValue.updateSelectedOption(selectedPlace)
+    }
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
@@ -393,9 +412,37 @@ export default class App extends Component {
 
   }
 
+  _handleChangePlace = (item) => {
+    const { setSelectedOption } = this.props
+    console.log('Place change APPJS', item)
+    this.topDropdown.updateSelectedOption(item)
+    this.header.showOverlay(false)
+    setSelectedOption(item)
+  }
+  _handlePressIcon = (openning) => {
+    console.log('Handle Press Icon APPJS')
+    if (openning) {
+      this.topDropdownListValue.close()
+      this.header.showOverlay(false)
+    } else {
+      this.topDropdownListValue.open()
+      this.header.showOverlay(true)
+    }
+  }
+  _handlePressOverlay = () => {
+    console.log('Handle Press Overlay APPJS')
+    this.topDropdown.close()
+    this.header.showOverlay(false)
+  }
+  _handlePressHeaderOverlay = () => {
+    console.log('Press header overlay')
+    this.topDropdown.close()
+    this.topDropdownListValue.close()
+    this.header.showOverlay(false)
+  }
   render() {
     const { router, drawerState, closeDrawer } = this.props
-    const { title, path, headerType, footerType } = this.page
+    const { title, path,headerType, footerType, showTopDropdown } = this.page
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -427,12 +474,26 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} />
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} 
+            onPressOverlay = {this._handlePressHeaderOverlay}
+            />
+
+          <TopDropdown
+            ref={ref => this.topDropdown = ref}
+            onPressIcon={this._handlePressIcon}
+          />
+
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
-            initialRoute={{ title, path }}
+            initialRoute={{ title, path, showTopDropdown }}
             renderScene={this._renderPage}
           />
+          <TopDropdownListValue
+            onSelect={this._handleChangePlace}
+            onPressOverlay={this._handlePressOverlay}
+            ref={ref => this.topDropdownListValue = ref}
+          />
+
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />

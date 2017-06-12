@@ -20,7 +20,7 @@ import * as authSelectors from '~/store/selectors/auth'
 import * as placeAction from '~/store/actions/place'
 import * as accountSelectors from '~/store/selectors/account'
 import { getSelectedPlace } from '~/store/selectors/place'
-import TopDropdown from '~/ui/components/TopDropdown'
+// import TopDropdown from '~/ui/components/TopDropdown'
 import material from '~/theme/variables/material.js'
 
 const img = 'https://facebook.github.io/react/img/logo_og.png'
@@ -102,15 +102,21 @@ class UserManagement extends Component {
         })
     }
     componentDidMount() {
-        let currentPlace = this.refs.placeDropdown.getValue()
-        currentPlace && this._loadListEmployee(currentPlace.id)
+        // let currentPlace = this.refs.placeDropdown.getValue()
+        const {app} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        let currentPlace = app.topDropdown.getValue()
+        this._loadListEmployee(currentPlace.id)
     }
-
+    componentWillFocus(){
+        const {app} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+    }
     onAccountPress(data, rowID) {
         // this.setState({
         //     employeeData: data,
         //     rowIDOfEmployee: rowID
-        // }, () => {
+        // }, () =   {
         //     this.setState({
         //         modalOpen: true
         //     })
@@ -234,7 +240,7 @@ class UserManagement extends Component {
     }
 
     onSubmitModal() {
-        const { forwardTo, selectedPlace } = this.props
+        const { forwardTo, selectedPlace, app } = this.props
         if (this.state.updateInfoChecked) {
             this.setState({
                 updateInfoChecked: !this.state.updateInfoChecked
@@ -244,7 +250,7 @@ class UserManagement extends Component {
             this.setState({
                 isFetchingData: true
             })
-            let currentPlace = this.refs.placeDropdown.getValue()
+            let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
             })
@@ -319,8 +325,7 @@ class UserManagement extends Component {
         forwardTo('userManagement/action/createUser')
     }
     _handleChangePlace = (item) => {
-        const {setSelectedOption} = this.props
-        setSelectedOption(item)
+        console.log('User management place change', item)
         this._loadListEmployee(item.id)
     }
     render() {
@@ -337,12 +342,7 @@ class UserManagement extends Component {
             name: item.address
         }))
         return (
-            <Container style={{ paddingTop: 50 }}>
-                <TopDropdown
-                    ref='placeDropdown'
-                    dropdownValues={dropdownValues}
-                    selectedOption={selectedPlace}
-                    onSelect={this._handleChangePlace.bind(this)} />
+            <Container>
                 <Content style={{ backgroundColor: material.white500 }}>
                     <List
                         removeClippedSubviews={false}

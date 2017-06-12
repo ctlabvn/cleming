@@ -27,12 +27,14 @@ export default {
     merchantOverview: {
         title: 'Merchant Name',
         Page: MerchantOverview,
-        headerType: 'home'
+        headerType: 'home',
+        showTopDropdown: true
     },
     transactionList: {
         title: 'Danh sách giao dịch',
         Page: TransactionList,
-        headerType: 'back'
+        headerType: 'back',
+        showTopDropdown: true
     },
     'transactionDetail/:id/:type': {
         title: 'Chi tiết giao dịch',
@@ -63,7 +65,8 @@ export default {
     deliveryList: {
         title: 'Danh sách giao hàng',
         Page: DeliveryList,
-        headerType: 'back'
+        headerType: 'back',
+        showTopDropdown: true
     },
     'deliveryDetail/:id': {
         title: 'Chi tiết giao hàng',
@@ -72,12 +75,14 @@ export default {
     },
     report: {
         title: 'Khách hàng tiềm năng',
-        Page: Report
+        Page: Report,
+        showTopDropdown: true
     },
     placeOrderList: {
         title: 'Danh sách đặt chỗ',
         Page: PlaceOrderList,
-        headerType: 'back'
+        headerType: 'back',
+        showTopDropdown: true
     },
     'placeOrderDetail/:id': {
         title: 'Chi tiết đặt chỗ',
@@ -112,6 +117,7 @@ export default {
         Page: UserManagement,
         footerType: 'none',
         headerType: 'back',
+        showTopDropdown: true
     },
     'userManagement/action/createUser': {
         title: 'Thêm tài khoản',

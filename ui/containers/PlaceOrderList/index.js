@@ -31,8 +31,8 @@ import {
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
-    selectedPlace: getSelectedPlace(state),
-    place: state.place,
+    // selectedPlace: getSelectedPlace(state),
+    // place: state.place,
     booking: state.booking,
     modal: state.modal.modal
 }), { ...commonActions, ...bookingActions, ...placeActions }, null, { withRef: true })
@@ -172,45 +172,50 @@ export default class PlaceOrderList extends Component {
     }
     _onRefresh = () => {
         this.setState({ loading: true })
-        let currentPlace = this.refs.placeDropdown.getValue()
+        let {app} = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
-        if (currentPlace) {
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
     }
     _loadMore = () => {
-        const { booking } = this.props
+        const { booking, app } = this.props
         if (booking.isLast) return
-        let currentPlace = this.refs.placeDropdown.getValue()
+        // let currentPlace = this.refs.placeDropdown.getValue()
+        let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to,
+        this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to,
             this.refs.tabs.getActiveTab(), true, booking.page + 1)
 
     }
-    _handlePressTab(item) {
+    _handlePressTab = (item) => {
+        const {app} = this.props
+        let selectedPlace = app.topDropdown.getValue()
         this.selectTab = item.tabID
-        let currentPlace = this.refs.placeDropdown.getValue()
+        // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        if (currentPlace) {
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, item.tabID)
+        if (selectedPlace && Object.keys(selectedPlace).length>0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, item.tabID)
         }
 
     }
 
-    _handleTopDrowpdown(item) {
-        const { booking, setSelectedOption } = this.props
-        setSelectedOption(item)
-        let currentPlace = this.refs.placeDropdown.getValue()
+    _handleTopDrowpdown = (item) => {
+        const { booking } = this.props
+        // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
 
     }
     _handlePressFilter(item) {
-        const { booking } = this.props
-        let currentPlace = this.refs.placeDropdown.getValue()
+        const { booking, app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        if (currentPlace) {
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        if (selectedPlace && Object.keys(selectedPlace).length>0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
 
     }
@@ -240,11 +245,15 @@ export default class PlaceOrderList extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            let currentPlace = this.refs.placeDropdown.getValue()
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            selectedPlace = app.topDropdown.getValue()
+
+            // let currentPlace = this.refs.placeDropdown.getValue()
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             // this.counting = true
-            if (currentPlace) {
-                this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
             } else {
                 this.isLoadingPlace = true
             }
@@ -252,6 +261,8 @@ export default class PlaceOrderList extends Component {
     }
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             this.setState({ counting: true })
         })
     }
@@ -260,19 +271,19 @@ export default class PlaceOrderList extends Component {
             this.setState({ counting: false })
         })
     }
-    componentWillReceiveProps(nextProps) {
-        if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-            this.isLoadingPlace = false
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            let currentPlace = nextProps.place.listPlace.map(item => ({
-                id: item.placeId,
-                name: item.address
-            }))[0]
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+    //         this.isLoadingPlace = false
+    //         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+    //         let currentPlace = nextProps.place.listPlace.map(item => ({
+    //             id: item.placeId,
+    //             name: item.address
+    //         }))[0]
+    //         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+    //     }
+    // }
     render() {
-        const { booking, place, selectedPlace } = this.props
+        const { booking, place } = this.props
         if (!booking) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -283,29 +294,29 @@ export default class PlaceOrderList extends Component {
         }
 
         // GET PLACE LIST
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
+        // let dropdownValues = place.listPlace.map(item => ({
+        //     id: item.placeId,
+        //     name: item.address
+        // }))
 
         return (
             <View style={styles.container}>
-                <TopDropdown
+                {/*<TopDropdown
                     modalOpen={this.props.modal}
                     ref='placeDropdown'
                     dropdownValues={dropdownValues}
                     selectedOption={selectedPlace}
-                    onSelect={this._handleTopDrowpdown.bind(this)} />
+                    onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}
                     open={this.state.modalOpen} />
-                <View style={{ marginTop: 50, height: '100%' }}>
+                <View style={{ height: '100%' }}>
                     {/*<View style={styles.merchantAddress}>
                     <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
                 </View>*/}
                     <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
-                        onPressTab={this._handlePressTab.bind(this)} />
+                        onPressTab={this._handlePressTab} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <Content
                         padder
