@@ -145,14 +145,18 @@ export class renderGroup extends Component {
     this.props.onReady && this.props.onReady(this)
       // alert('selected place utils' + this.state.selectedPlace)
 
+      this.setDefaultChecked();
+  }
+
+  setDefaultChecked() {
       // select default place the same the selected place
       let selectedPlace = this.state.selectedPlace;
       let placeIndex = 0;
       this.state.fields.map((c, index)=>{
-        if (c.placeId == selectedPlace) {
-          placeIndex = index;
-          return;
-        }
+          if (c.placeId == selectedPlace) {
+              placeIndex = index;
+              return;
+          }
       })
       this.handleCheck(placeIndex);
   }

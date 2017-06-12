@@ -136,42 +136,51 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillFocus() {
+      // alert('will focus');
       console.log('step', 'componentWillFocus');
-    if (typeof this.props.route.params.id != "undefined") {
-      let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
-      let permission = null
-      switch (employeeDetail.titleType) {
-        case 1: permission = "Nhân Viên"
+      if (typeof this.props.route.params.id != "undefined") {
+          let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+          let permission = null
+          switch (employeeDetail.titleType) {
+              case 1:
+                  permission = "Nhân Viên"
+          }
+          this.props.change('GroupAddress', this.props.place.listPlace)
+          this.props.change('name', employeeDetail.userName)
+          this.props.change('email', employeeDetail.email)
+          this.props.change('phone', employeeDetail.phoneNumber)
+
+          this.setState({
+              chosenListPlace: employeeDetail.listPlace,
+              currentJob: {
+                  id: employeeDetail.titleType,
+                  name: permission
+              },
+              firstTimeResetPassword: false,
+
+          })
+
+      } else {
+          this.props.actions.deleteGeneratedPassword()
+          this.props.change('GroupAddress', this.props.place.listPlace)
+          this.props.change('name', '')
+          this.props.change('email', '')
+          this.props.change('phone', '')
+          this.setState({
+              chosenListPlace: [],
+              currentJob: {
+                  id: 1,
+                  name: "Nhân Viên"
+              },
+              fromTime: "07:00",
+              toTime: "20:00"
+          })
       }
-      this.props.change('GroupAddress', this.props.place.listPlace)
-      this.props.change('name', employeeDetail.userName)
-      this.props.change('email', employeeDetail.email)
-      this.props.change('phone', employeeDetail.phoneNumber)
 
       this.setState({
-        chosenListPlace: employeeDetail.listPlace,
-        currentJob: {
-          id: employeeDetail.titleType,
-          name: permission
-        },
-        firstTimeResetPassword: false
-      })
-    } else {
-      this.props.actions.deleteGeneratedPassword()
-      this.props.change('GroupAddress', this.props.place.listPlace)
-      this.props.change('name', '')
-      this.props.change('email', '')
-      this.props.change('phone', '')
-      this.setState({
-        chosenListPlace: [],
-        currentJob: {
-          id: 1,
-          name: "Nhân Viên"
-        },
-        fromTime: "07:00",
-        toTime: "20:00"
-      })
-    }
+          firstTimeResetTime: true,
+      });
+      this.setDefaultTimeWork();
   }
 
   componentWillMount() {
@@ -316,24 +325,32 @@ export default class CreateUserContainer extends Component {
     })
   }
 
+  setDefaultTimeWork() {
+      // alert('setDefaultTime ' + this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
+      if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
+          if (this.state.fromTime != this.props.initialValues.fromTimeWork
+              && this.state.toTime != this.props.initialValues.toTimeWork
+              && this.state.firstTimeResetTime) {
+              this.setState({
+                  fromTime: this.props.initialValues.fromTimeWork,
+                  toTime: this.props.initialValues.toTimeWork,
+                  firstTimeResetTime: false,
+              })
+              this.setDefaultPlace();
+          }
+  }
+
+  setDefaultPlace() {
+    this.placeDropdown.setDefaultChecked();
+  }
+
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
-      if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
-        if (this.state.fromTime != this.props.initialValues.fromTimeWork
-            && this.state.toTime != this.props.initialValues.toTimeWork && this.state.firstTimeResetTime) {
-        this.setState({
-            fromTime: this.props.initialValues.fromTimeWork,
-            toTime: this.props.initialValues.toTimeWork,
-            // firstTimeResetTime: false,
-        })
-          // this.state.fromTime = this.props.initialValues.fromTimeWork
-          // this.state.toTime = this.props.initialValues.toTimeWork
-          // this.state.firstTimeResetTime = false
-        }
+    this.setDefaultTimeWork();
+
     let fromTime = this.state.fromTime
     let toTime = this.state.toTime
-        
-        
+
     let listPlace = []
     if (typeof this.props.route.params.id == "undefined") {
       listPlace = this.state.chosenListPlace
