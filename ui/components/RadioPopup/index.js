@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button, Radio } from 'native-base'
+import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Easing, Modal } from 'react-native'
-
+import CheckBox from '~/ui/elements/CheckBox'
 import styles from './styles'
 
 
@@ -51,7 +51,7 @@ export default class RadioPopup extends Component {
                             return (
                                 <ListItem key={item.value} style={{ ...styles.listItem, borderBottomWidth: 0 }} onPress={() => this._handlePressRadio(item)}>
                                     <Text style={{...styles.itemText}}>{item.display}</Text>
-                                    <Radio selected={selectedValue == item.value} style={{...styles.itemRadio}} onPress={() => this._handlePressRadio(item)}/>
+                                    <CheckBox type="radio" checked={selectedValue == item.value} style={{...styles.itemRadio}} onPress={() => this._handlePressRadio(item)}/>
                                 </ListItem>
                             )
                         })}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Text, Button, Content, Spinner, Radio, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
 import { View, KeyboardAvoidingView } from 'react-native'
 import styles from './styles'
 import material from '~/theme/variables/material'
