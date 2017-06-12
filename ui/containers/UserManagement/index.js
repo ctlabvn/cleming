@@ -321,6 +321,7 @@ class UserManagement extends Component {
     _handleChangePlace = (item) => {
         const {setSelectedOption} = this.props
         setSelectedOption(item)
+
         this._loadListEmployee(item.id)
     }
     render() {

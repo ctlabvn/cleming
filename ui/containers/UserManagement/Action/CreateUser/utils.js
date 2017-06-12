@@ -89,7 +89,6 @@ export class renderGroup extends Component {
         address: props.fields.get(index).address
       })),
       checkAll: false,
-      selectedPlace: props.selectedPlace,
     }
   }
   
@@ -148,13 +147,18 @@ export class renderGroup extends Component {
       this.setDefaultChecked();
   }
 
-  setDefaultChecked() {
+  setDefaultChecked(placeId) {
       // select default place the same the selected place
-      let selectedPlace = this.state.selectedPlace;
+      if (typeof placeId != 'undefined') {
+        this.props.selectedPlaceId = placeId;
+      }
+
+      let selectedPlaceId = this.props.selectedPlaceId;
       let placeIndex = 0;
       this.state.fields.map((c, index)=>{
-          if (c.placeId == selectedPlace) {
+          if (c.placeId == selectedPlaceId) {
               placeIndex = index;
+
               return;
           }
       })

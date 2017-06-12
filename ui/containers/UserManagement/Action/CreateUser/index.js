@@ -136,8 +136,7 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillFocus() {
-      // alert('will focus');
-      console.log('step', 'componentWillFocus');
+
       if (typeof this.props.route.params.id != "undefined") {
           let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
           let permission = null
@@ -342,8 +341,11 @@ export default class CreateUserContainer extends Component {
           }
   }
 
+
+
   setDefaultPlace() {
-    this.placeDropdown.setDefaultChecked();
+    // console.warn(JSON.stringify(this.props.selectedPlace, null, 2));
+    this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
   }
 
   renderMainContainer() {
@@ -507,7 +509,7 @@ export default class CreateUserContainer extends Component {
           employeeListPlace={listPlace}
           name="GroupAddress"
           onReady={ref => this.placeDropdown = ref}
-          selectedPlace = {this.state.selectedPlace}
+          selectedPlaceId = {this.props.selectedPlace.id}
           component={renderGroup} />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
