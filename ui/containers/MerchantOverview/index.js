@@ -79,9 +79,9 @@ export default class MerchantOverview extends Component {
                     }
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                        getMerchantNews(xsession, selectedPlace.id)
-                    } else {
                         getMerchantNews(xsession, data.updated.data[0].placeId)
+                    } else {
+                        getMerchantNews(xsession, selectedPlace.id)
                     }
 
                 }
