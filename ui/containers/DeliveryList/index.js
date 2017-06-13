@@ -23,6 +23,8 @@ import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
 import { formatPhoneNumber } from '~/ui/shared/utils'
+import { getNews } from '~/store/selectors/place'
+
 import {
     ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
     ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY
@@ -31,16 +33,17 @@ import {
 @connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
+    news: getNews(state)
 }), { ...orderActions, ...commonActions, ...placeActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
     constructor(props) {
         super(props)
-        const {app} = props
+        const { app } = props
         let placeDropdownValue = app.topDropdown.getValue()
         let selectedPlace = null
-        if (placeDropdownValue && Object.keys(placeDropdownValue).length>0){
+        if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
             selectedPlace = placeDropdownValue.id
         }
         this.state = {
@@ -69,17 +72,29 @@ export default class extends Component {
     componentWillFocus() {
         // this.counting = true
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            if (news && news.orderWaitConfirm) {
+                this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            }
+            if (news && news.orderWaitDelivery) {
+                this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            }
             this.setState({ counting: true })
         })
     }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const {app} = this.props
+            const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             this._load()
+            if (news && news.orderWaitConfirm) {
+                this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            }
+            if (news && news.orderWaitDelivery) {
+                this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            }
         })
 
     }
@@ -123,9 +138,6 @@ export default class extends Component {
                     loading: false,
                     loadingMore: false,
                 })
-                if (data && data.updated) {
-                    this.refs.tabs.updateNumber(this.selectedStatus, data.updated.resultNumber)
-                }
             })
     }
 
@@ -143,12 +155,25 @@ export default class extends Component {
     }
 
     _handleChangePlace = (item) => {
-        const { setSelectedOption } = this.props
+        const { setSelectedOption, getMerchantNews, session } = this.props
         // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
         this.setState({
             selectedPlace: item.id,
         }, () => this.loadPage(1, dateFilter.from, dateFilter.to))
+        getMerchantNews(session, item.id,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate && newsUpdate.orderWaitConfirm) {
+                        this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+                    }
+                    if (newsUpdate && newsUpdate.orderWaitDelivery) {
+                        this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
+                    }
+                }
+            }
+        )
     }
 
     _onRefresh = () => {

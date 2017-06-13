@@ -67,7 +67,7 @@ export default class RadioPopup extends Component {
                                 this.props.onClickYes(this.state.selectedValue)
                                 this.cachedSelectValue = this.state.selectedValue
                             }} style={styles.confirmButton}>
-                                <Text style={{color: 'blue'}}>OK</Text>
+                                <Text primary>OK</Text>
                             </Button>
                         </View>
                     </View>

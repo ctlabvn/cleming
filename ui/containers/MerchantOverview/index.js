@@ -105,25 +105,7 @@ export default class MerchantOverview extends Component {
     _handleChangePlace = (item) => {
         console.log('Call callback handle place change', item)
         const { place, setSelectedOption } = this.props
-        // let dateFilterData = this.refs.dateFilter.getData()
-        // this.props.getPlaceStatistic(this.props.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to)
-        // setSelectedOption(item)
         this.props.getMerchantNews(this.props.xsession, item.id)
-    }
-
-    _handlePressFilter(item) {
-        // this.setState({ loading: true })
-        let currentPlace = this.refs.placeDropdown.getValue()
-        this.props.getPlaceStatistic(
-            this.props.xsession,
-            currentPlace.id,
-            item.currentSelectValue.value.from,
-            item.currentSelectValue.value.to)
-        this.props.getMerchantNews(
-            this.props.xsession,
-            currentPlace.id,
-            item.currentSelectValue.value.from,
-            item.currentSelectValue.value.to)
     }
 
     renderLoading() {
@@ -225,8 +207,6 @@ export default class MerchantOverview extends Component {
                 <View style={styles.contentContainer}>
                     <GradientBackground colors={[material.blue400, material.blue600]} />
                     <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
-                    {/*<Image source={storeFilled} style={{ resizeMode: 'cover', width: '100%', height: 120 }} />*/}
-                    {/*<DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />*/}
                 </View>
                 {mainContainer}
 

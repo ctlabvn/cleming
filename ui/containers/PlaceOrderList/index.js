@@ -22,7 +22,7 @@ import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import CallModal from '~/ui/components/CallModal'
 import { getSession } from '~/store/selectors/auth'
-import { getSelectedPlace } from '~/store/selectors/place'
+import { getNews } from '~/store/selectors/place'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import {
     BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT,
@@ -31,10 +31,9 @@ import {
 import material from '~/theme/variables/material.js'
 @connect(state => ({
     xsession: getSession(state),
-    // selectedPlace: getSelectedPlace(state),
-    // place: state.place,
     booking: state.booking,
-    modal: state.modal.modal
+    modal: state.modal.modal,
+    news: getNews(state)
 }), { ...commonActions, ...bookingActions, ...placeActions }, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
@@ -172,7 +171,7 @@ export default class PlaceOrderList extends Component {
     }
     _onRefresh = () => {
         this.setState({ loading: true })
-        let {app} = this.props
+        let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData()
@@ -191,30 +190,39 @@ export default class PlaceOrderList extends Component {
 
     }
     _handlePressTab = (item) => {
-        const {app} = this.props
+        const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         this.selectTab = item.tabID
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        if (selectedPlace && Object.keys(selectedPlace).length>0) {
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, item.tabID)
         }
 
     }
 
     _handleTopDrowpdown = (item) => {
-        const { booking } = this.props
+        const { booking, xsession, getMerchantNews } = this.props
         // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-
+        getMerchantNews(xsession, item.id,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate && newsUpdate.bookingNews) {
+                        this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
+                    }
+                }
+            }
+        )
     }
     _handlePressFilter(item) {
         const { booking, app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        if (selectedPlace && Object.keys(selectedPlace).length>0) {
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
 
@@ -237,15 +245,12 @@ export default class PlaceOrderList extends Component {
             (err, data) => {
                 console.log('Load Order', data)
                 this.setState({ loading: false, loadingMore: false })
-                if (data && data.updated && data.updated.resultNumber) {
-                    this.refs.tabs.updateNumber(this.refs.tabs.getActiveTab(), data.updated.resultNumber)
-                }
             }
         )
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             selectedPlace = app.topDropdown.getValue()
 
@@ -257,13 +262,19 @@ export default class PlaceOrderList extends Component {
             } else {
                 this.isLoadingPlace = true
             }
+            if (news && news.bookingNews) {
+                this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+            }
         })
     }
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             this.setState({ counting: true })
+            if (news && news.bookingNews) {
+                this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+            }
         })
     }
     componentWillBlur() {

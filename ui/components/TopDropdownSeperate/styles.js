@@ -5,7 +5,7 @@ export default {
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
-        elevation: 100,
+        elevation: 2,
         justifyContent: 'center',
         // flex: 1,
         // top: material.toolbarHeight

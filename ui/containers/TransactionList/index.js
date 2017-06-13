@@ -17,6 +17,7 @@ import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
 import { getSession } from '~/store/selectors/auth'
+import { getNews } from '~/store/selectors/place'
 import { getListTransactionDirect, getListTransactionCLM } from '~/store/selectors/transaction'
 // import { getSelectedPlace } from '~/store/selectors/place'
 import options from './options'
@@ -32,6 +33,7 @@ import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_S
 
 @connect(state => ({
     xsession: getSession(state),
+    news: getNews(state),
     // place: state.place,
     // selectedPlace: getSelectedPlace(state),
     payDirect: getListTransactionDirect(state),
@@ -51,8 +53,8 @@ export default class extends Component {
     // need filter transaction type
     _handlePressFilter(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
-        const {app} = this.props
-        let selectedPlace  = app.topDropdown.getValue()
+        const { app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -61,7 +63,7 @@ export default class extends Component {
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        const {app} = this.props
+        const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         this.setState({ currentTab: item.tabID },
             () => {
@@ -83,7 +85,7 @@ export default class extends Component {
 
     _handleTransactionFilterChange(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
-        const {app} = this.props
+        const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -96,9 +98,23 @@ export default class extends Component {
     _handleTopDrowpdown = (item) => {
         // setSelectedOption(item)
         console.log('Handle Change TopDropdown', item)
+        const { getMerchantNews, xsession } = this.props
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(item.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        getMerchantNews(xsession, item.id,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate && newsUpdate.payThroughClmNotifyNumber) {
+                        this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
+                    }
+                    if (newsUpdate && newsUpdate.payDirectionNotifyNumber) {
+                        this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
+                    }
+                }
+            }
+        )
     }
     confirmTransaction = (clingmeId) => {
         const { confirmTransaction, xsession, setToast, forwardTo } = this.props
@@ -107,7 +123,7 @@ export default class extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const {app} = this.props
+            const { app, news } = this.props
             let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -119,12 +135,25 @@ export default class extends Component {
             } else {
                 this.isLoadingPlace = true
             }
+
+            if (news && news.payThroughClmNotifyNumber) {
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            }
+            if (news && news.payDirectionNotifyNumber) {
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
+            }
         })
     }
-    componentWillFocus(){
-        InteractionManager.runAfterInteractions(()=>{
-            const {app} = this.props
+    componentWillFocus() {
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            if (news && news.payThroughClmNotifyNumber) {
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            }
+            if (news && news.payDirectionNotifyNumber) {
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
+            }
         })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
@@ -356,7 +385,7 @@ export default class extends Component {
                 {/*<TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
                     selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
-                <View style={{height: '100%' }}>
+                <View style={{ height: '100%' }}>
                     <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
