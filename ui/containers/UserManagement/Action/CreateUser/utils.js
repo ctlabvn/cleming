@@ -109,22 +109,48 @@ export class renderGroup extends Component {
   
   componentWillReceiveProps(nextProps) {
 
-    if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
-      if (this.props.employeeListPlace != nextProps.employeeListPlace) {
-        const newState = this.state.fields.slice(0)        
-        newState.map((c, index) => {
-          newState[index].checked = false
-          nextProps.employeeListPlace.map((place, placeIndex) => {
-            if (place.placeId == c.placeId) {
-              newState[index].checked = true
-            }
-          })
-        })
-        this.setState({
-          fields: newState
-        })
+    // if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
+    //   if (this.props.employeeListPlace != nextProps.employeeListPlace) {
+    //     const newState = this.state.fields.slice(0)
+    //     newState.map((c, index) => {
+    //       newState[index].checked = false
+    //       nextProps.employeeListPlace.map((place, placeIndex) => {
+    //         if (place.placeId == c.placeId) {
+    //           newState[index].checked = true
+    //         }
+    //       })
+    //     })
+    //     this.setState({
+    //       fields: newState
+    //     })
+    //   }
+    // }
+
+      if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
+          if (this.props.employeeListPlace != nextProps.employeeListPlace) {
+              const newState = this.state.fields.slice(0)
+              newState.map((value, index) => {
+                  newState[index].checked = value.placeId === nextProps.selectedPlaceId;
+              })
+              this.setState({
+                  fields: newState
+              })
+          }
       }
-    }
+
+      if (this.state.selectedPlaceId != nextProps.selectedPlaceId) {
+          this.setState({
+              selectedPlaceId: nextProps.selectedPlaceId,
+          }, this.setDefaultChecked);
+      }
+  }
+
+  componentWillFocus() {
+      if (this.state.selectedPlaceId != this.props.selectedPlaceId) {
+          this.setState({
+              selectedPlaceId: this.props.selectedPlaceId,
+          }, this.setDefaultChecked);
+      }
   }
   
   componentDidMount() {
@@ -150,13 +176,8 @@ export class renderGroup extends Component {
       this.setDefaultChecked();
   }
 
-  setDefaultChecked(placeId) {
+  setDefaultChecked() {
       // select default place the same the selected place
-      if (typeof placeId != 'undefined') {
-        this.setState({
-          selectedPlaceId: placeId,
-        });
-      }
 
       let selectedPlaceId = this.state.selectedPlaceId;
       let placeIndex = 0;
