@@ -345,7 +345,8 @@ export default class CreateUserContainer extends Component {
 
   setDefaultPlace() {
     // console.warn(JSON.stringify(this.props.selectedPlace, null, 2));
-    this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
+    // this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
+      this.placeDropdown.setDefaultChecked();
   }
 
   renderMainContainer() {

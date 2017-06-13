@@ -89,6 +89,7 @@ export class renderGroup extends Component {
         address: props.fields.get(index).address
       })),
       checkAll: false,
+        selectedPlaceId: props.selectedPlaceId,
     }
   }
   
@@ -127,19 +128,21 @@ export class renderGroup extends Component {
   }
   
   componentDidMount() {
-    const newState = this.state.fields.slice(0)
-    newState.map((c, index) => {
-      this.props.employeeListPlace.map((place, placeIndex) => {
-        if (place.placeId == c.placeId) {
-          newState[index].checked = true
-        }
-      })
-    })
-    this.setState({
-      fields: newState
-    }, () => {
+    // const newState = this.state.fields.slice(0)
+    // newState.map((c, index) => {
+    //   this.props.employeeListPlace.map((place, placeIndex) => {
+    //     if (place.placeId == c.placeId) {
+    //       newState[index].checked = true
+    //     }
+    //   })
+    // })
+    // this.setState({
+    //   fields: newState
+    // }, () => {
+    //   this.props.handleGetListPlaceFromArrayField(this.getSelected())
+    // })
+
       this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    })
 
     this.props.onReady && this.props.onReady(this)
       // alert('selected place utils' + this.state.selectedPlace)
@@ -150,19 +153,21 @@ export class renderGroup extends Component {
   setDefaultChecked(placeId) {
       // select default place the same the selected place
       if (typeof placeId != 'undefined') {
-        this.props.selectedPlaceId = placeId;
+        this.setState({
+          selectedPlaceId: placeId,
+        });
       }
 
-      let selectedPlaceId = this.props.selectedPlaceId;
+      let selectedPlaceId = this.state.selectedPlaceId;
       let placeIndex = 0;
       this.state.fields.map((c, index)=>{
           if (c.placeId == selectedPlaceId) {
               placeIndex = index;
-
+              this.handleCheck(placeIndex);
               return;
           }
       })
-      this.handleCheck(placeIndex);
+
   }
   
   getSelected(){
@@ -220,7 +225,7 @@ export class renderGroup extends Component {
                   <View style={styles.right}>
                     <CheckBox           
                       type="radio"                                 
-                      checked={address.checked}
+                      checked={this.state.selectedPlaceId === address.placeId}
                       onPress={e=>this.handleCheck(index)}
                     />
                     
