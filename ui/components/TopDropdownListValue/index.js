@@ -85,7 +85,9 @@ export default class TopDropdownListValue extends Component {
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { openningDropdown, selectedOption, dropdownValues } = this.state
-        let maxHeight = openningDropdown ? 150 : 0
+        let maxHeight = openningDropdown ? (material.deviceHeight-material.toolbarHeight-60) : 0
+        // let maxHeight = 50
+        console.log('Max height: ', maxHeight)
         if (!dropdownValues || dropdownValues.length == 0){
             return <View />
         }
