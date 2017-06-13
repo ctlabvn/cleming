@@ -97,7 +97,7 @@ const formSelector = formValueSelector('CreateUserForm')
 export default class CreateUserContainer extends Component {
   constructor(props) {
       console.log('step', 'constructor');
-      let selectedPlace = props.selectedPlace.id
+      // let selectedPlaceId = props.selectedPlace.id
     super(props)
     let currentJob = {
       id: 1,
@@ -122,7 +122,7 @@ export default class CreateUserContainer extends Component {
       isLoading: false,
       firstTimeResetPassword: false,
       firstTimeResetTime: true,
-      selectedPlace: selectedPlace,
+      selectedPlaceId: props.selectedPlace.id,
     }
 
   }
@@ -136,6 +136,10 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillFocus() {
+      // console.warn(JSON.stringify(
+      //     {thisPropsSelectedPlace: this.props.selectedPlace,
+      //         thisStateSelectedPlaceId: this.state.selectedPlaceId,
+      //     }, null, 2));
 
       if (typeof this.props.route.params.id != "undefined") {
           let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
@@ -181,6 +185,12 @@ export default class CreateUserContainer extends Component {
       });
       this.setDefaultTimeWork();
       this.setDefaultPlace();
+
+      if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
+        this.setState({
+            selectedPlaceId: this.props.selectedPlace.id,
+        });
+      }
   }
 
   componentWillMount() {
@@ -510,7 +520,7 @@ export default class CreateUserContainer extends Component {
           employeeListPlace={listPlace}
           name="GroupAddress"
           onReady={ref => this.placeDropdown = ref}
-          selectedPlaceId = {this.props.selectedPlace.id}
+          selectedPlaceId = {this.state.selectedPlaceId}
           component={renderGroup} />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
