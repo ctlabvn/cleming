@@ -333,7 +333,7 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
       this.topDropdown.updateDropdownValues(place.listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
@@ -343,8 +343,9 @@ export default class App extends Component {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
-        if (!location || Object.keys(location).length == 0) {
+        if (!location || Object.keys(location).length == 0 || !location.alreadyGotLocation) {
           this.updatePlaceList(position.coords.latitude, position.coords.longitude)
+          alreadyGotLocation()
         }
         saveCurrentLocation(position.coords)
       },
@@ -352,14 +353,15 @@ export default class App extends Component {
       },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
-
-    this.watchID = navigator.geolocation.watchPosition((position) => {
+      this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log('Position Change', position)
-      if (!location || Object.keys(location).length == 0) {
+      if (!location || Object.keys(location).length == 0 || !location.alreadyGotLocation) {
         this.updatePlaceList(position.coords.latitude, position.coords.longitude)
+        alreadyGotLocation()
       }
       saveCurrentLocation(position.coords)
     })
+    
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const { router, goBack } = this.props
       if (router.route === 'merchantOverview' || router.route === 'login') {

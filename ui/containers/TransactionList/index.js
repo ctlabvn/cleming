@@ -84,7 +84,7 @@ export default class extends Component {
     _handleTransactionFilterChange(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
         const {app} = this.props
-        let {selectedPlace} = app.topDropdown.getValue()
+        let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, item.value)
