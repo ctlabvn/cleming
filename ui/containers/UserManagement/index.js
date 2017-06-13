@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
-import { Text } from 'react-native'
+import { Text, TouchableHighlight } from 'react-native'
 import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
@@ -280,10 +280,18 @@ class UserManagement extends Component {
                         <Row style={{ height: '50%' }}>
                             <Col style={{ width: '70%' }}>
                                 <Row style={{ alignItems: 'center' }}>
+                                    <TouchableHighlight
+                                        underlayColor={material.white500}
+                                        onPress={this.onUpdateInfoPress.bind(this)}>
                                     <Text style={styles.rowText}>Thay đổi thông tin</Text>
+                                    </TouchableHighlight>
                                 </Row>
                                 <Row style={{ alignItems: 'center' }}>
+                                    <TouchableHighlight
+                                        underlayColor={material.white500}
+                                        onPress={this.onDeleteAccountPress.bind(this)}>
                                     <Text style={styles.rowText}>Xoá tài khoản khỏi danh sách</Text>
+                                    </TouchableHighlight>
                                 </Row>
                             </Col>
                             <Col style={{ width: '30%' }}>
