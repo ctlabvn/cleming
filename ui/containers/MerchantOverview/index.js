@@ -60,18 +60,22 @@ export default class MerchantOverview extends Component {
                     app.topDropdown.updateDropdownValues(listPLace)
                     app.topDropdownListValue.updateDropdownValues(listPLace)
 
-                    if (!selectedPlace || Object.keys(selectedPlace).length == 0
-                        || !location.alreadyGotLocation
-                    ) {
+                    if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
                         selectedOption.id = data.updated.data[0].placeId
                         selectedOption.name = data.updated.data[0].address
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
                         app.topDropdownListValue.updateSelectedOption(selectedOption)
-                        if ((lat !=0 || long != 0)&& !location.alreadyGotLocation){
-                            alreadyGotLocation()
-                        }
+
+                    } else if ((lat != 0 || long != 0) && !location.alreadyGotLocation) {
+                        let selectedOption = {}
+                        selectedOption.id = data.updated.data[0].placeId
+                        selectedOption.name = data.updated.data[0].address
+                        setSelectedOption(selectedOption)
+                        app.topDropdown.updateSelectedOption(selectedOption)
+                        app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        alreadyGotLocation()
                     }
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
@@ -83,7 +87,7 @@ export default class MerchantOverview extends Component {
                 }
             }
         )
-        
+
     }
 
     componentDidMount() {
