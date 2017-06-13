@@ -116,7 +116,12 @@ export default class MerchantOverview extends Component {
     _handleChangePlace = (item) => {
         console.log('Call callback handle place change', item)
         const { place, setSelectedOption } = this.props
-        this.props.getMerchantNews(this.props.xsession, item.id)
+        this.setState({loading: true})
+        this.props.getMerchantNews(this.props.xsession, item.id,
+            ()=>{
+                this.setState({loading: false})
+            }
+        )
     }
 
     renderLoading() {
