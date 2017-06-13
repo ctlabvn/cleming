@@ -126,29 +126,23 @@ export class renderGroup extends Component {
     //   }
     // }
 
-      if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
-          if (this.props.employeeListPlace != nextProps.employeeListPlace) {
-              const newState = this.state.fields.slice(0)
-              newState.map((value, index) => {
-                  newState[index].checked = value.placeId === nextProps.selectedPlaceId;
-              })
-              this.setState({
-                  fields: newState
-              })
-          }
-      }
-
+      // if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
+      //     if (this.props.employeeListPlace != nextProps.employeeListPlace) {
+      //         const newState = this.state.fields.slice(0)
+      //         newState.map((value, index) => {
+      //             newState[index].checked = value.placeId === nextProps.selectedPlaceId;
+      //         })
+      //         this.setState({
+      //             fields: newState
+      //         })
+      //     }
+      // }
+      //
+      // console.warn(JSON.stringify({status: 'componentWillReceiveProps'}, null, 2));
+      //
       if (this.state.selectedPlaceId != nextProps.selectedPlaceId) {
           this.setState({
               selectedPlaceId: nextProps.selectedPlaceId,
-          }, this.setDefaultChecked);
-      }
-  }
-
-  componentWillFocus() {
-      if (this.state.selectedPlaceId != this.props.selectedPlaceId) {
-          this.setState({
-              selectedPlaceId: this.props.selectedPlaceId,
           }, this.setDefaultChecked);
       }
   }
@@ -246,7 +240,7 @@ export class renderGroup extends Component {
                   <View style={styles.right}>
                     <CheckBox           
                       type="radio"                                 
-                      checked={this.state.selectedPlaceId === address.placeId}
+                      checked={address.checked}
                       onPress={e=>this.handleCheck(index)}
                     />
                     
