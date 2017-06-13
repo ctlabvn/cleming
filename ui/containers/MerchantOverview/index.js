@@ -35,13 +35,17 @@ export default class MerchantOverview extends Component {
 
     constructor(props) {
         super(props)
+        this.state = {
+            loading: false
+        }
     }
 
-    _load() {
+    _load(showLoading=false) {
         const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession, alreadyGotLocation } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
+        showLoading && this.setState({loading: true})
         let lat = 0, long = 0
         if (location && Object.keys(location).length > 1) {
             lat = location.latitude
@@ -83,13 +87,16 @@ export default class MerchantOverview extends Component {
                     } else {
                         getMerchantNews(xsession, selectedPlace.id)
                     }
-
+                    showLoading && this.setState({loading: false})
                 }
             }
         )
 
     }
-
+    _onRefresh = ()=>{
+        console.log('Refreshing...')
+        this._load(true)
+    }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
@@ -208,12 +215,13 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                <View style={styles.contentContainer}>
-                    <GradientBackground colors={[material.blue400, material.blue600]} />
-                    <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
-                </View>
-                {mainContainer}
-
+                <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
+                    <View style={styles.contentContainer}>
+                        <GradientBackground colors={[material.blue400, material.blue600]} />
+                        <Image source={storeTransparent} style={{ resizeMode: 'contain', height: 120 }} />
+                    </View>
+                    {mainContainer}
+                </Content>
             </Container>
         )
     }
