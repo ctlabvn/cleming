@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
-import { View, Modal, TouchableOpacity, Animated, Easing, Image, TextInput, KeyboardAvoidingView } from 'react-native'
+import { View, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import moment from 'moment'
@@ -8,6 +8,7 @@ import { formatNumber } from '~/ui/shared/utils'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import material from '~/theme/variables/material.js'
 import CheckBox from '~/ui/elements/CheckBox'
+// import Content from '~/ui/components/Content'
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
@@ -20,6 +21,8 @@ export default class FeedbackDialog extends Component {
             otherValue: otherValue,
             note: ''
         }
+        this.caculatingHeight = true
+        this.height = 0
     }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible })
@@ -28,7 +31,7 @@ export default class FeedbackDialog extends Component {
         this.setState({ note: '' })
         this.setState({ selectedValue: item.reasonId })
     }
-    _resetDialog(){
+    _resetDialog() {
         let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
         let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
 
@@ -38,6 +41,15 @@ export default class FeedbackDialog extends Component {
             selectedValue: listValue[0].reasonId,
             note: ''
         })
+    }
+    _onMeasure = (e)=>{
+        console.log('Go onMeasure')
+        if (!this.caculatingHeight) return
+        this.caculatingHeight = false
+        const {height} = e.nativeEvent.layout
+        console.log('Content Height', height)
+        this.height = height
+        this.forceUpdate()
     }
     render() {
 
@@ -50,31 +62,37 @@ export default class FeedbackDialog extends Component {
                     this.setModalVisible(!this.state.modalVisible)
                 }}
             >
+
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
+
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        {this.state.listValue && this.state.listValue.map((item) => (
-                            <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
+                        <ScrollView style={{maxHeight: this.height}}>
+                            <View onLayout={this._onMeasure}>
+                                {this.state.listValue && this.state.listValue.map((item) => (
+                                    <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
+                                        <View style={styles.row}>
+                                            <CheckBox type="radio" checked={this.state.selectedValue == item.reasonId} style={styles.marginRight} />
+                                            <Text style={styles.reasonText}>{item.reason}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ))}
                                 <View style={styles.rowPadding}>
-                                    <CheckBox type="radio" checked={this.state.selectedValue == item.reasonId} style={styles.marginRight} />
-                                    <Text>{item.reason}</Text>
+                                    <Input placeholder='Lí do khác...'
+                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
+                                        value={this.state.note}
+                                        onFocus={() => {
+                                            this.setState({ selectedValue: this.state.otherValue.reasonId })
+                                        }}
+                                        onChangeText={(text) => this.setState({ note: text })}
+                                    />
                                 </View>
-                            </TouchableOpacity>
-                        ))}
-                        <View style={styles.rowPadding}>
-                            <Input placeholder='Lí do khác...'
-                                style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
-                                value={this.state.note}
-                                onFocus={() => {
-                                    this.setState({ selectedValue: this.state.otherValue.reasonId })
-                                }}
-                                onChangeText={(text) => this.setState({ note: text })}
-                            />
-                        </View>
+                            </View>
+                        </ScrollView>
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                            <Button transparent onPress={() => this.setModalVisible(false)}><Text light>Cancel</Text></Button>
+                            <Button transparent onPress={() => this.setModalVisible(false)}><Text style={styles.gray}>Cancel</Text></Button>
                             <Button transparent
                                 onPress={() => {
                                     this.setModalVisible(false)
@@ -82,6 +100,7 @@ export default class FeedbackDialog extends Component {
                                 }}
                             ><Text primary>Ok</Text></Button>
                         </View>
+
                     </View>
                 </View>
             </Modal>
