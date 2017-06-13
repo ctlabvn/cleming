@@ -101,12 +101,20 @@ export default class extends Component {
   renderNotificationIcon({ notifyType }) {
     switch (notifyType) {
       case NOTIFY_TYPE.NEW_BOOKING:
-        return <Icon name="calendar" style={styles.icon} />
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-        return <Icon name="clingme-wallet" style={styles.icon} />
+        return <Icon name="calendar" style={{ ...styles.icon, ...styles.warning }} />
+      // case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+      //   return <Icon name="clingme-wallet" style={styles.icon} />
+      case NOTIFY_TYPE.NEW_ORDER:
+        return <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.warning }} />
+      case NOTIFY_TYPE.ORDER_CANCELLED:
+        return <Icon name="shiping-bike2" style={{ ...styles.icon, ...styles.error }} />
       // case NOTIFY_TYPE.WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
         return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+        return <Icon name="term" style={{ ...styles.icon }} />
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
+        return <Icon name="comment" style={{ ...styles.icon }} />
       default:
         return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
     }
@@ -120,7 +128,7 @@ export default class extends Component {
 
     switch (notifyType) {
 
-      case NOTIFY_TYPE.BOOKING:
+      case NOTIFY_TYPE.NEW_BOOKING:
         const minutesRemain = Math.round((paramLong2 - Date.now() / 1000) / 60)
         return (
           <Body>
@@ -131,26 +139,100 @@ export default class extends Component {
                 </Text>
               </View>
 
-              {minutesRemain > 0 && <Text small style={{
+              {/*{minutesRemain > 0 && <Text small style={{
                 color: material.red500,
                 alignSelf: 'flex-end',
                 position: 'absolute',
                 top: 0,
                 right: 0,
               }}>Còn {minutesRemain}'</Text>
-              }
-
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(paramLong2 * 1000).format('hh:mm     DD/M/YY')}</Text>
+              }*/}
+              <Text small style={{
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>{moment(paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              <View style={styles.rowEnd}>
+                <Icon name='friend' style={styles.icon} />
+                <Text bold>2</Text>
+              </View>
             </View>
 
             {border}
 
           </Body>
         )
+      case NOTIFY_TYPE.NEW_ORDER:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{title} </Text>
+                <Text bold style={styles.textGray}>{content}
+                </Text>
+              </View>
 
-      case NOTIFY_TYPE.SUCCESS:
+              <Text small style={{
+                color: material.red500,
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>Giao nhanh 45'</Text>
+
+              <View style={styles.rowEnd}>
+                <Icon name='want-feed' style={styles.icon} />
+                <Text bold>2</Text>
+              </View>
+            </View>
+
+            {border}
+
+          </Body>)
+      case NOTIFY_TYPE.ORDER_CANCELLED:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note error>{title} </Text>
+                <Text bold style={styles.textGray}>{content}
+                </Text>
+              </View>
+              <View style={styles.rowEnd}>
+                <Icon name='want-feed' style={styles.icon} />
+                <Text bold>2</Text>
+              </View>
+            </View>
+
+            {border}
+
+          </Body>)
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{title}</Text>
+                <Text bold style={styles.textGray}>{content}
+                </Text>
+              </View>
+
+              <Text style={{
+                alignSelf: 'flex-end',
+                marginRight: 0,
+              }}>
+                <Text style={{
+                  fontWeight: '900',
+                  fontSize: 18,
+                }}>{formatNumber(paramDouble1)}</Text>đ
+                  </Text>
+
+            </View>
+            {border}
+          </Body>
+        )
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
         return (
           <Body>
             <View style={styles.listItemRow}>
@@ -168,7 +250,7 @@ export default class extends Component {
                 <Text style={{
                   fontWeight: '900',
                   color: material.blue600,
-                  fontSize: 22,
+                  fontSize: 24,
                 }}>{formatNumber(paramDouble1)}</Text>đ
                   </Text>
 
@@ -176,8 +258,28 @@ export default class extends Component {
             {border}
           </Body>
         )
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail'>
+                  <Text bold style={styles.textGray}>{content}: </Text>
+                  Very long text zzzz ahihji 1243, zzadk qql,a
+                </Text>
+              </View>
 
-      // case NOTIFY_TYPE.WAITING:
+              <Text small style={{
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>{moment(paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+            </View>
+            {border}
+          </Body>
+        )
       default:
         return (
           <Body>
@@ -224,7 +326,6 @@ export default class extends Component {
         break
     }
   }
-
   render() {
 
     // const { notificationRequest} = this.props    
@@ -237,8 +338,7 @@ export default class extends Component {
     // }
 
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
-    const { notifications, notificationRequest } = this.props
-
+    let { notifications, notificationRequest } = this.props
     return (
 
       <Container>
@@ -272,7 +372,6 @@ export default class extends Component {
                 </ListItem>
               } />
           }
-
           {this.state.loading && <Spinner />}
 
         </Content>
