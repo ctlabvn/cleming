@@ -3,9 +3,10 @@
  */
 import React, { Component } from 'react'
 import {
-    Button, List, ListItem, Switch, Spinner, CheckBox,
+    Button, List, ListItem, Switch, Spinner,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
+import CheckBox from '~/ui/elements/CheckBox'
 import { Text } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -288,15 +289,17 @@ class UserManagement extends Component {
                             <Col style={{ width: '30%' }}>
                                 <Row style={styles.rowCheckBox}>
                                     <CheckBox
-                                        style={{ borderWidth: 2 }}
                                         onPress={this.onUpdateInfoPress.bind(this)}
-                                        checked={this.state.updateInfoChecked} />
+                                        checked={this.state.updateInfoChecked}
+                                        type="radio"
+                                         />
                                 </Row>
                                 <Row style={styles.rowCheckBox}>
                                     <CheckBox
-                                        style={{ borderWidth: 2 }}
                                         onPress={this.onDeleteAccountPress.bind(this)}
-                                        checked={this.state.deleteAccountChecked} />
+                                        checked={this.state.deleteAccountChecked}
+                                        type="radio"
+                                         />
                                 </Row>
                             </Col>
                         </Row>
