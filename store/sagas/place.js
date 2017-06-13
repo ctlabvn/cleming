@@ -11,15 +11,15 @@ const requestListPlace = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            if (data && data.updated){
+            if (data && data.updated) {
                 return setListPlace(data.updated.data)
             }
             return setToast('Load place fail', 'error')
-            
-        }          
+
+        }
     ],
     failure: [
-        (data) => setToast('Place List: '+JSON.stringify(data), 'error')
+        (data) => setToast('Place List: ' + JSON.stringify(data), 'error')
     ],
 })
 const requestPlaceStatistic = createRequestSaga({
@@ -29,36 +29,37 @@ const requestPlaceStatistic = createRequestSaga({
     success: [
         (data) => {
             return setPlaceStatistic(data.updated.data)
-        }          
+        }
     ],
     failure: [
-        (data) => setToast('Place Statistic: '+JSON.stringify(data), 'error')
+        (data) => setToast('Place Statistic: ' + JSON.stringify(data), 'error')
     ],
 })
 
 const requestNews = createRequestSaga({
-  request: api.place.news,
-  key: 'merchantNews',
-  cancel: 'app/logout',
-  success: [
-    (data) => {
-      return setMerchantNews(data.updated.data)
-    }
-  ],
-  failure: [
-    () => setToast('Couldn\'t connect to server', 'error')
-  ],
+    request: api.place.news,
+    key: 'merchantNews',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            console.log('News Data', data)
+            return setMerchantNews(data.updated.data)
+        }
+    ],
+    failure: [
+        () => setToast('Couldn\'t connect to server', 'error')
+    ],
 })
 
 export default [
     function* fetchWatcher() {
-        yield [            
+        yield [
             takeLatest('place/list', requestListPlace),
             takeLatest('place/statistic', requestPlaceStatistic),
             takeLatest('place/getNews', requestNews)
         ]
     },
-    
+
 ]
 
 

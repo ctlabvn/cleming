@@ -12,8 +12,8 @@ export default {
     statistic(xsession, placeIds, fromTime=1304848140, toTime=1494236940){
         return apiGet('/place/statisticBasic', {placeIds, fromTime, toTime}, xsession)
     },
-    news(xsession, placeIds){
-        console.log('Place News API', xsession+'---'+placeIds)
-        return apiGet('/merchantapp/news', {placeIds}, xsession)
+    news(xsession, placeId){
+        console.log('Place News API', xsession+'---'+placeId)
+        return apiGet('/merchantapp/news', {placeId}, xsession)
     }
 }
