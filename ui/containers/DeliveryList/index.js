@@ -24,10 +24,10 @@ import CallModal from '~/ui/components/CallModal'
 import moment from 'moment'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import { getNews } from '~/store/selectors/place'
-
+import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
 import {
     ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
-    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY
+    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK
 }
     from '~/store/constants/app'
 @connect(state => ({
@@ -61,12 +61,16 @@ export default class extends Component {
     }
     _load() {
         InteractionManager.runAfterInteractions(() => {
-            const { order } = this.props
+            const { order, getOrderDenyReason, session } = this.props
             let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
             if (!this.state.selectedPlace) {
                 this.isLoadingPlace = true
             }
             this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+            if (!order.denyReason || order.denyReason.length == 0) {
+                getOrderDenyReason(session)
+            }
+
         })
     }
     componentWillFocus() {
@@ -74,6 +78,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            // this._load()
             if (news && news.orderWaitConfirm) {
                 this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
             }
@@ -199,9 +204,43 @@ export default class extends Component {
     _handlePressFilter = (item) => {
         this.loadPage(1, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
     }
+    _handleFeedbackOrder = (posOrderId, reasonId, note) => {
+        console.log('Feedback Order', posOrderId + '---' + reasonId + '---' + note)
+        const { updateOrderStatus, setToast, session } = this.props
+        updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
+            (err, data) => {
+                console.log('Data update status', data)
+                console.log('Error update order status', err)
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    this._load()
+                } else {
+                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                }
+            }
+        )
+    }
+    _handleConfirmOrder = (posOrderId) => {
+        console.log('Confirm Order', posOrderId)
+        const { updateOrderStatus, setToast, session } = this.props
+        updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.OK,
+            (err, data) => {
+                console.log('Data update status', data)
+                console.log('Error update order status', err)
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    this._load()
+                } else {
+                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                }
+            }
+        )
+    }
+    showReasonPopup = (posOrderId) => {
+        console.log('Show Reason Popup', posOrderId)
+        this.refs.deliveryFeedbackDialog.show(posOrderId)
+    }
     _renderRow({ orderInfo, orderRowList }) {
         const { forwardTo } = this.props
-        var statusBlock = null;
+        var statusBlock = null, buttonActionBlock = null
         const status = this.selectedStatus
         let totalItem = 0
         if (orderRowList) {
@@ -227,6 +266,15 @@ export default class extends Component {
                 <View style={styles.deliveryCodeBlock}>
                     <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
                     <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
+                </View>
+            )
+            buttonActionBlock = (
+                <View style={styles.block}>
+                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                    <View style={styles.row}>
+                        <Button transparent onPress={()=>this.showReasonPopup(orderInfo.clingmeId)}><Text bold gray>Hủy giao hàng</Text></Button>
+                        <Button transparent onPress={()=>this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold primary>Đã giao hàng</Text></Button>
+                    </View>
                 </View>
             )
         } else if (status == ORDER_SUCCESS) {
@@ -315,22 +363,15 @@ export default class extends Component {
                         <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
-
+                {buttonActionBlock}
             </ListItem>
         )
     }
 
     render() {
-        const { handleSubmit, submitting, place } = this.props
-
-
-        // let dropdownValues = place.listPlace.map(item => ({
-        //     id: item.placeId,
-        //     name: item.address
-        // }))
-
-        const { orderList } = this.props.order
-
+        const { handleSubmit, submitting, place, order } = this.props
+        const { orderList } = order
+        console.log('Deny Reason', order.denyReason)
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData}
@@ -340,6 +381,10 @@ export default class extends Component {
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}
                     open={this.state.modalOpen} />
+                <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'
+                    listValue={order.denyReason}
+                    onClickYes={this._handleFeedbackOrder}
+                />
                 <Content
                     contentContainerStyle={styles.contentContainerStyle}
                     onEndReached={this._loadMore} onRefresh={this._onRefresh}

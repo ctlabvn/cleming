@@ -55,3 +55,7 @@ export const FAST_DELIVERY = {
     YES: 1,
     NO: 0
 }
+export const DELIVERY_FEEDBACK = {
+  OK: 1,
+  CANCEL: 2
+}

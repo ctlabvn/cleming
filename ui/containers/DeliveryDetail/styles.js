@@ -4,6 +4,10 @@ export default {
         backgroundColor: material.white500,
         paddingBottom: 100
     },
+    container2: {
+        backgroundColor: material.white500,
+        paddingBottom: 50
+    },
     content: {
 
     },
@@ -92,5 +96,27 @@ export default {
         height: 1,
         borderBottomColor: 'rgba(0,0,0,0.3)',
         borderBottomWidth: 0.5
+    },
+    fixButtonBlock: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'absolute',
+        width: '100%',
+        bottom: 0
+    },
+    buttonFeedback: {
+        width: '50%',
+        borderRadius: 0,
+        justifyContent: 'center',
+        height: 50
+    },
+    backgroundLightGray: {
+        backgroundColor: material.gray300
+    },
+    gray: {
+        backgroundColor: material.gray300
     }
+
 }
