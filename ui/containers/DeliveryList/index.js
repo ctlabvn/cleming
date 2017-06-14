@@ -76,9 +76,16 @@ export default class extends Component {
     componentWillFocus() {
         // this.counting = true
         InteractionManager.runAfterInteractions(() => {
-            const { app, news } = this.props
+            const { app, news, order, markWillReload } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            // this._load()
+            let now = new Date().getTime()
+            //Effect within 1 munites from markTime
+            if (order.willReload && order.markReloadTime && (now-order.markReloadTime < 60000)){
+                markWillReload(false)
+                this.selectedStatus = ORDER_WAITING_DELIVERY
+                this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
+                this._load()
+            }
             if (news && news.orderWaitConfirm) {
                 this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
             }
@@ -371,7 +378,6 @@ export default class extends Component {
     render() {
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
-        console.log('Deny Reason', order.denyReason)
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData}

@@ -35,3 +35,8 @@ export const updateOrderStatus = (...args)=>({
   type: 'app/updateOrderStatus',
   args
 })
+
+export const markWillReload = (reload) => ({
+  type: 'order/markReloadFlag',
+  payload: reload
+})
