@@ -16,6 +16,9 @@ export const place = (state = initialState, {type, payload}) => {
     case 'app/logout':
       console.log('App logout clear place')
       return {...state, ...initialState}
+    case 'app/clearData':
+      console.log('App clear data')
+      return {...state, ...initialState}
     default:
       return state
   }
