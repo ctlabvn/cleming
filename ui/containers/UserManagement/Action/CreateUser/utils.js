@@ -162,7 +162,8 @@ export class renderGroup extends Component {
     //   this.props.handleGetListPlaceFromArrayField(this.getSelected())
     // })
 
-      this.props.handleGetListPlaceFromArrayField(this.getSelected())
+      // this.props.handleGetListPlaceFromArrayField(this.getSelected())
+    this.state.selectedPlaceId
 
     this.props.onReady && this.props.onReady(this)
       // alert('selected place utils' + this.state.selectedPlace)
@@ -186,23 +187,27 @@ export class renderGroup extends Component {
   }
   
   getSelected(){
+    // console.log(this.state.fields)
     return this.state.fields.filter(c=>c.checked).map(c=>c)
   }
   
   handleCheck(index){
     // const newState = this.state.fields.slice(0)
-    let newState = this.state.fields.map((item)=>{
-      return {...item, checked : false}
-    })
+    let newState = this.state.fields
+    // this.state.fields.map((item)=>{
+    //   return {...item, checked : false}
+    // })
 
     if(newState[index]){
-      newState[index].checked = !newState[index].checked;
+      // newState[index].checked = true;
+      // console.log(newState)
       let newSelectedPlaceId = newState[index].placeId;
       this.setState({
-          fields: newState,
+          // fields: newState,
           selectedPlaceId: newSelectedPlaceId,
       }, () => {
-        this.props.handleGetListPlaceFromArrayField(this.getSelected())
+        // console.log(newState)
+        // this.props.handleGetListPlaceFromArrayField(this.getSelected())
       })
     }
   }
