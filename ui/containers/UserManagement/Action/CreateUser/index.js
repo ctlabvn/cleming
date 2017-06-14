@@ -296,12 +296,14 @@ export default class CreateUserContainer extends Component {
     let userInfo = {}
     // if (this.state.chosenListPlace.length == 0) {
       console.log(this.state.selectedPlaceId)
-    if(!this.state.selectedPlaceId){
-      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')    
+
+      if (this.props.formState.CreateUserForm.syncErrors) {
+          this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
+          return;
+      } else if(!this.state.selectedPlaceId){
+      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
       this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
-    } else if (this.props.formState.CreateUserForm.syncErrors) {
-      this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
     } else {
       this.setState({
         isLoading: true
