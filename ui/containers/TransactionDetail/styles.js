@@ -357,7 +357,7 @@ export default {
     },
     rowCenter: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     contentRootChild: {

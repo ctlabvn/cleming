@@ -87,7 +87,7 @@ export default class FeedbackDialogClingme extends Component {
                             <Button transparent onPress={() => {
                                 this.setModalVisible(false)
                                 this._resetDialog()
-                            }}><Text light>Cancel</Text></Button>
+                            }}><Text style={styles.gray}>Cancel</Text></Button>
                             <Button transparent
                                 onPress={() => {
                                     this.setModalVisible(false)

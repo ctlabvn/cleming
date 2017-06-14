@@ -35,5 +35,8 @@ export default {
         borderBottomColor: material.gray300,
         height: 40, 
         fontSize: 14 
-    }
+    },
+    gray: {
+        color: material.gray600
+    },
 }

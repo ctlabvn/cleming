@@ -231,12 +231,9 @@ export default class TransactionDetail extends Component {
                             <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                         </View>
                     </View>
-                    <View style={styles.row}>
+                    <View style={styles.rowCenter}>
                         <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                             <Text>Trợ giúp</Text>
-                        </Button>
-                        <Button dark style={{ ...styles.feedbackClmTransaction, ...styles.confirmButton }} onPress={() => this._confirmTransaction()}>
-                            <Text>Đồng ý</Text>
                         </Button>
 
                     </View>
