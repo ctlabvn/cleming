@@ -16,6 +16,8 @@ export const account = (state = {
       return {...state, generatedPassword: ''}
     case 'app/logout':
       return {...state, listEmployee: []}
+    case 'app/clearData':
+      return {...state, listEmployee: []}
     default:
       return state
   }

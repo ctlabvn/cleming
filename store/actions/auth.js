@@ -8,8 +8,6 @@ export const logout = (...args) => ({
   type: 'app/logout',
   args
 })
-
-
 // actions called by sagas
 
 /**
@@ -65,4 +63,8 @@ export const updateProfileToRedux = (data) => ({
 export const updateFirstTimeLogin = (data)=>({
   type: 'app/updateFirstTimeLogin',
   payload: data
+})
+
+export const clearData = ()=>({
+  type: 'app/clearData'
 })

@@ -12,13 +12,9 @@ import CheckBox from '~/ui/elements/CheckBox'
 export default class DeliveryFeedbackDialog extends Component {
     constructor(props) {
         super(props)
-        console.log('List value first', props.listValue)
         let length = props.listValue.length
         let listValue = props.listValue.slice(0, length-1)
         let otherValue = props.listValue[length-1]
-        console.log('Props Dialig', props)
-        console.log('List value', listValue)
-        console.log('Other value', otherValue)
         this.state = {
             modalVisible: false,
             listValue: listValue,
