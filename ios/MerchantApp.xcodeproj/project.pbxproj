@@ -28,6 +28,8 @@
 		1C5F5FA83FC142E387F147E5 /* Arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D09B4B7E6C2D4A6BA8C06089 /* Arial.ttf */; };
 		1CC2BED014954CF581AAB1A7 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 172CAE934BC84898B6BDF826 /* Arial Black.ttf */; };
 		247A6ADE1EC95985004F9790 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 247A6AC91EC9593F004F9790 /* libRCTPushNotification.a */; };
+		24D4A8DA1EF0F9D800D66580 /* LaunchScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */; };
+		24D4A8DD1EF1021000D66580 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8DC1EF1021000D66580 /* HexColor.m */; };
 		2A20071B9A6C4F17AA725D80 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B3A2FFD3CB040F8A3859526 /* rubicon-icon-font.ttf */; };
 		2BFD2DE45F52466688E7257F /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1828CB53EDC4706B63E7580 /* Rubik-Italic.ttf */; };
 		2EBA1298E05746C48698D8EA /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8172E8473D447F7B6DD9949 /* Comic Sans MS.ttf */; };
@@ -334,6 +336,10 @@
 		2294767123CF43F08093C6E7 /* Rubik-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-Light.ttf"; path = "../node_modules/native-base/Fonts/Rubik-Light.ttf"; sourceTree = "<group>"; };
 		247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		24B26FB11ECD577900166C09 /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/MerchantApp-epmqigzjwbzslygualqwcpohipxa/Build/Products/Debug-iphonesimulator/React/libReact.a"; sourceTree = "<group>"; };
+		24D4A8D81EF0F9D800D66580 /* LaunchScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LaunchScreenController.h; path = MerchantApp/LaunchScreenController.h; sourceTree = "<group>"; };
+		24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LaunchScreenController.m; path = MerchantApp/LaunchScreenController.m; sourceTree = "<group>"; };
+		24D4A8DB1EF1021000D66580 /* HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HexColor.h; path = MerchantApp/HexColor.h; sourceTree = "<group>"; };
+		24D4A8DC1EF1021000D66580 /* HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HexColor.m; path = MerchantApp/HexColor.m; sourceTree = "<group>"; };
 		24DDD9441EC999CF00B391DF /* MerchantApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MerchantApp.entitlements; path = MerchantApp/MerchantApp.entitlements; sourceTree = "<group>"; };
 		2981C30D21664DF7AF173FCD /* Rubik-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Rubik-LightItalic.ttf"; path = "../node_modules/native-base/Fonts/Rubik-LightItalic.ttf"; sourceTree = "<group>"; };
 		2B97CB47DD99488EB2306242 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
@@ -502,6 +508,10 @@
 		13B07FAE1A68108700A75B9A /* MerchantApp */ = {
 			isa = PBXGroup;
 			children = (
+				24D4A8DB1EF1021000D66580 /* HexColor.h */,
+				24D4A8DC1EF1021000D66580 /* HexColor.m */,
+				24D4A8D81EF0F9D800D66580 /* LaunchScreenController.h */,
+				24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */,
 				24DDD9441EC999CF00B391DF /* MerchantApp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -1234,6 +1244,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24D4A8DA1EF0F9D800D66580 /* LaunchScreenController.m in Sources */,
+				24D4A8DD1EF1021000D66580 /* HexColor.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
