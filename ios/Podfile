@@ -6,8 +6,9 @@ platform :ios, '8.0'
 # Change 'MerchantApp' to match the target in your Xcode project.
 target 'MerchantApp' do
     
-    pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga/Yoga.podspec'
+    pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
     pod 'React', path: '../node_modules/react-native', :subspecs => [
+    'jschelpers',
     'Core',
     'RCTActionSheet',
     'RCTAnimation',
@@ -37,3 +38,4 @@ post_install do |installer|
         end
     end
 end
+
