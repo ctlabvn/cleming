@@ -117,13 +117,14 @@ export default class CreateUserContainer extends Component {
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
-      chosenListPlace: [],
+      // chosenListPlace: [],
       currentJob: currentJob,
       isLoading: false,
-      firstTimeResetPassword: false,
-      firstTimeResetTime: true,
+      firstTimeResetPassword: false,      
       selectedPlaceId: props.selectedPlace.id,
     }
+
+    this.firstTimeResetTime = true
 
   }
 
@@ -141,6 +142,8 @@ export default class CreateUserContainer extends Component {
       //         thisStateSelectedPlaceId: this.state.selectedPlaceId,
       //     }, null, 2));
 
+      this.firstTimeResetTime = true
+
       if (typeof this.props.route.params.id != "undefined") {
           let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
           let permission = null
@@ -154,7 +157,7 @@ export default class CreateUserContainer extends Component {
           this.props.change('phone', employeeDetail.phoneNumber)
 
           this.setState({
-              chosenListPlace: employeeDetail.listPlace,
+              // chosenListPlace: employeeDetail.listPlace,
               currentJob: {
                   id: employeeDetail.titleType,
                   name: permission
@@ -169,8 +172,9 @@ export default class CreateUserContainer extends Component {
           this.props.change('name', '')
           this.props.change('email', '')
           this.props.change('phone', '')
+
           this.setState({
-              chosenListPlace: [],
+              // chosenListPlace: [],
               currentJob: {
                   id: 1,
                   name: "Nhân Viên"
@@ -180,9 +184,9 @@ export default class CreateUserContainer extends Component {
           })
       }
 
-      this.setState({
-          firstTimeResetTime: true,
-      });
+      // this.setState({
+      //     firstTimeResetTime: true,
+      // });
       this.setDefaultTimeWork();
       this.setDefaultPlace();
 
@@ -290,8 +294,10 @@ export default class CreateUserContainer extends Component {
   onSubmitUser = () => {
 
     let userInfo = {}
-    if (this.state.chosenListPlace.length == 0) {
-      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
+    // if (this.state.chosenListPlace.length == 0) {
+      console.log(this.state.selectedPlaceId)
+    if(!this.state.selectedPlaceId){
+      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')    
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
       this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
     } else if (this.props.formState.CreateUserForm.syncErrors) {
@@ -300,7 +306,7 @@ export default class CreateUserContainer extends Component {
       this.setState({
         isLoading: true
       })
-      let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
+      // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = this.props.formValues.name
       userInfo.phoneNumber = this.props.formValues.phone
       userInfo.password = this.props.generatedPassword
@@ -309,10 +315,10 @@ export default class CreateUserContainer extends Component {
         userInfo.password = md5(this.props.generatedPassword)
       }
       userInfo.email = this.props.formValues.email
-      userInfo.titleType = this.state.currentJob.id
+      userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
       userInfo.toTimeWork = this.state.toTime
-      userInfo.listPlaceId = listPlaceId
+      userInfo.listPlaceId = this.state.selectedPlaceId.toString()//listPlaceId
       if (typeof this.props.route.params.id == 'undefined') {
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
@@ -327,9 +333,10 @@ export default class CreateUserContainer extends Component {
   }
 
   handleGetListPlaceFromArrayField(data) {
-    this.setState({
-      chosenListPlace: data
-    })
+    // this.setState({
+    //   // chosenListPlace: data
+    //   selectedPlaceId: data.length ? data[0].placeId : 0,
+    // })
   }
 
   handleChangePlace(item) {
@@ -346,12 +353,16 @@ export default class CreateUserContainer extends Component {
       if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
           if (this.state.fromTime != this.props.initialValues.fromTimeWork
               && this.state.toTime != this.props.initialValues.toTimeWork
-              && this.state.firstTimeResetTime) {
-              this.setState({
-                  fromTime: this.props.initialValues.fromTimeWork,
-                  toTime: this.props.initialValues.toTimeWork,
-                  firstTimeResetTime: false,
-              })
+              && this.firstTimeResetTime) {
+              // this.setState({
+              //     fromTime: this.props.initialValues.fromTimeWork,
+              //     toTime: this.props.initialValues.toTimeWork,
+              //     firstTimeResetTime: false,
+              // })
+              // update without re-rendering, tricky way
+              this.state.fromTime = this.props.initialValues.fromTimeWork
+              this.state.toTime = this.props.initialValues.toTimeWork
+              this.firstTimeResetTime = false
           }
   }
 
@@ -369,13 +380,13 @@ export default class CreateUserContainer extends Component {
 
     let fromTime = this.state.fromTime
     let toTime = this.state.toTime
-
-    let listPlace = []
-    if (typeof this.props.route.params.id == "undefined") {
-      listPlace = this.state.chosenListPlace
-    } else {
-      listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
-    }
+    const item = this.props.listEmployee[+this.props.route.params.id]
+    let listPlace = item ? item.listPlace : []
+    // if (typeof this.props.route.params.id == "undefined") {
+    //   listPlace = this.state.chosenListPlace
+    // } else {
+    //   listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
+    // }
     let formState = null
     let nameError = null
     let nameTouched = false
@@ -575,10 +586,10 @@ export default class CreateUserContainer extends Component {
     let mainContainer = null
     if (this.state.isLoading) {
       mainContainer = this.renderIndicator()
-        console.log("state.isLoading: ", "renderIndiCator");
+        // console.log("state.isLoading: ", "renderIndiCator");
     } else {
       mainContainer = this.renderMainContainer()
-        console.log("state.isLoading: ", "renderMainContainer");
+        // console.log("state.isLoading: ", "renderMainContainer");
     }
 
     const [hour, minute] = this.state.fromTime.split(":")
