@@ -1,25 +1,25 @@
 import material from '~/theme/variables/material'
 
 export default {
-  container:{
+  container: {
     backgroundColor: material.white500,
   },
-  listItemContainer:{
+  listItemContainer: {
     // borderBottomWidth:0.5,
     // borderColor: material.grayColor,
-    marginLeft:0,
-    marginRight:0,      
+    marginLeft: 0,
+    marginRight: 0,
     // paddingTop:0,
-    paddingBottom:0,    
+    paddingBottom: 0,
   },
-  listItemRow:{
+  listItemRow: {
     // width: '100%',   
-    height: 50,    
+    height: 50,
     marginLeft: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',    
+    justifyContent: 'space-between',
   },
-  titleContainer:{
+  titleContainer: {
     height: '100%',
     justifyContent: 'space-between',
   },
@@ -31,13 +31,25 @@ export default {
     borderRadius: 3,
     backgroundColor: material.toolbarDefaultBg,
   },
-  icon:{
+  icon: {
     color: material.gray600,
-    alignSelf:'flex-start',
-    fontSize: 18,    
-    marginLeft:10,    
+    alignSelf: 'flex-start',
+    fontSize: 18,
+    marginLeft: 10,
+    marginRight: 3
   },
   textGray: {
-    color: material.gray600
+    color: material.titleContainer
+  },
+  warning: {
+    color: material.orange500
+  },
+  error: {
+    color: material.red500
+  },
+  rowEnd: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-end'
   },
 }
