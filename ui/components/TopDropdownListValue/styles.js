@@ -1,7 +1,7 @@
 import material from '~/theme/variables/material'
 export default {
     ovarlayContainerOpen: {
-        // backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         width: '100%',
         zIndex: 500,
         elevation: 5,
@@ -12,7 +12,7 @@ export default {
         bottom: 0
     },
     ovarlayContainerClose: {
-        // backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         width: '100%',
         zIndex: 500,
         elevation: 5,

@@ -207,8 +207,9 @@ export default class extends Component {
 
     _onRefresh = () => {
         console.log('On refreshing trans')
+        const {app} = this.props
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        let currentPlace = this.refs.placeDropdown.getValue()
+        let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
     }

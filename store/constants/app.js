@@ -55,3 +55,9 @@ export const FAST_DELIVERY = {
     YES: 1,
     NO: 0
 }
+export const DELIVERY_FEEDBACK = {
+  OK: 1,
+  CANCEL: 2
+}
+
+export const GENERAL_ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại sau'

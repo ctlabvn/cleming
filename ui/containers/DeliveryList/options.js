@@ -8,7 +8,7 @@ export default {
       },
       {
           tabID: ORDER_WAITING_DELIVERY,
-          text: 'Chờ giao hàng'
+          text: 'Xác nhận'
       },
       {
           tabID: ORDER_SUCCESS,

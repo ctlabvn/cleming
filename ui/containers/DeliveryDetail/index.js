@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Spinner, Container, List, ListItem, Text } from 'native-base'
+import { Spinner, Container, List, ListItem, Text, Button } from 'native-base'
 import { View, Image, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
@@ -20,9 +20,10 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
-import { DEFAULT_TIME_FORMAT, FAST_DELIVERY } from '~/store/constants/app'
+import { DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 import { formatPhoneNumber } from '~/ui/shared/utils'
+import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -33,12 +34,14 @@ export default class extends Component {
         super(props)
         this.state = {
             orderDetail: {},
-            counting: false
+            counting: false,
+            loading: false
         }
     }
     _load() {
-        const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead } = this.props
+        const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead, order, getOrderDenyReason } = this.props
         let deliveryId = route.params.id
+        this.setState({ loading: true })
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 if (err) {
@@ -52,15 +55,18 @@ export default class extends Component {
                     return
                 }
                 if (data && data.updated) {
-                    this.setState({ orderDetail: data.updated })
+                    this.setState({ orderDetail: data.updated, loading: false })
                     if (data.updated.orderInfo && !data.updated.orderInfo.isReadCorrespond
-                        && data.updated.orderInfo.notifyIdCorrespond){
-                            updateRead(xsession, data.updated.orderInfo.notifyIdCorrespond)
+                        && data.updated.orderInfo.notifyIdCorrespond) {
+                        updateRead(xsession, data.updated.orderInfo.notifyIdCorrespond)
                     }
                 }
 
             }
         )
+        if (!order.denyReason || order.denyReason.length == 0) {
+            getOrderDenyReason(xsession)
+        }
     }
 
     componentDidMount() {
@@ -81,9 +87,54 @@ export default class extends Component {
             this.setState({ counting: false })
         })
     }
+    _handleFeedbackOrder = (posOrderId, reasonId, note) => {
+        const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props
+        updateOrderStatus(xsession, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
+            (err, data) => {
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    markWillReload(true)
+                    forwardTo('deliveryList')
+                } else {
+                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                }
+            }
+        )
+    }
+    _handleConfirmOrder = (posOrderId) => {
+        const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props
+        updateOrderStatus(xsession, posOrderId, DELIVERY_FEEDBACK.OK,
+            (err, data) => {
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    markWillReload(true)
+                    forwardTo('deliveryList')
+                } else {
+                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                }
+            }
+        )
+    }
+    showReasonPopup = (posOrderId) => {
+        console.log('Show Reason Popup', posOrderId)
+        this.refs.deliveryFeedbackDialog.show(posOrderId)
+    }
+    _onRefresh = () => {
+        this._load()
+    }
+    _renderStatusText(status){
+        switch(status){
+            case 'WAIT_CONFIRM':
+                return <Text warning small bold>Chờ xác nhận</Text>
+            case 'CONFIRMED':
+                return <Text primary small bold>Xác nhận</Text>
+            case 'COMPLETED':
+                return <Text success small bold>Thành công</Text>
+            case 'FAILED':
+                return <Text gray small bold>Đã hủy</Text>
+        }
+    }
     render() {
         console.log('Render DeliveryDetail')
-        const { route } = this.props
+        const { route, order } = this.props
         if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
@@ -99,15 +150,37 @@ export default class extends Component {
         }
         console.log('Order detail instate', orderDetail)
         const countTo = orderDetail.orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
+        let moneyBlock = (
+            <View>
+                <View style={styles.rowPadding}>
+                    <Text small grayDark>Tiền hàng:</Text>
+                    <Text bold grayDark>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                </View>
+                <View style={styles.rowPadding}>
+                    <Text small grayDark>Phí giao hàng:</Text>
+                    <Text bold grayDark>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
+                </View>
+                <View style={styles.line} />
+                <View style={styles.rowPadding}>
+                    <Text small grayDark>Tổng tiền thanh toán: </Text>
+                    <Text bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                </View>
+            </View>
+        )
+        let containerStyle = (orderDetail.orderInfo.status == 'CONFIRMED') ? styles.container2 : styles.container
         return (
-            <Container style={styles.container}>
+            <Container style={containerStyle}>
+                <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'
+                    listValue={order.denyReason}
+                    onClickYes={this._handleFeedbackOrder}
+                />
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary, width: '100%', justifyContent: 'center' }}>
                     <Text white center bold>{orderDetail.orderInfo.placeInfo.address}</Text>
                 </View>
 
-                <Content padder>
+                <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}>
                     <View style={styles.rowPadding}>
-                        <Text success small>Đã thanh toán</Text>
+                        {this._renderStatusText(orderDetail.orderInfo.status)}
                         <View style={styles.row}>
                             <Text small grayDark style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
@@ -162,22 +235,25 @@ export default class extends Component {
                         )
                         }>
                     </List>
+                    {(orderDetail.orderInfo.status == 'CONFIRMED') && moneyBlock}
                 </Content>
-                <View style={styles.fixBottom}>
-                    <View style={styles.rowPadding}>
-                        <Text small grayDark>Tiền hàng:</Text>
-                        <Text bold grayDark>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                {(orderDetail.orderInfo.status != 'CONFIRMED') && (
+                    <View style={styles.fixBottom}>
+                        {moneyBlock}
                     </View>
-                    <View style={styles.rowPadding}>
-                        <Text small grayDark>Phí giao hàng:</Text>
-                        <Text bold grayDark>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
+                )}
+
+                {(orderDetail.orderInfo.status == 'CONFIRMED') && (
+                    <View style={styles.fixButtonBlock}>
+                        <Button style={{ ...styles.buttonFeedback, ...styles.backgroundLightGray }}
+                            onPress={() => this.showReasonPopup(orderDetail.orderInfo.clingmeId)}
+                        ><Text gray>Hủy giao hàng</Text></Button>
+                        <Button style={{ ...styles.buttonFeedback, ...styles.backgroundPrimary }}
+                            onPress={() => this._handleConfirmOrder(orderDetail.orderInfo.clingmeId)}
+                        ><Text white>Đã giao hàng</Text></Button>
                     </View>
-                    <View style={styles.line} />
-                    <View style={styles.rowPadding}>
-                        <Text small grayDark>Tổng tiền thanh toán: </Text>
-                        <Text bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
-                    </View>
-                </View>
+                )}
+
             </Container>
         )
     }

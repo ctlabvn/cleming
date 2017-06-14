@@ -20,3 +20,23 @@ export const clearOrderList = (...args)=>({
   type: 'app/clearOrderList',
   args
 })
+
+export const getOrderDenyReason = (...args)=>({
+  type: 'app/getOrderDenyReason',
+  args,
+})
+
+export const setOrderDenyReason = (data) => ({
+  type: 'app/setOrderDenyReason',
+  payload: data,
+})
+
+export const updateOrderStatus = (...args)=>({
+  type: 'app/updateOrderStatus',
+  args
+})
+
+export const markWillReload = (reload) => ({
+  type: 'order/markReloadFlag',
+  payload: reload
+})
