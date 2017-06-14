@@ -23,6 +23,9 @@ export default class TabsWithNoti extends Component {
     getActiveTab() {
         return this.state.activeTab
     }
+    setActiveTab(tabID){
+        this.setState({activeTab: tabID})
+    }
     updateNumber(tabID, number) {
         let tabData = this.state.tabData.slice()
         let index = tabData.findIndex(item => item.tabID == tabID)

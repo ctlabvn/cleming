@@ -55,7 +55,6 @@ export default class extends Component {
                     return
                 }
                 if (data && data.updated) {
-                    console.log('Load order detail', data.updated)
                     this.setState({ orderDetail: data.updated, loading: false })
                     if (data.updated.orderInfo && !data.updated.orderInfo.isReadCorrespond
                         && data.updated.orderInfo.notifyIdCorrespond) {
@@ -89,14 +88,12 @@ export default class extends Component {
         })
     }
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
-        console.log('Feedback Order', posOrderId + '---' + reasonId + '---' + note)
-        const { updateOrderStatus, setToast, xsession } = this.props
+        const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props
         updateOrderStatus(xsession, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
             (err, data) => {
-                console.log('Data update status', data)
-                console.log('Error update order status', err)
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
-                    this._load()
+                    markWillReload(true)
+                    forwardTo('deliveryList')
                 } else {
                     setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
                 }
@@ -104,14 +101,12 @@ export default class extends Component {
         )
     }
     _handleConfirmOrder = (posOrderId) => {
-        console.log('Confirm Order', posOrderId)
-        const { updateOrderStatus, setToast, xsession } = this.props
+        const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props
         updateOrderStatus(xsession, posOrderId, DELIVERY_FEEDBACK.OK,
             (err, data) => {
-                console.log('Data update status', data)
-                console.log('Error update order status', err)
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
-                    this._load()
+                    markWillReload(true)
+                    forwardTo('deliveryList')
                 } else {
                     setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
                 }
@@ -124,6 +119,18 @@ export default class extends Component {
     }
     _onRefresh = () => {
         this._load()
+    }
+    _renderStatusText(status){
+        switch(status){
+            case 'WAIT_CONFIRM':
+                return <Text warning small bold>Chờ xác nhận</Text>
+            case 'CONFIRMED':
+                return <Text primary small bold>Xác nhận</Text>
+            case 'COMPLETED':
+                return <Text success small bold>Thành công</Text>
+            case 'FAILED':
+                return <Text gray small bold>Đã hủy</Text>
+        }
     }
     render() {
         console.log('Render DeliveryDetail')
@@ -161,7 +168,6 @@ export default class extends Component {
             </View>
         )
         let containerStyle = (orderDetail.orderInfo.status == 'CONFIRMED') ? styles.container2 : styles.container
-        console.log('Container style', containerStyle)
         return (
             <Container style={containerStyle}>
                 <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'
@@ -174,7 +180,7 @@ export default class extends Component {
 
                 <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}>
                     <View style={styles.rowPadding}>
-                        <Text success small>Đã thanh toán</Text>
+                        {this._renderStatusText(orderDetail.orderInfo.status)}
                         <View style={styles.row}>
                             <Text small grayDark style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&

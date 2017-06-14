@@ -1,7 +1,7 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
+import { View, TouchableWithoutFeedback, BackAndroid, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
 import Content from '~/ui/components/Content'
@@ -81,11 +81,15 @@ export default class TopDropdownListValue extends Component {
         this.props.onPressOverlay && this.props.onPressOverlay()
         this.close()
     }
-
+    componentDidMount(){
+        BackAndroid.addEventListener('hardwareBackPress', () => {
+            console.log('Back Press Top Dropdown')
+        })
+    }
     render() {
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { openningDropdown, selectedOption, dropdownValues } = this.state
-        let maxHeight = openningDropdown ? (material.deviceHeight-material.toolbarHeight-60) : 0
+        let maxHeight = openningDropdown ? (material.deviceHeight-material.toolbarHeight-260) : 0
         // let maxHeight = 50
         console.log('Max height: ', maxHeight)
         if (!dropdownValues || dropdownValues.length == 0){
