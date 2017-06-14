@@ -140,11 +140,11 @@ export class renderGroup extends Component {
       //
       // console.warn(JSON.stringify({status: 'componentWillReceiveProps'}, null, 2));
       //
-      if (this.state.selectedPlaceId != nextProps.selectedPlaceId) {
-          this.setState({
-              selectedPlaceId: nextProps.selectedPlaceId,
-          }, this.setDefaultChecked);
-      }
+      // if (this.state.selectedPlaceId != nextProps.selectedPlaceId) {
+      //     this.setState({
+      //         selectedPlaceId: nextProps.selectedPlaceId,
+      //     }, this.setDefaultChecked);
+      // }
   }
   
   componentDidMount() {
@@ -173,7 +173,7 @@ export class renderGroup extends Component {
   setDefaultChecked() {
       // select default place the same the selected place
 
-      let selectedPlaceId = this.state.selectedPlaceId;
+      let selectedPlaceId = this.props.selectedPlaceId;
       let placeIndex = 0;
       this.state.fields.map((c, index)=>{
           if (c.placeId == selectedPlaceId) {
@@ -194,9 +194,14 @@ export class renderGroup extends Component {
     let newState = this.state.fields.map((item)=>{
       return {...item, checked : false}
     })
+
     if(newState[index]){
-      newState[index].checked = !newState[index].checked
-      this.setState({fields: newState}, () => {
+      newState[index].checked = !newState[index].checked;
+      let newSelectedPlaceId = newState[index].placeId;
+      this.setState({
+          fields: newState,
+          selectedPlaceId: newSelectedPlaceId,
+      }, () => {
         this.props.handleGetListPlaceFromArrayField(this.getSelected())
       })
     }
@@ -238,12 +243,11 @@ export class renderGroup extends Component {
               <ListItem key={index} last={index===this.state.fields.length-1} style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
-                    <CheckBox           
-                      type="radio"                                 
-                      checked={address.checked}
-                      onPress={e=>this.handleCheck(index)}
-                    />
-                    
+                      <CheckBox
+                          type="radio"
+                          checked={address.placeId === this.state.selectedPlaceId}
+                          onPress={e=>this.handleCheck(index)}
+                      />
                   </View>
               </ListItem>
             )

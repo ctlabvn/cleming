@@ -189,9 +189,13 @@ export default class CreateUserContainer extends Component {
       if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
         this.setState({
             selectedPlaceId: this.props.selectedPlace.id,
+        }, () => {
+          this.setDefaultPlace()
         });
       }
   }
+
+
 
   componentWillMount() {
     this.props.actions.deleteGeneratedPassword();
