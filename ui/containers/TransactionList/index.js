@@ -167,16 +167,22 @@ export default class extends Component {
 
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
-                () => {
+                (err, data) => {
                     this.setState({ loading: false, loadingMore: false })
-                    transactionFilterComponent.updateIndicatorNumber(payWithClingme.totalRecord)
+                    if (data && data.updated && data.updated.data) {
+                        transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
+                    }
                 }
             )
         } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
             getListTransaction(xsession, placeId, fromTime, toTime, filter, page,
-                () => {
+                (err, data) => {
                     this.setState({ loading: false, loadingMore: false })
-                    transactionFilterComponent.updateIndicatorNumber(payDirect.totalRecord)
+                    if (data && data.updated && data.updated.data) {
+                        transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
+
+                    }
+
                 }
             )
         }
