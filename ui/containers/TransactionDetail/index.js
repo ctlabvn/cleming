@@ -411,7 +411,7 @@ export default class TransactionDetail extends Component {
                             }
                         )
                     } else {
-                        // setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
                         goBack()
                         return
                     }
@@ -446,9 +446,7 @@ export default class TransactionDetail extends Component {
     }
     _goToMiddlePage = () => {
         this.swiping = true
-        if (this.refs.viewPager) {
-            this.refs.viewPager.setPageWithoutAnimation(1)
-        }
+        this.refs.viewPager && this.refs.viewPager.setPageWithoutAnimation(1)
     }
     goNextViewPager() {
         this.refs.viewPager.setPage(2)
