@@ -131,7 +131,7 @@ export default class CreateUserContainer extends Component {
   componentWillBlur() {
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
-      // this. resetProps();
+      this. resetProps();
     // console.log(this.props.initialValues.GroupAddress)
     this.placeDropdown.clearAll()
 
@@ -179,7 +179,7 @@ export default class CreateUserContainer extends Component {
 
       } else {
           this.props.actions.deleteGeneratedPassword()
-          // this.props.change('GroupAddress', this.props.place.listPlace)
+          this.props.change('GroupAddress', this.props.place.listPlace)
           // this.props.change('name', '')
           // this.props.change('email', '')
           // this.props.change('phone', '')
