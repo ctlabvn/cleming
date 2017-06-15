@@ -210,9 +210,7 @@ export default class PlaceOrderList extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    if (newsUpdate && newsUpdate.bookingNews) {
-                        this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
-                    }
+                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
                 }
             }
         )
