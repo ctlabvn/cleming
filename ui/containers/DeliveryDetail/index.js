@@ -20,7 +20,7 @@ import moment from 'moment'
 import ProgressCircle from 'react-native-progress-circle'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
-import { DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK } from '~/store/constants/app'
+import { DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK, GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import material from '~/theme/variables/material.js'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
@@ -50,7 +50,7 @@ export default class extends Component {
                         forwardTo('merchantOverview', true)
                         return
                     }
-                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
                     forwardTo('merchantOverview', true)
                     return
                 }
@@ -95,7 +95,7 @@ export default class extends Component {
                     markWillReload(true)
                     forwardTo('deliveryList')
                 } else {
-                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
                 }
             }
         )
@@ -108,7 +108,7 @@ export default class extends Component {
                     markWillReload(true)
                     forwardTo('deliveryList')
                 } else {
-                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
                 }
             }
         )

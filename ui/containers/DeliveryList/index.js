@@ -27,7 +27,7 @@ import { getNews } from '~/store/selectors/place'
 import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
 import {
     ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
-    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK
+    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK, GENERAL_ERROR_MESSAGE
 }
     from '~/store/constants/app'
 @connect(state => ({
@@ -221,7 +221,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
                 }
             }
         )
@@ -236,7 +236,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
                 }
             }
         )

@@ -18,7 +18,7 @@ import styles from './styles'
 import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
 import CircleCountdown from '~/ui/components/CircleCountdown'
 import material from '~/theme/variables/material.js'
-import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT } from '~/store/constants/app'
+import { DEFAULT_TIME_FORMAT, DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT, GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { formatPhoneNumber } from '~/ui/shared/utils'
 @connect(state => ({
   xsession: getSession(state),
@@ -53,7 +53,7 @@ export default class PlaceOrderDetail extends Component {
               this.setState({ bookingDetail: bookingDetail })
               return
             } else {
-              setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+              setToast(GENERAL_ERROR_MESSAGE, 'danger')
               this.props.forwardTo('merchantOverview')
               return
             }
@@ -81,7 +81,7 @@ export default class PlaceOrderDetail extends Component {
               this.setState({ bookingDetail: data.updated.bookingInfo })
               return
             } else {
-              setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+              setToast(GENERAL_ERROR_MESSAGE, 'danger')
               this.props.forwardTo('merchantOverview')
               return
             }
