@@ -131,9 +131,17 @@ export default class CreateUserContainer extends Component {
   componentWillBlur() {
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
+      // this. resetProps();
     // console.log(this.props.initialValues.GroupAddress)
     this.placeDropdown.clearAll()
 
+  }
+
+  resetProps() {
+      // this.props.change('GroupAddress', this.props.place.listPlace)
+      this.props.change('name', '')
+      this.props.change('email', '')
+      this.props.change('phone', '')
   }
 
   componentWillFocus() {
@@ -141,6 +149,9 @@ export default class CreateUserContainer extends Component {
       //     {thisPropsSelectedPlace: this.props.selectedPlace,
       //         thisStateSelectedPlaceId: this.state.selectedPlaceId,
       //     }, null, 2));
+
+      // console.warn('props: ' + JSON.stringify(this.props.formValues, null, 2));
+      // console.warn('state: ' + JSON.stringify(this.state, null, 2));
 
       this.firstTimeResetTime = true
 
@@ -168,10 +179,11 @@ export default class CreateUserContainer extends Component {
 
       } else {
           this.props.actions.deleteGeneratedPassword()
-          this.props.change('GroupAddress', this.props.place.listPlace)
-          this.props.change('name', '')
-          this.props.change('email', '')
-          this.props.change('phone', '')
+          // this.props.change('GroupAddress', this.props.place.listPlace)
+          // this.props.change('name', '')
+          // this.props.change('email', '')
+          // this.props.change('phone', '')
+          this.resetProps();
 
           this.setState({
               // chosenListPlace: [],
