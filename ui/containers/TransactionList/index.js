@@ -189,7 +189,7 @@ export default class extends Component {
     }
     // need care about currentPage
     _loadMore = () => {
-        const { transaction, payWithClingme, payDirect } = this.props
+        const { transaction, payWithClingme, payDirect, app } = this.props
         let pageNumber, totalPage
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             pageNumber = payWithClingme.pageNumber
@@ -200,7 +200,7 @@ export default class extends Component {
         }
         if (pageNumber >= totalPage) return
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        let currentPlace = this.refs.placeDropdown.getValue()
+        let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1)
     }
