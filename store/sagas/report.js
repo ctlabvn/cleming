@@ -18,11 +18,6 @@ const requestCustomerReport = createRequestSaga({
             return setCustomerReport(data.updated.data)
         }          
     ],
-    failure: [
-        (data) => {
-            return setToast('Load Fail: '+JSON.stringify(data), 'error')
-        }
-    ],
 })
 const requestMapReport = createRequestSaga({
     request: api.report.getMapStatistic,
@@ -37,11 +32,6 @@ const requestMapReport = createRequestSaga({
             // return setListTransaction(data.updated.data)
             return setMapReport(data.updated.data)
         }          
-    ],
-    failure: [
-        (data) => {
-            return setToast('Load Fail: '+JSON.stringify(data), 'error')
-        }
     ],
 })
 export default [
