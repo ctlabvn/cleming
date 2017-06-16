@@ -303,7 +303,7 @@ export default class extends Component {
         const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
         let listItemStyle = (status != ORDER_CANCEL) ? styles.deliveryBlock : styles.deliveryBlockCacel
         return (
-            <ListItem style={listItemStyle} key={orderInfo.clingmeId}
+            <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
                 onPress={() => {
                     forwardTo('deliveryDetail/' + orderInfo.orderCode)
                 }
