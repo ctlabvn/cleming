@@ -42,13 +42,16 @@ export default class extends Component {
 
   navigateTo(route) {
     const {forwardTo, closeDrawer, user} = this.props
-    if (user.accTitle != 1 && route == 'userManagement') {
-      closeDrawer()
-      forwardTo('userManagement/action/updateUser')
-    } else {
+    // if (user.accTitle != 1 && route == 'userManagement') {
+    //   closeDrawer()
+    //   forwardTo('userManagement/action/updateUser')
+    // } else {
+    //   closeDrawer()
+    //   forwardTo(route)
+    // }
+
       closeDrawer()
       forwardTo(route)
-    }
   }
 
   render() {
