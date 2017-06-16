@@ -20,10 +20,6 @@ const requestBookingList = createRequestSaga({
     ],
 
     failure: [
-        (data) => {
-            console.log('Booking Err', data)
-            return setToast('Booking Fail: ' + JSON.stringify(data), 'error')
-        }
     ],
 })
 
@@ -32,9 +28,6 @@ const requestBookingDetail = createRequestSaga({
     key: 'booking/detail',
     cancel: 'app/logout',
     failure: [
-        (data) => {
-            return setToast('Booking Item Fail: ' + JSON.stringify(data), 'error')
-        }
     ]
 })
 

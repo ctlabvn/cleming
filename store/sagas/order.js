@@ -16,16 +16,10 @@ const requestGetOrderList = createRequestSaga({
             return setToast('Load order fail: ', JSON.stringify(data))
         },               
     ],
-    failure: [
-        (data) => setToast('Can not get order', 'error')
-    ],
 })
 const requestGetOrderDetail = createRequestSaga({
     request: api.order.getOrderDetail,
     key: 'getOrderDetail',    
-    failure: [
-        (data) => setToast('can not get order detail', 'error')
-    ],
 })
 
 const requestGetOrderDenyReason = createRequestSaga({
@@ -40,9 +34,6 @@ const requestGetOrderDenyReason = createRequestSaga({
             return setToast(GENERAL_ERROR_MESSAGE, 'danger')
         }
     ],
-    failure: [
-        (data) => setToast('can not get order detail', 'error')
-    ]
 })
 
 const requestUpdateOrderStatus = createRequestSaga({

@@ -13,11 +13,12 @@ export default {
     },
     ovarlayContainerClose: {
         backgroundColor: 'rgba(0,0,0,0.5)',
-        width: '100%',
         zIndex: 500,
         elevation: 5,
         position: 'absolute',
-        top: 106,
+        top: 0,
+        width: 0,
+        height: 0
     },
 
     dropdownList: {

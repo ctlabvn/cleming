@@ -18,11 +18,6 @@ const requestListTransaction = createRequestSaga({
             return setListTransaction(data.updated.data)
         }          
     ],
-    failure: [
-        (data) => {
-            return setToast('Load Fail: '+JSON.stringify(data), 'error')
-        }
-    ],
 })
 requestListTransactionPayWithClingme = createRequestSaga({
     request: api.transaction.listPayWithClingme,
@@ -34,25 +29,18 @@ requestListTransactionPayWithClingme = createRequestSaga({
             return setListTransactionPayWithClingme(data.updated.data)
         }          
     ],
-    failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
-    ],
 }),
 requestTransactionDetail = createRequestSaga({
     request: api.transaction.detail,
     key: 'transaction/detail',
     cancel: 'app/logout',
     failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
     ],
 })
 requestTransactionDetailPayWithClingme = createRequestSaga({
     request: api.transaction.detailPayWithClingme,
     key: 'transaction/detailPayWithClingme',
     cancel: 'app/logout',
-    failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
-    ],
 })
 requestDenyReason = createRequestSaga({
     request: api.transaction.getDenyReason,
@@ -64,26 +52,17 @@ requestDenyReason = createRequestSaga({
             return setDenyReason(data.updated.data)
         }
     ],
-    failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
-    ],
 })
 
 requestSendDenyReason = createRequestSaga({
     request: api.transaction.sendDenyReason,
     key: 'transaction/sendDenyReason',
     cancel: 'app/logout',
-    failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
-    ],
 })
 requestTransactionConfirm = createRequestSaga({
     request: api.transaction.confirmTransaction,
     key: 'transaction/confirm',
     cancel: 'app/logout',
-    failure: [
-        () => setToast('Couldn\'t load list transaction Clingme', 'error')
-    ],
 })
 export default [
     function* fetchWatcher() {

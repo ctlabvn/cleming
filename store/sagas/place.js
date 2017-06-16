@@ -18,9 +18,6 @@ const requestListPlace = createRequestSaga({
 
         }
     ],
-    failure: [
-        (data) => setToast('Place List: ' + JSON.stringify(data), 'error')
-    ],
 })
 const requestPlaceStatistic = createRequestSaga({
     request: api.place.statistic,
@@ -30,9 +27,6 @@ const requestPlaceStatistic = createRequestSaga({
         (data) => {
             return setPlaceStatistic(data.updated.data)
         }
-    ],
-    failure: [
-        (data) => setToast('Place Statistic: ' + JSON.stringify(data), 'error')
     ],
 })
 
@@ -45,9 +39,6 @@ const requestNews = createRequestSaga({
             console.log('News Data', data)
             return setMerchantNews(data.updated.data)
         }
-    ],
-    failure: [
-        () => setToast('Couldn\'t connect to server', 'error')
     ],
 })
 
