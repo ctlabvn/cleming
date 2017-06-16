@@ -165,28 +165,36 @@ export default class App extends Component {
       // (required) Called when a remote or local notification is opened or received
       onNotification: (notification) => {
         console.log('NOTIFICATION:', notification)
-        let notificationData = notification.data
         if (notification.userInteraction) {
-          // New transaction
-          switch (notificationData.type) {
-            case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
-            case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
-              this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
-              break
-            case NOTIFY_TYPE.NEW_BOOKING:
-              this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
-              break
-            case NOTIFY_TYPE.NEW_ORDER:
-              this.props.forwardTo('deliveryDetail/' + notificationData.param1)
-              break
+          this._handleNoti(notification)
+        } else {
+          let currentPlace = this.props.selectedPlace
+          if (currentPlace && currentPlace.id) {
+            this.props.getMerchantNews(this.props.xsession, currentPlace.id)
           }
+          this.props.setToast(notification.title, 'warning', this._handleNoti, notification)
         }
       },
 
       senderID: SENDER_ID,
     })
   }
-
+  _handleNoti = (notification) => {
+    console.log('Call handle Noti')
+    let notificationData = notification.data
+    switch (notificationData.type) {
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
+        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
+        break
+      case NOTIFY_TYPE.NEW_BOOKING:
+        this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
+        break
+      case NOTIFY_TYPE.NEW_ORDER:
+        this.props.forwardTo('deliveryDetail/' + notificationData.param1)
+        break
+    }
+  }
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
@@ -363,8 +371,8 @@ export default class App extends Component {
       // Save location when nerver detect location yet, or last detection longer than 2 minutes
       if (!location || Object.keys(location).length == 0 ||
         (location.lastDetect && (now - location.lastDetect > DETECT_LOCATION_INTERVAL))) {
-          console.log('Saving Position')
-          saveCurrentLocation(position.coords)
+        console.log('Saving Position')
+        saveCurrentLocation(position.coords)
       }
 
     })
