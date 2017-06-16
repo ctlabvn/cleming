@@ -32,6 +32,15 @@ export default class TabsWithNoti extends Component {
         tabData[index].number = number
         this.setState({ tabData: tabData })
     }
+
+    renderTextCount(isActive, number){
+        const fontSize = +number > 99 ? 8 : 10
+        const style = isActive ? styles.tabNumberActive : styles.tabNumberDeactive
+        return (            
+            <Text style={{...style,fontSize}}>{number}</Text>
+        )
+    }
+
     render() {
         return (
             <View style={styles.tabBar}>
@@ -42,10 +51,8 @@ export default class TabsWithNoti extends Component {
                             <TouchableOpacity onPress={() => this._handlePressTab(tabItem)}>
                                 <View style={styles.tab}>
                                     <Text small style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
-                                    {(typeof tabItem.number != 'undefined' && tabItem.number != 0) && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>
-                                        <Text style={isActive ? styles.tabNumberActive : styles.tabNumberDeactive}>
-                                            {tabItem.number}
-                                        </Text>
+                                    {(typeof tabItem.number != 'undefined' && tabItem.number != 0) && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>                                        
+                                        {this.renderTextCount(isActive, tabItem.number)}                                        
                                     </View>}
                                 </View>
                             </TouchableOpacity>
