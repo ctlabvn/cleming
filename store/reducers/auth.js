@@ -35,12 +35,14 @@ export const auth = (state = initialState, {type, payload}) => {
       }
     case 'app/setPushToken':
       return {...state, push_token: payload}
-    case 'app/updateProfileToRedux':
+      case 'app/updateProfileToRedux':
+        console.warn('state.user.accTitle' + JSON.stringify( state.user.accTitle, null, 2));
       return {
         ...state,
         user: {
           ...state.user,
-          ...payload.updated.mertchant_accout_info
+          ...payload.updated.mertchant_accout_info,
+          accTitle: state.user.accTitle,
         }
       }
     case 'app/updateFirstTimeLogin':
