@@ -42,7 +42,7 @@ export default class TabsWithNoti extends Component {
                             <TouchableOpacity onPress={() => this._handlePressTab(tabItem)}>
                                 <View style={styles.tab}>
                                     <Text small style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
-                                    {(typeof tabItem.number != 'undefined') && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>
+                                    {(typeof tabItem.number != 'undefined' && tabItem.number != 0) && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>
                                         <Text style={isActive ? styles.tabNumberActive : styles.tabNumberDeactive}>
                                             {tabItem.number}
                                         </Text>

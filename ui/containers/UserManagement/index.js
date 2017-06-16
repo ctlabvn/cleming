@@ -244,7 +244,7 @@ class UserManagement extends Component {
     }
 
     onSubmitModal() {
-        const { forwardTo, selectedPlace } = this.props
+        const { forwardTo, selectedPlace, app } = this.props
         if (this.state.updateInfoChecked) {
             this.setState({
                 updateInfoChecked: !this.state.updateInfoChecked
@@ -254,7 +254,7 @@ class UserManagement extends Component {
             this.setState({
                 isFetchingData: true
             })
-            let currentPlace = this.refs.placeDropdown.getValue()
+            let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
             })

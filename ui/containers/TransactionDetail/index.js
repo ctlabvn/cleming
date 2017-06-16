@@ -179,7 +179,7 @@ export default class TransactionDetail extends Component {
     // Go to Page 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const {app} = this.props
+            const { app } = this.props
             this._goToMiddlePage()
             const { xsession, listTransaction, getTransactionDetail, route } = this.props
             let transactionId = route.params.id
@@ -338,7 +338,7 @@ export default class TransactionDetail extends Component {
         }
     }
     _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack } = this.props
         let transactionType = route.params.type
         this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
@@ -375,6 +375,8 @@ export default class TransactionDetail extends Component {
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
             getTransactionDetail(xsession, transactionId,
                 (err, data) => {
+                    console.log('Loaded Detail', data)
+                    console.log('Err', err)
                     this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
@@ -398,7 +400,7 @@ export default class TransactionDetail extends Component {
                             }
 
                         }
-                        if (!transInfo.isReadCorrespond && transInfo.notifyIdCorrespond){
+                        if (!transInfo.isReadCorrespond && transInfo.notifyIdCorrespond) {
                             updateRead(xsession, transInfo.notifyIdCorrespond)
                         }
 
@@ -408,6 +410,10 @@ export default class TransactionDetail extends Component {
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
                             }
                         )
+                    } else {
+                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        goBack()
+                        return
                     }
                 }
             )
@@ -440,7 +446,7 @@ export default class TransactionDetail extends Component {
     }
     _goToMiddlePage = () => {
         this.swiping = true
-        this.refs.viewPager.setPageWithoutAnimation(1)
+        this.refs.viewPager && this.refs.viewPager.setPageWithoutAnimation(1)
     }
     goNextViewPager() {
         this.refs.viewPager.setPage(2)

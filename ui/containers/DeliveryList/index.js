@@ -80,18 +80,16 @@ export default class extends Component {
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             let now = new Date().getTime()
             //Effect within 1 munites from markTime
-            if (order.willReload && order.markReloadTime && (now-order.markReloadTime < 60000)){
+            if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
                 markWillReload(false)
                 this.selectedStatus = ORDER_WAITING_DELIVERY
                 this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
                 this._load()
             }
-            if (news && news.orderWaitConfirm) {
-                this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-            }
-            if (news && news.orderWaitDelivery) {
-                this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-            }
+            
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            
             this.setState({ counting: true })
         })
     }
@@ -101,12 +99,9 @@ export default class extends Component {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             this._load()
-            if (news && news.orderWaitConfirm) {
-                this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-            }
-            if (news && news.orderWaitDelivery) {
-                this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-            }
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            
         })
 
     }
@@ -177,12 +172,8 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    if (newsUpdate && newsUpdate.orderWaitConfirm) {
-                        this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
-                    }
-                    if (newsUpdate && newsUpdate.orderWaitDelivery) {
-                        this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
-                    }
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
                 }
             }
         )
@@ -279,8 +270,8 @@ export default class extends Component {
                 <View style={styles.block}>
                     <Border color='rgba(0,0,0,0.5)' size={1} />
                     <View style={styles.row}>
-                        <Button transparent onPress={()=>this.showReasonPopup(orderInfo.clingmeId)}><Text bold gray>Hủy giao hàng</Text></Button>
-                        <Button transparent onPress={()=>this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold primary>Đã giao hàng</Text></Button>
+                        <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold gray>Hủy giao hàng</Text></Button>
+                        <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold primary>Đã giao hàng</Text></Button>
                     </View>
                 </View>
             )
