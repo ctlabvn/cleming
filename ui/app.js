@@ -168,11 +168,13 @@ export default class App extends Component {
         if (notification.userInteraction) {
           this._handleNoti(notification)
         } else {
-          let currentPlace = this.props.selectedPlace
-          if (currentPlace && currentPlace.id) {
-            this.props.getMerchantNews(this.props.xsession, currentPlace.id)
+          if (this.props.xsession) {
+            let currentPlace = this.props.selectedPlace
+            if (currentPlace && currentPlace.id) {
+              this.props.getMerchantNews(this.props.xsession, currentPlace.id)
+            }
+            this.props.setToast(notification.title, 'warning', this._handleNoti, notification)
           }
-          this.props.setToast(notification.title, 'warning', this._handleNoti, notification)
         }
       },
 
