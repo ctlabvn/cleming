@@ -257,7 +257,7 @@ export default class extends Component {
     }
 
     _renderTransactionItem(item) {
-        let iconBlock, statusText, transactionCode
+        let iconBlock, statusText, transactionCode, timeBlock
         let moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
         switch (item.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK: //chờ duyệt
@@ -268,6 +268,7 @@ export default class extends Component {
                 )
                 statusText = <Text small warning>Chờ phê duyệt</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
                 iconBlock = (
@@ -277,6 +278,7 @@ export default class extends Component {
                 )
                 statusText = <Text small grayDark>Cashback thành công</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
                 iconBlock = (
@@ -287,6 +289,7 @@ export default class extends Component {
                 statusText = <Text small error>Bị từ chối</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 moneyText = <Text bold gray style={styles.moneyNumber}></Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             default:
                 iconBlock = (
@@ -296,6 +299,7 @@ export default class extends Component {
                 )
                 statusText = <Text small warning>Chờ phê duyệt</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         }
         return (
             <ListItem
@@ -308,7 +312,7 @@ export default class extends Component {
                         <View style={{ width: '100%', flex: 1 }}>
                             <View style={styles.row}>
                                 {transactionCode}
-                                <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                {timeBlock}
                             </View>
                             <View style={styles.row}>
                                 {statusText}
