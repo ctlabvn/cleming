@@ -215,10 +215,12 @@ export default class UpdateUserContainer extends Component {
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>
                             <Field
-                                editable={true}
+                                editable={false}
                                 iconStyle={styles.inputIcon}
-                                icon="edit_personal"
                                 style={styles.inputField}
+                                inputStyle={{
+                                    color: material.gray500
+                                }}
                                 keyboardType="numeric"
                                 label="Số điện thoại"
                                 name="phone"
