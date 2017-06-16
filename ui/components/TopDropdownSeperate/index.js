@@ -1,7 +1,7 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
+import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
 import Content from '~/ui/components/Content'
@@ -129,14 +129,17 @@ export default class TopDropdown extends Component {
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
-                    <Button noPadder style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
+                    <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
+                        <View>
                         <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>                    
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: material.white500,
-                            position: 'absolute',                            
-                            right: -8,
+                            position: 'absolute',     
+                            marginTop: -5,                                                   
+                            right: 10,                            
                         }} />
-                    </Button>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         )

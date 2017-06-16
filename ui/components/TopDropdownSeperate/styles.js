@@ -45,20 +45,18 @@ export default {
         backgroundColor: material.primaryColor,
         flexDirection: 'row',
         paddingTop: 15,
-        paddingBottom: 15,
-        paddingHorizontal: 20,    
+        paddingBottom: 15,            
         height: 50
     },
     dropdownSelectedValue:{        
         color: material.white500,
-        fontWeight: 'bold',        
+        fontWeight: 'bold',      
+        paddingHorizontal: 40,  
     },
     dropdownIcon:{
-        marginTop: -10,    
-        width: '100%',   
-        justifyContent: 'center',         
-        paddingRight: 20,
-        paddingLeft: 20, 
+        marginTop: -10,      
+        width: '100%',      
+        justifyContent: 'center',        
     },
     dropdownList:{
         backgroundColor: 'transparent',
