@@ -57,6 +57,15 @@ export default class UpdateUserContainer extends Component {
         this.state = {
             
         }
+        this.componentWillFocus();
+    }
+
+    componentWillFocus() {
+        // console.warn(JSON.stringify(this.props.initialValues, null, 2));
+        // console.warn(JSON.stringify(this.props.user, null, 2));
+        this.props.change('name', this.props.initialValues.name);
+        this.props.change('email', this.props.initialValues.email);
+        this.props.change('phone', this.props.initialValues.phone);
     }
     
     handleChoosePhoto = (response)=>{
@@ -206,7 +215,7 @@ export default class UpdateUserContainer extends Component {
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>
                             <Field
-                                editable={false}
+                                editable={true}
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
