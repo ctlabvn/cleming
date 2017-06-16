@@ -41,6 +41,7 @@ sagaMiddleware.run(rootSaga)
 const configureStore = callback =>   {  
   // callback(store)
   persistStore(store, {storage: AsyncStorage}, ()=> callback(store))
+    // .purge(['auth'])    
 }
 
 export default configureStore

@@ -116,8 +116,9 @@ export default class TopDropdown extends Component {
         return (
             <View style={containerStyleTopDown}>
                 <View style={styles.dropdownHeader}>
-                    <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
                     <Button style={styles.dropdownIcon} onPress={() => this._handlePressIcon()} transparent>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.selectedOption.name}</Text>
+                    
                         <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
                             color: material.white500
                         }} />

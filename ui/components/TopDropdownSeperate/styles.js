@@ -46,19 +46,19 @@ export default {
         flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,
-        paddingLeft: 50,
-        paddingRight: 50,        
+        paddingHorizontal: 20,    
         height: 50
     },
-    dropdownSelectedValue:{
-        alignSelf: 'center',
+    dropdownSelectedValue:{        
         color: material.white500,
-        fontWeight: 'bold'
+        fontWeight: 'bold',        
     },
     dropdownIcon:{
-        position: 'absolute',
-        right: 0,
-        paddingRight: 10,
+        marginTop: -10,    
+        width: '100%',   
+        justifyContent: 'center',         
+        paddingRight: 20,
+        paddingLeft: 20, 
     },
     dropdownList:{
         backgroundColor: 'transparent',

@@ -9,6 +9,9 @@ import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import material from '~/theme/variables/material.js'
 import CheckBox from '~/ui/elements/CheckBox'
 // import Content from '~/ui/components/Content'
+
+import ModalOverlay from '~/ui/components/ModalOverlay'
+
 export default class DeliveryFeedbackDialog extends Component {
     constructor(props) {
         super(props)
@@ -64,7 +67,7 @@ export default class DeliveryFeedbackDialog extends Component {
         this.caculatingHeight = false
         const { height } = e.nativeEvent.layout
         console.log('Content Height', height)
-        this.height = height
+        this.height = height// status bar height
         this.forceUpdate()
     }
     render() {
@@ -79,7 +82,7 @@ export default class DeliveryFeedbackDialog extends Component {
                 }}
             >
 
-                <View style={styles.modalOverlay}>
+                <ModalOverlay style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
@@ -122,7 +125,7 @@ export default class DeliveryFeedbackDialog extends Component {
                         </View>
 
                     </View>
-                </View>
+                </ModalOverlay>
             </Modal>
         )
     }

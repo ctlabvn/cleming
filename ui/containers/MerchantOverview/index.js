@@ -136,6 +136,13 @@ export default class MerchantOverview extends Component {
         )
     }
 
+    renderTextCount(number){
+        const fontSize = +number > 99 ? 11 : 12
+        return (
+            <Text style={{...styles.numberRight,fontSize}}>{number}</Text>
+        )
+    }
+
     renderMainContainer() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
         return (
@@ -169,7 +176,7 @@ export default class MerchantOverview extends Component {
                                 <Text style={{ ...styles.textLabelRightImage }}>Giao dịch</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.transactionNews}</Text></View>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{this.renderTextCount(place.news.transactionNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
@@ -181,7 +188,7 @@ export default class MerchantOverview extends Component {
                                 <Text style={{ ...styles.textLabelRightImage }}>Đặt chỗ</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.bookingNews}</Text></View>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{this.renderTextCount(place.news.bookingNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
@@ -193,7 +200,7 @@ export default class MerchantOverview extends Component {
                                 <Text style={{ ...styles.textLabelRightImage }}>Đặt giao hàng</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{place.news.orderNews}</Text></View>
+                                <View style={styles.badgeContainer}><Text small style={styles.numberRight}>{this.renderTextCount(place.news.orderNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>

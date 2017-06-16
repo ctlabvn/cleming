@@ -9,6 +9,9 @@ import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import material from '~/theme/variables/material.js'
 import CheckBox from '~/ui/elements/CheckBox'
 // import Content from '~/ui/components/Content'
+
+import ModalOverlay from '~/ui/components/ModalOverlay'
+
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
@@ -63,7 +66,7 @@ export default class FeedbackDialog extends Component {
                 }}
             >
 
-                <View style={styles.modalOverlay}>
+                <ModalOverlay style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
@@ -102,7 +105,7 @@ export default class FeedbackDialog extends Component {
                         </View>
 
                     </View>
-                </View>
+                </ModalOverlay>
             </Modal>
         )
     }

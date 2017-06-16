@@ -8,6 +8,9 @@ import { formatNumber } from '~/ui/shared/utils'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import material from '~/theme/variables/material'
 import CheckBox from '~/ui/elements/CheckBox'
+
+import ModalOverlay from '~/ui/components/ModalOverlay'
+
 export default class FeedbackDialogClingme extends Component {
     constructor(props) {
         super(props)
@@ -56,7 +59,7 @@ export default class FeedbackDialogClingme extends Component {
                     this.setModalVisible(!this.state.modalVisible)
                 }}
             >
-                <View style={styles.modalOverlay}>
+                <ModalOverlay style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
@@ -97,7 +100,7 @@ export default class FeedbackDialogClingme extends Component {
                             ><Text primary>Ok</Text></Button>
                         </View>
                     </View>
-                </View>
+                </ModalOverlay>
             </Modal>
         )
     }
