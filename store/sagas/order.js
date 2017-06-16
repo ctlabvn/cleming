@@ -4,7 +4,7 @@ import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { replaceOrderList, setOrderDenyReason } from '~/store/actions/order'
-
+import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 const requestGetOrderList = createRequestSaga({
     request: api.order.getOrderList,
     key: 'getOrderList',    
@@ -37,7 +37,7 @@ const requestGetOrderDenyReason = createRequestSaga({
             if (data && data.updated && data.updated.data){
                 return setOrderDenyReason(data.updated.data)
             }
-            return setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+            return setToast(GENERAL_ERROR_MESSAGE, 'danger')
         }
     ],
     failure: [

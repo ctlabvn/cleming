@@ -120,22 +120,22 @@ export default class extends Component {
     }
   }
 
-  renderNotificationContent({ title, notifyType, paramLong2, content, paramDouble1 }) {
+  renderNotificationContent(item) {
     const border = <Border style={{
       marginLeft: 15,
       marginTop: 10,
     }} color='rgba(0,0,0,0.5)' size={1} />
 
-    switch (notifyType) {
+    switch (item.notifyType) {
 
       case NOTIFY_TYPE.NEW_BOOKING:
-        const minutesRemain = Math.round((paramLong2 - Date.now() / 1000) / 60)
+        const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
         return (
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title} </Text>
-                <Text bold style={styles.textGray}>{content}
+                <Text note style={styles.textGray}>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}
                 </Text>
               </View>
 
@@ -152,10 +152,10 @@ export default class extends Component {
                 position: 'absolute',
                 top: 0,
                 right: 0,
-              }}>{moment(paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
               <View style={styles.rowEnd}>
                 <Icon name='friend' style={styles.icon} />
-                <Text bold>2</Text>
+                <Text bold>{item.paramId1}</Text>
               </View>
             </View>
 
@@ -164,26 +164,25 @@ export default class extends Component {
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
+        let fastDeliveryText = item.paramId3 ? <Text small style={{
+          color: material.red500,
+          alignSelf: 'flex-end',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }}>Giao nhanh 45'</Text> : null
         return (
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title} </Text>
-                <Text bold style={styles.textGray}>{content}
+                <Text note style={styles.textGray}>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}
                 </Text>
               </View>
-
-              <Text small style={{
-                color: material.red500,
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>Giao nhanh 45'</Text>
-
+              {fastDeliveryText}
               <View style={styles.rowEnd}>
                 <Icon name='want-feed' style={styles.icon} />
-                <Text bold>2</Text>
+                <Text bold>{item.paramId1}</Text>
               </View>
             </View>
 
@@ -195,16 +194,14 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note error>{title} </Text>
-                <Text bold style={styles.textGray}>{content}
-                </Text>
+                <Text note error>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}</Text>
               </View>
               <View style={styles.rowEnd}>
                 <Icon name='want-feed' style={styles.icon} />
-                <Text bold>2</Text>
+                <Text bold>{item.paramId1}</Text>
               </View>
             </View>
-
             {border}
 
           </Body>)
@@ -213,8 +210,8 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title}</Text>
-                <Text bold style={styles.textGray}>{content}
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}
                 </Text>
               </View>
 
@@ -225,7 +222,7 @@ export default class extends Component {
                 <Text style={{
                   fontWeight: '900',
                   fontSize: 18,
-                }}>{formatNumber(paramDouble1)}</Text>đ
+                }}>{formatNumber(item.paramDouble1)}</Text>đ
                   </Text>
 
             </View>
@@ -237,8 +234,8 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title}</Text>
-                <Text bold style={styles.textGray}>{content}
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}
                 </Text>
               </View>
 
@@ -251,7 +248,7 @@ export default class extends Component {
                   fontWeight: '900',
                   color: material.blue600,
                   fontSize: 24,
-                }}>{formatNumber(paramDouble1)}</Text>đ
+                }}>{formatNumber(item.paramDouble1)}</Text>đ
                   </Text>
 
             </View>
@@ -263,10 +260,10 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title}</Text>
+                <Text note style={styles.textGray}>{item.title}</Text>
                 <Text numberOfLines={1} ellipsizeMode='tail'>
-                  <Text bold style={styles.textGray}>{content}: </Text>
-                  Very long text zzzz ahihji 1243, zzadk qql,a
+                  <Text bold style={styles.textGray}>{item.content}: </Text>
+                  {item.paramStr2}
                 </Text>
               </View>
 
@@ -275,7 +272,7 @@ export default class extends Component {
                 position: 'absolute',
                 top: 0,
                 right: 0,
-              }}>{moment(paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
             </View>
             {border}
           </Body>
@@ -285,8 +282,8 @@ export default class extends Component {
           <Body>
             <View style={styles.listItemRow}>
               <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{title}</Text>
-                <Text bold style={styles.textGray}>{content}</Text>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}</Text>
               </View>
               <Text note style={{
                 alignSelf: 'flex-end',
@@ -294,7 +291,7 @@ export default class extends Component {
               }}>
                 <Text style={{
                   ...styles.textGray
-                }} bold>{formatNumber(paramDouble1)}</Text>đ
+                }} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
 
@@ -359,13 +356,15 @@ export default class extends Component {
               removeClippedSubviews={false}
               pageSize={10}
               dataArray={notifications.data} renderRow={(item) =>
-                <ListItem noBorder style={styles.listItemContainer} onPress={() => this.handleNotiClick(item)}>
+                <ListItem noBorder
+                  style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
+                  onPress={() => this.handleNotiClick(item)}>
                   <View style={{
                     justifyContent: 'space-between',
-                    alignSelf: 'flex-start',
+                    alignSelf: 'flex-start'
                   }}>
                     {this.renderNotificationIcon(item)}
-                    <View style={styles.circle} />
+                    {!item.isRead && <View style={styles.circle} />}
                   </View>
                   {this.renderNotificationContent(item)}
 

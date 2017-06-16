@@ -38,7 +38,7 @@ import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import { NOTIFY_TYPE, TRANSACTION_TYPE, DIFF_COORD } from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 // import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
@@ -194,7 +194,7 @@ export default class App extends Component {
     this.page = getPage(router.route)
     const { headerType, footerType, title, path, showTopDropdown } = this.page
     this.topDropdown.show(showTopDropdown)
-    
+
     if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
       if (this.page) {
@@ -237,8 +237,8 @@ export default class App extends Component {
   }
 
   // will assign visible props for page, and only render when it is visible
-  initializePage(ref, route){    
-    if(ref && route.path){
+  initializePage(ref, route) {
+    if (ref && route.path) {
       this.pageInstances[route.path] = ref
       ref.visible = true
       // const fn = ref.shouldComponentUpdate
@@ -250,7 +250,7 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <Page ref={ref=>this.initializePage(ref, route)} route={route} app={this} />
+      <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
     )
   }
 
@@ -273,7 +273,7 @@ export default class App extends Component {
     //     this.topDropdown.show(false)
     //   }
     // }
-    
+
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
         {this.renderComponentFromPage(this.page)}
@@ -353,15 +353,22 @@ export default class App extends Component {
       },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
-      this.watchID = navigator.geolocation.watchPosition((position) => {
+    this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log('Position Change', position)
       if (!location || Object.keys(location).length == 0 || !location.alreadyGotLocation) {
         this.updatePlaceList(position.coords.latitude, position.coords.longitude)
         alreadyGotLocation()
       }
-      saveCurrentLocation(position.coords)
+      let now = new Date().getTime()
+      // Save location when nerver detect location yet, or last detection longer than 2 minutes
+      if (!location || Object.keys(location).length == 0 ||
+        (location.lastDetect && (now - location.lastDetect > DETECT_LOCATION_INTERVAL))) {
+          console.log('Saving Position')
+          saveCurrentLocation(position.coords)
+      }
+
     })
-    
+
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const { router, goBack } = this.props
       if (router.route === 'merchantOverview' || router.route === 'login') {
@@ -444,7 +451,7 @@ export default class App extends Component {
   }
   render() {
     const { router, drawerState, closeDrawer } = this.props
-    const { title, path,headerType, footerType, showTopDropdown } = this.page
+    const { title, path, headerType, footerType, showTopDropdown } = this.page
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -476,9 +483,9 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref} 
-            onPressOverlay = {this._handlePressHeaderOverlay}
-            />
+          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
+            onPressOverlay={this._handlePressHeaderOverlay}
+          />
 
           <TopDropdown
             ref={ref => this.topDropdown = ref}

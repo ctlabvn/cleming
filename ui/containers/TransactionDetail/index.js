@@ -20,7 +20,7 @@ import Content from '~/ui/components/Content'
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import {
     TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS,
-    DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION
+    DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION, GENERAL_ERROR_MESSAGE
 } from '~/store/constants/app'
 import { ViewPager } from 'rn-viewpager'
 import material from '~/theme/variables/material'
@@ -69,8 +69,8 @@ export default class TransactionDetail extends Component {
                 return <Text bold warning>Giao dịch chờ phê duyệt</Text>
         }
     }
-    _renderBottomAction(status) {
-        switch (status) {
+    _renderBottomAction(transactionInfo) {
+        switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
                 return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
@@ -78,7 +78,7 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return (<Text small transparent>Fake success</Text>)
             case TRANSACTION_DIRECT_STATUS.REJECT:
-                return (<Text small error>*Hóa đơn không đúng chương trình khuyến mại</Text>)
+                return (<Text small error>*{transactionInfo.rejectReason}</Text>)
 
             default:
                 return (<View key='bottomBlock'></View>)
@@ -179,7 +179,7 @@ export default class TransactionDetail extends Component {
     // Go to Page 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const {app} = this.props
+            const { app } = this.props
             this._goToMiddlePage()
             const { xsession, listTransaction, getTransactionDetail, route } = this.props
             let transactionId = route.params.id
@@ -330,7 +330,7 @@ export default class TransactionDetail extends Component {
                         </View>
 
                         <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
-                            {this._renderBottomAction(transactionInfo.transactionStatus)}
+                            {this._renderBottomAction(transactionInfo)}
                         </View>
                     </View>
                 </Content>
@@ -338,7 +338,7 @@ export default class TransactionDetail extends Component {
         }
     }
     _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack } = this.props
         let transactionType = route.params.type
         this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
@@ -347,7 +347,7 @@ export default class TransactionDetail extends Component {
                     this.setState({ loading: false })
                     console.log('ErrData', data)
                     if (err) {
-                        setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -375,6 +375,8 @@ export default class TransactionDetail extends Component {
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
             getTransactionDetail(xsession, transactionId,
                 (err, data) => {
+                    console.log('Loaded Detail', data)
+                    console.log('Err', err)
                     this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
@@ -382,7 +384,7 @@ export default class TransactionDetail extends Component {
                             forwardTo('merchantOverview', true)
                             return
                         }
-                        setToast('Có lỗi xảy ra, vui lòng thử lại sau', 'danger')
+                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -398,7 +400,7 @@ export default class TransactionDetail extends Component {
                             }
 
                         }
-                        if (!transInfo.isReadCorrespond && transInfo.notifyIdCorrespond){
+                        if (!transInfo.isReadCorrespond && transInfo.notifyIdCorrespond) {
                             updateRead(xsession, transInfo.notifyIdCorrespond)
                         }
 
@@ -408,6 +410,10 @@ export default class TransactionDetail extends Component {
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
                             }
                         )
+                    } else {
+                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        goBack()
+                        return
                     }
                 }
             )
@@ -440,7 +446,7 @@ export default class TransactionDetail extends Component {
     }
     _goToMiddlePage = () => {
         this.swiping = true
-        this.refs.viewPager.setPageWithoutAnimation(1)
+        this.refs.viewPager && this.refs.viewPager.setPageWithoutAnimation(1)
     }
     goNextViewPager() {
         this.refs.viewPager.setPage(2)

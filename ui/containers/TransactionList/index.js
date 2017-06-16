@@ -106,12 +106,8 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    if (newsUpdate && newsUpdate.payThroughClmNotifyNumber) {
-                        this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
-                    }
-                    if (newsUpdate && newsUpdate.payDirectionNotifyNumber) {
-                        this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
-                    }
+                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
+                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
                 }
             }
         )
@@ -135,25 +131,16 @@ export default class extends Component {
             } else {
                 this.isLoadingPlace = true
             }
-
-            if (news && news.payThroughClmNotifyNumber) {
-                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-            }
-            if (news && news.payDirectionNotifyNumber) {
-                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-            }
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
         })
     }
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            if (news && news.payThroughClmNotifyNumber) {
-                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-            }
-            if (news && news.payDirectionNotifyNumber) {
-                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-            }
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
         })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
@@ -189,7 +176,7 @@ export default class extends Component {
     }
     // need care about currentPage
     _loadMore = () => {
-        const { transaction, payWithClingme, payDirect } = this.props
+        const { transaction, payWithClingme, payDirect, app } = this.props
         let pageNumber, totalPage
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             pageNumber = payWithClingme.pageNumber
@@ -200,7 +187,7 @@ export default class extends Component {
         }
         if (pageNumber >= totalPage) return
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        let currentPlace = this.refs.placeDropdown.getValue()
+        let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1)
     }
