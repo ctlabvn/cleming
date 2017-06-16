@@ -115,7 +115,7 @@ export default class TransactionDetail extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data.success) {
                     let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
-                    setToast(message, 'info', 3000, 'bottom')
+                    setToast(message, 'info', null, null,3000, 'bottom')
                     // forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
                     this._load(this.state.transactionInfo.clingmeId)
                 }
@@ -430,7 +430,7 @@ export default class TransactionDetail extends Component {
                     updateTrans.transactionStatus = 5
                     this.setState({ transactionInfo: updateTrans })
                     let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Đã ghi nhận phản hồi.</Text></View>
-                    setToast(message, 'info', 3000, 'bottom')
+                    setToast(message, 'info', null, null, 3000, 'bottom')
                 }
             }
         )

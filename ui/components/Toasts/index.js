@@ -21,14 +21,19 @@ export default class extends Component {
       this.timer = setTimeout(()=> this.props.clearToast(), duration)
     }
   }
-
+  _onPress=(duration)=>{
+    const {toast} = this.props
+    console.log('On Press Toast')
+    toast.callback && toast.callback(toast.data)
+    this._closeToast(100)
+  }
   renderToastMessage(message, levelProps){
     return (
       <Button 
         full  
         iconRight            
         {...levelProps}
-        onPress={() => this._closeToast(100)}>
+        onPress={() => this._onPress(100)}>
           <Text style={{color:'#fff'}}>{message}</Text>        
       </Button> 
     )
@@ -36,7 +41,7 @@ export default class extends Component {
 
   renderToastView(message){
     return (
-      <TouchableOpacity style={{alignSelf:'center',backgroundColor:'transparent'}} onPress={() => this._closeToast(100)}>
+      <TouchableOpacity style={{alignSelf:'center',backgroundColor:'transparent'}} onPress={() => this._onPress(100)}>
         <View>{message}</View>
       </TouchableOpacity>
     )
