@@ -56,6 +56,7 @@ export default class FeedbackDialogClingme extends Component {
         this.forceUpdate()
     }
     _handlePressClear = () => {
+        console.log('Pressing Clear CLM')
         this.setState({ note: '' })
     }
     render() {
@@ -74,7 +75,7 @@ export default class FeedbackDialogClingme extends Component {
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }}>
+                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => {
                                     return (
