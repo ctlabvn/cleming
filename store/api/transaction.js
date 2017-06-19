@@ -26,13 +26,15 @@ export default {
         console.log('Transaction API Confirm', xsession+'---'+clingmeId+'---'+transactionType)
         return apiPost('/merchantapp/payclm-confirm', {clingmeId, transactionType}, xsession)
     },
-
-    //"dealTransactionId": long,	// id của giao dịch
-// "isMcAccept": int,	// 1 là đồng ý, 2 là không đồng ý, khiếu nại
-// "reasonId": int,	// id lý do từ chối, nếu là khiếu nại thì bắt buộc gửi lên, nếu đồng ý thì không cần gửi
-// "note": string,	// thêm ý kiến khác, lựa chọn, mặc định là “”
+    getDenyReasonClm(xsession){
+        return apiGet('/merchantapp/payclm-reason', {}, xsession)
+    },
     sendDenyReason(xsession, dealTransactionId, reasonId, note, isMcAccept = 2){
         return apiPost('/merchantapp/confirm-transaction', {dealTransactionId, reasonId, note, isMcAccept}, xsession)
+    },
+    sendDenyReasonClm(xsession, clingmeId, reasonId, note='', amountMoney=0){
+        console.log('Send Deny CLM API', xsession+'---'+clingmeId+'---'+reasonId+'---'+note+'---'+amountMoney)
+        return apiPost('/merchantapp/payclm-help', {clingmeId, reasonId, note, amountMoney}, xsession)
     }
 
 }
