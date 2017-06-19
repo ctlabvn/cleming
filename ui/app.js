@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
 import { BackAndroid, NativeModules, Navigator } from 'react-native'
-import { Drawer, StyleProvider } from 'native-base'
+import { Drawer, StyleProvider, View } from 'native-base'
 
 import URL from 'url-parse'
 
@@ -203,14 +203,12 @@ export default class App extends Component {
     // console.log('Route will receive props', getPage(router.route))
     this.page = getPage(router.route)
     const { headerType, footerType, title, path, showTopDropdown } = this.page
-    
+    this.topDropdown.show(showTopDropdown)
 
     if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
-      this.topDropdown.show(showTopDropdown)
       if (this.page) {
         // show header and footer, and clear search string
-
         this.header.show(headerType, title)
         this.header._search('')
         this.footer.show(footerType, router.route)
@@ -235,9 +233,6 @@ export default class App extends Component {
         this.page = routes.notFound
         this.props.setToast('Route not found: ' + router.route, 'danger')
       }
-    } else {
-      this.topDropdown.show(showTopDropdown)
-      this.header.show(headerType)
     }
 
     // check drawer
@@ -265,7 +260,9 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
+      <View style={{marginTop:page.showTopDropdown?50:0, flex:1}}>
       <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
+      </View>
     )
   }
 
