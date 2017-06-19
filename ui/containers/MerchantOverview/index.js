@@ -40,12 +40,12 @@ export default class MerchantOverview extends Component {
         }
     }
 
-    _load(showLoading=false) {
+    _load(showLoading = false) {
         const { user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession, alreadyGotLocation } = this.props
         if (user) {
             this.props.app.header.show('home', user.fullName, user.avatar)
         }
-        showLoading && this.setState({loading: true})
+        showLoading && this.setState({ loading: true })
         let lat = 0, long = 0
         if (location && Object.keys(location).length > 1) {
             lat = location.latitude
@@ -87,13 +87,13 @@ export default class MerchantOverview extends Component {
                     } else {
                         getMerchantNews(xsession, selectedPlace.id)
                     }
-                    this.setState({loading: false})
+                    this.setState({ loading: false })
                 }
             }
         )
 
     }
-    _onRefresh = ()=>{
+    _onRefresh = () => {
         console.log('Refreshing...')
         this._load(true)
     }
@@ -116,10 +116,10 @@ export default class MerchantOverview extends Component {
     _handleChangePlace = (item) => {
         console.log('Call callback handle place change', item)
         const { place, setSelectedOption } = this.props
-        this.setState({loading: true})
+        this.setState({ loading: true })
         this.props.getMerchantNews(this.props.xsession, item.id,
-            ()=>{
-                this.setState({loading: false})
+            () => {
+                this.setState({ loading: false })
             }
         )
     }
@@ -136,10 +136,10 @@ export default class MerchantOverview extends Component {
         )
     }
 
-    renderTextCount(number){
+    renderTextCount(number) {
         const fontSize = +number > 99 ? 11 : 12
         return (
-            <Text style={{...styles.numberRight,fontSize}}>{number}</Text>
+            <Text style={{ ...styles.numberRight, fontSize }}>{number}</Text>
         )
     }
 
@@ -150,26 +150,7 @@ export default class MerchantOverview extends Component {
             <View style={styles.menuContainer}>
                 <Text style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
                 <View style={styles.menuContainer}>
-                    {/*<Text style={styles.timeInteval}>{moment(parseInt(place.statistic.fromTime * 1000)).format('DD/MM/YYYY')} đến {moment(parseInt(place.statistic.toTime) * 1000).format('DD/MM/YYYY')}</Text>
-                    <View style={styles.infoContainer}>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeReach)}</Text>
-                            <Text style={styles.infoItemLabel}>Tiếp cận</Text>
-                        </View>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeView)}</Text>
-                            <Text style={styles.infoItemLabel}>Xem</Text>
-                        </View>
-                        <View style={styles.infoItemBorderRight}>
-                            <Text style={styles.infoItemNumber}>{formatNumber(place.statistic.placeInteract)}</Text>
-                            <Text style={styles.infoItemLabel}>Tìm hiểu</Text>
-                        </View>
-                        <View style={styles.infoItem}>
-                            <Text style={{ ...styles.infoItemNumber, ...styles.success }}>{formatNumber(place.statistic.placeBought)}</Text>
-                            <Text style={styles.infoItemLabel}>Mua</Text>
-                        </View>
-                    </View>*/}
-                    <TouchableOpacity onPress={() => forwardTo('transactionList')}>
+                    {(place && place.news && place.news.transactionNews > -1) && <TouchableOpacity onPress={() => forwardTo('transactionList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon} />
@@ -180,8 +161,8 @@ export default class MerchantOverview extends Component {
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
+                    </TouchableOpacity>}
+                    {(place && place.news && place.news.bookingNews > -1) && <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon} />
@@ -192,8 +173,9 @@ export default class MerchantOverview extends Component {
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => forwardTo('deliveryList')}>
+                    </TouchableOpacity>}
+
+                    {(place && place.news && place.news.orderNews > -1) && <TouchableOpacity onPress={() => forwardTo('deliveryList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon} />
@@ -204,7 +186,7 @@ export default class MerchantOverview extends Component {
                                 <Icon name='chevron-right' style={styles.rightIcon} />
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </View>
             </View>
             // </Content>
