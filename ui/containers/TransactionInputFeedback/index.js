@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
-import { View, KeyboardAvoidingView, InteractionManager } from 'react-native'
+import { View, KeyboardAvoidingView, InteractionManager, Keyboard } from 'react-native'
 import styles from './styles'
 import material from '~/theme/variables/material'
 import { FEEDBACK_CLM_TRANSACTION } from '~/store/constants/app'
@@ -29,6 +29,7 @@ export default class FeedbackDialogClingme extends Component {
         console.log('Route', route.params)
         const clingmeId = route.params.dealID
         const reasonID = route.params.reasonID
+        Keyboard.dismiss()
         sendDenyReasonClm(xsession, clingmeId, reasonID, '', this.state.value,
             (err, data) => {
                 console.log('Deny Reason CLM', data)
