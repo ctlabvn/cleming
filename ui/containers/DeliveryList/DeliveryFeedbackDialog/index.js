@@ -103,7 +103,7 @@ export default class DeliveryFeedbackDialog extends Component {
                         <View style={styles.rowPadding}>
                             <Text>Lí do hủy đơn hàng</Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }}>
+                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
