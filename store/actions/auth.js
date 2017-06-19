@@ -8,8 +8,6 @@ export const logout = (...args) => ({
   type: 'app/logout',
   args
 })
-
-
 // actions called by sagas
 
 /**
@@ -45,4 +43,28 @@ export const saveRefreshToken = (data) => ({
  */
 export const removeLoggedUser = () => ({
   type: 'app/removeLoggedUser',  
+})
+
+export const setUserAvatar = (avatarUrl) => ({
+  type: 'app/setUserAvatar',
+  payload: avatarUrl,
+})
+
+export const setPushToken = (token) => ({
+  type: 'app/setPushToken',
+  payload: token
+})
+
+export const updateProfileToRedux = (data) => ({
+  type: 'app/updateProfileToRedux',
+  payload: data
+})
+
+export const updateFirstTimeLogin = (data)=>({
+  type: 'app/updateFirstTimeLogin',
+  payload: data
+})
+
+export const clearData = ()=>({
+  type: 'app/clearData'
 })

@@ -26,18 +26,32 @@ import {
 @connect(state=>({
   session: authSelectors.getSession(state),
   profile: accountSelectors.getProfile(state),
+  user: authSelectors.getUser(state)
 }), {...authActions, ...commonActions})
 export default class extends Component {  
 
   _handleLogout = (e) => {    
-    this.props.closeDrawer()
-    this.props.logout(this.props.session)       
+
+    const { closeDrawer, setAuthState, forwardTo, removeLoggedUser, session, logout } = this.props
+    closeDrawer()
+    removeLoggedUser()
+    setAuthState(false)        
+    forwardTo('login', true)
+    logout(session)       
   }
 
   navigateTo(route) {
-    const {forwardTo, closeDrawer} = this.props
-    closeDrawer()
-    forwardTo(route)
+    const {forwardTo, closeDrawer, user} = this.props
+    // if (user.accTitle != 1 && route == 'userManagement') {
+    //   closeDrawer()
+    //   forwardTo('userManagement/action/updateUser')
+    // } else {
+    //   closeDrawer()
+    //   forwardTo(route)
+    // }
+
+      closeDrawer()
+      forwardTo(route)
   }
 
   render() {

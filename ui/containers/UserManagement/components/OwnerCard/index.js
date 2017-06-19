@@ -24,7 +24,8 @@ export default class OwnerCard extends Component {
                         <Text style={styles.nameText}>{data.fullName}</Text>
                     </Row>
                     <Row style={{height: '50%'}}>
-                        <Text style={styles.subTitleText}>Owner</Text>
+                        {(data.accTitle == 1 ? <Text style={styles.subTitleText}>Owner</Text>
+                            : <Text style={styles.nameText}>{data.phoneNumber}</Text>)}
                     </Row>
                 </Col>
             </Grid>

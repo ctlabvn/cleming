@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { 
   Item, Input, Text, Label,    
-  View, CheckBox,
+  View,
 } from 'native-base'
 
 import Icon from '~/ui/elements/Icon'
@@ -12,28 +12,34 @@ import DatePicker from '~/ui/components/DatePicker'
 import Dropdown from '~/ui/components/Dropdown'
 import Toggle from '~/ui/components/Toggle'
 import material from '~/theme/variables/material'
+import CheckBox from '~/ui/elements/CheckBox'
 import styles from './styles'
 
-export const InputField = ({ input, label, meta: { touched, error, warning }, icon, addon, onPress, style, inputStyle, iconStyle, ...custom }) => (
-  <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
-    {addon}
-    <Input   
-      placeholder={label}    
-      {...input}
-      placeholderTextColor={material.inputColorPlaceholder}
-      {...custom}
-      style={{...styles.input, ...inputStyle}}     
-    />    
-    {icon && <Icon
-      style={{...styles.inputIcon, ...iconStyle}}
-      name={icon}
-    />}
-  </Item>
-)
+export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
+  return (
+    <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
+      {addon}
+      <Input   
+        placeholder={label}    
+        {...input}
+        placeholderTextColor={material.inputColorPlaceholder}
+        {...custom}
+        style={{...styles.input, ...inputStyle}}     
+      />    
+      {iconName && <Icon
+        onPress={e=>onIconPress && onIconPress(input, active)}
+        style={{...styles.inputIcon, ...iconStyle}}
+        name={iconName}
+      />}
+    </Item>
+  )
+}
 
 export const CheckBoxField = ({ input, label, meta: { touched, error, warning }, style, checkboxStyle, labelStyle, ...custom }) => (  
   <View style={{...styles.checkboxContainer, ...style}} >      
     <CheckBox
+      color="transparent"
       checked={!!input.value}
       {...custom}      
       style={{...styles.checkbox, ...checkboxStyle}}     

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { LayoutAnimation } from 'react-native'
-import {                 
-    Button, Container, ListItem, List, Spinner,
-    Text, Item, View, Input, Left, Right, Body,
+import {
+  Button, Container, ListItem, List, Spinner,
+  Text, Item, View, Input, Left, Right, Body,
 } from 'native-base'
 
 import moment from 'moment'
@@ -22,24 +22,15 @@ import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
 
-import { getTextParts } from '~/ui/shared/utils'
+import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
 
-const renderTextParts = text => {
-  const parts = getTextParts(text)
-  return (
-    <Text small>
-      {parts[0]}
-      {parts[1] && <Text small bold>{parts[1]}</Text>}
-      {parts[2]}
-    </Text>  
-  )
-}
+import { formatNumber } from '~/ui/shared/utils'
 
-@connect(state=>({
+@connect(state => ({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
-  notificationRequest: commonSelectors.getRequest(state, 'getNotification'),  
-}), {...commonActions, ...notificationActions})
+  notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
+}), { ...commonActions, ...notificationActions })
 export default class extends Component {
 
   constructor(props) {
@@ -48,168 +39,290 @@ export default class extends Component {
     this.state = {
       refreshing: false,
       loading: false,
-    }    
+    }
   }
 
-  componentWillFocus(){
+  componentWillFocus() {
     // make it like before    
-    const {session, notifications, getNotification} = this.props
-    if(!notifications.data.length) {
-      getNotification(session, 1, ()=>getNotification(session, 2))  
-    } 
+    const { session, notifications, getNotification, app } = this.props
+
+    if (!notifications.data.length) {
+      getNotification(session, 1, () => getNotification(session, 2))
+    }
 
     this.setState({
       refreshing: false,
     })
-    
+
   }
 
-  componentWillMount(){
-    this.componentWillFocus()      
+  componentWillMount() {
+    this.componentWillFocus()
   }
 
-  _onRefresh =() => {    
-    const {session, getNotification} = this.props
-    this.setState({refreshing: true})        
-    getNotification(session, 1, ()=>getNotification(session, 2, ()=>this.setState({refreshing: false})))    
-  }    
+  _onRefresh = () => {
+    const { session, getNotification } = this.props
+    this.setState({ refreshing: true })
+    getNotification(session, 1, () => getNotification(session, 2, () => this.setState({ refreshing: false })))
+  }
 
-  _loadMore = ()=>{
-    if(this.state.loading || this.state.refreshing)
+  _loadMore = () => {
+    if (this.state.loading || this.state.refreshing)
       return
     // console.log('load more')
-    const {session, notifications, getNotification} = this.props
-    if(notifications.hasMore){
-      this.setState({loading: true})          
-      getNotification(session, notifications.page + 1, ()=>this.setState({loading: false}))              
-    }        
-  }
-
-  _handleNotiRead = (e) => {
-    
-  }
-
-  renderNotificationContent({title, notifyType, createdTime, content}){    
-    switch(notifyType){
-      case 1:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#08a7ce'
-                }}>{content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end'
-              }}>
-                2 khách
-              </Text>                        
-            </View>
-
-            <View style={styles.listItemRow}>                        
-              
-              <Text note small>{title}</Text>                        
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
-            </View>
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
-          </Body>
-        )
-
-      case 2:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#838383'
-                }}>{content}</Text>
-              </View>
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>
-                Số hóa đơn: <Text small bold style={{
-                  color: '#08a7ce',
-                }}>00456</Text>
-              </Text>                        
-            </View>
-
-            <View style={styles.listItemRow}>                        
-              
-              <Text note small>Khách hàng: <Text small bold style={{
-                color: '#838383'
-              }}>Username</Text></Text>                        
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>                          
-            </View>
-              
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-                color: '#0388b5',
-              }}>
-                <Text style={{
-                fontWeight: '900',
-                color: '#0388b5',
-                fontSize: 20,
-              }}>560.000</Text>đ
-              </Text>
-            
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
-          </Body>
-        )
-
-      default:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>                                         
-              <View>
-                <Text small>{title}</Text>
-                <Text bold style={{
-                  color: '#f7ae3b'
-                }}>{content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end'
-              }}>
-                <Text style={{
-                  color: '#838383',
-                }} bold>400.000</Text>đ
-              </Text>                        
-            </View>
-
-            <View style={styles.listItemRow}>                        
-              
-              <Text note small>Khách hàng: <Text small bold style={{
-                color: '#838383'
-              }}>Username</Text></Text>                        
-              <Text note small style={{
-                alignSelf: 'flex-end'
-              }}>{moment(createdTime).format('hh:mm     DD/M/YY')}</Text>
-            </View>
-            <Border style={{
-              marginLeft: 15,
-              marginTop: 10,
-            }} color='rgba(0,0,0,0.5)' size={1} />
-          </Body>
-        )
-
-        
-                      
+    const { session, notifications, getNotification } = this.props
+    if (notifications.hasMore) {
+      this.setState({ loading: true })
+      getNotification(session, notifications.page + 1, () => this.setState({ loading: false }))
     }
   }
 
+  _handleNotiRead = (e) => {
+    this.props.app.showNotification({
+      title: "My Push Token",
+      message: this.props.app.pushToken,
+    })
+  }
+  // export const NOTIFY_TYPE = {
+  //   COMMENT: 1,
+  //   PAY: 2,
+  //   NEW_BILL: 3,
+  //   DEAL_EXPIRED: 4,
+  //   TRANSACTION_DIRECT_WAITING: 5,
+  //   TRANSACTION_DIRECT_SUCCESS: 7,
+  //   NEW_BOOKING: 6,
+  //   NEW_ORDER: 8,
+  //   TRANSACTION_FEEDBACK: 9,
+  //   ORDER_FEEDBACK: 11,
+  //   ORDER_CANCELLED: 12,
+  // }
+
+
+  renderNotificationIcon({ notifyType }) {
+    switch (notifyType) {
+      case NOTIFY_TYPE.NEW_BOOKING:
+        return <Icon name="calendar" style={{ ...styles.icon, ...styles.warning }} />
+      // case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+      //   return <Icon name="clingme-wallet" style={styles.icon} />
+      case NOTIFY_TYPE.NEW_ORDER:
+        return <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.warning }} />
+      case NOTIFY_TYPE.ORDER_CANCELLED:
+        return <Icon name="shiping-bike2" style={{ ...styles.icon, ...styles.error }} />
+      // case NOTIFY_TYPE.WAITING:
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+        return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+        return <Icon name="term" style={{ ...styles.icon }} />
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
+        return <Icon name="comment" style={{ ...styles.icon }} />
+      default:
+        return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
+    }
+  }
+
+  renderNotificationContent(item) {
+    const border = <Border style={{
+      marginLeft: 15,
+      marginTop: 10,
+    }} color='rgba(0,0,0,0.5)' size={1} />
+
+    switch (item.notifyType) {
+
+      case NOTIFY_TYPE.NEW_BOOKING:
+        const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}
+                </Text>
+              </View>
+
+              {/*{minutesRemain > 0 && <Text small style={{
+                color: material.red500,
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>Còn {minutesRemain}'</Text>
+              }*/}
+              <Text small style={{
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              <View style={styles.rowEnd}>
+                <Icon name='friend' style={styles.icon} />
+                <Text bold>{item.paramId1}</Text>
+              </View>
+            </View>
+
+            {border}
+
+          </Body>
+        )
+      case NOTIFY_TYPE.NEW_ORDER:
+        let fastDeliveryText = item.paramId3 ? <Text small style={{
+          color: material.red500,
+          alignSelf: 'flex-end',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+        }}>Giao nhanh 45'</Text> : null
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}
+                </Text>
+              </View>
+              {fastDeliveryText}
+              <View style={styles.rowEnd}>
+                <Icon name='want-feed' style={styles.icon} />
+                <Text bold>{item.paramId1}</Text>
+              </View>
+            </View>
+
+            {border}
+
+          </Body>)
+      case NOTIFY_TYPE.ORDER_CANCELLED:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note error>{item.title} </Text>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+              </View>
+              <View style={styles.rowEnd}>
+                <Icon name='want-feed' style={styles.icon} />
+                <Text bold>{item.paramId1}</Text>
+              </View>
+            </View>
+            {border}
+
+          </Body>)
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}
+                </Text>
+              </View>
+
+              <Text style={{
+                alignSelf: 'flex-end',
+                marginRight: 0,
+              }}>
+                <Text style={{
+                  fontWeight: '900',
+                  fontSize: 18,
+                }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  </Text>
+
+            </View>
+            {border}
+          </Body>
+        )
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}
+                </Text>
+              </View>
+
+              <Text style={{
+                alignSelf: 'flex-end',
+                marginRight: 0,
+                color: material.blue600,
+              }}>
+                <Text style={{
+                  fontWeight: '900',
+                  color: material.blue600,
+                  fontSize: 24,
+                }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  </Text>
+
+            </View>
+            {border}
+          </Body>
+        )
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail'>
+                  <Text bold style={styles.textGray}>{item.content}: </Text>
+                  {item.paramStr2}
+                </Text>
+              </View>
+
+              <Text small style={{
+                alignSelf: 'flex-end',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+            </View>
+            {border}
+          </Body>
+        )
+      default:
+        return (
+          <Body>
+            <View style={styles.listItemRow}>
+              <View style={styles.titleContainer}>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+              </View>
+              <Text note style={{
+                alignSelf: 'flex-end',
+                ...styles.textGray
+              }}>
+                <Text style={{
+                  ...styles.textGray
+                }} bold>{formatNumber(item.paramDouble1)}</Text>đ
+              </Text>
+            </View>
+
+
+            {border}
+          </Body>
+        )
+
+
+    }
+  }
+
+  handleNotiClick(notification) {
+    console.log('Notification Press', notification)
+    const { notifyType, paramLong3 } = notification
+    // console.log(type, notification)
+    switch (notifyType) {
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+        this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        break
+      case NOTIFY_TYPE.NEW_BOOKING:
+        this.props.forwardTo('placeOrderDetail/' + paramLong3)
+        break
+      case NOTIFY_TYPE.NEW_ORDER:
+        this.props.forwardTo('deliveryDetail/' + paramLong3)
+        break
+      default:
+        break
+    }
+  }
   render() {
 
     // const { notificationRequest} = this.props    
@@ -222,49 +335,49 @@ export default class extends Component {
     // }
 
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
-    const {notifications, notificationRequest} = this.props    
-    
-    return (          
-       
-        <Container>
+    let { notifications, notificationRequest } = this.props
+    return (
 
-            <Button onPress={this._handleNotiRead} noPadder style={{
-              alignSelf:'flex-end',              
-              marginRight: 10,              
-            }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
-            </Button>
-                    
-            <Content               
-              onEndReached={this._loadMore} onRefresh={this._onRefresh}             
-              style={styles.container} refreshing={this.state.refreshing} 
-            >              
-              {notifications &&
-                <List
-                  removeClippedSubviews={false}       
-                  pageSize={10}                                           
-                  dataArray={notifications.data} renderRow={(item) =>
-                    <ListItem noBorder style={styles.listItemContainer}>   
-                      <View style={{
-                        justifyContent: 'space-between',   
-                        alignSelf:'flex-start',
-                        height: 47,                     
-                      }}>
-                        <Icon name={options.iconMap[item.notifyType] || 'clingme-wallet'} style={styles.icon}/>                    
-                        <View style={styles.circle}/>
-                      </View>                      
-                      {this.renderNotificationContent(item)}
+      <Container>
+        {
+          // <Button onPress={this._handleNotiRead} noPadder style={{
+          //   alignSelf:'flex-end',              
+          //   marginRight: 10,              
+          // }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
+          // </Button>
+        }
 
-                    </ListItem>  
-                } />
-              } 
+        <Content
+          onEndReached={this._loadMore} onRefresh={this._onRefresh}
+          style={styles.container} refreshing={this.state.refreshing}
+        >
+          {notifications &&
+            <List
+              removeClippedSubviews={false}
+              pageSize={10}
+              dataArray={notifications.data} renderRow={(item) =>
+                <ListItem noBorder
+                  style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
+                  onPress={() => this.handleNotiClick(item)}>
+                  <View style={{
+                    justifyContent: 'space-between',
+                    alignSelf: 'flex-start'
+                  }}>
+                    {this.renderNotificationIcon(item)}
+                    {!item.isRead && <View style={styles.circle} />}
+                  </View>
+                  {this.renderNotificationContent(item)}
 
-              {this.state.loading && <Spinner/>}
+                </ListItem>
+              } />
+          }
+          {this.state.loading && <Spinner />}
 
-            </Content>
-            
-            
-        </Container>
-      
+        </Content>
+
+
+      </Container>
+
     )
   }
 }

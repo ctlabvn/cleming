@@ -10,6 +10,7 @@ import transaction from './transaction'
 import place from './place'
 import booking from './booking'
 import order from './order'
+import report from './report'
 // we compose all api for each category here as single entry point
 // api will be an single entry point for all frame methods
 // this is where common functions are put
@@ -26,4 +27,5 @@ export default {
   place,
   booking,
   order,
+  report
 }

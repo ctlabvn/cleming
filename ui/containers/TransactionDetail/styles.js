@@ -1,42 +1,48 @@
-import {PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR} from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
-    container:{
+    container: {
         flexDirection: 'column',
-        backgroundColor: 'white'
+        backgroundColor: material.white500,
     },
-    transactionBlock:{
+    transactionBlock: {
         backgroundColor: 'lavender',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,  
+        padding: 10,
     },
     block: {
         flexDirection: 'column'
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    topPart: {
+        backgroundColor: material.backgroundColor1,
     },
     rowPadding: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10
+        padding: 10,
+        alignItems: 'center'
     },
 
-    transactionContent:{
+    transactionContent: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    transactionLabel:{
+    transactionLabel: {
 
     },
     transactionID: {
-        color: PRIMARY_COLOR,
+        color: material.primaryColor,
         fontWeight: 'bold',
         fontSize: 14
     },
     transactionIcon: {
-        color: 'limegreen',
+        // color: 'limegreen',
+        color: material.green400
     },
     userBlock: {
         padding: 10,
@@ -44,14 +50,14 @@ export default {
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    userLabel:{
+    userLabel: {
 
     },
     userContent: {
         flexDirection: 'row',
         alignItems: 'center'
     },
-    username:{
+    username: {
         fontWeight: 'bold'
     },
     avatar: {
@@ -68,7 +74,7 @@ export default {
     },
     statusTextWaiting: {
         fontWeight: 'bold',
-        color: 'orange'
+        color: material.orange500,
     },
 
     bar: {
@@ -83,28 +89,28 @@ export default {
         alignItems: 'center',
         justifyContent: 'center'
     },
-    barOne:{
-        backgroundColor: 'blue',
+    barOne: {
+        backgroundColor: material.blue500,
         width: '100%',
         height: 5,
     },
-     barTwo:{
+    barTwo: {
         backgroundColor: 'lightblue',
         width: '100%',
         height: 5
     },
     barThree: {
-        backgroundColor: 'orange',
+        backgroundColor: material.orange500,
         width: '100%',
         height: 5
     },
     barMain: {
         width: '100%',
         height: 5,
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
 
-    arrowDown:{
+    arrowDown: {
         width: 0,
         height: 0,
         borderWidth: 5,
@@ -115,7 +121,7 @@ export default {
         alignSelf: 'center',
         bottom: -5
     },
-   
+
     arrowUp: {
         width: 0,
         height: 0,
@@ -125,7 +131,7 @@ export default {
         borderRightColor: 'transparent',
         // borderBottomColor: 'lightblue',
         alignSelf: 'center',
-        bottom:5
+        bottom: 5
     },
 
     barHiddenPartTop: {
@@ -137,9 +143,9 @@ export default {
         borderRightColor: 'transparent',
         borderBottomColor: 'transparent',
         alignSelf: 'center',
-        bottom:-5
+        bottom: -5
     },
-     barHiddenPartBottom: {
+    barHiddenPartBottom: {
         width: 0,
         height: 0,
         borderWidth: 5,
@@ -148,7 +154,7 @@ export default {
         borderRightColor: 'transparent',
         borderBottomColor: 'transparent',
         alignSelf: 'center',
-        bottom:5
+        bottom: 5
     },
     invoiceStatusBlock: {
         padding: 10,
@@ -177,7 +183,7 @@ export default {
         borderWidth: 1,
         margin: 10,
         padding: 10,
-        borderColor: PRIMARY_COLOR,
+        borderColor: material.primaryColor,
         flexDirection: 'column',
         // height: 300
     },
@@ -189,16 +195,18 @@ export default {
         zIndex: 20
     },
     invoiceLabel: {
-        backgroundColor: 'white',
-        paddingLeft: 5
+        backgroundColor: material.white500,
+        paddingLeft: 25
     },
     invoice: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         fontWeight: 'bold',
-        color: PRIMARY_COLOR,
-        paddingRight: 5
+        color: material.primaryColor,
+        paddingRight: 25
     },
-
+    backgroundTransparent: {
+        backgroundColor: 'transparent'
+    },
     invoiceDetailBlock: {
         flexDirection: 'column',
         // flexWrap: 'wrap'
@@ -222,15 +230,17 @@ export default {
     labelInfo: {
         color: 'grey'
     },
-    confirmButton: {
-        width: '45%',
-        justifyContent: 'center'
-    },
     navigateInvoiceBlock: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
-        alignItems: 'center'
+        padding: 5,
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: material.white500,
+        zIndex: 20,
+        elevation: 5,
+        width: '100%'
     },
     buttonLeft: {
         flexDirection: 'row',
@@ -250,55 +260,128 @@ export default {
     },
     icon: {
         fontSize: 20,
-        marginLeft: 3,
-        color: 'grey',
+        marginLeft: 5,
+        color: material.gray500,
     },
     marginRight: {
-        marginRight: 3
+        marginRight: 10
     },
     center: {
         justifyContent: 'center'
     },
 
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     primary: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     warning: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     disabled: {
-        color: '#f4f4f4'
+        // color: '#f4f4f4'
+        color: material.gray200
     },
     backgroundBlue: {
-        backgroundColor: 'blue'
+        backgroundColor: material.blue500
     },
     backgroundPrimary: {
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     backgroundWarning: {
-        backgroundColor: WARNING_COLOR
+        backgroundColor: material.warningColor
     },
     backgroundError: {
-        backgroundColor: ERROR_COLOR
+        backgroundColor: material.errorColor
     },
     backgroundSuccess: {
-        backgroundColor: SUCCESS_COLOR
+        backgroundColor: material.successColor
     },
 
     borderTopBlue: {
         borderTopColor: 'blue'
     },
     borderBottomPrimary: {
-        borderBottomColor: PRIMARY_COLOR
+        borderBottomColor: material.primaryColor
     },
     lineThrough: {
         textDecorationLine: 'line-through'
     },
     btnTxt: {
         fontSize: 12
-    }
+    },
+    feedbackButton: {
+        backgroundColor: material.warningColor,
+        justifyContent: 'center',
+        width: '100%'
+    },
+    feedbackButtonDisable: {
+        justifyContent: 'center',
+        width: '100%'
+    },
+    modalOverlay: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.7)'
+    },
+    modalContainer: {
+        marginTop: '30%',
+        width: '80%',
+        minHeight: 200,
+        backgroundColor: material.white500,
+        borderRadius: 4,
+        flexDirection: 'column',
+        alignSelf: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
 
+    textPrev: {
+        paddingBottom: 3,
+    },
+
+    textNext: {
+        paddingBottom: 3,
+    },
+    blockCenter: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // marginBottom: 30
+
+    },
+    content: {
+        padding: 10,
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    contentRootChild: {
+        flexDirection: 'column',
+        flex: 1,
+        justifyContent: 'space-around',
+        height: '100%',
+        padding: 10,
+        backgroundColor: material.white500
+    },
+    loadingContainer: { 
+        backgroundColor: material.white500,
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        flex: 1
+    },
+    feedbackClmTransaction: {
+        width: '40%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    confirmButton: {
+        backgroundColor: material.primaryColor
+    },
 }

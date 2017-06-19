@@ -20,7 +20,8 @@ export default class TransactionFilter extends Component {
         super(props)
         this.state = {
             listValue: props.listValue,
-            selectValue: props.listValue[0]
+            selectValue: props.listValue[0],
+            indicatorNumber: 0
         }
     }
     _handleYesFilterTransactionType(item){
@@ -36,6 +37,9 @@ export default class TransactionFilter extends Component {
         this.setState({listValue: listValue, selectValue: listValue[0]})
         this.refs.transactionTypePopup.update(listValue)
     }
+    updateIndicatorNumber(number){
+        this.setState({indicatorNumber: number})
+    }
     getCurrentValue(){
         return this.state.selectValue
     }
@@ -47,10 +51,10 @@ export default class TransactionFilter extends Component {
                     <TouchableOpacity onPress={() => this._handlePressTransactionFilter()}>
                         <View style={styles.leftContainer}>
                             <Icon name='filter' style={styles.transactionTypeIcon} />
-                            <Text small>{this.state.selectValue.display}</Text>
+                            <Text small grayDark>{this.state.selectValue.display}</Text>
                         </View>
                     </TouchableOpacity>
-                    <Text small style={styles.numberRight}>10</Text>
+                    <Text small grayDark style={styles.numberRight}>{this.state.indicatorNumber}</Text>
                 </View>
 
 

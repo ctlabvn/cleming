@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {         
     Header, Left, Right, Body,           
     Text, Title, Button, Item, Input,
+    Thumbnail, View
 } from 'native-base'
 
 import * as commonSelectors from '~/store/selectors/common'
@@ -10,6 +11,9 @@ import * as commonActions from '~/store/actions/common'
 
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
+import { storeTransparent, storeFilled } from '~/assets'
+
+import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 @connect(state=>({
   searchString: commonSelectors.getSearchString(state),
@@ -22,6 +26,8 @@ export default class extends Component {
     this.state = {
       type: props.type,
       title: props.title,
+      icon: props.icon,
+      showOverlay: false
     }
   }
 
@@ -29,13 +35,16 @@ export default class extends Component {
     this.props.onItemRef && this.props.onItemRef(this)
   }
 
-  show(type, title){
-    this.setState({type, title})
+  show(type, title, icon){
+    this.setState({type, title, icon})
   } 
-
+  showOverlay(showStatus){
+    this.setState({showOverlay: showStatus})
+  }
   _leftClick = (e)=>{
     const {onLeftClick} = this.props
     onLeftClick && onLeftClick(this.state.type)
+    Keyboard.dismiss()
   }
 
   _search = (value, force=false)=>{
@@ -75,11 +84,14 @@ export default class extends Component {
     return this.renderHeaderTitle(center, "cloud-upload")    
   }
 
-  renderHeaderHome(title, leftIcon='add_place'){
-    const left = (
+  renderHeaderHome(title, leftIcon='~/assests/images/store_without_background.png'){
+    /*const left = (
       <Button noPadder transparent style={styles.circleButton} onPress={this._leftClick}>
         <Icon style={styles.circleIcon} name={leftIcon}/>
       </Button>
+    )*/
+    const left = (
+      <Thumbnail source={{uri: leftIcon}} style={{width: 40, height: 40, borderRadius: 20}}/>
     )
     return this.renderHeaderTitle(title, left)
   }
@@ -101,20 +113,27 @@ export default class extends Component {
     )
     return this.renderHeader(left, center, right) 
   }
-
+  _handlePressOverlay = ()=>{
+    this.props.onPressOverlay && this.props.onPressOverlay()
+  }
   renderHeader(left, center, right, props) {    
     return (                             
       <Header noShadow {...props} style={styles.container}>          
         <Left>{left}</Left>
         <Body>{center}</Body>
         <Right>{right}</Right>
+        {this.state.showOverlay && 
+          <TouchableWithoutFeedback onPress={()=>this._handlePressOverlay()}>
+            <View style={styles.overlay}/>
+          </TouchableWithoutFeedback>
+        }
       </Header>     
     )
   }
 
   render(){
     // events will be 
-    const {type, title} = this.state    
+    const {type, title, icon} = this.state    
     // event will be invoke via pageInstance
     switch(type){
       case 'none':      
@@ -124,7 +143,7 @@ export default class extends Component {
       case 'searchBack':
         return this.renderHeaderSearch('keyboard-arrow-left')
       case 'home':
-        return this.renderHeaderHome(title)  
+        return this.renderHeaderHome(title, icon)  
       case 'noBack':
         this.renderHeaderTitle(title, null)    
       default:

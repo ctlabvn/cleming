@@ -29,7 +29,7 @@ import { closeDrawer } from '~/store/actions/common'
 //         () => setToast('Logged successfully!!!'),            
 //     ],
 //     failure: [
-//         () => setToast('Couldn\'t login', 'error')
+//         () => setToast('Couldn\'t login', 'danger')
 //     ],
 // })
 
@@ -38,29 +38,38 @@ const requestLogin = createRequestSaga({
     key: 'login',
     cancel: 'app/logout',
     success: [
-        (data) => setUserData(data),          
-        ()=>setAuthState(true),
-        () => forwardTo('merchantOverview', true), 
-        () => setToast('Logged successfully!!!'),            
+        (data) => setUserData(data),
+        (data) => setAuthState(true),
+        (data) => {
+            if (data.firstLogin == 0) {
+                return forwardTo('merchantOverview', true)
+            } else {
+                return noop("nothing")
+            }
+        },
+        () => setToast('Logged successfully!!!')
     ],
     failure: [
-        () => setToast('Couldn\'t login', 'error')
+        // code : 1201
+        (data) => setToast('Email/SDT hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
     ],
 })
 
 
 const requestLogout = createRequestSaga({
-    request: api.auth.logout,
+    request: api.auth.logout,   
     key: 'logout',
     success: [
-        () => removeLoggedUser(),
-        () => setAuthState(false),           
-        () => closeDrawer(),
-        () => forwardTo('login'),
-        () => setToast('Logout successfully!!!'),    
+        // () => removeLoggedUser(),
+        // () => setAuthState(false),
+        // () => closeDrawer(),
+        // () => forwardTo('login', true)
     ],
     failure: [
-        () => setToast('Couldn\'t logout', 'error')
+        // () => removeLoggedUser(),
+        // () => setAuthState(false),
+        // () => closeDrawer(),
+        // () => forwardTo('login', true)
     ],
 })
 
@@ -74,9 +83,9 @@ export default [
     // other watcher may be background workers
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
-        yield [            
+        yield [
             takeLatest('app/login', requestLogin),
-            takeLatest('app/logout', requestLogout),
+            takeLatest('app/logout', requestLogout)
         ]
     },
 ]

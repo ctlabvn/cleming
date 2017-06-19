@@ -6,19 +6,17 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setListPlace, setPlaceStatistic, setMerchantNews } from '~/store/actions/place'
 
 const requestListPlace = createRequestSaga({
-    request: api.place.list,
+    request: api.place.listPlace,
     key: 'listPlace',
     cancel: 'app/logout',
     success: [
         (data) => {
-            // if (data.code && data.msg == 'session_expired'){
-            //     return forwardTo('login')
-            // }
-            return setListPlace(data.updated.listPlace)
-        }          
-    ],
-    failure: [
-        (data) => setToast('Place List: '+JSON.stringify(data), 'error')
+            if (data && data.updated) {
+                return setListPlace(data.updated.data)
+            }
+            return setToast('Load place fail', 'error')
+
+        }
     ],
 })
 const requestPlaceStatistic = createRequestSaga({
@@ -26,39 +24,33 @@ const requestPlaceStatistic = createRequestSaga({
     key: 'placeStatistic',
     cancel: 'app/logout',
     success: [
-        (data) => {            
-            console.log('data', data)
+        (data) => {
             return setPlaceStatistic(data.updated.data)
-        }          
-    ],
-    failure: [
-        (data) => setToast('Place Statistic: '+JSON.stringify(data), 'error')
+        }
     ],
 })
 
 const requestNews = createRequestSaga({
-  request: api.place.news,
-  key: 'merchantNews',
-  cancel: 'app/logout',
-  success: [
-    (data) => {
-      return setMerchantNews(data.updated.data)
-    }
-  ],
-  failure: [
-    () => setToast('Couldn\'t connect to server', 'error')
-  ],
+    request: api.place.news,
+    key: 'merchantNews',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            console.log('News Data', data)
+            return setMerchantNews(data.updated.data)
+        }
+    ],
 })
 
 export default [
     function* fetchWatcher() {
-        yield [            
+        yield [
             takeLatest('place/list', requestListPlace),
             takeLatest('place/statistic', requestPlaceStatistic),
             takeLatest('place/getNews', requestNews)
         ]
     },
-    
+
 ]
 
 

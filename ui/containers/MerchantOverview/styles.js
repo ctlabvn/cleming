@@ -1,20 +1,43 @@
-import { PRIMARY_COLOR, SUCCESS_COLOR, BACKGROUND_COLOR_1, TEXT_COLOR_1 } from '~/ui/shared/constants'
+
+import { Dimensions } from 'react-native'
+import material from '~/theme/variables/material.js'
+
+const {height, width} = Dimensions.get('window');
+
 export default {
     container: {
-        backgroundColor: BACKGROUND_COLOR_1,
+        backgroundColor: material.backgroundColor1,
         height: '100%',
         width: '100%',
+        // paddingBottom: 90 // Why: 40(footer)+50(marginTop contentContainer)
     },
     contentContainer: {
-        marginTop: 140,
+        // marginTop: 50,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    topDropdownPlaceHolder: {
+        height: 50, 
+        width: '100%',
+        backgroundColor: material.primaryColor,
+        zIndex: 1000, 
+        top: 0, 
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'center' 
     },
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
         marginBottom: 10,
         fontSize: 13,
+        marginTop: 10
+    },
+    funnyToday: {
+        color: 'rgba(0,0,0,0.5)',
+        marginBottom: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
         marginTop: 10
     },
     infoContainer: {
@@ -40,21 +63,22 @@ export default {
     },
     infoItemNumber: {
         fontSize: 20,
-        color: PRIMARY_COLOR
+        color: material.primaryColor,
     },
     infoItemLabel: {
-        color: TEXT_COLOR_1,
+        color: material.textColor1,
         fontSize: 13
     },
     menuItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 2,
-        width: '98%',
         padding: 10,
-        marginBottom: 7
+        marginBottom: 10,
+        height: 60, 
+        width: '100%'
     },
     leftBlock: {
         flexDirection: 'row',
@@ -68,13 +92,13 @@ export default {
         width: 25,
         height: 25,
         borderRadius: 20,
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberRight: {
         fontWeight: 'bold',
-        color: 'white',
+        color: material.white500,
         textAlign: 'center'
     },
     rightIcon: {
@@ -84,20 +108,34 @@ export default {
         fontSize: 20,
         marginRight: 10,
         marginLeft: 5,
-        color: 'grey'
+        color: material.gray500
     },
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
     },
     dateFilterContainer: {
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
         marginLeft: 45,
         marginRight: 20
     },
 
     textLabelRightImage: {
-        color: TEXT_COLOR_1,
+        color: material.textColor1,
+    },
+    loadingContainer: {
+      backgroundColor: material.white500,
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: height - 120 - 76 - 50 - 50 - 50
+    },
+    menuContainer: {
+        alignItems: 'center', 
+        flex: 1, 
+        flexDirection: 'column', 
+        justifyContent: 'flex-start',
+        padding: 5
     }
 
 }

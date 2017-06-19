@@ -1,62 +1,111 @@
-import {PRIMARY_COLOR, WARNING_COLOR, ERROR_COLOR, SUCCESS_COLOR} from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default{
     container: {
-        paddingTop: 50, 
+        // paddingTop: 50,
+        backgroundColor: material.gray200 
     },
     contentContainer: {
-      padding: 10,
+      padding: 0,
+      marginLeft: 10,
+      marginRight: 10,
+    },
+    contentContainerStyle: {
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     deliveryBlock: {
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 2,
-        padding: 10,
-        marginBottom: 10
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 0,
+        marginRight: 0,
+        width: '100%'
+    },
+    deliveryBlockCacel: {
+        flexDirection: 'column',
+        backgroundColor: material.gray300,
+        borderRadius: 2,
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 0,
+        marginRight: 0,
+        width: '100%'
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    rowLeft: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '100%',
+        // paddingLeft: 10,
+        // paddingRight: 10,
+    },
     block: {
         flexDirection: 'column',
-        // borderStyle: 'dotted',
-        // borderBottomWidth: 0.5,
-        // borderBottomColor: 'rgba(0,0,0,0.5)',
         marginTop: 5,
         marginBottom: 5
+    },
+    subBlock: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start'
+    },
+    textLeft: {
+        alignSelf: 'flex-start',
+        textAlign: 'left'
     },
     deliveryCodeBlock: {
         flexDirection: 'row',
         alignItems: 'center'
     },
     deliveryCodeWaitingConfirm: {
-        color: WARNING_COLOR
+        color: material.warningColor
     },
     deliveryCodeWaitingDelivery: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     deliveryCodeSuccess: {
-        color: SUCCESS_COLOR
+        color: material.successColor
+    },
+    grey: {
+        color: material.gray600
     },
     icon: {
         fontSize: 20,
-        marginRight: 5
+        marginRight: 5,
+        color: material.gray600
     },
     avatar: {
         width: 40,
         height: 40
     },
     phoneNumber: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     phoneIcon: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
     },
     reject: {
         color: 'rgba(0,0,0,0.5)'
     },
     confirm: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
+    },
+    time: {
+        marginRight: 5
     }
 }

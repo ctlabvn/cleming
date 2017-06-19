@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Input, Radio, Card } from 'native-base'
-import { View, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity } from 'react-native'
+import { Container, List, ListItem, Text, Thumbnail, Button, Spinner } from 'native-base'
+import { View, Modal, InteractionManager } from 'react-native'
 import { Field, reduxForm } from 'redux-form'
 import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
 import DateFilter from '~/ui/components/DateFilter'
 import * as orderActions from '~/store/actions/order'
+import * as commonActions from '~/store/actions/common'
+import * as placeActions from '~/store/actions/place'
 import * as orderSelectors from '~/store/selectors/order'
 import * as authSelectors from '~/store/selectors/auth'
 import { InputField } from '~/ui/elements/Form'
@@ -15,207 +16,384 @@ import Content from '~/ui/components/Content'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Border from '~/ui/elements/Border'
 import Icon from '~/ui/elements/Icon'
-
 import options from './options'
 import { formatNumber } from '~/ui/shared/utils'
-
-
-@connect(state=>({
-    place: state.place,
+import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
+import CircleCountdown from '~/ui/components/CircleCountdown'
+import CallModal from '~/ui/components/CallModal'
+import moment from 'moment'
+import { formatPhoneNumber } from '~/ui/shared/utils'
+import { getNews } from '~/store/selectors/place'
+import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
+import {
+    ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
+    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK, GENERAL_ERROR_MESSAGE
+}
+    from '~/store/constants/app'
+@connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-}), orderActions)
+    news: getNews(state)
+}), { ...orderActions, ...commonActions, ...placeActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
     constructor(props) {
         super(props)
-
-        this.state = {          
-          selectedPlace: props.place.listPlace.map(item => item.placeId).join(','),
-          refreshing: false,
-          loading: false,
-        }  
-
-        this.selectedStatus = 0
-    }
-
-    componentWillFocus(){        
-
-        // make it like before    
-        const {order} = this.props
-        if(!order.orderList.length) {
-          this.loadPage()
-        } 
-
-        this.setState({
-          refreshing: false,
-        })
-        
-    }
-
-    componentWillMount(){
-        this.componentWillFocus()      
-    }
-
-    loadPage(page=1){
-       const {session, getOrderList} = this.props      
-       const {selectedPlace} = this.state
-        getOrderList(session, selectedPlace, this.selectedStatus, page, 
-          ()=>this.setState({
-            refreshing: false,
+        const { app } = props
+        let placeDropdownValue = app.topDropdown.getValue()
+        let selectedPlace = null
+        if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
+            selectedPlace = placeDropdownValue.id
+        }
+        this.state = {
+            selectedPlace: selectedPlace,
             loading: false,
-          }))
+            loadingMore: false,
+            modalOpen: false,
+            counting: true,
+            phoneNumber: ''
+        }
+        // this.counting = true
+        this.selectedStatus = 0
+        this.interval = 0
+        this.isLoadingPlace = false
+    }
+    _load() {
+        InteractionManager.runAfterInteractions(() => {
+            const { order, getOrderDenyReason, session } = this.props
+            let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
+            if (!this.state.selectedPlace) {
+                this.isLoadingPlace = true
+            }
+            this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+            if (!order.denyReason || order.denyReason.length == 0) {
+                getOrderDenyReason(session)
+            }
+
+        })
+    }
+    componentWillFocus() {
+        // this.counting = true
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news, order, markWillReload } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            let now = new Date().getTime()
+            //Effect within 1 munites from markTime
+            if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
+                markWillReload(false)
+                this.selectedStatus = ORDER_WAITING_DELIVERY
+                this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
+                this._load()
+            }
+            
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            
+            this.setState({ counting: true })
+        })
     }
 
-    _handleChangePlace = (item) => {        
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            this._load()
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+            
+        })
+
+    }
+
+    componentWillBlur() {
+        // this.counting = false
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ counting: false })
+        })
+
+    }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
+    //         this.isLoadingPlace = false
+    //         let selectedPlace = nextProps.place.listPlace[0].placeId
+    //         this.setState({ selectedPlace: selectedPlace },
+    //             () => {
+    //                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
+    //                 this.loadPage(1, dateFilterData.from, dateFilterData.to)
+    //             }
+    //         )
+
+    //     }
+    // }
+
+    loadPage(page = 1, from_time, to_time, isLoadMore = false) {
+        const { session, getOrderList, clearOrderList } = this.props
+        const { selectedPlace } = this.state
+        if (!selectedPlace) return
+        if (isLoadMore) {
+            this.setState({ loadingMore: true })
+        } else {
+            clearOrderList()
+            this.setState({ loading: true })
+        }
+        getOrderList(session, selectedPlace, this.selectedStatus, page,
+            from_time, to_time,
+            (err, data) => {
+                this.setState({
+                    loading: false,
+                    loadingMore: false,
+                })
+            })
+    }
+
+    onModalOpen(phoneNumber) {
         this.setState({
-          selectedPlace: item.id,
-        }, ()=>this.loadPage())                
+            modalOpen: true,
+            phoneNumber: phoneNumber
+        })
     }
 
-    _onRefresh =() => {    
-      this.setState({refreshing: true})        
-      this.loadPage()
-    }    
-
-    _loadMore = ()=>{
-      if(this.state.loading || this.state.refreshing)
-        return
-      // console.log('load more')
-      const {order} = this.props
-      if(order.hasMore){
-        this.setState({loading: true})          
-        this.loadPage(order.page + 1)              
-      }        
+    onModalClose() {
+        this.setState({
+            modalOpen: false
+        })
     }
-        
+
+    _handleChangePlace = (item) => {
+        const { setSelectedOption, getMerchantNews, session } = this.props
+        // setSelectedOption(item)
+        let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
+        this.setState({
+            selectedPlace: item.id,
+        }, () => this.loadPage(1, dateFilter.from, dateFilter.to))
+        getMerchantNews(session, item.id,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
+                }
+            }
+        )
+    }
+
+    _onRefresh = () => {
+        let dateFilter = this.refs.dateFilter.getData()
+        this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+    }
+
+    _loadMore = () => {
+        if (this.state.loading || this.state.loadingMore)
+            return
+        const { order } = this.props
+        let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value
+        if (order.hasMore) {
+            this.loadPage(order.page + 1, dateFilter.from, dateFilter.to, true)
+        }
+    }
+
     _handlePressTab = (item) => {
         this.selectedStatus = item.tabID
-        this.loadPage()
+        let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value
+        this.loadPage(1, dateFilter.from, dateFilter.to)
     }
-
-    _renderRow({orderInfo, orderRowList}) {
-        var statusBlock=null;
-        // var bottomBlock=null;
+    _handlePressFilter = (item) => {
+        this.loadPage(1, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
+    }
+    _handleFeedbackOrder = (posOrderId, reasonId, note) => {
+        console.log('Feedback Order', posOrderId + '---' + reasonId + '---' + note)
+        const { updateOrderStatus, setToast, session } = this.props
+        updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
+            (err, data) => {
+                console.log('Data update status', data)
+                console.log('Error update order status', err)
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    this._load()
+                } else {
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                }
+            }
+        )
+    }
+    _handleConfirmOrder = (posOrderId) => {
+        console.log('Confirm Order', posOrderId)
+        const { updateOrderStatus, setToast, session } = this.props
+        updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.OK,
+            (err, data) => {
+                console.log('Data update status', data)
+                console.log('Error update order status', err)
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    this._load()
+                } else {
+                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                }
+            }
+        )
+    }
+    showReasonPopup = (posOrderId) => {
+        console.log('Show Reason Popup', posOrderId)
+        this.refs.deliveryFeedbackDialog.show(posOrderId)
+    }
+    _renderRow({ orderInfo, orderRowList }) {
+        const { forwardTo } = this.props
+        var statusBlock = null, buttonActionBlock = null
         const status = this.selectedStatus
-        if (status === 0){
-            statusBlock =  (
-                <View style={styles.deliveryCodeBlock}>
-                    <Icon name='order-history' style={{ ...styles.deliveryCodeWaitingConfirm, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.orderCode}</Text>
-                </View>
-            )
-            // bottomBlock = (
-            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-            //         <Button transparent><Text style={styles.reject}>Từ chối</Text></Button>
-            //         <Button transparent><Text style={styles.confirm}>Xác nhận</Text></Button>
-            //     </View>
-            // )
-        }else if(status === 1){
+        let totalItem = 0
+        if (orderRowList) {
+            totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
+        }
+        let phoneNumberBlock = (
+            <View style={styles.row}>
+                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                <Text
+                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+            </View>
+        )
+        if (status === ORDER_WAITING_CONFIRM) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='shiping-bike2' style={{ ...styles.deliveryCodeWaitingDelivery, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
+                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                 </View>
             )
-            // bottomBlock = (
-            //     <View style={{ ...styles.row, justifyContent: 'space-around' }}>
-            //         <Button transparent><Text style={styles.reject}>Hủy</Text></Button>
-            //         <Button transparent><Text style={styles.confirm}>Đã giao thành công</Text></Button>
-            //     </View>
-            // )
-        }else {
+        } else if (status === ORDER_WAITING_DELIVERY) {
             statusBlock = (
                 <View style={styles.deliveryCodeBlock}>
-                    <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.orderCode}</Text>
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
+                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
+                </View>
+            )
+            buttonActionBlock = (
+                <View style={styles.block}>
+                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                    <View style={styles.row}>
+                        <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold gray>Hủy giao hàng</Text></Button>
+                        <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold primary>Đã giao hàng</Text></Button>
+                    </View>
+                </View>
+            )
+        } else if (status == ORDER_SUCCESS) {
+            statusBlock = (
+                <View style={styles.deliveryCodeBlock}>
+                    {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
+                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
+                </View>
+            )
+        } else {
+            statusBlock = (
+                <View style={styles.deliveryCodeBlock}>
+                    {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
+                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
+                    <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                </View>
+            )
+            phoneNumberBlock = (
+                <View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                        style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
                 </View>
             )
         }
+        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
+        let listItemStyle = (status != ORDER_CANCEL) ? styles.deliveryBlock : styles.deliveryBlockCacel
         return (
-            <View style={styles.deliveryBlock} key={orderInfo.clingmeId}>
+            <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
+                onPress={() => {
+                    forwardTo('deliveryDetail/' + orderInfo.clingmeId)
+                }
+                }>
                 <View style={styles.block}>
-                    <View style={styles.row}>
+                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
-                        <Text style={styles.time}>17:30 14/03/2017</Text>
+                        <View style={styles.row}>
+                            <Text style={styles.time} grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            {(status == ORDER_SUCCESS) && (
+                                <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
+                            )}
+                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
+                                <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                    counting={this.state.counting}
+                                    countTo={countTo}
+                                />}
+                        </View>
                     </View>
                 </View>
                 <Border color='rgba(0,0,0,0.5)' size={1} />
                 <View style={styles.block}>
-                    {orderRowList.map((subItem, index)=>
-                        (
-                            <View key={index} style={styles.row}>
-                                <Text bold>{subItem.itemName}</Text>
-                                <Text>SL: <Text bold>{subItem.quantity}</Text></Text>
+                    <View style={{ width: '100%' }}>
+                        <View style={styles.row}>
+                            <Text bold grayDark>Số món đặt giao hàng</Text>
+                            <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
+                        </View>
+                    </View>
+                </View>
+                <Border color='rgba(0,0,0,0.5)' size={1} />
+                {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
+                    <View style={styles.block}>
+                        <View>
+                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                            <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                    </View>
+                }
+                <View style={styles.block}>
+                    {orderInfo.userInfo &&
+                        (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
+                            <View style={styles.row}>
+                                <Icon name='account' style={styles.icon} />
+                                <Text grayDark>{orderInfo.userInfo.memberName}</Text>
                             </View>
-                        )
-                    )}
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                <View style={styles.block}>
-                    <Text>
-                        <Text style={{ fontWeight: 'bold' }}>Ghi chú: </Text>
-                        {orderInfo.note}
-                    </Text>
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                <View style={styles.block}>
-                    <View style={styles.row}>
-                        <View style={styles.row}>
-                            <Icon name='account' style={styles.icon} />
-                            <Text>{orderInfo.userInfo.memberName}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Icon name='phone' style={{ ...styles.phoneIcon, ...styles.icon }} />
-                            <Text style={styles.phoneNumber}>{orderInfo.userInfo.phoneNumber}</Text>
-                        </View>
+                            {phoneNumberBlock}
+                        </View>)}
+
+                    <View style={{ ...styles.row, marginBottom: 5 }}>
+                        <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text>Địa chỉ: {orderInfo.placeInfo.address}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text>Đã thanh toán</Text>
-                        <Text bold>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
+                        <Text success>Đã thanh toán</Text>
+                        <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
-                
-            </View>
+                {buttonActionBlock}
+            </ListItem>
         )
     }
 
     render() {
-        const { handleSubmit, submitting, place } = this.props
-        
-        let defaultSelected = {
-            id: this.state.selectedPlace,
-            name: "Tất cả địa điểm"
-        }
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
-        dropdownValues = [defaultSelected, ...dropdownValues]
-
-        const {orderList} = this.props.order
-        
-
+        const { handleSubmit, submitting, place, order } = this.props
+        const { orderList } = order
         return (
             <Container style={styles.container}>
-                <TopDropdown dropdownValues={dropdownValues} onSelect={this._handleChangePlace} selectedOption={defaultSelected} />
-                
-                <TabsWithNoti tabData={options.tabData} 
-                  activeTab={0} onPressTab={this._handlePressTab} />
-
-                <Content 
-                onEndReached={this._loadMore} onRefresh={this._onRefresh}             
-                refreshing={this.state.refreshing} 
-                style={styles.contentContainer}>
-                        {orderList && orderList.map(item=>(
-                            this._renderRow(item)
-                        ))}
-                    
-
+                <TabsWithNoti tabData={options.tabData}
+                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
+                <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+                <CallModal
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={this.onModalClose.bind(this)}
+                    open={this.state.modalOpen} />
+                <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'
+                    listValue={order.denyReason}
+                    onClickYes={this._handleFeedbackOrder}
+                />
+                <Content
+                    contentContainerStyle={styles.contentContainerStyle}
+                    onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                    refreshing={this.state.loading}
+                    style={styles.contentContainer}
+                >
+                    {orderList && orderList.map(item => (
+                        this._renderRow(item)
+                    ))}
+                    {this.state.loadingMore &&
+                        <Spinner />
+                    }
                 </Content>
             </Container>
         )

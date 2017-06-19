@@ -5,8 +5,8 @@ import ResponsiveImage from 'react-native-responsive-image'
 import URL from 'url-parse'
 
 const SHA1 = require("crypto-js/sha1")
-
-export default class extends Component {
+// give it a name so we can search
+export default class CacheableImage extends Component {
 
   static propTypes = {
       activityIndicatorProps: PropTypes.object,
@@ -65,7 +65,7 @@ export default class extends Component {
         return true
     }
     
-    async imageDownloadBegin(info) {
+    imageDownloadBegin(info) {
         switch (info.statusCode) {
             case 404:
             case 403:
@@ -76,14 +76,14 @@ export default class extends Component {
         }
     }
 
-    async imageDownloadProgress(info) {
+    imageDownloadProgress(info) {
         if ((info.contentLength / info.bytesWritten) == 1) {
             this.downloading = false
             this.jobId = null
         }
     }
 
-    async checkImageCache(imageUri, cachePath, cacheKey) {
+    checkImageCache(imageUri, cachePath, cacheKey) {
         const dirPath = DocumentDirectoryPath+'/'+cachePath
         const filePath = dirPath+'/'+cacheKey
         
@@ -246,7 +246,7 @@ export default class extends Component {
         if (this.props.checkNetwork) {
             NetInfo.isConnected.addEventListener('change', this._handleConnectivityChange)
             // componentWillUnmount unsets this._handleConnectivityChange in case the component unmounts before this fetch resolves
-            NetInfo.isConnected.fetch().done(this._handleConnectivityChange)
+            NetInfo.isConnected.fetch().then(this._handleConnectivityChange)
         }
 
         this._processSource(this.props.source, true)
@@ -263,7 +263,7 @@ export default class extends Component {
         }
     }
 
-    async _handleConnectivityChange(isConnected) {
+    _handleConnectivityChange(isConnected) {        
         this.networkAvailable = isConnected
     }
   

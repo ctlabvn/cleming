@@ -1,13 +1,17 @@
+import { BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL } from '~/store/constants/app'
 export default {
     tabData : [
         {
-            tabID: 1,
+            tabID: BOOKING_WAITING_CONFIRM,
             text: 'Chờ xác nhận',
-            number: 2
         },
         {
-            tabID: 2,
+            tabID: BOOKING_CONFIRMED,
             text: 'Đã xác nhận'
+        },
+        {
+            tabID: BOOKING_CANCEL,
+            text: 'Đã hủy'
         }
     ]
 }

@@ -2,13 +2,18 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { setToast, noop, forwardTo, goBack } from '~/store/actions/common'
 
 import {
     replaceProfile,
     setListEmployee,
     setGeneratedPassword
 } from '~/store/actions/account'
+
+import {
+  setUserAvatar,
+  updateProfileToRedux
+} from '~/store/actions/auth'
 
 
 const requestGetProfile = createRequestSaga({
@@ -18,7 +23,7 @@ const requestGetProfile = createRequestSaga({
         (data) => replaceProfile(data),       
     ],
     failure: [
-        () => setToast('Couldn\'t get profile', 'error')
+        () => setToast('Couldn\'t get profile', 'danger')
     ],
 })
 
@@ -26,10 +31,11 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
-        () => setToast('Change password successfully!')
+        () => setToast('Thay đổi Mật khẩu thành công.'),
+        // () => forwardTo('merchantOverview')
     ],
     failure: [
-        () => setToast('Couldn\'t change password', 'error')
+        () => setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
     ]
 })
 
@@ -45,8 +51,21 @@ const requestResetPassword = createRequestSaga({
         } 
     ],
     failure: [
-        () => setToast('Couldn\'t reset password', 'error')
+        () => setToast('Số điện thoại không tồn tại, vui lòng liên hệ chủ cửa hàng để kiểm tra.', 'danger')
     ]
+})
+
+const requestUpdateProfile = createRequestSaga({
+  request: api.account.updateProfile,
+  key: 'updateProfile',
+  success: [
+    (data) => updateProfileToRedux(data),
+    () => setToast('Update profile successfully!'),
+      goBack,
+  ],
+  failure: [
+    () => setToast('Couldn\'t update profile', 'danger')
+  ],
 })
 
 const requestGetListEmployee = createRequestSaga({
@@ -56,7 +75,7 @@ const requestGetListEmployee = createRequestSaga({
     (data) => setListEmployee(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get employee list', 'error')
+    () => setToast('Couldn\'t get employee list', 'danger')
   ],
 })
 
@@ -67,7 +86,66 @@ const requestGetGeneratedPassword = createRequestSaga({
     (data) => setGeneratedPassword(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get password', 'error')
+    () => setToast('Couldn\'t get password', 'danger')
+  ],
+})
+
+const requestUpdateEmployeeInfo = createRequestSaga({
+  request: api.account.updateEmployeeInfo,
+  key: 'updateEmployeeInfo',
+  success: [
+
+  ],
+  failure: [
+    (error) => {
+      if (error.code == 1207) {
+        return setToast('Số điện thoại đã tồn tại', 'danger')
+      } else if (error.code == 1206) {
+        return setToast('Địa chỉ email đã tồn tại', 'danger')
+      }
+      return setToast('Không có kết nối đến máy chủ', 'danger')
+    }
+  ],
+})
+
+const requestCreateEmployeeInfo = createRequestSaga({
+  request: api.account.createEmployeeInfo,
+  key: 'createEmployeeInfo',
+  success: [
+  
+  ],
+  failure: [
+    (error) => {
+      console.log('Error', error)
+      if (error.code == 1207) {
+        return setToast('Số điện thoại đã tồn tại', 'danger')
+      } else if (error.code == 1206) {
+        return setToast('Địa chỉ email đã tồn tại', 'danger')
+      }
+      return setToast('Không có kết nối đến máy chủ', 'danger')
+    }
+  ],
+})
+
+const requestDeleteEmployeeInfo = createRequestSaga({
+  request: api.account.deleteEmployeeInfo,
+  key: 'deleteEmployeeInfo',
+  success: [
+  
+  ],
+  failure: [
+    () => setToast('Couldn\'t delete employee', 'danger')
+  ],
+})
+
+const requestUpdateOwnerAvatar = createRequestSaga({
+  request: api.account.updateOwnerAvatar,
+  key: 'updateOwnerAvatar',
+  success: [
+    (data) => setUserAvatar(data),
+  ],
+  failure: [
+    () => setToast('Couldn\'t upload avatar', 'danger')
   ],
 })
 
@@ -84,7 +162,12 @@ export default [
           takeLatest('app/changePassword', requestChangePassword),
           takeLatest('app/resetPassword', requestResetPassword),
           takeLatest('app/getListEmployee', requestGetListEmployee),
-          takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword)
+          takeLatest('app/getGeneratedPassword', requestGetGeneratedPassword),
+          takeLatest('app/updateEmployeeInfo', requestUpdateEmployeeInfo),
+          takeLatest('app/createEmployeeInfo', requestCreateEmployeeInfo),
+          takeLatest('app/deleteEmployeeInfo', requestDeleteEmployeeInfo),
+          takeLatest('app/updateOwnerAvatar', requestUpdateOwnerAvatar),
+          takeLatest('app/updateProfile', requestUpdateProfile)
         ]
     },
 ]

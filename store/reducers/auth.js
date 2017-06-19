@@ -8,7 +8,7 @@
 const initialState = {  
   loggedIn: false
 }
-
+const img = 'https://facebook.github.io/react/img/logo_og.png'
 // Takes care of changing the application state
 // state is previous state, 
 export const auth = (state = initialState, {type, payload}) => {
@@ -24,7 +24,34 @@ export const auth = (state = initialState, {type, payload}) => {
       return {...state, user: null, token: null}
     case 'app/saveRefreshToken':
       // payload is access token
-      return {...state, token: {...state.token, ...payload} }  
+      return {...state, token: {...state.token, ...payload} }
+    case 'app/setUserAvatar':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          avatar: (typeof payload.updated != 'undefined') ? payload.updated.url_new_avatar : img
+        }
+      }
+    case 'app/setPushToken':
+      return {...state, push_token: payload}
+      case 'app/updateProfileToRedux':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...payload.updated.mertchant_accout_info,
+          accTitle: state.user.accTitle,
+        }
+      }
+    case 'app/updateFirstTimeLogin':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          firstLogin: 0
+        }
+      }
     default:
       return state
   }

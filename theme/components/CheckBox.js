@@ -8,42 +8,33 @@ export default (variables = variable) => {
   const checkBoxTheme = {
       '.checked': {
         'NativeBase.Icon': {
-          color: variables.checkboxTickColor,
+          color: variables.blue400,
         },
         'NativeBase.IconNB': {
-          color: variables.checkboxTickColor,
-        },
+          color: variables.blue400,
+        },        
       },
-      '.large': {
-        borderRadius: variables.checkboxSizeLarge / 2,
+      '.large': {        
         width: variables.checkboxSizeLarge,
-        height: variables.checkboxSizeLarge,
-        borderWidth: variables.CheckboxBorderWidth * 2,
-      },
-      '.square': {
-        borderRadius: 0,
+        height: variables.checkboxSizeLarge,        
       },
       'NativeBase.Icon': {
-        color: 'transparent',
-        lineHeight: variables.CheckboxIconSize,
-        marginTop: variables.CheckboxIconMarginTop,
-        fontSize: variables.CheckboxFontSize,
+        color: variables.gray400,                
+        fontSize: variables.CheckboxFontSize,        
       },
       'NativeBase.IconNB': {
-        color: 'transparent',
-        lineHeight: variables.CheckboxIconSize,
-        marginTop: variables.CheckboxIconMarginTop,
-        fontSize: variables.CheckboxFontSize,
-      },
-      borderRadius: variables.CheckboxRadius,
-      borderColor: '#ccc',
-      overflow: 'hidden',
+        color: variables.gray400,                
+        fontSize: variables.CheckboxFontSize,        
+      },            
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 0,
+      paddingBottom: 0,      
       width: variables.checkboxSize,
       height: variables.checkboxSize,
-      borderWidth: variables.CheckboxBorderWidth,
-      paddingLeft: variables.CheckboxPaddingLeft - 1,
-      paddingBottom: variables.CheckboxPaddingBottom,
-      left: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 0,
   };
 
 

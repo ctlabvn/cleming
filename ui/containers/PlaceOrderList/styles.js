@@ -1,9 +1,8 @@
-import { PRIMARY_COLOR, WARNING_COLOR, SUCCESS_COLOR, ERROR_COLOR, BACKGROUND_COLOR_1 } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
     container: {
-        backgroundColor: BACKGROUND_COLOR_1,
+        backgroundColor: material.backgroundColor1,
         height: '100%',
-        paddingBottom: 10
     },
     content: {
         padding: 10,
@@ -26,7 +25,11 @@ export default {
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // alignItems: 'center'
+    },
+    rowCenter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     rowRight: {
         padding: 10,
@@ -43,7 +46,7 @@ export default {
     },
     block: {
         // padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
         borderRadius: 3,
         marginBottom: 10
@@ -55,11 +58,11 @@ export default {
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: PRIMARY_COLOR
+        backgroundColor: material.primaryColor
     },
     icon: {
         fontSize: 20,
-        color: 'grey'
+        color: material.gray500
     },
     iconLeft: {
         marginRight: 10
@@ -68,10 +71,16 @@ export default {
         marginLeft: 3
     },
     primary: {
-        color: PRIMARY_COLOR
+        color: material.primaryColor
+    },
+    warning: {
+        color: material.orange500
     },
     success: {
-        color: SUCCESS_COLOR
+        color: material.successColor
+    },
+    gray: {
+        color: material.gray500
     },
     button: {
         justifyContent: 'center',
@@ -79,7 +88,7 @@ export default {
     },
     detailButton: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         flexDirection: 'column',
         height: 250,
         paddingBottom: 0,
@@ -89,7 +98,7 @@ export default {
             width: 0,
             height: 0
         },
-        shadowColor: 'white',
+        shadowColor: material.white500,
         paddingLeft: 0,
         paddingRight: 0,
         paddingTop: 0,
@@ -98,7 +107,6 @@ export default {
     },
 
     labelUnderImage: {
-        color: 'black',
         marginTop: 5,
     },
     listItem: {
@@ -109,9 +117,28 @@ export default {
         marginRight: 0,
         borderBottomWidth: 0,
         paddingTop: 0,
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 3,
-        marginBottom: 10
+        marginBottom: 10,
+        height: 170
+    },
+    listItemGray: {
+        backgroundColor: material.gray400 
+    },
+    listButton: {
+      backgroundColor: material.white500,
+      flexDirection: 'column',
+      height: '100%',
+      elevation: 0,
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      paddingTop: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingBottom: 0,
+      shadowOpacity: 0
     },
   
 }

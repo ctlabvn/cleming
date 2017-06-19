@@ -1,28 +1,29 @@
 /**
  * Created by vjtc0n on 5/12/17.
  */
-import material from '~/theme/variables/material'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
+import material from '~/theme/variables/material.js'
 export default {
   dropdownContainer:{
     position: 'absolute',
     flexDirection:'column',
     width: '100%',
-    elevation: 5,
+    elevation: 0,
     borderRadius: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    zIndex: 100
   },
   dropdownHeader:{
     justifyContent:'flex-start',
-    backgroundColor: "#d9d9d9",
+    backgroundColor: material.gray300,
     flexDirection: 'row',
     paddingLeft: 15,
     paddingRight: 0,
     height: 50,
-    alignItems: 'center'
+    borderRadius: 5,
+    alignItems: 'center',
   },
   dropdownSelectedValue:{
-    color: '#7e7e7e',
+    color: material.gray500,
   },
   dropdownIcon:{
     right: 0,
@@ -32,8 +33,9 @@ export default {
     alignSelf: 'flex-end'
   },
   dropdownList:{
-    backgroundColor: PRIMARY_COLOR,
+    backgroundColor: material.primaryColor,
     width: '100%',
+    marginTop:-2,
     zIndex: 1000,
   },
   dropdownListItem:{
@@ -41,7 +43,7 @@ export default {
     justifyContent: 'center',
   },
   dropdownListItemText:{
-    color: 'white',
+    color: material.white500,
     fontWeight: '100'
   },
   content:{

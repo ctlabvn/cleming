@@ -2,32 +2,39 @@ import React, { Component } from 'react'
 import App from './app'
 import { Provider } from 'react-redux'
 import configureStore from '~/store/config'
-
+import { forwardTo } from '~/store/actions/common'
 import Preload from './containers/Preload'
 
-export default class Regit extends Component {
+export default class extends Component {
 
   constructor(props) {
     super(props)
-  
-    this.state = {
-      store: null,
-    }        
+    this.store = null              
   }
 
   componentDidMount(){
-    configureStore(store=> this.setState({store}))
+    configureStore(store=> {
+      if(!__DEV__){
+        const firstRoute = store.getState().auth.loggedIn ? 'merchantOverview' : 'login'
+        store.dispatch(forwardTo(firstRoute, true))
+      }
+      this.store = store
+      this.forceUpdate()
+    })  
   }
 
-  render() {    
-    const {store} = this.state
+  shouldComponentUpdate(){
+    return false
+  }
+
+  render() {        
     // should have a pre-load page
-    if(!store)
+    if(!this.store)
       return ( <Preload message="Initializing..."/> )
 
     return (
-      <Provider store={store}>
-        <App/>
+      <Provider store={this.store}>
+        <App/>        
       </Provider>
     )
   }

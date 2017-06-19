@@ -11,21 +11,31 @@ const requestBookingList = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            // console.log('Load booking', data)
+            console.log('Load booking', data)
+            if (data.code) {
+                return setToast('Load Booking Fail: ' + JSON.stringify(data), 'error')
+            }
             return setBookingList(data.updated)
-        }          
-    ],
-    failure: [
-        (data) => {
-            console.log('Booking Err', data)
-            return setToast('Booking Fail: '+JSON.stringify(data), 'error')
         }
     ],
+
+    failure: [
+    ],
 })
+
+const requestBookingDetail = createRequestSaga({
+    request: api.booking.detail,
+    key: 'booking/detail',
+    cancel: 'app/logout',
+    failure: [
+    ]
+})
+
 export default [
     function* fetchWatcher() {
-        yield [            
+        yield [
             takeLatest('booking/list', requestBookingList),
+            takeLatest('booking/detail', requestBookingDetail)
         ]
     },
 ]

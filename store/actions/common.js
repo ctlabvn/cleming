@@ -59,11 +59,13 @@ export const markRequestFailed = (reason, key) => ({
 
 // show toast => we can use kind of alerts, stackbar to notify user
 // with dynamic id force update everytime
-export const setToast = (message, level = 'info', duration = 3000, position = 'bottom') => ({
+export const setToast = (message, level = 'info', callback=null, data=null,duration = 3000, position = 'bottom') => ({
   type: 'app/setToast',
   payload: {    
     message,
     level,
+    callback,
+    data,
     duration,
     position,    
   },
@@ -84,5 +86,13 @@ export const closeDrawer = () => ({
 export const search = (payload) => ({
   type: 'app/search',
   payload,
+})
+
+export const openModal = () => ({
+  type: 'app/openModal'
+})
+
+export const closeModal = () => ({
+  type: 'app/closeModal',
 })
 

@@ -8,14 +8,15 @@ const urlEncode = data => data
 ? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
 : ''
 
-export const rejectErrors = (res) => {
-  const { status } = res  
+export const rejectErrors = async(res) => {
+  const { status } = res
   if (status >= 200 && status < 300) {
     return res
   }
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
-  return Promise.reject({ message: res.statusText, status })
+  let errorBody = await(res.json())
+  return Promise.reject({message: res.statusText, status,...errorBody})
 }
 
 // try invoke callback for refresh token here
@@ -27,9 +28,9 @@ export const fetchJson = (url, options = {}, base = API_BASE) => (
     headers: {
       ...options.headers,
       // 'Content-Type':'application/x-www-form-urlencoded',   
-      // Origin: API_BASE,      
-      'Accept': 'application/json',
+      // Origin: API_BASE,
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'X-VERSION': 1,
       'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
       'X-DATA-VERSION': 1,
@@ -59,8 +60,9 @@ export const apiCall = (url, options, token = null) =>
   token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
 
 // must have data to post, put should not return data
-export const apiPost = (url, data, token, method='POST') => 
-  apiCall(url, { method, body: JSON.stringify(data) }, token)
+export const apiPost = (url, data, token, method='POST') => {
+  return apiCall(url, { method, body: JSON.stringify(data) }, token)
+}
 
 export const apiGet = (url, data, token, method='GET') => 
   apiCall(url + '?' + urlEncode(data), { method }, token)

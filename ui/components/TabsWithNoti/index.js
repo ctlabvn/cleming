@@ -11,6 +11,7 @@ export default class TabsWithNoti extends Component {
         super(props)
         this.state = {
             activeTab: props.activeTab || props.tabData[0].tabID,
+            tabData: props.tabData
         }
     }
     _handlePressTab(item) {
@@ -19,57 +20,46 @@ export default class TabsWithNoti extends Component {
             this.props.onPressTab(item)
         }
     }
-    getActiveTab(){
+    getActiveTab() {
         return this.state.activeTab
     }
+    setActiveTab(tabID){
+        this.setState({activeTab: tabID})
+    }
+    updateNumber(tabID, number) {
+        let tabData = this.state.tabData.slice()
+        let index = tabData.findIndex(item => item.tabID == tabID)
+        tabData[index].number = number
+        this.setState({ tabData: tabData })
+    }
+
+    renderTextCount(isActive, number){
+        const fontSize = +number > 99 ? 8 : 10
+        const style = isActive ? styles.tabNumberActive : styles.tabNumberDeactive
+        return (            
+            <Text style={{...style,fontSize}}>{number}</Text>
+        )
+    }
+
     render() {
         return (
             <View style={styles.tabBar}>
-                {this.props.tabData.map((tabItem) => {
+                {this.state.tabData.map((tabItem) => {
                     let isActive = (tabItem.tabID == this.state.activeTab)
                     return (
-
                         <View style={isActive ? styles.tabActive : styles.tabDeactive} key={tabItem.tabID}>
                             <TouchableOpacity onPress={() => this._handlePressTab(tabItem)}>
                                 <View style={styles.tab}>
-                                    <Text style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
-                                    {tabItem.number && <View style={isActive?styles.tabNumberContainerActive:styles.tabNumberContainerDeactive}>
-                                        <Text style={isActive ? styles.tabNumberActive : styles.tabNumberDeactive}>
-                                            {tabItem.number}
-                                        </Text>
+                                    <Text small style={isActive ? styles.tabTextActive : styles.tabTextDeactive}>{tabItem.text}</Text>
+                                    {(typeof tabItem.number != 'undefined' && tabItem.number != 0) && <View style={isActive ? styles.tabNumberContainerActive : styles.tabNumberContainerDeactive}>                                        
+                                        {this.renderTextCount(isActive, tabItem.number)}                                        
                                     </View>}
                                 </View>
                             </TouchableOpacity>
                         </View>
-
                     )
                 })}
             </View>
         )
     }
 }
-
-
-
-{/*<View style={styles.tabBar}>
-            <View style={styles.tabActive}>
-                <Text style={styles.tabTextActive}>
-                    Trả qua Clingme
-                            </Text>
-                <View style={styles.tabNumberContainer}>
-                    <Text style={styles.tabNumberActive}>
-                        4
-                            </Text>
-                </View>
-            </View>
-            <View style={styles.tab}>
-                <Text style={styles.tabTextDeactive}>
-                    Trả trực tiếp
-                            </Text>
-                <View style={styles.tabNumberContainer}>
-                    <Text style={styles.tabNumberDeactive}>
-                        50
-                            </Text>
-                </View>
-            </View>
-        </View>*/}

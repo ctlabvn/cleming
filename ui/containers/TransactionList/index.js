@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Spinner } from 'native-base'
+import { Container, List, ListItem, Text, Spinner, Button } from 'native-base'
 import { View, InteractionManager } from 'react-native'
 import styles from './styles'
 import TopDropdown from '~/ui/components/TopDropdown'
@@ -8,6 +8,7 @@ import DateFilter from '~/ui/components/DateFilter'
 import * as commonAction from '~/store/actions/common'
 import * as transactionAction from '~/store/actions/transaction'
 import * as authActions from '~/store/actions/auth'
+import * as placeActions from '~/store/actions/place'
 import TransactionFilter from '~/ui/components/TransactionFilter'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import Icon from '~/ui/elements/Icon'
@@ -15,220 +16,309 @@ import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
 import Content from '~/ui/components/Content'
-// import Perf from 'react-addons-perf';
-
+import { getSession } from '~/store/selectors/auth'
+import { getNews } from '~/store/selectors/place'
+import { getListTransactionDirect, getListTransactionCLM } from '~/store/selectors/transaction'
+// import { getSelectedPlace } from '~/store/selectors/place'
 import options from './options'
+import material from '~/theme/variables/material.js'
+import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, TIME_FORMAT_WITHOUT_SECOND } from '~/store/constants/app'
+
+// export const getListTransactionDirect = state => state.place.transaction.payDirect || []
+
+// export const getListTransactionCLM = state => state.place.transaction.payWithClingme || []
+
+// payDirect
+// payWithClingme
 
 @connect(state => ({
-    user: state.auth.user,
-    place: state.place,
-    transaction: state.transaction
-}), { ...commonAction, ...transactionAction, ...authActions })
+    xsession: getSession(state),
+    news: getNews(state),
+    // place: state.place,
+    // selectedPlace: getSelectedPlace(state),
+    payDirect: getListTransactionDirect(state),
+    payWithClingme: getListTransactionCLM(state)
+}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
 export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            currentTab: TRANSACTION_TYPE_CLINGME,
             loading: false,
-            refreshing: false,
             loadingMore: false
         }
-    }
-    // net filter transaction type
-    _handlePressFilter(item) {
-        // console.log('Handle Press Item', item)
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ loading: true })
-        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({ loading: false })
-            )
-        } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, item.currentSelectValue.value.from, item.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({ loading: false })
-            )
+        this.isLoadingPlace = false
 
+    }
+    // need filter transaction type
+    _handlePressFilter(item) {
+        // let currentPlace = this.refs.placeDropdown.getValue()
+        const { app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        let dateFilterData = item.currentSelectValue.value
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         }
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilter = this.refs.dateFilter.getData()
-        this.setState({ loading: true })
-        if (item.tabID == 1) { // Trả qua Clingme
-            this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
-                () => this.setState({ loading: false })
-            )
-        } else { // Trả trực tiếp
-            this.refs.transactionFilter.updateFilter(options.transactionFilterListDỉrect)
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to,
-                () => this.setState({ loading: false })
-            )
-        }
+        const { app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        this.setState({ currentTab: item.tabID },
+            () => {
+                // let currentPlace = this.refs.placeDropdown.getValue()
+                let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+                if (item.tabID == TRANSACTION_TYPE_CLINGME) { // Trả qua Clingme
+                    this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
+                } else { // Trả trực tiếp
+                    this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
+                }
+                if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                    this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+                }
+
+            }
+        )
+
     }
 
     _handleTransactionFilterChange(item) {
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilter = this.refs.dateFilter.getData()
-        this.setState({ loading: true })
-        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
-                () => this.setState({ loading: false })
-            )
-        } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to, item.value,
-                () => this.setState({ loading: false })
-            )
+        // let currentPlace = this.refs.placeDropdown.getValue()
+        const { app } = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, item.value)
         }
+
     }
 
     // Need Filter transaction type
-    _handleTopDrowpdown(item) {
-        let dateFilterData = this.refs.dateFilter.getData()
+    _handleTopDrowpdown = (item) => {
+        // setSelectedOption(item)
+        console.log('Handle Change TopDropdown', item)
+        const { getMerchantNews, xsession } = this.props
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ loading: true })
-        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({ loading: false })
-            )
-        } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, item.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to, transactionFilter.value,
-                () => this.setState({ loading: false })
-            )
-        }
-
-    }
-    componentDidMount() {
-        let dateFilterData = this.refs.dateFilter.getData()
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ loading: true })
-        this.props.getListTransaction(this.props.user.xsession, currentPlace.id, dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-            () => this.setState({ loading: false })
+        this._load(item.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        getMerchantNews(xsession, item.id,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
+                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
+                }
+            }
         )
     }
-    // need care about currentPage
-    _loadMore = ()=>{
-        console.log('Props', this.props)
-        const {transaction} = this.props
-        console.log('Trans load More', transaction)
-        if (transaction.pageNumber >= transaction.totalPage){
-            return;
+    confirmTransaction = (clingmeId) => {
+        const { confirmTransaction, xsession, setToast, forwardTo } = this.props
+        forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news } = this.props
+            let selectedPlace = app.topDropdown.getValue()
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // let currentPlace = this.refs.placeDropdown.getValue()
+            let transactionFilterComponent = this.refs.transactionFilter
+            let transactionFilter = transactionFilterComponent.getCurrentValue()
+            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+            } else {
+                this.isLoadingPlace = true
+            }
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
+        })
+    }
+    componentWillFocus() {
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+            news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
+        })
+    }
+    _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
+        const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect } = this.props
+        let transactionFilterComponent = this.refs.transactionFilter
+        if (isLoadMore) {
+            this.setState({ loadingMore: true })
+        } else {
+            this.setState({ loading: true })
         }
-        console.log('On loadMore trans', transaction)
-        let dateFilterData = this.refs.dateFilter.getData()
-        let currentPlace = this.refs.placeDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ loadingMore: true })
-        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-            this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
-                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value, transaction.pageNumber+1,
-                () => this.setState({ loadingMore: false })
+
+        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
+            getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
+                (err, data) => {
+                    this.setState({ loading: false, loadingMore: false })
+                    if (data && data.updated && data.updated.data) {
+                        transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
+                    }
+                }
             )
-        } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
-                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value, transaction.pageNumber+1,
-                () => this.setState({ loadingMore: false })
+        } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
+            getListTransaction(xsession, placeId, fromTime, toTime, filter, page,
+                (err, data) => {
+                    this.setState({ loading: false, loadingMore: false })
+                    if (data && data.updated && data.updated.data) {
+                        transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
+
+                    }
+
+                }
             )
         }
     }
-
-    _onRefresh= () => {
-        console.log('On refreshing trans')
-        let dateFilterData = this.refs.dateFilter.getData()
-        let currentPlace = this.refs.placeDropdown.getValue()
+    // need care about currentPage
+    _loadMore = () => {
+        const { transaction, payWithClingme, payDirect, app } = this.props
+        let pageNumber, totalPage
+        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
+            pageNumber = payWithClingme.pageNumber
+            totalPage = payWithClingme.totalPage
+        } else {
+            pageNumber = payDirect.pageNumber
+            totalPage = payDirect.totalPage
+        }
+        if (pageNumber >= totalPage) return
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this.setState({ refreshing: true })
-        if (this.refs.tabs.getActiveTab() == 1) { //trả qua Clingme
-             this.props.getListTransactionPayWithClingme(this.props.user.xsession, currentPlace.id,
-                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value,
-                () => this.setState({ refreshing: false })
-            )
-        } else { // Trả trực tiếp
-            this.props.getListTransaction(this.props.user.xsession, currentPlace.id,
-                dateFilterData.currentSelectValue.value.from, dateFilterData.currentSelectValue.value.to,
-                transactionFilter.value,
-                () => this.setState({ refreshing: false })
-            )
+        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1)
+    }
+
+    _onRefresh = () => {
+        console.log('On refreshing trans')
+        const {app} = this.props
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+    }
+    _renderTransactionPayWithClingmeItem(item) {
+        //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
+        switch (item.transactionStatus) {
+            case 1:
+            default:
+                return (
+                    <ListItem style={styles.listItem}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                    >
+                        <View style={styles.block}>
+                            <View style={styles.rowPadding}>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text small bold grayDark>{item.userName}</Text>
+                            </View>
+                            <View style={styles.rowCenter}>
+                                <Text bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                            </View>
+                            <View style={styles.rowCenter}>
+                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <Text small primary>Đã thanh toán</Text>
+                                <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
+                                    <Text bold primary>Xác nhận</Text>
+                                    <Icon name='foward' style={styles.primary} />
+                                </Button>
+                            </View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                    </ListItem>
+                )
+            case 2:
+                return (
+                    <ListItem style={styles.listItem}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                    >
+                        <View style={styles.blockConfirmed}>
+                            <View style={styles.rowPadding}>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+
+                            </View>
+                            <View style={styles.rowPadding}>
+                                <Text small grayDark>Khách hàng: <Text small bold grayDark>{item.userName}</Text></Text>
+                            </View>
+                            <View style={styles.rowPadding}>
+                                <Text success small>Đã xác nhận</Text>
+                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                            </View>
+                        </View>
+                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                    </ListItem>
+                )
         }
     }
 
     _renderTransactionItem(item) {
-        var transactionNumberBlock;
-        var statusText;
+        let iconBlock, statusText, transactionCode, timeBlock
+        let moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
         switch (item.transactionStatus) {
-            case 0: // chờ duyệt
-            case 3:
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text warning small>Clingme đã duyệt</Text>
+            case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK: //chờ duyệt
+                iconBlock = (
+                    <View style={styles.iconBlock}>
+                        <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
+                    </View>
+                )
+                statusText = <Text small warning>Chờ phê duyệt</Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
-            case 1: // thành công
-                transactionNumberBlock =
-                    (<View style={styles.row}>
+            case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
+                iconBlock = (
+                    <View style={styles.iconBlock}>
                         <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.success }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text success small>Thành công</Text>
+                    </View>
+                )
+                statusText = <Text small grayDark>Cashback thành công</Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
-            case 2: // Bị từ chối
-                transactionNumberBlock = (
-                    <View style={styles.row}>
+            case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
+                iconBlock = (
+                    <View style={styles.iconBlock}>
                         <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.reject }}>{item.dealTransactionIdDisplay}</Text>
                     </View>
                 )
                 statusText = <Text small error>Bị từ chối</Text>
+                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
+                moneyText = <Text bold gray style={styles.moneyNumber}></Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             default:
-                transactionNumberBlock =
-                    (<View style={styles.row}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.processing }} />
-                        <Text small style={{ ...styles.transactionCode, ...styles.processing }}>{item.dealTransactionIdDisplay}</Text>
-                    </View>)
-                statusText = <Text warning small>Đang xử lí</Text>
-                break
-        }
-        var payClingmeText;
-        var payIndicator = null
-        if (parseInt(item.paymentStatus) > 0) {
-            payClingmeText = <Text small>Đã trả phí Clingme</Text>
-        } else {
-            payClingmeText = <Text small warning>Chưa trả phí Clingme</Text>
-            payIndicator = <View style={styles.readIndicator} />
+                iconBlock = (
+                    <View style={styles.iconBlock}>
+                        <Icon name='order-history' style={styles.icon} />
+                    </View>
+                )
+                statusText = <Text small warning>Chờ phê duyệt</Text>
+                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
+                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         }
         return (
             <ListItem
-                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionIdDisplay)}
+                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionId + '/' + item.transactionType)}
                 style={styles.listItem}
             >
                 <View style={styles.block}>
-                    <View style={styles.row}>
-                        {transactionNumberBlock}
-                        <Text bold>{formatNumber(item.originPrice)}đ</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <View style={styles.row}>
-                            <View style={styles.placeholder} />
-                            <Text small>Khách hàng: <Text bold small>{item.userName}</Text></Text>
-                        </View>
-                        <Text style={styles.timestamp} small>{moment(item.boughtTime * 1000).format('hh:mm  DD/MM/YYYY')}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <View style={styles.row}>
-                            <View style={styles.placeholder}>
-                                {payIndicator}
+                    <View style={{ ...styles.row, alignItems: 'flex-start' }}>
+                        {iconBlock}
+                        <View style={{ width: '100%', flex: 1 }}>
+                            <View style={styles.row}>
+                                {transactionCode}
+                                {timeBlock}
                             </View>
-                            {statusText}
+                            <View style={styles.row}>
+                                {statusText}
+                                {moneyText}
+                            </View>
                         </View>
-                        {payClingmeText}
                     </View>
                 </View>
                 {
@@ -237,60 +327,77 @@ export default class extends Component {
             </ListItem>
         )
     }
-    render() {
-        const { handleSubmit, submitting, forwardTo, transaction, place } = this.props
-        if (!transaction) {
+
+    _renderRow(item) {
+        if (item.transactionType == TRANSACTION_TYPE_CLINGME) { // Over clingme
+            return this._renderTransactionPayWithClingmeItem(item)
+        } else { // Direct
+            return this._renderTransactionItem(item)
+        }
+    }
+    _renderList() {
+        const { transaction, payWithClingme, payDirect } = this.props
+        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
+            return (<List dataArray={payWithClingme.listTransaction}
+                renderRow={(item) => {
+                    return this._renderRow(item)
+                }}
+                pageSize={10}
+            ></List>)
+        } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
             return (
-                <View style={{ backgroundColor: 'white', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner color='red' />
+                <List dataArray={payDirect.listTransaction}
+                    renderRow={(item) => {
+                        return this._renderRow(item)
+                    }}
+                    pageSize={10}></List>
+            )
+        }
+    }
+    render() {
+        console.log('Render TransactionList')
+        const { forwardTo, payDirect, payWithClingme } = this.props
+        if (!payDirect && !payWithClingme) {
+            return (
+                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <Spinner color={material.red500} />
                     <Text>Loading...</Text>
                 </View>
             )
         }
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
-        let defaultSelected = dropdownValues[0]
-        if (dropdownValues.length > 1) {
-            defaultSelected = {
-                id: '',
-                name: 'Tất cả địa điểm'
-            }
-            dropdownValues = [defaultSelected, ...dropdownValues]
-        }
+        // let dropdownValues = place.listPlace.map(item => ({
+        //     id: item.placeId,
+        //     name: item.address
+        // }))
 
-        let noData = null
-        if (transaction.listTransaction && transaction.listTransaction.length == 0) {
-            noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
-        }
-        let moreData = null
-        if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0){
-            moreData = <View style={{flexDirection: 'row', justifyContent: 'center'}}><Text small>No more data</Text></View>
-        }
+        // let noData = null
+        // if (transaction.listTransaction && transaction.listTransaction.length == 0) {
+        //     noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
+        // }
+        // let moreData = null
+        // if (transaction.pageNumber >= transaction.totalPage && transaction.totalPage > 0) {
+        //     moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
+        // }
         return (
             <Container style={styles.container}>
-                <TopDropdown ref='placeDropdown' dropdownValues={dropdownValues} onSelect={this._handleTopDrowpdown.bind(this)} selectedOption={defaultSelected} />
-                <View style={{ marginTop: 50, height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={2} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                {/*<TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
+                    selectedOption={selectedPlace}
+                    onSelect={this._handleTopDrowpdown.bind(this)} />*/}
+                <View style={{ height: '100%' }}>
+                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDỉrect} ref='transactionFilter'
+                        listValue={options.transactionFilterListClingme} ref='transactionFilter'
                     />
                     <Content
                         padder
                         onEndReached={this._loadMore} onRefresh={this._onRefresh}
-                        refreshing={this.state.refreshing}
+                        refreshing={this.state.loading}
                     >
-                        {this.state.loading && <Spinner color='red' />}
-                        <List dataArray={transaction.listTransaction||[]}
-                            renderRow={(item) => this._renderTransactionItem(item)}
-                            pageSize={10}
-                        >
-                        </List>
-                        {this.state.loadingMore && <Spinner color='red' />}
-                        {noData}
-                        {moreData}
+                        {this._renderList()}
+                        {this.state.loadingMore && <Spinner color={material.red500} />}
+                        {/*{noData}
+                        {moreData}*/}
                     </Content>
 
                 </View>

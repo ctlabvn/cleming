@@ -2,6 +2,7 @@ import { Platform } from 'react-native';
 import _ from 'lodash';
 
 import variable from './../variables/platform';
+import material from '~/theme/variables/material'
 
 export default (variables = variable) => {
   const textTheme = {
@@ -28,23 +29,38 @@ export default (variables = variable) => {
         fontSize: variables.btnTextSizeLarge
       },
       '.primary': {
-        color: '#00a9d4'
+        color: material.primaryColor
+      },
+      '.secondary': {
+          color: material.secondaryColor
       },
       '.success': {
-        color: 'green'
+        color: material.successColor
       },
       '.warning': {
-        color: 'orange'
+        color: material.orange500
       },
       '.error': {
-        color: 'red'
+        color: material.red500
       },
       '.white': {
-        color: 'white'
+        color: material.white500
       },
       '.light': {
-        color: 'lightgrey'
-      }
+        color: material.gray300
+      },
+      '.gray': {
+          color: material.gray500
+      },
+      '.grayDark': {
+          color: material.gray600
+      },
+      '.transparent': {
+        color: 'transparent'
+      },
+      '.center': {
+        justifyContent: 'center'
+      },
   };
 
   return textTheme;

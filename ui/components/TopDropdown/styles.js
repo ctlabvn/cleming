@@ -1,16 +1,44 @@
 import material from '~/theme/variables/material'
-import { PRIMARY_COLOR } from '~/ui/shared/constants'
 export default {
-    dropdownContainer:{
+    dropdownContainerAndroid:{
         position: 'absolute',
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
-        elevation: 5
+        elevation: 100,
+        justifyContent: 'center',
+        flex: 1,
     },
+    dropdownContainerIos:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        flex: 1,
+    },
+
+    dropdownContainerAndroidFull:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        elevation: 100,
+        justifyContent: 'center',
+        flex: 1,
+        height: material.deviceHeight
+    },
+    dropdownContainerIosFull:{
+        position: 'absolute',
+        zIndex: 1000,
+        flexDirection:'column',
+        width: '100%',
+        flex: 1,
+        height: material.deviceHeight
+    },
+
     dropdownHeader:{
         justifyContent:'center',
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: material.primaryColor,
         flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,
@@ -20,7 +48,7 @@ export default {
     },
     dropdownSelectedValue:{
         alignSelf: 'center',
-        color: 'white',
+        color: material.white500,
         fontWeight: 'bold'
     },
     dropdownIcon:{
@@ -29,21 +57,28 @@ export default {
         paddingRight: 10,
     },
     dropdownList:{
-        backgroundColor: PRIMARY_COLOR,
+        backgroundColor: 'transparent',
         width: '100%',        
         zIndex: 1000,
     },
     dropdownListItem:{
         borderBottomWidth: 0,
         justifyContent: 'center',
-    },
+        zIndex: 1000
+    },  
     dropdownListItemText:{
-        color: 'white',
+        color: material.white500,
         fontWeight: '100'
     },
     content:{
         position: 'absolute',
         top: 75
+    },
+    overlay: {
+        flex: 1, 
+        // backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: 1000,
+        elevation: 10
     },
     backdrop:{
         position: 'absolute',

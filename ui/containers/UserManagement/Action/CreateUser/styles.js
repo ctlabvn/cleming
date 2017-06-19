@@ -1,31 +1,41 @@
 /**
  * Created by vjtc0n on 5/5/17.
  */
+import material from '~/theme/variables/material.js'
+
 export default {
     inputField: {
         borderRadius: 5,
-        backgroundColor: '#d9d9d9',
-        height: 50
+        // backgroundColor: '#d9d9d9',
+        backgroundColor: material.gray300,
+        height: 48,
+        marginTop: 0
     },
     inputContainer: {
-        marginBottom: 15,
-        minHeight: 50,
+        marginBottom: 5,
+        height: 50,
+        borderRadius: 5,
+        marginTop: 10,
+        paddingTop: 0,
+        overflow: 'hidden',
     },
     inputIcon: {
         fontSize: 20,
-        color: '#7e7e7e'
+        color: material.gray500
     },
     inputText: {
-      color: "#7e7e7e"
+      color: material.gray500,
+      top: 0
     },
     listItem:{
         marginLeft:10,
-        marginRight:10,
+        marginRight:-5,
         paddingLeft:10,
         paddingRight:10,
         height:40,
         borderBottomWidth: 0,
-        paddingBottom: 0
+        paddingBottom: 10,
+        height: 50,
     },
     right: {
         flexDirection:'row',
@@ -35,55 +45,87 @@ export default {
     },
     left: {
         flex: 1,
-        color: '#a2a2a2'
+        // color: '#a2a2a2',
+        color: material.gray400
     },
     leftAddressTitleText: {
         fontSize: 15,
-        color: '#7e7e7e',
-        fontWeight: 'bold'
+        color: material.gray500,
+        fontWeight: 'bold',
     },
     rightAddressTitleText: {
         fontSize: 15,
-        color: '#00a9d7'
+        color: material.blue400
     },
     createPasswordButton: {
-        backgroundColor: '#00a9d7',
+        backgroundColor: material.blue400,
         alignSelf: 'center',
         width: '80%',
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        shadowOpacity: 0
     },
     createPasswordButtonText: {
-        color: 'white'
+        color: material.white500
     },
     passwordText: {
-        color: '#00a9d7',
-        fontSize: 16,
+        color: material.blue400,
+        fontSize: 24,
         fontWeight: 'bold'
     },
+    passwordTextWarning: {
+        color: material.blue400,
+        fontSize: 14
+    },
     copyText: {
-        color: '#00a9d7',
+        color: material.blue400,
         fontSize: 14,
     },
     submitButton: {
-        backgroundColor: '#00a9d7',
-        alignSelf: 'center',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: material.blue400,
+        height: 40,
         width: '100%',
         borderRadius: 0,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
     },
     copyIcon: {
-        color: '#00a9d7',
+        color: material.blue400,
         marginRight: 5
     },
     modalContainer: {
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: material.white500,
         borderRadius: 10,
         overflow: 'hidden',
         minHeight: 50,
         justifyContent: 'center'
     },
+    absoluteContainer: {
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: 170,
+      backgroundColor: material.white500
+    },
+    createPassBlock: {
+        marginTop: 10
+    },
+    subText: {
+      color: material.gray500,
+      marginLeft: 20,
+      fontStyle: 'italic'
+    },
+    closeIcon: {
+      color: material.gray500,
+      fontSize: 18
+    },
+    container: {
+        paddingBottom: 40,
+        backgroundColor: 'white'
+    }
 }

@@ -36,9 +36,11 @@ export default {
   CheckboxIconMarginTop: (platform === 'ios') ? undefined : 1,
   CheckboxFontSize: (platform === 'ios') ? 21 : 18,
   DefaultFontSize: 17,
-  checkboxBgColor: '#039BE5',
-  checkboxSize: 20,
-  checkboxTickColor: 'transparent',
+  checkboxBgColor: 'transparent',
+  checkboxSize: 24,
+  get checkboxTickColor(){
+    return this.gray400
+  },
   get checkboxSizeLarge(){
     return this.checkboxSize * 1.5
   },
@@ -120,6 +122,47 @@ export default {
   brandWarning: '#f26522',
   brandSidebar: '#252932',
 
+  red500: '#F44336',
+
+  white500: '#ffffff',
+  black500: '#000000',
+
+  blue600: '#0085AC',
+  blue500: '#2196F3',
+  blue400: '#00A9D3',
+
+  green500: '#4CAF50',
+  green400: '#8CC63F',
+
+  orange500: '#F7931E',
+
+  gray600: '#4D4D4D',
+  gray500: '#808080',
+  gray400: '#B3B3B3',
+  gray300: '#E8E8E8',
+  gray200: '#F2F2F2',
+
+  get primaryColor(){
+    return this.blue400;
+  },
+  get secondaryColor(){
+      return this.blue600;
+  },
+  get warningColor(){
+    return this.orange500;
+  },
+  get errorColor(){
+    return this.red500;
+  },
+  get successColor(){
+    return this.green400;
+  },
+  get backgroundColor1(){
+    return this.gray200;
+  },
+  get textColor1(){
+    return this.gray600;
+  },
 
     // Font
   fontFamily: 'Roboto',
@@ -162,7 +205,9 @@ export default {
 
     // Header
   toolbarBtnColor: '#fff',
-  toolbarDefaultBg: '#00a9d4',
+  get toolbarDefaultBg() {
+    return this.blue400
+  },
   toolbarHeight: (platform === 'ios') ? 76 : 56,
   toolbarIconSize: (platform === 'ios') ? 20 : 22,
   toolbarSearchIconSize: (platform === 'ios') ? 20 : 23,
@@ -266,7 +311,7 @@ export default {
   textColor: '#000',
   inverseTextColor: '#fff',
   noteFontSize: 14,
-  noteTextColor: '#a7a7a7',
+  noteTextColor: '#a8a8a8',
   linkTextColor: '#448ccb',
 
     // Title
