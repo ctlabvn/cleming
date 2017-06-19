@@ -23,6 +23,12 @@ export default {
         padding: 10,
         alignItems: 'center'
     },
+    row: {
+        flexDirection: 'row',
+        padding: 10,
+        width: '100%',
+        alignItems: 'center'
+    },
      marginRight: {
         marginRight: 10
     },
@@ -38,5 +44,9 @@ export default {
     },
     gray: {
         color: material.gray600
+    },
+    item: {
+        width: '100%',
+        borderColor: 'transparent'
     },
 }
