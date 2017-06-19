@@ -133,6 +133,13 @@
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = RNSVG;
 		};
+		24773D381EF7864E00429A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2AC3B851ECDA46100611367 /* React.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 83CBBA2D1A601D0E00E9B192;
+			remoteInfo = React;
+		};
 		247A6AC81EC9593F004F9790 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */;
@@ -754,6 +761,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				24773D391EF7864E00429A1D /* PBXTargetDependency */,
 			);
 			name = MerchantApp;
 			productName = "Hello World";
@@ -1250,6 +1258,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* MerchantApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		24773D391EF7864E00429A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			targetProxy = 24773D381EF7864E00429A1D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

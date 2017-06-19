@@ -6,7 +6,7 @@ import {
   Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
   Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text, Dimensions, Clipboard, Keyboard } from 'react-native'
+import { Text, Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -311,11 +311,13 @@ export default class CreateUserContainer extends Component {
 
       if (this.props.formState.CreateUserForm.syncErrors) {
           this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
-          return;
+          this._scrollPageUp();
+          // return;
       } else if(!this.state.selectedPlaceId){
       this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
       this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+      this._scrollPageDown();
     } else {
       this.setState({
         isLoading: true
@@ -593,6 +595,14 @@ export default class CreateUserContainer extends Component {
     )
   }
 
+  _scrollPageUp(){
+      this.refs.myContent.scrollTo({x: 0, y: 0, animated: true});
+  }
+
+  _scrollPageDown(){
+      this.refs.myContent.scrollToEnd();
+  }
+
   render() {
     // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
     //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
@@ -611,11 +621,16 @@ export default class CreateUserContainer extends Component {
 
     return (
       <Container style={styles.container}>
-        <Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'}>
-          {mainContainer}
+        {/*<Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>*/}
+          {/*{mainContainer}*/}
 
-          {/*style={styles.absoluteContainer}*/}
-        </Content>
+          {/*/!*style={styles.absoluteContainer}*!/*/}
+        {/*</Content>*/}
+        <ScrollView style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>
+            {mainContainer}
+
+            {/*style={styles.absoluteContainer}*/}
+        </ScrollView>
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
           style={{ ...styles.submitButton }}>
