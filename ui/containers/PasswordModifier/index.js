@@ -15,7 +15,7 @@ import {
 } from 'native-base'
 import styles from './styles'
 import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, reset } from 'redux-form'
 import Icon from '~/ui/elements/Icon'
 // import LinearGradient from 'react-native-linear-gradient'
 import GradientBackground from '~/ui/elements/GradientBackground'
@@ -50,7 +50,7 @@ import { validate } from './utils'
   },
   loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state)
-}), {...commonActions, ...authActions, ...accountActions})
+}), {...commonActions, ...authActions, ...accountActions, resetForm:reset})
 @reduxForm({ form: 'ModifyPasswordForm', validate})
 export default class extends Component {
   
@@ -61,6 +61,10 @@ export default class extends Component {
       showForgot: false,
       showPassword: true,
     }
+  }
+
+  componentWillBlur(){
+    this.props.resetForm('ModifyPasswordForm')
   }
   
   _handleChangePassword = ({oldPassword, newPassword}) => {

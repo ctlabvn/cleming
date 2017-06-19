@@ -50,7 +50,7 @@ const formSelector = formValueSelector('CreateUserForm')
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
 }), (stateProps, dispatchProps, ownProps) => {
-  if (typeof ownProps.route.params.id == 'undefined') {
+  if (typeof ownProps.route.params.id == 'undefined' || stateProps.listEmployee.length <= 0) {
     return ({
       enableReinitialize: true,
       persistentSubmitErrors: true,
@@ -68,13 +68,17 @@ const formSelector = formValueSelector('CreateUserForm')
     })
   }
   let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
-    console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
-
+    // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
+  // console.warn(JSON.stringify(stateProps.listEmployee, null, 2));
   let permission = null
-  switch (employeeDetail.titleType) {
-    case 1: permission = "Nhân Viên"
-      break
-  }
+      switch (employeeDetail.titleType) {
+          case 1:
+              permission = "Nhân Viên"
+              break
+          default:
+              permission = "Nhân Viên"
+              break
+      }
 
   return ({
     enableReinitialize: true,
