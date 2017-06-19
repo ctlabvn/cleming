@@ -354,7 +354,7 @@ export default class extends Component {
                         </View>)}
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text grayDark>Địa chỉ: {orderInfo.placeInfo.address}</Text>
+                        <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
                         <Text success>Đã thanh toán</Text>
