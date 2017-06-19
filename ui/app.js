@@ -494,22 +494,21 @@ export default class App extends Component {
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
           <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
-            onPressOverlay={this._handlePressHeaderOverlay}
-          />
-
-          <TopDropdown
-            ref={ref => this.topDropdown = ref}
-            onPressIcon={this._handlePressIcon}
-          />
+            app={this} onPressOverlay={this._handlePressHeaderOverlay}
+          />          
 
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
             initialRoute={{ title, path, showTopDropdown }}
-            renderScene={this._renderPage}
+            renderScene={this._renderPage}            
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />
+          <TopDropdown
+            ref={ref => this.topDropdown = ref}
+            onPressIcon={this._handlePressIcon}
+          />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}

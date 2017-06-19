@@ -116,9 +116,9 @@ export default class extends Component {
   _handlePressOverlay = ()=>{
     this.props.onPressOverlay && this.props.onPressOverlay()
   }
-  renderHeader(left, center, right, props) {    
+  renderHeader(left, center, right, props) {   
     return (                             
-      <Header noShadow {...props} style={styles.container}>          
+      <Header noShadow {...props} style={{...styles.container, marginBottom: this.props.app.topDropdown && this.props.app.topDropdown.state.show ? 50 : 0}}>          
         <Left>{left}</Left>
         <Body>{center}</Body>
         <Right>{right}</Right>

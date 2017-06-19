@@ -57,7 +57,11 @@ export default class UpdateUserContainer extends Component {
         this.state = {
             
         }
-        this.componentWillFocus();
+        
+    }
+
+    componentDidMount(){
+      this.componentWillFocus();
     }
 
     componentWillFocus() {

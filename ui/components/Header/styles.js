@@ -2,7 +2,7 @@ import material from '~/theme/variables/material'
 
 export default {
   container: {
-    borderBottomWidth: 0,
+    borderBottomWidth: 0,    
   },
   searchContainer: {    
     backgroundColor: '#0085b6',
