@@ -208,20 +208,20 @@ export default class TransactionDetail extends Component {
                         dealTransactionId={transactionInfo.clingmeId}
                     />
                     <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                        <Text style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        <Text small style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
-                        <Text>Số đơn hàng</Text>
+                        <Text gray>Số đơn hàng</Text>
                         <Text bold style={{ fontSize: 24 }}>{transactionInfo.transactionIdDisplay}</Text>
                     </View>
                     <View style={styles.blockCenter}>
-                        <Text>Tổng tiền thanh toán</Text>
-                        <Text bold style={{ fontSize: 40 }}>{formatNumber(transactionInfo.moneyAmount)}</Text>
+                        <Text gray>Tổng tiền thanh toán</Text>
+                        <Text bold style={{ fontSize: 48 }}>{formatNumber(transactionInfo.moneyAmount)}</Text>
                         {payStatus}
                     </View>
                     <View style={styles.blockCenter}>
-                        <Text bold>{transactionInfo.placeName}</Text>
-                        <Text>{transactionInfo.placeAddress}</Text>
+                        <Text bold>{formatNumber(10120)}</Text>
+                        <Text gray>Phí Clingme</Text>
                     </View>
                     <View style={styles.row}>
                         <Text>Khách hàng</Text>

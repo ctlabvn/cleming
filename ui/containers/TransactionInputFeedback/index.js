@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
 import { View, KeyboardAvoidingView } from 'react-native'
 import styles from './styles'
 import material from '~/theme/variables/material'
 import { FEEDBACK_CLM_TRANSACTION } from '~/store/constants/app'
 import * as commonActions from '~/store/actions/common'
+import Icon from '~/ui/elements/Icon'
 @connect(null, commonActions)
 export default class FeedbackDialogClingme extends Component {
     constructor(props) {
@@ -15,9 +16,20 @@ export default class FeedbackDialogClingme extends Component {
         }
     }
     _handlePressOk = () => {
-        const { goBack } = this.props
+        const { goBack, setToast } = this.props
+        if (!this.state.value) {
+            setToast('Bạn phải nhập số tiền', 'danger')
+            return
+        } else if (isNaN(this.state.value)) {
+            setToast('Số tiền phải ở dạng số', 'danger')
+            return
+        }
         goBack()
 
+    }
+    _handlePressClear = ()=>{
+        console.log('Go to clear')
+        this.setState({value: ''})
     }
     componentWillMount() {
         const { route, app } = this.props
@@ -46,10 +58,16 @@ export default class FeedbackDialogClingme extends Component {
         return (
             <Container style={styles.container}>
                 <Text>{text}</Text>
-                <Input
-                    style={styles.input}
-                    keyboardType='phone-pad'
-                />
+                <Item style={styles.item}>
+                    <Input
+                        style={styles.input}
+                        keyboardType='phone-pad'
+                        onChangeText={(value) => this.setState({ value })}
+                        value={this.state.value.toString()}
+                    />
+                    {(this.state.value!=0 || this.state.value.length >0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear}/>}
+                </Item>
+
                 <Button style={styles.okBtn} onPress={() => this._handlePressOk()}>
                     <Text>OK</Text>
                 </Button>

@@ -154,7 +154,7 @@ export default class extends Component {
             <View>
                 <View style={styles.rowPadding}>
                     <Text small grayDark>Tiền hàng:</Text>
-                    <Text bold grayDark>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                    <Text bold grayDark>{formatNumber(orderDetail.orderInfo.price)}đ</Text>
                 </View>
                 <View style={styles.rowPadding}>
                     <Text small grayDark>Phí giao hàng:</Text>

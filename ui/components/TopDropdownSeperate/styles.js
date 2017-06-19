@@ -51,7 +51,8 @@ export default {
     dropdownSelectedValue:{        
         color: material.white500,
         fontWeight: 'bold',      
-        paddingHorizontal: 40,  
+        paddingHorizontal: 40,
+        textAlign: 'center'  
     },
     dropdownIcon:{
         marginTop: -10,      
