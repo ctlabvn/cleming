@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
 import { View, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -16,23 +16,23 @@ export default class DeliveryFeedbackDialog extends Component {
     constructor(props) {
         super(props)
         let length = props.listValue.length
-        let listValue = props.listValue.slice(0, length-1)
-        let otherValue = props.listValue[length-1]
+        let listValue = props.listValue.slice(0, length - 1)
+        let otherValue = props.listValue[length - 1]
         this.state = {
             modalVisible: false,
             listValue: listValue,
             otherValue: otherValue,
             note: ''
         }
-        if (listValue.length > 0){
+        if (listValue.length > 0) {
             this.state.selectedValue = listValue[0].reasonId
         }
         this.caculatingHeight = true
         this.height = 0
     }
-    setListValue(listValue){
+    setListValue(listValue) {
         let length = listValue.length
-        listValue = props.listValue.slice(0, length-1)
+        listValue = props.listValue.slice(0, length - 1)
         let otherValue = props.listValue[length - 1]
         this.setState({
             selectedValue: listValue[0].reasonId,
@@ -50,9 +50,24 @@ export default class DeliveryFeedbackDialog extends Component {
         this.setState({ note: '' })
         this.setState({ selectedValue: item.reasonId })
     }
+    _handlePressOK = () => {
+        if (this.state.selectedValue != this.state.otherValue.reasonId) {
+            this.setModalVisible(false)
+            this.props.onClickYes(this.state.posOrderId, this.state.selectedValue, this.state.note)
+            this._resetDialog()
+        } else if (this.state.note && this.state.note.trim().length > 0) {
+            this.setModalVisible(false)
+            this.props.onClickYes(this.state.posOrderId, this.state.selectedValue, this.state.note)
+            this._resetDialog()
+        }
+
+    }
+    _handlePressClear = () => {
+        this.setState({ note: '' })
+    }
     _resetDialog() {
         let length = this.props.listValue.length
-        let listValue = this.props.listValue.slice(0, length-1)
+        let listValue = this.props.listValue.slice(0, length - 1)
         let otherValue = this.props.listValue[length - 1]
         this.setState({
             listValue: listValue,
@@ -99,28 +114,27 @@ export default class DeliveryFeedbackDialog extends Component {
                                     </TouchableOpacity>
                                 ))}
                                 <View style={styles.rowPadding}>
-                                    <Input placeholder='Lí do khác...'
-                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
-                                        value={this.state.note}
-                                        onFocus={() => {
-                                            this.setState({ selectedValue: this.state.otherValue.reasonId })
-                                        }}
-                                        onChangeText={(text) => this.setState({ note: text })}
-                                    />
+                                    <Item style={styles.item}>
+                                        <Input placeholder='Lí do khác...'
+                                            style={styles.input}
+                                            value={this.state.note}
+                                            onFocus={() => {
+                                                this.setState({ selectedValue: this.state.otherValue.reasonId })
+                                            }}
+                                            onChangeText={(text) => this.setState({ note: text })}
+                                        />
+                                        {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
+                                    </Item>
                                 </View>
                             </View>
                         </ScrollView>
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
                             <Button transparent onPress={() => {
                                 this.setModalVisible(false)
-                                this._resetDialog()    
+                                this._resetDialog()
                             }}><Text style={styles.gray}>Cancel</Text></Button>
                             <Button transparent
-                                onPress={() => {
-                                    this.setModalVisible(false)
-                                    this.props.onClickYes(this.state.posOrderId, this.state.selectedValue, this.state.note)
-                                    this._resetDialog()
-                                }}
+                                onPress={this._handlePressOK}
                             ><Text primary>Ok</Text></Button>
                         </View>
 

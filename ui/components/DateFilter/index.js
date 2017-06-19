@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Button } from 'native-base'
-import { View, ListView, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
+import { View, ScrollView, ListView, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import RadioPopup from '~/ui/components/RadioPopup'
@@ -86,10 +86,11 @@ export default class DateFilter extends Component {
 
     }
     componentDidMount() {
-        setTimeout(() => {
-            this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
-        }, 0)
+        // setTimeout(() => {
+        //     this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+        // }, 0)
     }
+
     componentDidUpdate() {
         // this.refs.dateFilterList.scrollToEnd({ animated: false })
     }
@@ -256,7 +257,6 @@ export default class DateFilter extends Component {
     render() {
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
-            
 
         const data = this.ds.cloneWithRows(_data)
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
@@ -271,8 +271,12 @@ export default class DateFilter extends Component {
                     </View>
                 </TouchableOpacity>
                 <ListView
+                    onLayout={()=>
+                        this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+                    }
                     enableEmptySections={true}
-                    style={styles.dateFilterList}                    
+                    style={styles.dateFilterList}    
+                    initialListSize={_data.length}                
                     horizontal={true} showsHorizontalScrollIndicator={false}
                     ref='dateFilterList' dataSource={data}
                     removeClippedSubviews={false}
