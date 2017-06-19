@@ -204,12 +204,12 @@ export default class App extends Component {
     this.page = getPage(router.route)
     const { headerType, footerType, title, path, showTopDropdown } = this.page
     this.topDropdown.show(showTopDropdown)
-
+    this.header.show(headerType, title)
     if (router.route !== this.props.router.route) {
       const oldComponent = this.pageInstances[this.page.path]
       if (this.page) {
         // show header and footer, and clear search string
-        this.header.show(headerType, title)
+        
         this.header._search('')
         this.footer.show(footerType, router.route)
 
