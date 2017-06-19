@@ -86,10 +86,11 @@ export default class DateFilter extends Component {
 
     }
     componentDidMount() {
-        setTimeout(() => {
-            this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
-        }, 0)
+        // setTimeout(() => {
+        //     this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+        // }, 0)
     }
+
     componentDidUpdate() {
         // this.refs.dateFilterList.scrollToEnd({ animated: false })
     }
@@ -256,9 +257,8 @@ export default class DateFilter extends Component {
     render() {
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
-            
 
-        // const data = this.ds.cloneWithRows(_data)
+        const data = this.ds.cloneWithRows(_data)
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
 
         return (
@@ -270,15 +270,18 @@ export default class DateFilter extends Component {
                         <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
-                <ScrollView
+                <ListView
+                    onLayout={()=>
+                        this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+                    }
                     enableEmptySections={true}
-                    contentContainerStyle={{justifyContent: 'flex-start'}}
-                    style={styles.dateFilterList}                    
+                    style={styles.dateFilterList}    
+                    initialListSize={_data.length}                
                     horizontal={true} showsHorizontalScrollIndicator={false}
-                    ref='dateFilterList' 
+                    ref='dateFilterList' dataSource={data}
                     removeClippedSubviews={false}
-                    >
-                        {_data.map((rowData, rowID) => {
+                    renderRow={
+                        (rowData, sectionID, rowID, highlightRow) => {
                             let lastItemStyle = null
                             if (rowID == _data.length - 1) {
                                 lastItemStyle = {
@@ -287,7 +290,6 @@ export default class DateFilter extends Component {
                             }
                             return (
                                 <TouchableOpacity
-                                    key={rowID}
                                     style={{ marginRight: 20, ...lastItemStyle }}
                                     onPress={() => this._handlePressDateFilter(rowData)}>
                                     <Text
@@ -296,9 +298,8 @@ export default class DateFilter extends Component {
                                 </TouchableOpacity>
                             )
                         }
-                        )}
-                    
-                </ScrollView>
+                    }
+                />
             </View>
         )
     }
