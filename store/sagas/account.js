@@ -60,7 +60,8 @@ const requestUpdateProfile = createRequestSaga({
   key: 'updateProfile',
   success: [
     (data) => updateProfileToRedux(data),
-    () => setToast('Update profile successfully!')
+    () => setToast('Update profile successfully!'),
+      goBack,
   ],
   failure: [
     () => setToast('Couldn\'t update profile', 'danger')
@@ -93,7 +94,7 @@ const requestUpdateEmployeeInfo = createRequestSaga({
   request: api.account.updateEmployeeInfo,
   key: 'updateEmployeeInfo',
   success: [
-    
+
   ],
   failure: [
     (error) => {
