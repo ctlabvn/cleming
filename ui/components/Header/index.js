@@ -36,7 +36,7 @@ export default class extends Component {
   }
 
   show(type, title, icon){
-    this.setState({type, title, icon})
+    this.setState({type, title: title || this.state.title, icon})
   } 
   showOverlay(showStatus){
     this.setState({showOverlay: showStatus})
