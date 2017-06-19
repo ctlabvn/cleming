@@ -86,10 +86,10 @@ export default class extends Component {
                 this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
                 this._load()
             }
-            
+
             news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
             news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-            
+
             this.setState({ counting: true })
         })
     }
@@ -101,7 +101,7 @@ export default class extends Component {
             this._load()
             news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
             news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-            
+
         })
 
     }
@@ -172,6 +172,10 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
+                    if (newsUpdate.orderNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
                     newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
                     newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
                 }
