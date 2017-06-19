@@ -45,5 +45,20 @@ export default {
         // justifyContent: 'center'
         // flex: 0,
         // height: 200
+    },
+    item: {
+        width: '100%',
+        borderColor: 'transparent'
+    },
+    input: { 
+        // width: '100%', 
+        borderBottomWidth: 0.5, 
+        borderBottomColor: material.gray300, 
+        height: 40, 
+        fontSize: 14
+    },
+    icon: {
+        fontSize: 25,
+        color: material.gray600
     }
 }
