@@ -32,9 +32,10 @@ export default class FeedbackDialogClingme extends Component {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible })
     }
-    _handlePressRadio(item) {
-        this.setState({ note: '' })
-        this.setState({ selectedValue: item.reasonId })
+    _handlePressRadio = (item) => {
+        this.setState({ note: '', selectedValue: item.reasonId })
+        console.log('Press radio', this.refs.otherReasonInput )
+        this.refs.otherReasonInput.blur()
     }
     _resetDialog() {
         let length = this.props.listValue.length
@@ -89,14 +90,15 @@ export default class FeedbackDialogClingme extends Component {
                                 })}
                                 <View style={styles.rowPadding}>
                                     <Item style={styles.item}>
-                                        <Input placeholder='Lí do khác...'
-                                            style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
+                                        <TextInput placeholder='Lí do khác...'
+                                            style={styles.input}
                                             value={this.state.note}
                                             onFocus={() => {
                                                 console.log('On Focus')
                                                 this.setState({ selectedValue: this.state.otherValue.reasonId })
                                             }}
                                             onChangeText={(text) => this.setState({ note: text })}
+                                            ref='otherReasonInput'
                                         />
                                         {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
                                     </Item>

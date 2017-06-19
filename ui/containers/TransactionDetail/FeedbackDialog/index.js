@@ -31,8 +31,8 @@ export default class FeedbackDialog extends Component {
         this.setState({ modalVisible: visible })
     }
     _handlePressRadio(item) {
-        this.setState({ note: '' })
-        this.setState({ selectedValue: item.reasonId })
+        this.setState({ note: '', selectedValue: item.reasonId })
+        this.refs.otherReasonInput.blur()
     }
     _resetDialog() {
         let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
@@ -72,7 +72,7 @@ export default class FeedbackDialog extends Component {
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView style={{maxHeight: this.height}}>
+                        <ScrollView style={{maxHeight: this.height}} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -83,13 +83,14 @@ export default class FeedbackDialog extends Component {
                                     </TouchableOpacity>
                                 ))}
                                 <View style={styles.rowPadding}>
-                                    <Input placeholder='Lí do khác...'
-                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
+                                    <TextInput placeholder='Lí do khác...'
+                                        style={styles.input}
                                         value={this.state.note}
                                         onFocus={() => {
                                             this.setState({ selectedValue: this.state.otherValue.reasonId })
                                         }}
                                         onChangeText={(text) => this.setState({ note: text })}
+                                        ref='otherReasonInput'
                                     />
                                 </View>
                             </View>

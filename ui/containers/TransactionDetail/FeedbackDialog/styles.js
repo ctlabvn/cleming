@@ -31,7 +31,7 @@ export default {
         width: '100%',
         alignItems: 'center'
     },
-     marginRight: {
+    marginRight: {
         marginRight: 10
     },
     reasonText: {
@@ -45,5 +45,12 @@ export default {
         // justifyContent: 'center'
         // flex: 0,
         // height: 200
-    }
+    },
+    input: {
+        flex: 1,
+        borderBottomWidth: 0.5,
+        borderBottomColor: material.gray300,
+        height: 40,
+        fontSize: 14
+    },
 }
