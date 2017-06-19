@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Button } from 'native-base'
-import { View, ListView, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
+import { View, ScrollView, ListView, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import RadioPopup from '~/ui/components/RadioPopup'
@@ -258,7 +258,7 @@ export default class DateFilter extends Component {
         const _data = this._getDataForFilter(this.state.currentDateFilter)
             
 
-        const data = this.ds.cloneWithRows(_data)
+        // const data = this.ds.cloneWithRows(_data)
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
 
         return (
@@ -270,14 +270,15 @@ export default class DateFilter extends Component {
                         <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
-                <ListView
+                <ScrollView
                     enableEmptySections={true}
+                    contentContainerStyle={{justifyContent: 'flex-start'}}
                     style={styles.dateFilterList}                    
                     horizontal={true} showsHorizontalScrollIndicator={false}
-                    ref='dateFilterList' dataSource={data}
+                    ref='dateFilterList' 
                     removeClippedSubviews={false}
-                    renderRow={
-                        (rowData, sectionID, rowID, highlightRow) => {
+                    >
+                        {_data.map((rowData, rowID) => {
                             let lastItemStyle = null
                             if (rowID == _data.length - 1) {
                                 lastItemStyle = {
@@ -286,6 +287,7 @@ export default class DateFilter extends Component {
                             }
                             return (
                                 <TouchableOpacity
+                                    key={rowID}
                                     style={{ marginRight: 20, ...lastItemStyle }}
                                     onPress={() => this._handlePressDateFilter(rowData)}>
                                     <Text
@@ -294,8 +296,9 @@ export default class DateFilter extends Component {
                                 </TouchableOpacity>
                             )
                         }
-                    }
-                />
+                        )}
+                    
+                </ScrollView>
             </View>
         )
     }
