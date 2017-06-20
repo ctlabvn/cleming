@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { KeyboardAvoidingView, Platform, View, InteractionManager } from 'react-native'
+import { KeyboardAvoidingView, Platform, View, InteractionManager, Keyboard } from 'react-native'
 import {
   Container,
   Form,
@@ -87,6 +87,8 @@ export default class extends Component {
     const { pushToken } = this.props
     let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
+    this.setState({ emailFocus: false })
+    Keyboard.dismiss()
     this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
@@ -110,6 +112,8 @@ export default class extends Component {
 
   _handleShowHome = (e) => {
     this._handleShowLogin(e)
+    this.setState({ emailFocus: false })
+    Keyboard.dismiss()
     this.props.forwardTo('merchantOverview', true)
   }
 

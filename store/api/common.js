@@ -23,8 +23,6 @@ export const rejectErrors = async (res) => {
 export const fetchJson = (url, options = {}, base = API_BASE) => {
   // in the same server, API_BASE is emtpy
   /// check convenient way of passing base directly
-  console.log('Options', options.method)
-  console.log('Options', options.headers)
   return fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
     method: options.method,
     headers: {
