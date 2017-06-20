@@ -135,7 +135,7 @@ export default class CreateUserContainer extends Component {
   componentWillBlur() {
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
-      this. resetProps();
+    if (typeof this.props.route.params.id == "undefined") this. resetProps();
     // console.log(this.props.initialValues.GroupAddress)
     this.placeDropdown.clearAll()
 
@@ -204,7 +204,7 @@ export default class CreateUserContainer extends Component {
       //     firstTimeResetTime: true,
       // });
       this.setDefaultTimeWork();
-      this.setDefaultPlace();
+
 
       if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
         this.setState({
@@ -212,6 +212,8 @@ export default class CreateUserContainer extends Component {
         }, () => {
           this.setDefaultPlace()
         });
+      } else {
+          this.setDefaultPlace();
       }
   }
 
