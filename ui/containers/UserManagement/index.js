@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
-import { Text, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight, InteractionManager } from 'react-native'
 import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
@@ -103,17 +103,24 @@ class UserManagement extends Component {
         })
     }
     componentDidMount() {
-        const {app} = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        let currentPlace = app.topDropdown.getValue()
-        if (currentPlace && Object.keys(currentPlace).length>0){
-            this._loadListEmployee(currentPlace.id)
-        }
+        // const {app} = this.props
+        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // let currentPlace = app.topDropdown.getValue()
+        // if (currentPlace && Object.keys(currentPlace).length>0){
+        //     this._loadListEmployee(currentPlace.id)
+        // }
+        this.componentWillFocus();
     }
 
     componentWillFocus(){
         const {app} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        InteractionManager.runAfterInteractions(()=> {
+            let currentPlace = app.topDropdown.getValue()
+            if (currentPlace && Object.keys(currentPlace).length > 0) {
+                this._loadListEmployee(currentPlace.id)
+            }
+        })
     }
 
     onAccountPress(data, rowID) {
