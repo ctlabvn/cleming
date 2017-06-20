@@ -120,8 +120,8 @@ export default class extends Component {
     _onRefresh = () => {
         this._load()
     }
-    _renderStatusText(status){
-        switch(status){
+    _renderStatusText(status) {
+        switch (status) {
             case 'WAIT_CONFIRM':
                 return <Text warning small bold>Chờ xác nhận</Text>
             case 'CONFIRMED':
@@ -208,10 +208,14 @@ export default class extends Component {
                         <Text small grayDark>Số điện thoại</Text>
                         <Text bold grayDark>{formatPhoneNumber(orderDetail.orderInfo.userInfo.phoneNumber)}</Text>
                     </View>
-                    <View style={styles.rowPaddingTopMedium}>
-                        <Text small grayDark>Yêu cầu nhận hàng trong</Text>
-                        <Text bold grayDark>45'</Text>
-                    </View>
+                    {
+                        (orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
+                        <View style={styles.rowPaddingTopMedium}>
+                            <Text small grayDark>Yêu cầu nhận hàng trong</Text>
+                            <Text bold grayDark>45'</Text>
+                        </View>
+                    }
+
                     <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
                         <Text small grayDark>Yêu cầu khác</Text>
                         <Text bold grayDark>{orderDetail.orderInfo.note}</Text>

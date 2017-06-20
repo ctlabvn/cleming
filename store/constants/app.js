@@ -46,8 +46,8 @@ export const TRANSACTION_TYPE={
     DIRECT: 2
 }
 export const FEEDBACK_CLM_TRANSACTION = {
-    MISS: 2,
-    REDUNDANT: 1
+    MISS: 1,
+    REDUNDANT: 2
 }
 
 export const DIFF_COORD = 0.1

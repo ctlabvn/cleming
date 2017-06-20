@@ -47,7 +47,7 @@ const requestLogin = createRequestSaga({
                 return noop("nothing")
             }
         },
-        () => setToast('Logged successfully!!!')
+        // () => setToast('Logged successfully!!!')
     ],
     failure: [
         // code : 1201

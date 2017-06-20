@@ -51,7 +51,7 @@ export default {
         borderColor: 'transparent'
     },
     input: { 
-        // width: '100%', 
+        flex: 1,
         borderBottomWidth: 0.5, 
         borderBottomColor: material.gray300, 
         height: 40, 

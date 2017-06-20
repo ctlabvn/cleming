@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListTransaction, setDenyReason, setListTransactionPayWithClingme } from '~/store/actions/transaction'
+import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm } from '~/store/actions/transaction'
 
 const requestListTransaction = createRequestSaga({
     request: api.transaction.list,
@@ -12,11 +12,11 @@ const requestListTransaction = createRequestSaga({
     success: [
         (data) => {
             console.log('Load transaction', data)
-            if (data.code){
-                return setToast('Load trans fail: '+JSON.stringify(data), 'error')
+            if (data.code) {
+                return setToast('Load trans fail: ' + JSON.stringify(data), 'error')
             }
             return setListTransaction(data.updated.data)
-        }          
+        }
     ],
 })
 requestListTransactionPayWithClingme = createRequestSaga({
@@ -27,16 +27,16 @@ requestListTransactionPayWithClingme = createRequestSaga({
         (data) => {
             console.log('Load transaction PayWithClingme', data)
             return setListTransactionPayWithClingme(data.updated.data)
-        }          
+        }
     ],
 }),
-requestTransactionDetail = createRequestSaga({
-    request: api.transaction.detail,
-    key: 'transaction/detail',
-    cancel: 'app/logout',
-    failure: [
-    ],
-})
+    requestTransactionDetail = createRequestSaga({
+        request: api.transaction.detail,
+        key: 'transaction/detail',
+        cancel: 'app/logout',
+        failure: [
+        ],
+    })
 requestTransactionDetailPayWithClingme = createRequestSaga({
     request: api.transaction.detailPayWithClingme,
     key: 'transaction/detailPayWithClingme',
@@ -59,21 +59,41 @@ requestSendDenyReason = createRequestSaga({
     key: 'transaction/sendDenyReason',
     cancel: 'app/logout',
 })
+requestSendDenyReasonClm = createRequestSaga({
+    request: api.transaction.sendDenyReasonClm,
+    key: 'transaction/sendDenyReasonClm',
+    cancel: 'app/logout',
+})
 requestTransactionConfirm = createRequestSaga({
     request: api.transaction.confirmTransaction,
     key: 'transaction/confirm',
     cancel: 'app/logout',
 })
+requestDenyReasonClm = createRequestSaga({
+    request: api.transaction.getDenyReasonClm,
+    key: 'transaction/denyReasonClm',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            console.log('Deny Reason CLM', data)
+            if (data && data.updated && data.updated.data) {
+                return setDenyReasonClm(data.updated.data)
+            }
+        }
+    ],
+})
 export default [
     function* fetchWatcher() {
-        yield [            
+        yield [
             takeLatest('transaction/list', requestListTransaction),
             takeLatest('transaction/listPayWithClingme', requestListTransactionPayWithClingme),
             takeLatest('transaction/detail', requestTransactionDetail),
             takeLatest('transaction/denyReason', requestDenyReason),
             takeLatest('transaction/sendDenyReason', requestSendDenyReason),
             takeLatest('transaction/detailPayWithClingme', requestTransactionDetailPayWithClingme),
-            takeLatest('transaction/confirm', requestTransactionConfirm)
+            takeLatest('transaction/confirm', requestTransactionConfirm),
+            takeLatest('transaction/denyReasonClm', requestDenyReasonClm),
+            takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm)
         ]
     },
 ]

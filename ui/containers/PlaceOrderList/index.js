@@ -202,7 +202,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _handleTopDrowpdown = (item) => {
-        const { booking, xsession, getMerchantNews } = this.props
+        const { booking, xsession, getMerchantNews, forwardTo } = this.props
         // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
@@ -210,6 +210,10 @@ export default class PlaceOrderList extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
+                    if (newsUpdate.bookingNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
                     newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
                 }
             }

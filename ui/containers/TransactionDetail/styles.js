@@ -349,6 +349,9 @@ export default {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20
+        // height: 50
         // marginBottom: 30
 
     },
@@ -358,15 +361,16 @@ export default {
     rowCenter: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10
     },
     contentRootChild: {
         flexDirection: 'column',
         flex: 1,
-        justifyContent: 'space-around',
-        height: '100%',
+        justifyContent: 'flex-start',
         padding: 10,
-        backgroundColor: material.white500
+        backgroundColor: material.white500,
+        height: material.deviceHeight
     },
     loadingContainer: { 
         backgroundColor: material.white500,

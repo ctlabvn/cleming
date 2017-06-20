@@ -46,9 +46,9 @@ export default class DeliveryFeedbackDialog extends Component {
     show(posOrderId) {
         this.setState({ posOrderId: posOrderId, modalVisible: true })
     }
-    _handlePressRadio(item) {
-        this.setState({ note: '' })
-        this.setState({ selectedValue: item.reasonId })
+    _handlePressRadio = (item) => {
+        this.setState({  note: '', selectedValue: item.reasonId })
+        this.refs.otherReasonInput.blur()
     }
     _handlePressOK = () => {
         if (this.state.selectedValue != this.state.otherValue.reasonId) {
@@ -103,7 +103,7 @@ export default class DeliveryFeedbackDialog extends Component {
                         <View style={styles.rowPadding}>
                             <Text>Lí do hủy đơn hàng</Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }}>
+                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -115,13 +115,14 @@ export default class DeliveryFeedbackDialog extends Component {
                                 ))}
                                 <View style={styles.rowPadding}>
                                     <Item style={styles.item}>
-                                        <Input placeholder='Lí do khác...'
+                                        <TextInput placeholder='Lí do khác...'
                                             style={styles.input}
                                             value={this.state.note}
                                             onFocus={() => {
                                                 this.setState({ selectedValue: this.state.otherValue.reasonId })
                                             }}
                                             onChangeText={(text) => this.setState({ note: text })}
+                                            ref='otherReasonInput'
                                         />
                                         {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
                                     </Item>

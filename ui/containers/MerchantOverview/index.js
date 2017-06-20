@@ -86,9 +86,9 @@ export default class MerchantOverview extends Component {
                         getMerchantNews(xsession, data.updated.data[0].placeId)
                     } else {
                         getMerchantNews(xsession, selectedPlace.id)
-                    }
-                    this.setState({ loading: false })
+                    }                    
                 }
+                this.setState({ loading: false })
             }
         )
 
