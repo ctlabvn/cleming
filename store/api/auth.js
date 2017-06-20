@@ -52,9 +52,10 @@ export default {
   /**
   * Logs the current user out
   */
-  logout(session) {
+  logout(session, xDevice, xUniqueDevice) {
     // return fetchJsonWithToken(token, `/logout`)
-    return apiGet(`/logout`, {}, session)
+    console.log('API logout', session+'---'+xDevice+'---'+xUniqueDevice)
+    return apiGet(`/logout`, {}, session, {'X-DEVICE': xDevice, 'X-UNIQUE-DEVICE': xUniqueDevice})
   },
 
 }

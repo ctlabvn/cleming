@@ -1,30 +1,32 @@
 
 // default api_base for all request
-import {  
+import {
   API_BASE
 } from '~/store/constants/api'
 
-const urlEncode = data => data 
-? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
-: ''
+const urlEncode = data => data
+  ? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
+  : ''
 
-export const rejectErrors = async(res) => {
+export const rejectErrors = async (res) => {
   const { status } = res
   if (status >= 200 && status < 300) {
     return res
   }
   // we can get message from Promise but no need, just use statusText instead of
   // server return errors
-  let errorBody = await(res.json())
-  return Promise.reject({message: res.statusText, status,...errorBody})
+  let errorBody = await (res.json())
+  return Promise.reject({ message: res.statusText, status, ...errorBody })
 }
 
 // try invoke callback for refresh token here
-export const fetchJson = (url, options = {}, base = API_BASE) => (
+export const fetchJson = (url, options = {}, base = API_BASE) => {
   // in the same server, API_BASE is emtpy
-  /// check convenient way of passing base directly  
-  fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
-    ...options,
+  /// check convenient way of passing base directly
+  console.log('Options', options.method)
+  console.log('Options', options.headers)
+  return fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
+    method: options.method,
     headers: {
       ...options.headers,
       // 'Content-Type':'application/x-www-form-urlencoded',   
@@ -37,35 +39,35 @@ export const fetchJson = (url, options = {}, base = API_BASE) => (
       'X-AUTH': '',
     },
   })
-  .then(rejectErrors)
-  // default return empty json when no content
-  .then((res) => {    
-    const contentType = res.headers.get("content-type") || ''
-    return (res.status !== 204 && contentType.indexOf("application/json") !== -1) ? res.json() : {}
-  })
-)
+    .then(rejectErrors)
+    // default return empty json when no content
+    .then((res) => {
+      const contentType = res.headers.get("content-type") || ''
+      return (res.status !== 204 && contentType.indexOf("application/json") !== -1) ? res.json() : {}
+    })
+}
 
-export const fetchJsonWithToken = (token, url, options = {}, ...args) => (
-  fetchJson(url, {
-    ...options,
+export const fetchJsonWithToken = (token, url, options = {}, ...args) => {
+  return fetchJson(url, {
+    method: options.method,
     headers: {
-      ...options.header,
+      ...options.headers,
       'X-SESSION': token.accessToken || token,
     },
   }, ...args)
-)
+}
 
 // default is get method, we can override header with method:PUT for sample
-export const apiCall = (url, options, token = null) => 
+export const apiCall = (url, options, token = null) =>
   token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
 
 // must have data to post, put should not return data
-export const apiPost = (url, data, token, method='POST') => {
+export const apiPost = (url, data, token, method = 'POST') => {
   return apiCall(url, { method, body: JSON.stringify(data) }, token)
 }
 
-export const apiGet = (url, data, token, method='GET') => 
-  apiCall(url + '?' + urlEncode(data), { method }, token)
+export const apiGet = (url, data, token, headers, method = 'GET') =>
+  apiCall(url + '?' + urlEncode(data), { method, headers }, token)
 
 
 // if we want to fetch blob data with progress support, we should use fetchBlob, such as download from uri to local, then cache it

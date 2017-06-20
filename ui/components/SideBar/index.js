@@ -18,7 +18,8 @@ import options from './options'
 import routes from '~/ui/routes'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
-
+import DeviceInfo from 'react-native-device-info'
+import md5 from 'md5'
 import {  
   API_BASE
 } from '~/store/constants/api'
@@ -26,7 +27,8 @@ import {
 @connect(state=>({
   session: authSelectors.getSession(state),
   profile: accountSelectors.getProfile(state),
-  user: authSelectors.getUser(state)
+  user: authSelectors.getUser(state),
+  pushToken: authSelectors.gePushToken(state),
 }), {...authActions, ...commonActions})
 export default class extends Component {  
 
@@ -37,7 +39,11 @@ export default class extends Component {
     removeLoggedUser()
     setAuthState(false)        
     forwardTo('login', true)
-    logout(session)       
+     const { pushToken } = this.props
+    let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
+    let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
+    console.log('Logout', xDevice+'---'+xUniqueDevice)
+    logout(session, xDevice, xUniqueDevice)       
   }
 
   navigateTo(route) {
