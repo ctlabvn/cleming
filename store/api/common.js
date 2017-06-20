@@ -24,7 +24,7 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
   // in the same server, API_BASE is emtpy
   /// check convenient way of passing base directly
   return fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
-    method: options.method,
+    ...options,
     headers: {
       ...options.headers,
       // 'Content-Type':'application/x-www-form-urlencoded',   
@@ -47,7 +47,7 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
 
 export const fetchJsonWithToken = (token, url, options = {}, ...args) => {
   return fetchJson(url, {
-    method: options.method,
+    ...options,
     headers: {
       ...options.headers,
       'X-SESSION': token.accessToken || token,
@@ -56,8 +56,10 @@ export const fetchJsonWithToken = (token, url, options = {}, ...args) => {
 }
 
 // default is get method, we can override header with method:PUT for sample
-export const apiCall = (url, options, token = null) =>
-  token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
+export const apiCall = (url, options, token = null) =>{
+  return token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
+}
+  
 
 // must have data to post, put should not return data
 export const apiPost = (url, data, token, method = 'POST') => {
