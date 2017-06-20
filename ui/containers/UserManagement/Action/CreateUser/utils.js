@@ -19,7 +19,7 @@ import {
 import styles from './styles'
 import { convertVn } from '~/ui/shared/utils'
 
-const namePattern = /^(\w{2,}\s)*\w{2,}$/
+const namePattern = /^([A-Za-z_]{2,}\s)*[A-Za-z_]{2,}$/
 const usernameConstraints = {
   username: {
     format: {
@@ -29,7 +29,7 @@ const usernameConstraints = {
   }
 }
 
-const phonePattern = /^\d{9,11}$/
+const phonePattern = /^0\d{9,10}$/
 const phoneConstraints = {
   phone: {
     format: {
@@ -57,8 +57,7 @@ export const validateField = (values) => {
     // if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
     //   errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
     // }
-
-    if(!convertVn('Phạm Hoàng Nam').match(namePattern)){
+    if(!convertVn(values.name).match(namePattern)){
       errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
         return errors;
     }

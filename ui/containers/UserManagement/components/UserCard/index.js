@@ -30,7 +30,7 @@ export default class UserCard extends Component {
                         <Text numberOfLines={1} style={styles.nameText}>{data.userName}</Text>
                     </Row>
                     <Row style={{ height: '50%', alignItems: 'flex-end'}}>
-                        <Text style={styles.nameText}>{data.phoneNumber}</Text>
+                        <Text style={styles.nameText}>0{data.phoneNumber}</Text>
                     </Row>
                 </Col>
             </Grid>

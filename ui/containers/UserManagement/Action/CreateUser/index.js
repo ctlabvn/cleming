@@ -86,7 +86,7 @@ const formSelector = formValueSelector('CreateUserForm')
       GroupAddress: stateProps.place.listPlace,
       name: employeeDetail.userName,
       email: employeeDetail.email,
-      phone: employeeDetail.phoneNumber,
+      phone: '0' + employeeDetail.phoneNumber,
       permission: {
         id: employeeDetail.titleType,
         name: permission
@@ -304,6 +304,7 @@ export default class CreateUserContainer extends Component {
           isLoading: false
         }, () => {
           this.props.actions.goBack()
+          this.props.actions.setToast('Successfully!');
         })
       })
     }
