@@ -228,7 +228,7 @@ export default class extends Component {
                         renderRow={(item) => (
                             <ListItem style={styles.orderItem}>
                                 <View style={styles.cartLeft}>
-                                    <Image style={{ width: 60, height: 60 }} source={{ uri: 'https://tea-3.lozi.vn/v1/images/resized/korokke-72882-1434777201' }} />
+                                    <Image style={{ width: 60, height: 60 }} source={{ uri: item.itemImage }} />
                                     <View style={styles.cartContent}>
                                         <Text small grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
                                         <Text small grayDark style={styles.textLeft}>Số lượng: {item.quantity}</Text>
