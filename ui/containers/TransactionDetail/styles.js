@@ -3,6 +3,7 @@ export default {
     container: {
         flexDirection: 'column',
         backgroundColor: material.white500,
+        paddingBottom: 50
     },
     transactionBlock: {
         backgroundColor: 'lavender',

@@ -15,7 +15,7 @@ export default class FeedbackDialogClingme extends Component {
     constructor(props) {
         super(props)
 
-        let length = props.listValue.length
+        let length = props.listValue? props.listValue.length:0
         let listValue = props.listValue.slice(0, length - 1)
         let otherValue = props.listValue[length - 1]
 
@@ -34,7 +34,6 @@ export default class FeedbackDialogClingme extends Component {
     }
     _handlePressRadio = (item) => {
         this.setState({ note: '', selectedValue: item.reasonId })
-        console.log('Press radio', this.refs.otherReasonInput )
         this.refs.otherReasonInput.blur()
     }
     _resetDialog() {
@@ -92,6 +91,7 @@ export default class FeedbackDialogClingme extends Component {
                                     <Item style={styles.item}>
                                         <TextInput placeholder='Lí do khác...'
                                             style={styles.input}
+                                            underlineColorAndroid={'transparent'}
                                             value={this.state.note}
                                             onFocus={() => {
                                                 console.log('On Focus')
