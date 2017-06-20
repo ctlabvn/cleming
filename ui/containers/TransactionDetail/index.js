@@ -185,9 +185,17 @@ export default class TransactionDetail extends Component {
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
                 payStatus = <Text success bold>Đã thanh toán</Text>
-                helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                    <Text>Trợ giúp</Text>
-                </Button>
+                //Chưa sử dụng help
+                if (!transactionInfo.helpStatus) {
+                    helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                        <Text>Trợ giúp</Text>
+                    </Button>
+                }else{
+                    helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
+                        <Text>Trợ giúp</Text>
+                    </Button>
+                }
+
             } else if (transactionInfo.transactionStatus == 2) {
                 payStatus = <Text success bold>Đã xác nhận</Text>
             }
