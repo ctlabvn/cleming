@@ -62,6 +62,7 @@ export default class DateFilter extends Component {
         }
         this.dateFilterHeight = 0
         this.contentWidth = 0
+        this.scrollFisrtLoad = true
     }
     getData() {
         return this.state
@@ -271,8 +272,10 @@ export default class DateFilter extends Component {
                     </View>
                 </TouchableOpacity>
                 <ListView
-                    onLayout={()=>
-                        this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+                    onLayout={()=>{
+                            this.scrollFisrtLoad && this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
+                            this.scrollFisrtLoad = false
+                        }
                     }
                     enableEmptySections={true}
                     style={styles.dateFilterList}    
