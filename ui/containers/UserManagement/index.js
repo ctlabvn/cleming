@@ -345,11 +345,36 @@ class UserManagement extends Component {
         const { forwardTo } = this.props
         forwardTo('userManagement/action/createUser')
     }
+
+    renderAddEmployeeButton() {
+        if (typeof  this.data != 'undefined') {
+            let data0 = this.data[0];
+            // console.warn('data[0] ' + JSON.stringify(data0, null, 2));
+            if (typeof data0 != 'undefined') {
+                owner = data0.owner;
+                if (typeof owner != 'undefined') {
+                    // console.warn('owner ' + JSON.stringify(owner, null, 2));
+                    if (owner.accTitle == 1) {
+                        return (
+                            <Button
+                                onPress={this.onCreateUserPress.bind(this)}
+                                style={styles.addUserButton}>
+                                <Text style={styles.addUserText}>Thêm tài khoản</Text>
+                            </Button>)
+                    }
+                }
+                // console.warn('owner undefined');
+            }
+        }
+    }
+
     _handleChangePlace = (item) => {
         this._loadListEmployee(item.id)
     }
+
     render() {
         const { place, selectedPlace } = this.props
+
         if (this.state.isFetchingData) {
             return (
                 <View style={{ backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -369,11 +394,7 @@ class UserManagement extends Component {
                 <Modal onCloseClick={e => this.setState({ modalOpen: false })} open={this.state.modalOpen}>
                     {this.renderModal()}
                 </Modal>
-                <Button
-                    onPress={this.onCreateUserPress.bind(this)}
-                    style={styles.addUserButton}>
-                    <Text style={styles.addUserText}>Thêm tài khoản</Text>
-                </Button>
+                {this.renderAddEmployeeButton()}
             </Container>
         )
     }
