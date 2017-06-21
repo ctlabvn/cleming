@@ -53,4 +53,8 @@ export default {
         height: 40,
         fontSize: 14
     },
+    item: {
+        width: '100%',
+        borderColor: 'transparent'
+    },
 }

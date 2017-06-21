@@ -539,6 +539,7 @@ export default class TransactionDetail extends Component {
                 <PopupInfo ref='popupInfo' />
                 {/*<LoadingModal loading={this.state.loading} />*/}
                 <ViewPager style={{ flex: 1, height: '100%' }}
+                    keyboardShouldPersistTaps='always'
                     onPageSelected={(event) => this.onSwipeViewPager(event)}
                     ref='viewPager'
                     initialPage={1}
