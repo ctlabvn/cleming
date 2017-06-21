@@ -37,7 +37,7 @@ export default {
     },
     dropdownListItemText: {
         color: material.white500,
-        fontWeight: '100'
+        // fontWeight: '100'
     },
     content: {
         position: 'absolute',

@@ -119,7 +119,10 @@ export default class FeedbackDialog extends Component {
                             </View>
                         </ScrollView>
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                            <Button transparent onPress={() => this.setModalVisible(false)}><Text style={styles.gray}>Cancel</Text></Button>
+                            <Button transparent onPress={() =>{
+                                this._resetDialog()
+                                this.setModalVisible(false)
+                            }}><Text style={styles.gray}>Cancel</Text></Button>
                             <Button transparent
                                 onPress={() => {
                                     this.setModalVisible(false)
