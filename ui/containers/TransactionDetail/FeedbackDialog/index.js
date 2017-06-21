@@ -39,11 +39,12 @@ export default class FeedbackDialog extends Component {
     }
     componentWillReceiveProps(nextProps) {
         console.log('Dialog Will Receive Props', nextProps)
-        let listValue = nextProps.listValue
-        if (!listValue || listValue.length == 0) return
-        let length = listValue.length
-        listValue = listValue.slice(0, length - 1)
-        let otherValue = listValue[length - 1]
+        let listValueProps = nextProps.listValue
+        if (!listValueProps || listValueProps.length == 0) return
+        if (this.state.listValue && this.state.listValue.length > 0) return
+        let length = listValueProps.length
+        let listValue = listValueProps.slice(0, length - 1)
+        let otherValue = listValueProps[length - 1]
         this.setState({
             selectedValue: listValue[0].reasonId,
             listValue: listValue,
@@ -92,7 +93,7 @@ export default class FeedbackDialog extends Component {
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView ref={ref=>this.scrollView=ref} style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
+                        <ScrollView ref={ref => this.scrollView = ref} style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -106,6 +107,7 @@ export default class FeedbackDialog extends Component {
                                     <TextInput placeholder='Lí do khác...'
                                         style={styles.input}
                                         value={this.state.note}
+                                        underlineColorAndroid={'transparent'}
                                         onFocus={() => {
 
                                             this.setState({ selectedValue: this.state.otherValue.reasonId })

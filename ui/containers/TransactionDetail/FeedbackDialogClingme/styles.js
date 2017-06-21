@@ -3,10 +3,11 @@ export default {
     modalOverlay: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.7)'
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        justifyContent: 'center'
     },
     modalContainer: {
-        marginTop: '30%',
+        // marginTop: '30%',
         width: '90%',
         minHeight: 200,
         backgroundColor: material.white500,

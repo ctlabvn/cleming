@@ -31,11 +31,12 @@ export default class FeedbackDialogClingme extends Component {
     }
     componentWillReceiveProps(nextProps){
         console.log('Dialog Will Receive Props', nextProps)
-        let listValue = nextProps.listValue
-        if (!listValue || listValue.length == 0) return
-        let length = listValue.length
-        listValue = listValue.slice(0, length-1)
-        let otherValue = listValue[length - 1]
+        let listValueProps = nextProps.listValue
+        if (!listValueProps || listValueProps.length == 0) return
+        if (this.state.listValue && this.state.listValue.length > 0) return
+        let length = listValueProps.length
+        let listValue = listValueProps.slice(0, length-1)
+        let otherValue = listValueProps[length - 1]
         this.setState({
             selectedValue: listValue[0].reasonId,
             listValue: listValue,
@@ -107,7 +108,7 @@ export default class FeedbackDialogClingme extends Component {
                                             underlineColorAndroid={'transparent'}
                                             value={this.state.note}
                                             onFocus={() => {
-                                                console.log('On Focus')
+                                                console.log('On Focus', this.state)
                                                 this.setState({ selectedValue: this.state.otherValue.reasonId })
                                             }}
                                             onChangeText={(text) => this.setState({ note: text })}
