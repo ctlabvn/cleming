@@ -15,8 +15,11 @@ import ModalOverlay from '~/ui/components/ModalOverlay'
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
-        let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
-        let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
+
+        let length = props.listValue ? props.listValue.length : 0
+        let listValue = props.listValue.slice(0, length - 1)
+        let otherValue = props.listValue[length - 1]
+
         this.state = {
             modalVisible: false,
             selectedValue: listValue[0].reasonId,
@@ -35,8 +38,9 @@ export default class FeedbackDialog extends Component {
         this.refs.otherReasonInput.blur()
     }
     _resetDialog() {
-        let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
-        let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
+        let length = props.listValue ? props.listValue.length : 0
+        let listValue = props.listValue.slice(0, length - 1)
+        let otherValue = props.listValue[length - 1]
 
         this.setState({
             listValue: listValue,
@@ -45,11 +49,11 @@ export default class FeedbackDialog extends Component {
             note: ''
         })
     }
-    _onMeasure = (e)=>{
+    _onMeasure = (e) => {
         console.log('Go onMeasure')
         if (!this.caculatingHeight) return
         this.caculatingHeight = false
-        const {height} = e.nativeEvent.layout
+        const { height } = e.nativeEvent.layout
         console.log('Content Height', height)
         this.height = height
         this.forceUpdate()
@@ -72,7 +76,7 @@ export default class FeedbackDialog extends Component {
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView style={{maxHeight: this.height}} keyboardShouldPersistTaps='always'>
+                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
