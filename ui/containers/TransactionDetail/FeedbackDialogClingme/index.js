@@ -15,19 +15,32 @@ export default class FeedbackDialogClingme extends Component {
     constructor(props) {
         super(props)
 
-        let length = props.listValue? props.listValue.length:0
-        let listValue = props.listValue.slice(0, length - 1)
-        let otherValue = props.listValue[length - 1]
-
+        let length = props.listValue? props.listValue.length : 0
+        let listValue = props.listValue ? props.listValue.slice(0, length - 1) : []
+        let otherValue = props.listValue ? props.listValue[length - 1] : {}
+        console.log('Constructor', listValue)
         this.state = {
             modalVisible: false,
-            selectedValue: listValue[0].reasonId,
+            selectedValue: (listValue && listValue.length>0) ? listValue[0].reasonId : 0,
             listValue: listValue,
             otherValue: otherValue,
             note: '',
             keyboardType: 'phone-pad',
             // showingInput: false
         }
+    }
+    componentWillReceiveProps(nextProps){
+        console.log('Dialog Will Receive Props', nextProps)
+        let listValue = nextProps.listValue
+        if (!listValue || listValue.length == 0) return
+        let length = listValue.length
+        listValue = listValue.slice(0, length-1)
+        let otherValue = listValue[length - 1]
+        this.setState({
+            selectedValue: listValue[0].reasonId,
+            listValue: listValue,
+            otherValue: otherValue
+        })
     }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible })
