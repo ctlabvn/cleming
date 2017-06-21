@@ -50,7 +50,7 @@ export default class FeedbackDialogClingme extends Component {
         this.setState({ note: '', selectedValue: item.reasonId })
         this.refs.otherReasonInput.blur()
     }
-    _resetDialog() {
+    _resetDialog = () => {
         let length = this.props.listValue.length
         let listValue = this.props.listValue.slice(0, length - 1)
         let otherValue = this.props.listValue[length - 1]

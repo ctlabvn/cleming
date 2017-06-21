@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
+import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
 import { View, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -52,10 +52,10 @@ export default class FeedbackDialog extends Component {
         })
     }
 
-    _resetDialog() {
-        let length = props.listValue ? props.listValue.length : 0
-        let listValue = props.listValue.slice(0, length - 1)
-        let otherValue = props.listValue[length - 1]
+    _resetDialog = () => {
+        let length = this.props.listValue.length
+        let listValue = this.props.listValue.slice(0, length - 1)
+        let otherValue = this.props.listValue[length - 1]
 
         this.setState({
             listValue: listValue,
@@ -72,6 +72,10 @@ export default class FeedbackDialog extends Component {
         console.log('Content Height', height)
         this.height = height
         this.forceUpdate()
+    }
+    _handlePressClear = () => {
+        console.log('Pressing Clear CLM')
+        this.setState({ note: '' })
     }
     render() {
 
@@ -104,6 +108,7 @@ export default class FeedbackDialog extends Component {
                                     </TouchableOpacity>
                                 ))}
                                 <View style={styles.rowPadding}>
+                                    <Item style={styles.item}>
                                     <TextInput placeholder='Lí do khác...'
                                         style={styles.input}
                                         value={this.state.note}
@@ -115,6 +120,8 @@ export default class FeedbackDialog extends Component {
                                         onChangeText={(text) => this.setState({ note: text })}
                                         ref='otherReasonInput'
                                     />
+                                    {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
+                                    </Item>
                                 </View>
                             </View>
                         </ScrollView>
@@ -127,6 +134,7 @@ export default class FeedbackDialog extends Component {
                                 onPress={() => {
                                     this.setModalVisible(false)
                                     this.props.onClickYes(this.props.dealTransactionId, this.state.selectedValue, this.state.note)
+                                    this._resetDialog()
                                 }}
                             ><Text primary>Ok</Text></Button>
                         </View>
