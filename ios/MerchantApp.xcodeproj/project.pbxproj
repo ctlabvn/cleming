@@ -1386,8 +1386,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "e083ae90-1cc4-4c38-b116-0f799a263d4c";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1425,8 +1425,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = MerchantApp;
-				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

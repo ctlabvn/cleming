@@ -63,9 +63,8 @@ export default class ModalOverlay extends Component {
           }
       })    
     }
-    
-    this.props.onToggle(true)
 
+    setTimeout(()=>this.props.onToggle(true), event.duration)    
   }
 
   resetKeyboardSpace(event) {
@@ -76,8 +75,8 @@ export default class ModalOverlay extends Component {
           style: this.props.style,
       })    
     }
-
-    this.props.onToggle(false)
+        
+    setTimeout(()=>this.props.onToggle(false), event.duration)
   }
 
   render() {    

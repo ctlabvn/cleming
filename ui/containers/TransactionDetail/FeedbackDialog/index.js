@@ -84,13 +84,15 @@ export default class FeedbackDialog extends Component {
                 }}
             >
 
-                <ModalOverlay style={styles.modalOverlay}>
+                <ModalOverlay onToggle={toggled =>
+                    toggled && this.scrollView && this.scrollView.scrollToEnd({ animated: false })
+                } style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
+                        <ScrollView ref={ref=>this.scrollView=ref} style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -105,6 +107,7 @@ export default class FeedbackDialog extends Component {
                                         style={styles.input}
                                         value={this.state.note}
                                         onFocus={() => {
+
                                             this.setState({ selectedValue: this.state.otherValue.reasonId })
                                         }}
                                         onChangeText={(text) => this.setState({ note: text })}
