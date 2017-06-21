@@ -263,7 +263,13 @@ export default class DateFilter extends Component {
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
 
         return (
-            <View style={styles.dateFilter}>
+            <View onLayout={()=>{
+                            if(this.scrollFisrtLoad && this.refs.dateFilterList){
+                             setTimeout(() => this.refs.dateFilterList.scrollToEnd({ animated: false }), 1000)
+                            }
+                            this.scrollFisrtLoad = false
+                        }
+                    } style={styles.dateFilter}>
                 <RadioPopup ref='dateFilterTypePopup' listValue={this.dateFilterListValue} selectedValue={this.state.currentDateFilter} onClickYes={this._handleYesDateFilter.bind(this)} />
                 <TouchableOpacity onPress={() => this._handlePressTriggerDateFilterPopup()}>
                     <View style={styles.stickPart}>
@@ -271,12 +277,7 @@ export default class DateFilter extends Component {
                         <Text small style={styles.filterIntevalLabel}>{currentDateFilterDisplay}</Text>
                     </View>
                 </TouchableOpacity>
-                <ListView
-                    onLayout={()=>{
-                            this.scrollFisrtLoad && this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
-                            this.scrollFisrtLoad = false
-                        }
-                    }
+                <ListView                    
                     enableEmptySections={true}
                     style={styles.dateFilterList}    
                     initialListSize={_data.length}                
