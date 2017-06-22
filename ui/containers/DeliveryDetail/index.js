@@ -204,8 +204,12 @@ export default class extends Component {
                         </View>
                     </View>
                     <View style={styles.rowPadding}>
-                        <Text small>Đặt hàng số</Text>
+                        <Text small grayDark>Đặt hàng số</Text>
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
+                    </View>
+                    <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
+                        <Text small grayDark>Phản hồi của khách hàng</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.feedback}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
