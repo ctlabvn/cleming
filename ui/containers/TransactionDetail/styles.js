@@ -189,11 +189,21 @@ export default {
         // height: 300
     },
 
-    invoiceBlock: {
+    invoiceBlockAndroid: {
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
         bottom: -20,
-        zIndex: 20
+        elevation: 2
+        // zIndex: 20
+    },
+
+    invoiceBlockIOS: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: -20,
+         zIndex: 20
     },
     invoiceLabel: {
         backgroundColor: material.white500,
