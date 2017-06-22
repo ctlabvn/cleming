@@ -63,3 +63,8 @@ export const DELIVERY_FEEDBACK = {
 export const GENERAL_ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại sau'
 export const EXPIRED_ERROR_MESSAGE = 'Phiên làm việc đã hết, vui lòng đăng nhập lại'
 export const DETECT_LOCATION_INTERVAL = 120000 // 2 minute
+
+export const DEFAULT_MAP_DELTA = {
+    LAT: 0.05,
+    LONG: 0.05
+}

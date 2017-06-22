@@ -1,28 +1,32 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Spinner, Button } from 'native-base'
-import { View, InteractionManager } from 'react-native'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as commonAction from '~/store/actions/common'
-import * as transactionAction from '~/store/actions/transaction'
-import * as authActions from '~/store/actions/auth'
-import * as placeActions from '~/store/actions/place'
-import TransactionFilter from '~/ui/components/TransactionFilter'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import Border from '~/ui/elements/Border'
-import moment from 'moment'
-import { formatNumber } from '~/ui/shared/utils'
-import Content from '~/ui/components/Content'
-import { getSession } from '~/store/selectors/auth'
-import { getNews } from '~/store/selectors/place'
-import { getListTransactionDirect, getListTransactionCLM } from '~/store/selectors/transaction'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Container, List, ListItem, Spinner, Text} from "native-base";
+import {InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as commonAction from "~/store/actions/common";
+import * as transactionAction from "~/store/actions/transaction";
+import * as authActions from "~/store/actions/auth";
+import * as placeActions from "~/store/actions/place";
+import TransactionFilter from "~/ui/components/TransactionFilter";
+import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Icon from "~/ui/elements/Icon";
+import Border from "~/ui/elements/Border";
+import moment from "moment";
+import {formatNumber} from "~/ui/shared/utils";
+import Content from "~/ui/components/Content";
+import {getSession} from "~/store/selectors/auth";
+import {getNews} from "~/store/selectors/place";
+import {getListTransactionCLM, getListTransactionDirect} from "~/store/selectors/transaction";
 // import { getSelectedPlace } from '~/store/selectors/place'
-import options from './options'
-import material from '~/theme/variables/material.js'
-import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS, TIME_FORMAT_WITHOUT_SECOND } from '~/store/constants/app'
+import options from "./options";
+import material from "~/theme/variables/material.js";
+import {
+    TIME_FORMAT_WITHOUT_SECOND,
+    TRANSACTION_DIRECT_STATUS,
+    TRANSACTION_TYPE_CLINGME,
+    TRANSACTION_TYPE_DIRECT
+} from "~/store/constants/app";
 
 // export const getListTransactionDirect = state => state.place.transaction.payDirect || []
 

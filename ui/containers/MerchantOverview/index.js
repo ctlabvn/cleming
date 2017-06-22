@@ -1,29 +1,23 @@
-import React, { PureComponent, Component } from 'react'
-import { connect } from 'react-redux'
-import { ScrollView } from 'react-native'
-import { List, ListItem, Text, Thumbnail, Button, Tabs, Tab, TabHeading, ScrollableTab, Container } from 'native-base'
-import { View, Modal, TouchableOpacity, Image, ActivityIndicator, InteractionManager } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as commonActions from '~/store/actions/common'
-import * as placeAction from '~/store/actions/place'
-import * as locationAction from '~/store/actions/location'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import moment from 'moment'
-import { storeTransparent, storeFilled } from '~/assets'
-import { formatNumber } from '~/ui/shared/utils'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Container, Text} from "native-base";
+import {ActivityIndicator, Image, InteractionManager, TouchableOpacity, View} from "react-native";
+import styles from "./styles";
+import * as commonActions from "~/store/actions/common";
+import * as placeAction from "~/store/actions/place";
+import * as locationAction from "~/store/actions/location";
+import {InputField} from "~/ui/elements/Form";
+import Icon from "~/ui/elements/Icon";
+import moment from "moment";
+import {storeFilled, storeTransparent} from "~/assets";
+import {formatNumber} from "~/ui/shared/utils";
 // import LinearGradient from 'react-native-linear-gradient'
-import GradientBackground from '~/ui/elements/GradientBackground'
+import GradientBackground from "~/ui/elements/GradientBackground";
 
-import Content from '~/ui/components/Content'
-import { getSession, getUser } from '~/store/selectors/auth'
-import { getSelectedPlace } from '~/store/selectors/place'
-import material from '~/theme/variables/material.js'
+import Content from "~/ui/components/Content";
+import {getSession, getUser} from "~/store/selectors/auth";
+import {getSelectedPlace} from "~/store/selectors/place";
+import material from "~/theme/variables/material.js";
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),

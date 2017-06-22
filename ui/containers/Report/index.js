@@ -1,25 +1,17 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Button, Spinner } from 'native-base'
-import { Dimensions, View, InteractionManager } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
-import * as commonActions from '~/store/actions/common'
-import * as reportActions from '~/store/actions/report'
-import * as placeActions from '~/store/actions/place'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import Border from '~/ui/elements/Border'
-import moment from 'moment'
-import Content from '~/ui/components/Content'
-import geoViewport from '@mapbox/geo-viewport'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-import { getSession } from '~/store/selectors/auth'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Container, Text} from "native-base";
+import {Dimensions, InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as commonActions from "~/store/actions/common";
+import * as reportActions from "~/store/actions/report";
+import * as placeActions from "~/store/actions/place";
+import {InputField} from "~/ui/elements/Form";
+import geoViewport from "@mapbox/geo-viewport";
+import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+import {getSession} from "~/store/selectors/auth";
+import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -34,9 +26,10 @@ export default class Report extends Component {
             region: {
                 latitude: 21.0461027,
                 longitude: 105.7955732,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-            }
+                latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+                longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+            },
+            focusMerchant: {}
         }
         this.isLoadingPlace = false
         this.showMap = false
@@ -69,22 +62,22 @@ export default class Report extends Component {
         }
     }
     _loadAndFocus(placeId, fromTime, toTime) {
-        this._requestMapData(placeId, fromTime, toTime,
-            (err, data) => {
-                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
-                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
-                    console.log('Focus Merchant', focusMechant)
-                    this.setState({
-                        region: {
-                            latitude: focusMechant.latitude,
-                            longitude: focusMechant.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }
-                    })
-                }
-            }
-        )
+        const { place } = this.props
+        if (place && place.listPlace && place.listPlace.length > 0) {
+            let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
+            console.log('Focus Merchant', focusMerchant)
+            this.setState({
+                region: {
+                    latitude: focusMerchant.latitude,
+                    longitude: focusMerchant.longitude,
+                    latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+                    longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+                },
+                focusMerchant: focusMerchant
+            })
+        }
+
+        this._requestMapData(placeId, fromTime, toTime)
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -92,7 +85,6 @@ export default class Report extends Component {
             app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let selectedPlace = app.topDropdown.getValue()
-            console.log('Select Place Did Mount report', selectedPlace)
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
@@ -114,7 +106,7 @@ export default class Report extends Component {
                 this.isLoadingPlace = true
                 return
             }
-            setTimeout(()=>{
+            setTimeout(() => {
                 this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
             }, 500)
         })
@@ -140,21 +132,7 @@ export default class Report extends Component {
     _handleTopDropdown = (item) => {
         console.log('Report dropdown change', item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this._requestMapData(item.id, dateFilterData.from, dateFilterData.to,
-            (err, data) => {
-                if (data && data.updated && data.updated.data && data.updated.data.listPlaceLocationDtos) {
-                    let focusMechant = data.updated.data.listPlaceLocationDtos[0]
-                    this.setState({
-                        region: {
-                            latitude: focusMechant.latitude,
-                            longitude: focusMechant.longitude,
-                            latitudeDelta: 0.1,
-                            longitudeDelta: 0.1,
-                        }
-                    })
-                }
-            }
-        )
+        this._loadAndFocus(item.id, dateFilterData.from, dateFilterData.to)
     }
     _handleOnLayoutMap = e => {
         const { width, height } = e.nativeEvent.layout
@@ -175,11 +153,7 @@ export default class Report extends Component {
 
     render() {
         const { report, place } = this.props
-        // let dropdownValues = place.listPlace.map(item => ({
-        //     id: item.placeId,
-        //     name: item.address
-        // }))
-
+        console.log('Focus Merchant Render', this.state.focusMerchant)
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
@@ -203,7 +177,15 @@ export default class Report extends Component {
                                 </MapView.Marker>
                             )
                         })}
-                        {report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
+                        {(Object.keys(this.state.focusMerchant).length > 0) &&
+                            <MapView.Marker
+                                coordinate={{ latitude: this.state.focusMerchant.latitude, longitude: this.state.focusMerchant.longitude }}
+                            >
+                                <View style={styles.markerMerchant}>
+                                </View>
+                            </MapView.Marker>
+                        }
+                        {/*{report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
                             return (
                                 <MapView.Marker key={idx}
                                     coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
@@ -213,7 +195,7 @@ export default class Report extends Component {
                                 </MapView.Marker>
                             )
 
-                        })}
+                        })}*/}
                     </MapView>
 
                 </View>
