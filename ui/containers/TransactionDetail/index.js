@@ -81,8 +81,8 @@ export default class TransactionDetail extends Component {
         } else {
             return (
                 <View style={styles.invoiceBlock}>
-                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent }}>Số hóa đơn: </Text>
-                    <Text small transparent style={{ ...styles.invoice, ...styles.backgroundTransparent }}>{transactionInfo.invoiceNumber}</Text>
+                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>Số hóa đơn: </Text>
+                    <Text small transparent style={{ ...styles.invoice, ...styles.backgroundTransparent, color: 'transparent' }}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         }
 
