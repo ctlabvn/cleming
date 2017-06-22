@@ -175,7 +175,7 @@ export default class PlaceOrderList extends Component {
         let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
