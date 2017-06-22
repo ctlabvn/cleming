@@ -143,10 +143,6 @@ export default class CreateUserContainer extends Component {
 
   }
 
-  componentWillReceiveProps() {
-      console.warn('will receive props');
-  }
-
   componentWillBlur() {
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
@@ -626,7 +622,6 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
-      console.warn('render ' + JSON.stringify(this.state, null, 2));
     // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
     //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
     const { handleSubmit } = this.props;

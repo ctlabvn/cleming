@@ -109,6 +109,9 @@ class UserManagement extends Component {
         // if (currentPlace && Object.keys(currentPlace).length>0){
         //     this._loadListEmployee(currentPlace.id)
         // }
+    }
+
+    componentWillMount() {
         this.componentWillFocus();
     }
 
