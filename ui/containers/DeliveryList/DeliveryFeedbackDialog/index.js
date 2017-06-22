@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
-import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
-import { View, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
-import Icon from '~/ui/elements/Icon'
-import styles from './styles'
-import moment from 'moment'
-import { formatNumber } from '~/ui/shared/utils'
-import PopupPhotoView from '~/ui/components/PopupPhotoView'
-import material from '~/theme/variables/material.js'
-import CheckBox from '~/ui/elements/CheckBox'
+import React, {Component} from "react";
+import {Button, Item, Text} from "native-base";
+import {Modal, ScrollView, TextInput, TouchableOpacity, View} from "react-native";
+import Icon from "~/ui/elements/Icon";
+import styles from "./styles";
+import {formatNumber} from "~/ui/shared/utils";
+import CheckBox from "~/ui/elements/CheckBox";
+import ModalOverlay from "~/ui/components/ModalOverlay";
 // import Content from '~/ui/components/Content'
-
-import ModalOverlay from '~/ui/components/ModalOverlay'
 
 export default class DeliveryFeedbackDialog extends Component {
     constructor(props) {

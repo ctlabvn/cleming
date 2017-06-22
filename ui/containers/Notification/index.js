@@ -1,30 +1,24 @@
-import React, { Component } from 'react'
-import { LayoutAnimation } from 'react-native'
-import {
-  Button, Container, ListItem, List, Spinner,
-  Text, Item, View, Input, Left, Right, Body,
-} from 'native-base'
+import React, {Component} from "react";
+import {Body, Container, List, ListItem, Spinner, Text, View} from "native-base";
 
-import moment from 'moment'
+import moment from "moment";
 
-import Content from '~/ui/components/Content'
-import Border from '~/ui/elements/Border'
-import { connect } from 'react-redux'
-import * as commonActions from '~/store/actions/common'
-import * as notificationActions from '~/store/actions/notification'
+import Content from "~/ui/components/Content";
+import Border from "~/ui/elements/Border";
+import {connect} from "react-redux";
+import * as commonActions from "~/store/actions/common";
+import * as notificationActions from "~/store/actions/notification";
 
-import Icon from '~/ui/elements/Icon'
-import TimeAgo from '~/ui/components/TimeAgo'
-import * as commonSelectors from '~/store/selectors/common'
-import * as authSelectors from '~/store/selectors/auth'
-import * as notificationSelectors from '~/store/selectors/notification'
-import options from './options'
-import styles from './styles'
-import material from '~/theme/variables/material'
+import Icon from "~/ui/elements/Icon";
+import * as commonSelectors from "~/store/selectors/common";
+import * as authSelectors from "~/store/selectors/auth";
+import * as notificationSelectors from "~/store/selectors/notification";
+import styles from "./styles";
+import material from "~/theme/variables/material";
 
-import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
+import {NOTIFY_TYPE, TRANSACTION_TYPE} from "~/store/constants/app";
 
-import { formatNumber } from '~/ui/shared/utils'
+import {formatNumber} from "~/ui/shared/utils";
 
 @connect(state => ({
   session: authSelectors.getSession(state),

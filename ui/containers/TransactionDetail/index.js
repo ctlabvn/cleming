@@ -1,29 +1,31 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, Text, Button, Spinner, Input, Toast, Thumbnail } from 'native-base'
-import { View, Modal, InteractionManager, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Image, TextInput } from 'react-native'
-import Icon from '~/ui/elements/Icon'
-import styles from './styles'
-import moment from 'moment'
-import { formatNumber } from '~/ui/shared/utils'
-import * as transactionActions from '~/store/actions/transaction'
-import * as commonActions from '~/store/actions/common'
-import * as notificationActions from '~/store/actions/notification'
-import { getSession } from '~/store/selectors/auth'
-import { storeTransparent, storeFilled } from '~/assets'
-import PopupPhotoView from '~/ui/components/PopupPhotoView'
-import FeedbackDialog from './FeedbackDialog'
-import FeedbackDialogClingme from './FeedbackDialogClingme'
-import PopupInfo from '~/ui/components/PopupInfo'
-import LoadingModal from '~/ui/components/LoadingModal'
-import Content from '~/ui/components/Content'
-import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Container, Spinner, Text, Thumbnail} from "native-base";
+import {Image, InteractionManager, TouchableWithoutFeedback, View} from "react-native";
+import Icon from "~/ui/elements/Icon";
+import styles from "./styles";
+import moment from "moment";
+import {formatNumber} from "~/ui/shared/utils";
+import * as transactionActions from "~/store/actions/transaction";
+import * as commonActions from "~/store/actions/common";
+import * as notificationActions from "~/store/actions/notification";
+import {getSession} from "~/store/selectors/auth";
+import {storeFilled, storeTransparent} from "~/assets";
+import PopupPhotoView from "~/ui/components/PopupPhotoView";
+import FeedbackDialog from "./FeedbackDialog";
+import FeedbackDialogClingme from "./FeedbackDialogClingme";
+import PopupInfo from "~/ui/components/PopupInfo";
+import Content from "~/ui/components/Content";
 import {
-    TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT, TRANSACTION_DIRECT_STATUS,
-    DEFAULT_TIME_FORMAT, FEEDBACK_CLM_TRANSACTION, GENERAL_ERROR_MESSAGE
-} from '~/store/constants/app'
-import { ViewPager } from 'rn-viewpager'
-import material from '~/theme/variables/material'
+    DEFAULT_TIME_FORMAT,
+    FEEDBACK_CLM_TRANSACTION,
+    GENERAL_ERROR_MESSAGE,
+    TRANSACTION_DIRECT_STATUS,
+    TRANSACTION_TYPE_CLINGME,
+    TRANSACTION_TYPE_DIRECT
+} from "~/store/constants/app";
+import {ViewPager} from "rn-viewpager";
+import material from "~/theme/variables/material";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,

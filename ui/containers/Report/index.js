@@ -1,26 +1,17 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Button, Spinner } from 'native-base'
-import { Dimensions, View, InteractionManager } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
-import * as commonActions from '~/store/actions/common'
-import * as reportActions from '~/store/actions/report'
-import * as placeActions from '~/store/actions/place'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import Border from '~/ui/elements/Border'
-import moment from 'moment'
-import Content from '~/ui/components/Content'
-import geoViewport from '@mapbox/geo-viewport'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-import { getSession } from '~/store/selectors/auth'
-import { DEFAULT_MAP_DELTA } from '~/store/constants/app'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Container, Text} from "native-base";
+import {Dimensions, InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as commonActions from "~/store/actions/common";
+import * as reportActions from "~/store/actions/report";
+import * as placeActions from "~/store/actions/place";
+import {InputField} from "~/ui/elements/Form";
+import geoViewport from "@mapbox/geo-viewport";
+import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+import {getSession} from "~/store/selectors/auth";
+import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
