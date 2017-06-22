@@ -103,7 +103,7 @@ export default class MerchantOverview extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            this._load()
+            // this._load()
         })
     }
 
