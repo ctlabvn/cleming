@@ -288,8 +288,6 @@ export default class extends Component {
                 }} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
-
-
             {border}
           </Body>
         )
@@ -318,29 +316,11 @@ export default class extends Component {
     }
   }
   render() {
-
-    // const { notificationRequest} = this.props    
-    // const data= []
-    // for(let i=1;i<100;i++){
-    //   data.push({title: 'title'+i,notifyType:1})
-    // }
-    // const notifications = {
-    //   data,
-    // }
-
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     let { notifications, notificationRequest } = this.props
     return (
 
       <Container>
-        {
-          // <Button onPress={this._handleNotiRead} noPadder style={{
-          //   alignSelf:'flex-end',              
-          //   marginRight: 10,              
-          // }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
-          // </Button>
-        }
-
         <Content
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
@@ -366,12 +346,8 @@ export default class extends Component {
               } />
           }
           {this.state.loading && <Spinner />}
-
         </Content>
-
-
       </Container>
-
     )
   }
 }
