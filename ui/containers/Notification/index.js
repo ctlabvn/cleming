@@ -309,6 +309,7 @@ export default class extends Component {
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
         break
       case NOTIFY_TYPE.NEW_ORDER:
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
         this.props.forwardTo('deliveryDetail/' + paramLong3)
         break
       default:
