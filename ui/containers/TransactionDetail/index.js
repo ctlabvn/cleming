@@ -1,16 +1,16 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Button, Container, Spinner, Text, Thumbnail} from "native-base";
-import {Image, InteractionManager, TouchableWithoutFeedback, View} from "react-native";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Button, Container, Spinner, Text, Thumbnail } from "native-base";
+import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react-native";
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import {formatNumber} from "~/ui/shared/utils";
+import { formatNumber } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
-import {getSession} from "~/store/selectors/auth";
-import {storeFilled, storeTransparent} from "~/assets";
+import { getSession } from "~/store/selectors/auth";
+import { storeFilled, storeTransparent } from "~/assets";
 import PopupPhotoView from "~/ui/components/PopupPhotoView";
 import FeedbackDialog from "./FeedbackDialog";
 import FeedbackDialogClingme from "./FeedbackDialogClingme";
@@ -24,7 +24,7 @@ import {
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT
 } from "~/store/constants/app";
-import {ViewPager} from "rn-viewpager";
+import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
 @connect(state => ({
     xsession: getSession(state),
@@ -74,13 +74,16 @@ export default class TransactionDetail extends Component {
         }
     }
     _renderInvoiceBlock(transactionInfo) {
+        console.log('Go to function')
         if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
+            console.log('Case 1 show', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
                     <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
                     <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         } else {
+            console.log('Case 2 hide', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
                     <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>Số hóa đơn: </Text>
@@ -192,7 +195,7 @@ export default class TransactionDetail extends Component {
                     helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                         <Text>Trợ giúp</Text>
                     </Button>
-                }else{
+                } else {
                     helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
                         <Text>Trợ giúp</Text>
                     </Button>
@@ -292,7 +295,19 @@ export default class TransactionDetail extends Component {
                             <Text small>Chụp hóa đơn:</Text>
                             <Text small bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
-                        {this._renderInvoiceBlock(transactionInfo)}
+                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                            <View style={styles.rowPadding}>
+                                <Text small>Xuất hóa đơn:</Text>
+                                <Text small bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            </View>
+                        }
+
+                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                            <View style={material.platform == 'android' ? styles.invoiceBlockAndroid : invoiceBlockIOS}>
+                                <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                                <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
+                            </View>
+                        }
                         <View style={styles.borderBlock}>
 
                             {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
@@ -484,8 +499,8 @@ export default class TransactionDetail extends Component {
         }
 
     }
-    //  "transactionStatus": int,	
-    // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý, 
+    //  "transactionStatus": int,
+    // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý,
     // 1 là thành công, 2 là bị từ chối
 
     render() {
