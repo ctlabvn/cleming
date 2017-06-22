@@ -128,8 +128,23 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
 
+      if (typeof this.props.route.params.id == "undefined") {
+        let oldState = this.state;
+          this.state ={
+              ...oldState,
+              fromTime: "07:00",
+              toTime: "20:00",
+              firstTimeResetPassword: false
+          }
+      }
+
     this.firstTimeResetTime = true
 
+
+  }
+
+  componentWillReceiveProps() {
+      console.warn('will receive props');
   }
 
   componentWillBlur() {
@@ -224,13 +239,13 @@ export default class CreateUserContainer extends Component {
   }
 
   componentDidMount() {
-    if (typeof this.props.route.params.id == "undefined") {
-      this.setState({
-        fromTime: "07:00",
-        toTime: "20:00",
-        firstTimeResetPassword: false
-      })
-    }
+    // if (typeof this.props.route.params.id == "undefined") {
+    //   this.setState({
+    //     fromTime: "07:00",
+    //     toTime: "20:00",
+    //     firstTimeResetPassword: false
+    //   })
+    // }
   }
 
   onFromTimeFocus() {
@@ -611,6 +626,7 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
+      console.warn('render ' + JSON.stringify(this.state, null, 2));
     // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
     //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
     const { handleSubmit } = this.props;
