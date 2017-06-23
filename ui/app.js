@@ -256,9 +256,9 @@ export default class App extends Component {
   initializePage(ref, route) {
     if (ref && route.path) {
       this.pageInstances[route.path] = ref
-      ref.visible = true
-      const fn = ref.shouldComponentUpdate
-      ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible
+      // ref.visible = true
+      // const fn = ref.shouldComponentUpdate
+      // ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible
     }
   }
 
