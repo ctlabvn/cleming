@@ -252,8 +252,8 @@ export default class App extends Component {
     if (ref && route.path) {
       this.pageInstances[route.path] = ref
       ref.visible = true
-      // const fn = ref.shouldComponentUpdate
-      // ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible      
+      const fn = ref.shouldComponentUpdate
+      ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible      
     }
   }
 
@@ -261,8 +261,8 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <View style={{marginTop:page.showTopDropdown?50:0, flex:1}}>
-      <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
+      <View style={{paddingTop:page.showTopDropdown?50:0, flex:1}}>
+        <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
       </View>
     )
   }
@@ -405,7 +405,11 @@ export default class App extends Component {
     ref.visible = focus
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
-      ref[method] && ref[method]()
+      // ref[method] && ref[method]()
+      if(ref[method]){
+        requestAnimationFrame(()=>ref[method]())
+        break
+      } 
       ref = ref._reactInternalInstance._renderedComponent._instance
       whatdog--
     }
