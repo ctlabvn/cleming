@@ -47,7 +47,7 @@ export default class MerchantOverview extends Component {
             long = location.longitude
         }
 
-        getListPlace(this.props.xsession, lat, long,
+        getListPlace(xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
@@ -84,6 +84,7 @@ export default class MerchantOverview extends Component {
                     }
                 }
                 this.setState({ loading: false })
+                // this.forceUpdate()
             }
         )
 
@@ -106,7 +107,8 @@ export default class MerchantOverview extends Component {
         // InteractionManager.runAfterInteractions(() => {
             const { app, place } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            if (!place.listPlace || place.listPlace.length ==0){
+            if (!place.listPlace || place.listPlace.length == 0){
+                console.log('Place List will focus', place.listPlace)
                 this._load()
             }
         // })
@@ -166,7 +168,6 @@ export default class MerchantOverview extends Component {
 
     renderMainContainer() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
-        console.log('Render main container', place.news)
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>

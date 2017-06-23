@@ -51,7 +51,7 @@ export default class DeliveryFeedbackDialog extends Component {
         this.refs.otherReasonInput.blur()
     }
     componentWillReceiveProps(nextProps) {
-        console.log('Dialog Will Receive Props', nextProps)
+        // console.log('Dialog Will Receive Props', nextProps)
         let listValueProps = nextProps.listValue
         if (!listValueProps || listValueProps.length == 0) return
         if (this.state.listValue && this.state.listValue.length > 0) return
