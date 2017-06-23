@@ -51,13 +51,13 @@ export default class MerchantOverview extends Component {
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
-                    let listPLace = data.updated.data.map(item => ({
+                    let listPlace = data.updated.data.map(item => ({
                         id: item.placeId,
                         name: item.address
                     }))
 
-                    app.topDropdown.updateDropdownValues(listPLace)
-                    app.topDropdownListValue.updateDropdownValues(listPLace)
+                    app.topDropdown.updateDropdownValues(listPlace)
+                    app.topDropdownListValue.updateDropdownValues(listPlace)
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}

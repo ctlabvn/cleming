@@ -105,7 +105,7 @@ export default class App extends Component {
   // }
 
   static configureScene(route) {
-    const {animationType = material.platform === 'ios' ? 'PushFromRight' : 'FadeAndroid'} = routes[route.path] || {}
+    const { animationType = material.platform === 'ios' ? 'PushFromRight' : 'FadeAndroid' } = routes[route.path] || {}
 
     // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
     return {
@@ -173,7 +173,7 @@ export default class App extends Component {
             if (currentPlace && currentPlace.id) {
               this.props.getMerchantNews(this.props.xsession, currentPlace.id)
             }
-            const title = notification.title ? notification.title + " " +notification.message : notification.alert            
+            const title = notification.title ? notification.title + " " + notification.message : notification.alert
             this.props.setToast(title, 'warning', this._handleNoti, notification)
           }
         }
@@ -253,7 +253,7 @@ export default class App extends Component {
       this.pageInstances[route.path] = ref
       ref.visible = true
       const fn = ref.shouldComponentUpdate
-      ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible      
+      ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible
     }
   }
 
@@ -261,7 +261,7 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <View style={{paddingTop:page.showTopDropdown?50:0, flex:1}}>
+      <View style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
         <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
       </View>
     )
@@ -346,13 +346,22 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-      this.topDropdown.updateDropdownValues(place.listPlace)
+      let listPlace = place.listPlace.map(item => ({
+        id: item.placeId,
+        name: item.address
+      }))
+      this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
-      this.topDropdownListValue.updateDropdownValues(place.listPLace)
+      this.topDropdownListValue.updateDropdownValues(listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
+
+    this.page = getPage(router.route)
+    const { showTopDropdown } = this.page
+    this.topDropdown.show(showTopDropdown)
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
@@ -406,10 +415,10 @@ export default class App extends Component {
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
       // ref[method] && ref[method]()
-      if(ref[method]){
-        requestAnimationFrame(()=>ref[method]())
+      if (ref[method]) {
+        requestAnimationFrame(() => ref[method]())
         break
-      } 
+      }
       ref = ref._reactInternalInstance._renderedComponent._instance
       whatdog--
     }
@@ -467,7 +476,7 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { router, drawerState, closeDrawer } = this.props
+    const { router, drawerState, closeDrawer, place } = this.props
     const { title, path, headerType, footerType, showTopDropdown } = this.page
     return (
       <StyleProvider style={getTheme(material)}>
@@ -502,12 +511,12 @@ export default class App extends Component {
           }
           <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
             app={this} onPressOverlay={this._handlePressHeaderOverlay}
-          />          
+          />
 
           <Navigator ref={ref => this.navigator = ref}
             configureScene={this.constructor.configureScene}
             initialRoute={{ title, path, showTopDropdown }}
-            renderScene={this._renderPage}            
+            renderScene={this._renderPage}
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
