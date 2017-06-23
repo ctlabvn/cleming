@@ -97,19 +97,19 @@ export default class Report extends Component {
     }
 
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            let selectedPlace = app.topDropdown.getValue()
-            if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                this.isLoadingPlace = true
-                return
-            }
-            setTimeout(() => {
-                this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-            }, 500)
-        })
+        // InteractionManager.runAfterInteractions(() => {
+        //     const { app } = this.props
+        //     app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
+        //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        //     let selectedPlace = app.topDropdown.getValue()
+        //     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+        //         this.isLoadingPlace = true
+        //         return
+        //     }
+        //     setTimeout(() => {
+        //         this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        //     }, 500)
+        // })
     }
     _regionChange = (region) => {
         this.setState({ region },
