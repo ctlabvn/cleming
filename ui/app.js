@@ -40,19 +40,19 @@ import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
-// import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
+import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
-// const NoTransition = {
-//   opacity: {
-//     from: 1,
-//     to: 1,
-//     min: 1,
-//     max: 1,
-//     type: 'linear',
-//     extrapolate: false,
-//     round: 100,
-//   },
-// }
+const NoTransition = {
+  opacity: {
+    from: 1,
+    to: 1,
+    min: 1,
+    max: 1,
+    type: 'linear',
+    extrapolate: false,
+    round: 100,
+  },
+}
 
 const getPage = (url) => {
   for (route in routes) {
@@ -105,13 +105,17 @@ export default class App extends Component {
   // }
 
   static configureScene(route) {
-    const {animationType = material.platform === 'ios' ? 'PushFromRight' : 'FadeAndroid'} = routes[route.path] || {}
+    const {animationType = material.platform === 'ios' ? 'PushFromRight' : 'FloatFromLeft'} = routes[route.path] || {}
 
     // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
     return {
       ...Navigator.SceneConfigs[animationType],
       gestures: null,
       defaultTransitionVelocity: material.platform === 'ios' ? 20 : 2,
+      animationInterpolators: {
+        into: buildStyleInterpolator(NoTransition),
+        out: buildStyleInterpolator(NoTransition),
+      },
     }
     // return Navigator.SceneConfigs[animationType]
   }
