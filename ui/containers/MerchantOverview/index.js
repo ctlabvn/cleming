@@ -51,13 +51,13 @@ export default class MerchantOverview extends Component {
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
-                    let listPLace = data.updated.data.map(item => ({
+                    let listPlace = data.updated.data.map(item => ({
                         id: item.placeId,
                         name: item.address
                     }))
 
-                    app.topDropdown.updateDropdownValues(listPLace)
-                    app.topDropdownListValue.updateDropdownValues(listPLace)
+                    app.topDropdown.updateDropdownValues(listPlace)
+                    app.topDropdownListValue.updateDropdownValues(listPlace)
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
@@ -108,28 +108,26 @@ export default class MerchantOverview extends Component {
         })
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('Next Props', nextProps)
-        console.log('Next State', nextState)
-        if (this.state.loading != nextState.loading) {
-            console.log('Should update MerchantOverview')
-            return true
-        }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (this.state.loading != nextState.loading) {
+    //         console.log('Should update MerchantOverview')
+    //         return true
+    //     }
 
-        const { place } = this.props
-        if (place && place.news && nextProps.place && nextProps.place.news
-            && (
-                place.news.bookingNews != nextProps.place.news.bookingNews ||
-                place.news.orderNews != nextProps.place.news.orderNews ||
-                place.news.transactionNews != nextProps.place.news.transactionNews
-            )
-        ) {
-            console.log('Should update MerchantOverview')
-            return true
-        }
-        console.log('Not render')
-        return false
-    }
+    //     const { place } = this.props
+    //     if (place && place.news && nextProps.place && nextProps.place.news
+    //         && (
+    //             place.news.bookingNews != nextProps.place.news.bookingNews ||
+    //             place.news.orderNews != nextProps.place.news.orderNews ||
+    //             place.news.transactionNews != nextProps.place.news.transactionNews
+    //         )
+    //     ) {
+    //         console.log('Should update MerchantOverview')
+    //         return true
+    //     }
+    //     console.log('Not render')
+    //     return false
+    // }
 
     _handleChangePlace = (item) => {
         console.log('Call callback handle place change', item)
