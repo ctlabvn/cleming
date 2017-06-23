@@ -102,9 +102,11 @@ export default class MerchantOverview extends Component {
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, place } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            // this._load()
+            if (!place.listPlace || place.listPlace.length ==0){
+                this._load()
+            }
         })
     }
 
@@ -161,6 +163,7 @@ export default class MerchantOverview extends Component {
 
     renderMainContainer() {
         const { handleSubmit, submitting, forwardTo, place } = this.props
+        console.log('Render main container', place.news)
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
@@ -212,10 +215,6 @@ export default class MerchantOverview extends Component {
     render() {
         console.log('Rendering MerchantOverview')
         const { handleSubmit, submitting, forwardTo, place, selectedPlace } = this.props
-        let dropdownValues = place.listPlace.map(item => ({
-            id: item.placeId,
-            name: item.address
-        }))
 
         let mainContainer = null
         if (place && place.listPlace) {
