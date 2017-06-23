@@ -1,35 +1,37 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, List, ListItem, Text, Thumbnail, Button, Spinner } from 'native-base'
-import { View, Modal, InteractionManager } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import DateFilter from '~/ui/components/DateFilter'
-import * as orderActions from '~/store/actions/order'
-import * as commonActions from '~/store/actions/common'
-import * as placeActions from '~/store/actions/place'
-import * as orderSelectors from '~/store/selectors/order'
-import * as authSelectors from '~/store/selectors/auth'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import Content from '~/ui/components/Content'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Border from '~/ui/elements/Border'
-import Icon from '~/ui/elements/Icon'
-import options from './options'
-import { formatNumber } from '~/ui/shared/utils'
-import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
-import CircleCountdown from '~/ui/components/CircleCountdown'
-import CallModal from '~/ui/components/CallModal'
-import moment from 'moment'
-import { formatPhoneNumber } from '~/ui/shared/utils'
-import { getNews } from '~/store/selectors/place'
-import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Container, ListItem, Spinner, Text} from "native-base";
+import {InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as orderActions from "~/store/actions/order";
+import * as commonActions from "~/store/actions/common";
+import * as placeActions from "~/store/actions/place";
+import * as orderSelectors from "~/store/selectors/order";
+import * as authSelectors from "~/store/selectors/auth";
+import {InputField} from "~/ui/elements/Form";
+import Content from "~/ui/components/Content";
+import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Border from "~/ui/elements/Border";
+import Icon from "~/ui/elements/Icon";
+import options from "./options";
+import {formatNumber, formatPhoneNumber} from "~/ui/shared/utils";
+import {BASE_COUNTDOWN_ORDER_MINUTE} from "~/ui/shared/constants";
+import CircleCountdown from "~/ui/components/CircleCountdown";
+import CallModal from "~/ui/components/CallModal";
+import moment from "moment";
+import {getNews} from "~/store/selectors/place";
+import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
 import {
-    ORDER_WAITING_CONFIRM, ORDER_WAITING_DELIVERY, ORDER_SUCCESS,
-    ORDER_CANCEL, DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK, GENERAL_ERROR_MESSAGE
-}
-    from '~/store/constants/app'
+    DEFAULT_TIME_FORMAT,
+    DELIVERY_FEEDBACK,
+    FAST_DELIVERY,
+    GENERAL_ERROR_MESSAGE,
+    ORDER_CANCEL,
+    ORDER_SUCCESS,
+    ORDER_WAITING_CONFIRM,
+    ORDER_WAITING_DELIVERY
+} from "~/store/constants/app";
 @connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),

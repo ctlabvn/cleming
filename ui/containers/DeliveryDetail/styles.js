@@ -117,6 +117,14 @@ export default {
     },
     gray: {
         backgroundColor: material.gray300
-    }
+    },
+    phoneIcon: {
+        color: material.primaryColor
+    },
+    icon: {
+        fontSize: 20,
+        marginRight: 5,
+        color: material.gray600
+    },
 
 }

@@ -1,29 +1,24 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Spinner, Container, List, ListItem, Text, Button } from 'native-base'
-import { View, Image, InteractionManager } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import * as orderActions from '~/store/actions/order'
-import * as commonActions from '~/store/actions/common'
-import * as orderSelectors from '~/store/selectors/order'
-import * as notificationActions from '~/store/actions/notification'
-import * as authSelectors from '~/store/selectors/auth'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import Content from '~/ui/components/Content'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Border from '~/ui/elements/Border'
-import Icon from '~/ui/elements/Icon'
-import { formatNumber } from '~/ui/shared/utils'
-import moment from 'moment'
-import ProgressCircle from 'react-native-progress-circle'
-import CircleCountdown from '~/ui/components/CircleCountdown'
-import { BASE_COUNTDOWN_ORDER_MINUTE } from '~/ui/shared/constants'
-import { DEFAULT_TIME_FORMAT, FAST_DELIVERY, DELIVERY_FEEDBACK, GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
-import material from '~/theme/variables/material.js'
-import { formatPhoneNumber } from '~/ui/shared/utils'
-import DeliveryFeedbackDialog from '~/ui/containers/DeliveryList/DeliveryFeedbackDialog'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Button, Container, List, ListItem, Spinner, Text } from "native-base";
+import { Image, InteractionManager, View, TouchableWithoutFeedback } from "react-native";
+import styles from "./styles";
+import * as orderActions from "~/store/actions/order";
+import * as commonActions from "~/store/actions/common";
+import * as orderSelectors from "~/store/selectors/order";
+import * as notificationActions from "~/store/actions/notification";
+import * as authSelectors from "~/store/selectors/auth";
+import { InputField } from "~/ui/elements/Form";
+import Content from "~/ui/components/Content";
+import { formatNumber, formatPhoneNumber } from "~/ui/shared/utils";
+import moment from "moment";
+import CircleCountdown from "~/ui/components/CircleCountdown";
+import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
+import { DEFAULT_TIME_FORMAT, DELIVERY_FEEDBACK, FAST_DELIVERY, GENERAL_ERROR_MESSAGE } from "~/store/constants/app";
+import material from "~/theme/variables/material.js";
+import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
+import Icon from "~/ui/elements/Icon"
+import CallModal from "~/ui/components/CallModal"
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -35,7 +30,9 @@ export default class extends Component {
         this.state = {
             orderDetail: {},
             counting: false,
-            loading: false
+            loading: false,
+            modalOpen: false,
+            phoneNumber: ''
         }
     }
     _load() {
@@ -132,6 +129,17 @@ export default class extends Component {
                 return <Text gray small bold>Đã hủy</Text>
         }
     }
+    onModalOpen = (phoneNumber) => {
+        this.setState({
+            modalOpen: true,
+            phoneNumber: phoneNumber
+        })
+    }
+    onModalClose = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
     render() {
         console.log('Render DeliveryDetail')
         const { route, order } = this.props
@@ -174,6 +182,10 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
+                <CallModal
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={this.onModalClose.bind(this)}
+                    open={this.state.modalOpen} />
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary, width: '100%', justifyContent: 'center' }}>
                     <Text white center bold>{orderDetail.orderInfo.placeInfo.address}</Text>
                 </View>
@@ -192,8 +204,12 @@ export default class extends Component {
                         </View>
                     </View>
                     <View style={styles.rowPadding}>
-                        <Text small grayDark >Đặt hàng số</Text>
-                        <Text primary bold grayDark>{orderDetail.orderInfo.tranId}</Text>
+                        <Text small grayDark>Đặt hàng số</Text>
+                        <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
+                    </View>
+                    <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
+                        <Text small grayDark>Phản hồi của khách hàng</Text>
+                        <Text bold grayDark>{orderDetail.orderInfo.feedback}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
@@ -206,7 +222,19 @@ export default class extends Component {
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
                         <Text small grayDark>Số điện thoại</Text>
-                        <Text bold grayDark>{formatPhoneNumber(orderDetail.orderInfo.userInfo.phoneNumber)}</Text>
+
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                console.log('Press foneNumber')
+                                this.onModalOpen(orderDetail.orderInfo.userInfo.phoneNumber)
+                            }}>
+                            <View style={styles.row}>
+
+                                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                                <Text bold primary>{formatPhoneNumber(orderDetail.orderInfo.userInfo.phoneNumber)}</Text>
+
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                     {
                         (orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&

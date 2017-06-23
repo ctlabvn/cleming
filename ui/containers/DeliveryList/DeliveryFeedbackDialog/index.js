@@ -47,8 +47,22 @@ export default class DeliveryFeedbackDialog extends Component {
         this.setState({ posOrderId: posOrderId, modalVisible: true })
     }
     _handlePressRadio = (item) => {
-        this.setState({  note: '', selectedValue: item.reasonId })
+        this.setState({ note: '', selectedValue: item.reasonId })
         this.refs.otherReasonInput.blur()
+    }
+    componentWillReceiveProps(nextProps) {
+        console.log('Dialog Will Receive Props', nextProps)
+        let listValueProps = nextProps.listValue
+        if (!listValueProps || listValueProps.length == 0) return
+        if (this.state.listValue && this.state.listValue.length > 0) return
+        let length = listValueProps.length
+        let listValue = listValueProps.slice(0, length - 1)
+        let otherValue = listValueProps[length - 1]
+        this.setState({
+            selectedValue: listValue[0].reasonId,
+            listValue: listValue,
+            otherValue: otherValue
+        })
     }
     _handlePressOK = () => {
         if (this.state.selectedValue != this.state.otherValue.reasonId) {
@@ -121,6 +135,7 @@ export default class DeliveryFeedbackDialog extends Component {
                                             onFocus={() => {
                                                 this.setState({ selectedValue: this.state.otherValue.reasonId })
                                             }}
+                                            underlineColorAndroid={'transparent'}
                                             onChangeText={(text) => this.setState({ note: text })}
                                             ref='otherReasonInput'
                                         />

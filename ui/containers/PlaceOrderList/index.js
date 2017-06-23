@@ -1,34 +1,35 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { List, ListItem, Text, Button, Spinner, Grid, Row, Col } from 'native-base'
-import { View, InteractionManager, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
-import * as commonActions from '~/store/actions/common'
-import * as bookingActions from '~/store/actions/booking'
-import * as placeActions from '~/store/actions/place'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import Border from '~/ui/elements/Border'
-import moment from 'moment'
-import Content from '~/ui/components/Content'
-import options from './options'
-import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
-import CircleCountdown from '~/ui/components/CircleCountdown'
-import CallModal from '~/ui/components/CallModal'
-import { getSession } from '~/store/selectors/auth'
-import { getNews } from '~/store/selectors/place'
-import { formatPhoneNumber } from '~/ui/shared/utils'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Grid, List, ListItem, Row, Spinner, Text} from "native-base";
+import {InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as commonActions from "~/store/actions/common";
+import * as bookingActions from "~/store/actions/booking";
+import * as placeActions from "~/store/actions/place";
+import {InputField} from "~/ui/elements/Form";
+import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Icon from "~/ui/elements/Icon";
+import Border from "~/ui/elements/Border";
+import moment from "moment";
+import Content from "~/ui/components/Content";
+import options from "./options";
+import {BASE_COUNTDOWN_BOOKING_MINUTE} from "~/ui/shared/constants";
+import CircleCountdown from "~/ui/components/CircleCountdown";
+import CallModal from "~/ui/components/CallModal";
+import {getSession} from "~/store/selectors/auth";
+import {getNews} from "~/store/selectors/place";
+import {formatPhoneNumber} from "~/ui/shared/utils";
 import {
-    BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT,
-    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT
-} from '~/store/constants/app'
-import material from '~/theme/variables/material.js'
+    BOOKING_CANCEL,
+    BOOKING_CONFIRMED,
+    BOOKING_WAITING_CONFIRM,
+    DAY_WITHOUT_YEAR,
+    DEFAULT_DATE_FORMAT,
+    DEFAULT_HOUR_FORMAT,
+    DEFAULT_TIME_FORMAT
+} from "~/store/constants/app";
+import material from "~/theme/variables/material.js";
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
@@ -174,7 +175,7 @@ export default class PlaceOrderList extends Component {
         let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }

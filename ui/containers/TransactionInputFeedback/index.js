@@ -1,14 +1,13 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Container, Text, Button, Content, Spinner, Input, Item } from 'native-base'
-import { View, KeyboardAvoidingView, InteractionManager, Keyboard } from 'react-native'
-import styles from './styles'
-import material from '~/theme/variables/material'
-import { FEEDBACK_CLM_TRANSACTION } from '~/store/constants/app'
-import * as commonActions from '~/store/actions/common'
-import * as transactionActions from '~/store/actions/transaction'
-import Icon from '~/ui/elements/Icon'
-import { getSession } from '~/store/selectors/auth'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Container, Input, Item, Text} from "native-base";
+import {InteractionManager, Keyboard} from "react-native";
+import styles from "./styles";
+import {FEEDBACK_CLM_TRANSACTION} from "~/store/constants/app";
+import * as commonActions from "~/store/actions/common";
+import * as transactionActions from "~/store/actions/transaction";
+import Icon from "~/ui/elements/Icon";
+import {getSession} from "~/store/selectors/auth";
 @connect(state => ({ xsession: getSession(state) }), { ...commonActions, ...transactionActions })
 export default class FeedbackDialogClingme extends Component {
     constructor(props) {

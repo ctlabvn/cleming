@@ -128,7 +128,18 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
 
+      if (typeof this.props.route.params.id == "undefined") {
+        let oldState = this.state;
+          this.state ={
+              ...oldState,
+              fromTime: "07:00",
+              toTime: "20:00",
+              firstTimeResetPassword: false
+          }
+      }
+
     this.firstTimeResetTime = true
+
 
   }
 
@@ -224,13 +235,13 @@ export default class CreateUserContainer extends Component {
   }
 
   componentDidMount() {
-    if (typeof this.props.route.params.id == "undefined") {
-      this.setState({
-        fromTime: "07:00",
-        toTime: "20:00",
-        firstTimeResetPassword: false
-      })
-    }
+    // if (typeof this.props.route.params.id == "undefined") {
+    //   this.setState({
+    //     fromTime: "07:00",
+    //     toTime: "20:00",
+    //     firstTimeResetPassword: false
+    //   })
+    // }
   }
 
   onFromTimeFocus() {
@@ -316,7 +327,7 @@ export default class CreateUserContainer extends Component {
     // if (this.state.chosenListPlace.length == 0) {
       console.log(this.state.selectedPlaceId)
 
-      if (this.props.formState.CreateUserForm.syncErrors) {
+      if (typeof this.props.formState.CreateUserForm.syncErrors == 'undefined' || this.props.formState.CreateUserForm.syncErrors) {
           this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
           this._scrollPageUp();
           // return;
