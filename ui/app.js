@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackAndroid, NativeModules, Navigator } from 'react-native'
+import { BackAndroid, NativeModules, Navigator, InteractionManager } from 'react-native'
 import { Drawer, StyleProvider, View } from 'native-base'
 
 import URL from 'url-parse'
