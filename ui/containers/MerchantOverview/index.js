@@ -108,26 +108,26 @@ export default class MerchantOverview extends Component {
         })
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.state.loading != nextState.loading) {
-            console.log('Should update MerchantOverview')
-            return true
-        }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (this.state.loading != nextState.loading) {
+    //         console.log('Should update MerchantOverview')
+    //         return true
+    //     }
 
-        const { place } = this.props
-        if (place && place.news && nextProps.place && nextProps.place.news
-            && (
-                place.news.bookingNews != nextProps.place.news.bookingNews ||
-                place.news.orderNews != nextProps.place.news.orderNews ||
-                place.news.transactionNews != nextProps.place.news.transactionNews
-            )
-        ) {
-            console.log('Should update MerchantOverview')
-            return true
-        }
-        console.log('Not render')
-        return false
-    }
+    //     const { place } = this.props
+    //     if (place && place.news && nextProps.place && nextProps.place.news
+    //         && (
+    //             place.news.bookingNews != nextProps.place.news.bookingNews ||
+    //             place.news.orderNews != nextProps.place.news.orderNews ||
+    //             place.news.transactionNews != nextProps.place.news.transactionNews
+    //         )
+    //     ) {
+    //         console.log('Should update MerchantOverview')
+    //         return true
+    //     }
+    //     console.log('Not render')
+    //     return false
+    // }
 
     _handleChangePlace = (item) => {
         console.log('Call callback handle place change', item)
