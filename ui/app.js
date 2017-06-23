@@ -105,13 +105,13 @@ export default class App extends Component {
   // }
 
   static configureScene(route) {
-    const { animationType = 'PushFromRight' } = routes[route.path] || {}
+    const {animationType = material.platform === 'ios' ? 'PushFromRight' : 'FadeAndroid'} = routes[route.path] || {}
 
     // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
     return {
       ...Navigator.SceneConfigs[animationType],
       gestures: null,
-      defaultTransitionVelocity: 20,
+      defaultTransitionVelocity: material.platform === 'ios' ? 20 : 2,
     }
     // return Navigator.SceneConfigs[animationType]
   }
