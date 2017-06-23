@@ -74,6 +74,7 @@ export default class extends Component {
     }
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
+            console.log('Will focus DeliveryDetail')
             const { app } = this.props
             this.setState({ counting: true })
             this._load()
@@ -126,6 +127,7 @@ export default class extends Component {
             case 'COMPLETED':
                 return <Text success small bold>Thành công</Text>
             case 'FAILED':
+            case 'CANCELLED':
                 return <Text gray small bold>Đã hủy</Text>
         }
     }
