@@ -67,22 +67,22 @@ export default class extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             this._load()
-        })
+        // })
     }
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             this.setState({ counting: true })
             this._load()
-        })
+        // })
     }
     componentWillBlur() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({ counting: false })
-        })
+        // })
     }
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
         const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props

@@ -93,19 +93,21 @@ export default class MerchantOverview extends Component {
         this._load(true)
     }
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            this._load()
-        })
+        // InteractionManager.runAfterInteractions(() => {
+            // const { app } = this.props
+            // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            // this._load()
+        // })
+
+        this.componentWillFocus()
     }
 
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             // this._load()
-        })
+        // })
     }
 
     // shouldComponentUpdate(nextProps, nextState) {

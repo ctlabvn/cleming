@@ -160,10 +160,10 @@ export default class extends Component {
     )
   }
   componentWillFocus() {
-    InteractionManager.runAfterInteractions(() => {
+    // InteractionManager.runAfterInteractions(() => {
       const { app } = this.props
       this._handleShowLogin()
-    })
+    // })
     // this.forceUpdate()
   }
   componentWillMount() {
