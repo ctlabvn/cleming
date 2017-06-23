@@ -156,15 +156,20 @@ export default class TransactionDetail extends Component {
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app } = this.props
+            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
             // this._goToMiddlePage()
             let transactionId = route.params.id
             let transactionType = route.params.type
             this.setState({ type: transactionType })
             this._load(transactionId)
             // No need frequently update, call one when component mount
-            getListDenyReason(xsession)
-            getDenyReasonClm(xsession)
+            if (!denyReason || denyReason.length == 0) {
+                getListDenyReason(xsession)
+            }
+            if (!denyReasonClm || denyReasonClm.length == 0) {
+                getDenyReasonClm(xsession)
+            }
+
         })
 
     }
@@ -172,13 +177,18 @@ export default class TransactionDetail extends Component {
     // Go to Page 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
             this._goToMiddlePage()
-            const { xsession, listTransaction, getTransactionDetail, route } = this.props
             let transactionId = route.params.id
             let transactionType = route.params.type
             this.setState({ type: transactionType })
             this._load(transactionId)
+            if (!denyReason || denyReason.length == 0) {
+                getListDenyReason(xsession)
+            }
+            if (!denyReasonClm || denyReasonClm.length == 0) {
+                getDenyReasonClm(xsession)
+            }
         })
 
     }
