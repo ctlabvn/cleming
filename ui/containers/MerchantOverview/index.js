@@ -109,8 +109,6 @@ export default class MerchantOverview extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('Next Props', nextProps)
-        console.log('Next State', nextState)
         if (this.state.loading != nextState.loading) {
             console.log('Should update MerchantOverview')
             return true
