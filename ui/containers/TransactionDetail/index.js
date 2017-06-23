@@ -28,7 +28,6 @@ import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
 @connect(state => ({
     xsession: getSession(state),
-    place: state.place,
     transaction: state.transaction,
     denyReason: state.transaction.denyReason,
     denyReasonClm: state.transaction.denyReasonClm
