@@ -428,7 +428,7 @@ export default class App extends Component {
         // requestAnimationFrame(() => ref[method]())
         InteractionManager.runAfterInteractions(()=>{
           // clear previous focus or blur action
-          clearTimeout(this.timer)
+          // clearTimeout(this.timer)
           // and only do the action after 3 seconds, if there is no interaction after animation
           this.timer = setTimeout(()=>ref[method](), 1000)
         })        
