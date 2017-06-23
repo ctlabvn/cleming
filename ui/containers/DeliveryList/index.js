@@ -62,7 +62,7 @@ export default class extends Component {
         this.isLoadingPlace = false
     }
     _load() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { order, getOrderDenyReason, session } = this.props
             let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
             if (!this.state.selectedPlace) {
@@ -73,11 +73,11 @@ export default class extends Component {
                 getOrderDenyReason(session)
             }
 
-        })
+        // })
     }
     componentWillFocus() {
         // this.counting = true
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news, order, markWillReload } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             let now = new Date().getTime()
@@ -93,26 +93,26 @@ export default class extends Component {
             news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
 
             this.setState({ counting: true })
-        })
+        // })
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
             this._load()
             news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
             news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
 
-        })
+        // })
 
     }
 
     componentWillBlur() {
         // this.counting = false
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({ counting: false })
-        })
+        // })
 
     }
 

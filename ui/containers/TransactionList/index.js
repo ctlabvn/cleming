@@ -122,7 +122,7 @@ export default class extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
@@ -137,15 +137,15 @@ export default class extends Component {
             }
             news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
             news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-        })
+        // })
     }
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
             news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-        })
+        // })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect } = this.props

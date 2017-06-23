@@ -154,7 +154,7 @@ export default class TransactionDetail extends Component {
         }
     }
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
             // this._goToMiddlePage()
             let transactionId = route.params.id
@@ -169,13 +169,13 @@ export default class TransactionDetail extends Component {
                 getDenyReasonClm(xsession)
             }
 
-        })
+        // })
 
     }
 
     // Go to Page 
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
             this._goToMiddlePage()
             let transactionId = route.params.id
@@ -188,7 +188,7 @@ export default class TransactionDetail extends Component {
             if (!denyReasonClm || denyReasonClm.length == 0) {
                 getDenyReasonClm(xsession)
             }
-        })
+        // })
 
     }
 

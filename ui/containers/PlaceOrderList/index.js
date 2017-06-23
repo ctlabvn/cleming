@@ -170,6 +170,7 @@ export default class PlaceOrderList extends Component {
             </ListItem >
         )
     }
+
     _onRefresh = () => {
         this.setState({ loading: true })
         let { app } = this.props
@@ -180,6 +181,7 @@ export default class PlaceOrderList extends Component {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
     }
+
     _loadMore = () => {
         const { booking, app } = this.props
         if (booking.isLast) return
@@ -252,7 +254,7 @@ export default class PlaceOrderList extends Component {
         )
     }
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             selectedPlace = app.topDropdown.getValue()
@@ -268,23 +270,24 @@ export default class PlaceOrderList extends Component {
             if (news && news.bookingNews) {
                 this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
             }
-        })
+        // })
     }
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             this.setState({ counting: true })
             if (news && news.bookingNews) {
                 this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
             }
-        })
+        // })
     }
     componentWillBlur() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({ counting: false })
-        })
+        // })
     }
+    
     // componentWillReceiveProps(nextProps) {
     //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
     //         this.isLoadingPlace = false

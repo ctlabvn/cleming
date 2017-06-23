@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackAndroid, NativeModules, Navigator } from 'react-native'
+import { BackAndroid, NativeModules, Navigator, InteractionManager } from 'react-native'
 import { Drawer, StyleProvider, View } from 'native-base'
 
 import URL from 'url-parse'
@@ -106,13 +106,13 @@ export default class App extends Component {
 
   static configureScene(route) {
 
-    const {animationType = material.platform === 'ios' ? 'PushFromRight' : 'FloatFromLeft'} = routes[route.path] || {}
+    const {animationType = 'FloatFromLeft'} = routes[route.path] || {}
 
     // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
     return {
       ...Navigator.SceneConfigs[animationType],
       gestures: null,
-      defaultTransitionVelocity: material.platform === 'ios' ? 20 : 2,
+      defaultTransitionVelocity: 20,
       animationInterpolators: {
         into: buildStyleInterpolator(NoTransition),
         out: buildStyleInterpolator(NoTransition),
@@ -161,6 +161,7 @@ export default class App extends Component {
     this.pageInstances = {}
     this.watchID = 0
     this.firstTime = true
+    this.timer = null
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
@@ -216,7 +217,7 @@ export default class App extends Component {
       if (this.page) {
         // show header and footer, and clear search string
         this.header.show(headerType, title)
-        this.header._search('')
+        // this.header._search('')
         this.footer.show(footerType, router.route)
 
         // return console.warn('Not found: ' + router.route)
@@ -421,7 +422,13 @@ export default class App extends Component {
     while (ref && whatdog > 0) {
       // ref[method] && ref[method]()
       if (ref[method]) {
-        requestAnimationFrame(() => ref[method]())
+        // requestAnimationFrame(() => ref[method]())
+        InteractionManager.runAfterInteractions(()=>{
+          // clear previous focus or blur action
+          clearTimeout(this.timer)
+          // and only do the action after 3 seconds, if there is no interaction after animation
+          this.timer = setTimeout(()=>ref[method](), 3000)
+        })        
         break
       }
       ref = ref._reactInternalInstance._renderedComponent._instance
