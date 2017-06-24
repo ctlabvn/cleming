@@ -208,13 +208,13 @@ export default class App extends Component {
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
-    // console.log('Route will receive props', getPage(router.route))
-    const oldPath = this.page.path
-    this.page = getPage(router.route)
-    const { headerType, footerType, title, path, showTopDropdown } = this.page
-    this.topDropdown.show(showTopDropdown)
+    // console.log('Route will receive props', getPage(router.route))    
 
     if (router.route !== this.props.router.route) {      
+      const oldPath = this.page.path
+      this.page = getPage(router.route)
+      const { headerType, footerType, title, path, showTopDropdown } = this.page
+      this.topDropdown.show(showTopDropdown)
       if (this.page) {
         // show header and footer, and clear search string
         this.header.show(headerType, title)
@@ -428,9 +428,10 @@ export default class App extends Component {
     let whatdog = 10
     let ref = this.pageInstances[path]
     let wrapper = this.pageWrapperInstances[path]
-    wrapper.setNativeProps({
+    // update not override
+    wrapper && wrapper.setNativeProps({
       style:{
-        ...wrapper.props.style,
+        // ...wrapper.props.style,
         opacity: focus ? 1 : 0,
       }
     })
@@ -534,7 +535,7 @@ export default class App extends Component {
             },
           })}
           openDrawerOffset={0.27}
-          tweenDuration={200}
+          tweenDuration={20}
           content={<SideBar />}
           onClose={closeDrawer}
         >
