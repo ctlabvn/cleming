@@ -36,13 +36,13 @@ import {
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
     news: getNews(state)
-}), { ...orderActions, ...commonActions, ...placeActions })
+}), {...orderActions, ...commonActions, ...placeActions})
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
     constructor(props) {
         super(props)
-        const { app } = props
+        const {app} = props
         let placeDropdownValue = app.topDropdown.getValue()
         let selectedPlace = null
         if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
@@ -61,48 +61,50 @@ export default class extends Component {
         this.interval = 0
         this.isLoadingPlace = false
     }
+
     _load() {
         // InteractionManager.runAfterInteractions(() => {
-            const { order, getOrderDenyReason, session } = this.props
-            let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
-            if (!this.state.selectedPlace) {
-                this.isLoadingPlace = true
-            }
-            this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-            if (!order.denyReason || order.denyReason.length == 0) {
-                getOrderDenyReason(session)
-            }
+        const {order, getOrderDenyReason, session} = this.props
+        let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
+        if (!this.state.selectedPlace) {
+            this.isLoadingPlace = true
+        }
+        this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+        if (!order.denyReason || order.denyReason.length == 0) {
+            getOrderDenyReason(session)
+        }
 
         // })
     }
+
     componentWillFocus() {
         // this.counting = true
         // InteractionManager.runAfterInteractions(() => {
-            const { app, news, order, markWillReload } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            let now = new Date().getTime()
-            //Effect within 1 munites from markTime
-            if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
-                markWillReload(false)
-                this.selectedStatus = ORDER_WAITING_DELIVERY
-                this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
-                this._load()
-            }
+        const {app, news, order, markWillReload} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        let now = new Date().getTime()
+        //Effect within 1 munites from markTime
+        if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
+            markWillReload(false)
+            this.selectedStatus = ORDER_WAITING_DELIVERY
+            this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
+            this._load()
+        }
 
-            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
 
-            this.setState({ counting: true })
+        this.setState({counting: true})
         // })
     }
 
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
-            const { app, news } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-            this._load()
-            news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-            news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+        const {app, news} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        this._load()
+        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
+        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
 
         // })
 
@@ -111,7 +113,7 @@ export default class extends Component {
     componentWillBlur() {
         // this.counting = false
         // InteractionManager.runAfterInteractions(() => {
-            this.setState({ counting: false })
+        this.setState({counting: false})
         // })
 
     }
@@ -131,14 +133,14 @@ export default class extends Component {
     // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
-        const { session, getOrderList, clearOrderList } = this.props
-        const { selectedPlace } = this.state
+        const {session, getOrderList, clearOrderList} = this.props
+        const {selectedPlace} = this.state
         if (!selectedPlace) return
         if (isLoadMore) {
-            this.setState({ loadingMore: true })
+            this.setState({loadingMore: true})
         } else {
-            clearOrderList()
-            this.setState({ loading: true })
+            // clearOrderList()
+            this.setState({loading: true})
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
@@ -164,7 +166,7 @@ export default class extends Component {
     }
 
     _handleChangePlace = (item) => {
-        const { setSelectedOption, getMerchantNews, session } = this.props
+        const {setSelectedOption, getMerchantNews, session} = this.props
         // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
         this.setState({
@@ -193,7 +195,7 @@ export default class extends Component {
     _loadMore = () => {
         if (this.state.loading || this.state.loadingMore)
             return
-        const { order } = this.props
+        const {order} = this.props
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value
         if (order.hasMore) {
             this.loadPage(order.page + 1, dateFilter.from, dateFilter.to, true)
@@ -210,7 +212,7 @@ export default class extends Component {
     }
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
         console.log('Feedback Order', posOrderId + '---' + reasonId + '---' + note)
-        const { updateOrderStatus, setToast, session } = this.props
+        const {updateOrderStatus, setToast, session} = this.props
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
             (err, data) => {
                 console.log('Data update status', data)
@@ -225,7 +227,7 @@ export default class extends Component {
     }
     _handleConfirmOrder = (posOrderId) => {
         console.log('Confirm Order', posOrderId)
-        const { updateOrderStatus, setToast, session } = this.props
+        const {updateOrderStatus, setToast, session} = this.props
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.OK,
             (err, data) => {
                 console.log('Data update status', data)
@@ -242,8 +244,10 @@ export default class extends Component {
         console.log('Show Reason Popup', posOrderId)
         this.refs.deliveryFeedbackDialog.show(posOrderId)
     }
-    _renderRow({ orderInfo, orderRowList }) {
-        const { forwardTo } = this.props
+
+    _renderRow({orderInfo, orderRowList}) {
+        console.log('Render Row', orderInfo)
+        const {forwardTo} = this.props
         var statusBlock = null, buttonActionBlock = null
         const status = this.selectedStatus
         let totalItem = 0
@@ -252,114 +256,127 @@ export default class extends Component {
         }
         let phoneNumberBlock = (
             <View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                <Icon name='phone' style={{...styles.icon, ...styles.phoneIcon}}/>
                 <Text
                     onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
                     style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
             </View>
         )
-        if (status === ORDER_WAITING_CONFIRM) {
-            statusBlock = (
-                <View style={styles.deliveryCodeBlock}>
-                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
-                    <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
-                </View>
-            )
-        } else if (status === ORDER_WAITING_DELIVERY) {
-            statusBlock = (
-                <View style={styles.deliveryCodeBlock}>
-                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
-                    <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
-                </View>
-            )
-            buttonActionBlock = (
-                <View style={styles.block}>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                    <View style={styles.row}>
-                        <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold gray>Hủy giao hàng</Text></Button>
-                        <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold primary>Đã giao hàng</Text></Button>
+        switch (orderInfo.status) {
+            case 'WAIT_CONFIRM':
+            default:
+                statusBlock = (
+                    <View style={styles.deliveryCodeBlock}>
+                        <Icon name='shiping-bike2' style={{...styles.icon, ...styles.deliveryCodeWaitingConfirm}}/>
+                        <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                     </View>
-                </View>
-            )
-        } else if (status == ORDER_SUCCESS) {
-            statusBlock = (
-                <View style={styles.deliveryCodeBlock}>
-                    {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
-                    <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
-                </View>
-            )
-        } else {
-            statusBlock = (
-                <View style={styles.deliveryCodeBlock}>
-                    {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                    <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
-                    <Text style={styles.grey}>{orderInfo.tranId}</Text>
-                </View>
-            )
-            phoneNumberBlock = (
-                <View style={styles.row}>
-                    <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
-                    <Text
-                        onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                        style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
-                </View>
-            )
+                )
+                break
+            case 'CONFIRMED':
+                statusBlock = (
+                    <View style={styles.deliveryCodeBlock}>
+                        <Icon name='shiping-bike2' style={{...styles.icon, ...styles.deliveryCodeWaitingDelivery}}/>
+                        <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
+                    </View>
+                )
+                buttonActionBlock = (
+                    <View style={styles.block}>
+                        <Border color='rgba(0,0,0,0.5)' size={1}/>
+                        <View style={styles.row}>
+                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold
+                                                                                                                gray>Hủy
+                                giao hàng</Text></Button>
+                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold
+                                                                                                                    primary>Đã
+                                giao hàng</Text></Button>
+                        </View>
+                    </View>
+                )
+                break
+            case 'COMPLETED':
+                statusBlock = (
+                    <View style={styles.deliveryCodeBlock}>
+                        {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
+                        <Icon name='shiping-bike2' style={{...styles.icon, ...styles.deliveryCodeSuccess}}/>
+                        <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
+                    </View>
+                )
+                break
+            case 'FAILED':
+            case 'CANCELLED':
+                statusBlock = (
+                    <View style={styles.deliveryCodeBlock}>
+                        {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
+                        <Icon name='shiping-bike2' style={{...styles.icon, ...styles.grey}}/>
+                        <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                    </View>
+                )
+                phoneNumberBlock = (
+                    <View style={styles.row}>
+                        <Icon name='phone' style={{...styles.icon, ...styles.phoneIcon, ...styles.grey}}/>
+                        <Text
+                            onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
+                            style={{...styles.phoneNumber, ...styles.grey}}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+                    </View>
+                )
+                break
         }
         const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
-        let listItemStyle = (status != ORDER_CANCEL) ? styles.deliveryBlock : styles.deliveryBlockCacel
+        let listItemStyle = (orderInfo.status != 'CANCELLED' && orderInfo.status != 'FAILED') ? styles.deliveryBlock : styles.deliveryBlockCacel
         return (
             <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
-                onPress={() => {
-                    forwardTo('deliveryDetail/' + orderInfo.clingmeId)
-                }
-                }>
+                      onPress={() => {
+                          forwardTo('deliveryDetail/' + orderInfo.clingmeId)
+                      }
+                      }>
                 <View style={styles.block}>
-                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
+                    <View style={{...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5}}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time} grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            {(status == ORDER_SUCCESS) && (
-                                <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
+                            <Text style={styles.time}
+                                  grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            {(orderInfo.status == 'CANCELLED' || orderInfo.status== 'FAILED') && (
+                                <Icon name='done' style={{...styles.deliveryCodeSuccess, ...styles.icon}}/>
                             )}
                             {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
-                                <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                    counting={this.state.counting}
-                                    countTo={countTo}
-                                />}
+                            <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                             counting={this.state.counting}
+                                             countTo={countTo}
+                            />}
                         </View>
                     </View>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
                 <View style={styles.block}>
-                    <View style={{ width: '100%' }}>
+                    <View style={{width: '100%'}}>
                         <View style={styles.row}>
                             <Text bold grayDark>Số món đặt giao hàng</Text>
                             <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
                         </View>
                     </View>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
-                    <View style={styles.block}>
-                        <View>
-                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
-                            <View style={styles.rowLeft}><Text grayDark style={styles.textLeft}>{orderInfo.note}</Text></View>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                <View style={styles.block}>
+                    <View>
+                        <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                        <View style={styles.rowLeft}><Text grayDark
+                                                           style={styles.textLeft}>{orderInfo.note}</Text></View>
                     </View>
+                    <Border color='rgba(0,0,0,0.5)' size={1}/>
+                </View>
                 }
                 <View style={styles.block}>
                     {orderInfo.userInfo &&
-                        (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
-                            <View style={styles.row}>
-                                <Icon name='account' style={styles.icon} />
-                                <Text grayDark>{orderInfo.userInfo.memberName}</Text>
-                            </View>
-                            {phoneNumberBlock}
-                        </View>)}
+                    (<View style={{...styles.row, marginBottom: 10, marginTop: 5}}>
+                        <View style={styles.row}>
+                            <Icon name='account' style={styles.icon}/>
+                            <Text grayDark>{orderInfo.userInfo.memberName}</Text>
+                        </View>
+                        {phoneNumberBlock}
+                    </View>)}
 
-                    <View style={{ ...styles.row, marginBottom: 5 }}>
+                    <View style={{...styles.row, marginBottom: 5}}>
                         <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
@@ -373,20 +390,20 @@ export default class extends Component {
     }
 
     render() {
-        const { handleSubmit, submitting, place, order } = this.props
-        const { orderList } = order
+        const {handleSubmit, submitting, place, order} = this.props
+        const {orderList} = order
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData}
-                    activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
-                <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+                              activeTab={0} onPressTab={this._handlePressTab} ref='tabs'/>
+                <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter'/>
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}
-                    open={this.state.modalOpen} />
+                    open={this.state.modalOpen}/>
                 <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'
-                    listValue={order.denyReason}
-                    onClickYes={this._handleFeedbackOrder}
+                                        listValue={order.denyReason}
+                                        onClickYes={this._handleFeedbackOrder}
                 />
                 <Content
                     contentContainerStyle={styles.contentContainerStyle}
@@ -398,7 +415,7 @@ export default class extends Component {
                         this._renderRow(item)
                     ))}
                     {this.state.loadingMore &&
-                        <Spinner />
+                    <Spinner />
                     }
                 </Content>
             </Container>

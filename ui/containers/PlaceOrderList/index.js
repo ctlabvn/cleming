@@ -77,43 +77,48 @@ export default class PlaceOrderList extends Component {
         let hourMinute = item.deliveryHour + ':' + minute
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(item.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
-
-        if (this.selectTab == BOOKING_WAITING_CONFIRM) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                <Text warning bold>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-        } else if (this.selectTab == BOOKING_CONFIRMED) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                <Text primary bold>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-        } else if (this.selectTab == BOOKING_CANCEL) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                <Text bold style={styles.gray}>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-            listItemStyle = { ...listItemStyle, ...styles.listItemGray }
-            listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
+        console.log('Order Item', item)
+        switch (item.status){
+            case 'WAIT_CONFIRMED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                    <Text warning bold>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                break
+            case 'CONFIRMED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                    <Text primary bold>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                break
+            case 'CANCELLED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                    <Text bold style={styles.gray}>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                listItemStyle = { ...listItemStyle, ...styles.listItemGray }
+                listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
+                break
         }
+
         return (
 
             <ListItem style={listItemStyle}>
@@ -242,7 +247,7 @@ export default class PlaceOrderList extends Component {
         if (isLoadMore) {
             this.setState({ loadingMore: true })
         } else {
-            clearBookingList()
+            // clearBookingList()
             this.setState({ loading: true })
         }
         this.props.getBookingList(this.props.xsession, placeId,
