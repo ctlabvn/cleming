@@ -7,6 +7,7 @@ import {formatNumber} from "~/ui/shared/utils";
 import CheckBox from "~/ui/elements/CheckBox";
 import ModalOverlay from "~/ui/components/ModalOverlay";
 // import Content from '~/ui/components/Content'
+import material from '~/theme/variables/material'
 
 export default class FeedbackDialog extends Component {
     constructor(props) {
@@ -34,7 +35,7 @@ export default class FeedbackDialog extends Component {
         this.refs.otherReasonInput.blur()
     }
     componentWillReceiveProps(nextProps) {
-        // console.log('Dialog Will Receive Props', nextProps)
+        console.log('Dialog Will Receive Props', nextProps)
         let listValueProps = nextProps.listValue
         if (!listValueProps || listValueProps.length == 0) return
         if (this.state.listValue && this.state.listValue.length > 0) return
@@ -86,14 +87,22 @@ export default class FeedbackDialog extends Component {
             >
 
                 <ModalOverlay onToggle={toggled =>
-                    toggled && this.scrollView && this.scrollView.scrollToEnd({ animated: false })
+                    toggled && this.scrollView && this.scrollView.scrollToEnd()
                 } style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView ref={ref => this.scrollView = ref} style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
+
+                        <View style={{ 
+                            maxHeight: material.platform === 'ios' 
+                            ? this.height
+                            : undefined
+                        }} >
+                        <ScrollView 
+
+                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -121,6 +130,7 @@ export default class FeedbackDialog extends Component {
                                 </View>
                             </View>
                         </ScrollView>
+                        </View>
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
                             <Button transparent onPress={() =>{
                                 this._resetDialog()

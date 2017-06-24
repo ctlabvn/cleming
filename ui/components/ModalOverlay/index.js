@@ -38,13 +38,13 @@ export default class ModalOverlay extends Component {
     this._listeners.forEach(listener => listener.remove())
   }
 
-  configureAnimation(event) {
+  configureAnimation(event, callback) {
     const animationConfig = LayoutAnimation.create(
       event.duration,
       LayoutAnimation.Types[event.easing],
       LayoutAnimation.Properties.opacity,
     )
-    LayoutAnimation.configureNext(animationConfig)
+    LayoutAnimation.configureNext(animationConfig, callback)
   }
 
   updateKeyboardSpace(event) {
@@ -54,15 +54,14 @@ export default class ModalOverlay extends Component {
     }
 
     if (this.modalOverlay && Platform.OS === 'ios') {
-      this.configureAnimation(event)
+      this.configureAnimation(event, () => this.props.onToggle(true))
       this.modalOverlay._root.setNativeProps({
         style: {
           ...this.props.style,
           height: event.endCoordinates.screenY,
           paddingTop: 30,
         }
-      })
-      setTimeout(() => this.props.onToggle(true), event.duration)
+      })      
     }
 
 
@@ -71,11 +70,10 @@ export default class ModalOverlay extends Component {
   resetKeyboardSpace(event) {
 
     if (this.modalOverlay && Platform.OS === 'ios') {
-      this.configureAnimation(event)
+      this.configureAnimation(event, () => this.props.onToggle(false))
       this.modalOverlay._root.setNativeProps({
         style: this.props.style,
-      })
-      setTimeout(() => this.props.onToggle(false), event.duration)
+      })      
     }
 
 

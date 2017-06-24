@@ -159,6 +159,7 @@ export default class App extends Component {
     this.page = getPage(props.router.route) || routes.notFound
     // this.prevPage = null
     this.pageInstances = {}
+    this.pageWrapperInstances = {}
     this.watchID = 0
     this.firstTime = true
     this.timer = null
@@ -208,12 +209,12 @@ export default class App extends Component {
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
     // console.log('Route will receive props', getPage(router.route))
+    const oldPath = this.page.path
     this.page = getPage(router.route)
     const { headerType, footerType, title, path, showTopDropdown } = this.page
     this.topDropdown.show(showTopDropdown)
 
-    if (router.route !== this.props.router.route) {
-      const oldComponent = this.pageInstances[this.page.path]
+    if (router.route !== this.props.router.route) {      
       if (this.page) {
         // show header and footer, and clear search string
         this.header.show(headerType, title)
@@ -228,8 +229,8 @@ export default class App extends Component {
         // console.log(this.navigator.state)      
         if (destIndex !== -1) {
           // trigger will focus, the first time should be did mount
-          this.handlePageWillFocus(path)
-          oldComponent && this.handleFocusableComponent(oldComponent, false)
+          this.handleFocusableComponent(oldPath, false)
+          this.handlePageWillFocus(path)          
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
@@ -258,7 +259,7 @@ export default class App extends Component {
     if (ref && route.path) {
       this.pageInstances[route.path] = ref
 
-      ref.visible = true
+      ref.state.visible = true
 
       // ref.visible = true
       // const fn = ref.shouldComponentUpdate
@@ -266,11 +267,17 @@ export default class App extends Component {
     }
   }
 
+   initializePageWrapper(ref, route) {
+    if (ref && route.path) {
+      this.pageWrapperInstances[route.path] = ref._root
+    }
+  }
+
   // render a component from current page, then pass the params to Page
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <View style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
+      <View ref={ref=>this.initializePageWrapper(ref, route)} style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
         <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
       </View>
     )
@@ -415,16 +422,24 @@ export default class App extends Component {
     navigator.geolocation.clearWatch(this.watchID)
   }
 
-  handleFocusableComponent(component, focus = true) {
+  handleFocusableComponent(path, focus = true) {
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10
-    let ref = component
-    ref.visible = focus
+    let ref = this.pageInstances[path]
+    let wrapper = this.pageWrapperInstances[path]
+    wrapper.setNativeProps({
+      style:{
+        ...wrapper.props.style,
+        opacity: focus ? 1 : 0,
+      }
+    })
+    
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
       // ref[method] && ref[method]()
       if (ref[method]) {
+        ref.setState({visible:focus})
         // requestAnimationFrame(() => ref[method]())
         InteractionManager.runAfterInteractions(()=>{
           // clear previous focus or blur action
@@ -444,20 +459,23 @@ export default class App extends Component {
     // currently we support only React.Component instead of check the existing method
     // when we extend the Component, it is still instanceof
     const component = this.pageInstances[path]
-
+    // will focus can get the new props, and should setState to force update
     // check method
     if (component) {
       const { Page, ...route } = this.page
       const propsChanged = !shallowEqual(route.params, component.props.route.params)
         || !shallowEqual(route.query, component.props.route.query)
-      if (component.forceUpdate && propsChanged) {
+      // if (component.forceUpdate && propsChanged) {
+      //   // only update prop value
+      //   Object.assign(component.props.route, route)
+      //   component.forceUpdate && component.forceUpdate()
+      // }
+      if (propsChanged) {
         // only update prop value
         Object.assign(component.props.route, route)
-        component.forceUpdate && component.forceUpdate()
       }
-
       // after update the content then focus on it, so we have new content
-      this.handleFocusableComponent(component)
+      this.handleFocusableComponent(path)
     }
 
   }

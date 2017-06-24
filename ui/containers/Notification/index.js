@@ -1,24 +1,30 @@
-import React, {Component} from "react";
-import {Body, Container, List, ListItem, Spinner, Text, View} from "native-base";
+import React, { Component } from 'react'
+import { LayoutAnimation } from 'react-native'
+import {
+  Button, Container, ListItem, List, Spinner,
+  Text, Item, View, Input, Left, Right, Body,
+} from 'native-base'
 
-import moment from "moment";
+import moment from 'moment'
 
-import Content from "~/ui/components/Content";
-import Border from "~/ui/elements/Border";
-import {connect} from "react-redux";
-import * as commonActions from "~/store/actions/common";
-import * as notificationActions from "~/store/actions/notification";
+import Content from '~/ui/components/Content'
+import Border from '~/ui/elements/Border'
+import { connect } from 'react-redux'
+import * as commonActions from '~/store/actions/common'
+import * as notificationActions from '~/store/actions/notification'
 
-import Icon from "~/ui/elements/Icon";
-import * as commonSelectors from "~/store/selectors/common";
-import * as authSelectors from "~/store/selectors/auth";
-import * as notificationSelectors from "~/store/selectors/notification";
-import styles from "./styles";
-import material from "~/theme/variables/material";
+import Icon from '~/ui/elements/Icon'
+import TimeAgo from '~/ui/components/TimeAgo'
+import * as commonSelectors from '~/store/selectors/common'
+import * as authSelectors from '~/store/selectors/auth'
+import * as notificationSelectors from '~/store/selectors/notification'
+import options from './options'
+import styles from './styles'
+import material from '~/theme/variables/material'
 
-import {NOTIFY_TYPE, TRANSACTION_TYPE} from "~/store/constants/app";
+import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
 
-import {formatNumber} from "~/ui/shared/utils";
+import { formatNumber } from '~/ui/shared/utils'
 
 @connect(state => ({
   session: authSelectors.getSession(state),
@@ -288,6 +294,8 @@ export default class extends Component {
                 }} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
+
+
             {border}
           </Body>
         )
@@ -303,14 +311,12 @@ export default class extends Component {
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
         break
       case NOTIFY_TYPE.NEW_ORDER:
-      case NOTIFY_TYPE.ORDER_FEEDBACK:
         this.props.forwardTo('deliveryDetail/' + paramLong3)
         break
       default:
@@ -318,11 +324,29 @@ export default class extends Component {
     }
   }
   render() {
+
+    // const { notificationRequest} = this.props    
+    // const data= []
+    // for(let i=1;i<100;i++){
+    //   data.push({title: 'title'+i,notifyType:1})
+    // }
+    // const notifications = {
+    //   data,
+    // }
+
     // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     let { notifications, notificationRequest } = this.props
     return (
 
       <Container>
+        {
+          // <Button onPress={this._handleNotiRead} noPadder style={{
+          //   alignSelf:'flex-end',              
+          //   marginRight: 10,              
+          // }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
+          // </Button>
+        }
+
         <Content
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
@@ -348,8 +372,12 @@ export default class extends Component {
               } />
           }
           {this.state.loading && <Spinner />}
+
         </Content>
+
+
       </Container>
+
     )
   }
 }
