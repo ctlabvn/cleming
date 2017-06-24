@@ -106,19 +106,23 @@ export default class App extends Component {
 
   static configureScene(route) {
 
-    const {animationType = 'FloatFromLeft'} = routes[route.path] || {}
+    const {animationType = 'PushFromRight'} = routes[route.path] || {}
+    
 
-    // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-    return {
+    const sceneConfig = {
       ...Navigator.SceneConfigs[animationType],
       gestures: null,
       defaultTransitionVelocity: 20,
-      animationInterpolators: {
+    }
+
+    if (material.platform === 'android') {
+      sceneConfig.animationInterpolators = {
         into: buildStyleInterpolator(NoTransition),
         out: buildStyleInterpolator(NoTransition),
-      },
+      }
     }
-    // return Navigator.SceneConfigs[animationType]
+
+    return sceneConfig
   }
 
   initPushNotification(options) {
@@ -427,14 +431,16 @@ export default class App extends Component {
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10
     let ref = this.pageInstances[path]
-    let wrapper = this.pageWrapperInstances[path]
-    // update not override
-    wrapper && wrapper.setNativeProps({
-      style:{
-        // ...wrapper.props.style,
-        opacity: focus ? 1 : 0,
-      }
-    })
+    if(material.platform === 'android'){
+      let wrapper = this.pageWrapperInstances[path]
+      // update not override
+      wrapper && wrapper.setNativeProps({
+        style:{
+          // ...wrapper.props.style,
+          opacity: focus ? 1 : 0,
+        }
+      })
+    }
     
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
