@@ -182,7 +182,7 @@ export default class CreateUserContainer extends Component {
           this.props.change('GroupAddress', this.props.place.listPlace)
           this.props.change('name', employeeDetail.userName)
           this.props.change('email', employeeDetail.email)
-          this.props.change('phone', '0'+employeeDetail.phoneNumber)
+          this.props.change('phone', '0' + employeeDetail.phoneNumber)
 
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
@@ -219,18 +219,24 @@ export default class CreateUserContainer extends Component {
       this.setDefaultTimeWork();
 
 
+
+  }
+
+  _repairDefaultPlace() {
       if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
-        this.setState({
-            selectedPlaceId: this.props.selectedPlace.id,
-        }, () => {
-          this.setDefaultPlace()
-        });
+          this.setState({
+              selectedPlaceId: this.props.selectedPlace.id,
+          }, () => {
+              this.setDefaultPlace()
+          });
       } else {
           this.setDefaultPlace();
       }
   }
 
-
+  componentDidUpdate(prevProps, prevState) {
+     this._repairDefaultPlace();
+  }
 
   componentWillMount() {
     this.props.actions.deleteGeneratedPassword();
