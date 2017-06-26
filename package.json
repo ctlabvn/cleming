@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "font": "node font-processor.js",
     "test": "jest"
   },
   "rnpm": {
@@ -58,6 +59,7 @@
     "babel-plugin-transform-remove-console": "^6.8.1",
     "babel-preset-react-native": "1.9.1",
     "jest": "19.0.2",
+    "plist": "^2.1.0",
     "react-test-renderer": "~15.4.1"
   },
   "jest": {
