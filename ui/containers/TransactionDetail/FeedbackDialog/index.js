@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Item, Text} from "native-base";
-import {Modal, ScrollView, TextInput, TouchableOpacity, View} from "react-native";
+import {Modal, TextInput, TouchableOpacity, ScrollView, View} from "react-native";
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import {formatNumber} from "~/ui/shared/utils";
@@ -67,13 +67,38 @@ export default class FeedbackDialog extends Component {
         this.caculatingHeight = false
         const { height } = e.nativeEvent.layout
         console.log('Content Height', height)
-        this.height = height
+        this.height = height        
         this.forceUpdate()
     }
     _handlePressClear = () => {
         console.log('Pressing Clear CLM')
         this.setState({ note: '' })
     }
+
+    renderScrollView(content){
+        if(material.platform === 'ios'){
+            return ( 
+                <View ref={ref=>this.wrapperScrollView=ref} style={{
+                    maxHeight: this.height
+                }}>
+                    <ScrollView                         
+                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                        {content}
+                    </ScrollView>
+                </View>
+            )
+        }
+
+        return (
+            <ScrollView style={{
+                    maxHeight: this.height
+                }}
+                ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                {content}
+            </ScrollView>
+        )
+    }
+
     render() {
 
         return (
@@ -86,23 +111,21 @@ export default class FeedbackDialog extends Component {
                 }}
             >
 
-                <ModalOverlay onToggle={toggled =>
-                    toggled && this.scrollView && this.scrollView.scrollToEnd()
-                } style={styles.modalOverlay}>
+                <ModalOverlay onToggle={(toggled, maxHeight) =>{     
+                    this.wrapperScrollView && this.wrapperScrollView.setNativeProps({
+                       style:{
+                            maxHeight: toggled ? maxHeight - 150 : this.height         
+                       } 
+                    }) 
+                    toggled && this.scrollView && setTimeout(() => this.scrollView.scrollToEnd(), 500)
+                }} style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-
-                        <View style={{ 
-                            maxHeight: material.platform === 'ios' 
-                            ? this.height
-                            : undefined
-                        }} >
-                        <ScrollView 
-
-                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                        
+                        {this.renderScrollView(
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -129,8 +152,8 @@ export default class FeedbackDialog extends Component {
                                     </Item>
                                 </View>
                             </View>
-                        </ScrollView>
-                        </View>
+                        )}
+                        
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
                             <Button transparent onPress={() =>{
                                 this._resetDialog()
