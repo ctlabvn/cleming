@@ -99,6 +99,31 @@ export default class DeliveryFeedbackDialog extends Component {
         this.height = height// status bar height
         this.forceUpdate()
     }
+
+    renderScrollView(content){
+        if(material.platform === 'ios'){
+            return ( 
+                <View ref={ref=>this.wrapperScrollView=ref} style={{
+                    maxHeight: this.height
+                }}>
+                    <ScrollView                         
+                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                        {content}
+                    </ScrollView>
+                </View>
+            )
+        }
+
+        return (
+            <ScrollView style={{
+                    maxHeight: this.height
+                }}
+                ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                {content}
+            </ScrollView>
+        )
+    }
+
     render() {
 
         return (
@@ -111,13 +136,22 @@ export default class DeliveryFeedbackDialog extends Component {
                 }}
             >
 
-                <ModalOverlay style={styles.modalOverlay}>
+                <ModalOverlay onToggle={(toggled, maxHeight) =>{     
+                    this.wrapperScrollView && this.wrapperScrollView.setNativeProps({
+                       style:{
+                            maxHeight: toggled ? maxHeight - 150 : this.height         
+                       } 
+                    }) 
+                    toggled && this.scrollView && setTimeout(() => this.scrollView.scrollToEnd(), 500)
+                }}
+                style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text>Lí do hủy đơn hàng</Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }} keyboardShouldPersistTaps='always'>
+
+                        {this.renderScrollView(
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -143,7 +177,8 @@ export default class DeliveryFeedbackDialog extends Component {
                                     </Item>
                                 </View>
                             </View>
-                        </ScrollView>
+                        )}
+
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
                             <Button transparent onPress={() => {
                                 this.setModalVisible(false)
