@@ -152,7 +152,7 @@ export default class extends Component {
                 position: 'absolute',
                 top: 0,
                 right: 0,
-              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              }}>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
               <View style={styles.rowEnd}>
                 <Icon name='friend' style={styles.icon} />
                 <Text bold>{item.paramId1}</Text>
