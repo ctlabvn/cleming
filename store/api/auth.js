@@ -1,61 +1,73 @@
-import { apiPost, apiGet } from '~/store/api/common'
-import { CLINGME_SERVER } from '~/store/constants/api'
+import {apiPost, apiGet} from '~/store/api/common'
+import {CLINGME_SERVER, SECRET_KEY} from '~/store/constants/api'
 import md5 from 'md5'
 import 'whatwg-fetch'
+import SHA256 from 'crypto-js/sha256'
+import CryptoJS from 'crypto-js'
 export default {
 
 
-  login(username, password, xDevice, xUniqueDevice) {
-    console.log('Login API', username+'---'+password+'---'+xDevice+'---'+xUniqueDevice)
-    return fetch(CLINGME_SERVER + 'login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-VERSION': 1,
-        'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
-        'X-DATA-VERSION': 1,
-        'X-AUTH': '',
-        'X-DEVICE': xDevice,
-        'X-UNIQUE-DEVICE': xUniqueDevice
-      },
-      body: JSON.stringify({
-        userName: username,
-        password: md5(password),
-      })
-    }).then(async (response) => {
-      const xsession = response.headers.map['x-session'][0]
-      const body = await response.json()
-      return { ...body.updated.account, xsession }
-    })
-  },
+    login(username, password, xDevice, xUniqueDevice) {
+        console.log('Login API', username + '---' + password + '---' + xDevice + '---' + xUniqueDevice)
+        // let crypto = require('crypto')
+        let xVersion = 1
+        let xDataVersion = 1
+        let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
+        let body = JSON.stringify({
+            userName: username,
+            password: md5(password),
+        })
+        let xAuthStr = "" + xDataVersion + xVersion + xTimeStamp + SECRET_KEY + body
+        console.log('xAUTH Str Login', xAuthStr)
+        let xAuth = SHA256(xAuthStr).toString(CryptoJS.enc.Hex)
+        console.log('xAuth Hex Login', xAuth)
 
-  // login(userName, password) {
-  //   return apiPost('/login', {
-  //     userName,
-  //     password
-  //   })
-  // },
+        return fetch(CLINGME_SERVER + 'login', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-VERSION': xVersion,
+                'X-TIMESTAMP': xTimeStamp,
+                'X-DATA-VERSION': xDataVersion,
+                'X-AUTH': xAuth,
+                'X-DEVICE': xDevice,
+                'X-UNIQUE-DEVICE': xUniqueDevice
+            },
+            body:body
+        }).then(async (response) => {
+            const xsession = response.headers.map['x-session'][0]
+            const body = await response.json()
+            return {...body.updated.account, xsession}
+        })
+    },
 
-  refreshAccessToken(refreshToken) {
-    return apiPost(`/auth/token`, {
-      refreshToken,
-    })
-  },
+    // login(userName, password) {
+    //   return apiPost('/login', {
+    //     userName,
+    //     password
+    //   })
+    // },
 
-  reject(refreshToken) {
-    return apiPost(`/auth/reject`, {
-      refreshToken,
-    })
-  },
+    refreshAccessToken(refreshToken) {
+        return apiPost(`/auth/token`, {
+            refreshToken,
+        })
+    },
 
-  /**
-  * Logs the current user out
-  */
-  logout(session, xDevice, xUniqueDevice) {
-    // return fetchJsonWithToken(token, `/logout`)
-    console.log('API logout', session+'---'+xDevice+'---'+xUniqueDevice)
-    return apiGet(`/logout`, {}, session, {'X-DEVICE': xDevice, 'X-UNIQUE-DEVICE': xUniqueDevice})
-  },
+    reject(refreshToken) {
+        return apiPost(`/auth/reject`, {
+            refreshToken,
+        })
+    },
+
+    /**
+     * Logs the current user out
+     */
+    logout(session, xDevice, xUniqueDevice) {
+        // return fetchJsonWithToken(token, `/logout`)
+        console.log('API logout', session + '---' + xDevice + '---' + xUniqueDevice)
+        return apiGet(`/logout`, {}, session, {'X-DEVICE': xDevice, 'X-UNIQUE-DEVICE': xUniqueDevice})
+    },
 
 }
