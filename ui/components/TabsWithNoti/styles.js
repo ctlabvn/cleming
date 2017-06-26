@@ -18,13 +18,13 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
         // borderBottomWidth: 2,
         // borderColor: material.white500
     },
     tab: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 10,
     },
     tabTextActive: {
         color: material.white500,
