@@ -100,6 +100,7 @@ const formSelector = formValueSelector('CreateUserForm')
 @reduxForm({ form: 'CreateUserForm', fields: ['name', 'email', 'phone'], validate: validateField })
 export default class CreateUserContainer extends Component {
   constructor(props) {
+
       console.log('step', 'constructor');
       // let selectedPlaceId = props.selectedPlace.id
     super(props)
@@ -144,6 +145,7 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillBlur() {
+
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
     if (typeof this.props.route.params.id == "undefined") this. resetProps();
@@ -180,7 +182,7 @@ export default class CreateUserContainer extends Component {
           this.props.change('GroupAddress', this.props.place.listPlace)
           this.props.change('name', employeeDetail.userName)
           this.props.change('email', employeeDetail.email)
-          this.props.change('phone', employeeDetail.phoneNumber)
+          this.props.change('phone', '0'+employeeDetail.phoneNumber)
 
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
@@ -627,7 +629,7 @@ export default class CreateUserContainer extends Component {
     const { handleSubmit } = this.props;
     let mainContainer = null
     if (this.state.isLoading) {
-      mainContainer = this.renderIndicator()
+      // mainContainer = this.renderIndicator()
         // console.log("state.isLoading: ", "renderIndiCator");
     } else {
       mainContainer = this.renderMainContainer()
