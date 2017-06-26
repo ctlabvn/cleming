@@ -58,7 +58,6 @@ export default class TransactionDetail extends Component {
         }
     }
     _renderBottomAction(transactionInfo) {
-        return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
                 return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
