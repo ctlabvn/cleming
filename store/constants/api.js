@@ -14,3 +14,4 @@ export const NOTIFY_TYPE = {
   BOOKING: 6,
   SUCCESS: 7,
 }
+export const SECRET_KEY = 'qwerc24214'

@@ -97,7 +97,11 @@ const formSelector = formValueSelector('CreateUserForm')
     ...ownProps, ...stateProps, ...dispatchProps,
   })
 })
-@reduxForm({ form: 'CreateUserForm', fields: ['name', 'email', 'phone'], validate: validateField })
+@reduxForm({
+    form: 'CreateUserForm',
+    fields: ['name', 'email', 'phone'],
+  // validate: validateField
+})
 export default class CreateUserContainer extends Component {
   constructor(props) {
 
@@ -145,10 +149,10 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillBlur() {
-
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
-    if (typeof this.props.route.params.id == "undefined") this. resetProps();
+    // if (typeof this.props.route.params.id == "undefined")
+        this. resetProps();
     // console.log(this.props.initialValues.GroupAddress)
     this.placeDropdown.clearAll()
 
@@ -329,24 +333,38 @@ export default class CreateUserContainer extends Component {
     }
   }
 
-  onSubmitUser = () => {
+  onSubmitUser = (data) => {
+        const errRet = validateField(data)
+      // console.warn(JSON.stringify(errRet))
 
-    let userInfo = {}
+      let userInfo = {}
     // if (this.state.chosenListPlace.length == 0) {
       console.log(this.state.selectedPlaceId)
 
-      if (this.props.formState.CreateUserForm.syncErrors) {
+      // if (this.props.formState.CreateUserForm.syncErrors) {
+      if (errRet.name || errRet.phone || errRet.email) {
           this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
-          this._scrollPageUp();
+          this.setState({
+              errorForm: errRet,
+          }, () => this._scrollPageUp());
+
           // return;
       } else if(!this.state.selectedPlaceId){
-      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
+
+          this.setState({
+              errorForm: errRet,
+          }, () => this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger'));
+
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
-      this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
-      this._scrollPageDown();
+          this.setState({errorForm: errRet}, ()=> {
+              this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+              this._scrollPageDown();
+          })
+
     } else {
       this.setState({
-        isLoading: true
+          errorForm: errRet,
+          isLoading: true
       })
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = this.props.formValues.name
@@ -441,32 +459,32 @@ export default class CreateUserContainer extends Component {
     let errorEmailStyle = null
     let emailTouched = false
     let fields = null
-    if (typeof this.props.route.params.id == 'undefined') {
-      formState = this.props.formState.CreateUserForm
-    } else {
-      formState = this.props.formState.CreateUserForm
-    }
-    if (typeof formState != "undefined") {
+
+    formState = this.props.formState.CreateUserForm
+
+    let errorForm = this.state.errorForm;
+
+    if (typeof errorForm != "undefined") {
       fields = formState.fields
-      if (typeof formState.syncErrors != 'undefined' && typeof fields != "undefined") {
-        let errors = formState.syncErrors
-        if (errors.name && typeof fields.name != 'undefined' && fields.name.touched) {
+      if (typeof errorForm != 'undefined' && typeof fields != "undefined") {
+        // let errors = formState.syncErrors
+        if (errorForm.name && typeof fields.name != 'undefined' && fields.name.touched) {
           nameTouched = true
           errorNameStyle = { borderColor: material.red500, borderWidth: 1 }
-          if (errors.name.length > 30) {
+          if (errorForm.name.length > 30) {
             errorLongNameStyle = { marginBottom: 5 }
           }
-          nameError = <Text style={{ color: material.red500 }}>{errors.name}</Text>
+          nameError = <Text style={{ color: material.red500 }}>{errorForm.name}</Text>
         }
-        if (errors.phone && typeof fields.phone != 'undefined' && fields.phone.touched) {
+        if (errorForm.phone && typeof fields.phone != 'undefined' && fields.phone.touched) {
           phoneTouched = true
           errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
-          phoneError = <Text style={{ color: material.red500 }}>{errors.phone}</Text>
+          phoneError = <Text style={{ color: material.red500 }}>{errorForm.phone}</Text>
         }
-        if (errors.email && typeof fields.email != 'undefined' && fields.email.touched) {
+        if (errorForm.email && typeof fields.email != 'undefined' && fields.email.touched) {
           emailTouched = true
           errorEmailStyle = { borderColor: material.red500, borderWidth: 1 }
-          emailError = <Text style={{ color: material.red500 }}>{errors.email}</Text>
+          emailError = <Text style={{ color: material.red500 }}>{errorForm.email}</Text>
         }
       }
     }
@@ -630,6 +648,7 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
+      // console.warn('render');
     // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
     //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
     const { handleSubmit } = this.props;

@@ -1,8 +1,11 @@
 
 // default api_base for all request
 import {
-  API_BASE
+  API_BASE, SECRET_KEY
 } from '~/store/constants/api'
+import SHA256 from 'crypto-js/sha256'
+import CryptoJS from 'crypto-js'
+// import {crypto} from 'crypto'
 
 const urlEncode = data => data
   ? Object.keys(data).map((key) => key + '=' + data[key]).join('&')
@@ -23,6 +26,16 @@ export const rejectErrors = async (res) => {
 export const fetchJson = (url, options = {}, base = API_BASE) => {
   // in the same server, API_BASE is emtpy
   /// check convenient way of passing base directly
+  //   Checksum=SHA256(X-DATA-VERSION+X-VERSION+X-TIMESTAMP+SecretKey+Json body).
+    let xVersion = 1
+    let xDataVersion = 1
+    let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
+    let xAuthStr = options.method == 'GET' ? ""+xDataVersion+xVersion+xTimeStamp+SECRET_KEY : ""+xDataVersion+xVersion+xTimeStamp+SECRET_KEY+options.body
+    console.log('Options FetchJSON', options)
+    console.log('xAUTH Str', xAuthStr)
+    let xAuth = SHA256(xAuthStr).toString(CryptoJS.enc.Hex)
+    console.log('xAuth Hex', xAuth)
+
   return fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
     ...options,
     headers: {
@@ -31,10 +44,10 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
       // Origin: API_BASE,
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'X-VERSION': 1,
-      'X-TIMESTAMP': Math.floor((new Date().getTime()) / 1000),
-      'X-DATA-VERSION': 1,
-      'X-AUTH': '',
+      'X-VERSION': xVersion,
+      'X-TIMESTAMP': xTimeStamp,
+      'X-DATA-VERSION': xDataVersion,
+      'X-AUTH': xAuth,
     },
   })
     .then(rejectErrors)
