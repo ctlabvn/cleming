@@ -246,7 +246,6 @@ export default class extends Component {
     }
 
     _renderRow({orderInfo, orderRowList}) {
-        console.log('Render Row', orderInfo)
         const {forwardTo} = this.props
         var statusBlock = null, buttonActionBlock = null
         const status = this.selectedStatus

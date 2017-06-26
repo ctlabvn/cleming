@@ -77,7 +77,6 @@ export default class PlaceOrderList extends Component {
         let hourMinute = item.deliveryHour + ':' + minute
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(item.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
-        console.log('Order Item', item)
         switch (item.status){
             case 'WAIT_CONFIRMED':
                 orderCodeBlock = (<View style={styles.row}>

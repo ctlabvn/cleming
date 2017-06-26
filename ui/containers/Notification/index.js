@@ -311,12 +311,14 @@ export default class extends Component {
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
         break
       case NOTIFY_TYPE.NEW_ORDER:
+      case NOTIFY_TYPE.ORDER_FEEDBACK:
         this.props.forwardTo('deliveryDetail/' + paramLong3)
         break
       default:

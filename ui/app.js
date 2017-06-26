@@ -452,7 +452,7 @@ export default class App extends Component {
           // clear previous focus or blur action
           // clearTimeout(this.timer)
           // and only do the action after 3 seconds, if there is no interaction after animation
-          this.timer = setTimeout(()=>ref[method](), 1000)
+          this.timer = setTimeout(()=>ref[method](), 100)
         })        
         break
       }

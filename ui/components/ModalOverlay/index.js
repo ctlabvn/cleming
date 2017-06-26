@@ -54,12 +54,13 @@ export default class ModalOverlay extends Component {
     }
 
     if (this.modalOverlay && Platform.OS === 'ios') {
-      this.configureAnimation(event, () => this.props.onToggle(true))
+      const maxHeight = event.endCoordinates.screenY
+      this.configureAnimation(event, () => this.props.onToggle(true, maxHeight))
       this.modalOverlay._root.setNativeProps({
         style: {
           ...this.props.style,
-          height: event.endCoordinates.screenY,
-          paddingTop: 30,
+          height: maxHeight,
+          // paddingTop: 50,
         }
       })      
     }
@@ -70,7 +71,8 @@ export default class ModalOverlay extends Component {
   resetKeyboardSpace(event) {
 
     if (this.modalOverlay && Platform.OS === 'ios') {
-      this.configureAnimation(event, () => this.props.onToggle(false))
+      const maxHeight = event.endCoordinates.screenY
+      this.configureAnimation(event, () => this.props.onToggle(false, maxHeight))
       this.modalOverlay._root.setNativeProps({
         style: this.props.style,
       })      
