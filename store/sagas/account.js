@@ -117,12 +117,20 @@ const requestCreateEmployeeInfo = createRequestSaga({
   failure: [
     (error) => {
       console.log('Error', error)
-      if (error.code == 1207) {
-        return setToast('Số điện thoại đã tồn tại', 'danger')
-      } else if (error.code == 1206) {
-        return setToast('Địa chỉ email đã tồn tại', 'danger')
-      }
-      return setToast('Không có kết nối đến máy chủ', 'danger')
+        switch (error.code) {
+            case 1207:
+                return setToast('Số điện thoại đã tồn tại', 'danger');
+                break;
+            case 1206:
+                return setToast('Địa chỉ email đã tồn tại', 'danger');
+                break;
+            case 1808:
+                return setToast('Tài khoản không được thêm', 'danger');
+                break;
+            default:
+                return setToast('Không có kết nối đến máy chủ', 'danger')
+                break;
+        }
     }
   ],
 })
