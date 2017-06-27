@@ -78,6 +78,9 @@ export default class extends Component {
         // InteractionManager.runAfterInteractions(() => {
         console.log('Will focus DeliveryDetail')
         const {app} = this.props
+        // console.log('Content', this.content)
+        this.content.scrollToTop()
+        // this.refs.content._root.scrollToPosition({ x: 0, y: 0, animated: false })
         this.setState({counting: true})
         this._load()
         // })
@@ -216,7 +219,9 @@ export default class extends Component {
                     <Text white center bold>{orderDetail.orderInfo.placeInfo.address}</Text>
                 </View>
 
-                <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}>
+                <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}
+                         ref={(c) => { this.content = c }}
+                >
                     <View style={styles.rowPadding}>
                         {this._renderStatusText(orderDetail.orderInfo.status)}
                         <View style={styles.row}>
@@ -234,7 +239,7 @@ export default class extends Component {
                         <Text small grayDark>Đặt hàng số</Text>
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
-                    {(orderDetail.orderInfo.feedback && orderDetail.orderInfo.feedback!="")&&
+                    {(typeof orderDetail.orderInfo.feedback != "undefined" && orderDetail.orderInfo.feedback!="")&&
                         <View style={{...styles.block, ...styles.paddingTopMedium}}>
                             <Text small grayDark>Phản hồi của khách hàng</Text>
                             <Text bold grayDark>{orderDetail.orderInfo.feedback}</Text>

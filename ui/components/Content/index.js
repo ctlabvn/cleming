@@ -13,6 +13,9 @@ export default class extends Component {
     keyboardShouldPersistTaps: 'always',
   }
 
+  scrollToTop=()=>{
+      this.refs.content._root.scrollToPosition(0, 0, false)
+  }
   render() {
     const {children, refreshing, onRefresh, onScroll, padder, onEndReached, onEndReachedThreshold, ...props} = this.props    
     // show refresh control
@@ -22,6 +25,7 @@ export default class extends Component {
     
     return (                             
       <Content
+          ref="content"
         onScroll={(e)=>{    
           const offsetY = e.nativeEvent.contentOffset.y     
           const contentHeight= e.nativeEvent.contentSize.height
