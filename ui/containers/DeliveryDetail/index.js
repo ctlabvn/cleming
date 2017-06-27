@@ -197,8 +197,8 @@ export default class extends Component {
         let containerStyle = (orderDetail.orderInfo.status == 'CONFIRMED') ? styles.container2 : styles.container
         let rejectReason = null
         if (orderDetail && orderDetail.orderInfo && orderDetail.orderInfo.orderRejectReason
-            && (orderDetail.orderInfo.orderRejectReason.reason || orderDetail.orderInfo.orderRejectReason.note)){
-            rejectReason = (orderDetail.orderInfo.orderRejectReason.reason || orderDetail.orderInfo.orderRejectReason.note)
+            && (orderDetail.orderInfo.orderRejectReason.note || orderDetail.orderInfo.orderRejectReason.reason)){
+            rejectReason = (orderDetail.orderInfo.orderRejectReason.note || orderDetail.orderInfo.orderRejectReason.reason)
         }
         console.log('Reject Reason', rejectReason)
         return (
@@ -239,7 +239,7 @@ export default class extends Component {
                         <Text small grayDark>Đặt hàng số</Text>
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
-                    {(typeof orderDetail.orderInfo.feedback != "undefined" && orderDetail.orderInfo.feedback!="")&&
+                    {(typeof orderDetail.orderInfo.feedback != "undefined" && orderDetail.orderInfo.feedback != null && orderDetail.orderInfo.feedback!="")&&
                         <View style={{...styles.block, ...styles.paddingTopMedium}}>
                             <Text small grayDark>Phản hồi của khách hàng</Text>
                             <Text bold grayDark>{orderDetail.orderInfo.feedback}</Text>
