@@ -82,7 +82,7 @@ export default class extends Component {
     const { setToast } = this.props
     console.log('Handle Forgot', forgotEmail)
     if (!forgotEmail || forgotEmail.trim()==""){
-      setToast("Bạn phải nhập Email/Số điện thoại", "danger")
+      setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
       return
     }
     this.props.resetPassword(forgotEmail, (err, data) => {
