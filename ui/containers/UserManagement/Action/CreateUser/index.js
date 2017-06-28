@@ -152,9 +152,10 @@ export default class CreateUserContainer extends Component {
       console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
     // if (typeof this.props.route.params.id == "undefined")
-        this. resetProps();
+        this.resetProps();
     // console.log(this.props.initialValues.GroupAddress)
     // this.placeDropdown.clearAll()
+    
 
   }
 
@@ -178,6 +179,9 @@ export default class CreateUserContainer extends Component {
 
       if (typeof this.props.route.params.id != "undefined") {
           let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+
+          this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || {placeId:this.state.selectedPlaceId})
+
           let permission = null
           switch (employeeDetail.titleType) {
               case 1:
@@ -205,6 +209,8 @@ export default class CreateUserContainer extends Component {
           // this.props.change('email', '')
           // this.props.change('phone', '')
           this.resetProps();
+
+          this.placeDropdown.handleCheck({placeId:this.state.selectedPlaceId})
 
           this.setState({
               // chosenListPlace: [],

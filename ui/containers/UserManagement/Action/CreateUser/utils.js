@@ -200,12 +200,13 @@ export class RenderGroup extends Component {
     // console.log(this.state.fields)
     // return this.state.fields.filter(c=>c.checked).map(c=>c)
   // }
+
   
   handleCheck(address){
 
     // console.log(this.children)
 
-    if(address.placeId !== this.selectedPlaceId){
+    if(address && address.placeId !== this.selectedPlaceId){
       this.children[this.selectedPlaceId]._root.setState({checked: false})
       this.selectedPlaceId = address.placeId
       this.children[this.selectedPlaceId]._root.setState({checked: true})
@@ -268,7 +269,7 @@ export class RenderGroup extends Component {
               </Text>*/}
             </Col>
         </Grid>
-        <View style={{maxHeight: 300,marginVertical: 10}}>
+        <View style={{height: 10}}/>
         {place.listPlace && place.listPlace.map((address,index) => (
               <ListItem key={index} last={index === place.listPlace.length -1} style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
@@ -283,7 +284,7 @@ export class RenderGroup extends Component {
                   </View>
               </ListItem>
           ))}
-        </View>
+        <View style={{height: 10}}/>
       </View>
     )
   }

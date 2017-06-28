@@ -76,11 +76,7 @@ class UserManagement extends Component {
         }
     }
     _loadListEmployee(placeId) {
-        const { getListEmployee, session, user } = this.props
-
-        this.setState({
-            isFetchingData: true
-        })
+        const { getListEmployee, session, user } = this.props        
         getListEmployee(session, placeId, () => {
             let data = []
             for (let i = 0; i < 1; i++) {
@@ -113,6 +109,12 @@ class UserManagement extends Component {
 
     componentWillMount() {
         this.componentWillFocus();
+    }
+
+    componentWillBlur(){
+        this.setState({
+            isFetchingData: true
+        })
     }
 
     componentWillFocus(){
