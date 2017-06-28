@@ -107,15 +107,7 @@ export const validateField = (values) => {
 export class RenderGroup extends Component {
   constructor(props) {
     super(props)
-    // this.state = {
-    //   // fields: props.fields.map((c, index)=>({
-    //   //   placeId: props.fields.get(index).placeId,
-    //   //   checked: false,
-    //   //   address: props.fields.get(index).address
-    //   // })),
-    //   // checkAll: false,
-    //     selectedPlaceId: props.selectedPlaceId,
-    // }
+
     this.children = {}
     this.selectedPlaceId = props.selectedPlaceId
   }
@@ -123,100 +115,18 @@ export class RenderGroup extends Component {
   componentWillMount() {
     
   }
-
-  // clearAll(){
-    // const newState = this.state.fields.slice(0)  
-    // newState.map((c, index) => {
-    //   c.checked = false         
-    // })
-    // this.setState({
-    //   fields: newState
-    // })
-  // }
   
   componentWillReceiveProps(nextProps) {
 
-    // if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
-    //   if (this.props.employeeListPlace != nextProps.employeeListPlace) {
-    //     const newState = this.state.fields.slice(0)
-    //     newState.map((c, index) => {
-    //       newState[index].checked = false
-    //       nextProps.employeeListPlace.map((place, placeIndex) => {
-    //         if (place.placeId == c.placeId) {
-    //           newState[index].checked = true
-    //         }
-    //       })
-    //     })
-    //     this.setState({
-    //       fields: newState
-    //     })
-    //   }
-    // }
-
-      // if (nextProps.employeeListPlace.length != 0 && this.props.employeeListPlace.length != 0) {
-      //     if (this.props.employeeListPlace != nextProps.employeeListPlace) {
-      //         const newState = this.state.fields.slice(0)
-      //         newState.map((value, index) => {
-      //             newState[index].checked = value.placeId === nextProps.selectedPlaceId;
-      //         })
-      //         this.setState({
-      //             fields: newState
-      //         })
-      //     }
-      // }
-      //
-      // console.warn(JSON.stringify({status: 'componentWillReceiveProps'}, null, 2));
-      //
-      // if (this.state.selectedPlaceId != nextProps.selectedPlaceId) {
-      //     this.setState({
-      //         selectedPlaceId: nextProps.selectedPlaceId,
-      //     }, this.setDefaultChecked);
-      // }
   }
   
   componentDidMount() {
-    // const newState = this.state.fields.slice(0)
-    // newState.map((c, index) => {
-    //   this.props.employeeListPlace.map((place, placeIndex) => {
-    //     if (place.placeId == c.placeId) {
-    //       newState[index].checked = true
-    //     }
-    //   })
-    // })
-    // this.setState({
-    //   fields: newState
-    // }, () => {
-    //   this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    // })
-
-      // this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    // this.state.selectedPlaceId
 
     this.props.onReady && this.props.onReady(this)
       // alert('selected place utils' + this.state.selectedPlace)
 
       // this.setDefaultChecked();
   }
-
-  // setDefaultChecked() {
-      // select default place the same the selected place
-
-      // let selectedPlaceId = this.props.selectedPlaceId;
-      // let placeIndex = 0;
-      // this.state.fields.map((c, index)=>{
-      //     if (c.placeId == selectedPlaceId) {
-      //         placeIndex = index;
-      //         this.handleCheck(placeIndex);
-      //         return;
-      //     }
-      // })
-
-  // }
-  
-  // getSelected(){
-    // console.log(this.state.fields)
-    // return this.state.fields.filter(c=>c.checked).map(c=>c)
-  // }
 
   
   handleCheck(address){
@@ -230,45 +140,8 @@ export class RenderGroup extends Component {
       prevChild = this.children[this.selectedPlaceId]
       prevChild && prevChild._root.setState({checked: true})
     }    
-
-
-    // this.setState({
-    //   selectedPlaceId
-    // })
-
-    // const newState = this.state.fields.slice(0)
-    // let newState = this.state.fields
-    // // this.state.fields.map((item)=>{
-    // //   return {...item, checked : false}
-    // // })
-
-    // if(newState[index]){
-    //   // newState[index].checked = true;
-    //   // console.log(newState)
-    //   let newSelectedPlaceId = newState[index].placeId;
-    //   this.setState({
-    //       // fields: newState,
-    //       selectedPlaceId: newSelectedPlaceId,
-    //   }, () => {
-    //     // console.log(newState)
-    //     // this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    //   })
-    // }
   }
   
-  // handleCheckAll() {
-    // const newState = this.state.fields.slice(0)
-    // newState.map((c, index) => {
-    //   // alert('index: ' + index);
-    //   c.checked = !this.state.checkAll
-    // })
-    // this.setState({
-    //   fields: newState,
-    //   checkAll: !this.state.checkAll
-    // }, () => {
-    //   this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    // })
-  // }
   
   render() {
 
@@ -276,34 +149,26 @@ export class RenderGroup extends Component {
       
     return (
       <View style={{marginTop: 10}}>
-        <Grid>
-            <Col style={{alignItems: 'center'}}>
-              <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
-            </Col>
-            <Col style={{alignItems: 'center'}}>
-              {/*<Text
-                style={styles.rightAddressTitleText}
-                onPress={this.handleCheckAll.bind(this)}>
-                  Đánh dấu tất cả
-              </Text>*/}
-            </Col>
-        </Grid>
-        <View style={{height: 10}}/>
+        
+        <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
+            
+        
         {place.listPlace && place.listPlace.map((address,index) => (
-              <ListItem key={index} last={index === place.listPlace.length -1} style={styles.listItem}>
+              <ListItem key={index} 
+                  onPress={()=>this.handleCheck(address)}
+                  style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                       <CheckBox
                           ref={ref=>this.children[address.placeId]=ref}
                           type="radio"
                           parent={this}
-                          checked={address.placeId === this.selectedPlaceId}
-                          onPress={()=>this.handleCheck(address)}
+                          checked={address.placeId === this.selectedPlaceId}                          
                       />
                   </View>
               </ListItem>
           ))}
-        <View style={{height: 10}}/>
+        
       </View>
     )
   }

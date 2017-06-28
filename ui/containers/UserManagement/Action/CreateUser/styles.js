@@ -30,8 +30,8 @@ export default {
     listItem:{
         marginLeft:10,
         marginRight:-5,
-        paddingLeft:10,
-        paddingRight:10,
+        paddingLeft:0,
+        paddingRight:0,
         height:40,
         borderBottomWidth: 0,
         paddingBottom: 10,
@@ -40,12 +40,13 @@ export default {
     right: {
         flexDirection:'row',
         justifyContent:'flex-end',
-        flex:1,
-        marginRight: 10
-    },
-    left: {
+        width: 40,
+        marginRight: 10,
         flex: 1,
+    },
+    left: {        
         // color: '#a2a2a2',
+        flex: 3,
         color: material.gray400
     },
     leftAddressTitleText: {
