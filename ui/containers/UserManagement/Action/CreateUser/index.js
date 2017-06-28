@@ -127,10 +127,9 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillBlur() {
-    // console.log('step', 'componentWillBlur');
-    this._scrollPageUp()
+    // console.log('step', 'componentWillBlur');    
     this.props.actions.resetForm('CreateUserForm')
-
+    this._scrollPageUp()
   }
 
 
