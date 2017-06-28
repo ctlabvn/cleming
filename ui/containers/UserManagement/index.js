@@ -53,28 +53,29 @@ class UserManagement extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.listEmployee != nextProps.listEmployee || this.props.user != nextProps.user) {
-            let data = []
-            for (let i = 0; i < 1; i++) {
-                data.push({
-                    owner: nextProps.user,
-                    employeeList: nextProps.listEmployee
-                })
-            }
+        // if (this.props.user != nextProps.user) {
+        //     let data = []
+        //     for (let i = 0; i < 1; i++) {
+        //         data.push({
+        //             owner: nextProps.user,
+        //             employeeList: nextProps.listEmployee
+        //         })
+        //     }
 
-            this.data = data
-            this.setState({
-                isFetchingData: false
-            })
-            // this.setState({
-            //     data: data
-            // }, () => {
-            //     this.setState({
-            //         isFetchingData: false
-            //     })
-            // })
-        }
+        //     this.data = data
+        //     this.setState({
+        //         isFetchingData: false
+        //     })
+        //     // this.setState({
+        //     //     data: data
+        //     // }, () => {
+        //     //     this.setState({
+        //     //         isFetchingData: false
+        //     //     })
+        //     // })
+        // }
     }
+
     _loadListEmployee(placeId) {
         const { getListEmployee, session, user } = this.props        
         getListEmployee(session, placeId, () => {
@@ -227,6 +228,7 @@ class UserManagement extends Component {
                         </Button>
                         {blueLineBelowOwner}
                         <List
+                            removeClippedSubviews={false}
                             dataArray={data.employeeList}
                             renderRow={this.renderEmployeeRow.bind(this)} />
                     </Col>
@@ -387,7 +389,8 @@ class UserManagement extends Component {
         return (
             <Container>
                 <Content style={{ backgroundColor: material.white500 }}>
-                    <List                                                
+                    <List                                                    
+                        enableEmptySections={true}                                            
                         removeClippedSubviews={false}                        
                         style={{ marginBottom: 50, marginTop: 20 }}
                         dataArray={this.data}

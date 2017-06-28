@@ -24,6 +24,8 @@ import {
 } from '~/ui/elements/Form'
 import Icon from '~/ui/elements/Icon'
 
+import Modal from '~/ui/components/Modal'
+
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
@@ -50,25 +52,32 @@ const formSelector = formValueSelector('CreateUserForm')
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
 }), (stateProps, dispatchProps, ownProps) => {
-  if (typeof ownProps.route.params.id == 'undefined' || stateProps.listEmployee.length <= 0) {
-    return ({
-      enableReinitialize: true,
-      persistentSubmitErrors: true,
-      initialValues: {
-        // GroupAddress: stateProps.place.listPlace,
-        name: '',
-        email: '',
-        phone: '',
-        permission: {
-          id: 1,
-          name: "Nhân Viên"
-        }
-      },
-      ...ownProps, ...stateProps, ...dispatchProps,
-    })
-  }
-  let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+  // if (typeof ownProps.route.params.id == 'undefined' || stateProps.listEmployee.length <= 0) {
+  //   return ({
+  //     enableReinitialize: true,
+  //     persistentSubmitErrors: true,
+  //     initialValues: {
+  //       // GroupAddress: stateProps.place.listPlace,
+  //       name: '',
+  //       email: '',
+  //       phone: '',
+  //       permission: {
+  //         id: 1,
+  //         name: "Nhân Viên"
+  //       }
+  //     },
+  //     ...ownProps, ...stateProps, ...dispatchProps,
+  //   })
+  // }
+  let employeeDetail = stateProps.listEmployee[+ownProps.route.params.id] || {
     // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    titleType: 1,
+    fromTimeWork: "07:00",
+    toTimeWork: "20:00",
+  }
   // console.warn(JSON.stringify(stateProps.listEmployee, null, 2));
   let permission = null
       switch (employeeDetail.titleType) {
@@ -86,14 +95,14 @@ const formSelector = formValueSelector('CreateUserForm')
       // GroupAddress: stateProps.place.listPlace,
       name: employeeDetail.userName,
       email: employeeDetail.email,
-      phone: '0' + employeeDetail.phoneNumber,
-      permission: {
-        id: employeeDetail.titleType,
-        name: permission
-      },
-      fromTimeWork: employeeDetail.fromTimeWork,
-      toTimeWork: employeeDetail.toTimeWork
+      phone: employeeDetail.phoneNumber ? '0' + employeeDetail.phoneNumber : '',      
     },
+    // permission: {
+    //   id: employeeDetail.titleType,
+    //   name: permission
+    // },
+    fromTimeWork: employeeDetail.fromTimeWork,
+    toTimeWork: employeeDetail.toTimeWork,
     ...ownProps, ...stateProps, ...dispatchProps,
   })
 })
@@ -121,8 +130,8 @@ export default class CreateUserContainer extends Component {
       permissionModalOpen: false,
       fromTimeVisible: false,
       toTimeVisible: false,
-      fromTime: props.initialValues.fromTimeWork || moment(new Date()).format("HH:mm"),
-      toTime: props.initialValues.toTimeWork || moment(new Date()).format("HH:mm"),
+      fromTime: props.fromTimeWork,
+      toTime: props.toTimeWork,
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
@@ -133,15 +142,15 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
 
-      if (typeof this.props.route.params.id == "undefined") {
-        let oldState = this.state;
-          this.state ={
-              ...oldState,
-              fromTime: "07:00",
-              toTime: "20:00",
-              firstTimeResetPassword: false
-          }
-      }
+      // if (typeof this.props.route.params.id == "undefined") {
+      //   let oldState = this.state;
+      //     this.state ={
+      //         ...oldState,
+      //         fromTime: "07:00",
+      //         toTime: "20:00",
+      //         firstTimeResetPassword: false
+      //     }
+      // }
 
     this.firstTimeResetTime = true
 
@@ -342,6 +351,9 @@ export default class CreateUserContainer extends Component {
   onSubmitUser = (data) => {
     // console.log(data)
         const errRet = validateField(data)
+        this.setState({
+            errorForm: errRet,            
+        })
       // console.warn(JSON.stringify(errRet))
 
       let userInfo = {}
@@ -351,28 +363,16 @@ export default class CreateUserContainer extends Component {
       // if (this.props.formState.CreateUserForm.syncErrors) {
       if (errRet.name || errRet.phone || errRet.email) {
           this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
-          this.setState({
-              errorForm: errRet,
-          }, () => this._scrollPageUp());
-
+          this._scrollPageUp()
           // return;
       } else if(!this.state.selectedPlaceId){
+        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger');
 
-          this.setState({
-              errorForm: errRet,
-          }, () => this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger'));
-
-    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
-          this.setState({errorForm: errRet}, ()=> {
-              this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
-              this._scrollPageDown();
-          })
-
+    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
+        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+        this._scrollPageDown();        
     } else {
-      this.setState({
-          errorForm: errRet,
-          isLoading: true
-      })
+      
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = data.name
       userInfo.phoneNumber = data.phone
@@ -386,6 +386,11 @@ export default class CreateUserContainer extends Component {
       userInfo.fromTimeWork = this.state.fromTime
       userInfo.toTimeWork = this.state.toTime
       userInfo.listPlaceId = this.placeDropdown.selectedPlaceId // this.state.selectedPlaceId.toString()//listPlaceId
+
+      this.setState({
+        isLoading: true,
+      })
+
       if (typeof this.props.route.params.id == 'undefined') {
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
@@ -657,14 +662,14 @@ export default class CreateUserContainer extends Component {
     // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
     //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
     const { handleSubmit } = this.props;
-    let mainContainer = null
-    if (this.state.isLoading) {
-      // mainContainer = this.renderIndicator()
-        // console.log("state.isLoading: ", "renderIndiCator");
-    } else {
-      mainContainer = this.renderMainContainer()
-        // console.log("state.isLoading: ", "renderMainContainer");
-    }
+    let mainContainer = this.renderMainContainer()
+    // if (this.state.isLoading) {
+    //   // mainContainer = this.renderIndicator()
+    //     // console.log("state.isLoading: ", "renderIndiCator");
+    // } else {
+    //   mainContainer = this.renderMainContainer()
+    //     // console.log("state.isLoading: ", "renderMainContainer");
+    // }
 
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
@@ -706,6 +711,21 @@ export default class CreateUserContainer extends Component {
           onCancel={this.onToTimeCancel.bind(this)}
           date={new Date(2000, 1, 1, +hour1, +minute1)}
         />
+
+        <Modal open={this.state.isLoading}>
+            <View style={{
+              height: 50,
+              width: 200,
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              overflow: 'hidden',              
+            }}>
+              <Text>Please waiting...</Text>
+            </View>
+        </Modal>
+
       </Container>
     )
   }
