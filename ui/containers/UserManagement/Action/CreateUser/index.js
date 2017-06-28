@@ -29,7 +29,7 @@ import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
 import * as commonActions from '~/store/actions/common'
 import { getSelectedPlace } from '~/store/selectors/place'
-import { validateField, renderGroup } from './utils'
+import { validateField, RenderGroup } from './utils'
 import styles from './styles'
 import md5 from 'md5'
 import material from '~/theme/variables/material'
@@ -55,7 +55,7 @@ const formSelector = formValueSelector('CreateUserForm')
       enableReinitialize: true,
       persistentSubmitErrors: true,
       initialValues: {
-        GroupAddress: stateProps.place.listPlace,
+        // GroupAddress: stateProps.place.listPlace,
         name: '',
         email: '',
         phone: '',
@@ -83,7 +83,7 @@ const formSelector = formValueSelector('CreateUserForm')
   return ({
     enableReinitialize: true,
     initialValues: {
-      GroupAddress: stateProps.place.listPlace,
+      // GroupAddress: stateProps.place.listPlace,
       name: employeeDetail.userName,
       email: employeeDetail.email,
       phone: '0' + employeeDetail.phoneNumber,
@@ -183,7 +183,7 @@ export default class CreateUserContainer extends Component {
               case 1:
                   permission = "Nhân Viên"
           }
-          this.props.change('GroupAddress', this.props.place.listPlace)
+          // this.props.change('GroupAddress', this.props.place.listPlace)
           this.props.change('name', employeeDetail.userName)
           this.props.change('email', employeeDetail.email)
           this.props.change('phone', '0' + employeeDetail.phoneNumber)
@@ -200,7 +200,7 @@ export default class CreateUserContainer extends Component {
 
       } else {
           this.props.actions.deleteGeneratedPassword()
-          this.props.change('GroupAddress', this.props.place.listPlace)
+          // this.props.change('GroupAddress', this.props.place.listPlace)
           // this.props.change('name', '')
           // this.props.change('email', '')
           // this.props.change('phone', '')
@@ -378,7 +378,7 @@ export default class CreateUserContainer extends Component {
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
       userInfo.toTimeWork = this.state.toTime
-      userInfo.listPlaceId = this.state.selectedPlaceId.toString()//listPlaceId
+      userInfo.listPlaceId = this.placeDropdown.selectedPlaceId // this.state.selectedPlaceId.toString()//listPlaceId
       if (typeof this.props.route.params.id == 'undefined') {
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
@@ -431,7 +431,7 @@ export default class CreateUserContainer extends Component {
   setDefaultPlace() {
     // console.warn(JSON.stringify(this.props.selectedPlace, null, 2));
     // this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
-      this.placeDropdown.setDefaultChecked();
+      // this.placeDropdown.setDefaultChecked();
   }
 
   renderMainContainer() {
@@ -590,13 +590,13 @@ export default class CreateUserContainer extends Component {
           </Grid>
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
-        <FieldArray
+        <RenderGroup
           handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
-          employeeListPlace={listPlace}
-          name="GroupAddress"
+          // employeeListPlace={listPlace}
+          // name="GroupAddress"
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId = {this.state.selectedPlaceId}
-          component={renderGroup} />
+        />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
           <Grid>

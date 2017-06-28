@@ -2,6 +2,7 @@
  * Created by vjtc0n on 5/5/17.
  */
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import {
     ListItem, Text, View, Grid, Col, List
 } from 'native-base'
@@ -83,33 +84,38 @@ export const validateField = (values) => {
   return errors
 }
 
-export class renderGroup extends Component {
+@connect(state => ({  
+  place: state.place,
+}))
+export class RenderGroup extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      fields: props.fields.map((c, index)=>({
-        placeId: props.fields.get(index).placeId,
-        checked: false,
-        address: props.fields.get(index).address
-      })),
-      checkAll: false,
-        selectedPlaceId: props.selectedPlaceId,
-    }
+    // this.state = {
+    //   // fields: props.fields.map((c, index)=>({
+    //   //   placeId: props.fields.get(index).placeId,
+    //   //   checked: false,
+    //   //   address: props.fields.get(index).address
+    //   // })),
+    //   // checkAll: false,
+    //     selectedPlaceId: props.selectedPlaceId,
+    // }
+    this.children = {}
+    this.selectedPlaceId = props.selectedPlaceId
   }
   
   componentWillMount() {
     
   }
 
-  clearAll(){
-    const newState = this.state.fields.slice(0)  
-    newState.map((c, index) => {
-      c.checked = false         
-    })
-    this.setState({
-      fields: newState
-    })
-  }
+  // clearAll(){
+    // const newState = this.state.fields.slice(0)  
+    // newState.map((c, index) => {
+    //   c.checked = false         
+    // })
+    // this.setState({
+    //   fields: newState
+    // })
+  // }
   
   componentWillReceiveProps(nextProps) {
 
@@ -167,70 +173,87 @@ export class renderGroup extends Component {
     // })
 
       // this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    this.state.selectedPlaceId
+    // this.state.selectedPlaceId
 
     this.props.onReady && this.props.onReady(this)
       // alert('selected place utils' + this.state.selectedPlace)
 
-      this.setDefaultChecked();
+      // this.setDefaultChecked();
   }
 
-  setDefaultChecked() {
+  // setDefaultChecked() {
       // select default place the same the selected place
 
-      let selectedPlaceId = this.props.selectedPlaceId;
-      let placeIndex = 0;
-      this.state.fields.map((c, index)=>{
-          if (c.placeId == selectedPlaceId) {
-              placeIndex = index;
-              this.handleCheck(placeIndex);
-              return;
-          }
-      })
+      // let selectedPlaceId = this.props.selectedPlaceId;
+      // let placeIndex = 0;
+      // this.state.fields.map((c, index)=>{
+      //     if (c.placeId == selectedPlaceId) {
+      //         placeIndex = index;
+      //         this.handleCheck(placeIndex);
+      //         return;
+      //     }
+      // })
 
-  }
+  // }
   
-  getSelected(){
+  // getSelected(){
     // console.log(this.state.fields)
-    return this.state.fields.filter(c=>c.checked).map(c=>c)
-  }
+    // return this.state.fields.filter(c=>c.checked).map(c=>c)
+  // }
   
-  handleCheck(index){
-    // const newState = this.state.fields.slice(0)
-    let newState = this.state.fields
-    // this.state.fields.map((item)=>{
-    //   return {...item, checked : false}
+  handleCheck(address){
+
+    // console.log(this.children)
+
+    if(address.placeId !== this.selectedPlaceId){
+      this.children[this.selectedPlaceId]._root.setState({checked: false})
+      this.selectedPlaceId = address.placeId
+      this.children[this.selectedPlaceId]._root.setState({checked: true})
+    }    
+
+
+    // this.setState({
+    //   selectedPlaceId
     // })
 
-    if(newState[index]){
-      // newState[index].checked = true;
-      // console.log(newState)
-      let newSelectedPlaceId = newState[index].placeId;
-      this.setState({
-          // fields: newState,
-          selectedPlaceId: newSelectedPlaceId,
-      }, () => {
-        // console.log(newState)
-        // this.props.handleGetListPlaceFromArrayField(this.getSelected())
-      })
-    }
+    // const newState = this.state.fields.slice(0)
+    // let newState = this.state.fields
+    // // this.state.fields.map((item)=>{
+    // //   return {...item, checked : false}
+    // // })
+
+    // if(newState[index]){
+    //   // newState[index].checked = true;
+    //   // console.log(newState)
+    //   let newSelectedPlaceId = newState[index].placeId;
+    //   this.setState({
+    //       // fields: newState,
+    //       selectedPlaceId: newSelectedPlaceId,
+    //   }, () => {
+    //     // console.log(newState)
+    //     // this.props.handleGetListPlaceFromArrayField(this.getSelected())
+    //   })
+    // }
   }
   
-  handleCheckAll() {
-    const newState = this.state.fields.slice(0)
-    newState.map((c, index) => {
-      // alert('index: ' + index);
-      c.checked = !this.state.checkAll
-    })
-    this.setState({
-      fields: newState,
-      checkAll: !this.state.checkAll
-    }, () => {
-      this.props.handleGetListPlaceFromArrayField(this.getSelected())
-    })
-  }
+  // handleCheckAll() {
+    // const newState = this.state.fields.slice(0)
+    // newState.map((c, index) => {
+    //   // alert('index: ' + index);
+    //   c.checked = !this.state.checkAll
+    // })
+    // this.setState({
+    //   fields: newState,
+    //   checkAll: !this.state.checkAll
+    // }, () => {
+    //   this.props.handleGetListPlaceFromArrayField(this.getSelected())
+    // })
+  // }
   
   render() {
+
+    const {place} = this.props
+      
     return (
       <View style={{marginTop: 10}}>
         <Grid>
@@ -245,24 +268,27 @@ export class renderGroup extends Component {
               </Text>*/}
             </Col>
         </Grid>
-        <View style={{height: 10}}/>
-        {this.state.fields.map((address, index) =>
-          {
-            return (
-              <ListItem key={index} last={index===this.state.fields.length-1} style={styles.listItem}>
+        <View style={{maxHeight: 300,marginVertical: 10}}>
+        <List 
+          dataArray={place.listPlace}
+          removeClippedSubviews={false}
+          pageSize={20}
+          renderRow={(address) => (
+              <ListItem style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                       <CheckBox
+                          ref={ref=>this.children[address.placeId]=ref}
                           type="radio"
-                          checked={address.placeId === this.state.selectedPlaceId}
-                          onPress={e=>this.handleCheck(index)}
+                          parent={this}
+                          checked={address.placeId === this.selectedPlaceId}
+                          onPress={()=>this.handleCheck(address)}
                       />
                   </View>
               </ListItem>
-            )
-          }
-        )}
-        <View style={{height: 10}}/>
+          )}
+        />
+        </View>
       </View>
     )
   }
