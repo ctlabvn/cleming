@@ -127,5 +127,14 @@ export default {
     container: {
         paddingBottom: 40,
         backgroundColor: 'white'
+    },
+    preload: {
+      height: 50,
+      width: 200,
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#fff',
+      overflow: 'hidden',              
     }
 }

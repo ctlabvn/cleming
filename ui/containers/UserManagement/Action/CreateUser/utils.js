@@ -11,13 +11,15 @@ import CheckBox from '~/ui/elements/CheckBox'
 import validate from 'validate.js'
 import _ from 'underscore'
 
+import { Field } from 'redux-form'
 import {
-    // InputField,
+    InputField,
     CheckBoxField,
     // DateField,
 } from '~/ui/elements/Form'
 
 import styles from './styles'
+import material from '~/theme/variables/material'
 import { convertVn } from '~/ui/shared/utils'
 
 const namePattern = /^([A-Za-z_]{2,}\s)*[A-Za-z_]{2,}$/
@@ -45,6 +47,21 @@ const emailConstraints = {
     email: true
   }
 }
+
+export const RenderTextField = ({errorStyle, ...props}) => (
+  <View style={{ ...styles.inputContainer, ...errorStyle }}>
+    <Field
+      iconStyle={styles.closeIcon}
+      icon={input => input.value ? 'close' : false}
+      onIconPress={input => input.onChange('')}
+      inputStyle={styles.inputText}
+      style={styles.inputField}
+      component={InputField}
+      placeholderTextColor={material.gray500} 
+      {...props}
+    />
+  </View>
+)
 
 // if long then seperate
 export const validateField = (values) => {

@@ -31,7 +31,7 @@ import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
 import * as commonActions from '~/store/actions/common'
 import { getSelectedPlace } from '~/store/selectors/place'
-import { validateField, RenderGroup } from './utils'
+import { validateField, RenderGroup, RenderTextField } from './utils'
 import styles from './styles'
 import md5 from 'md5'
 import material from '~/theme/variables/material'
@@ -127,7 +127,8 @@ export default class CreateUserContainer extends Component {
   }
 
   componentWillBlur() {
-    console.log('step', 'componentWillBlur');
+    // console.log('step', 'componentWillBlur');
+    this._scrollPageUp()
     this.props.actions.resetForm('CreateUserForm')
 
   }
@@ -332,6 +333,8 @@ export default class CreateUserContainer extends Component {
     })
   }
 
+  
+
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
     // this.setDefaultTimeWork();
@@ -342,8 +345,7 @@ export default class CreateUserContainer extends Component {
     let formState = null
     let nameError = null
     let nameTouched = false
-    let errorNameStyle = null
-    let errorLongNameStyle = null
+    let errorNameStyle = null    
     let phoneError = null
     let phoneTouched = false
     let errorPhoneStyle = null
@@ -362,7 +364,7 @@ export default class CreateUserContainer extends Component {
           nameTouched = true
           errorNameStyle = { borderColor: material.red500, borderWidth: 1 }
           if (errorForm.name.length > 30) {
-            errorLongNameStyle = { marginBottom: 5 }
+            errorNameStyle.marginBottom = 5
           }
           nameError = <Text style={{ color: material.red500 }}>{errorForm.name}</Text>
         }
@@ -394,47 +396,14 @@ export default class CreateUserContainer extends Component {
 
     return (
       <View style={{ paddingLeft: 15, paddingRight: 15 }}>
-        <View style={{ ...styles.inputContainer, ...errorNameStyle, ...errorLongNameStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={(input, active) => input.value && active ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            style={{ ...styles.inputField }}
-            label="Họ và tên"
-            name="name"
-            component={InputField}
-            placeholderTextColor= {material.gray500} />
-        </View>
+
+        <RenderTextField label="Họ và tên" name="name"  errorStyle={errorNameStyle} />        
         {nameTouched && nameError}
 
-        <View style={{ ...styles.inputContainer, ...errorPhoneStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={input => input.value ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            keyboardType="numeric"
-            style={styles.inputField}
-            label="Số điện thoại"
-            name="phone"
-            component={InputField}
-            placeholderTextColor={material.gray500} />
-        </View>
+        <RenderTextField label="Số điện thoại" name="phone"  errorStyle={errorPhoneStyle} keyboardType="numeric" />        
         {phoneTouched && phoneError}
 
-        <View style={{ ...styles.inputContainer, ...errorEmailStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={input => input.value ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            style={styles.inputField}
-            label="Email"
-            name="email"
-            component={InputField}
-            placeholderTextColor={material.gray500} />
-        </View>
+        <RenderTextField label="Email" name="email"  errorStyle={errorEmailStyle} />   
         {emailTouched && emailError}
 
         <View style={{ ...styles.inputContainer, zIndex: 100, marginBottom: 10, overflow: null }}>
@@ -534,7 +503,8 @@ export default class CreateUserContainer extends Component {
 
     return (
       <Container style={styles.container}>
-        <ScrollView style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>
+        <ScrollView style={{ backgroundColor: material.white500 }} 
+          keyboardShouldPersistTaps="always" ref="myContent">
             {this.renderMainContainer()}
         </ScrollView>
         <Button
@@ -564,15 +534,7 @@ export default class CreateUserContainer extends Component {
         />
 
         <Modal open={this.state.isLoading}>
-            <View style={{
-              height: 50,
-              width: 200,
-              borderRadius: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-              overflow: 'hidden',              
-            }}>
+            <View style={styles.preload}>
               <Text>Please waiting...</Text>
             </View>
         </Modal>
