@@ -307,13 +307,13 @@ export default class CreateUserContainer extends Component {
       })
 
       if (typeof this.props.route.params.id == 'undefined') {
-        userInfo.password = md5(this.props.generatedPassword)        
+        userInfo.password = this.props.generatedPassword
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
         })
       } else {
         if(this.props.generatedPassword){
-          userInfo.password = this.props.generatedPassword
+          userInfo.password = md5(this.props.generatedPassword)
         } 
         userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
