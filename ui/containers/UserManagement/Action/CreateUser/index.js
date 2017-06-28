@@ -154,7 +154,7 @@ export default class CreateUserContainer extends Component {
     // if (typeof this.props.route.params.id == "undefined")
         this. resetProps();
     // console.log(this.props.initialValues.GroupAddress)
-    this.placeDropdown.clearAll()
+    // this.placeDropdown.clearAll()
 
   }
 

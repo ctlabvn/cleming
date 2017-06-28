@@ -269,12 +269,8 @@ export class RenderGroup extends Component {
             </Col>
         </Grid>
         <View style={{maxHeight: 300,marginVertical: 10}}>
-        <List 
-          dataArray={place.listPlace}
-          removeClippedSubviews={false}
-          pageSize={20}
-          renderRow={(address) => (
-              <ListItem style={styles.listItem}>
+        {place.listPlace && place.listPlace.map((address,index) => (
+              <ListItem key={index} last={index === place.listPlace.length -1} style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                       <CheckBox
@@ -286,8 +282,7 @@ export class RenderGroup extends Component {
                       />
                   </View>
               </ListItem>
-          )}
-        />
+          ))}
         </View>
       </View>
     )
