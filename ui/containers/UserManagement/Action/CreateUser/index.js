@@ -44,8 +44,8 @@ const formSelector = formValueSelector('CreateUserForm')
   listEmployee: accountSelectors.getListEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
-  formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
-  formState: state.form,
+  // formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
+  // formState: state.form,
   selectedPlace: getSelectedPlace(state)
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
@@ -112,9 +112,9 @@ export default class CreateUserContainer extends Component {
       id: 1,
       name: "Nhân Viên"
     }
-    if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission) {
-      currentJob = props.formValues.permission
-    }
+    // if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission) {
+    //   currentJob = props.formValues.permission
+    // }
 
     this.state = {
       jobModalOpen: false,
@@ -340,12 +340,13 @@ export default class CreateUserContainer extends Component {
   }
 
   onSubmitUser = (data) => {
+    // console.log(data)
         const errRet = validateField(data)
       // console.warn(JSON.stringify(errRet))
 
       let userInfo = {}
     // if (this.state.chosenListPlace.length == 0) {
-      console.log(this.state.selectedPlaceId)
+      // console.log(this.state.selectedPlaceId)
 
       // if (this.props.formState.CreateUserForm.syncErrors) {
       if (errRet.name || errRet.phone || errRet.email) {
@@ -373,14 +374,14 @@ export default class CreateUserContainer extends Component {
           isLoading: true
       })
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
-      userInfo.fullName = this.props.formValues.name
-      userInfo.phoneNumber = this.props.formValues.phone
+      userInfo.fullName = data.name
+      userInfo.phoneNumber = data.phone
       userInfo.password = this.props.generatedPassword
       // If edit create account, not encrypt password; if editing, encrypt password
       if (typeof this.props.route.params.id != 'undefined') {
         userInfo.password = md5(this.props.generatedPassword)
       }
-      userInfo.email = this.props.formValues.email
+      userInfo.email = data.email
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
       userInfo.toTimeWork = this.state.toTime
@@ -466,15 +467,13 @@ export default class CreateUserContainer extends Component {
     let emailTouched = false
     let fields = null
 
-    formState = this.props.formState.CreateUserForm
-
     let errorForm = this.state.errorForm;
 
     if (typeof errorForm != "undefined") {
-      fields = formState.fields
+      
       if (typeof errorForm != 'undefined' && typeof fields != "undefined") {
         // let errors = formState.syncErrors
-        if (errorForm.name && typeof fields.name != 'undefined' && fields.name.touched) {
+        if (errorForm.name) {
           nameTouched = true
           errorNameStyle = { borderColor: material.red500, borderWidth: 1 }
           if (errorForm.name.length > 30) {
@@ -482,12 +481,12 @@ export default class CreateUserContainer extends Component {
           }
           nameError = <Text style={{ color: material.red500 }}>{errorForm.name}</Text>
         }
-        if (errorForm.phone && typeof fields.phone != 'undefined' && fields.phone.touched) {
+        if (errorForm.phone) {
           phoneTouched = true
           errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
           phoneError = <Text style={{ color: material.red500 }}>{errorForm.phone}</Text>
         }
-        if (errorForm.email && typeof fields.email != 'undefined' && fields.email.touched) {
+        if (errorForm.email) {
           emailTouched = true
           errorEmailStyle = { borderColor: material.red500, borderWidth: 1 }
           emailError = <Text style={{ color: material.red500 }}>{errorForm.email}</Text>

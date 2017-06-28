@@ -207,9 +207,11 @@ export class RenderGroup extends Component {
     // console.log(this.children)
 
     if(address && address.placeId !== this.selectedPlaceId){
-      this.children[this.selectedPlaceId]._root.setState({checked: false})
+      let prevChild = this.children[this.selectedPlaceId]
+      prevChild && prevChild._root.setState({checked: false})
       this.selectedPlaceId = address.placeId
-      this.children[this.selectedPlaceId]._root.setState({checked: true})
+      prevChild = this.children[this.selectedPlaceId]
+      prevChild && prevChild._root.setState({checked: true})
     }    
 
 

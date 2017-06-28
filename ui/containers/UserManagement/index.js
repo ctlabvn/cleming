@@ -259,24 +259,21 @@ class UserManagement extends Component {
         const { forwardTo, selectedPlace, app } = this.props
         if (this.state.updateInfoChecked) {
             this.setState({
+                modalOpen: false,
                 updateInfoChecked: !this.state.updateInfoChecked
             })
             forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
-        } else if (this.state.deleteAccountChecked) {
-            this.setState({
-                isFetchingData: true
-            })
+        } else if (this.state.deleteAccountChecked) {            
             let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
             })
             this.setState({
+                modalOpen: false,
+                isFetchingData: true,
                 deleteAccountChecked: !this.state.deleteAccountChecked
             })
         }
-        this.setState({
-            modalOpen: false
-        })
     }
 
     renderModal() {
@@ -390,8 +387,8 @@ class UserManagement extends Component {
         return (
             <Container>
                 <Content style={{ backgroundColor: material.white500 }}>
-                    <List
-                        removeClippedSubviews={false}
+                    <List                                                
+                        removeClippedSubviews={false}                        
                         style={{ marginBottom: 50, marginTop: 20 }}
                         dataArray={this.data}
                         renderRow={this.renderRow.bind(this)} />
