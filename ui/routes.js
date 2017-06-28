@@ -111,6 +111,7 @@ export default {
         title: 'Đổi mật khẩu',
         Page: PasswordModifier,
         footerType: 'none',
+        headerType: 'back',
     },
     userManagement: {
         title: 'Quản lý tài khoản',
