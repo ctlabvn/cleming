@@ -77,8 +77,15 @@ export default class extends Component {
     this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
-  _handleForgot = ({ email }) => {
-    this.props.resetPassword(email, (err, data) => {
+  _handleForgot = ({ forgotEmail }) => {
+    Keyboard.dismiss()
+    const { setToast } = this.props
+    console.log('Handle Forgot', forgotEmail)
+    if (!forgotEmail || forgotEmail.trim()==""){
+      setToast("Bạn phải nhập Email/Số điện thoại", "danger")
+      return
+    }
+    this.props.resetPassword(forgotEmail, (err, data) => {
       if (!err) {
         this.setState({ showForgot: false, passwordFocus: true })
       }
