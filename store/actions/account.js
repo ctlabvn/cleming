@@ -37,6 +37,12 @@ export const setListEmployee = (data) => ({
   payload: data
 })
 
+export const setEmployee = (data) => ({
+  type: 'app/setEmployee',
+  payload: data
+})
+
+
 export const getGeneratedPassword = (...args) => ({
   type: 'app/getGeneratedPassword',
   args

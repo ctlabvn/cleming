@@ -10,6 +10,8 @@ export const account = (state = {
   switch (type) {
     case 'app/setListEmployee':
       return {...state, listEmployee: payload.updated.data}
+    case 'app/setEmployee':
+      return {...state, currentEmployee: payload}
     case 'app/setGeneratedPassword':
       return {...state, generatedPassword: payload.updated.data.password}
     case 'app/deleteGeneratedPassword':

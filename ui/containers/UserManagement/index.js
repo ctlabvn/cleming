@@ -208,6 +208,7 @@ class UserManagement extends Component {
 
     onUpdateUserPress() {
         const { forwardTo } = this.props
+        // this.props.setEmployee(null)
         forwardTo('userManagement/action/updateUser')
     }
 
@@ -264,6 +265,10 @@ class UserManagement extends Component {
                 modalOpen: false,
                 updateInfoChecked: !this.state.updateInfoChecked
             })
+
+            // update current user
+            this.props.setEmployee(this.props.listEmployee[this.rowIDOfEmployee])
+
             forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
         } else if (this.state.deleteAccountChecked) {            
             let currentPlace = app.topDropdown.getValue()
@@ -347,6 +352,7 @@ class UserManagement extends Component {
 
     onCreateUserPress() {
         const { forwardTo } = this.props
+        this.props.setEmployee(null)
         forwardTo('userManagement/action/createUser')
     }
 

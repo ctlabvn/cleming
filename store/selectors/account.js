@@ -5,6 +5,9 @@ export const getProfile = state =>
 export const getListEmployee = state =>
   state.account.listEmployee
 
+export const getCurrentEmployee = state =>
+  state.account.currentEmployee
+
 export const getGeneratedPassword = state =>
   state.account.generatedPassword
   

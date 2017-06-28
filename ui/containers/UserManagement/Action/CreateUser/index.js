@@ -43,7 +43,8 @@ const formSelector = formValueSelector('CreateUserForm')
 
 @connect(state => ({
   session: authSelectors.getSession(state),
-  listEmployee: accountSelectors.getListEmployee(state),
+  // listEmployee: accountSelectors.getListEmployee(state),
+  employeeDetail: accountSelectors.getCurrentEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   // formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
@@ -69,7 +70,7 @@ const formSelector = formValueSelector('CreateUserForm')
   //     ...ownProps, ...stateProps, ...dispatchProps,
   //   })
   // }
-  let employeeDetail = stateProps.listEmployee[+ownProps.route.params.id] || {
+  let employeeDetail = stateProps.employeeDetail || {
     // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
     userName: '',
     email: '',
@@ -108,7 +109,7 @@ const formSelector = formValueSelector('CreateUserForm')
 })
 @reduxForm({
     form: 'CreateUserForm',
-    fields: ['name', 'email', 'phone'],
+    // fields: ['name', 'email', 'phone'],
   // validate: validateField
 })
 export default class CreateUserContainer extends Component {
@@ -152,42 +153,30 @@ export default class CreateUserContainer extends Component {
       //     }
       // }
 
-    this.firstTimeResetTime = true
+    // this.firstTimeResetTime = true
 
 
   }
 
   componentWillBlur() {
-      console.log('step', 'componentWillBlur');
+    console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
     // if (typeof this.props.route.params.id == "undefined")
-        this.resetProps();
-    // console.log(this.props.initialValues.GroupAddress)
-    // this.placeDropdown.clearAll()
-    
+    // this.resetProps();
 
   }
 
-  resetProps() {
-      // this.props.change('GroupAddress', this.props.place.listPlace)
-      this.props.change('name', '')
-      this.props.change('email', '')
-      this.props.change('phone', '')
-  }
+  // resetProps() {
+  //     // this.props.change('GroupAddress', this.props.place.listPlace)
+  //     // this.props.change('name', '')
+  //     // this.props.change('email', '')
+  //     // this.props.change('phone', '')
+  // }
 
   componentWillFocus() {
-      // console.warn(JSON.stringify(
-      //     {thisPropsSelectedPlace: this.props.selectedPlace,
-      //         thisStateSelectedPlaceId: this.state.selectedPlaceId,
-      //     }, null, 2));
-
-      // console.warn('props: ' + JSON.stringify(this.props.formValues, null, 2));
-      // console.warn('state: ' + JSON.stringify(this.state, null, 2));
-
-      this.firstTimeResetTime = true
 
       if (typeof this.props.route.params.id != "undefined") {
-          let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+          let employeeDetail = this.props.employeeDetail
 
           this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || {placeId:this.state.selectedPlaceId})
 
@@ -197,9 +186,9 @@ export default class CreateUserContainer extends Component {
                   permission = "Nhân Viên"
           }
           // this.props.change('GroupAddress', this.props.place.listPlace)
-          this.props.change('name', employeeDetail.userName)
-          this.props.change('email', employeeDetail.email)
-          this.props.change('phone', '0' + employeeDetail.phoneNumber)
+          // this.props.change('name', employeeDetail.userName)
+          // this.props.change('email', employeeDetail.email)
+          // this.props.change('phone', '0' + employeeDetail.phoneNumber)
 
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
@@ -213,14 +202,7 @@ export default class CreateUserContainer extends Component {
 
       } else {
           this.props.actions.deleteGeneratedPassword()
-          // this.props.change('GroupAddress', this.props.place.listPlace)
-          // this.props.change('name', '')
-          // this.props.change('email', '')
-          // this.props.change('phone', '')
-          this.resetProps();
-
           this.placeDropdown.handleCheck({placeId:this.state.selectedPlaceId})
-
           this.setState({
               // chosenListPlace: [],
               currentJob: {
@@ -232,24 +214,13 @@ export default class CreateUserContainer extends Component {
           })
       }
 
-      // this.setState({
-      //     firstTimeResetTime: true,
-      // });
-      this.setDefaultTimeWork();
-
-
-
   }
 
   _repairDefaultPlace() {
       if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
           this.setState({
               selectedPlaceId: this.props.selectedPlace.id,
-          }, () => {
-              this.setDefaultPlace()
           });
-      } else {
-          this.setDefaultPlace();
       }
   }
 
@@ -376,12 +347,7 @@ export default class CreateUserContainer extends Component {
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = data.name
       userInfo.phoneNumber = data.phone
-      
-      // If edit create account, not encrypt password; if editing, encrypt password
-      if (!this.props.route.params.id) {
-        userInfo.password = md5(this.props.generatedPassword)
-      }
-      
+
       userInfo.email = data.email
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
@@ -393,23 +359,20 @@ export default class CreateUserContainer extends Component {
       })
 
       if (typeof this.props.route.params.id == 'undefined') {
+        userInfo.password = md5(this.props.generatedPassword)        
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
         })
       } else {
-        userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
+        if(this.props.generatedPassword){
+          userInfo.password = this.props.generatedPassword
+        } 
+        userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
         })
       }
     }
-  }
-
-  handleGetListPlaceFromArrayField(data) {
-    // this.setState({
-    //   // chosenListPlace: data
-    //   selectedPlaceId: data.length ? data[0].placeId : 0,
-    // })
   }
 
   handleChangePlace(item) {
@@ -421,45 +384,13 @@ export default class CreateUserContainer extends Component {
     })
   }
 
-  setDefaultTimeWork() {
-      // alert('setDefaultTime ' + this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
-      if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
-          if (this.state.fromTime != this.props.initialValues.fromTimeWork
-              && this.state.toTime != this.props.initialValues.toTimeWork
-              && this.firstTimeResetTime) {
-              // this.setState({
-              //     fromTime: this.props.initialValues.fromTimeWork,
-              //     toTime: this.props.initialValues.toTimeWork,
-              //     firstTimeResetTime: false,
-              // })
-              // update without re-rendering, tricky way
-              this.state.fromTime = this.props.initialValues.fromTimeWork
-              this.state.toTime = this.props.initialValues.toTimeWork
-              this.firstTimeResetTime = false
-          }
-  }
-
-
-
-  setDefaultPlace() {
-    // console.warn(JSON.stringify(this.props.selectedPlace, null, 2));
-    // this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
-      // this.placeDropdown.setDefaultChecked();
-  }
-
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
-    this.setDefaultTimeWork();
+    // this.setDefaultTimeWork();
 
     let fromTime = this.state.fromTime
-    let toTime = this.state.toTime
-    const item = this.props.listEmployee[+this.props.route.params.id]
-    let listPlace = item ? item.listPlace : []
-    // if (typeof this.props.route.params.id == "undefined") {
-    //   listPlace = this.state.chosenListPlace
-    // } else {
-    //   listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
-    // }
+    let toTime = this.state.toTime    
+    let listPlace = this.props.employeeDetail ? this.props.employeeDetail.listPlace : []
     let formState = null
     let nameError = null
     let nameTouched = false
@@ -601,10 +532,7 @@ export default class CreateUserContainer extends Component {
           </Grid>
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
-        <RenderGroup
-          handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
-          // employeeListPlace={listPlace}
-          // name="GroupAddress"
+        <RenderGroup                            
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId = {this.state.selectedPlaceId}
         />
@@ -642,14 +570,6 @@ export default class CreateUserContainer extends Component {
     )
   }
 
-  renderIndicator() {
-    return (
-      <View style={{ height: height - 100, justifyContent: 'center' }}>
-        <Spinner />
-      </View>
-    )
-  }
-
   _scrollPageUp(){
       this.refs.myContent.scrollTo({x: 0, y: 0, animated: true});
   }
@@ -659,33 +579,15 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
-      // console.warn('render');
-    // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
-    //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
-    const { handleSubmit } = this.props;
-    let mainContainer = this.renderMainContainer()
-    // if (this.state.isLoading) {
-    //   // mainContainer = this.renderIndicator()
-    //     // console.log("state.isLoading: ", "renderIndiCator");
-    // } else {
-    //   mainContainer = this.renderMainContainer()
-    //     // console.log("state.isLoading: ", "renderMainContainer");
-    // }
-
+      // console.warn('render');    
+    const { handleSubmit } = this.props;    
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
     return (
       <Container style={styles.container}>
-        {/*<Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>*/}
-          {/*{mainContainer}*/}
-
-          {/*/!*style={styles.absoluteContainer}*!/*/}
-        {/*</Content>*/}
         <ScrollView style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>
-            {mainContainer}
-
-            {/*style={styles.absoluteContainer}*/}
+            {this.renderMainContainer()}
         </ScrollView>
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
