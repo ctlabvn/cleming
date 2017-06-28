@@ -53,23 +53,7 @@ const formSelector = formValueSelector('CreateUserForm')
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
 }), (stateProps, dispatchProps, ownProps) => {
-  // if (typeof ownProps.route.params.id == 'undefined' || stateProps.listEmployee.length <= 0) {
-  //   return ({
-  //     enableReinitialize: true,
-  //     persistentSubmitErrors: true,
-  //     initialValues: {
-  //       // GroupAddress: stateProps.place.listPlace,
-  //       name: '',
-  //       email: '',
-  //       phone: '',
-  //       permission: {
-  //         id: 1,
-  //         name: "Nhân Viên"
-  //       }
-  //     },
-  //     ...ownProps, ...stateProps, ...dispatchProps,
-  //   })
-  // }
+
   let employeeDetail = stateProps.employeeDetail || {
     // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
     userName: '',
@@ -122,9 +106,6 @@ export default class CreateUserContainer extends Component {
       id: 1,
       name: "Nhân Viên"
     }
-    // if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission) {
-    //   currentJob = props.formValues.permission
-    // }
 
     this.state = {
       jobModalOpen: false,
@@ -143,35 +124,14 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
 
-      // if (typeof this.props.route.params.id == "undefined") {
-      //   let oldState = this.state;
-      //     this.state ={
-      //         ...oldState,
-      //         fromTime: "07:00",
-      //         toTime: "20:00",
-      //         firstTimeResetPassword: false
-      //     }
-      // }
-
-    // this.firstTimeResetTime = true
-
-
   }
 
   componentWillBlur() {
     console.log('step', 'componentWillBlur');
     this.props.actions.resetForm('CreateUserForm')
-    // if (typeof this.props.route.params.id == "undefined")
-    // this.resetProps();
 
   }
 
-  // resetProps() {
-  //     // this.props.change('GroupAddress', this.props.place.listPlace)
-  //     // this.props.change('name', '')
-  //     // this.props.change('email', '')
-  //     // this.props.change('phone', '')
-  // }
 
   componentWillFocus() {
 
@@ -185,11 +145,6 @@ export default class CreateUserContainer extends Component {
               case 1:
                   permission = "Nhân Viên"
           }
-          // this.props.change('GroupAddress', this.props.place.listPlace)
-          // this.props.change('name', employeeDetail.userName)
-          // this.props.change('email', employeeDetail.email)
-          // this.props.change('phone', '0' + employeeDetail.phoneNumber)
-
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
               currentJob: {
@@ -233,13 +188,6 @@ export default class CreateUserContainer extends Component {
   }
 
   componentDidMount() {
-    // if (typeof this.props.route.params.id == "undefined") {
-    //   this.setState({
-    //     fromTime: "07:00",
-    //     toTime: "20:00",
-    //     firstTimeResetPassword: false
-    //   })
-    // }
   }
 
   onFromTimeFocus() {
