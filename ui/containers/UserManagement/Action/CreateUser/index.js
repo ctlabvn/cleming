@@ -376,11 +376,12 @@ export default class CreateUserContainer extends Component {
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = data.name
       userInfo.phoneNumber = data.phone
-      userInfo.password = this.props.generatedPassword
+      
       // If edit create account, not encrypt password; if editing, encrypt password
-      if (typeof this.props.route.params.id != 'undefined') {
+      if (!this.props.route.params.id) {
         userInfo.password = md5(this.props.generatedPassword)
       }
+      
       userInfo.email = data.email
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
