@@ -60,6 +60,7 @@ export default class extends Component {
         this.selectedStatus = 0
         this.interval = 0
         this.isLoadingPlace = false
+        this.clickCount = 0
     }
 
     _load() {
@@ -80,6 +81,7 @@ export default class extends Component {
     componentWillFocus() {
         // this.counting = true
         // InteractionManager.runAfterInteractions(() => {
+        this.clickCount = 0
         const {app, news, order, markWillReload} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
@@ -149,6 +151,7 @@ export default class extends Component {
                     loading: false,
                     loadingMore: false,
                 })
+                this.clickCount = 0
             })
     }
 
@@ -228,6 +231,9 @@ export default class extends Component {
     _handleConfirmOrder = (posOrderId) => {
         console.log('Confirm Order', posOrderId)
         const {updateOrderStatus, setToast, session} = this.props
+        console.log('Before Check Click', this.clickCount)
+        if (this.clickCount >0) return
+        console.log('After Check Click', this.clickCount)
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.OK,
             (err, data) => {
                 console.log('Data update status', data)
@@ -236,9 +242,12 @@ export default class extends Component {
                     this._load()
                 } else {
                     setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    this.clickCount = 0
                 }
             }
         )
+        this.clickCount ++
+        console.log('Increase Click', this.clickCount)
     }
     showReasonPopup = (posOrderId) => {
         console.log('Show Reason Popup', posOrderId)

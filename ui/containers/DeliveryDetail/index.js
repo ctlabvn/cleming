@@ -34,6 +34,7 @@ export default class extends Component {
             modalOpen: false,
             phoneNumber: ''
         }
+        this.clickCount = 0
     }
 
     _load() {
@@ -42,6 +43,7 @@ export default class extends Component {
         this.setState({loading: true})
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
+                this.clickCount = 0
                 if (err) {
                     if (err.code == 1522) {
                         setToast('Đơn hàng không tồn tại', 'danger')
@@ -77,6 +79,7 @@ export default class extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         console.log('Will focus DeliveryDetail')
+        this.clickCount = 0
         const {app} = this.props
         // console.log('Content', this.content)
         this.content.scrollToTop()
@@ -107,6 +110,7 @@ export default class extends Component {
     }
     _handleConfirmOrder = (posOrderId) => {
         const {updateOrderStatus, setToast, xsession, markWillReload, forwardTo} = this.props
+        if (this.clickCount >0) return
         updateOrderStatus(xsession, posOrderId, DELIVERY_FEEDBACK.OK,
             (err, data) => {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
@@ -114,9 +118,11 @@ export default class extends Component {
                     forwardTo('deliveryList')
                 } else {
                     setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    this.clickCount = 0
                 }
             }
         )
+        this.clickCount ++
     }
     showReasonPopup = (posOrderId) => {
         console.log('Show Reason Popup', posOrderId)

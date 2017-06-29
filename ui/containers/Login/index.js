@@ -106,7 +106,7 @@ export default class extends Component {
     this._handleShowLogin(e)
     this.setState({ emailFocus: false })
     Keyboard.dismiss()
-    setTimeout(()=>this.props.forwardTo('merchantOverview', true), 200)
+    setTimeout(()=>this.props.forwardTo('merchantOverview', true), 500)
   }
 
   _handleShowLogin = (e) => {

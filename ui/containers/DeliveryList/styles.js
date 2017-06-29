@@ -57,7 +57,8 @@ export default{
     block: {
         flexDirection: 'column',
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        width: '100%'
     },
     subBlock: {
         flexDirection: 'column',
