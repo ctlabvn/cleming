@@ -53,7 +53,7 @@ export default class Report extends Component {
         // console.log('Geo View Port', zoomLevel)
         // console.log('Map Width Height', this.mapWidth+'---'+this.mapHeight)
         let zoomLevel = geoViewport.viewport(bounds, [this.mapHeight, this.mapWidth]).zoom
-        zoomLevel += 1
+        zoomLevel += 1 // ??? correct with zoomLevel of server side
         console.log('New Geo Viewport', zoomLevel)
         if (callback) {
             getMapReport(xsession, placeIds, minLa, minLo, maxLa, maxLo, zoomLevel, fromTime, toTime, callback)
