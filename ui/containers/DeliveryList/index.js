@@ -65,16 +65,31 @@ export default class extends Component {
 
     _load() {
         // InteractionManager.runAfterInteractions(() => {
-        const {order, getOrderDenyReason, session} = this.props
+        const {order, getOrderDenyReason, session, getMerchantNews} = this.props
         let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
         if (!this.state.selectedPlace) {
             this.isLoadingPlace = true
         }
+        // load list content
         this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
         if (!order.denyReason || order.denyReason.length == 0) {
             getOrderDenyReason(session)
         }
 
+        //update noti Number
+        getMerchantNews(session, this.state.selectedPlace,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate.orderNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
+                }
+            }
+        )
         // })
     }
 
