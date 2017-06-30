@@ -209,22 +209,10 @@ export default class PlaceOrderList extends Component {
     }
 
     _handleTopDrowpdown = (item) => {
-        const { booking, xsession, getMerchantNews, forwardTo } = this.props
+        const { booking, xsession, forwardTo } = this.props
         // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        getMerchantNews(xsession, item.id,
-            (err, data) => {
-                if (data && data.updated && data.updated.data) {
-                    let newsUpdate = data.updated.data
-                    if (newsUpdate.bookingNews < 0) {
-                        forwardTo('merchantOverview', true)
-                        return
-                    }
-                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
-                }
-            }
-        )
     }
     _handlePressFilter(item) {
         const { booking, app } = this.props
@@ -242,7 +230,7 @@ export default class PlaceOrderList extends Component {
     // resultNumber: int, //số lượng kết quả,
     // isLast: boolean, //có phải là trang cuối cùng hay không
     _load(placeId, fromTime, toTime, status, isLoadMore = false, page = 0) {
-        const { xsession, clearBookingList } = this.props
+        const { xsession, clearBookingList, getMerchantNews } = this.props
         if (isLoadMore) {
             this.setState({ loadingMore: true })
         } else {
@@ -254,6 +242,18 @@ export default class PlaceOrderList extends Component {
             (err, data) => {
                 console.log('Load Order', data)
                 this.setState({ loading: false, loadingMore: false })
+            }
+        )
+        getMerchantNews(xsession, placeId,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate.bookingNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
+                }
             }
         )
     }
