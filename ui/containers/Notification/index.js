@@ -23,7 +23,7 @@ import styles from './styles'
 import material from '~/theme/variables/material'
 
 import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
-
+import {BASE_COUNTDOWN_ORDER_MINUTE} from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
 
 @connect(state => ({
@@ -170,7 +170,7 @@ export default class extends Component {
           position: 'absolute',
           top: 0,
           right: 0,
-        }}>Giao nhanh 45'</Text> : null
+        }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
         return (
           <Body>
             <View style={styles.listItemRow}>

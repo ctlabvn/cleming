@@ -287,7 +287,7 @@ export default class extends Component {
                         (orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
                         <View style={styles.rowPaddingTopMedium}>
                             <Text small grayDark>Yêu cầu nhận hàng trong</Text>
-                            <Text bold grayDark>45'</Text>
+                            <Text bold grayDark>{BASE_COUNTDOWN_ORDER_MINUTE}'</Text>
                         </View>
                     }
 
