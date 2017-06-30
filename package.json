@@ -26,6 +26,7 @@
     "react-native-communications": "^2.2.1",
     "react-native-dash": "0.0.5",
     "react-native-device-info": "^0.10.2",
+    "react-native-fabric": "^0.4.1",
     "react-native-fs": "2.3.2",
     "react-native-gifted-chat": "0.1.4",
     "react-native-image-picker": "0.26.2",

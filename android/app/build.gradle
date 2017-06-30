@@ -1,5 +1,9 @@
 apply plugin: "com.android.application"
+apply plugin: 'io.fabric'
 
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 //project.ext.vectoricons = [
 //        iconFontNames: [ 'MaterialIcons.ttf', 'Roboto.ttf', 'Roboto_medium.ttf', 'clingme_font.ttf' ] // Name of the font files you want to copy
 //]
@@ -143,6 +147,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fabric')
     compile project(':react-native-photo-view')
     compile project(':react-native-uploader')
     compile project(':react-native-device-info')
@@ -158,6 +163,9 @@ dependencies {
 //    compile "com.android.support:appcompat-v7:24.0.0"
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile "com.facebook.react:react-native:+"  // From node_modules
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }
 
 // Run this once to be able to run the application with BUCK
