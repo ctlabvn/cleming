@@ -306,8 +306,11 @@ export default class extends Component {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
     const { updateRead, session, updateReadOfline } = this.props
-    updateReadOfline(notification.notifyId)
-    updateRead(session, notification.notifyId)
+    if (!notification.isRead){
+      updateReadOfline(notification.notifyId)
+      updateRead(session, notification.notifyId)
+    }
+  
     // console.log(type, notification)
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
@@ -329,7 +332,6 @@ export default class extends Component {
   }
   render() {
     let { notifications, notificationRequest } = this.props
-    console.log('NOtification Render', notifications)
     return (
 
       <Container>
