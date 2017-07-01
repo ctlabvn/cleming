@@ -18,6 +18,16 @@ export const notification = (state=initialState, {type, payload}) => {
     case 'app/logout':      
     case 'app/clearData':
       return initialState
+    case 'notification/updateReadOffline':
+      console.log('Go to update read ofline', payload)
+      let data = state.data.slice()
+      let index = data.findIndex(item=>item.notifyId == payload)
+      if (index != -1){
+        console.log('Noti block', data[index])
+        data[index]['isRead'] = 1
+        return {...state, data: data}
+      }
+      return initialState
     default:
       return state
   }

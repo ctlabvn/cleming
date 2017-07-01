@@ -23,7 +23,7 @@ import styles from './styles'
 import material from '~/theme/variables/material'
 
 import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
-import {BASE_COUNTDOWN_ORDER_MINUTE} from "~/ui/shared/constants";
+import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
 
 @connect(state => ({
@@ -45,15 +45,13 @@ export default class extends Component {
   componentWillFocus() {
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
-
+    console.log('Component Will Focus noty')
     if (!notifications.data.length) {
       getNotification(session, 1, () => getNotification(session, 2))
+      this.setState({
+        refreshing: false,
+      })
     }
-
-    this.setState({
-      refreshing: false,
-    })
-
   }
 
   componentWillMount() {
@@ -307,7 +305,8 @@ export default class extends Component {
   handleNotiClick(notification) {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
-    const { updateRead, session } = this.props
+    const { updateRead, session, updateReadOfline } = this.props
+    updateReadOfline(notification.notifyId)
     updateRead(session, notification.notifyId)
     // console.log(type, notification)
     switch (notifyType) {
@@ -329,29 +328,11 @@ export default class extends Component {
     }
   }
   render() {
-
-    // const { notificationRequest} = this.props    
-    // const data= []
-    // for(let i=1;i<100;i++){
-    //   data.push({title: 'title'+i,notifyType:1})
-    // }
-    // const notifications = {
-    //   data,
-    // }
-
-    // we store the page so we must not set removeClippedSubviews to true, sometime it is for tab too
     let { notifications, notificationRequest } = this.props
+    console.log('NOtification Render', notifications)
     return (
 
       <Container>
-        {
-          // <Button onPress={this._handleNotiRead} noPadder style={{
-          //   alignSelf:'flex-end',              
-          //   marginRight: 10,              
-          // }} transparent><Text active small>Đánh dấu tất cả đã đọc</Text>
-          // </Button>
-        }
-
         <Content
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
@@ -360,8 +341,8 @@ export default class extends Component {
             <List
               removeClippedSubviews={false}
               pageSize={10}
-              dataArray={notifications.data} renderRow={(item) =>
-                <ListItem noBorder
+              dataArray={notifications.data} renderRow={(item) => {
+                return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
                   onPress={() => this.handleNotiClick(item)}>
                   <View style={{
@@ -374,6 +355,7 @@ export default class extends Component {
                   {this.renderNotificationContent(item)}
 
                 </ListItem>
+              }
               } />
           }
           {this.state.loading && <Spinner />}

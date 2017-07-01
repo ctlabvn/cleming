@@ -16,3 +16,8 @@ export const updateRead = (...args) => ({
   type: 'notification/updateReadStatus',
   args
 })
+
+export const updateReadOfline = (notifyId) => ({
+  type: 'notification/updateReadOffline',
+  payload: notifyId
+})
