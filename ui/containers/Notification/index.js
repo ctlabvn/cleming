@@ -307,6 +307,8 @@ export default class extends Component {
   handleNotiClick(notification) {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
+    const { updateRead, session } = this.props
+    updateRead(session, notification.notifyId)
     // console.log(type, notification)
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:

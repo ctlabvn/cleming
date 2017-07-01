@@ -32,6 +32,7 @@ import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
 import * as placeActions from '~/store/actions/place'
 import * as locationActions from '~/store/actions/location'
+import * as notificationActions from '~/store/actions/notification'
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
@@ -79,7 +80,7 @@ const UIManager = NativeModules.UIManager
   location: state.location,
   selectedPlace: getSelectedPlace(state),
   xsession: getSession(state)
-}), { ...commonActions, ...authActions, ...placeActions, ...locationActions })
+}), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions })
 export default class App extends Component {
 
   // static configureScene(route) {
@@ -106,8 +107,8 @@ export default class App extends Component {
 
   static configureScene(route) {
 
-    const {animationType = 'PushFromRight'} = routes[route.path] || {}
-    
+    const { animationType = 'PushFromRight' } = routes[route.path] || {}
+
 
     const sceneConfig = {
       ...Navigator.SceneConfigs[animationType],
@@ -194,6 +195,10 @@ export default class App extends Component {
     })
   }
   _handleNoti = (notification) => {
+    const { xsession, updateRead } = this.props
+    if (notification.param2) {
+      updateRead(xsession, param2)
+    }
     console.log('Call handle Noti')
     let notificationData = notification.data
     switch (notificationData.type) {
@@ -214,7 +219,7 @@ export default class App extends Component {
     // process for route change only
     // console.log('Route will receive props', getPage(router.route))    
 
-    if (router.route !== this.props.router.route) {      
+    if (router.route !== this.props.router.route) {
       const oldPath = this.page.path
       this.page = getPage(router.route)
       const { headerType, footerType, title, path, showTopDropdown } = this.page
@@ -234,7 +239,7 @@ export default class App extends Component {
         if (destIndex !== -1) {
           // trigger will focus, the first time should be did mount
           this.handleFocusableComponent(oldPath, false)
-          this.handlePageWillFocus(path)          
+          this.handlePageWillFocus(path)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
@@ -271,7 +276,7 @@ export default class App extends Component {
     }
   }
 
-   initializePageWrapper(ref, route) {
+  initializePageWrapper(ref, route) {
     if (ref && route.path) {
       this.pageWrapperInstances[route.path] = ref._root
     }
@@ -281,7 +286,7 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <View ref={ref=>this.initializePageWrapper(ref, route)} style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
+      <View ref={ref => this.initializePageWrapper(ref, route)} style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
         <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
       </View>
     )
@@ -431,17 +436,17 @@ export default class App extends Component {
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10
     let ref = this.pageInstances[path]
-    if(material.platform === 'android'){
+    if (material.platform === 'android') {
       let wrapper = this.pageWrapperInstances[path]
       // update not override
       wrapper && wrapper.setNativeProps({
-        style:{
+        style: {
           // ...wrapper.props.style,
           opacity: focus ? 1 : 0,
         }
       })
     }
-    
+
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
       // ref[method] && ref[method]()
@@ -449,12 +454,12 @@ export default class App extends Component {
         // test force reload, but can do individual by using forceUpdate on componentWillFocus event
         // ref.setState({visible:focus})
         // requestAnimationFrame(() => ref[method]())
-        InteractionManager.runAfterInteractions(()=>{
+        InteractionManager.runAfterInteractions(() => {
           // clear previous focus or blur action
           // clearTimeout(this.timer)
           // and only do the action after 3 seconds, if there is no interaction after animation
-          this.timer = setTimeout(()=>ref[method](), 100)
-        })        
+          this.timer = setTimeout(() => ref[method](), 100)
+        })
         break
       }
       ref = ref._reactInternalInstance._renderedComponent._instance
