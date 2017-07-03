@@ -130,14 +130,14 @@ export class RenderGroup extends Component {
   
   handleCheck(address){
 
-    // console.log(this.children)
+    console.log(this.children)
 
     if(address && address.placeId !== this.selectedPlaceId){
       let prevChild = this.children[this.selectedPlaceId]
-      prevChild && prevChild._root.setState({checked: false})
+      prevChild && prevChild.setState({checked: false})
       this.selectedPlaceId = address.placeId
       prevChild = this.children[this.selectedPlaceId]
-      prevChild && prevChild._root.setState({checked: true})
+      prevChild && prevChild.setState({checked: true})
     }    
   }
   
@@ -159,7 +159,7 @@ export class RenderGroup extends Component {
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
                   <View style={styles.right}>
                       <CheckBox
-                          ref={ref=>this.children[address.placeId]=ref}
+                          onReady={ref=>this.children[address.placeId]=ref}
                           type="radio"
                           parent={this}
                           checked={address.placeId === this.selectedPlaceId}                          
