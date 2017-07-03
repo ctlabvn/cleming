@@ -1249,7 +1249,7 @@
 					"-ObjC",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
-				PRODUCT_NAME = MerchantApp;
+				PRODUCT_NAME = "Đối Tác";
 				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
 				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1289,7 +1289,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
-				PRODUCT_NAME = MerchantApp;
+				PRODUCT_NAME = "Đối Tác";
 				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
 				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
