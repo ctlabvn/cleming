@@ -312,7 +312,7 @@ export default class TransactionDetail extends Component {
                         }
 
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                            <View style={material.platform == 'android' ? styles.invoiceBlockAndroid : invoiceBlockIOS}>
+                            <View style={styles.invoiceBlock}>
                                 <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
                                 <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                             </View>

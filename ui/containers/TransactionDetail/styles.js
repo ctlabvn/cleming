@@ -1,3 +1,4 @@
+import { Platform } from 'react-native'
 import material from '~/theme/variables/material.js'
 export default {
     container: {
@@ -189,22 +190,24 @@ export default {
         // height: 300
     },
 
-    invoiceBlockAndroid: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: -20,
-        elevation: 2
-        // zIndex: 20
-    },
+    invoiceBlock: Platform.select({
+        android:{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bottom: -20,
+            elevation: 2
+            // zIndex: 20
+        },
+        ios: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bottom: -20,
+             zIndex: 20
+        },
+    }),
 
-    invoiceBlockIOS: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        bottom: -20,
-         zIndex: 20
-    },
     invoiceLabel: {
         backgroundColor: material.white500,
         paddingLeft: 25
