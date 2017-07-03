@@ -1,4 +1,3 @@
-import { CLINGME_SERVER } from '~/store/constants/api'
 import { apiGet, apiPost } from '~/store/api/common'
 export default {
     // transaction/merchantapp/list-direct

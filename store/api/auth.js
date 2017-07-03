@@ -1,5 +1,5 @@
 import {apiPost, apiGet} from '~/store/api/common'
-import {CLINGME_SERVER, SECRET_KEY} from '~/store/constants/api'
+import {API_BASE, SECRET_KEY} from '~/store/constants/api'
 import md5 from 'md5'
 import 'whatwg-fetch'
 import SHA256 from 'crypto-js/sha256'
@@ -22,7 +22,7 @@ export default {
         let xAuth = SHA256(xAuthStr).toString(CryptoJS.enc.Hex)
         console.log('xAuth Hex Login', xAuth)
 
-        return fetch(CLINGME_SERVER + 'login', {
+        return fetch(API_BASE + '/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
