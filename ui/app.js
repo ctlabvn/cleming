@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackAndroid, NativeModules, Navigator } from 'react-native'
-import { Drawer, StyleProvider } from 'native-base'
+import { BackAndroid, NativeModules, Navigator, InteractionManager } from 'react-native'
+import { Drawer, StyleProvider, View } from 'native-base'
 
 import URL from 'url-parse'
 
@@ -32,6 +32,7 @@ import * as commonActions from '~/store/actions/common'
 import * as authActions from '~/store/actions/auth'
 import * as placeActions from '~/store/actions/place'
 import * as locationActions from '~/store/actions/location'
+import * as notificationActions from '~/store/actions/notification'
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
@@ -40,19 +41,19 @@ import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
-// import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
+import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
-// const NoTransition = {
-//   opacity: {
-//     from: 1,
-//     to: 1,
-//     min: 1,
-//     max: 1,
-//     type: 'linear',
-//     extrapolate: false,
-//     round: 100,
-//   },
-// }
+const NoTransition = {
+  opacity: {
+    from: 1,
+    to: 1,
+    min: 1,
+    max: 1,
+    type: 'linear',
+    extrapolate: false,
+    round: 100,
+  },
+}
 
 const getPage = (url) => {
   for (route in routes) {
@@ -79,7 +80,7 @@ const UIManager = NativeModules.UIManager
   location: state.location,
   selectedPlace: getSelectedPlace(state),
   xsession: getSession(state)
-}), { ...commonActions, ...authActions, ...placeActions, ...locationActions })
+}), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions })
 export default class App extends Component {
 
   // static configureScene(route) {
@@ -105,15 +106,24 @@ export default class App extends Component {
   // }
 
   static configureScene(route) {
+
     const { animationType = 'PushFromRight' } = routes[route.path] || {}
 
-    // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-    return {
+
+    const sceneConfig = {
       ...Navigator.SceneConfigs[animationType],
       gestures: null,
       defaultTransitionVelocity: 20,
     }
-    // return Navigator.SceneConfigs[animationType]
+
+    if (material.platform === 'android') {
+      sceneConfig.animationInterpolators = {
+        into: buildStyleInterpolator(NoTransition),
+        out: buildStyleInterpolator(NoTransition),
+      }
+    }
+
+    return sceneConfig
   }
 
   initPushNotification(options) {
@@ -154,8 +164,10 @@ export default class App extends Component {
     this.page = getPage(props.router.route) || routes.notFound
     // this.prevPage = null
     this.pageInstances = {}
+    this.pageWrapperInstances = {}
     this.watchID = 0
     this.firstTime = true
+    this.timer = null
     this.initPushNotification({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: (token) => {
@@ -173,7 +185,8 @@ export default class App extends Component {
             if (currentPlace && currentPlace.id) {
               this.props.getMerchantNews(this.props.xsession, currentPlace.id)
             }
-            this.props.setToast(notification.title, 'warning', this._handleNoti, notification)
+            const title = notification.title ? notification.title + " " + notification.message : notification.alert
+            this.props.setToast(title, 'warning', this._handleNoti, notification)
           }
         }
       },
@@ -182,6 +195,10 @@ export default class App extends Component {
     })
   }
   _handleNoti = (notification) => {
+    const { xsession, updateRead } = this.props
+    if (notification.param2) {
+      updateRead(xsession, param2)
+    }
     console.log('Call handle Noti')
     let notificationData = notification.data
     switch (notificationData.type) {
@@ -200,17 +217,17 @@ export default class App extends Component {
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
-    // console.log('Route will receive props', getPage(router.route))
-    this.page = getPage(router.route)
-    const { headerType, footerType, title, path, showTopDropdown } = this.page
-    this.topDropdown.show(showTopDropdown)
+    // console.log('Route will receive props', getPage(router.route))    
 
     if (router.route !== this.props.router.route) {
-      const oldComponent = this.pageInstances[this.page.path]
+      const oldPath = this.page.path
+      this.page = getPage(router.route)
+      const { headerType, footerType, title, path, showTopDropdown } = this.page
+      this.topDropdown.show(showTopDropdown)
       if (this.page) {
         // show header and footer, and clear search string
         this.header.show(headerType, title)
-        this.header._search('')
+        // this.header._search('')
         this.footer.show(footerType, router.route)
 
         // return console.warn('Not found: ' + router.route)
@@ -221,8 +238,8 @@ export default class App extends Component {
         // console.log(this.navigator.state)      
         if (destIndex !== -1) {
           // trigger will focus, the first time should be did mount
+          this.handleFocusableComponent(oldPath, false)
           this.handlePageWillFocus(path)
-          oldComponent && this.handleFocusableComponent(oldComponent, false)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
@@ -250,9 +267,18 @@ export default class App extends Component {
   initializePage(ref, route) {
     if (ref && route.path) {
       this.pageInstances[route.path] = ref
-      ref.visible = true
+
+      // ref.state.visible = true
+
+      // ref.visible = true
       // const fn = ref.shouldComponentUpdate
-      // ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible      
+      // ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible
+    }
+  }
+
+  initializePageWrapper(ref, route) {
+    if (ref && route.path) {
+      this.pageWrapperInstances[route.path] = ref._root
     }
   }
 
@@ -260,7 +286,9 @@ export default class App extends Component {
   renderComponentFromPage(page) {
     const { Page, ...route } = page
     return (
-      <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
+      <View ref={ref => this.initializePageWrapper(ref, route)} style={{ paddingTop: page.showTopDropdown ? 50 : 0, flex: 1 }}>
+        <Page ref={ref => this.initializePage(ref, route)} route={route} app={this} />
+      </View>
     )
   }
 
@@ -343,13 +371,22 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-      this.topDropdown.updateDropdownValues(place.listPlace)
+      let listPlace = place.listPlace.map(item => ({
+        id: item.placeId,
+        name: item.address
+      }))
+      this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
-      this.topDropdownListValue.updateDropdownValues(place.listPLace)
+      this.topDropdownListValue.updateDropdownValues(listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
+
+    this.page = getPage(router.route)
+    const { showTopDropdown } = this.page
+    this.topDropdown.show(showTopDropdown)
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log('Position', position)
@@ -394,15 +431,37 @@ export default class App extends Component {
     navigator.geolocation.clearWatch(this.watchID)
   }
 
-  handleFocusableComponent(component, focus = true) {
+  handleFocusableComponent(path, focus = true) {
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
     let whatdog = 10
-    let ref = component
-    ref.visible = focus
+    let ref = this.pageInstances[path]
+    if (material.platform === 'android') {
+      let wrapper = this.pageWrapperInstances[path]
+      // update not override
+      wrapper && wrapper.setNativeProps({
+        style: {
+          // ...wrapper.props.style,
+          opacity: focus ? 1 : 0,
+        }
+      })
+    }
+
     // maybe connect, check name of constructor is _class means it is a component :D
     while (ref && whatdog > 0) {
-      ref[method] && ref[method]()
+      // ref[method] && ref[method]()
+      if (ref[method]) {
+        // test force reload, but can do individual by using forceUpdate on componentWillFocus event
+        // ref.setState({visible:focus})
+        // requestAnimationFrame(() => ref[method]())
+        InteractionManager.runAfterInteractions(() => {
+          // clear previous focus or blur action
+          // clearTimeout(this.timer)
+          // and only do the action after 3 seconds, if there is no interaction after animation
+          this.timer = setTimeout(() => ref[method](), 100)
+        })
+        break
+      }
       ref = ref._reactInternalInstance._renderedComponent._instance
       whatdog--
     }
@@ -413,20 +472,23 @@ export default class App extends Component {
     // currently we support only React.Component instead of check the existing method
     // when we extend the Component, it is still instanceof
     const component = this.pageInstances[path]
-
+    // will focus can get the new props, and should setState to force update
     // check method
     if (component) {
       const { Page, ...route } = this.page
       const propsChanged = !shallowEqual(route.params, component.props.route.params)
         || !shallowEqual(route.query, component.props.route.query)
-      if (component.forceUpdate && propsChanged) {
+      // if (component.forceUpdate && propsChanged) {
+      //   // only update prop value
+      //   Object.assign(component.props.route, route)
+      //   component.forceUpdate && component.forceUpdate()
+      // }
+      if (propsChanged) {
         // only update prop value
         Object.assign(component.props.route, route)
-        component.forceUpdate && component.forceUpdate()
       }
-
       // after update the content then focus on it, so we have new content
-      this.handleFocusableComponent(component)
+      this.handleFocusableComponent(path)
     }
 
   }
@@ -460,7 +522,7 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { router, drawerState, closeDrawer } = this.props
+    const { router, drawerState, closeDrawer, place } = this.props
     const { title, path, headerType, footerType, showTopDropdown } = this.page
     return (
       <StyleProvider style={getTheme(material)}>
@@ -485,7 +547,7 @@ export default class App extends Component {
             },
           })}
           openDrawerOffset={0.27}
-          tweenDuration={200}
+          tweenDuration={20}
           content={<SideBar />}
           onClose={closeDrawer}
         >
@@ -494,12 +556,7 @@ export default class App extends Component {
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
           <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
-            onPressOverlay={this._handlePressHeaderOverlay}
-          />
-
-          <TopDropdown
-            ref={ref => this.topDropdown = ref}
-            onPressIcon={this._handlePressIcon}
+            app={this} onPressOverlay={this._handlePressHeaderOverlay}
           />
 
           <Navigator ref={ref => this.navigator = ref}
@@ -510,6 +567,10 @@ export default class App extends Component {
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />
+          <TopDropdown
+            ref={ref => this.topDropdown = ref}
+            onPressIcon={this._handlePressIcon}
+          />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}

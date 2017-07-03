@@ -1,50 +1,35 @@
-import React, { Component } from 'react'
-import { KeyboardAvoidingView, Platform, View, InteractionManager } from 'react-native'
-import {
-  Container,
-  Form,
-  Item,
-  Input,
-  Button,
-  Text,
-  Thumbnail,
-  Label,
-  Grid,
-  Row,
-  Col
-} from 'native-base'
-import styles from './styles'
-import { connect } from 'react-redux'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
-import Icon from '~/ui/elements/Icon'
+import React, {Component} from "react";
+import {InteractionManager, Keyboard, Platform} from "react-native";
+import {Button, Col, Container, Form, Grid, Text, Thumbnail} from "native-base";
+import styles from "./styles";
+import {connect} from "react-redux";
+import {Field, formValueSelector, reduxForm} from "redux-form";
+import Icon from "~/ui/elements/Icon";
 // import LinearGradient from 'react-native-linear-gradient'
-import material from '~/theme/variables/material.js'
-
-import routes from '~/ui/routes'
-
+import material from "~/theme/variables/material.js";
 // this way help copy and paste faster
-import * as commonActions from '~/store/actions/common'
-import * as authActions from '~/store/actions/auth'
-import * as accountActions from '~/store/actions/account'
-import * as commonSelectors from '~/store/selectors/common'
-import * as authSelectors from '~/store/selectors/auth'
-import Content from '~/ui/components/Content'
-import Preload from '~/ui/containers/Preload'
-import { InputField } from '~/ui/elements/Form'
-import { validate } from './utils'
-import { logoSource, storeTransparent } from '~/assets'
-import md5 from 'md5'
-import DeviceInfo from 'react-native-device-info'
+import * as commonActions from "~/store/actions/common";
+import * as authActions from "~/store/actions/auth";
+import * as accountActions from "~/store/actions/account";
+import * as commonSelectors from "~/store/selectors/common";
+import * as authSelectors from "~/store/selectors/auth";
+import Content from "~/ui/components/Content";
+import Preload from "~/ui/containers/Preload";
+import {InputField} from "~/ui/elements/Form";
+import {validate} from "./utils";
+import {logoSource, storeTransparent} from "~/assets";
+import md5 from "md5";
+import DeviceInfo from "react-native-device-info";
 
-import GradientBackground from '~/ui/elements/GradientBackground'
+import GradientBackground from "~/ui/elements/GradientBackground";
 
 
 const formSelector = formValueSelector('LoginForm')
 
 @connect(state => ({
   initialValues: {
-    email: 'thao@clingme.vn',
-    password: 'clingme',
+    email: '',
+    password: '',
   },
 
   currentValues: formSelector(state, 'email', 'password'),
@@ -87,11 +72,20 @@ export default class extends Component {
     const { pushToken } = this.props
     let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
+    this.setState({ emailFocus: false })
+    Keyboard.dismiss()
     this.props.login(email, password, xDevice, xUniqueDevice)
   }
 
-  _handleForgot = ({ email }) => {
-    this.props.resetPassword(email, (err, data) => {
+  _handleForgot = ({ forgotEmail }) => {
+    Keyboard.dismiss()
+    const { setToast } = this.props
+    console.log('Handle Forgot', forgotEmail)
+    if (!forgotEmail || forgotEmail.trim()==""){
+      setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
+      return
+    }
+    this.props.resetPassword(forgotEmail, (err, data) => {
       if (!err) {
         this.setState({ showForgot: false, passwordFocus: true })
       }
@@ -110,7 +104,9 @@ export default class extends Component {
 
   _handleShowHome = (e) => {
     this._handleShowLogin(e)
-    this.props.forwardTo('merchantOverview', true)
+    this.setState({ emailFocus: false })
+    Keyboard.dismiss()
+    setTimeout(()=>this.props.forwardTo('merchantOverview', true), 500)
   }
 
   _handleShowLogin = (e) => {
@@ -171,10 +167,10 @@ export default class extends Component {
     )
   }
   componentWillFocus() {
-    InteractionManager.runAfterInteractions(() => {
+    // InteractionManager.runAfterInteractions(() => {
       const { app } = this.props
       this._handleShowLogin()
-    })
+    // })
     // this.forceUpdate()
   }
   componentWillMount() {

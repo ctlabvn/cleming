@@ -7,7 +7,6 @@ export default {
     backgroundColor: material.white500,
     width: '80%',
     height: 130,
-    borderRadius: 5,
     overflow: 'hidden'
   },
   text: {
@@ -21,7 +20,7 @@ export default {
   headerContainer: {
     backgroundColor: material.primaryColor,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   leftButton: {
     backgroundColor: material.gray400,

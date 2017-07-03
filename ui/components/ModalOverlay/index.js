@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import {
   Keyboard,
-  LayoutAnimation,  
-  Platform,  
+  LayoutAnimation,
+  Platform,
 } from 'react-native'
 
 import { View } from 'native-base'
@@ -10,11 +10,11 @@ import { View } from 'native-base'
 // should have a name to search
 export default class ModalOverlay extends Component {
 
-  static propTypes = {    
-    onToggle: PropTypes.func,    
+  static propTypes = {
+    onToggle: PropTypes.func,
   }
 
-  static defaultProps = {    
+  static defaultProps = {
     onToggle: () => null,
   }
 
@@ -38,13 +38,13 @@ export default class ModalOverlay extends Component {
     this._listeners.forEach(listener => listener.remove())
   }
 
-  configureAnimation(event){
-      const animationConfig = LayoutAnimation.create(
-        event.duration,
-        LayoutAnimation.Types[event.easing],
-        LayoutAnimation.Properties.opacity,
-      )
-      LayoutAnimation.configureNext(animationConfig)
+  configureAnimation(event, callback) {
+    const animationConfig = LayoutAnimation.create(
+      event.duration,
+      LayoutAnimation.Types[event.easing],
+      LayoutAnimation.Properties.opacity,
+    )
+    LayoutAnimation.configureNext(animationConfig, callback)
   }
 
   updateKeyboardSpace(event) {
@@ -53,36 +53,37 @@ export default class ModalOverlay extends Component {
       return
     }
 
-    if (this.modalOverlay && Platform.OS === 'ios') {      
-      this.configureAnimation(event)
+    if (this.modalOverlay && Platform.OS === 'ios') {
+      const maxHeight = event.endCoordinates.screenY
+      this.configureAnimation(event, () => this.props.onToggle(true, maxHeight))
       this.modalOverlay._root.setNativeProps({
-          style: {
-              ...this.props.style,
-              height: event.endCoordinates.screenY,
-              paddingTop: 30,
-          }
-      })    
+        style: {
+          ...this.props.style,
+          height: maxHeight,
+          // paddingTop: 50,
+        }
+      })      
     }
-    
-    this.props.onToggle(true)
+
 
   }
 
   resetKeyboardSpace(event) {
 
-    if (this.modalOverlay && Platform.OS === 'ios') {      
-      this.configureAnimation(event)
+    if (this.modalOverlay && Platform.OS === 'ios') {
+      const maxHeight = event.endCoordinates.screenY
+      this.configureAnimation(event, () => this.props.onToggle(false, maxHeight))
       this.modalOverlay._root.setNativeProps({
-          style: this.props.style,
-      })    
+        style: this.props.style,
+      })      
     }
 
-    this.props.onToggle(false)
+
   }
 
-  render() {    
-    return (      
-      <View ref={ref=>this.modalOverlay=ref} {...this.props} />
+  render() {
+    return (
+      <View ref={ref => this.modalOverlay = ref} {...this.props} />
     )
   }
 }

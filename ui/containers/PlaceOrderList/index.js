@@ -1,34 +1,35 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { List, ListItem, Text, Button, Spinner, Grid, Row, Col } from 'native-base'
-import { View, InteractionManager, TouchableWithoutFeedback, Animated, Picker, Easing, TextInput, Modal, TouchableOpacity, Image } from 'react-native'
-import { Field, reduxForm } from 'redux-form'
-import styles from './styles'
-import TopDropdown from '~/ui/components/TopDropdown'
-import DateFilter from '~/ui/components/DateFilter'
-import * as authAction from '~/store/actions/auth'
-import * as commonActions from '~/store/actions/common'
-import * as bookingActions from '~/store/actions/booking'
-import * as placeActions from '~/store/actions/place'
-import { InputField } from '~/ui/elements/Form'
-import RadioPopup from '~/ui/components/RadioPopup'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import Icon from '~/ui/elements/Icon'
-import Border from '~/ui/elements/Border'
-import moment from 'moment'
-import Content from '~/ui/components/Content'
-import options from './options'
-import { BASE_COUNTDOWN_BOOKING_MINUTE } from '~/ui/shared/constants'
-import CircleCountdown from '~/ui/components/CircleCountdown'
-import CallModal from '~/ui/components/CallModal'
-import { getSession } from '~/store/selectors/auth'
-import { getNews } from '~/store/selectors/place'
-import { formatPhoneNumber } from '~/ui/shared/utils'
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Grid, List, ListItem, Row, Spinner, Text} from "native-base";
+import {InteractionManager, View} from "react-native";
+import styles from "./styles";
+import DateFilter from "~/ui/components/DateFilter";
+import * as commonActions from "~/store/actions/common";
+import * as bookingActions from "~/store/actions/booking";
+import * as placeActions from "~/store/actions/place";
+import {InputField} from "~/ui/elements/Form";
+import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Icon from "~/ui/elements/Icon";
+import Border from "~/ui/elements/Border";
+import moment from "moment";
+import Content from "~/ui/components/Content";
+import options from "./options";
+import {BASE_COUNTDOWN_BOOKING_MINUTE} from "~/ui/shared/constants";
+import CircleCountdown from "~/ui/components/CircleCountdown";
+import CallModal from "~/ui/components/CallModal";
+import {getSession} from "~/store/selectors/auth";
+import {getNews} from "~/store/selectors/place";
+import {formatPhoneNumber} from "~/ui/shared/utils";
 import {
-    BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL, DEFAULT_TIME_FORMAT,
-    DEFAULT_HOUR_FORMAT, DAY_WITHOUT_YEAR, DEFAULT_DATE_FORMAT
-} from '~/store/constants/app'
-import material from '~/theme/variables/material.js'
+    BOOKING_CANCEL,
+    BOOKING_CONFIRMED,
+    BOOKING_WAITING_CONFIRM,
+    DAY_WITHOUT_YEAR,
+    DEFAULT_DATE_FORMAT,
+    DEFAULT_HOUR_FORMAT,
+    DEFAULT_TIME_FORMAT
+} from "~/store/constants/app";
+import material from "~/theme/variables/material.js";
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
@@ -76,43 +77,47 @@ export default class PlaceOrderList extends Component {
         let hourMinute = item.deliveryHour + ':' + minute
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(item.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
-
-        if (this.selectTab == BOOKING_WAITING_CONFIRM) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                <Text warning bold>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-        } else if (this.selectTab == BOOKING_CONFIRMED) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                <Text primary bold>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-        } else if (this.selectTab == BOOKING_CANCEL) {
-            orderCodeBlock = (<View style={styles.row}>
-                <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                <Text bold style={styles.gray}>#{item.orderCode}</Text>
-            </View >)
-            phoneNumberBlock = (<View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                <Text
-                    onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                    style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
-            </View>)
-            listItemStyle = { ...listItemStyle, ...styles.listItemGray }
-            listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
+        switch (item.status){
+            case 'WAIT_CONFIRMED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                    <Text warning bold>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                break
+            case 'CONFIRMED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                    <Text primary bold>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                break
+            case 'CANCELLED':
+                orderCodeBlock = (<View style={styles.row}>
+                    <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                    <Text bold style={styles.gray}>#{item.orderCode}</Text>
+                </View >)
+                phoneNumberBlock = (<View style={styles.row}>
+                    <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
+                    <Text
+                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
+                        style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                </View>)
+                listItemStyle = { ...listItemStyle, ...styles.listItemGray }
+                listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
+                break
         }
+
         return (
 
             <ListItem style={listItemStyle}>
@@ -169,16 +174,18 @@ export default class PlaceOrderList extends Component {
             </ListItem >
         )
     }
+
     _onRefresh = () => {
         this.setState({ loading: true })
         let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
     }
+
     _loadMore = () => {
         const { booking, app } = this.props
         if (booking.isLast) return
@@ -202,18 +209,10 @@ export default class PlaceOrderList extends Component {
     }
 
     _handleTopDrowpdown = (item) => {
-        const { booking, xsession, getMerchantNews } = this.props
+        const { booking, xsession, forwardTo } = this.props
         // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        getMerchantNews(xsession, item.id,
-            (err, data) => {
-                if (data && data.updated && data.updated.data) {
-                    let newsUpdate = data.updated.data
-                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
-                }
-            }
-        )
     }
     _handlePressFilter(item) {
         const { booking, app } = this.props
@@ -231,11 +230,11 @@ export default class PlaceOrderList extends Component {
     // resultNumber: int, //số lượng kết quả,
     // isLast: boolean, //có phải là trang cuối cùng hay không
     _load(placeId, fromTime, toTime, status, isLoadMore = false, page = 0) {
-        const { xsession, clearBookingList } = this.props
+        const { xsession, clearBookingList, getMerchantNews } = this.props
         if (isLoadMore) {
             this.setState({ loadingMore: true })
         } else {
-            clearBookingList()
+            // clearBookingList()
             this.setState({ loading: true })
         }
         this.props.getBookingList(this.props.xsession, placeId,
@@ -245,9 +244,21 @@ export default class PlaceOrderList extends Component {
                 this.setState({ loading: false, loadingMore: false })
             }
         )
+        getMerchantNews(xsession, placeId,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate.bookingNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
+                }
+            }
+        )
     }
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             selectedPlace = app.topDropdown.getValue()
@@ -263,23 +274,24 @@ export default class PlaceOrderList extends Component {
             if (news && news.bookingNews) {
                 this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
             }
-        })
+        // })
     }
     componentWillFocus() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             this.setState({ counting: true })
             if (news && news.bookingNews) {
                 this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
             }
-        })
+        // })
     }
     componentWillBlur() {
-        InteractionManager.runAfterInteractions(() => {
+        // InteractionManager.runAfterInteractions(() => {
             this.setState({ counting: false })
-        })
+        // })
     }
+    
     // componentWillReceiveProps(nextProps) {
     //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
     //         this.isLoadingPlace = false

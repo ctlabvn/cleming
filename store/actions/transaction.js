@@ -43,7 +43,23 @@ export const sendDenyReason = (...args) => ({
   args
 })
 
+export const sendDenyReasonClm = (...args) => ({
+  type: 'transaction/sendDenyReasonClm',
+  args
+})
+
 export const confirmTransaction = (...args) => ({
   type: 'transaction/confirm',
   args
+})
+
+
+export const getDenyReasonClm = (...args) => ({
+  type: 'transaction/denyReasonClm',
+  args
+})
+
+export const setDenyReasonClm = (reason) => ({
+  type: 'transaction/setDenyReasonClm',
+  payload: reason
 })

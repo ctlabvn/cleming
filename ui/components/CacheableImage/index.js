@@ -96,7 +96,8 @@ export default class CacheableImage extends Component {
                 // An attempt is made to display the default however it's instantly removed since source is available
                 
                 // means file exists, ie, cache-hit
-                this.setState({cacheable: true, cachedImagePath: filePath})
+                !this.mounted && 
+                    this.setState({cacheable: true, cachedImagePath: filePath})
             } 
             else {
                 throw Error("CacheableImage: Invalid file in checkImageCache()")
@@ -261,7 +262,9 @@ export default class CacheableImage extends Component {
         if (this.downloading && this.jobId) {
             this._stopDownload()
         }
-    }
+
+        this.mounted = true
+    }    
 
     _handleConnectivityChange(isConnected) {        
         this.networkAvailable = isConnected

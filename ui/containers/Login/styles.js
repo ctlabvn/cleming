@@ -14,8 +14,13 @@ export default {
     zIndex: 1, //above image
   },
   get formForgot(){
-    return {...this.form, marginBottom: 20}
-  },
+    // return {...this.form, marginBottom: 20}
+    return {
+          width: '96%',
+          alignSelf: 'center',
+          zIndex: 1, //above image
+      }
+    },
   logoIcon:{
     color: material.white500,
     fontSize: 60,

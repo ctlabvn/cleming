@@ -37,6 +37,8 @@ export const transaction = (state = initialState, { type, payload }) => {
       }
     case 'transaction/setDenyReason':
       return { ...state, denyReason: payload }
+    case 'transaction/setDenyReasonClm':
+      return {...state, denyReasonClm: payload}
     case 'app/logout':
       return {...state, ...initialState}
     default:

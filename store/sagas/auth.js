@@ -47,11 +47,11 @@ const requestLogin = createRequestSaga({
                 return noop("nothing")
             }
         },
-        () => setToast('Logged successfully!!!')
+        // () => setToast('Logged successfully!!!')
     ],
     failure: [
         // code : 1201
-        (data) => setToast('Email/SDT hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
+        (data) => setToast('Email/Số Điện Thoại hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
     ],
 })
 

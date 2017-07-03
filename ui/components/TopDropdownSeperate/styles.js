@@ -1,7 +1,8 @@
 import material from '~/theme/variables/material'
 export default {
     dropdownContainerAndroid:{
-        // position: 'absolute',
+        position: 'absolute',
+        top: material.toolbarHeight,
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
@@ -11,7 +12,8 @@ export default {
         // top: material.toolbarHeight
     },
     dropdownContainerIos:{
-        // position: 'absolute',
+        position: 'absolute',
+        top: material.toolbarHeight,
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
@@ -20,7 +22,8 @@ export default {
     },
 
     dropdownContainerAndroidFull:{
-        // position: 'absolute',
+        position: 'absolute',
+        top: material.toolbarHeight,
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',
@@ -31,7 +34,8 @@ export default {
         // top: material.toolbarHeight+50
     },
     dropdownContainerIosFull:{
-        // position: 'absolute',
+        position: 'absolute',
+        top: material.toolbarHeight,
         zIndex: 1000,
         flexDirection:'column',
         width: '100%',

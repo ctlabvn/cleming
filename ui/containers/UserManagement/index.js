@@ -7,7 +7,7 @@ import {
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
-import { Text, TouchableHighlight } from 'react-native'
+import { Text, TouchableHighlight, InteractionManager } from 'react-native'
 import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
@@ -53,34 +53,31 @@ class UserManagement extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.listEmployee != nextProps.listEmployee || this.props.user != nextProps.user) {
-            let data = []
-            for (let i = 0; i < 1; i++) {
-                data.push({
-                    owner: nextProps.user,
-                    employeeList: nextProps.listEmployee
-                })
-            }
+        // if (this.props.user != nextProps.user) {
+        //     let data = []
+        //     for (let i = 0; i < 1; i++) {
+        //         data.push({
+        //             owner: nextProps.user,
+        //             employeeList: nextProps.listEmployee
+        //         })
+        //     }
 
-            this.data = data
-            this.setState({
-                isFetchingData: false
-            })
-            // this.setState({
-            //     data: data
-            // }, () => {
-            //     this.setState({
-            //         isFetchingData: false
-            //     })
-            // })
-        }
+        //     this.data = data
+        //     this.setState({
+        //         isFetchingData: false
+        //     })
+        //     // this.setState({
+        //     //     data: data
+        //     // }, () => {
+        //     //     this.setState({
+        //     //         isFetchingData: false
+        //     //     })
+        //     // })
+        // }
     }
-    _loadListEmployee(placeId) {
-        const { getListEmployee, session, user } = this.props
 
-        this.setState({
-            isFetchingData: true
-        })
+    _loadListEmployee(placeId) {
+        const { getListEmployee, session, user } = this.props        
         getListEmployee(session, placeId, () => {
             let data = []
             for (let i = 0; i < 1; i++) {
@@ -103,17 +100,33 @@ class UserManagement extends Component {
         })
     }
     componentDidMount() {
-        const {app} = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        let currentPlace = app.topDropdown.getValue()
-        if (currentPlace && Object.keys(currentPlace).length>0){
-            this._loadListEmployee(currentPlace.id)
-        }
+        // const {app} = this.props
+        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // let currentPlace = app.topDropdown.getValue()
+        // if (currentPlace && Object.keys(currentPlace).length>0){
+        //     this._loadListEmployee(currentPlace.id)
+        // }
+    }
+
+    componentWillMount() {
+        this.componentWillFocus();
+    }
+
+    componentWillBlur(){
+        this.setState({
+            isFetchingData: true
+        })
     }
 
     componentWillFocus(){
         const {app} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // InteractionManager.runAfterInteractions(()=> {
+            let currentPlace = app.topDropdown.getValue()
+            if (currentPlace && Object.keys(currentPlace).length > 0) {
+                this._loadListEmployee(currentPlace.id)
+            }
+        // })
     }
 
     onAccountPress(data, rowID) {
@@ -195,6 +208,7 @@ class UserManagement extends Component {
 
     onUpdateUserPress() {
         const { forwardTo } = this.props
+        // this.props.setEmployee(null)
         forwardTo('userManagement/action/updateUser')
     }
 
@@ -215,6 +229,7 @@ class UserManagement extends Component {
                         </Button>
                         {blueLineBelowOwner}
                         <List
+                            removeClippedSubviews={false}
                             dataArray={data.employeeList}
                             renderRow={this.renderEmployeeRow.bind(this)} />
                     </Col>
@@ -247,24 +262,25 @@ class UserManagement extends Component {
         const { forwardTo, selectedPlace, app } = this.props
         if (this.state.updateInfoChecked) {
             this.setState({
+                modalOpen: false,
                 updateInfoChecked: !this.state.updateInfoChecked
             })
+
+            // update current user
+            this.props.setEmployee(this.props.listEmployee[this.rowIDOfEmployee])
+
             forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
-        } else if (this.state.deleteAccountChecked) {
-            this.setState({
-                isFetchingData: true
-            })
+        } else if (this.state.deleteAccountChecked) {            
             let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
             })
             this.setState({
+                modalOpen: false,
+                isFetchingData: true,
                 deleteAccountChecked: !this.state.deleteAccountChecked
             })
         }
-        this.setState({
-            modalOpen: false
-        })
     }
 
     renderModal() {
@@ -336,13 +352,39 @@ class UserManagement extends Component {
 
     onCreateUserPress() {
         const { forwardTo } = this.props
+        this.props.setEmployee(null)
         forwardTo('userManagement/action/createUser')
     }
+
+    renderAddEmployeeButton() {
+        if (typeof  this.data != 'undefined') {
+            let data0 = this.data[0];
+            // console.warn('data[0] ' + JSON.stringify(data0, null, 2));
+            if (typeof data0 != 'undefined') {
+                owner = data0.owner;
+                if (typeof owner != 'undefined') {
+                    // console.warn('owner ' + JSON.stringify(owner, null, 2));
+                    if (owner.accTitle == 1) {
+                        return (
+                            <Button
+                                onPress={this.onCreateUserPress.bind(this)}
+                                style={styles.addUserButton}>
+                                <Text style={styles.addUserText}>Thêm tài khoản</Text>
+                            </Button>)
+                    }
+                }
+                // console.warn('owner undefined');
+            }
+        }
+    }
+
     _handleChangePlace = (item) => {
         this._loadListEmployee(item.id)
     }
+
     render() {
         const { place, selectedPlace } = this.props
+
         if (this.state.isFetchingData) {
             return (
                 <View style={{ backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
@@ -353,8 +395,9 @@ class UserManagement extends Component {
         return (
             <Container>
                 <Content style={{ backgroundColor: material.white500 }}>
-                    <List
-                        removeClippedSubviews={false}
+                    <List                                                    
+                        enableEmptySections={true}                                            
+                        removeClippedSubviews={false}                        
                         style={{ marginBottom: 50, marginTop: 20 }}
                         dataArray={this.data}
                         renderRow={this.renderRow.bind(this)} />
@@ -362,11 +405,7 @@ class UserManagement extends Component {
                 <Modal onCloseClick={e => this.setState({ modalOpen: false })} open={this.state.modalOpen}>
                     {this.renderModal()}
                 </Modal>
-                <Button
-                    onPress={this.onCreateUserPress.bind(this)}
-                    style={styles.addUserButton}>
-                    <Text style={styles.addUserText}>Thêm tài khoản</Text>
-                </Button>
+                {this.renderAddEmployeeButton()}
             </Container>
         )
     }

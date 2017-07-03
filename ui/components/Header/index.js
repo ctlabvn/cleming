@@ -36,7 +36,7 @@ export default class extends Component {
   }
 
   show(type, title, icon){
-    this.setState({type, title, icon})
+    this.setState({type, title: title || this.state.title, icon})
   } 
   showOverlay(showStatus){
     this.setState({showOverlay: showStatus})
@@ -116,7 +116,7 @@ export default class extends Component {
   _handlePressOverlay = ()=>{
     this.props.onPressOverlay && this.props.onPressOverlay()
   }
-  renderHeader(left, center, right, props) {    
+  renderHeader(left, center, right, props) {      
     return (                             
       <Header noShadow {...props} style={styles.container}>          
         <Left>{left}</Left>

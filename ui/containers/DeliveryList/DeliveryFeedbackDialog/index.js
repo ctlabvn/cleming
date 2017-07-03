@@ -46,9 +46,23 @@ export default class DeliveryFeedbackDialog extends Component {
     show(posOrderId) {
         this.setState({ posOrderId: posOrderId, modalVisible: true })
     }
-    _handlePressRadio(item) {
-        this.setState({ note: '' })
-        this.setState({ selectedValue: item.reasonId })
+    _handlePressRadio = (item) => {
+        this.setState({ note: '', selectedValue: item.reasonId })
+        this.refs.otherReasonInput.blur()
+    }
+    componentWillReceiveProps(nextProps) {
+        // console.log('Dialog Will Receive Props', nextProps)
+        let listValueProps = nextProps.listValue
+        if (!listValueProps || listValueProps.length == 0) return
+        if (this.state.listValue && this.state.listValue.length > 0) return
+        let length = listValueProps.length
+        let listValue = listValueProps.slice(0, length - 1)
+        let otherValue = listValueProps[length - 1]
+        this.setState({
+            selectedValue: listValue[0].reasonId,
+            listValue: listValue,
+            otherValue: otherValue
+        })
     }
     _handlePressOK = () => {
         if (this.state.selectedValue != this.state.otherValue.reasonId) {
@@ -85,6 +99,31 @@ export default class DeliveryFeedbackDialog extends Component {
         this.height = height// status bar height
         this.forceUpdate()
     }
+
+    renderScrollView(content){
+        if(material.platform === 'ios'){
+            return ( 
+                <View ref={ref=>this.wrapperScrollView=ref} style={{
+                    maxHeight: this.height
+                }}>
+                    <ScrollView                         
+                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                        {content}
+                    </ScrollView>
+                </View>
+            )
+        }
+
+        return (
+            <ScrollView style={{
+                    maxHeight: this.height
+                }}
+                ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                {content}
+            </ScrollView>
+        )
+    }
+
     render() {
 
         return (
@@ -97,13 +136,22 @@ export default class DeliveryFeedbackDialog extends Component {
                 }}
             >
 
-                <ModalOverlay style={styles.modalOverlay}>
+                <ModalOverlay onToggle={(toggled, maxHeight) =>{     
+                    this.wrapperScrollView && this.wrapperScrollView.setNativeProps({
+                       style:{
+                            maxHeight: toggled ? maxHeight - 150 : this.height         
+                       } 
+                    }) 
+                    toggled && this.scrollView && setTimeout(() => this.scrollView.scrollToEnd(), 500)
+                }}
+                style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text>Lí do hủy đơn hàng</Text>
                         </View>
-                        <ScrollView style={{ maxHeight: this.height }}>
+
+                        {this.renderScrollView(
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -115,19 +163,22 @@ export default class DeliveryFeedbackDialog extends Component {
                                 ))}
                                 <View style={styles.rowPadding}>
                                     <Item style={styles.item}>
-                                        <Input placeholder='Lí do khác...'
+                                        <TextInput placeholder='Lí do khác...'
                                             style={styles.input}
                                             value={this.state.note}
                                             onFocus={() => {
                                                 this.setState({ selectedValue: this.state.otherValue.reasonId })
                                             }}
+                                            underlineColorAndroid={'transparent'}
                                             onChangeText={(text) => this.setState({ note: text })}
+                                            ref='otherReasonInput'
                                         />
                                         {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
                                     </Item>
                                 </View>
                             </View>
-                        </ScrollView>
+                        )}
+
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
                             <Button transparent onPress={() => {
                                 this.setModalVisible(false)

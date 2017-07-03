@@ -6,7 +6,7 @@ const LOCAL_IP = Platform.OS === 'ios' ? '127.0.0.1' : '10.0.3.2'
 export const API_BASE = 'http://dev.clingme.net:9099'
 export const CLINGME_SERVER = 'http://dev.clingme.net:9099/'
 export const SENDER_ID = '1075989080862'
-export const API_TIMEOUT = 60000
+export const API_TIMEOUT = 10000
 
 
 export const NOTIFY_TYPE = {
@@ -14,3 +14,4 @@ export const NOTIFY_TYPE = {
   BOOKING: 6,
   SUCCESS: 7,
 }
+export const SECRET_KEY = 'qwerc24214'

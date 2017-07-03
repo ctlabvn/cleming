@@ -10,7 +10,6 @@ import { Text, Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
@@ -24,12 +23,14 @@ import {
 } from '~/ui/elements/Form'
 import Icon from '~/ui/elements/Icon'
 
+import Modal from '~/ui/components/Modal'
+
 import * as authSelectors from '~/store/selectors/auth'
 import * as accountSelectors from '~/store/selectors/account'
 import * as accountActions from '~/store/actions/account'
 import * as commonActions from '~/store/actions/common'
 import { getSelectedPlace } from '~/store/selectors/place'
-import { validateField, renderGroup } from './utils'
+import { validateField, RenderGroup, RenderTextField } from './utils'
 import styles from './styles'
 import md5 from 'md5'
 import material from '~/theme/variables/material'
@@ -41,34 +42,26 @@ const formSelector = formValueSelector('CreateUserForm')
 
 @connect(state => ({
   session: authSelectors.getSession(state),
-  listEmployee: accountSelectors.getListEmployee(state),
+  // listEmployee: accountSelectors.getListEmployee(state),
+  employeeDetail: accountSelectors.getCurrentEmployee(state),
   place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
-  formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
-  formState: state.form,
+  // formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
+  // formState: state.form,
   selectedPlace: getSelectedPlace(state)
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
 }), (stateProps, dispatchProps, ownProps) => {
-  if (typeof ownProps.route.params.id == 'undefined' || stateProps.listEmployee.length <= 0) {
-    return ({
-      enableReinitialize: true,
-      persistentSubmitErrors: true,
-      initialValues: {
-        GroupAddress: stateProps.place.listPlace,
-        name: '',
-        email: '',
-        phone: '',
-        permission: {
-          id: 1,
-          name: "Nhân Viên"
-        }
-      },
-      ...ownProps, ...stateProps, ...dispatchProps,
-    })
-  }
-  let employeeDetail = stateProps.listEmployee[Number(ownProps.route.params.id)]
+
+  let employeeDetail = stateProps.employeeDetail || {
     // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    titleType: 1,
+    fromTimeWork: "07:00",
+    toTimeWork: "20:00",
+  }
   // console.warn(JSON.stringify(stateProps.listEmployee, null, 2));
   let permission = null
       switch (employeeDetail.titleType) {
@@ -83,23 +76,28 @@ const formSelector = formValueSelector('CreateUserForm')
   return ({
     enableReinitialize: true,
     initialValues: {
-      GroupAddress: stateProps.place.listPlace,
+      // GroupAddress: stateProps.place.listPlace,
       name: employeeDetail.userName,
       email: employeeDetail.email,
-      phone: employeeDetail.phoneNumber,
-      permission: {
-        id: employeeDetail.titleType,
-        name: permission
-      },
-      fromTimeWork: employeeDetail.fromTimeWork,
-      toTimeWork: employeeDetail.toTimeWork
+      phone: employeeDetail.phoneNumber ? employeeDetail.phoneNumber : '',
     },
+    // permission: {
+    //   id: employeeDetail.titleType,
+    //   name: permission
+    // },
+    fromTimeWork: employeeDetail.fromTimeWork,
+    toTimeWork: employeeDetail.toTimeWork,
     ...ownProps, ...stateProps, ...dispatchProps,
   })
 })
-@reduxForm({ form: 'CreateUserForm', fields: ['name', 'email', 'phone'], validate: validateField })
+@reduxForm({
+    form: 'CreateUserForm',
+    // fields: ['name', 'email', 'phone'],
+  // validate: validateField
+})
 export default class CreateUserContainer extends Component {
   constructor(props) {
+
       console.log('step', 'constructor');
       // let selectedPlaceId = props.selectedPlace.id
     super(props)
@@ -107,17 +105,14 @@ export default class CreateUserContainer extends Component {
       id: 1,
       name: "Nhân Viên"
     }
-    if (props.formValues && Object.keys(props.formValues) > 1 && props.formValues.permission) {
-      currentJob = props.formValues.permission
-    }
 
     this.state = {
       jobModalOpen: false,
       permissionModalOpen: false,
       fromTimeVisible: false,
       toTimeVisible: false,
-      fromTime: props.initialValues.fromTimeWork || moment(new Date()).format("HH:mm"),
-      toTime: props.initialValues.toTimeWork || moment(new Date()).format("HH:mm"),
+      fromTime: props.fromTimeWork,
+      toTime: props.toTimeWork,
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
@@ -128,49 +123,27 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
 
-    this.firstTimeResetTime = true
-
   }
 
   componentWillBlur() {
-      console.log('step', 'componentWillBlur');
+    // console.log('step', 'componentWillBlur');    
     this.props.actions.resetForm('CreateUserForm')
-      this. resetProps();
-    // console.log(this.props.initialValues.GroupAddress)
-    this.placeDropdown.clearAll()
-
+    this._scrollPageUp()
   }
 
-  resetProps() {
-      // this.props.change('GroupAddress', this.props.place.listPlace)
-      this.props.change('name', '')
-      this.props.change('email', '')
-      this.props.change('phone', '')
-  }
 
   componentWillFocus() {
-      // console.warn(JSON.stringify(
-      //     {thisPropsSelectedPlace: this.props.selectedPlace,
-      //         thisStateSelectedPlaceId: this.state.selectedPlaceId,
-      //     }, null, 2));
-
-      // console.warn('props: ' + JSON.stringify(this.props.formValues, null, 2));
-      // console.warn('state: ' + JSON.stringify(this.state, null, 2));
-
-      this.firstTimeResetTime = true
 
       if (typeof this.props.route.params.id != "undefined") {
-          let employeeDetail = this.props.listEmployee[Number(this.props.route.params.id)]
+          let employeeDetail = this.props.employeeDetail
+
+          this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || {placeId:this.state.selectedPlaceId})
+
           let permission = null
           switch (employeeDetail.titleType) {
               case 1:
                   permission = "Nhân Viên"
           }
-          this.props.change('GroupAddress', this.props.place.listPlace)
-          this.props.change('name', employeeDetail.userName)
-          this.props.change('email', employeeDetail.email)
-          this.props.change('phone', employeeDetail.phoneNumber)
-
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
               currentJob: {
@@ -183,12 +156,7 @@ export default class CreateUserContainer extends Component {
 
       } else {
           this.props.actions.deleteGeneratedPassword()
-          this.props.change('GroupAddress', this.props.place.listPlace)
-          // this.props.change('name', '')
-          // this.props.change('email', '')
-          // this.props.change('phone', '')
-          this.resetProps();
-
+          this.placeDropdown.handleCheck({placeId:this.state.selectedPlaceId})
           this.setState({
               // chosenListPlace: [],
               currentJob: {
@@ -200,35 +168,25 @@ export default class CreateUserContainer extends Component {
           })
       }
 
-      // this.setState({
-      //     firstTimeResetTime: true,
-      // });
-      this.setDefaultTimeWork();
-      this.setDefaultPlace();
+  }
 
+  _repairDefaultPlace() {
       if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
-        this.setState({
-            selectedPlaceId: this.props.selectedPlace.id,
-        }, () => {
-          this.setDefaultPlace()
-        });
+          this.setState({
+              selectedPlaceId: this.props.selectedPlace.id,
+          });
       }
   }
 
-
+  componentDidUpdate(prevProps, prevState) {
+     this._repairDefaultPlace();
+  }
 
   componentWillMount() {
     this.props.actions.deleteGeneratedPassword();
   }
 
   componentDidMount() {
-    if (typeof this.props.route.params.id == "undefined") {
-      this.setState({
-        fromTime: "07:00",
-        toTime: "20:00",
-        firstTimeResetPassword: false
-      })
-    }
   }
 
   onFromTimeFocus() {
@@ -302,61 +260,66 @@ export default class CreateUserContainer extends Component {
           isLoading: false
         }, () => {
           this.props.actions.goBack()
+          this.props.actions.setToast('Successfully!');
         })
       })
     }
   }
 
-  onSubmitUser = () => {
+  onSubmitUser = (data) => {
+    // console.log(data)
+        const errRet = validateField(data)
+        this.setState({
+            errorForm: errRet,            
+        })
+      // console.warn(JSON.stringify(errRet))
 
-    let userInfo = {}
+      let userInfo = {}
     // if (this.state.chosenListPlace.length == 0) {
-      console.log(this.state.selectedPlaceId)
+      // console.log(this.state.selectedPlaceId)
 
-      if (this.props.formState.CreateUserForm.syncErrors) {
+      // if (this.props.formState.CreateUserForm.syncErrors) {
+      if (errRet.name || errRet.phone || errRet.email) {
           this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
-          this._scrollPageUp();
+          this._scrollPageUp()
           // return;
       } else if(!this.state.selectedPlaceId){
-      this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger')
-    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
-      this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
-      this._scrollPageDown();
+        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger');
+
+    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
+        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+        this._scrollPageDown();        
     } else {
-      this.setState({
-        isLoading: true
-      })
+      
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
-      userInfo.fullName = this.props.formValues.name
-      userInfo.phoneNumber = this.props.formValues.phone
-      userInfo.password = this.props.generatedPassword
-      // If edit create account, not encrypt password; if editing, encrypt password
-      if (typeof this.props.route.params.id != 'undefined') {
-        userInfo.password = md5(this.props.generatedPassword)
-      }
-      userInfo.email = this.props.formValues.email
+      userInfo.fullName = data.name
+      userInfo.phoneNumber = data.phone
+
+      userInfo.email = data.email
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
       userInfo.toTimeWork = this.state.toTime
-      userInfo.listPlaceId = this.state.selectedPlaceId.toString()//listPlaceId
+      userInfo.listPlaceId = this.placeDropdown.selectedPlaceId // this.state.selectedPlaceId.toString()//listPlaceId
+
+      this.setState({
+        isLoading: true,
+      })
+
       if (typeof this.props.route.params.id == 'undefined') {
+        userInfo.password = this.props.generatedPassword
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
         })
       } else {
-        userInfo.bizAccountId = this.props.listEmployee[Number(this.props.route.params.id)].bizAccountId
+        if(this.props.generatedPassword){
+          userInfo.password = md5(this.props.generatedPassword)
+        } 
+        userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
         })
       }
     }
-  }
-
-  handleGetListPlaceFromArrayField(data) {
-    // this.setState({
-    //   // chosenListPlace: data
-    //   selectedPlaceId: data.length ? data[0].placeId : 0,
-    // })
   }
 
   handleChangePlace(item) {
@@ -368,50 +331,19 @@ export default class CreateUserContainer extends Component {
     })
   }
 
-  setDefaultTimeWork() {
-      // alert('setDefaultTime ' + this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
-      if (typeof this.props.initialValues.fromTimeWork != "undefined" && typeof  this.props.initialValues.toTimeWork != "undefined")
-          if (this.state.fromTime != this.props.initialValues.fromTimeWork
-              && this.state.toTime != this.props.initialValues.toTimeWork
-              && this.firstTimeResetTime) {
-              // this.setState({
-              //     fromTime: this.props.initialValues.fromTimeWork,
-              //     toTime: this.props.initialValues.toTimeWork,
-              //     firstTimeResetTime: false,
-              // })
-              // update without re-rendering, tricky way
-              this.state.fromTime = this.props.initialValues.fromTimeWork
-              this.state.toTime = this.props.initialValues.toTimeWork
-              this.firstTimeResetTime = false
-          }
-  }
-
-
-
-  setDefaultPlace() {
-    // console.warn(JSON.stringify(this.props.selectedPlace, null, 2));
-    // this.placeDropdown.setDefaultChecked(this.props.selectedPlace.id);
-      this.placeDropdown.setDefaultChecked();
-  }
+  
 
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
-    this.setDefaultTimeWork();
+    // this.setDefaultTimeWork();
 
     let fromTime = this.state.fromTime
-    let toTime = this.state.toTime
-    const item = this.props.listEmployee[+this.props.route.params.id]
-    let listPlace = item ? item.listPlace : []
-    // if (typeof this.props.route.params.id == "undefined") {
-    //   listPlace = this.state.chosenListPlace
-    // } else {
-    //   listPlace = this.props.listEmployee[Number(this.props.route.params.id)].listPlace
-    // }
+    let toTime = this.state.toTime    
+    let listPlace = this.props.employeeDetail ? this.props.employeeDetail.listPlace : []
     let formState = null
     let nameError = null
     let nameTouched = false
-    let errorNameStyle = null
-    let errorLongNameStyle = null
+    let errorNameStyle = null    
     let phoneError = null
     let phoneTouched = false
     let errorPhoneStyle = null
@@ -419,32 +351,30 @@ export default class CreateUserContainer extends Component {
     let errorEmailStyle = null
     let emailTouched = false
     let fields = null
-    if (typeof this.props.route.params.id == 'undefined') {
-      formState = this.props.formState.CreateUserForm
-    } else {
-      formState = this.props.formState.CreateUserForm
-    }
-    if (typeof formState != "undefined") {
-      fields = formState.fields
-      if (typeof formState.syncErrors != 'undefined' && typeof fields != "undefined") {
-        let errors = formState.syncErrors
-        if (errors.name && typeof fields.name != 'undefined' && fields.name.touched) {
+
+    let errorForm = this.state.errorForm;
+
+    if (typeof errorForm != "undefined") {
+      
+      if (typeof errorForm != 'undefined' && typeof fields != "undefined") {
+        // let errors = formState.syncErrors
+        if (errorForm.name) {
           nameTouched = true
           errorNameStyle = { borderColor: material.red500, borderWidth: 1 }
-          if (errors.name.length > 30) {
-            errorLongNameStyle = { marginBottom: 5 }
+          if (errorForm.name.length > 30) {
+            errorNameStyle.marginBottom = 5
           }
-          nameError = <Text style={{ color: material.red500 }}>{errors.name}</Text>
+          nameError = <Text style={{ color: material.red500 }}>{errorForm.name}</Text>
         }
-        if (errors.phone && typeof fields.phone != 'undefined' && fields.phone.touched) {
+        if (errorForm.phone) {
           phoneTouched = true
           errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
-          phoneError = <Text style={{ color: material.red500 }}>{errors.phone}</Text>
+          phoneError = <Text style={{ color: material.red500 }}>{errorForm.phone}</Text>
         }
-        if (errors.email && typeof fields.email != 'undefined' && fields.email.touched) {
+        if (errorForm.email) {
           emailTouched = true
           errorEmailStyle = { borderColor: material.red500, borderWidth: 1 }
-          emailError = <Text style={{ color: material.red500 }}>{errors.email}</Text>
+          emailError = <Text style={{ color: material.red500 }}>{errorForm.email}</Text>
         }
       }
     }
@@ -464,47 +394,14 @@ export default class CreateUserContainer extends Component {
 
     return (
       <View style={{ paddingLeft: 15, paddingRight: 15 }}>
-        <View style={{ ...styles.inputContainer, ...errorNameStyle, ...errorLongNameStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={(input, active) => input.value && active ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            style={{ ...styles.inputField }}
-            label="Họ và tên"
-            name="name"
-            component={InputField}
-            placeholderTextColor= {material.gray500} />
-        </View>
+
+        <RenderTextField label="Họ và tên" name="name"  errorStyle={errorNameStyle} />        
         {nameTouched && nameError}
 
-        <View style={{ ...styles.inputContainer, ...errorPhoneStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={input => input.value ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            keyboardType="numeric"
-            style={styles.inputField}
-            label="Số điện thoại"
-            name="phone"
-            component={InputField}
-            placeholderTextColor={material.gray500} />
-        </View>
+        <RenderTextField label="Số điện thoại" name="phone"  errorStyle={errorPhoneStyle} keyboardType="numeric" />        
         {phoneTouched && phoneError}
 
-        <View style={{ ...styles.inputContainer, ...errorEmailStyle }}>
-          <Field
-            iconStyle={styles.closeIcon}
-            icon={input => input.value ? 'close' : false}
-            onIconPress={input => input.onChange('')}
-            inputStyle={styles.inputText}
-            style={styles.inputField}
-            label="Email"
-            name="email"
-            component={InputField}
-            placeholderTextColor={material.gray500} />
-        </View>
+        <RenderTextField label="Email" name="email"  errorStyle={errorEmailStyle} />   
         {emailTouched && emailError}
 
         <View style={{ ...styles.inputContainer, zIndex: 100, marginBottom: 10, overflow: null }}>
@@ -550,13 +447,10 @@ export default class CreateUserContainer extends Component {
           </Grid>
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
-        <FieldArray
-          handleGetListPlaceFromArrayField={this.handleGetListPlaceFromArrayField.bind(this)}
-          employeeListPlace={listPlace}
-          name="GroupAddress"
+        <RenderGroup                            
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId = {this.state.selectedPlaceId}
-          component={renderGroup} />
+        />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
           <Grid>
@@ -591,14 +485,6 @@ export default class CreateUserContainer extends Component {
     )
   }
 
-  renderIndicator() {
-    return (
-      <View style={{ height: height - 100, justifyContent: 'center' }}>
-        <Spinner />
-      </View>
-    )
-  }
-
   _scrollPageUp(){
       this.refs.myContent.scrollTo({x: 0, y: 0, animated: true});
   }
@@ -608,32 +494,16 @@ export default class CreateUserContainer extends Component {
   }
 
   render() {
-    // console.log("render props fromtime:totime", this.props.initialValues.fromTimeWork + " : " + this.props.initialValues.toTimeWork);
-    //   console.log("render state fromtime:totime", this.state.fromTime + " : " + this.state.toTime);
-    const { handleSubmit } = this.props;
-    let mainContainer = null
-    if (this.state.isLoading) {
-      mainContainer = this.renderIndicator()
-        // console.log("state.isLoading: ", "renderIndiCator");
-    } else {
-      mainContainer = this.renderMainContainer()
-        // console.log("state.isLoading: ", "renderMainContainer");
-    }
-
+      // console.warn('render');    
+    const { handleSubmit } = this.props;    
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
     return (
       <Container style={styles.container}>
-        {/*<Content style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>*/}
-          {/*{mainContainer}*/}
-
-          {/*/!*style={styles.absoluteContainer}*!/*/}
-        {/*</Content>*/}
-        <ScrollView style={{ backgroundColor: material.white500 }} keyboardShouldPersistTaps={'handled'} ref='myContent'>
-            {mainContainer}
-
-            {/*style={styles.absoluteContainer}*/}
+        <ScrollView style={{ backgroundColor: material.white500 }} 
+          keyboardShouldPersistTaps="always" ref="myContent">
+            {this.renderMainContainer()}
         </ScrollView>
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
@@ -660,6 +530,13 @@ export default class CreateUserContainer extends Component {
           onCancel={this.onToTimeCancel.bind(this)}
           date={new Date(2000, 1, 1, +hour1, +minute1)}
         />
+
+        <Modal open={this.state.isLoading}>
+            <View style={styles.preload}>
+              <Text>Please waiting...</Text>
+            </View>
+        </Modal>
+
       </Container>
     )
   }

@@ -1,25 +1,25 @@
-import React, { Component } from 'react'
-import { Container, Text, Button, Content, Spinner, Input } from 'native-base'
-import { View, Modal, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native'
-import Icon from '~/ui/elements/Icon'
-import styles from './styles'
-import moment from 'moment'
-import { formatNumber } from '~/ui/shared/utils'
-import PopupPhotoView from '~/ui/components/PopupPhotoView'
-import material from '~/theme/variables/material.js'
-import CheckBox from '~/ui/elements/CheckBox'
+import React, {Component} from "react";
+import {Button, Item, Text} from "native-base";
+import {Modal, TextInput, TouchableOpacity, ScrollView, View} from "react-native";
+import Icon from "~/ui/elements/Icon";
+import styles from "./styles";
+import {formatNumber} from "~/ui/shared/utils";
+import CheckBox from "~/ui/elements/CheckBox";
+import ModalOverlay from "~/ui/components/ModalOverlay";
 // import Content from '~/ui/components/Content'
-
-import ModalOverlay from '~/ui/components/ModalOverlay'
+import material from '~/theme/variables/material'
 
 export default class FeedbackDialog extends Component {
     constructor(props) {
         super(props)
-        let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
-        let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
+
+        let length = props.listValue ? props.listValue.length : 0
+        let listValue = props.listValue ? props.listValue.slice(0, length - 1) : []
+        let otherValue = props.listValue ? props.listValue[length - 1] : {}
+
         this.state = {
             modalVisible: false,
-            selectedValue: listValue[0].reasonId,
+            selectedValue: (listValue && listValue.length > 0) ? listValue[0].reasonId : 0,
             listValue: listValue,
             otherValue: otherValue,
             note: ''
@@ -31,12 +31,28 @@ export default class FeedbackDialog extends Component {
         this.setState({ modalVisible: visible })
     }
     _handlePressRadio(item) {
-        this.setState({ note: '' })
-        this.setState({ selectedValue: item.reasonId })
+        this.setState({ note: '', selectedValue: item.reasonId })
+        this.refs.otherReasonInput.blur()
     }
-    _resetDialog() {
-        let listValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') != 0))
-        let otherValue = props.listValue.filter((item) => (item.reason.toLowerCase().localeCompare('khác') == 0))[0]
+    componentWillReceiveProps(nextProps) {
+        console.log('Dialog Will Receive Props', nextProps)
+        let listValueProps = nextProps.listValue
+        if (!listValueProps || listValueProps.length == 0) return
+        if (this.state.listValue && this.state.listValue.length > 0) return
+        let length = listValueProps.length
+        let listValue = listValueProps.slice(0, length - 1)
+        let otherValue = listValueProps[length - 1]
+        this.setState({
+            selectedValue: listValue[0].reasonId,
+            listValue: listValue,
+            otherValue: otherValue
+        })
+    }
+
+    _resetDialog = () => {
+        let length = this.props.listValue.length
+        let listValue = this.props.listValue.slice(0, length - 1)
+        let otherValue = this.props.listValue[length - 1]
 
         this.setState({
             listValue: listValue,
@@ -45,15 +61,44 @@ export default class FeedbackDialog extends Component {
             note: ''
         })
     }
-    _onMeasure = (e)=>{
+    _onMeasure = (e) => {
         console.log('Go onMeasure')
         if (!this.caculatingHeight) return
         this.caculatingHeight = false
-        const {height} = e.nativeEvent.layout
+        const { height } = e.nativeEvent.layout
         console.log('Content Height', height)
-        this.height = height
+        this.height = height        
         this.forceUpdate()
     }
+    _handlePressClear = () => {
+        console.log('Pressing Clear CLM')
+        this.setState({ note: '' })
+    }
+
+    renderScrollView(content){
+        if(material.platform === 'ios'){
+            return ( 
+                <View ref={ref=>this.wrapperScrollView=ref} style={{
+                    maxHeight: this.height
+                }}>
+                    <ScrollView                         
+                        ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                        {content}
+                    </ScrollView>
+                </View>
+            )
+        }
+
+        return (
+            <ScrollView style={{
+                    maxHeight: this.height
+                }}
+                ref={ref => this.scrollView = ref} keyboardShouldPersistTaps='always'>
+                {content}
+            </ScrollView>
+        )
+    }
+
     render() {
 
         return (
@@ -66,13 +111,21 @@ export default class FeedbackDialog extends Component {
                 }}
             >
 
-                <ModalOverlay style={styles.modalOverlay}>
+                <ModalOverlay onToggle={(toggled, maxHeight) =>{     
+                    this.wrapperScrollView && this.wrapperScrollView.setNativeProps({
+                       style:{
+                            maxHeight: toggled ? maxHeight - 150 : this.height         
+                       } 
+                    }) 
+                    toggled && this.scrollView && setTimeout(() => this.scrollView.scrollToEnd(), 500)
+                }} style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
 
                         <View style={styles.rowPadding}>
                             <Text small>Không đồng ý với giao dịch <Text small bold>{this.props.transactionCode}</Text></Text>
                         </View>
-                        <ScrollView style={{maxHeight: this.height}}>
+                        
+                        {this.renderScrollView(
                             <View onLayout={this._onMeasure}>
                                 {this.state.listValue && this.state.listValue.map((item) => (
                                     <TouchableOpacity onPress={() => this._handlePressRadio(item)} key={item.reasonId}>
@@ -83,23 +136,34 @@ export default class FeedbackDialog extends Component {
                                     </TouchableOpacity>
                                 ))}
                                 <View style={styles.rowPadding}>
-                                    <Input placeholder='Lí do khác...'
-                                        style={{ width: '100%', borderBottomWidth: 0.5, borderBottomColor: material.gray300, height: 40, fontSize: 14 }}
+                                    <Item style={styles.item}>
+                                    <TextInput placeholder='Lí do khác...'
+                                        style={styles.input}
                                         value={this.state.note}
+                                        underlineColorAndroid={'transparent'}
                                         onFocus={() => {
+
                                             this.setState({ selectedValue: this.state.otherValue.reasonId })
                                         }}
                                         onChangeText={(text) => this.setState({ note: text })}
+                                        ref='otherReasonInput'
                                     />
+                                    {(this.state.note != '' || this.state.note.length > 0) && <Icon name='close' style={styles.icon} onPress={this._handlePressClear} />}
+                                    </Item>
                                 </View>
                             </View>
-                        </ScrollView>
+                        )}
+                        
                         <View style={{ ...styles.rowPadding, justifyContent: 'flex-end', width: '100%' }}>
-                            <Button transparent onPress={() => this.setModalVisible(false)}><Text style={styles.gray}>Cancel</Text></Button>
+                            <Button transparent onPress={() =>{
+                                this._resetDialog()
+                                this.setModalVisible(false)
+                            }}><Text style={styles.gray}>Cancel</Text></Button>
                             <Button transparent
                                 onPress={() => {
                                     this.setModalVisible(false)
                                     this.props.onClickYes(this.props.dealTransactionId, this.state.selectedValue, this.state.note)
+                                    this._resetDialog()
                                 }}
                             ><Text primary>Ok</Text></Button>
                         </View>
