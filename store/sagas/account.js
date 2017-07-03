@@ -116,7 +116,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
-      console.log('Error', error)
+      // console.log('Error', error)
         switch (error.code) {
             case 1207:
                 return setToast('Số điện thoại đã tồn tại', 'danger');

@@ -564,9 +564,7 @@ export default class App extends Component {
             initialRoute={{ title, path, showTopDropdown }}
             renderScene={this._renderPage}
           />
-          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />
-          <Toasts />
-          <Popover ref={ref => this.popover = ref} />
+          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
           <TopDropdown
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
@@ -576,6 +574,8 @@ export default class App extends Component {
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
           />
+          <Toasts />
+          <Popover ref={ref => this.popover = ref} />
         </Drawer>
       </StyleProvider>
     )

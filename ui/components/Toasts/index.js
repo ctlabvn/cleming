@@ -56,10 +56,13 @@ export default class extends Component {
     this._closeToast(duration)
     const levelProps = {[level]:true}
     return (
-      <Modal
-        animationType={(position=='bottom') ? "slide" : "fade"}
-        transparent={true}        
-        onRequestClose={() => this._closeToast(100)}
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          position: 'absolute',      
+          backgroundColor: 'transparent',    
+        }}
         >
         <View style={{            
             flex: 1,
@@ -67,7 +70,7 @@ export default class extends Component {
           }} >
             {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
         </View>
-      </Modal>
+      </View>
     )
   }
 }
