@@ -8,7 +8,7 @@ import styles from './styles'
 export default class extends Component {
   
   render(){
-    const {message='Please waiting...'} = this.props
+    const {message=''} = this.props
     return (
       <Container style={styles.container}>
         <Text>{message}</Text>

@@ -30,7 +30,7 @@ export default class extends Component {
   render() {        
     // should have a pre-load page
     if(!this.store)
-      return ( <Preload message="Initializing..."/> )
+      return ( <Preload message=""/> )
 
     return (
       <Provider store={this.store}>
