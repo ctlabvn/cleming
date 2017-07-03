@@ -79,7 +79,7 @@ const formSelector = formValueSelector('CreateUserForm')
       // GroupAddress: stateProps.place.listPlace,
       name: employeeDetail.userName,
       email: employeeDetail.email,
-      phone: employeeDetail.phoneNumber ? '0' + employeeDetail.phoneNumber : '',      
+      phone: employeeDetail.phoneNumber ? employeeDetail.phoneNumber : '',
     },
     // permission: {
     //   id: employeeDetail.titleType,

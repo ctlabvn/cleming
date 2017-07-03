@@ -6,9 +6,9 @@ export const validate = (values) => {
   if(!values) return errors
   // validate email
   if(!values.email){
-    errors.email = 'Bạn phải nhập Emai/SDT/ mật khẩu'
+    errors.email = 'Bạn phải nhập Emai/Số Điện Thoại/Mật khẩu'
   } else if (!isValidEmail(values.email) && !isValidPhoneNumber(values.email)) {
-    errors.email = 'Email/sdt không hợp lệ. Vui lòng kiểm tra lại!'
+    errors.email = 'Email/Số Điện Thoại không hợp lệ. Vui lòng kiểm tra lại!'
   } 
 
   return errors

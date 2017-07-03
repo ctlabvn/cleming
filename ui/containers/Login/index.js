@@ -28,8 +28,8 @@ const formSelector = formValueSelector('LoginForm')
 
 @connect(state => ({
   initialValues: {
-    email: 'thao@clingme.vn',
-    password: 'clingme',
+    email: '',
+    password: '',
   },
 
   currentValues: formSelector(state, 'email', 'password'),

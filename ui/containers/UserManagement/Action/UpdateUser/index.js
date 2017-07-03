@@ -124,27 +124,16 @@ export default class UpdateUserContainer extends Component {
         console.log('upload complete with status ' + status, json);
       });*/
   
-      let source = {};
-  
-      if (Platform.OS === 'ios') {
-        source = {
+      let source = {
           name: 'image[]',
           filename: `image_${(new Date()).getTime()}`,
           data: RNFetchBlob.wrap(response.uri)
         };
-      } else {
-        source = {
-          name: 'image[]',
-          filename: `image_${(new Date()).getTime()}`,
-          data: RNFetchBlob.wrap(response.uri)
-        };
-      }
-  
+
       let imageFiles = [source]
   
       RNFetchBlob.fetch('POST', 'http://dev.clingme.net:9099/edit/avatar', {
         'Accept': 'application/json',
-    
         'Content-Type': 'multipart/form-data',
         'X-VERSION': 1,
         'X-SESSION': this.props.session,

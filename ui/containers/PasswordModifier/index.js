@@ -40,8 +40,8 @@ import { validate } from './utils'
 @connect(state=>({
   session: authSelectors.getSession(state),
   initialValues:{
-    email: 'thao@clingme.vn',
-    password: 'clingme',
+    email: '',
+    password: '',
   },
   onSubmitFail: (errors, dispatch)=>{
     for(let k in errors){
