@@ -3,9 +3,10 @@ import {
   Keyboard,
   LayoutAnimation,
   Platform,
+  View,
 } from 'react-native'
 
-import { View } from 'native-base'
+// import { View } from 'native-base'
 
 // should have a name to search
 export default class ModalOverlay extends Component {
@@ -56,7 +57,7 @@ export default class ModalOverlay extends Component {
     if (this.modalOverlay && Platform.OS === 'ios') {
       const maxHeight = event.endCoordinates.screenY
       this.configureAnimation(event, () => this.props.onToggle(true, maxHeight))
-      this.modalOverlay._root.setNativeProps({
+      this.modalOverlay.setNativeProps({
         style: {
           ...this.props.style,
           height: maxHeight,
@@ -73,7 +74,7 @@ export default class ModalOverlay extends Component {
     if (this.modalOverlay && Platform.OS === 'ios') {
       const maxHeight = event.endCoordinates.screenY
       this.configureAnimation(event, () => this.props.onToggle(false, maxHeight))
-      this.modalOverlay._root.setNativeProps({
+      this.modalOverlay.setNativeProps({
         style: this.props.style,
       })      
     }
