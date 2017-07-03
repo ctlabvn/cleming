@@ -9,7 +9,7 @@ import {
 import { Text, Platform } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
-var RNUploader = require('react-native-uploader');
+// var RNUploader = require('react-native-uploader');
 
 // var RNUploader = NativeModules.RNUploader
 

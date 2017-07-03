@@ -10,7 +10,6 @@ import { Text, Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import Dash from 'react-native-dash';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 

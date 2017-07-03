@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import {
     ListItem, Text, View, Grid, Col, List
 } from 'native-base'
-import shallowCompare from 'react-addons-shallow-compare'
 import CheckBox from '~/ui/elements/CheckBox'
 import validate from 'validate.js'
 import _ from 'underscore'
