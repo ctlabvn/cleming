@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {InteractionManager, Keyboard, Platform} from "react-native";
-import {Button, Col, Container, Form, Grid, Text, Thumbnail} from "native-base";
+import React, { Component } from "react";
+import { InteractionManager, Keyboard, Platform } from "react-native";
+import { Button, Col, Container, Form, Grid, Text, Thumbnail } from "native-base";
 import styles from "./styles";
-import {connect} from "react-redux";
-import {Field, formValueSelector, reduxForm} from "redux-form";
+import { connect } from "react-redux";
+import { Field, formValueSelector, reduxForm } from "redux-form";
 import Icon from "~/ui/elements/Icon";
 // import LinearGradient from 'react-native-linear-gradient'
 import material from "~/theme/variables/material.js";
@@ -15,9 +15,9 @@ import * as commonSelectors from "~/store/selectors/common";
 import * as authSelectors from "~/store/selectors/auth";
 import Content from "~/ui/components/Content";
 import Preload from "~/ui/containers/Preload";
-import {InputField} from "~/ui/elements/Form";
-import {validate} from "./utils";
-import {logoSource, storeTransparent} from "~/assets";
+import { InputField } from "~/ui/elements/Form";
+import { validate } from "./utils";
+import { logoSource, storeTransparent } from "~/assets";
 import md5 from "md5";
 import DeviceInfo from "react-native-device-info";
 
@@ -81,7 +81,7 @@ export default class extends Component {
     Keyboard.dismiss()
     const { setToast } = this.props
     console.log('Handle Forgot', forgotEmail)
-    if (!forgotEmail || forgotEmail.trim()==""){
+    if (!forgotEmail || forgotEmail.trim() == "") {
       setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
       return
     }
@@ -106,15 +106,27 @@ export default class extends Component {
     this._handleShowLogin(e)
     this.setState({ emailFocus: false })
     Keyboard.dismiss()
-    setTimeout(()=>this.props.forwardTo('merchantOverview', true), 500)
+    setTimeout(() => this.props.forwardTo('merchantOverview', true), 500)
   }
 
   _handleShowLogin = (e) => {
+    console.log('Call handle show login')
     const length = this.props.currentValues.email.length
     this.setState({
       showPassword: false,
       showForgot: false,
       emailFocus: true,
+      emailSelection: { start: length, end: length }
+    })
+  }
+
+  _handleShowLoginWithoutFocus = (e) => {
+    console.log('Call handle show login without focus')
+    const length = this.props.currentValues.email.length
+    this.setState({
+      showPassword: false,
+      showForgot: false,
+      emailFocus: false,
       emailSelection: { start: length, end: length }
     })
   }
@@ -156,20 +168,22 @@ export default class extends Component {
       oldPassword: md5(oldPassword),
       password: md5(newPassword)
     }
+    Keyboard.dismiss()
     this.props.changePassword(this.props.session, data,
       (err, dataR) => {
         if (dataR && dataR.updated && dataR.updated.isSent) {
           updateFirstTimeLogin()
-          this._handleShowLogin()
-          forwardTo('merchantOverview', true)
+          this._handleShowLoginWithoutFocus()
+          console.log('Process Change Password')
+          setTimeout(() => forwardTo('merchantOverview', true), 500)
         }
       }
     )
   }
   componentWillFocus() {
     // InteractionManager.runAfterInteractions(() => {
-      const { app } = this.props
-      this._handleShowLogin()
+    const { app } = this.props
+    this._handleShowLogin()
     // })
     // this.forceUpdate()
   }
