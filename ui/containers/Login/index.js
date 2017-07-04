@@ -103,6 +103,7 @@ export default class extends Component {
   }
 
   _handleShowHome = (e) => {
+    this._resetFirstTimeChangePasswordForm()
     this._handleShowLogin(e)
     this.setState({ emailFocus: false })
     Keyboard.dismiss()
@@ -161,6 +162,11 @@ export default class extends Component {
     }
     return true
   }
+  _resetFirstTimeChangePasswordForm = () => {
+    this.props.change('oldPassword', '')
+    this.props.change('newPassword', '')
+    this.props.change('reNewPassword', '')
+  }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
     const { setToast, updateFirstTimeLogin, forwardTo } = this.props
     if (!this._checkChangePassword(oldPassword, newPassword, reNewPassword)) return
@@ -174,6 +180,7 @@ export default class extends Component {
         if (dataR && dataR.updated && dataR.updated.isSent) {
           updateFirstTimeLogin()
           this._handleShowLoginWithoutFocus()
+          this._resetFirstTimeChangePasswordForm()
           console.log('Process Change Password')
           setTimeout(() => forwardTo('merchantOverview', true), 500)
         }
