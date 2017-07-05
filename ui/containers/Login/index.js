@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {InteractionManager, Keyboard, Platform} from "react-native";
-import {Button, Col, Container, Form, Grid, Text, Thumbnail} from "native-base";
+import React, { Component } from "react";
+import { InteractionManager, Keyboard, Platform } from "react-native";
+import { Button, Col, Container, Form, Grid, Text, Thumbnail } from "native-base";
 import styles from "./styles";
-import {connect} from "react-redux";
-import {Field, formValueSelector, reduxForm} from "redux-form";
+import { connect } from "react-redux";
+import { Field, formValueSelector, reduxForm } from "redux-form";
 import Icon from "~/ui/elements/Icon";
 // import LinearGradient from 'react-native-linear-gradient'
 import material from "~/theme/variables/material.js";
@@ -15,9 +15,9 @@ import * as commonSelectors from "~/store/selectors/common";
 import * as authSelectors from "~/store/selectors/auth";
 import Content from "~/ui/components/Content";
 import Preload from "~/ui/containers/Preload";
-import {InputField} from "~/ui/elements/Form";
-import {validate} from "./utils";
-import {logoSource, storeTransparent} from "~/assets";
+import { InputField } from "~/ui/elements/Form";
+import { validate } from "./utils";
+import { logoSource, storeTransparent } from "~/assets";
 import md5 from "md5";
 import DeviceInfo from "react-native-device-info";
 
@@ -57,6 +57,7 @@ export default class extends Component {
       passwordFocus: false,
       emailSelection: { start: 0, end: 0 },
       passwordSelection: { start: 0, end: 0 },
+      loading: false
     }
 
 
@@ -72,16 +73,24 @@ export default class extends Component {
     const { pushToken } = this.props
     let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
-    this.setState({ emailFocus: false })
+    this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    this.props.login(email, password, xDevice, xUniqueDevice)
+    this.setState({loading:true})
+    this.props.login(email, password, xDevice, xUniqueDevice,
+      (err, data) => {
+        this.setState({loading: false})
+        if (!err) {
+          this.props.change('password', '')
+        }
+      }
+    )
   }
 
   _handleForgot = ({ forgotEmail }) => {
     Keyboard.dismiss()
     const { setToast } = this.props
     console.log('Handle Forgot', forgotEmail)
-    if (!forgotEmail || forgotEmail.trim()==""){
+    if (!forgotEmail || forgotEmail.trim() == "") {
       setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
       return
     }
@@ -103,18 +112,31 @@ export default class extends Component {
   }
 
   _handleShowHome = (e) => {
+    this._resetFirstTimeChangePasswordForm()
     this._handleShowLogin(e)
-    this.setState({ emailFocus: false })
+    this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    setTimeout(()=>this.props.forwardTo('merchantOverview', true), 500)
+    setTimeout(() => this.props.forwardTo('merchantOverview', true), 500)
   }
 
   _handleShowLogin = (e) => {
+    console.log('Call handle show login')
     const length = this.props.currentValues.email.length
     this.setState({
       showPassword: false,
       showForgot: false,
       emailFocus: true,
+      emailSelection: { start: length, end: length }
+    })
+  }
+
+  _handleShowLoginWithoutFocus = (e) => {
+    console.log('Call handle show login without focus')
+    const length = this.props.currentValues.email.length
+    this.setState({
+      showPassword: false,
+      showForgot: false,
+      emailFocus: false,
       emailSelection: { start: length, end: length }
     })
   }
@@ -149,6 +171,11 @@ export default class extends Component {
     }
     return true
   }
+  _resetFirstTimeChangePasswordForm = () => {
+    this.props.change('oldPassword', '')
+    this.props.change('newPassword', '')
+    this.props.change('reNewPassword', '')
+  }
   _handleChangePassword = ({ oldPassword, newPassword, reNewPassword }) => {
     const { setToast, updateFirstTimeLogin, forwardTo } = this.props
     if (!this._checkChangePassword(oldPassword, newPassword, reNewPassword)) return
@@ -156,22 +183,31 @@ export default class extends Component {
       oldPassword: md5(oldPassword),
       password: md5(newPassword)
     }
+    Keyboard.dismiss()
     this.props.changePassword(this.props.session, data,
       (err, dataR) => {
         if (dataR && dataR.updated && dataR.updated.isSent) {
           updateFirstTimeLogin()
-          this._handleShowLogin()
-          forwardTo('merchantOverview', true)
+          this._handleShowLoginWithoutFocus()
+          this._resetFirstTimeChangePasswordForm()
+          console.log('Process Change Password')
+          setTimeout(() => forwardTo('merchantOverview', true), 500)
         }
       }
     )
   }
   componentWillFocus() {
-    // InteractionManager.runAfterInteractions(() => {
-      const { app } = this.props
-      this._handleShowLogin()
-    // })
-    // this.forceUpdate()
+    const { app } = this.props
+    // this._handleShowLogin()
+    const length = this.props.currentValues.email.length
+    this.setState({
+      showPassword: false,
+      showForgot: false,
+      emailFocus: false,
+      passwordFocus: true,
+      emailSelection: { start: length, end: length }
+    })
+    // this.setState({ passwordFocus: true })
   }
   componentWillMount() {
     const { app } = this.props
@@ -254,6 +290,9 @@ export default class extends Component {
           label="Email/ Số điện thoại" component={InputField} />
         <Field name="password"
           autoFocus={passwordFocus}
+          icon={(input, active) => input.value && active ? 'close' : false}
+          iconStyle={{ color: material.black500 }}
+          onIconPress={input => input.onChange('')}
           initialSelection={passwordSelection} label="Mật khẩu" secureTextEntry={true} component={InputField} />
         <Button onPress={handleSubmit(this._handleLogin)}
           style={styles.button}>
@@ -270,10 +309,13 @@ export default class extends Component {
 
   render() {
     const { forwardTo, loginRequest, pushToken } = this.props
-    if (loginRequest.status === 'pending') {
-      return (
-        <Preload />
-      )
+    // if (loginRequest.status === 'pending') {
+    //   return (
+    //     <Preload />
+    //   )
+    // }
+    if (this.state.loading){
+      return (<Preload />)
     }
     return (
       <Container style={styles.container}>

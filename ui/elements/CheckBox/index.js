@@ -16,6 +16,10 @@ export default class CheckBox extends PureComponent {
     }
   }
 
+  componentDidMount(){
+    this.props.onReady && this.props.onReady(this)
+  }
+
   componentWillReceiveProps({checked}){
     this.setState({checked})
   }

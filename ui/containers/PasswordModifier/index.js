@@ -111,13 +111,6 @@ export default class extends Component {
   
   render() {
     const {forwardTo, loginRequest, pushToken} = this.props
-    console.log('Playform', Platform.OS)
-    if(loginRequest.status === 'pending'){
-      return (
-        <Preload/>
-      )
-    }
-    
     return (
       <Container style={styles.container}>
         
