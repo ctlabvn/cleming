@@ -22,8 +22,15 @@ import TransactionInputFeedback from './containers/TransactionInputFeedback'
 
 import ChartDemo from './containers/ChartDemo'
 
+import About from './containers/About'
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    about: {
+        title: 'Thông tin',
+        Page: About,
+        headerType: 'back',
+    },
     merchantOverview: {
         title: 'Merchant Name',
         Page: MerchantOverview,

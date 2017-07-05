@@ -5,6 +5,10 @@ export default {
       route: 'userManagement',
       // icon: 'poll',
     },
+    {
+        name: 'Thông tin',
+        route: 'about',
+    },
   ]
 
 
