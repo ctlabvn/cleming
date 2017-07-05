@@ -57,6 +57,7 @@ export default class extends Component {
       passwordFocus: false,
       emailSelection: { start: 0, end: 0 },
       passwordSelection: { start: 0, end: 0 },
+      loading: false
     }
 
 
@@ -74,8 +75,10 @@ export default class extends Component {
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
     this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
+    this.setState({loading:true})
     this.props.login(email, password, xDevice, xUniqueDevice,
       (err, data) => {
+        this.setState({loading: false})
         if (!err) {
           this.props.change('password', '')
         }
@@ -306,10 +309,13 @@ export default class extends Component {
 
   render() {
     const { forwardTo, loginRequest, pushToken } = this.props
-    if (loginRequest.status === 'pending') {
-      return (
-        <Preload />
-      )
+    // if (loginRequest.status === 'pending') {
+    //   return (
+    //     <Preload />
+    //   )
+    // }
+    if (this.state.loading){
+      return (<Preload />)
     }
     return (
       <Container style={styles.container}>
