@@ -28,4 +28,7 @@ export default {
         fontSize: 15,
     },
 
+    textBlue: {
+        color: material.blue500,
+    }
 }

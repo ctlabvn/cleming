@@ -37,12 +37,12 @@ export default class extends Component {
                     <Text style={styles.textTitle}>
                         Liên hệ
                     </Text>
-                    <Text style={styles.textContent}>
+                    <Text style={{...styles.textContent, ...styles.textBlue}}>
                         support@gigatum.com
                     </Text>
                     <Text style={styles.textContent}>
                         Clingme được thành lập từ 2013 với mục tiêu đem đến cho các nhà bán hàng kênh bán hàng hiệu quả
-                        và nhanh chóng
+                        và nhanh chóng.
                     </Text>
                 </ScrollView>
             </View>
