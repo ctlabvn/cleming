@@ -47,7 +47,7 @@ const requestResetPassword = createRequestSaga({
         if(code === 1201)  {
             throw new Error(msg)            
         }
-          return setToast('Reset password successfully!')  
+          return setToast('Đặt lại mật khẩu thành công.')  
         } 
     ],
     failure: [
