@@ -260,7 +260,6 @@ export default class CreateUserContainer extends Component {
           isLoading: false
         }, () => {
           this.props.actions.goBack()
-          this.props.actions.setToast('Successfully!');
         })
       })
     }
