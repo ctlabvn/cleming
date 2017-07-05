@@ -72,9 +72,15 @@ export default class extends Component {
     const { pushToken } = this.props
     let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
-    this.setState({ emailFocus: false })
+    this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    this.props.login(email, password, xDevice, xUniqueDevice)
+    this.props.login(email, password, xDevice, xUniqueDevice,
+      (err, data) => {
+        if (!err) {
+          this.props.change('password', '')
+        }
+      }
+    )
   }
 
   _handleForgot = ({ forgotEmail }) => {
@@ -105,7 +111,7 @@ export default class extends Component {
   _handleShowHome = (e) => {
     this._resetFirstTimeChangePasswordForm()
     this._handleShowLogin(e)
-    this.setState({ emailFocus: false })
+    this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
     setTimeout(() => this.props.forwardTo('merchantOverview', true), 500)
   }
@@ -188,11 +194,17 @@ export default class extends Component {
     )
   }
   componentWillFocus() {
-    // InteractionManager.runAfterInteractions(() => {
     const { app } = this.props
-    this._handleShowLogin()
-    // })
-    // this.forceUpdate()
+    // this._handleShowLogin()
+    const length = this.props.currentValues.email.length
+    this.setState({
+      showPassword: false,
+      showForgot: false,
+      emailFocus: false,
+      passwordFocus: true,
+      emailSelection: { start: length, end: length }
+    })
+    // this.setState({ passwordFocus: true })
   }
   componentWillMount() {
     const { app } = this.props
@@ -275,6 +287,9 @@ export default class extends Component {
           label="Email/ Số điện thoại" component={InputField} />
         <Field name="password"
           autoFocus={passwordFocus}
+          icon={(input, active) => input.value && active ? 'close' : false}
+          iconStyle={{ color: material.black500 }}
+          onIconPress={input => input.onChange('')}
           initialSelection={passwordSelection} label="Mật khẩu" secureTextEntry={true} component={InputField} />
         <Button onPress={handleSubmit(this._handleLogin)}
           style={styles.button}>
