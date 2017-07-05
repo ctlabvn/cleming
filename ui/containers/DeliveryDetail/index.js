@@ -191,7 +191,7 @@ export default class extends Component {
                 <View style={styles.rowPadding}>
                     <Text small grayDark>Phí giao hàng:</Text>
                     <Text bold
-                          grayDark>{orderDetail.shipPriceReal > 0 ? formatNumber(orderDetail.shipPriceReal) : 0}đ</Text>
+                          grayDark>{(orderDetail && orderDetail.orderInfo && orderDetail.orderInfo.shipPriceReal > 0) ? formatNumber(orderDetail.orderInfo.shipPriceReal) : 0}đ</Text>
                 </View>
                 <View style={styles.line}/>
                 <View style={styles.rowPadding}>
