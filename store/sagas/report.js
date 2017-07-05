@@ -4,6 +4,7 @@ import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setMapReport, setCustomerReport } from '~/store/actions/report'
+import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 const requestCustomerReport = createRequestSaga({
     request: api.report.getCustomerReport,
     key: 'customer/statistic',
@@ -12,7 +13,7 @@ const requestCustomerReport = createRequestSaga({
         (data) => {
             console.log('Load report', data)
             if (data.code){
-                return setToast('Load trans fail: '+JSON.stringify(data), 'error')
+                return setToast(GENERAL_ERROR_MESSAGE, 'error')
             }
             // return setListTransaction(data.updated.data)
             return setCustomerReport(data.updated.data)
@@ -27,7 +28,7 @@ const requestMapReport = createRequestSaga({
         (data) => {
             console.log('Load map', data)
             if (data.code){
-                return setToast('Load trans fail: '+JSON.stringify(data), 'error')
+                return setToast(GENERAL_ERROR_MESSAGE, 'error')
             }
             // return setListTransaction(data.updated.data)
             return setMapReport(data.updated.data)

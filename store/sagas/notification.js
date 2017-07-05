@@ -16,7 +16,6 @@ const requestGetNotification = createRequestSaga({
         (data, {args:[session, page]}) => replaceNotification({data, page}),              
     ],
     failure: [
-        () => setToast('Couldn\'t get notification', 'error')
     ],
 })
 

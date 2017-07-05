@@ -75,7 +75,6 @@ const requestGetListEmployee = createRequestSaga({
     (data) => setListEmployee(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get employee list', 'danger')
   ],
 })
 
@@ -86,7 +85,6 @@ const requestGetGeneratedPassword = createRequestSaga({
     (data) => setGeneratedPassword(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get password', 'danger')
   ],
 })
 
@@ -142,7 +140,6 @@ const requestDeleteEmployeeInfo = createRequestSaga({
   
   ],
   failure: [
-    () => setToast('Couldn\'t delete employee', 'danger')
   ],
 })
 

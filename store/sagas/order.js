@@ -13,7 +13,7 @@ const requestGetOrderList = createRequestSaga({
             if (data && data.updated){
                 return replaceOrderList(data)
             }
-            return setToast('Load order fail: ', JSON.stringify(data))
+            return setToast(GENERAL_ERROR_MESSAGE, 'error')
         },               
     ],
 })
