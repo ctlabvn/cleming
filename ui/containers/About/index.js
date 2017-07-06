@@ -17,7 +17,7 @@ export default class extends Component {
             <View style={styles.container}>
                 <ScrollView>
                     <Icon name="logo" style={styles.logoIcon}/>
-                    <Text style={styles.textTitle}>
+                    <Text style={{...styles.textTitle, marginTop: 15}}>
                         Giới thiệu
                     </Text>
                     <Text style={styles.textContent}>

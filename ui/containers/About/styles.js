@@ -18,7 +18,7 @@ export default {
         color: material.gray300,
         fontSize: 15,
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: 20,
         marginBottom: 10,
     },
 
@@ -31,7 +31,7 @@ export default {
 
     textContent: {
         marginTop: 10,
-        marginBottom: 15,
+        marginBottom: 0,
         color: material.gray600,
         fontWeight: 'normal',
         fontSize: 15,
