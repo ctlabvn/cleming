@@ -4,6 +4,7 @@ export default {
     container: {
         flex: 1,
         padding: 15,
+        backgroundColor: material.white500,
     },
 
     logoIcon:{
@@ -13,16 +14,24 @@ export default {
         marginTop: 25,
     },
 
+    logoIconDeep:{
+        color: material.gray300,
+        fontSize: 15,
+        alignSelf: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+
     textTitle: {
         fontSize: 18,
         fontWeight: 'bold',
         color: material.gray600,
-        marginTop: 35,
+        marginTop: 25,
     },
 
     textContent: {
         marginTop: 10,
-        marginBottom: 5,
+        marginBottom: 15,
         color: material.gray600,
         fontWeight: 'normal',
         fontSize: 15,

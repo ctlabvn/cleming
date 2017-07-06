@@ -44,6 +44,7 @@ export default class extends Component {
                         Clingme được thành lập từ 2013 với mục tiêu đem đến cho các nhà bán hàng kênh bán hàng hiệu quả
                         và nhanh chóng.
                     </Text>
+                    <Icon name="logo" style={styles.logoIconDeep}/>
                 </ScrollView>
             </View>
         )
