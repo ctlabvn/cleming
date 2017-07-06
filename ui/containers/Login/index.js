@@ -166,7 +166,7 @@ export default class extends Component {
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      setToast('Mật khẩu có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường', 'danger')
+      setToast('Mật khẩu có độ dài 4 - 12 kí tự.', 'danger')
       return false
     }
     return true

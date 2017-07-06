@@ -279,14 +279,14 @@ export default class CreateUserContainer extends Component {
 
       // if (this.props.formState.CreateUserForm.syncErrors) {
       if (errRet.name || errRet.phone || errRet.email) {
-          this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
+          this.props.actions.setToast("Thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại.", 'danger')
           this._scrollPageUp()
           // return;
       } else if(!this.state.selectedPlaceId){
-        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger');
+        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ.", 'danger');
 
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
-        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+        this.props.actions.setToast("Hãy nhấn nút Tạo mật khẩu đăng nhập.", 'danger')
         this._scrollPageDown();        
     } else {
       
