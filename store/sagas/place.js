@@ -4,6 +4,7 @@ import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setListPlace, setPlaceStatistic, setMerchantNews } from '~/store/actions/place'
+import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 
 const requestListPlace = createRequestSaga({
     request: api.place.listPlace,
@@ -14,7 +15,7 @@ const requestListPlace = createRequestSaga({
             if (data && data.updated) {
                 return setListPlace(data.updated.data)
             }
-            return setToast('Load place fail', 'error')
+            return setToast(GENERAL_ERROR_MESSAGE, 'error')
 
         }
     ],
