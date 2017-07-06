@@ -21,7 +21,7 @@ import {
     DEFAULT_TIME_FORMAT,
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
-import {formatPhoneNumber} from "~/ui/shared/utils";
+import {formatPhoneNumber, chainParse} from "~/ui/shared/utils";
 @connect(state => ({
     xsession: getSession(state),
     user: state.auth.user,
@@ -188,12 +188,12 @@ export default class PlaceOrderDetail extends Component {
                         <View style={styles.rowPaddingTB}>
                             <Text style={{...styles.normalText, ...styles.leftText}}>Người đặt chỗ:</Text>
                             <Text
-                                style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{this.state.bookingDetail.userInfo.memberName}</Text>
+                                style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{chainParse(this.state.bookingDetail, ['userInfo', 'memberName'])}</Text>
                         </View>
                         <View style={styles.rowPaddingTB}>
                             <Text style={{...styles.normalText, ...styles.leftText}}>Số điện thoại:</Text>
                             <Text
-                                style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(this.state.bookingDetail.userInfo.phoneNumber)}</Text>
+                                style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
                         </View>
                         <View style={styles.block}>
                             <Text style={{...styles.normalText, ...styles.leftText}}>Yêu cầu riêng:</Text>
