@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { LayoutAnimation } from 'react-native'
+import { LayoutAnimation, ListView } from 'react-native'
 import {
   Button, Container, ListItem, List, Spinner,
   Text, Item, View, Input, Left, Right, Body,
@@ -40,22 +40,29 @@ export default class extends Component {
       refreshing: false,
       loading: false,
     }
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1)!=JSON.stringify(r2))})
   }
 
-  componentWillFocus() {
+  componentWillFocus() {getNotification
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
-    console.log('Component Will Focus noty')
     if (!notifications.data.length) {
       getNotification(session, 1, () => getNotification(session, 2))
       this.setState({
         refreshing: false,
       })
+    }else{
+      this.forceUpdate()
     }
   }
 
   componentWillMount() {
-    this.componentWillFocus()
+    // this.componentWillFocus()
+    const { session, getNotification } = this.props
+    getNotification(session, 1, () => getNotification(session, 2))
+    this.setState({
+      refreshing: false,
+    })
   }
 
   _onRefresh = () => {
@@ -340,13 +347,16 @@ export default class extends Component {
           style={styles.container} refreshing={this.state.refreshing}
         >
           {notifications &&
-            <List
+            <ListView
               removeClippedSubviews={false}
               pageSize={10}
-              dataArray={notifications.data} renderRow={(item) => {
+              dataSource={this.ds.cloneWithRows(notifications.data)}
+              renderRow={(item) => {
                 return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
-                  onPress={() => this.handleNotiClick(item)}>
+                  onPress={() => this.handleNotiClick(item)}
+                  key={item.notifyId}
+                  >
                   <View style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start'
