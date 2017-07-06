@@ -73,3 +73,15 @@ export const convertVn = (str) => {
     .replace(/ỳ|ý|ỵ|ỷ|ỹ/gi, 'y')
     .replace(/đ/gi, 'd');
 }
+
+export const chainParse = (obj, attrArr) => {
+  if (!obj){
+    return null
+  }
+  let cloneObj = Object.assign({}, obj)
+  for (let i=0; i<attrArr.length; i++){
+    cloneObj = cloneObj[attrArr[i]]
+    if (!cloneObj) return null 
+  }
+  return cloneObj
+}

@@ -15,7 +15,7 @@ import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
 import options from "./options";
-import { formatNumber, formatPhoneNumber } from "~/ui/shared/utils";
+import { formatNumber, formatPhoneNumber, chainParse } from "~/ui/shared/utils";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
@@ -267,10 +267,11 @@ export default class extends Component {
             <View style={styles.row}>
                 <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
                 <Text
-                    onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                    style={styles.phoneNumber}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+                    onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
+                    style={styles.phoneNumber}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
             </View>
         )
+
         switch (orderInfo.status) {
             case 'WAIT_CONFIRM':
             default:
@@ -324,8 +325,8 @@ export default class extends Component {
                     <View style={styles.row}>
                         <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
                         <Text
-                            onPress={this.onModalOpen.bind(this, orderInfo.userInfo.phoneNumber)}
-                            style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(orderInfo.userInfo.phoneNumber)}</Text>
+                            onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
+                            style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
                     </View>
                 )
                 break
@@ -347,8 +348,9 @@ export default class extends Component {
                             {(orderInfo.status == 'CANCELLED' || orderInfo.status == 'FAILED') && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
-                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
-                                <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) 
+                                && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
+                                && <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
                                     counting={this.state.counting}
                                     countTo={countTo}
                                 />}
@@ -376,14 +378,13 @@ export default class extends Component {
                     </View>
                 }
                 <View style={styles.block}>
-                    {orderInfo.userInfo &&
-                        (<View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
-                            <View style={styles.row}>
-                                <Icon name='account' style={styles.icon} />
-                                <Text grayDark>{orderInfo.userInfo.memberName}</Text>
-                            </View>
-                            {phoneNumberBlock}
-                        </View>)}
+                    <View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
+                        <View style={styles.row}>
+                            <Icon name='account' style={styles.icon} />
+                            <Text grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
+                        </View>
+                        {phoneNumberBlock}
+                    </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
                         <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>

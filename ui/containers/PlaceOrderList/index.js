@@ -19,7 +19,7 @@ import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
 import {getSession} from "~/store/selectors/auth";
 import {getNews} from "~/store/selectors/place";
-import {formatPhoneNumber} from "~/ui/shared/utils";
+import {formatPhoneNumber, chainParse} from "~/ui/shared/utils";
 import {
     BOOKING_CANCEL,
     BOOKING_CONFIRMED,
@@ -86,8 +86,8 @@ export default class PlaceOrderList extends Component {
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
                     <Text
-                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                        warning>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                        onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
+                        warning>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
                 break
             case 'CONFIRMED':
@@ -98,8 +98,8 @@ export default class PlaceOrderList extends Component {
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
                     <Text
-                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                        primary>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                        onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
+                        primary>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
                 break
             case 'CANCELLED':
@@ -110,8 +110,8 @@ export default class PlaceOrderList extends Component {
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
                     <Text
-                        onPress={this.onModalOpen.bind(this, item.userInfo.phoneNumber)}
-                        style={styles.gray}>{formatPhoneNumber(item.userInfo.phoneNumber)}</Text>
+                        onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
+                        style={styles.gray}>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
                 listItemStyle = { ...listItemStyle, ...styles.listItemGray }
                 listButtonStyle = { ...listButtonStyle, ...styles.listItemGray }
@@ -165,7 +165,7 @@ export default class PlaceOrderList extends Component {
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text grayDark small>{item.userInfo.memberName}</Text>
+                                <Text grayDark small>{chainParse(item, ['userInfo', 'memberName'])}</Text>
                             </View>
                             {phoneNumberBlock}
                         </View>
