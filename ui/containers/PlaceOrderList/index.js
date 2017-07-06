@@ -165,7 +165,7 @@ export default class PlaceOrderList extends Component {
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text grayDark small>{item.userInfo.memberName}</Text>
+                                <Text grayDark small>{chainParse(item, ['userInfo', 'memberName'])}</Text>
                             </View>
                             {phoneNumberBlock}
                         </View>
