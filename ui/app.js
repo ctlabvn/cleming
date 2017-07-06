@@ -186,7 +186,7 @@ export default class App extends Component {
               this.props.getMerchantNews(this.props.xsession, currentPlace.id)
             }
             const title = notification.title ? notification.title + " " + notification.message : notification.alert
-            this.props.setToast(title, 'warning', this._handleNoti, notification)
+            this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
           }
         }
       },
