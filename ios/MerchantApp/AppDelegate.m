@@ -23,7 +23,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-  [GMSServices provideAPIKey:@"AIzaSyBcTLs7_bUK_J8h8MVES_xhCx9_LnMaXb8"];
+  //[GMSServices provideAPIKey:@"AIzaSyBcTLs7_bUK_J8h8MVES_xhCx9_LnMaXb8"];
+  [GMSServices provideAPIKey:@"AIzaSyA7eYM3S0YvqZDUSf-H8bEajHjusfiQzkQ"];
   
   [Fabric with:@[[Crashlytics class]]];
   
