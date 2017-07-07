@@ -14,9 +14,9 @@ export default {
         console.log('Trans Detail API', xsession+'---'+dealTransactionId)
         return apiGet('/merchantapp/transaction-detail', {dealTransactionId}, xsession)
     },
-    detailPayWithClingme(xsession, clingmeId){
-        console.log('Tras Detail Clingme', xsession+'---'+clingmeId)
-        return apiGet('/merchantapp/payclm-detail', {clingmeId}, xsession)
+    detailPayWithClingme(xsession, transactionId){
+        console.log('Tras Detail Clingme', xsession+'---'+transactionId)
+        return apiGet('/merchantapp/payclm-detail', {transactionId}, xsession)
     },
     getDenyReason(xsession){
         return apiGet('/merchantapp/transaction-reason', {}, xsession)

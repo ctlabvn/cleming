@@ -81,7 +81,7 @@ export default class PlaceOrderList extends Component {
             case 'WAIT_CONFIRMED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                    <Text warning bold>#{item.orderCode}</Text>
+                    <Text warning bold>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
@@ -93,7 +93,7 @@ export default class PlaceOrderList extends Component {
             case 'CONFIRMED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                    <Text primary bold>#{item.orderCode}</Text>
+                    <Text primary bold>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
@@ -105,7 +105,7 @@ export default class PlaceOrderList extends Component {
             case 'CANCELLED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                    <Text bold style={styles.gray}>#{item.orderCode}</Text>
+                    <Text bold style={styles.gray}>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />

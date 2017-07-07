@@ -118,12 +118,12 @@ export default class TransactionDetail extends Component {
         const { xsession, transaction } = this.props
         let index = 0, transactionId
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            transactionId = this.state.transactionInfo.clingmeId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+            transactionId = this.state.transactionInfo.transactionId
+            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
             if (index <= 0) return
             index--
             let preTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(preTrans.clingmeId)
+            this._load(preTrans.transactionId)
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
             index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
@@ -138,12 +138,12 @@ export default class TransactionDetail extends Component {
         const { xsession, transaction } = this.props
         let transactionId, index = 0
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            transactionId = this.state.transactionInfo.clingmeId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+            transactionId = this.state.transactionInfo.transactionId
+            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
             if (index >= transaction.payWithClingme.listTransaction.length - 1) return
             index++
             let nextTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(nextTrans.clingmeId)
+            this._load(nextTrans.transactionId)
 
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
@@ -199,20 +199,20 @@ export default class TransactionDetail extends Component {
             let payStatus, helpBtn = null
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text success bold>Đã thanh toán</Text>
+                payStatus = <Text success bold>{I18n.t('paid')}</Text>
                 //Chưa sử dụng help
                 if (!transactionInfo.helpStatus) {
                     helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                        <Text>Trợ giúp</Text>
+                        <Text>{I18n.t('help')}</Text>
                     </Button>
                 } else {
                     helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
-                        <Text>Trợ giúp</Text>
+                        <Text>{I18n.t('help')}</Text>
                     </Button>
                 }
 
             } else if (transactionInfo.transactionStatus == 2) {
-                payStatus = <Text success bold>Đã xác nhận</Text>
+                payStatus = <Text success bold>{I18n.t('confirmed')}</Text>
             }
             return (
                 <Content>
@@ -226,20 +226,20 @@ export default class TransactionDetail extends Component {
                             <Text small style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>Số đơn hàng</Text>
+                            <Text gray>{I18n.t('order_number')}</Text>
                             <Text bold style={{ fontSize: 24 }}>{transactionInfo.transactionIdDisplay}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>Tổng tiền thanh toán</Text>
+                            <Text gray>{I18n.t('total_pay')}</Text>
                             <Text bold style={{ fontSize: 48 }}>{formatNumber(transactionInfo.moneyAmount)}</Text>
                             {payStatus}
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text bold>{formatNumber(10120)}</Text>
-                            <Text gray>Phí Clingme</Text>
+                            <Text bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
+                            <Text gray>{I18n.t('clingme_fee')}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Text>Khách hàng</Text>
+                            <Text>{I18n.t('customer')}</Text>
                             <View style={styles.row}>
                                 <Text bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
                                 {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
@@ -370,7 +370,8 @@ export default class TransactionDetail extends Component {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
                     this.setState({ loading: false })
-                    console.log('ErrData', data)
+                    console.log('Load payCLM', data)
+                    console.log('Load payCLM', err)
                     if (err) {
                         setToast(GENERAL_ERROR_MESSAGE, 'danger')
                         forwardTo('merchantOverview', true)
@@ -381,7 +382,7 @@ export default class TransactionDetail extends Component {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payWithClingme) {
-                            let index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+                            let index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
                             if (index != -1) {
                                 hasPrevious = (index == 0) ? false : true
                                 hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
