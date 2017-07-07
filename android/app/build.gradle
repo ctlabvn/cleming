@@ -3,6 +3,9 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    flatDir{
+        dirs '../ScanditSDK'
+    }
 }
 //project.ext.vectoricons = [
 //        iconFontNames: [ 'MaterialIcons.ttf', 'Roboto.ttf', 'Roboto_medium.ttf', 'clingme_font.ttf' ] // Name of the font files you want to copy
@@ -148,9 +151,9 @@ android {
 
 dependencies {
     compile project(':react-native-i18n')
+    compile project(':react-native-scandit')
     compile project(':react-native-fabric')
     compile project(':react-native-photo-view')
-    compile project(':react-native-uploader')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile ('com.google.android.gms:play-services-gcm:10.2.0') {
