@@ -9,6 +9,10 @@ export default {
         name: 'Thông tin',
         route: 'about',
     },
+    {
+      name: 'Quét QR Code',
+      route: 'qrScanner',
+    }
   ]
 
 

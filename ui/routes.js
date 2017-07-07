@@ -20,7 +20,8 @@ import Report from './containers/Report'
 import TransactionConfirm from './containers/TransactionConfirm'
 import TransactionInputFeedback from './containers/TransactionInputFeedback'
 
-import ChartDemo from './containers/ChartDemo'
+// import ChartDemo from './containers/ChartDemo'
+import QRScanner from './containers/QRScanner'
 
 import About from './containers/About'
 
@@ -163,9 +164,9 @@ export default {
         footerType: 'none',
     },
    
-    chartDemo: {
-        title: 'Chart Demo',
-        Page: ChartDemo,
+    qrScanner: {
+        title: 'QR Scanner',
+        Page: QRScanner,
         headerType: 'back',
         footerType: 'none',
     },

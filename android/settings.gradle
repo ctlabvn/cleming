@@ -1,12 +1,12 @@
 rootProject.name = 'MerchantApp'
 include ':react-native-i18n'
 project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')
+include ':react-native-scandit'
+project(':react-native-scandit').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-scandit/android')
 include ':react-native-fabric'
 project(':react-native-fabric').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fabric/android')
 include ':react-native-photo-view'
 project(':react-native-photo-view').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-photo-view/android')
-include ':react-native-uploader'
-project(':react-native-uploader').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-uploader/android')
 include ':react-native-device-info'
 project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
 include ':react-native-push-notification'

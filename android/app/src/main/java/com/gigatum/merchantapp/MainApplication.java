@@ -5,9 +5,9 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.react.ReactApplication;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.reactlibrary.SGScanditPackage;
 import com.smixx.fabric.FabricPackage;
 import com.reactnative.photoview.PhotoViewPackage;
-import com.burlap.filetransfer.FileTransferPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.gigatum.merchantapp.BuildConfig;
@@ -36,9 +36,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNI18nPackage(),
+            new SGScanditPackage(),
             new FabricPackage(),
             new PhotoViewPackage(),
-            new FileTransferPackage(),
             new RNDeviceInfo(),
             new ReactNativePushNotificationPackage(),
             new RNFSPackage(),
