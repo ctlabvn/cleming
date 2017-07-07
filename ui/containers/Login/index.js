@@ -22,7 +22,7 @@ import md5 from "md5";
 import DeviceInfo from "react-native-device-info";
 
 import GradientBackground from "~/ui/elements/GradientBackground";
-
+import I18n from '~/ui/I18n'
 
 const formSelector = formValueSelector('LoginForm')
 
@@ -220,9 +220,9 @@ export default class extends Component {
           Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}
           Vui lòng tạo Mật khẩu riêng để bảo mật
           </Text>
-        <Field name="oldPassword" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />
-        <Field name="newPassword" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />
-        <Field name="reNewPassword" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />
+        <Field name="oldPassword" label={I18n.t('current_password')} secureTextEntry={true} component={InputField} />
+        <Field name="newPassword" label={I18n.t('new_password')} secureTextEntry={true} component={InputField} />
+        <Field name="reNewPassword" label={I18n.t('re_new_password')} secureTextEntry={true} component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
             <Button onPress={this._handleShowHome}
@@ -234,7 +234,7 @@ export default class extends Component {
           <Col style={{ width: '64%' }}>
             <Button onPress={handleSubmit(this._handleChangePassword)}
               style={styles.button}>
-              <Text>Cập nhật</Text>
+              <Text>{I18n.t('update')}</Text>
             </Button>
           </Col>
         </Grid>
@@ -248,13 +248,13 @@ export default class extends Component {
     // const { emailForgotFocus, emailSelection } = this.state
     return (
       <Form style={styles.formForgot}>
-        <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>
+        <Text style={styles.labelForgot}>{I18n.t('get_password')}</Text>
         <Field autoCapitalize="none" name="forgotEmail"
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
           secureTextEntry={false}
-          label="Nhập số điện thoại để lấy lại mật khẩu"
+          label={I18n.t('get_password_hint')}
           component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
@@ -267,7 +267,7 @@ export default class extends Component {
           <Col style={{ width: '64%' }}>
             <Button onPress={handleSubmit(this._handleForgot)}
               style={styles.button}>
-              <Text>Gửi</Text>
+              <Text>{I18n.t('send')}</Text>
             </Button>
           </Col>
         </Grid>
@@ -287,20 +287,20 @@ export default class extends Component {
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
-          label="Email/ Số điện thoại" component={InputField} />
+          label={I18n.t('email_phone')} component={InputField} />
         <Field name="password"
           autoFocus={passwordFocus}
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
-          initialSelection={passwordSelection} label="Mật khẩu" secureTextEntry={true} component={InputField} />
+          initialSelection={passwordSelection} label={I18n.t('password')} secureTextEntry={true} component={InputField} />
         <Button onPress={handleSubmit(this._handleLogin)}
           style={styles.button}>
-          <Text>Đăng nhập</Text>
+          <Text>{I18n.t('login')}</Text>
         </Button>
 
         <Button onPress={this._handleShowForgot} transparent>
-          <Text style={styles.label}>Quên mật khẩu?</Text>
+          <Text style={styles.label}>{I18n.t('forgot_password')}</Text>
         </Button>
 
       </Form>

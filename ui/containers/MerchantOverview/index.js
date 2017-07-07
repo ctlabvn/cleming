@@ -18,7 +18,6 @@ import Content from "~/ui/components/Content";
 import {getSession, getUser} from "~/store/selectors/auth";
 import {getSelectedPlace} from "~/store/selectors/place";
 import material from "~/theme/variables/material.js";
-import { getLanguages } from 'react-native-i18n';
 import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),

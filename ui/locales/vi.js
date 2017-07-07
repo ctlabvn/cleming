@@ -3,6 +3,7 @@ export default  vi = {
     'transaction': 'Giao dịch',
     'booking': 'Đặt chỗ',
     'order': 'Đặt giao hàng',
+    'loading_place': 'Đang tải địa điểm...',
 
     // Transaction List Screen
     'confirm': 'Xác nhận',
@@ -33,5 +34,34 @@ export default  vi = {
     'transaction_cashback_success': 'Giao dịch thành công',
     'transaction_reject': 'Giao dịch bị từ chối',
     'transaction_not_accept': 'Không đồng ý',
-    'method_pay_direct': 'Thanh toán trực tiếp'
+    'method_pay_direct': 'Thanh toán trực tiếp',
+    'transaction_type_clingme': 'Trả qua Clingme',
+    'transaction_type_direct': 'Trả trực tiếp',
+
+
+    // SideBar
+    'manage_account': 'Quản lý tài khoản',
+    'about': 'Thông tin',
+    'logout': 'Đăng xuất',
+
+    // routes
+
+    // Login Screen
+    'email_phone': 'Email/Số điện thoại',
+    'password': 'Mật khẩu',
+    'login': 'Đăng nhập',
+    'forgot_password': 'Quên mật khẩu?',
+    'get_password': 'Lấy lại mật khẩu?',
+    'get_password_hint': 'Nhập số điện thoại để lấy lại mật khẩu',
+    'send': 'Gửi',
+    'cancel_en': 'Cancel',
+    'current_password': 'Mật khẩu hiện tại',
+    'new_password': 'Mật khẩu mới',
+    're_new_password': 'Nhập lại Mật khẩu mới',
+    'update': 'Cập nhật',
+
+    // Booking Screen
+    'booking_wait_confirm': 'Chờ xác nhận',
+    'booking_confirmed': 'Đã xác nhận',
+    'booking_cancel': 'Đã hủy'
 }

@@ -1,12 +1,13 @@
+import I18n from '~/ui/I18n'
 export default { 
   listItems: [
     {
-      name: 'Quản lý tài khoản',
+      name: I18n.t('manage_account'),
       route: 'userManagement',
       // icon: 'poll',
     },
     {
-        name: 'Thông tin',
+        name: I18n.t('about'),
         route: 'about',
     },
   ]
