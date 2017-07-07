@@ -19,6 +19,7 @@ import material from "~/theme/variables/material.js";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
 import Icon from "~/ui/elements/Icon"
 import CallModal from "~/ui/components/CallModal"
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: authSelectors.getSession(state),
     order: orderSelectors.getOrder(state),
@@ -135,14 +136,14 @@ export default class extends Component {
     _renderStatusText(status) {
         switch (status) {
             case 'WAIT_CONFIRM':
-                return <Text warning small bold>Chờ xác nhận</Text>
+                return <Text warning small bold>{I18n.t('order_wait_confirm')}</Text>
             case 'CONFIRMED':
-                return <Text primary small bold>Xác nhận</Text>
+                return <Text primary small bold>{I18n.t('order_confirmed')}</Text>
             case 'COMPLETED':
-                return <Text success small bold>Thành công</Text>
+                return <Text success small bold>{I18n.t('order_completed')}</Text>
             case 'FAILED':
             case 'CANCELLED':
-                return <Text gray small bold>Đã hủy</Text>
+                return <Text gray small bold>{I18n.t('order_cancelled')}</Text>
         }
     }
 
@@ -244,34 +245,34 @@ export default class extends Component {
                         </View>
                     </View>
                     <View style={styles.rowPadding}>
-                        <Text small grayDark>Đặt hàng số</Text>
+                        <Text small grayDark>{I18n.t('order_number_2')}</Text>
                         <Text primary bold>{orderDetail.orderInfo.tranId}</Text>
                     </View>
                     {(typeof orderDetail.orderInfo.feedback != "undefined" && orderDetail.orderInfo.feedback != null && orderDetail.orderInfo.feedback != "") &&
                         <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                            <Text small grayDark>Phản hồi của khách hàng</Text>
+                            <Text small grayDark>{I18n.t('customer_feedback')}</Text>
                             <Text bold grayDark>{orderDetail.orderInfo.feedback}</Text>
                         </View>
                     }
                     {(rejectReason) &&
                         <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                            <Text small grayDark>Lí do hủy đơn hàng</Text>
+                            <Text small grayDark>{I18n.t('reject_order_reason')}</Text>
                             <Text bold grayDark>{rejectReason}</Text>
                         </View>
                     }
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
-                        <Text small grayDark>Địa chỉ giao hàng</Text>
+                        <Text small grayDark>{I18n.t('deliver_address')}</Text>
                         <Text bold grayDark>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
 
 
                     <View style={styles.rowPaddingTopLarge}>
-                        <Text small grayDark>Người nhận</Text>
+                        <Text small grayDark>{I18n.t('receive_user')}</Text>
                         <Text bold grayDark>{chainParse(orderDetail, ['orderInfo', 'userInfo', 'memberName'])}</Text>
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
-                        <Text small grayDark>Số điện thoại</Text>
+                        <Text small grayDark>{I18n.t('phone_number')}</Text>
 
                         <TouchableWithoutFeedback
                             onPress={() => {
@@ -291,18 +292,18 @@ export default class extends Component {
                     {
                         (orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
                         <View style={styles.rowPaddingTopMedium}>
-                            <Text small grayDark>Yêu cầu nhận hàng trong</Text>
+                            <Text small grayDark>{I18n.t('receive_within')}</Text>
                             <Text bold grayDark>{BASE_COUNTDOWN_ORDER_MINUTE}'</Text>
                         </View>
                     }
 
                     <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                        <Text small grayDark>Yêu cầu khác</Text>
+                        <Text small grayDark>{I18n.t('other_require')}</Text>
                         <Text bold grayDark>{chainParse(orderDetail, ['orderInfo', 'note'])}</Text>
                     </View>
                     <View style={styles.line} />
                     <View style={styles.rowPadding}>
-                        <Text small bold grayDark>Giỏ hàng: {totalItem}</Text>
+                        <Text small bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
                     </View>
                     <List dataArray={orderDetail.orderRowList}
                         renderRow={(item) => (
@@ -311,7 +312,7 @@ export default class extends Component {
                                     <Image style={{ width: 60, height: 60 }} source={{ uri: item.itemImage }} />
                                     <View style={styles.cartContent}>
                                         <Text small grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
-                                        <Text small grayDark style={styles.textLeft}>Số lượng: {item.quantity}</Text>
+                                        <Text small grayDark style={styles.textLeft}>{I18n.t('number_full')}: {item.quantity}</Text>
                                     </View>
                                 </View>
                                 <Text bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
@@ -326,15 +327,14 @@ export default class extends Component {
                         {moneyBlock}
                     </View>
                 )}
-
                 {(orderDetail.orderInfo.status == 'CONFIRMED') && (
                     <View style={styles.fixButtonBlock}>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundLightGray }}
                             onPress={() => this.showReasonPopup(orderDetail.orderInfo.clingmeId)}
-                        ><Text gray>Hủy giao hàng</Text></Button>
+                        ><Text gray>{I18n.t('cancel_delivery')}</Text></Button>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundPrimary }}
                             onPress={() => this._handleConfirmOrder(orderDetail.orderInfo.clingmeId)}
-                        ><Text white>Đã giao hàng</Text></Button>
+                        ><Text white>{I18n.t('delivered')}</Text></Button>
                     </View>
                 )}
 

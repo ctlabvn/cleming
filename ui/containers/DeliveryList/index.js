@@ -22,6 +22,7 @@ import CallModal from "~/ui/components/CallModal";
 import moment from "moment";
 import { getNews } from "~/store/selectors/place";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
+import I18n from '~/ui/I18n'
 import {
     DEFAULT_TIME_FORMAT,
     DELIVERY_FEEDBACK,
@@ -294,11 +295,9 @@ export default class extends Component {
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                         <View style={styles.row}>
                             <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold
-                                gray>Hủy
-                                giao hàng</Text></Button>
+                                gray>{I18n.t('cancel_delivery')}</Text></Button>
                             <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold
-                                primary>Đã
-                                giao hàng</Text></Button>
+                                primary>{I18n.t('delivered')}</Text></Button>
                         </View>
                     </View>
                 )
@@ -361,7 +360,7 @@ export default class extends Component {
                 <View style={styles.block}>
                     <View style={{ width: '100%' }}>
                         <View style={styles.row}>
-                            <Text bold grayDark>Số món đặt giao hàng</Text>
+                            <Text bold grayDark>{I18n.t('number_order_item')}</Text>
                             <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
                         </View>
                     </View>
@@ -370,7 +369,7 @@ export default class extends Component {
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
                     <View style={styles.block}>
                         <View>
-                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
+                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>{I18n.t('note')}: </Text></View>
                             <View style={styles.rowLeft}><Text grayDark
                                 style={styles.textLeft}>{orderInfo.note}</Text></View>
                         </View>
@@ -387,10 +386,10 @@ export default class extends Component {
                     </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>
+                        <Text grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text success>Đã thanh toán</Text>
+                        <Text success>{I18n.t('paid')}</Text>
                         <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>

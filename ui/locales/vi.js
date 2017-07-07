@@ -66,6 +66,33 @@ export default  vi = {
     'booking_wait_confirm': 'Chờ xác nhận',
     'booking_confirmed': 'Đã xác nhận',
     'booking_cancel': 'Đã hủy',
+    'booking_code': 'Mã đặt chỗ',
+    'booking_user': 'Người đặt chỗ',
+    'phone_number': 'Số điện thoại',
+    'require': 'Yêu cầu riêng',
+    'pre_order': 'Đặt trước',
+    'number': 'SL',
+
+    // Order Screen
+    'address': 'Địa chỉ',
+    'number_order_item': 'Số món đặt giao hàng',
+    'note': 'Ghi chú',
+    'cancel_delivery': 'Hủy giao hàng',
+    'delivered': 'Đã giao hàng',
+    'order_number_2': 'Đặt hàng số',
+    'customer_feedback': 'Phản hồi của khách hàng',
+    'reject_order_reason': 'Lí do hủy đơn hàng',
+    'deliver_address': 'Địa chỉ giao hàng',
+    'receive_user': 'Người nhận',
+    'receive_within': 'Yêu cầu nhận hàng trong',
+    'other_require': 'Yêu cầu khác',
+    'cart': 'Giỏ hàng',
+    'number_full': 'Số lượng',
+    'order_wait_confirm': 'Chờ xác nhận',
+    'order_confirmed': 'Xác nhận',
+    'order_completed': 'Thành công',
+    'order_cancelled':  'Đã hủy',
+
 
     // CreateUser Screen
 
