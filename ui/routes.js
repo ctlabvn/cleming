@@ -22,8 +22,8 @@ import TransactionInputFeedback from './containers/TransactionInputFeedback'
 
 // import ChartDemo from './containers/ChartDemo'
 import QRScanner from './containers/QRScanner'
-
 import About from './containers/About'
+
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {

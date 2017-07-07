@@ -150,11 +150,8 @@ android {
 }
 
 dependencies {
-<<<<<<< HEAD
     compile project(':react-native-i18n')
-=======
     compile project(':react-native-scandit')
->>>>>>> dd145a1... newfeature/phrase2
     compile project(':react-native-fabric')
     compile project(':react-native-photo-view')
     compile project(':react-native-device-info')

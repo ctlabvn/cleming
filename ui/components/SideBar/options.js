@@ -10,6 +10,7 @@ export default {
         route: 'about',
     },
     {
+
       name: 'Quét QR Code',
       route: 'qrScanner',
     }
