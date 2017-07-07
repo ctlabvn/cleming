@@ -530,7 +530,9 @@ export default class CreateUserContainer extends Component {
           date={new Date(2000, 1, 1, +hour1, +minute1)}
         />
 
-        <Modal open={this.state.isLoading}>
+        <Modal
+            onCloseClick={()=>{}}
+            open={this.state.isLoading}>
             <View style={styles.preload}>
               <Text>Please waiting...</Text>
             </View>
