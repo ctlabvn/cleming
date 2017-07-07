@@ -15,6 +15,8 @@ import {
   updateProfileToRedux
 } from '~/store/actions/auth'
 
+import I18n from '~/ui/I18n'
+
 
 const requestGetProfile = createRequestSaga({
     request: api.account.getProfile,
@@ -117,13 +119,13 @@ const requestCreateEmployeeInfo = createRequestSaga({
       // console.log('Error', error)
         switch (error.code) {
             case 1207:
-                return setToast('Số điện thoại đã tồn tại', 'danger');
+                return setToast(I18n.t('phone_number_is_used'), 'danger');
                 break;
             case 1206:
                 return setToast('Địa chỉ email đã tồn tại', 'danger');
                 break;
             case 1808:
-                return setToast('Tài khoản không được thêm', 'danger');
+                return setToast(I18n.t('can_not_add_account'), 'danger');
                 break;
             default:
                 return setToast('Không có kết nối đến máy chủ', 'danger')
