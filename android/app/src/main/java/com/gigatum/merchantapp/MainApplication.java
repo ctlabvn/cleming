@@ -4,6 +4,16 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
+import com.reactlibrary.SGScanditPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.reactnative.photoview.PhotoViewPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.rnfs.RNFSPackage;
+import com.smixx.fabric.FabricPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.reactlibrary.SGScanditPackage;
 import com.smixx.fabric.FabricPackage;
@@ -35,6 +45,16 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
+            new SGScanditPackage(),
+            new ReactNativePushNotificationPackage(),
+            new PhotoViewPackage(),
+            new MapsPackage(),
+            new ImagePickerPackage(),
+            new RNI18nPackage(),
+            new RNFSPackage(),
+            new FabricPackage(),
+            new RNDeviceInfo(),
             new RNI18nPackage(),
             new SGScanditPackage(),
             new FabricPackage(),
