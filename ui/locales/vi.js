@@ -63,5 +63,11 @@ export default  vi = {
     // Booking Screen
     'booking_wait_confirm': 'Chờ xác nhận',
     'booking_confirmed': 'Đã xác nhận',
-    'booking_cancel': 'Đã hủy'
+    'booking_cancel': 'Đã hủy',
+
+    // CreateUser Screen
+
+    // Store Sagas Account
+    'phone_number_is_used': 'Số điện thoại đã tồn tại',
+    'can_not_add_account': 'Tài khoản không được thêm',
 }
