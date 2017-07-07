@@ -16,7 +16,7 @@ export default class extends Component {
   scrollToTop=()=>{
     // console.log('content' ,this.content._root, this.content.wrappedInstance._root)
       // this.refs.content._root.scrollToPosition(0, 0, false)
-      // this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
+      this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
   }
 
   render() {
