@@ -91,7 +91,7 @@ export default class extends Component {
     const { setToast } = this.props
     console.log('Handle Forgot', forgotEmail)
     if (!forgotEmail || forgotEmail.trim() == "") {
-      setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
+      setToast(I18n.t('err_need_phone_number_to_recover_password'), "danger")
       return
     }
     this.props.resetPassword(forgotEmail, (err, data) => {
@@ -147,26 +147,26 @@ export default class extends Component {
     })
   }
   _checkChangePassword(oldPassword, newPassword, reNewPassword) {
-    const { setToast } = this.props
+    const { setToast } = this.props    
     if (!oldPassword) {
-      setToast('Bạn phải nhập Mật khẩu hiện tại', 'danger')
+      setToast(I18n.t('err_need_current_password'), 'danger')
       return false
     }
     if (!newPassword) {
-      setToast('Bạn phải nhập Mật khẩu mới', 'danger')
+      setToast(I18n.t('err_need_new_password'), 'danger')
       return false
     }
     if (newPassword != reNewPassword) {
-      setToast('Hai mật khẩu bạn nhập không khớp nhau', 'danger')
+      setToast(I18n.t('err_password_not_match'), 'danger')
       return false
     }
     if (oldPassword == newPassword) {
-      setToast('Mật khẩu mới không được giống mật khẩu hiện tại', 'danger')
+      setToast(I18n.t('err_new_password'), 'danger')
       return false
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      setToast('Mật khẩu có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường', 'danger')
+      setToast(I18n.t('err_password_length'), 'danger')
       return false
     }
     return true
@@ -217,8 +217,7 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
         <Text style={{ ...styles.label, marginTop: 50, marginBottom: 20 }}>
-          Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}
-          Vui lòng tạo Mật khẩu riêng để bảo mật
+          {I18n.t('first_login_hint')}
           </Text>
         <Field name="oldPassword" label={I18n.t('current_password')} secureTextEntry={true} component={InputField} />
         <Field name="newPassword" label={I18n.t('new_password')} secureTextEntry={true} component={InputField} />
