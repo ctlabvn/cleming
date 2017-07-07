@@ -47,6 +47,20 @@ export default  vi = {
     'logout': 'Đăng xuất',
 
     // routes
+    'page_home': 'Trang chủ',
+    'page_transaction_list': 'Danh sách giao dịch',
+    'page_transaction_detail': 'Chi tiết giao dịch',
+    'page_delivery_list': 'Danh sách giao hàng',
+    'page_delivery_detail': 'Chi tiết giao hàng',
+    'page_booking_list': 'Danh sách đặt chỗ',
+    'page_booking_detail': 'Chi tiết đặt chỗ',
+    'page_customer_statistic': 'Khách hàng tiềm năng',
+    'page_notification': 'Thông báo',
+    'page_change_password': 'Đổi mật khẩu',
+    'page_manage_account': 'Quản lý tài khoản',
+    'page_add_account': 'Thêm tài khoản',
+    'page_change_info': 'Thay đổi thông tin',
+    'page_account_info': 'Thông tin tài khoản',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -61,6 +75,7 @@ export default  vi = {
     'new_password': 'Mật khẩu mới',
     're_new_password': 'Nhập lại Mật khẩu mới',
     'update': 'Cập nhật',
+    'first_login_hint': 'Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}Vui lòng tạo Mật khẩu riêng để bảo mật',
 
     // Booking Screen
     'booking_wait_confirm': 'Chờ xác nhận',
@@ -92,12 +107,30 @@ export default  vi = {
     'order_confirmed': 'Xác nhận',
     'order_completed': 'Thành công',
     'order_cancelled':  'Đã hủy',
-
-
+    'ship_fee': 'Phí giao hàng',
+    'money': 'Tiền hàng',
     // CreateUser Screen
 
     // Store Sagas Account
     'phone_number_is_used': 'Số điện thoại đã tồn tại',
     'can_not_add_account': 'Tài khoản không được thêm',
-    'connection_have_problem' : 'Không có kết nối đến máy chủ'
+    'connection_have_problem' : 'Không có kết nối đến máy chủ',
+
+
+    // Error
+    'err_general': 'Có lỗi xảy ra, vui lòng thử lại sau.',
+    'err_expired': 'Phiên làm việc đã hết, vui lòng đăng nhập lại.',
+    'err_connection': 'Không có kết nối đến máy chủ.',
+    'err_need_phone_number_to_recover_password': 'Bạn cần nhập số điện thoại để lấy lại mật khẩu.',
+    'err_need_current_password': 'Bạn phải nhập Mật khẩu hiện tại.',
+    'err_need_new_password': 'Bạn phải nhập Mật khẩu mới.',
+    'err_password_not_match': 'Hai mật khẩu bạn nhập không khớp nhau.',
+    'err_new_password': 'Mật khẩu mới không được giống mật khẩu hiện tại.',
+    'err_password_length': 'Mật khẩu có độ dài 4 - 12 kí tự',
+    'err_phone_email_empty': 'Bạn phải nhập Emai/Số Điện Thoại/Mật khẩu.',
+    'err_phone_email_incorrect': 'Email/Số Điện Thoại không hợp lệ. Vui lòng kiểm tra lại.',
+    'err_account_not_register': 'Email/Số Điện Thoại chưa được đăng kí, vui lòng liên hệ chủ cửa hàng.',
+    'err_account_not_active': 'Tài khoản này chưa được kích hoạt.',
+    'err_order_not_exists': 'Đơn hàng không tồn tại.',
+    'err_transaction_not_exists': 'Giao dịch không tồn tại.',
 }

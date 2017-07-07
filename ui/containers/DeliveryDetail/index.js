@@ -47,7 +47,7 @@ export default class extends Component {
                 this.clickCount = 0
                 if (err) {
                     if (err.code == 1522) {
-                        setToast('Đơn hàng không tồn tại', 'danger')
+                        setToast(I18n.t('err_order_not_exists'), 'danger')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -186,17 +186,17 @@ export default class extends Component {
         let moneyBlock = (
             <View>
                 <View style={styles.rowPadding}>
-                    <Text small grayDark>Tiền hàng:</Text>
+                    <Text small grayDark>{I18n.t('money')}:</Text>
                     <Text bold grayDark>{formatNumber(orderDetail.orderInfo.price)}đ</Text>
                 </View>
                 <View style={styles.rowPadding}>
-                    <Text small grayDark>Phí giao hàng:</Text>
+                    <Text small grayDark>{I18n.t('ship_fee')}:</Text>
                     <Text bold
                         grayDark>{(orderDetail && orderDetail.orderInfo && orderDetail.orderInfo.shipPriceReal > 0) ? formatNumber(orderDetail.orderInfo.shipPriceReal) : 0}đ</Text>
                 </View>
                 <View style={styles.line} />
                 <View style={styles.rowPadding}>
-                    <Text small grayDark>Tổng tiền thanh toán: </Text>
+                    <Text small grayDark>{I18n.t('total_pay')}: </Text>
                     <Text bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                 </View>
             </View>
