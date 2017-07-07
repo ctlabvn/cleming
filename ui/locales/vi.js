@@ -70,4 +70,5 @@ export default  vi = {
     // Store Sagas Account
     'phone_number_is_used': 'Số điện thoại đã tồn tại',
     'can_not_add_account': 'Tài khoản không được thêm',
+    'connection_have_problem' : 'Không có kết nối đến máy chủ'
 }

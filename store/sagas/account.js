@@ -117,18 +117,15 @@ const requestCreateEmployeeInfo = createRequestSaga({
   failure: [
     (error) => {
       // console.log('Error', error)
+      //   console.warn(JSON.stringify(error))
         switch (error.code) {
             case 1207:
-                return setToast(I18n.t('phone_number_is_used'), 'danger');
-                break;
             case 1206:
-                return setToast('Địa chỉ email đã tồn tại', 'danger');
-                break;
             case 1808:
-                return setToast(I18n.t('can_not_add_account'), 'danger');
+                return setToast(I18n.t(error.msg), 'danger');
                 break;
             default:
-                return setToast('Không có kết nối đến máy chủ', 'danger')
+                return setToast(I18n.t('connection_have_problem'), 'danger')
                 break;
         }
     }
