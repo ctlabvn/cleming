@@ -26,6 +26,7 @@ import {
 } from "~/store/constants/app";
 import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
@@ -48,19 +49,19 @@ export default class TransactionDetail extends Component {
     _renderStatus(status) {
         switch (status) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return <Text bold warning>Giao dịch chờ phê duyệt</Text>
+                return <Text bold warning>{I18n.t('transaction_wait_confirm')}</Text>
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
-                return <Text bold success>Giao dịch thành công</Text>
+                return <Text bold success>{I18n.t('transaction_cashback_success')}</Text>
             case TRANSACTION_DIRECT_STATUS.REJECT:
-                return <Text bold error>Giao dịch bị từ chối</Text>
+                return <Text bold error>{I18n.t('transaction_reject')}</Text>
             default:
-                return <Text bold warning>Giao dịch chờ phê duyệt</Text>
+                return <Text bold warning>{I18n.t('transaction_wait_confirm')}</Text>
         }
     }
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
+                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>{I18n.t('transaction_not_accept')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -78,14 +79,14 @@ export default class TransactionDetail extends Component {
             console.log('Case 1 show', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
-                    <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                    <Text small style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
                     <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         } else {
             console.log('Case 2 hide', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
-                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>Số hóa đơn: </Text>
+                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>{I18n.t('bill_number')}: </Text>
                     <Text small transparent style={{ ...styles.invoice, ...styles.backgroundTransparent, color: 'transparent' }}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         }
@@ -267,7 +268,7 @@ export default class TransactionDetail extends Component {
                             </View>
                             <View style={styles.rowPadding}>
                                 <View style={styles.transactionContent}>
-                                    <Text small>Số giao dịch: </Text>
+                                    <Text small>{I18n.t('bill_number')}: </Text>
                                     <Text small primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                                 </View>
                                 <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
@@ -277,14 +278,14 @@ export default class TransactionDetail extends Component {
                             {this._renderStatus(transactionInfo.transactionStatus)}
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small style={styles.paymenMethodLabel}>Hình thức thanh toán:</Text>
+                            <Text small style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
                             <View style={styles.row}>
                                 <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
-                                <Text small bold style={styles.primary}>Thanh toán trực tiếp</Text>
+                                <Text small bold style={styles.primary}>{I18n.t('method_pay_direct')}</Text>
                             </View>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small style={styles.userLabel}>Khách hàng:</Text>
+                            <Text small style={styles.userLabel}>{I18n.t('customer')}:</Text>
                             <View style={styles.userContent}>
                                 <Text small bold>{transactionInfo.userName}</Text>
                                 {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
@@ -293,27 +294,27 @@ export default class TransactionDetail extends Component {
                         </View>
 
                         <View style={styles.rowPadding}>
-                            <Text small>Xem:</Text>
+                            <Text small>{I18n.t('view')}:</Text>
                             <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small>Đánh dấu:</Text>
+                            <Text small>{I18n.t('mark')}:</Text>
                             <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small>Chụp hóa đơn:</Text>
+                            <Text small>{I18n.t('shot_bill')}:</Text>
                             <Text small bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.rowPadding}>
-                                <Text small>Xuất hóa đơn:</Text>
+                                <Text small>{I18n.t('export_bill')}:</Text>
                                 <Text small bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             </View>
                         }
 
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.invoiceBlock}>
-                                <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                                <Text small style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
                                 <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                             </View>
                         }
@@ -324,22 +325,22 @@ export default class TransactionDetail extends Component {
                                     <View style={styles.rowSpaceAround}>
                                         <View style={styles.gridItem}>
                                             <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
-                                            <Text style={styles.labelInfo}>Tổng tiền hóa đơn</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
                                         </View>
                                         <View style={styles.gridItem}>
                                             <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
-                                            <Text style={styles.labelInfo}>Tỷ lệ giảm giá</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.rowSpaceAround}>
                                         <View style={styles.gridItem}>
 
                                             <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                            <Text style={styles.labelInfo}>Tổng tiền Cashback</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
                                         </View>
                                         <View style={styles.gridItem}>
                                             <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
-                                            <Text style={styles.labelInfo}>Phí Clingme</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -533,14 +534,14 @@ export default class TransactionDetail extends Component {
                 <Button dark transparent style={styles.buttonLeft}
                     onPress={() => this.goPreviousViewPager()}>
                     <Icon name="keyboard-arrow-left" style={styles.icon} />
-                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
+                    <Text small style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         } else {
             btnPrev = (
                 <Button light disabled transparent style={styles.buttonLeft}>
                     <Icon name="keyboard-arrow-left" style={{ ...styles.icon, ...styles.disabled }} />
-                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
+                    <Text small style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         }
@@ -548,14 +549,14 @@ export default class TransactionDetail extends Component {
         if (this.state.hasNext) {
             btnNext = (
                 <Button dark transparent style={styles.buttonRight} onPress={() => this.goNextViewPager()}>
-                    <Text small style={styles.textNext}>Giao dịch sau</Text>
+                    <Text small style={styles.textNext}>{I18n.t('next_transaction')}</Text>
                     <Icon name="keyboard-arrow-right" style={styles.icon} />
                 </Button>
             )
         } else {
             btnNext = (
                 <Button light disabled transparent style={styles.buttonRight}>
-                    <Text small style={styles.textNext}>Giao dịch sau</Text>
+                    <Text small style={styles.textNext}>{I18n.t('next_transaction')}</Text>
                     <Icon name="keyboard-arrow-right" style={{ ...styles.icon, ...styles.disabled }} />
                 </Button>
             )

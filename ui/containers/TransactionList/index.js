@@ -27,6 +27,7 @@ import {
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT
 } from "~/store/constants/app";
+import I18n from '~/ui/I18n'
 
 // export const getListTransactionDirect = state => state.place.transaction.payDirect || []
 
@@ -225,9 +226,9 @@ export default class extends Component {
                                 <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
-                                <Text small primary>Đã thanh toán</Text>
+                                <Text small primary>{I18n.t('paid')}</Text>
                                 <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
-                                    <Text bold primary>Xác nhận</Text>
+                                    <Text bold primary>{I18n.t('confirm')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
                             </View>
@@ -247,10 +248,10 @@ export default class extends Component {
 
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text small grayDark>Khách hàng: <Text small bold grayDark>{item.userName}</Text></Text>
+                                <Text small grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text success small>Đã xác nhận</Text>
+                                <Text success small>{I18n.t('confirmed')}</Text>
                                 <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
@@ -270,7 +271,7 @@ export default class extends Component {
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
                     </View>
                 )
-                statusText = <Text small warning>Chờ phê duyệt</Text>
+                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
@@ -280,7 +281,7 @@ export default class extends Component {
                         <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
                     </View>
                 )
-                statusText = <Text small grayDark>Cashback thành công</Text>
+                statusText = <Text small grayDark>{I18n.t('cashback_success')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
@@ -290,7 +291,7 @@ export default class extends Component {
                         <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
                     </View>
                 )
-                statusText = <Text small error>Bị từ chối</Text>
+                statusText = <Text small error>{I18n.t('reject')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 moneyText = <Text bold gray style={styles.moneyNumber}></Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
@@ -301,7 +302,7 @@ export default class extends Component {
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
-                statusText = <Text small warning>Chờ phê duyệt</Text>
+                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         }
@@ -391,7 +392,7 @@ export default class extends Component {
                     <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDirect} ref='transactionFilter'
+                        listValue={options.transactionFilterListClingme} ref='transactionFilter'
                     />
                     <Content
                         padder

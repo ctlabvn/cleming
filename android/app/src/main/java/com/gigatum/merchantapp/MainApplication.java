@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.react.ReactApplication;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.smixx.fabric.FabricPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.burlap.filetransfer.FileTransferPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNI18nPackage(),
             new FabricPackage(),
             new PhotoViewPackage(),
             new FileTransferPackage(),
