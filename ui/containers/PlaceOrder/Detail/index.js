@@ -215,104 +215,10 @@ export default class PlaceOrderDetail extends Component {
                         <Content>
                             {orderRow}
                         </Content>
-                        {/*{orderRow}*/}
-                        {/*<Grid>
-                         <Row style={{ height: '7%' }}>
-                         <Col style={{ alignItems: 'flex-end' }}>
-                         <Text style={{ ...styles.normalText }}>8:12:53</Text>
-                         </Col>
-                         <Col style={{ width: '5%' }} />
-                         <Col>
-                         <Text style={{ ...styles.normalText }}>10/03/17</Text>
-                         </Col>
-                         </Row>
-                         <Row style={{ flexDirection: 'column', height: '15%' }}>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         <View style={styles.row}>
-                         <View style={styles.column}>
-                         <Icon name='calendar' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('DD/MM')}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='history' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('hh:mm')}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='friend' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{this.state.bookingDetail.numberOfPeople}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='want-feed' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>2</Text>
-                         </View>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Người đặt chỗ:</Text>
-                         </Left>
-                         <Right>
-                         <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.memberName}</Text>
-                         </Right>
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Số điện thoại:</Text>
-                         </Left>
-                         <Right>
-                         <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.phoneNumber}</Text>
-                         </Right>
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Yêu cầu riêng:</Text>
-                         </Left>
-                         </Row>
-                         <Row style={{ height: '25%' }}>
-                         <Left>
-                         <Content>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>
-                         {this.state.bookingDetail.note}
-                         </Text>
-                         </Content>
-                         </Left>
-                         </Row>
-                         <Row style={{ flexDirection: 'column', height: '2%', marginTop: 10 }}>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         </Row>
-                         <Row style={{}}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText, ...styles.boldText }}>Đặt trước:</Text>
-                         </Left>
-                         <Right style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                         <Text primary style={{}}>SL: </Text>
-                         <Text primary style={{ ...styles.rightText, ...styles.boldText }}>{totalQuantity}</Text>
-                         </Right>
-                         </Row>
-                         {orderRow}
-                         </Grid>*/}
                     </View>
-                    {/*<View style={styles.submitContainer}>
-                     <Grid>
-                     <Col>
-                     <Button style={{ ...styles.submitButton, ...styles.declineButton }}>
-                     <Text style={{ ...styles.declineText, ...styles.boldText }}>Từ chối</Text>
-                     </Button>
-                     </Col>
-                     <Col>
-                     <Button style={{ ...styles.submitButton, ...styles.acceptButton }}>
-                     <Text style={{ ...styles.boldText }}>Nhận đặt chỗ</Text>
-                     </Button>
-                     </Col>
-                     </Grid>
-                     </View>*/}
                     <View style={styles.codeContainer}>
                         <Text style={{...styles.normalText, ...styles.codeTitleText}}>Mã đặt chỗ: </Text>
-                        <Text primary bold style={{...styles.codeText}}>#{this.state.bookingDetail.orderCode}</Text>
+                        <Text primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>
 

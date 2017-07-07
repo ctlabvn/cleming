@@ -37,7 +37,9 @@ export default  vi = {
     'method_pay_direct': 'Thanh toán trực tiếp',
     'transaction_type_clingme': 'Trả qua Clingme',
     'transaction_type_direct': 'Trả trực tiếp',
-
+    'total_pay': 'Tổng tiền thanh toán',
+    'order_number': 'Số đơn hàng',
+    'help': 'Trợ giúp',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',

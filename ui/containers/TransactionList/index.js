@@ -212,7 +212,7 @@ export default class extends Component {
             default:
                 return (
                     <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
@@ -239,7 +239,7 @@ export default class extends Component {
             case 2:
                 return (
                     <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
                     >
                         <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
