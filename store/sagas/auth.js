@@ -3,6 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { CONNECTION_ERROR_MESSAGE } from '~/store/constants/app'
 
 import {
     setAuthState,
@@ -51,7 +52,19 @@ const requestLogin = createRequestSaga({
     ],
     failure: [
         // code : 1201
-        (data) => setToast('Email/Số Điện Thoại hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
+        (data) => {
+            if (data.code == 1203 || data.code == 1202){
+                return setToast('Email/Số Điện Thoại không hợp lệ. Vui lòng kiểm tra lại.', 'danger')
+            }else if(data.code == 1201){
+                return setToast('Email/Số Điện Thoại chưa được đăng kí, vui lòng liên hệ chủ cửa hàng.', 'danger')
+            }else if (data.code == 1204){
+                return setToast('Tài khoản này chưa được kích hoạt.', 'danger')
+            }else {
+                return setToast(CONNECTION_ERROR_MESSAGE, 'danger')
+            }
+            
+        } 
+        
     ],
 })
 

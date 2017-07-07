@@ -34,10 +34,10 @@ export default {
       }
   ],
   tabData: [
-    //   {
-    //       tabID: TRANSACTION_TYPE_CLINGME,
-    //       text: 'Trả qua Clingme',
-    //   },
+      {
+          tabID: TRANSACTION_TYPE_CLINGME,
+          text: 'Trả qua Clingme',
+      },
       {
           tabID: TRANSACTION_TYPE_DIRECT,
           text: 'Trả trực tiếp',

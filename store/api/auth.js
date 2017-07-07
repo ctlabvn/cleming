@@ -36,9 +36,17 @@ export default {
             },
             body:body
         }).then(async (response) => {
-            const xsession = response.headers.map['x-session'][0]
+            const xsession = response.headers.map['x-session']
             const body = await response.json()
-            return {...body.updated.account, xsession}
+            console.log('Response', response)
+            console.log('Body', body)
+            if (xsession){
+                
+                return {...body.updated.account, xsession}
+            }
+            const {status, statusText} = response
+            return Promise.reject({message: statusText, status, ...body})
+            
         })
     },
 

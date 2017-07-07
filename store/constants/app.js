@@ -60,8 +60,9 @@ export const DELIVERY_FEEDBACK = {
   CANCEL: 2
 }
 
-export const GENERAL_ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại sau'
-export const EXPIRED_ERROR_MESSAGE = 'Phiên làm việc đã hết, vui lòng đăng nhập lại'
+export const GENERAL_ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại sau.'
+export const EXPIRED_ERROR_MESSAGE = 'Phiên làm việc đã hết, vui lòng đăng nhập lại.'
+export const CONNECTION_ERROR_MESSAGE = 'Lỗi kết nối đến máy chủ.'
 export const DETECT_LOCATION_INTERVAL = 180000 // 3 minute
 
 export const DEFAULT_MAP_DELTA = {

@@ -47,7 +47,7 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentTab: TRANSACTION_TYPE_DIRECT,
+            currentTab: TRANSACTION_TYPE_CLINGME,
             loading: false,
             loadingMore: false
         }
@@ -67,7 +67,6 @@ export default class extends Component {
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        return
         const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         this.setState({ currentTab: item.tabID },
@@ -389,7 +388,7 @@ export default class extends Component {
                     selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <View style={{ height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_DIRECT} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_CLINGME} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilterListDirect} ref='transactionFilter'
