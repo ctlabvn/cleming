@@ -406,7 +406,7 @@ export default class TransactionDetail extends Component {
                     this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
-                            setToast('Giao dịch không tồn tại', 'danger')
+                            setToast(I18n.t('err_transaction_not_exists'), 'danger')
                             forwardTo('merchantOverview', true)
                             return
                         }

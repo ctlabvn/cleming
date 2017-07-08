@@ -17,7 +17,7 @@ import {
 } from '~/store/actions/account'
 
 import { closeDrawer } from '~/store/actions/common'
-
+import I18n from '~/ui/I18n'
 // const requestLogin = createRequestSaga({
 //     request: api.auth.login,
 //     key: 'login',
@@ -54,11 +54,11 @@ const requestLogin = createRequestSaga({
         // code : 1201
         (data) => {
             if (data.code == 1203 || data.code == 1202){
-                return setToast('Email/Số Điện Thoại không hợp lệ. Vui lòng kiểm tra lại.', 'danger')
+                return setToast(I18n.t('err_phone_email_incorrect'), 'danger')
             }else if(data.code == 1201){
-                return setToast('Email/Số Điện Thoại chưa được đăng kí, vui lòng liên hệ chủ cửa hàng.', 'danger')
+                return setToast(I18n.t('err_account_not_register'), 'danger')
             }else if (data.code == 1204){
-                return setToast('Tài khoản này chưa được kích hoạt.', 'danger')
+                return setToast(I18n.t('err_account_not_active'), 'danger')
             }else {
                 return setToast(CONNECTION_ERROR_MESSAGE, 'danger')
             }

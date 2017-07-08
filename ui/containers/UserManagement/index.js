@@ -23,7 +23,7 @@ import * as accountSelectors from '~/store/selectors/account'
 import { getSelectedPlace } from '~/store/selectors/place'
 import TopDropdown from '~/ui/components/TopDropdown'
 import material from '~/theme/variables/material.js'
-
+import I18n from '~/ui/I18n'
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 @connect(state => ({
@@ -299,14 +299,14 @@ class UserManagement extends Component {
                                     <TouchableHighlight
                                         underlayColor={material.white500}
                                         onPress={this.onUpdateInfoPress.bind(this)}>
-                                    <Text style={styles.rowText}>Thay đổi thông tin</Text>
+                                    <Text style={styles.rowText}>{I18n.t('page_change_info')}</Text>
                                     </TouchableHighlight>
                                 </Row>
                                 <Row style={{ alignItems: 'center' }}>
                                     <TouchableHighlight
                                         underlayColor={material.white500}
                                         onPress={this.onDeleteAccountPress.bind(this)}>
-                                    <Text style={styles.rowText}>Xoá tài khoản khỏi danh sách</Text>
+                                    <Text style={styles.rowText}>{I18n.t('remove_account_from_list')}</Text>
                                     </TouchableHighlight>
                                 </Row>
                             </Col>
@@ -369,7 +369,7 @@ class UserManagement extends Component {
                             <Button
                                 onPress={this.onCreateUserPress.bind(this)}
                                 style={styles.addUserButton}>
-                                <Text style={styles.addUserText}>Thêm tài khoản</Text>
+                                <Text style={styles.addUserText}>{I18n.t('add_account')}</Text>
                             </Button>)
                     }
                 }

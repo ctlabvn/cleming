@@ -34,7 +34,7 @@ import { validateField, RenderGroup, RenderTextField } from './utils'
 import styles from './styles'
 import md5 from 'md5'
 import material from '~/theme/variables/material'
-
+import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window');
 
 const formSelector = formValueSelector('CreateUserForm')
@@ -66,10 +66,10 @@ const formSelector = formValueSelector('CreateUserForm')
   let permission = null
       switch (employeeDetail.titleType) {
           case 1:
-              permission = "Nhân Viên"
+              permission = I18n.t('employee')
               break
           default:
-              permission = "Nhân Viên"
+              permission = I18n.t('employee')
               break
       }
 
@@ -103,7 +103,7 @@ export default class CreateUserContainer extends Component {
     super(props)
     let currentJob = {
       id: 1,
-      name: "Nhân Viên"
+      name: I18n.t('employee')
     }
 
     this.state = {
@@ -142,7 +142,7 @@ export default class CreateUserContainer extends Component {
           let permission = null
           switch (employeeDetail.titleType) {
               case 1:
-                  permission = "Nhân Viên"
+                  permission = I18n.t('employee')
           }
           this.setState({
               // chosenListPlace: employeeDetail.listPlace,
@@ -161,7 +161,7 @@ export default class CreateUserContainer extends Component {
               // chosenListPlace: [],
               currentJob: {
                   id: 1,
-                  name: "Nhân Viên"
+                  name: I18n.t('employee')
               },
               fromTime: "07:00",
               toTime: "20:00"
@@ -278,15 +278,16 @@ export default class CreateUserContainer extends Component {
       // console.log(this.state.selectedPlaceId)
 
       // if (this.props.formState.CreateUserForm.syncErrors) {
+
       if (errRet.name || errRet.phone || errRet.email) {
-          this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
+          this.props.actions.setToast(I18n.t('err_employee_info_invalid'), 'danger')
           this._scrollPageUp()
           // return;
       } else if(!this.state.selectedPlaceId){
-        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger');
+        this.props.actions.setToast(I18n.t('err_need_address'), 'danger');
 
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
-        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+        this.props.actions.setToast(I18n.t('err_need_create_password'), 'danger')
         this._scrollPageDown();        
     } else {
       
@@ -381,7 +382,7 @@ export default class CreateUserContainer extends Component {
     let passwordText = null
     if (typeof this.props.route.params.id == 'undefined') {
       if (this.props.generatedPassword == '') {
-        passwordText = <Text style={styles.passwordTextWarning}>{'Bạn cần tạo 1 mật khẩu'}</Text>
+        passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
       } else {
         passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
       }
@@ -394,28 +395,28 @@ export default class CreateUserContainer extends Component {
     return (
       <View style={{ paddingLeft: 15, paddingRight: 15 }}>
 
-        <RenderTextField label="Họ và tên" name="name"  errorStyle={errorNameStyle} />        
+        <RenderTextField label={I18n.t('full_name')} name="name"  errorStyle={errorNameStyle} />        
         {nameTouched && nameError}
 
-        <RenderTextField label="Số điện thoại" name="phone"  errorStyle={errorPhoneStyle} keyboardType="numeric" />        
+        <RenderTextField label={I18n.t('phone_number')} name="phone"  errorStyle={errorPhoneStyle} keyboardType="numeric" />        
         {phoneTouched && phoneError}
 
-        <RenderTextField label="Email" name="email"  errorStyle={errorEmailStyle} />   
+        <RenderTextField label={I18n.t('email')} name="email"  errorStyle={errorEmailStyle} />   
         {emailTouched && emailError}
 
         <View style={{ ...styles.inputContainer, zIndex: 100, marginBottom: 10, overflow: null }}>
           <TopDropdown
             ref='placeDropdown'
             dropdownValues={[
-              { id: 1, name: "Nhân Viên" },
+              { id: 1, name: I18n.t('employee') },
               //{id: 2, name: "Admin"}
             ]}
             onSelect={this.handleChangePlace.bind(this)}
-            selectedOption={this.state.currentJob || { id: 1, name: "Nhân Viên" }} />
+            selectedOption={this.state.currentJob || { id: 1, name: I18n.t('employee') }} />
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
         <View style={{ marginLeft: 30, marginTop: 10 }}>
-          <Text style={styles.leftAddressTitleText}>Thời gian làm việc</Text>
+          <Text style={styles.leftAddressTitleText}>{I18n.t('work_time')}</Text>
         </View>
         <View style={{ marginBottom: 10 }}>
           <Grid>
@@ -457,7 +458,7 @@ export default class CreateUserContainer extends Component {
               <Button
                 onPress={this.onGeneratedPasswordPress.bind(this)}
                 style={styles.createPasswordButton}>
-                <Text style={styles.createPasswordButtonText}>Tạo mật khẩu đăng nhập</Text>
+                <Text style={styles.createPasswordButtonText}>{I18n.t('create_password')}</Text>
               </Button>
             </Row>
             <Row style={{ alignItems: 'center', paddingBottom: 10 }}>
@@ -474,7 +475,7 @@ export default class CreateUserContainer extends Component {
                 <Col style={{ justifyContent: 'center', width: '50%' }}>
                   <Text
                     onPress={this._setClipboardContent.bind(this)}
-                    style={styles.copyText}>Copy</Text>
+                    style={styles.copyText}>{I18n.t('copy')}</Text>
                 </Col>
               </Col>
             </Row>
@@ -511,7 +512,7 @@ export default class CreateUserContainer extends Component {
         </Button>
         <DateTimePicker
           mode="time"
-          titleIOS="Chọn thời gian"
+          titleIOS={I18n.t('choose_time')}
           confirmTextIOS="Ok"
           cancelTextIOS="Cancel"
           isVisible={this.state.fromTimeVisible}
@@ -521,7 +522,7 @@ export default class CreateUserContainer extends Component {
         />
         <DateTimePicker
           mode="time"
-          titleIOS="Chọn thời gian"
+          titleIOS={I18n.t('choose_time')}
           confirmTextIOS="Ok"
           cancelTextIOS="Cancel"
           isVisible={this.state.toTimeVisible}

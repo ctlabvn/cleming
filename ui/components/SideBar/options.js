@@ -10,11 +10,10 @@ export default {
         name: I18n.t('about'),
         route: 'about',
     },
-    {
-
-      name: 'Quét QR Code',
-      route: 'qrScanner',
-    }
+    // {
+    //   name: 'Quét QR Code',
+    //   route: 'qrScanner',
+    // }
   ]
 
 

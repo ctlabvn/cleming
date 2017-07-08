@@ -32,6 +32,7 @@ import styles from './styles'
 import {profileCoverSource} from '~/assets'
 
 import material from '~/theme/variables/material.js'
+import I18n from '~/ui/I18n'
 
 const formSelector = formValueSelector('UpdateUserForm')
 @connect(state=>({
@@ -195,7 +196,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label="Họ và tên"
+                                label={I18n.t('full_name')}
                                 name="name"
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>
@@ -203,7 +204,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label="Email"
+                                label={I18n.t('email')}
                                 name="email"
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>
@@ -215,7 +216,7 @@ export default class UpdateUserContainer extends Component {
                                     color: material.gray500
                                 }}
                                 keyboardType="numeric"
-                                label="Số điện thoại"
+                                label={I18n.t('phone_number')}
                                 name="phone"
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>
@@ -229,7 +230,7 @@ export default class UpdateUserContainer extends Component {
                               <View style={{width: 10}}/>
                               <Text
                                 onPress={this.changePasswordPress.bind(this)}
-                                style={styles.changePasswordText}>Thay đổi mật khẩu</Text>
+                                style={styles.changePasswordText}>{I18n.t('change_password')}</Text>
                             </Col>
                           </Grid>
                         </View>
@@ -238,7 +239,7 @@ export default class UpdateUserContainer extends Component {
                 <Button
                   onPress={this.onSubmitUserInfo.bind(this)}
                   style={styles.updatePasswordButton}>
-                  <Text style={styles.updatePasswordButtonText}>Đồng ý</Text>
+                  <Text style={styles.updatePasswordButtonText}>{I18n.t('ok')}</Text>
                 </Button>
             </Container>
         )

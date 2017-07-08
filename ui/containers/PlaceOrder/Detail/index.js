@@ -22,6 +22,7 @@ import {
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
 import {formatPhoneNumber, chainParse} from "~/ui/shared/utils";
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     user: state.auth.user,
@@ -126,7 +127,7 @@ export default class PlaceOrderDetail extends Component {
                 <View style={styles.row} key={item.itemId}>
                     <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{item.itemName}:</Text>
                     <View style={styles.row}>
-                        <Text style={{...styles.normalText}}>SL: </Text>
+                        <Text style={{...styles.normalText}}>{I18n.t('number')}: </Text>
                         <Text
                             style={{...styles.normalText, ...styles.rightText, ...styles.boldText}}>{item.quantity}</Text>
                     </View>
@@ -186,17 +187,17 @@ export default class PlaceOrderDetail extends Component {
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Người đặt chỗ:</Text>
+                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('booking_user')}:</Text>
                             <Text
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{chainParse(this.state.bookingDetail, ['userInfo', 'memberName'])}</Text>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Số điện thoại:</Text>
+                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('phone_number')}:</Text>
                             <Text
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
                         </View>
                         <View style={styles.block}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Yêu cầu riêng:</Text>
+                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('require')}:</Text>
                             <Content>
                                 <Text style={{...styles.normalText, ...styles.leftText}}>
                                     {this.state.bookingDetail.note}
@@ -205,10 +206,9 @@ export default class PlaceOrderDetail extends Component {
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1}/>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>Đặt
-                                trước:</Text>
+                            <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{I18n.t('pre_order')}:</Text>
                             <View style={styles.row}>
-                                <Text primary>SL: </Text>
+                                <Text primary>{I18n.t('number')}: </Text>
                                 <Text primary style={{...styles.rightText, ...styles.boldText}}>{totalQuantity}</Text>
                             </View>
                         </View>
@@ -217,7 +217,7 @@ export default class PlaceOrderDetail extends Component {
                         </Content>
                     </View>
                     <View style={styles.codeContainer}>
-                        <Text style={{...styles.normalText, ...styles.codeTitleText}}>Mã đặt chỗ: </Text>
+                        <Text style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
                         <Text primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>

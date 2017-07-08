@@ -25,6 +25,7 @@
 		240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 240B56E11F0F2FB1002AA476 /* libz.tbd */; };
 		2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1401F0F378700B47D74 /* libc++.tbd */; };
 		2473E1451F0F387100B47D74 /* ScanditBarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1441F0F387100B47D74 /* ScanditBarcodeScanner.framework */; };
+		2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */; };
 		247A6ADE1EC95985004F9790 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 247A6AC91EC9593F004F9790 /* libRCTPushNotification.a */; };
 		24D4A8DA1EF0F9D800D66580 /* LaunchScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */; };
 		24D4A8DD1EF1021000D66580 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8DC1EF1021000D66580 /* HexColor.m */; };
@@ -363,6 +364,7 @@
 		240B56E11F0F2FB1002AA476 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		2473E1401F0F378700B47D74 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		2473E1441F0F387100B47D74 /* ScanditBarcodeScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScanditBarcodeScanner.framework; path = ScanditSDK/ScanditBarcodeScanner.framework; sourceTree = "<group>"; };
+		2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		24B26FB11ECD577900166C09 /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/MerchantApp-epmqigzjwbzslygualqwcpohipxa/Build/Products/Debug-iphonesimulator/React/libReact.a"; sourceTree = "<group>"; };
 		24D4A8D81EF0F9D800D66580 /* LaunchScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LaunchScreenController.h; path = MerchantApp/LaunchScreenController.h; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */,
 				2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */,
 				240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */,
 				240B56E01F0F2FA8002AA476 /* libiconv.tbd in Frameworks */,
@@ -631,6 +634,7 @@
 		24DDD9451EC99A4F00B391DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */,
 				2473E1401F0F378700B47D74 /* libc++.tbd */,
 				240B56E11F0F2FB1002AA476 /* libz.tbd */,
 				240B56DF1F0F2FA8002AA476 /* libiconv.tbd */,
@@ -1522,6 +1526,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/React",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lc++",
@@ -1572,6 +1577,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/React",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-lc++",
