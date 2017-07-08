@@ -45,6 +45,8 @@ export default class extends Component {
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 this.clickCount = 0
+                console.log('Order Err', err)
+                console.log('Order Data', data)
                 if (err) {
                     if (err.code == 1522) {
                         setToast(I18n.t('err_order_not_exists'), 'danger')

@@ -69,31 +69,31 @@ export const validateField = (values) => {
   if(!values) return errors
   
   if (values.name.trim() == '') {
-    errors.name = "Bạn cần nhập tên"
+    errors.name = I18n.t('err_name_empty')
       return errors;
   } else {
     // if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
     //   errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
     // }
     if(!convertVn(values.name).match(namePattern)){
-      errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
+      errors.name = I18n.t('err_name_invalid_format')
         return errors;
     }
   }
   
   if (values.phone.trim() == '') {
-    errors.phone = "Bạn cần nhập số điện thoại"
+    errors.phone = I18n.t('err_phone_empty')
       return errors;
   } else {
     if (!_.isUndefined(validate({phone: values.phone}, phoneConstraints))) {
-      errors.phone = "Bạn nhập chưa đúng định dạng số điện thoại"
+      errors.phone = I18n.t('err_phone_invalid_format')
         return errors;
     }
   }
   
   if (values.email.trim() != '') {
     if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
-      errors.email = "Bạn nhập chưa đúng định dạng email"
+      errors.email = I18n.t('err_email_invalid_format')
         return errors;
     }
   }

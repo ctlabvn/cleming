@@ -278,15 +278,16 @@ export default class CreateUserContainer extends Component {
       // console.log(this.state.selectedPlaceId)
 
       // if (this.props.formState.CreateUserForm.syncErrors) {
+
       if (errRet.name || errRet.phone || errRet.email) {
-          this.props.actions.setToast("Phần thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại", 'danger')
+          this.props.actions.setToast(I18n.t('err_employee_info_invalid'), 'danger')
           this._scrollPageUp()
           // return;
       } else if(!this.state.selectedPlaceId){
-        this.props.actions.setToast("Bạn cần chọn tối thiểu 1 địa chỉ", 'danger');
+        this.props.actions.setToast(I18n.t('err_need_address'), 'danger');
 
     } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
-        this.props.actions.setToast("Hãy bấm nút Tạo mật khẩu đăng nhập", 'danger')
+        this.props.actions.setToast(I18n.t('err_need_create_password'), 'danger')
         this._scrollPageDown();        
     } else {
       

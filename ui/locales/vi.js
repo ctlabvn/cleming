@@ -152,4 +152,21 @@ export default  vi = {
     'err_account_not_active': 'Tài khoản này chưa được kích hoạt.',
     'err_order_not_exists': 'Đơn hàng không tồn tại.',
     'err_transaction_not_exists': 'Giao dịch không tồn tại.',
+    'err_employee_info_invalid': 'Thông tin nhân viên có lỗi sai, xin hãy kiểm tra lại.',
+    'err_need_address': 'Bạn cần chọn tối thiểu 1 địa chỉ.',
+    'err_need_create_password': 'Hãy bấm nút Tạo mật khẩu đăng nhập.',
+    'err_name_empty': 'Bạn cần nhập tên.',
+    'err_name_invalid_format': 'Tên cần có ít nhất 2 ký tự, không bao gồm các ký tự đặc biệt và số.',
+    'err_phone_empty': 'Bạn cần nhập số điện thoại.',
+    'err_phone_invalid_format': 'Bạn nhập chưa đúng định dạng số điện thoại.',
+    'err_email_invalid_format': 'Bạn nhập chưa đúng định dạng email.',
+    
+
+
+
+    //utils
+    'day': 'ngày',
+    'month': 'tháng',
+    'year': 'năm',
+    'to': 'đến'
 }

@@ -9,6 +9,7 @@ import moment from 'moment'
 import Icon from '~/ui/elements/Icon'
 import { DEFAULT_DATE_FORMAT, DEFAULT_MONTH_FORMAT, DEFAULT_YEAR_FORMAT }
     from '~/store/constants/app'
+import I18n from '~/ui/I18n'
 export default class DateFilter extends Component {
     constructor(props) {
         super(props)
@@ -21,42 +22,42 @@ export default class DateFilter extends Component {
         this.dateFilterListValue = [
             {
                 value: 'day',
-                display: '1 ngày'
+                display: `1 ${I18n.t('day')}`
             },
             {
                 value: 'week',
-                display: '7 ngày'
+                display: `7 ${I18n.t('day')}`
             },
             {
                 value: 'month',
-                display: '1 tháng'
+                display: `1 ${I18n.t('month')}`
             },
             {
                 value: 'quarter',
-                display: '3 tháng'
+                display: `3 ${I18n.t('month')}`
             },
             {
                 value: 'half-year',
-                display: '6 tháng'
+                display: `6 ${I18n.t('month')}`
             },
             {
                 value: 'year',
-                display: '1 năm'
+                display: `1 ${I18n.t('year')}`
             }
         ]
         if (props.type == 'lite') {
             this.dateFilterListValue = [
                 {
                     value: 'week',
-                    display: '7 ngày'
+                    display: `7 ${I18n.t('day')}`
                 },
                 {
                     value: 'month',
-                    display: '1 tháng'
+                    display: `1 ${I18n.t('month')}`
                 },
                 {
                     value: 'quarter',
-                    display: '3 tháng'
+                    display: `3 ${I18n.t('month')}`
                 }
             ]
         }
@@ -119,7 +120,7 @@ export default class DateFilter extends Component {
                         from: startWeek.unix(),
                         to: endWeek.unix()
                     },
-                    display: startWeek.format(DEFAULT_DATE_FORMAT) + ' đến ' + endWeek.format(DEFAULT_DATE_FORMAT)
+                    display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
                 }
             })
         } else if (filterType == 'month') {
@@ -151,7 +152,7 @@ export default class DateFilter extends Component {
                         from: startQuarter.unix(),
                         to: endQuarter.unix()
                     },
-                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ' đến ' + endQuarter.format(DEFAULT_DATE_FORMAT)
+                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
                 }
             })
         } else if (filterType == 'half-year') {
@@ -167,7 +168,7 @@ export default class DateFilter extends Component {
                         from: startQuarter.unix(),
                         to: endQuarter.unix()
                     },
-                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ' đến ' + endQuarter.format(DEFAULT_DATE_FORMAT)
+                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
                 }
             })
 
@@ -209,7 +210,7 @@ export default class DateFilter extends Component {
                     from: startWeek.unix(),
                     to: endWeek.unix()
                 },
-                display: startWeek.format(DEFAULT_DATE_FORMAT) + ' đến ' + endWeek.format(DEFAULT_DATE_FORMAT)
+                display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
             }
 
 
@@ -231,7 +232,7 @@ export default class DateFilter extends Component {
                     from: startQuarter.unix(),
                     to: current.endOf('day').unix()
                 },
-                display: startQuarter.format(DEFAULT_DATE_FORMAT) + ' đến ' + current.format(DEFAULT_DATE_FORMAT)
+                display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_DATE_FORMAT)
             }
         } else if (filterType == 'half-year') {
             let current = moment()
@@ -241,7 +242,7 @@ export default class DateFilter extends Component {
                     from: startHalfYear.unix(),
                     to: current.endOf('day').unix()
                 },
-                display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ' đến ' + current.format(DEFAULT_YEAR_FORMAT)
+                display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_YEAR_FORMAT)
             }
         } else if (filterType == 'year') {
             let current = moment()

@@ -206,10 +206,15 @@ export default class App extends Component {
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
         break
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.CLINGME)
+        break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
         break
       case NOTIFY_TYPE.NEW_ORDER:
+      case NOTIFY_TYPE.ORDER_REPUSH_1:
+      case NOTIFY_TYPE.ORDER_REPUSH_2:
         this.props.forwardTo('deliveryDetail/' + notificationData.param1)
         break
     }
