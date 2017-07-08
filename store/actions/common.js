@@ -71,6 +71,13 @@ export const setToast = (message, level = 'info', callback=null, data=null,durat
   },
 })
 
+export const showPopupInfo = (message) => ({
+  type: 'app/showPopupInfo',
+  payload: message
+})
+export const hidePopupInfo = () => ({
+  type: 'app/hidePopupInfo'
+})
 export const clearToast = () => ({
   type: 'app/clearToast',
 })

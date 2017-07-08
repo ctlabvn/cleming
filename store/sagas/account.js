@@ -2,7 +2,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo, goBack } from '~/store/actions/common'
+import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
     replaceProfile,
@@ -33,11 +33,11 @@ const requestChangePassword = createRequestSaga({
     request: api.account.changePassword,
     key: 'changePassword',    
     success: [
-        () => setToast('Thay đổi Mật khẩu thành công.'),
+        () => showPopupInfo(I18n.t('mess_change_password_success')),
         // () => forwardTo('merchantOverview')
     ],
     failure: [
-        () => setToast('Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại', 'danger')
+        () => showPopupInfo(I18n.t('err_current_password_invalid'))
     ]
 })
 
@@ -49,11 +49,11 @@ const requestResetPassword = createRequestSaga({
         if(code === 1201)  {
             throw new Error(msg)            
         }
-          return setToast('Đặt lại mật khẩu thành công.')  
+          return showPopupInfo(I18n.t('mess_reset_password_success'))  
         } 
     ],
     failure: [
-        () => setToast('Số điện thoại không tồn tại, vui lòng liên hệ chủ cửa hàng để kiểm tra.', 'danger')
+        () => showPopupInfo(I18n.t('err_reset_password'))
     ]
 })
 

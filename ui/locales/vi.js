@@ -160,13 +160,17 @@ export default  vi = {
     'err_phone_empty': 'Bạn cần nhập số điện thoại.',
     'err_phone_invalid_format': 'Bạn nhập chưa đúng định dạng số điện thoại.',
     'err_email_invalid_format': 'Bạn nhập chưa đúng định dạng email.',
+    'err_reset_password':'Số điện thoại không tồn tại, vui lòng liên hệ chủ cửa hàng để kiểm tra.',    
+
+    //message
+    'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
+    'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
     
-
-
 
     //utils
     'day': 'ngày',
     'month': 'tháng',
     'year': 'năm',
-    'to': 'đến'
+    'to': 'đến',
+    'info': 'Thông báo'
 }

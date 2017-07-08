@@ -3,7 +3,13 @@ import { Text, Button} from 'native-base'
 import { View, Modal} from 'react-native'
 import styles from './styles'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
-export default class FeedbackDialogClingme extends Component {
+import I18n from '~/ui/I18n'
+import { hidePopupInfo } from '~/store/actions/common'
+import { connect } from 'react-redux'
+@connect(state => ({
+  popupInfo: state.popupInfo,
+}), {hidePopupInfo})
+export default class PopupInfo extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -18,21 +24,26 @@ export default class FeedbackDialogClingme extends Component {
         this.setState({modalVisible: true, text: text})
     }
     render() {
+        const  {showing, message} = this.props.popupInfo
+        const {hidePopupInfo} = this.props
         return (
             <Modal 
                 animationType={"none"}
                 transparent={true}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    this.setModalVisible(!this.state.modalVisible)
-                }}
+                visible={showing}
+                onRequestClose={() => {hidePopupInfo()}}
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
-                        <Text style={styles.text}>{this.state.text}</Text>
+                        <View style={styles.header}>
+                            <Text bold white>{I18n.t('info')}</Text>
+                        </View>
+                        <View style={styles.textContanter}>
+                            <Text style={styles.text}>{message}</Text>
+                        </View>
                         <View style={styles.confirmContainer}>
-                            <Button transparent onPress={()=>this.setModalVisible(false)} style={styles.confirmBtn}>
-                                <Text>OK</Text>
+                            <Button transparent onPress={()=>hidePopupInfo()} style={styles.confirmBtn}>
+                                <Text primary>{I18n.t('ok')}</Text>
                             </Button>
                         </View>
                     </View>
