@@ -61,6 +61,9 @@ export default (variables = variable) => {
       '.center': {
         justifyContent: 'center'
       },
+      '.grayDisable': {
+        color: '#b3b3b3'
+      }
   };
 
   return textTheme;

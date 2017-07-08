@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { InteractionManager, Keyboard, Platform } from "react-native";
-import { Button, Col, Container, Form, Grid, Text, Thumbnail } from "native-base";
+import { Button, Col, Container, Form, Grid, Text, Thumbnail, Toast } from "native-base";
 import styles from "./styles";
 import { connect } from "react-redux";
 import { Field, formValueSelector, reduxForm } from "redux-form";
@@ -32,12 +32,12 @@ const formSelector = formValueSelector('LoginForm')
     password: '',
   },
 
-  currentValues: formSelector(state, 'email', 'password'),
-  onSubmitFail: (errors, dispatch) => {
-    for (let k in errors) {
-      return dispatch(commonActions.setToast(errors[k], 'warning'))
-    }
-  },
+  currentValues: formSelector(state, 'email', 'password', 'forgotEmail'),
+  // onSubmitFail: (errors, dispatch) => {
+  //   for (let k in errors) {
+  //     return dispatch(commonActions.setToast(errors[k], 'warning'))
+  //   }
+  // },
   session: authSelectors.getSession(state),
   loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state),
@@ -75,10 +75,10 @@ export default class extends Component {
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
     this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    this.setState({loading:true})
+    this.setState({ loading: true })
     this.props.login(email, password, xDevice, xUniqueDevice,
       (err, data) => {
-        this.setState({loading: false})
+        this.setState({ loading: false })
         if (!err) {
           this.props.change('password', '')
         }
@@ -88,12 +88,6 @@ export default class extends Component {
 
   _handleForgot = ({ forgotEmail }) => {
     Keyboard.dismiss()
-    const { setToast } = this.props
-    console.log('Handle Forgot', forgotEmail)
-    if (!forgotEmail || forgotEmail.trim() == "") {
-      setToast(I18n.t('err_need_phone_number_to_recover_password'), "danger")
-      return
-    }
     this.props.resetPassword(forgotEmail, (err, data) => {
       if (!err) {
         this.setState({ showForgot: false, passwordFocus: true })
@@ -102,12 +96,9 @@ export default class extends Component {
   }
 
   _handleShowForgot = (e) => {
-    // const length = this.props.currentValues.email.length
     this.props.change('forgotEmail', this.props.currentValues.email)
     this.setState({
       showForgot: true,
-      // emailForgotFocus: true,
-      // emailSelection: { start: length, end: length } 
     })
   }
 
@@ -147,26 +138,32 @@ export default class extends Component {
     })
   }
   _checkChangePassword(oldPassword, newPassword, reNewPassword) {
-    const { setToast } = this.props    
+    const { setToast } = this.props
     if (!oldPassword) {
-      setToast(I18n.t('err_need_current_password'), 'danger')
+      Toast.show({text: I18n.t('err_need_current_password'), position: 'top', duration: 1000})
+      // setToast(I18n.t('err_need_current_password'), 'danger')
+      
       return false
     }
     if (!newPassword) {
-      setToast(I18n.t('err_need_new_password'), 'danger')
+      Toast.show({text: I18n.t('err_need_new_password'), position: 'top', duration: 1000})
+      // setToast(I18n.t('err_need_new_password'), 'danger')
       return false
     }
     if (newPassword != reNewPassword) {
-      setToast(I18n.t('err_password_not_match'), 'danger')
+      // setToast(I18n.t('err_password_not_match'), 'danger')
+      Toast.show({text: I18n.t('err_password_not_match'), position: 'top', duration: 1000})
       return false
     }
     if (oldPassword == newPassword) {
-      setToast(I18n.t('err_new_password'), 'danger')
+      Toast.show({text: I18n.t('err_new_password'), position: 'top', duration: 1000})
+      // setToast(I18n.t('err_new_password'), 'danger')
       return false
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      setToast(I18n.t('err_password_length'), 'danger')
+      Toast.show({text: I18n.t('err_password_length'), position: 'top', duration: 1000})
+      // setToast(I18n.t('err_password_length'), 'danger')
       return false
     }
     return true
@@ -218,7 +215,7 @@ export default class extends Component {
       <Form style={styles.formForgot}>
         <Text style={{ ...styles.label, marginTop: 50, marginBottom: 20 }}>
           {I18n.t('first_login_hint')}
-          </Text>
+        </Text>
         <Field name="oldPassword" label={I18n.t('current_password')} secureTextEntry={true} component={InputField} />
         <Field name="newPassword" label={I18n.t('new_password')} secureTextEntry={true} component={InputField} />
         <Field name="reNewPassword" label={I18n.t('re_new_password')} secureTextEntry={true} component={InputField} />
@@ -241,7 +238,10 @@ export default class extends Component {
       </Form>
     )
   }
-
+  _isDisableSend(){
+    const {forgotEmail} = this.props.currentValues
+    return (!forgotEmail || forgotEmail.trim()=='')
+  }
   renderForgotForm() {
     const { handleSubmit } = this.props
     // const { emailForgotFocus, emailSelection } = this.state
@@ -264,9 +264,11 @@ export default class extends Component {
           </Col>
           <Col style={{ width: '2%' }} />
           <Col style={{ width: '64%' }}>
-            <Button onPress={handleSubmit(this._handleForgot)}
+            <Button 
+              disabled={(this._isDisableSend())}
+              onPress={handleSubmit(this._handleForgot)}
               style={styles.button}>
-              <Text>{I18n.t('send')}</Text>
+              <Text grayDisable={(this._isDisableSend())}>{I18n.t('send')}</Text>
             </Button>
           </Col>
         </Grid>
@@ -274,7 +276,10 @@ export default class extends Component {
       </Form>
     )
   }
-
+  _isDisableLogin(){
+    const {email, password} = this.props.currentValues
+    return (!email || !password || email.trim()=='' || password.trim()=='')
+  }
   renderLoginForm() {
     const { handleSubmit } = this.props
     const { passwordFocus, passwordSelection, emailFocus, emailSelection } = this.state
@@ -293,9 +298,11 @@ export default class extends Component {
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
           initialSelection={passwordSelection} label={I18n.t('password')} secureTextEntry={true} component={InputField} />
-        <Button onPress={handleSubmit(this._handleLogin)}
+        <Button
+          disabled={(this._isDisableLogin())}
+          onPress={handleSubmit(this._handleLogin)}
           style={styles.button}>
-          <Text>{I18n.t('login')}</Text>
+          <Text grayDisable={(this._isDisableLogin())}>{I18n.t('login')}</Text>
         </Button>
 
         <Button onPress={this._handleShowForgot} transparent>
@@ -313,7 +320,7 @@ export default class extends Component {
     //     <Preload />
     //   )
     // }
-    if (this.state.loading){
+    if (this.state.loading) {
       return (<Preload />)
     }
     return (

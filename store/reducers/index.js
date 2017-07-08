@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
-import { requests, toast, drawer, router, search, modal } from './common'
+import { requests, toast, drawer, router, search, modal, popupInfo } from './common'
 import { auth } from './auth'
 import { account } from './account'
 // import { data } from './data'
@@ -35,7 +35,8 @@ const rootReducer = combineReducers({
   order,
   report,
   location,
-  modal
+  modal,
+  popupInfo
 })
 
 export default rootReducer

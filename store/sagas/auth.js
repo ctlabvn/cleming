@@ -2,7 +2,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { setToast, noop, forwardTo, showPopupInfo } from '~/store/actions/common'
 import { CONNECTION_ERROR_MESSAGE } from '~/store/constants/app'
 
 import {
@@ -54,13 +54,13 @@ const requestLogin = createRequestSaga({
         // code : 1201
         (data) => {
             if (data.code == 1203 || data.code == 1202){
-                return setToast(I18n.t('err_phone_email_incorrect'), 'danger')
+                return showPopupInfo(I18n.t('err_phone_email_incorrect'))
             }else if(data.code == 1201){
-                return setToast(I18n.t('err_account_not_register'), 'danger')
+                return showPopupInfo(I18n.t('err_account_not_register'))
             }else if (data.code == 1204){
-                return setToast(I18n.t('err_account_not_active'), 'danger')
+                return showPopupInfo(I18n.t('err_account_not_active'))
             }else {
-                return setToast(CONNECTION_ERROR_MESSAGE, 'danger')
+                return showPopupInfo(CONNECTION_ERROR_MESSAGE)
             }
             
         } 

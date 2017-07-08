@@ -34,6 +34,17 @@ export const toast = (state = null, { type, payload }) => {
   }
 }
 
+export const popupInfo = (state={showing:false, message: ''}, {type, payload}) => {
+  switch(type){
+    case 'app/showPopupInfo':
+      return {...state, showing: true, message: payload}
+    case 'app/hidePopupInfo':
+      return {...state, showing: false, message: ''}
+    default:
+      return state
+  }
+}
+
 export const drawer = (state = {drawerState: 'closed'}, { type }) => {
   switch (type) {
     case 'app/openDrawer':

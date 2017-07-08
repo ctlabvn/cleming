@@ -1,3 +1,4 @@
+import material from '~/theme/variables/material'
 export default {
     modalOverlay: {
         width: '100%',
@@ -10,12 +11,11 @@ export default {
     modalContainer: {
         width: '90%',
         backgroundColor: 'white',
-        borderRadius: 4,
         flexDirection: 'column',
         alignSelf: 'center',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        padding: 10,
+        // padding: 10,
     },
     rowPadding: {
         flexDirection: 'row',
@@ -24,7 +24,10 @@ export default {
         alignItems: 'center'
     },
     confirmBtn: {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     confirmContainer: {
         borderTopWidth: 0.5,
@@ -34,7 +37,24 @@ export default {
         alignItems: 'center',
         flexDirection: 'row'
     },
+    textContanter: {
+        marginBottom: 15,
+        marginTop: 15,
+        paddingLeft: 10,
+        paddingRight: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%'
+    },
     text: {
-        marginBottom: 20
+        textAlign: 'center'
+    },
+    header: {
+        padding: 10,
+        backgroundColor: material.primaryColor,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%'
     }
 }
