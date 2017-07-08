@@ -366,7 +366,7 @@ export default class extends Component {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color={material.red500} />
-                    <Text>Loading...</Text>
+                    {/*<Text>Loading...</Text>*/}
                 </View>
             )
         }

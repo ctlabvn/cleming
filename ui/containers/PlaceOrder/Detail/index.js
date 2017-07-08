@@ -115,7 +115,6 @@ export default class PlaceOrderDetail extends Component {
                     flex: 1
                 }}>
                     <Spinner />
-                    <Text small>Loading...</Text>
                 </View>
             )
         }

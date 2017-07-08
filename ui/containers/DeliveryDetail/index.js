@@ -174,7 +174,6 @@ export default class extends Component {
                     height: '100%'
                 }}>
                     <Spinner />
-                    <Text small>Loading...</Text>
                 </View>
             )
         }

@@ -309,7 +309,6 @@ export default class PlaceOrderList extends Component {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color={material.red500} />
-                    <Text>Loading...</Text>
                 </View>
             )
         }
