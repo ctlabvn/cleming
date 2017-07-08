@@ -20,6 +20,7 @@ import {
 import styles from './styles'
 import material from '~/theme/variables/material'
 import { convertVn } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
 
 const namePattern = /^([A-Za-z_]{2,}\s)*[A-Za-z_]{2,}$/
 const usernameConstraints = {
@@ -149,7 +150,7 @@ export class RenderGroup extends Component {
     return (
       <View style={{marginTop: 10}}>
         
-        <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
+        <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
             
         
         {place.listPlace && place.listPlace.map((address,index) => (

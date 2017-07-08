@@ -1,20 +1,21 @@
+import I18n from '~/ui/I18n'
 export const validate = (values) => {
   const errors = {}
   // first time it is empty
   if (!values) return errors
   // validate email
   if (!values.oldPassword || !values.oldPassword.match(/^[\w\d]{4,12}$/)) {
-    errors.oldPassword = 'Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại'
+    errors.oldPassword = I18n.t('err_current_password_invalid')
   }
 
   if (!values.newPassword) {
-    errors.newPassword = 'Bạn phải nhập lại mật khẩu mới'
+    errors.newPassword = I18n.t('err_need_new_password')
   } else if (values.newPassword !== values.reNewPassword) {
-    errors.newPassword = 'Hai mật khẩu bạn nhập không khớp nhau'
+    errors.newPassword = I18n.t('err_password_not_match')
   } else if (values.oldPassword === values.newPassword) {
-    errors.newPassword = 'Mật khẩu mới không được giống mật khẩu hiện tại'
+    errors.newPassword = I18n.t('err_new_password')
   } else if (!values.newPassword.match(/^(\S){4,12}$/)) {
-    errors.newPassword = 'Mật khẩu mới có độ dài 4 - 12 kí tự, phân biệt chữ hoa và chữ thường'
+    errors.newPassword = I18n.t('err_password_length')
   }
   // console.log(errors)
   return errors

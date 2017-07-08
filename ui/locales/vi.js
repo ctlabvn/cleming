@@ -75,7 +75,7 @@ export default  vi = {
     'new_password': 'Mật khẩu mới',
     're_new_password': 'Nhập lại Mật khẩu mới',
     'update': 'Cập nhật',
-    'first_login_hint': 'Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}Vui lòng tạo Mật khẩu riêng để bảo mật',
+    'first_login_hint': 'Bạn đang đăng nhập bằng mật khẩu tự động\nVui lòng tạo Mật khẩu riêng để bảo mật',
 
     // Booking Screen
     'booking_wait_confirm': 'Chờ xác nhận',
@@ -109,7 +109,25 @@ export default  vi = {
     'order_cancelled':  'Đã hủy',
     'ship_fee': 'Phí giao hàng',
     'money': 'Tiền hàng',
-    // CreateUser Screen
+
+    //Manage Account Screen
+    'add_account': 'Thêm tài khoản',
+    'full_name': 'Họ và tên',
+    'email': 'Email',
+    'employee': 'Nhân Viên',
+    'work_time': 'Thời gian làm việc',
+    'create_password': 'Tạo mật khẩu đăng nhập',
+    'copy': 'copy',
+    'choose_time': 'Chọn thời gian',
+    'need_create_password': 'Bạn cần tạo 1 mật khẩu.',
+    'list_place': 'Danh sách địa điểm',
+    'change_password': 'Thay đổi mật khẩu',
+    'ok': 'Đồng ý',
+    'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
+
+    // Change Password In App
+    'password_modifier_hint': 'Đây là mục đổi mật khẩu cá nhân\nBạn có thể thay đổi mật khẩu riêng để bảo mật.',
+
 
     // Store Sagas Account
     'phone_number_is_used': 'Số điện thoại đã tồn tại',
@@ -122,6 +140,7 @@ export default  vi = {
     'err_expired': 'Phiên làm việc đã hết, vui lòng đăng nhập lại.',
     'err_connection': 'Không có kết nối đến máy chủ.',
     'err_need_phone_number_to_recover_password': 'Bạn cần nhập số điện thoại để lấy lại mật khẩu.',
+    'err_current_password_invalid': 'Mật khẩu hiện tại không đúng, vui lòng kiểm tra lại.',
     'err_need_current_password': 'Bạn phải nhập Mật khẩu hiện tại.',
     'err_need_new_password': 'Bạn phải nhập Mật khẩu mới.',
     'err_password_not_match': 'Hai mật khẩu bạn nhập không khớp nhau.',
