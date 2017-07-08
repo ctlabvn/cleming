@@ -325,6 +325,10 @@ export default {
         return this.fontSizeBase;  // this.fontSizeBase == 15
     },
 
+    get textSizelargeLight() {
+        return this.textSizeMedium * 16/15;  // 16
+    },
+
     get textSizelarge() {
         return this.textSizeMedium * 19/15;  // 19
     },
