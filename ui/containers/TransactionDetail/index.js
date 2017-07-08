@@ -199,20 +199,20 @@ export default class TransactionDetail extends Component {
             let payStatus, helpBtn = null
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text success bold>{I18n.t('paid')}</Text>
+                payStatus = <Text medium success bold>{I18n.t('paid')}</Text>
                 //Chưa sử dụng help
                 if (!transactionInfo.helpStatus) {
                     helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                        <Text>{I18n.t('help')}</Text>
+                        <Text medium>{I18n.t('help')}</Text>
                     </Button>
                 } else {
                     helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
-                        <Text>{I18n.t('help')}</Text>
+                        <Text medium>{I18n.t('help')}</Text>
                     </Button>
                 }
 
             } else if (transactionInfo.transactionStatus == 2) {
-                payStatus = <Text success bold>{I18n.t('confirmed')}</Text>
+                payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
             }
             return (
                 <Content>
@@ -226,22 +226,22 @@ export default class TransactionDetail extends Component {
                             <Text small style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>{I18n.t('order_number')}</Text>
-                            <Text bold style={{ fontSize: 24 }}>{transactionInfo.transactionIdDisplay}</Text>
+                            <Text medium gray>{I18n.t('order_number')}</Text>
+                            <Text big bold>{transactionInfo.transactionIdDisplay}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>{I18n.t('total_pay')}</Text>
-                            <Text bold style={{ fontSize: 48 }}>{formatNumber(transactionInfo.moneyAmount)}</Text>
+                            <Text medium gray>{I18n.t('total_pay')}</Text>
+                            <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
                             {payStatus}
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
-                            <Text gray>{I18n.t('clingme_fee')}</Text>
+                            <Text medium bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
+                            <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Text>{I18n.t('customer')}</Text>
+                            <Text medium>{I18n.t('customer')}</Text>
                             <View style={styles.row}>
-                                <Text bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
+                                <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
                                 {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
                                 <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                             </View>
@@ -535,14 +535,14 @@ export default class TransactionDetail extends Component {
                 <Button dark transparent style={styles.buttonLeft}
                     onPress={() => this.goPreviousViewPager()}>
                     <Icon name="keyboard-arrow-left" style={styles.icon} />
-                    <Text small style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
+                    <Text medium style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         } else {
             btnPrev = (
                 <Button light disabled transparent style={styles.buttonLeft}>
                     <Icon name="keyboard-arrow-left" style={{ ...styles.icon, ...styles.disabled }} />
-                    <Text small style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
+                    <Text medium style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         }
@@ -550,7 +550,7 @@ export default class TransactionDetail extends Component {
         if (this.state.hasNext) {
             btnNext = (
                 <Button dark transparent style={styles.buttonRight} onPress={() => this.goNextViewPager()}>
-                    <Text small style={styles.textNext}>{I18n.t('next_transaction')}</Text>
+                    <Text medium style={styles.textNext}>{I18n.t('next_transaction')}</Text>
                     <Icon name="keyboard-arrow-right" style={styles.icon} />
                 </Button>
             )

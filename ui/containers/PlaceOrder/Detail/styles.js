@@ -44,7 +44,6 @@ export default {
   },
   codeText: {
     marginLeft: 2,
-    fontSize: 18
   },
   row: {
     flexDirection: 'row',

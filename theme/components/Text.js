@@ -22,11 +22,23 @@ export default (variables = variable) => {
         color: variables.noteTextColor,
         fontSize: variables.noteFontSize
       },
+      '.tiny': {
+        fontSize: material.textSizeTiny
+      },
       '.small': {
-        fontSize: variables.btnTextSizeSmall
+        fontSize: material.textSizeSmall
+      },
+      '.medium': {
+          fontSize: material.textSizeMedium
       },
       '.large': {
-        fontSize: variables.btnTextSizeLarge
+          fontSize: material.textSizelarge
+      },
+      '.big': {
+          fontSize: material.textSizeBig
+      },
+      '.giant': {
+          fontSize: material.textSizeGiant
       },
       '.primary': {
         color: material.primaryColor
