@@ -149,7 +149,6 @@ android {
 dependencies {
     compile project(':react-native-fabric')
     compile project(':react-native-photo-view')
-    compile project(':react-native-uploader')
     compile project(':react-native-device-info')
     compile project(':react-native-push-notification')
     compile ('com.google.android.gms:play-services-gcm:10.2.0') {
