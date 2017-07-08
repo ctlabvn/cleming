@@ -139,30 +139,35 @@ export default class extends Component {
   }
   _checkChangePassword(oldPassword, newPassword, reNewPassword) {
     const { setToast } = this.props
+    const { toastModal } = this.props.app
     if (!oldPassword) {
-      Toast.show({text: I18n.t('err_need_current_password'), position: 'top', duration: 1000})
-      // setToast(I18n.t('err_need_current_password'), 'danger')
+      // Toast.show({text: I18n.t('err_need_current_password'), position: 'top', duration: 1000})
+      toastModal.show(I18n.t('err_need_current_password'))
       
       return false
     }
     if (!newPassword) {
-      Toast.show({text: I18n.t('err_need_new_password'), position: 'top', duration: 1000})
+      // Toast.show({text: I18n.t('err_need_new_password'), position: 'top', duration: 1000})
       // setToast(I18n.t('err_need_new_password'), 'danger')
+      toastModal.show(I18n.t('err_need_new_password'))
       return false
     }
     if (newPassword != reNewPassword) {
       // setToast(I18n.t('err_password_not_match'), 'danger')
-      Toast.show({text: I18n.t('err_password_not_match'), position: 'top', duration: 1000})
+      // Toast.show({text: I18n.t('err_password_not_match'), position: 'top', duration: 1000})
+      toastModal.show(I18n.t('err_password_not_match'))
       return false
     }
     if (oldPassword == newPassword) {
-      Toast.show({text: I18n.t('err_new_password'), position: 'top', duration: 1000})
+      // Toast.show({text: I18n.t('err_new_password'), position: 'top', duration: 1000})
       // setToast(I18n.t('err_new_password'), 'danger')
+      toastModal.show(I18n.t('err_new_password'))
       return false
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      Toast.show({text: I18n.t('err_password_length'), position: 'top', duration: 1000})
+      // Toast.show({text: I18n.t('err_password_length'), position: 'top', duration: 1000})
+      toastModal.show(I18n.t('err_password_length'))
       // setToast(I18n.t('err_password_length'), 'danger')
       return false
     }
