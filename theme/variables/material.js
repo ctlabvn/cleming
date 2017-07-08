@@ -326,15 +326,15 @@ export default {
     },
 
     get textSizelarge() {
-        return this.textSizeMedium * 20/15;  // 20
+        return this.textSizeMedium * 19/15;  // 19
     },
 
     get textSizeBig() {
-        return this.textSizeMedium * 24/15;;  // 24
+        return this.textSizeMedium * 24/15;  // 24
     },
 
     get textSizeGiant() {
-        return this.textSizeMedium * 48/15;; // 48
+        return this.textSizeMedium * 48/15; // 48
     },
 
     // Title

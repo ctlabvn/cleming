@@ -150,6 +150,7 @@ export default class PlaceOrderDetail extends Component {
                     <View style={styles.placeContainer}>
                         <View style={{...styles.rowPaddingTB, ...styles.center}}>
                             <Text
+                                medium
                                 grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
@@ -163,52 +164,54 @@ export default class PlaceOrderDetail extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon}/>
-                                    <Text grayDark
+                                    <Text medium grayDark
                                           style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon}/>
-                                    <Text grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
+                                    <Text medium grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon}/>
-                                    <Text grayDark
+                                    <Text medium grayDark
                                           style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon}/>
-                                    <Text grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
+                                    <Text medium grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('booking_user')}:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('booking_user')}:</Text>
                             <Text
+                                medium
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{chainParse(this.state.bookingDetail, ['userInfo', 'memberName'])}</Text>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('phone_number')}:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('phone_number')}:</Text>
                             <Text
+                                medium
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
                         </View>
                         <View style={styles.block}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>{I18n.t('require')}:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('require')}:</Text>
                             <Content>
-                                <Text style={{...styles.normalText, ...styles.leftText}}>
+                                <Text medium style={{...styles.normalText, ...styles.leftText}}>
                                     {this.state.bookingDetail.note}
                                 </Text>
                             </Content>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1}/>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{I18n.t('pre_order')}:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{I18n.t('pre_order')}:</Text>
                             <View style={styles.row}>
-                                <Text primary>{I18n.t('number')}: </Text>
-                                <Text primary style={{...styles.rightText, ...styles.boldText}}>{totalQuantity}</Text>
+                                <Text medium primary>{I18n.t('number')}: </Text>
+                                <Text medium primary style={{...styles.rightText, ...styles.boldText}}>{totalQuantity}</Text>
                             </View>
                         </View>
                         <Content>
@@ -216,8 +219,8 @@ export default class PlaceOrderDetail extends Component {
                         </Content>
                     </View>
                     <View style={styles.codeContainer}>
-                        <Text style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
-                        <Text primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
+                        <Text medium style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
+                        <Text large primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>
 
