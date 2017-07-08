@@ -109,7 +109,6 @@ export default {
     return this.iconFontSize * 0.6;
   },
 
-
     // Card
   cardDefaultBg: '#fff',
 
@@ -313,6 +312,30 @@ export default {
   noteFontSize: 14,
   noteTextColor: '#a8a8a8',
   linkTextColor: '#448ccb',
+
+    get textSizeTiny() {
+        return this.textSizeMedium * 10/15;
+    },
+
+    get textSizeSmall() {
+      return this.textSizeMedium * 13/15;
+    },
+
+    get textSizeMedium() {
+        return this.fontSizeBase;  // this.fontSizeBase == 15
+    },
+
+    get textSizelarge() {
+        return this.textSizeMedium * 20/15;  // 20
+    },
+
+    get textSizeBig() {
+        return this.textSizeMedium * 24/15;;  // 24
+    },
+
+    get textSizeGiant() {
+        return this.textSizeMedium * 48/15;; // 48
+    },
 
     // Title
   titleFontfamily: (platform === 'ios') ? 'Roboto' : 'Roboto_medium',
