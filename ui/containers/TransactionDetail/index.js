@@ -522,7 +522,7 @@ export default class TransactionDetail extends Component {
                 // <LoadingModal loading={true} />
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                     <Spinner />
-                    <Text>Loading...</Text>
+                    {/*<Text>Loading...</Text>*/}
                 </View>
             )
         }
