@@ -21,6 +21,7 @@ import TransactionConfirm from './containers/TransactionConfirm'
 import TransactionInputFeedback from './containers/TransactionInputFeedback'
 
 import ChartDemo from './containers/ChartDemo'
+import MapCluster from './containers/MapCluster'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -159,6 +160,13 @@ export default {
     chartDemo: {
         title: 'Chart Demo',
         Page: ChartDemo,
+        headerType: 'back',
+        footerType: 'none',
+    },
+
+    mapCluster: {
+        title: 'Map Cluster Demo',
+        Page: MapCluster,
         headerType: 'back',
         footerType: 'none',
     },
