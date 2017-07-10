@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 
 import styles from './styles'
-import {View, Text, ScrollView} from 'react-native'
+import {View, ScrollView} from 'react-native'
+import { Text } from 'native-base'
 
 import Icon from '~/ui/elements/Icon'
 
@@ -17,10 +18,10 @@ export default class extends Component {
             <View style={styles.container}>
                 <ScrollView>
                     <Icon name="logo" style={styles.logoIcon}/>
-                    <Text style={{...styles.textTitle, marginTop: 15}}>
+                    <Text large style={{...styles.textTitle, marginTop: 15}}>
                         Giới thiệu
                     </Text>
-                    <Text style={styles.textContent}>
+                    <Text medium style={styles.textContent}>
                         Ứng dụng "Đối tác Clingme" giúp cho các nhà bán hàng trên Clingme theo dõi các giao dịch của
                         khách
                         hàng với cửa hàng của mình thông qua chiếc smartphone của mình.
@@ -28,19 +29,19 @@ export default class extends Component {
                         như
                         tình trạng các đơn hàng.
                     </Text>
-                    <Text style={styles.textTitle}>
+                    <Text large style={styles.textTitle}>
                         Phiên bản
                     </Text>
-                    <Text style={styles.textContent}>
+                    <Text medium style={styles.textContent}>
                         1.x
                     </Text>
-                    <Text style={styles.textTitle}>
+                    <Text large style={styles.textTitle}>
                         Liên hệ
                     </Text>
-                    <Text style={{...styles.textContent, ...styles.textBlue}}>
+                    <Text medium style={{...styles.textContent, ...styles.textBlue}}>
                         support@gigatum.com
                     </Text>
-                    <Text style={styles.textContent}>
+                    <Text medium style={styles.textContent}>
                         Clingme được thành lập từ 2013 với mục tiêu đem đến cho các nhà bán hàng kênh bán hàng hiệu quả
                         và nhanh chóng.
                     </Text>

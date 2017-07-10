@@ -23,7 +23,6 @@ export default {
     },
 
     textTitle: {
-        fontSize: 18,
         fontWeight: 'bold',
         color: material.gray600,
         marginTop: 25,
@@ -34,7 +33,6 @@ export default {
         marginBottom: 0,
         color: material.gray600,
         fontWeight: 'normal',
-        fontSize: 15,
     },
 
     textBlue: {
