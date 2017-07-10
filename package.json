@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "font": "node font-processor.js",
+    "build-android": "cd android && ./gradlew assembleRelease",
+    "install-android": "adb devices | awk '{if(NR==2) system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
     "test": "jest"
   },
   "rnpm": {
