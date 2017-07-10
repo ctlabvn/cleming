@@ -81,11 +81,11 @@ export default class PlaceOrderList extends Component {
             case 'WAIT_CONFIRMED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                    <Text warning bold>{item.bookingClmCode}</Text>
+                    <Text medium warning bold>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
-                    <Text
+                    <Text medium
                         onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
                         warning>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
@@ -93,11 +93,11 @@ export default class PlaceOrderList extends Component {
             case 'CONFIRMED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                    <Text primary bold>{item.bookingClmCode}</Text>
+                    <Text medium primary bold>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.primary, ...styles.iconLeft }} />
-                    <Text
+                    <Text medium
                         onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
                         primary>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
@@ -105,11 +105,11 @@ export default class PlaceOrderList extends Component {
             case 'CANCELLED':
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                    <Text bold style={styles.gray}>{item.bookingClmCode}</Text>
+                    <Text medium bold style={styles.gray}>{item.bookingClmCode}</Text>
                 </View >)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
-                    <Text
+                    <Text medium
                         onPress={this.onModalOpen.bind(this, chainParse(item, ['userInfo', 'phoneNumber']))}
                         style={styles.gray}>{formatPhoneNumber(chainParse(item, ['userInfo', 'phoneNumber']))}</Text>
                 </View>)
@@ -140,22 +140,22 @@ export default class PlaceOrderList extends Component {
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
+                                    <Text medium grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{hourMinute}</Text>
+                                    <Text medium grayDark style={{ ...styles.labelUnderImage }}>{hourMinute}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{item.numberOfPeople}</Text>
+                                    <Text medium grayDark style={{ ...styles.labelUnderImage }}>{item.numberOfPeople}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
-                                    <Text grayDark style={{ ...styles.labelUnderImage }}>{totalQuantity}</Text>
+                                    <Text medium grayDark style={{ ...styles.labelUnderImage }}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
@@ -165,7 +165,7 @@ export default class PlaceOrderList extends Component {
                         <View style={{ ...styles.rowPadding }}>
                             <View style={styles.row}>
                                 <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text grayDark small>{chainParse(item, ['userInfo', 'memberName'])}</Text>
+                                <Text grayDark medium>{chainParse(item, ['userInfo', 'memberName'])}</Text>
                             </View>
                             {phoneNumberBlock}
                         </View>

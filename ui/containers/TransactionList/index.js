@@ -228,7 +228,7 @@ export default class extends Component {
                             <View style={styles.row}>
                                 <Text small primary>{I18n.t('paid')}</Text>
                                 <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
-                                    <Text medium bold primary>{I18n.t('confirm')}</Text>
+                                    <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
                             </View>

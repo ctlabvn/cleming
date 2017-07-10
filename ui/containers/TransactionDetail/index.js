@@ -246,9 +246,9 @@ export default class TransactionDetail extends Component {
                                 <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                             </View>
                         </View>
-                        <View style={styles.rowCenter}>
+                        {/*<View style={styles.rowCenter}>
                             {helpBtn}
-                        </View>
+                        </View>*/}
                     </View>
                 </Content>
             )
