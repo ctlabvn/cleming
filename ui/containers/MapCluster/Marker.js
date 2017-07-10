@@ -8,67 +8,68 @@ import styles from './styles'
 
 export default class Marker extends React.PureComponent {
 
-  state = {
-    colorByCategory: {
-      A: "violet",
-      B: "yellow",
-      C: "blue",
-      D: "pink",
-      E: "green",
-      "Cluster": "red"
-    }
-  }
-
   onPress() {
-    if (!this.props.feature.properties.featureclass) {
+    if (this.props.feature.properties.point_count > 1) {
+
       //  Calculer l'angle
-      const { region } = this.props;
-      const category = this.props.feature.properties.featureclass || "Cluster";
+      const { region } = this.props;      
       const angle = region.longitudeDelta || 0.0421/1.2;
-      const result =  Math.round(Math.log(360 / angle) / Math.LN2);
-      //  Chercher les enfants
-      const markers = this.props.clusters["places"].getChildren(this.props.feature.properties.cluster_id, result);
-      const newRegion = [];
-      const smallZoom = 0.05;
-      //  Remap
-      markers.map(function (element) {
-        newRegion.push({
-          latitude: offset_map_small + element.geometry.coordinates[1] - region.latitudeDelta * smallZoom,
-          longitude: offset_map_small + element.geometry.coordinates[0] - region.longitudeDelta * smallZoom,
-        });
+      const clusterZoom =  Math.round(Math.log(360 / angle) / Math.LN2);
 
-        newRegion.push({
-          latitude: offset_map_small + element.geometry.coordinates[1],
-          longitude: offset_map_small + element.geometry.coordinates[0],
-        });
-
-        newRegion.push({
-          latitude: offset_map_small + element.geometry.coordinates[1] + region.latitudeDelta * smallZoom,
-          longitude: offset_map_small + element.geometry.coordinates[0] + region.longitudeDelta * smallZoom,
-        });
-      });
-      //  Préparer the retour
-      const options = {
-        isCluster: true,
-        region: newRegion,
+      const item = this.props.cluster.trees[clusterZoom + 1]
+      let options = {
+          isCluster: true,                
       };
+
+      if(item){      
+        //  Chercher les enfants
+        console.log('cluster', this.props.feature.properties.cluster_id, this.props.feature)
+        const markers = this.props.cluster.getChildren(this.props.feature.properties.cluster_id, clusterZoom);      
+
+        const newRegion = [];
+        const smallZoom = 0.05;
+        //  Remap
+        markers.map(function (element) {
+          newRegion.push({
+            latitude: offset_map_small + element.geometry.coordinates[1] - region.latitudeDelta * smallZoom,
+            longitude: offset_map_small + element.geometry.coordinates[0] - region.longitudeDelta * smallZoom,
+          });
+
+          newRegion.push({
+            latitude: offset_map_small + element.geometry.coordinates[1],
+            longitude: offset_map_small + element.geometry.coordinates[0],
+          });
+
+          newRegion.push({
+            latitude: offset_map_small + element.geometry.coordinates[1] + region.latitudeDelta * smallZoom,
+            longitude: offset_map_small + element.geometry.coordinates[0] + region.longitudeDelta * smallZoom,
+          });
+        });
+
+        //  Préparer the retour
+        options.region = newRegion;
+
+      } else {
+        options.remote = true
+      }
+
       //  Ensuite envoyer l'événement
       if (this.props.onPress) {
-        this.props.onPress({
-          type: category,
+        this.props.onPress({          
           feature: this.props.feature,
           options: options,
         });
       }
     }
+
   }
 
 
   render() {
     const latitude = this.props.feature.geometry.coordinates[1];
-    const longitude = this.props.feature.geometry.coordinates[0];
-    const category = this.props.feature.properties.featureclass || "Cluster";
-    const text = (category  == "Cluster" ? this.props.feature.properties.point_count : category);
+    const longitude = this.props.feature.geometry.coordinates[0];  
+    const text = this.props.feature.properties.point_count_abbreviated || 1;
+    // const fontSize = text > 99 ? (text > 9999 ? 8 : 10) : 12
     const size = 37;
     return (
       <MapView.Marker

@@ -71,6 +71,8 @@ export default{
     },
     markerCustomerText: {
         color: material.white500,
+        fontSize: 10,        
+        letterSpacing: -1,
     },
     markerMerchant: {
         width: 30,
