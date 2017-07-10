@@ -7,8 +7,9 @@ export default  vi = {
     'load_place_fail': 'Tải địa điểm thất bại.',
     // Transaction List Screen
     'confirm': 'Xác nhận',
+    'detail': 'Chi tiết',
     'confirmed': 'Đã xác nhận',
-    'customer': 'Khánh hàng',
+    'customer': 'Khách hàng',
     'paid': 'Đã thanh toán',
     'all_transaction': 'Tất cả giao dịch',
     'wait_confirm': 'Chờ phê duyệt',
