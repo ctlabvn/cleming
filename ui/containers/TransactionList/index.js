@@ -217,18 +217,18 @@ export default class extends Component {
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
                                 <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text small bold grayDark>{item.userName}</Text>
+                                <Text medium bold grayDark>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text large bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
                                 <Text small primary>{I18n.t('paid')}</Text>
                                 <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
-                                    <Text bold primary>{I18n.t('confirm')}</Text>
+                                    <Text medium bold primary>{I18n.t('confirm')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
                             </View>
