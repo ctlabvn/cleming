@@ -5,6 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm } from '~/store/actions/transaction'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
+import { getToastMessage } from '~/ui/shared/utils'
 const requestListTransaction = createRequestSaga({
     request: api.transaction.list,
     key: 'transaction/list',
@@ -13,7 +14,7 @@ const requestListTransaction = createRequestSaga({
         (data) => {
             console.log('Load transaction', data)
             if (data.code) {
-                return setToast(GENERAL_ERROR_MESSAGE, 'error')
+                return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
             }
             return setListTransaction(data.updated.data)
         }

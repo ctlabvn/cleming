@@ -4,7 +4,7 @@ export default  vi = {
     'booking': 'Đặt chỗ',
     'order': 'Đặt giao hàng',
     'loading_place': 'Đang tải địa điểm...',
-
+    'load_place_fail': 'Tải địa điểm thất bại.',
     // Transaction List Screen
     'confirm': 'Xác nhận',
     'confirmed': 'Đã xác nhận',
