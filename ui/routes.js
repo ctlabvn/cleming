@@ -19,11 +19,12 @@ import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 import Report from './containers/Report'
 import TransactionConfirm from './containers/TransactionConfirm'
 import TransactionInputFeedback from './containers/TransactionInputFeedback'
-
 // import ChartDemo from './containers/ChartDemo'
 import QRScanner from './containers/QRScanner'
 import About from './containers/About'
 import I18n from '~/ui/I18n'
+import ChartDemo from './containers/ChartDemo'
+import MapCluster from './containers/MapCluster'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -153,6 +154,13 @@ export default {
     qrScanner: {
         title: 'QR Scanner',
         Page: QRScanner,
+        headerType: 'back',
+        footerType: 'none',
+    },
+
+    mapCluster: {
+        title: 'Map Cluster Demo',
+        Page: MapCluster,
         headerType: 'back',
         footerType: 'none',
     },

@@ -14,8 +14,11 @@ export default class extends Component {
   }
 
   scrollToTop=()=>{
-      this.refs.content._root.scrollToPosition(0, 0, false)
+    // console.log('content' ,this.content._root, this.content.wrappedInstance._root)
+      // this.refs.content._root.scrollToPosition(0, 0, false)
+      this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
   }
+
   render() {
     const {children, refreshing, onRefresh, onScroll, padder, onEndReached, onEndReachedThreshold, ...props} = this.props    
     // show refresh control
@@ -25,7 +28,7 @@ export default class extends Component {
     
     return (                             
       <Content
-          ref="content"
+          ref={ref=>this.content = ref}
         onScroll={(e)=>{    
           const offsetY = e.nativeEvent.contentOffset.y     
           const contentHeight= e.nativeEvent.contentSize.height

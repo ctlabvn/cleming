@@ -46,6 +46,7 @@
     "redux-persist": "4.5.0",
     "redux-saga": "0.14.4",
     "rn-viewpager": "^1.2.3",
+    "supercluster": "^2.3.0",
     "underscore": "^1.8.3",
     "url-parse": "1.1.8",
     "validate.js": "^0.11.1",

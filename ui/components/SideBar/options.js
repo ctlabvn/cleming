@@ -14,6 +14,10 @@ export default {
     //   name: 'Quét QR Code',
     //   route: 'qrScanner',
     // }
+    {
+      name: 'Map Cluster',
+      route: 'mapCluster',
+    }
   ]
 
 
