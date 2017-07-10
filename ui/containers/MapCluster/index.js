@@ -2,110 +2,126 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Container, Text} from "native-base";
 import {Dimensions, InteractionManager, View} from "react-native";
-import Points from './options'
-import supercluster from 'supercluster'
+// import Points from './options'
+import supercluster from './supercluster'
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+
+import shallowEqual from 'fbjs/lib/shallowEqual'
+
+import api from "~/store/api"
+import {getSession} from "~/store/selectors/auth";
+
 import Marker from './Marker'
+import styles from './styles'
+import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
 
-const Marseille = {
-  latitude: 43.2931047,
-  longitude: 5.38509780000004,
-  latitudeDelta: 0.0922/1.2,
-  longitudeDelta: 0.0421/1.2,
-}
-
-
+@connect(state => ({
+    xsession: getSession(state),    
+}))
 export default class extends React.PureComponent {
 
-  state = {
-    mapLock: false,
-    region: Marseille,
-  }
+  constructor(props) {
+        super(props)
+        this.state = {
+            region: {
+                latitude: 21.0461027,
+                longitude: 105.7955732,
+                latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+                longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+            },
+        }
+        this.maxZoom = 16
+
+        this.cluster = supercluster({
+          radius: styles.markerCustomer.width * 2,
+          maxZoom: this.maxZoom,
+        })
+    }
 
 
   setRegion(region) {
-    if(Array.isArray(region)) {
-      region.map(function(element) { 
-        if (element.hasOwnProperty("latitudeDelta") && element.hasOwnProperty("longitudeDelta")) {
-          region = element;
-          return;
-        }
-      })
-    }
-    if (!Array.isArray(region)) {
-      this.setState({
-        region: region
-      });
-    } else {
-      console.log("We can't set the region as an array");
-    }
+    this.setState({
+      region: region[0] || region
+    })  
   }
 
+  componentDidMount(){
+    const { xsession } = this.props
+    let minLa = this.state.region.latitude - this.state.region.latitudeDelta
+    let minLo = this.state.region.longitude - this.state.region.longitudeDelta
+    let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
+    let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
+    let placeIds = 559812    
+    let fromTime = 1499101200
+    let toTime = 1499705999
+    api.report.getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, this.maxZoom, fromTime, toTime)
+    .then(ret=>{
+      if(ret.updated){
+        const clusterData = ret.updated.data.locationDtos.map((item, index)=>{
+          const point = {
+              // numPoints: item.number,
+              properties: {
+                _id: index,
+              },
+              geometry: {              
+                coordinates: [
+                  item.longitude,
+                  item.latitude,
+                ]
+            }
+          }
+          if(item.number > 1){
+            point.numPoints = item.number
+            point.properties.remote = true
+          }
+          return point
+        })     
+      
 
-  componentDidMount() {
-    this.componentWillReceiveProps(this.props);
+        console.log(clusterData[0])
+        this.cluster.load(clusterData);
+        this.forceUpdate()
+
+      }
+    })
+          
   }
-
-
-  createMarkersForLocations(props) {
-    return {
-      places: Points
-    };
-  }
-
-
-  componentWillReceiveProps(nextProps) {
-    const markers = this.createMarkersForLocations(nextProps);
-    if (markers && Object.keys(markers)) {
-      const clusters = {};
-      this.setState({
-        mapLock: true
-      });
-      Object.keys(markers).forEach(categoryKey => {
-        // Recalculate cluster trees
-        const cluster = supercluster({
-          radius: 60,
-          maxZoom: 16,
-        });
-
-        cluster.load(markers[categoryKey]);
-
-        clusters[categoryKey] = cluster;
-      });
-
-      this.setState({
-        clusters,
-        mapLock: false
-      });
-    }
-  }
-
 
   getZoomLevel(region = this.state.region) {
     const angle = region.longitudeDelta;
     return Math.round(Math.log(360 / angle) / Math.LN2);
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    return !shallowEqual(this.state.region, nextState.region)
+  }
 
-  createMarkersForRegion_Places() {
-    const padding = 0.25;
-    if (this.state.clusters && this.state.clusters["places"]) {
-      const markers = this.state.clusters["places"].getClusters([
-        this.state.region.longitude - (this.state.region.longitudeDelta * (0.5 + padding)),
-        this.state.region.latitude - (this.state.region.latitudeDelta * (0.5 + padding)),
-        this.state.region.longitude + (this.state.region.longitudeDelta * (0.5 + padding)),
-        this.state.region.latitude + (this.state.region.latitudeDelta * (0.5 + padding)),
+
+  createMarkers() {
+    const padding = 0.25;    
+    if (this.cluster.points) {
+      const markers = this.cluster.getClusters([
+        this.state.region.longitude - this.state.region.longitudeDelta,
+        this.state.region.latitude - this.state.region.longitudeDelta,
+        this.state.region.longitude + this.state.region.longitudeDelta,
+        this.state.region.latitude + this.state.region.latitudeDelta,
       ], this.getZoomLevel());
       const returnArray = [];
-      const { clusters, region } = this.state;
-      const onPressMaker = this.onPressMaker.bind(this);
-      markers.map(function(element ) {
-        returnArray.push(
+      const { region } = this.state;     
+      // const check = {}
+      markers.map((element ) =>{        
+        const key = element.properties._id || ('cluster_' + element.properties.cluster_id) 
+        // if(check[key]) {
+        //   console.log('key', element)
+        //   return
+        // }
+        // check[key] = true
+        returnArray.push(          
             <Marker
-              key={element.properties._id || element.properties.cluster_id}
-              onPress={onPressMaker}
+              key={key}
+              onPress={this.onPressMaker.bind(this)}
               feature={element}
-              clusters={clusters}
+              cluster={this.cluster}
               region={region}
             />
         );
@@ -118,15 +134,12 @@ export default class extends React.PureComponent {
 
   onPressMaker(data) {
     if (data.options.isCluster) {
-      if (data.options.region.length > 0) {
-        this.goToRegion(data.options.region, 100)
+      if (data.options.remote) {
+        console.log("load more because it is remote");
       } else {
-        console.log("We can't move to an empty region");
+        this.goToRegion(data.options.region, 100)        
       }
-    } else {
-
     }
-    return;
   }
 
 
@@ -137,25 +150,13 @@ export default class extends React.PureComponent {
     });
   }
 
-
-
   onChangeRegionComplete(region) {
     this.setRegion(region);
-    this.setState({
-      moving: false,
-    });
   }
-
-
-  onChangeRegion(region) {
-    this.setState({
-      moving: true,
-    });
-  }
-
 
 
   render() {
+    
     return (
       <View
         style={{
@@ -168,12 +169,11 @@ export default class extends React.PureComponent {
             flex: 1,
           }}
           provider={PROVIDER_GOOGLE}
-          initialRegion={Marseille}
-          onRegionChange={this.onChangeRegion.bind(this)}
+          initialRegion={this.state.region}          
           onRegionChangeComplete={this.onChangeRegionComplete.bind(this)}
          >
           {
-            this.createMarkersForRegion_Places()
+            this.createMarkers()
           }
          </MapView>
       </View>
