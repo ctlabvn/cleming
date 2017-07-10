@@ -23,7 +23,7 @@ import DeviceInfo from "react-native-device-info";
 
 import GradientBackground from "~/ui/elements/GradientBackground";
 import I18n from '~/ui/I18n'
-
+import { getToastMessage } from '~/ui/shared/utils'
 const formSelector = formValueSelector('LoginForm')
 
 @connect(state => ({
@@ -33,11 +33,12 @@ const formSelector = formValueSelector('LoginForm')
   },
 
   currentValues: formSelector(state, 'email', 'password', 'forgotEmail'),
-  // onSubmitFail: (errors, dispatch) => {
-  //   for (let k in errors) {
-  //     return dispatch(commonActions.setToast(errors[k], 'warning'))
-  //   }
-  // },
+  onSubmitFail: (errors, dispatch) => {
+    for (let k in errors) {
+      // setToast(getToastMessage(I18n.t('err_need_current_password')), 'info', null, null, 3000, 'top')
+      return dispatch(commonActions.setToast(getToastMessage(errors[k]), 'info', null, null, 3000, 'top'))
+    }
+  },
   session: authSelectors.getSession(state),
   loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state),
@@ -143,52 +144,24 @@ export default class extends Component {
 
     
     if (!oldPassword) {
-      // Toast.show({text: I18n.t('err_need_current_password'), position: 'top', duration: 1000})
-      // toastModal.showtoastModal.show(I18n.t('err_need_current_password'))
-      let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
-        <Text white>{I18n.t('err_need_current_password')}</Text>
-      </View>
-      setToast(message, 'info', null, null, 3000, 'top')
-      
+      setToast(getToastMessage(I18n.t('err_need_current_password')), 'info', null, null, 3000, 'top')
       return false
     }
     if (!newPassword) {
-      // toastModal.show(I18n.t('err_need_new_password'))
-      let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
-        <Text white>{I18n.t('err_need_new_password')}</Text>
-      </View>
-      setToast(message, 'info', null, null, 3000, 'top')
+      setToast(getToastMessage(I18n.t('err_need_new_password')), 'info', null, null, 3000, 'top')
       return false
     }
     if (newPassword != reNewPassword) {
-      // setToast(I18n.t('err_password_not_match'), 'danger')
-      // Toast.show({text: I18n.t('err_password_not_match'), position: 'top', duration: 1000})
-      // toastModal.show(I18n.t('err_password_not_match'))
-      let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
-        <Text white>{I18n.t('err_password_not_match')}</Text>
-      </View>
-      setToast(message, 'info', null, null, 3000, 'top')
+      setToast(getToastMessage(I18n.t('err_password_not_match')), 'info', null, null, 3000, 'top')
       return false
     }
     if (oldPassword == newPassword) {
-      // Toast.show({text: I18n.t('err_new_password'), position: 'top', duration: 1000})
-      // setToast(I18n.t('err_new_password'), 'danger')
-      // toastModal.show(I18n.t('err_new_password'))
-      let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
-        <Text white>{I18n.t('err_new_password')}</Text>
-      </View>
-      setToast(message, 'info', null, null, 3000, 'top')
+      setToast(getToastMessage(I18n.t('err_new_password')), 'info', null, null, 3000, 'top')
       return false
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      // Toast.show({text: I18n.t('err_password_length'), position: 'top', duration: 1000})
-      // toastModal.show(I18n.t('err_password_length'))
-      let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
-        <Text white>{I18n.t('err_password_length')}</Text>
-      </View>
-      setToast(message, 'info', null, null, 3000, 'top')
-      // setToast(I18n.t('err_password_length'), 'danger')
+      setToast(getToastMessage('err_password_length'), 'info', null, null, 3000, 'top')
       return false
     }
     return true

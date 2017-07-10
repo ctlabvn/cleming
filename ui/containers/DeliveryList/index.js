@@ -15,7 +15,7 @@ import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
 import options from "./options";
-import { formatNumber, formatPhoneNumber, chainParse } from "~/ui/shared/utils";
+import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
@@ -225,7 +225,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                 }
             }
         )
@@ -243,7 +243,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                     this.clickCount = 0
                 }
             }

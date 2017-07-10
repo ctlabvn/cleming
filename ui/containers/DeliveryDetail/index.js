@@ -10,7 +10,7 @@ import * as notificationActions from "~/store/actions/notification";
 import * as authSelectors from "~/store/selectors/auth";
 import { InputField } from "~/ui/elements/Form";
 import Content from "~/ui/components/Content";
-import { formatNumber, formatPhoneNumber, chainParse } from "~/ui/shared/utils";
+import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
 import moment from "moment";
 import CircleCountdown from "~/ui/components/CircleCountdown";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
@@ -49,11 +49,11 @@ export default class extends Component {
                 console.log('Order Data', data)
                 if (err) {
                     if (err.code == 1522) {
-                        setToast(I18n.t('err_order_not_exists'), 'danger')
+                        setToast(getToastMessage(I18n.t('err_order_not_exists')), 'info', null, null, 3000, 'top')
                         forwardTo('merchantOverview', true)
                         return
                     }
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                     forwardTo('merchantOverview', true)
                     return
                 }
@@ -106,7 +106,7 @@ export default class extends Component {
                     markWillReload(true)
                     forwardTo('deliveryList')
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                 }
             }
         )
@@ -120,7 +120,7 @@ export default class extends Component {
                     markWillReload(true)
                     forwardTo('deliveryList')
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                     this.clickCount = 0
                 }
             }

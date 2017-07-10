@@ -1,5 +1,7 @@
 import material from '~/theme/variables/material'
-
+import React, { Component } from 'react'
+import {View} from 'react-native'
+import {Text} from 'native-base'
 export const getPopoverOptions = (popoverWidth, fromRect, arrowPadding = -5) => ({
   fromRect,
   // from center
@@ -84,4 +86,11 @@ export const chainParse = (obj, attrArr) => {
     if (!cloneObj) return null 
   }
   return cloneObj
+}
+
+export const getToastMessage = (message) => {
+  console.log('Toast Mess', message)
+  return <View style={{ backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, borderRadius: 5, marginTop: 50 }}>
+    <Text white>{message}</Text>
+  </View>
 }

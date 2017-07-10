@@ -5,7 +5,7 @@ import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import { formatNumber } from "~/ui/shared/utils";
+import { formatNumber, getToastMessage } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
@@ -373,7 +373,7 @@ export default class TransactionDetail extends Component {
                     console.log('Load payCLM', data)
                     console.log('Load payCLM', err)
                     if (err) {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -396,6 +396,10 @@ export default class TransactionDetail extends Component {
 
                             }
                         )
+                    }else{
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+                        goBack()
+                        return
                     }
                 })
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
@@ -406,11 +410,11 @@ export default class TransactionDetail extends Component {
                     this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
-                            setToast(I18n.t('err_transaction_not_exists'), 'danger')
+                            setToast(getToastMessage(I18n.t('err_transaction_not_exists')), 'info', null, null, 3000, 'top')
                             forwardTo('merchantOverview', true)
                             return
                         }
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -437,7 +441,7 @@ export default class TransactionDetail extends Component {
                             }
                         )
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         goBack()
                         return
                     }

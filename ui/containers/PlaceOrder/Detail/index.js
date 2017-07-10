@@ -21,7 +21,7 @@ import {
     DEFAULT_TIME_FORMAT,
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
-import {formatPhoneNumber, chainParse} from "~/ui/shared/utils";
+import {formatPhoneNumber, chainParse, getToastMessage} from "~/ui/shared/utils";
 import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
@@ -57,7 +57,7 @@ export default class PlaceOrderDetail extends Component {
                         this.setState({bookingDetail: bookingDetail})
                         return
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         this.props.forwardTo('merchantOverview')
                         return
                     }
@@ -86,7 +86,7 @@ export default class PlaceOrderDetail extends Component {
                         this.setState({bookingDetail: data.updated.bookingInfo})
                         return
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         this.props.forwardTo('merchantOverview')
                         return
                     }
