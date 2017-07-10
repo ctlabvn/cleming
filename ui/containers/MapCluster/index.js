@@ -15,8 +15,10 @@ import Marker from './Marker'
 import styles from './styles'
 import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
 
+import DateFilter from "~/ui/components/DateFilter";
+
 @connect(state => ({
-    xsession: getSession(state),    
+    xsession: getSession(state), 
 }))
 export default class extends React.PureComponent {
 
@@ -45,15 +47,28 @@ export default class extends React.PureComponent {
     })  
   }
 
-  componentDidMount(){
+  _handleTopDropdown = (item) => {
+      console.log('Report dropdown change', item)
+      let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+      this._requestMapData(item.id, dateFilterData.from, dateFilterData.to)
+  }
+
+  _handlePressFilter = (item) => {
+      const { app } = this.props
+      let placeData = app.topDropdown.getValue()
+      let dateFilterData = item.currentSelectValue.value
+      this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+  }
+
+  _requestMapData(placeIds, fromTime, toTime){
     const { xsession } = this.props
     let minLa = this.state.region.latitude - this.state.region.latitudeDelta
     let minLo = this.state.region.longitude - this.state.region.longitudeDelta
     let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
     let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
-    let placeIds = 559812    
-    let fromTime = 1499101200
-    let toTime = 1499705999
+    // let placeIds = 559812    
+    // let fromTime = 1499101200
+    // let toTime = 1499705999
     api.report.getMapStatistic(xsession, placeIds, minLa, minLo, maxLa, maxLo, this.maxZoom, fromTime, toTime)
     .then(ret=>{
       if(ret.updated){
@@ -84,7 +99,11 @@ export default class extends React.PureComponent {
 
       }
     })
-          
+  }
+
+  componentDidMount(){
+      this.props.app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)    
+      this._handlePressFilter(this.refs.dateFilter.getData())
   }
 
   getZoomLevel(region = this.state.region) {
@@ -163,6 +182,8 @@ export default class extends React.PureComponent {
           flex: 1
         }}
       >
+        <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
+
         <MapView
           ref={ref => { this.map = ref; }}
           style={{
