@@ -26,8 +26,7 @@ export default class extends Component {
                         khách
                         hàng với cửa hàng của mình thông qua chiếc smartphone của mình.
                         Các nhà bán hàng có thể kiểm tra nhanh khách hàng tiềm năng, hiệu quả bán hàng, doanh thu cũng
-                        như
-                        tình trạng các đơn hàng.
+                        như tình trạng các đơn hàng.
                     </Text>
                     <Text large style={styles.textTitle}>
                         Phiên bản
