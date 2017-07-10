@@ -161,7 +161,6 @@ export default {
     mapCluster: {
         title: 'Map Cluster Demo',
         Page: MapCluster,
-        headerType: 'back',
-        footerType: 'none',
+        showTopDropdown: true,
     },
 }

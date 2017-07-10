@@ -1,12 +1,11 @@
 apply plugin: "com.android.application"
 apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-    flatDir{
-        dirs '../ScanditSDK'
-    }
-}
+
+
+
+//apply from: "../../node_modules/react-native-scandit/android/build.gradle"
+
 //project.ext.vectoricons = [
 //        iconFontNames: [ 'MaterialIcons.ttf', 'Roboto.ttf', 'Roboto_medium.ttf', 'clingme_font.ttf' ] // Name of the font files you want to copy
 //]
