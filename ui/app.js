@@ -20,6 +20,7 @@ import Footer from '~/ui/components/Footer'
 import Popover from '~/ui/components/Popover'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
+import PopupInfo from '~/ui/components/PopupInfo'
 // router => render component base on url
 // history.push => location match => return component using navigator push
 import { matchPath } from 'react-router'
@@ -581,6 +582,7 @@ export default class App extends Component {
           />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />
+          <PopupInfo />
         </Drawer>
       </StyleProvider>
     )
