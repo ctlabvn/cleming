@@ -199,7 +199,7 @@ export default class TransactionDetail extends Component {
             let payStatus, helpBtn = null
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text medium success bold>{I18n.t('paid')}</Text>
+                payStatus = <Text largeLight success bold>{I18n.t('paid')}</Text>
                 //Chưa sử dụng help
                 if (!transactionInfo.helpStatus) {
                     helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
@@ -223,7 +223,7 @@ export default class TransactionDetail extends Component {
                             dealTransactionId={transactionInfo.clingmeId}
                         />
                         <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                            <Text small style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.blockCenter}>
                             <Text medium gray>{I18n.t('order_number')}</Text>
