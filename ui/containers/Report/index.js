@@ -153,7 +153,7 @@ export default class Report extends Component {
 
     render() {
         const { report, place } = this.props
-        console.log('Focus Merchant Render', this.state.focusMerchant)
+        // console.log('Focus Merchant Render', report.map)
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
@@ -167,8 +167,9 @@ export default class Report extends Component {
                         onLayout={this._handleOnLayoutMap}
                     >
                         {report && report.map && report.map.locationDtos.map((marker, idx) => {
+                            const key = marker.latitude.toFixed(8) + '.' + marker.longitude.toFixed(8)
                             return (
-                                <MapView.Marker key={idx}
+                                <MapView.Marker key={key}
                                     coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
                                 >
                                     <View style={styles.markerCustomer}>
