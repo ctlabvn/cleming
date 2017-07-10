@@ -268,6 +268,7 @@ export default class extends Component {
             <View style={styles.row}>
                 <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
                 <Text
+                    medium
                     onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
                     style={styles.phoneNumber}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
             </View>
@@ -279,7 +280,7 @@ export default class extends Component {
                 statusBlock = (
                     <View style={styles.deliveryCodeBlock}>
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
-                        <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 break
@@ -287,17 +288,17 @@ export default class extends Component {
                 statusBlock = (
                     <View style={styles.deliveryCodeBlock}>
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
-                        <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 buttonActionBlock = (
                     <View style={styles.block}>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                         <View style={styles.row}>
-                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold
-                                gray>{I18n.t('cancel_delivery')}</Text></Button>
-                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold
-                                primary>{I18n.t('delivered')}</Text></Button>
+                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}>
+                                <Text medium bold gray>{I18n.t('cancel_delivery')}</Text></Button>
+                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}>
+                                <Text medium bold primary>{I18n.t('delivered')}</Text></Button>
                         </View>
                     </View>
                 )
@@ -307,7 +308,7 @@ export default class extends Component {
                     <View style={styles.deliveryCodeBlock}>
                         {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
-                        <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 break
@@ -317,13 +318,13 @@ export default class extends Component {
                     <View style={styles.deliveryCodeBlock}>
                         {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
-                        <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.grey}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 phoneNumberBlock = (
                     <View style={styles.row}>
                         <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
-                        <Text
+                        <Text medium
                             onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
                             style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
                     </View>
@@ -342,7 +343,7 @@ export default class extends Component {
                     <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time}
+                            <Text medium style={styles.time}
                                 grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderInfo.status == 'CANCELLED' || orderInfo.status == 'FAILED') && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
@@ -360,8 +361,8 @@ export default class extends Component {
                 <View style={styles.block}>
                     <View style={{ width: '100%' }}>
                         <View style={styles.row}>
-                            <Text bold grayDark>{I18n.t('number_order_item')}</Text>
-                            <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
+                            <Text medium bold grayDark>{I18n.t('number_order_item')}</Text>
+                            <Text medium grayDark>SL: <Text mediumbold grayDark>{totalItem}</Text></Text>
                         </View>
                     </View>
                 </View>
@@ -369,9 +370,10 @@ export default class extends Component {
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
                     <View style={styles.block}>
                         <View>
-                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>{I18n.t('note')}: </Text></View>
-                            <View style={styles.rowLeft}><Text grayDark
-                                style={styles.textLeft}>{orderInfo.note}</Text></View>
+                            <View style={styles.rowLeft}><Text medium bold grayDark style={styles.textLeft}>{I18n.t('note')}: </Text></View>
+                            <View style={styles.rowLeft}>
+                                <Text medium grayDark style={styles.textLeft}>{orderInfo.note}</Text>
+                            </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                     </View>
@@ -380,17 +382,17 @@ export default class extends Component {
                     <View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
                         <View style={styles.row}>
                             <Icon name='account' style={styles.icon} />
-                            <Text grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
+                            <Text medium grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
                         </View>
                         {phoneNumberBlock}
                     </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
+                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text success>{I18n.t('paid')}</Text>
-                        <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
+                        <Text medium success>{I18n.t('paid')}</Text>
+                        <Text medium bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
                 {buttonActionBlock}
