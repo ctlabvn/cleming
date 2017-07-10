@@ -14,7 +14,7 @@ import {
   setUserAvatar,
   updateProfileToRedux
 } from '~/store/actions/auth'
-
+import { getToastMessage } from '~/ui/shared/utils'
 import I18n from '~/ui/I18n'
 
 
@@ -99,11 +99,11 @@ const requestUpdateEmployeeInfo = createRequestSaga({
   failure: [
     (error) => {
       if (error.code == 1207) {
-        return setToast('Số điện thoại đã tồn tại', 'danger')
+        return setToast(getToastMessage(I18n.t('err_phone_exists')), 'info', null, null, 3000, 'top')
       } else if (error.code == 1206) {
-        return setToast('Địa chỉ email đã tồn tại', 'danger')
+        return setToast(getToastMessage(I18n.t('err_email_exists')), 'info', null, null, 3000, 'top')
       }
-      return setToast('Không có kết nối đến máy chủ', 'danger')
+      return setToast(getToastMessage(I18n.t('err_connection')), 'info', null, null, 3000, 'top')
     }
   ],
 })
@@ -122,10 +122,10 @@ const requestCreateEmployeeInfo = createRequestSaga({
             case 1207:
             case 1206:
             case 1808:
-                return setToast(I18n.t(error.msg), 'danger');
+                return setToast(getToastMessage(I18n.t(error.msg)), 'info', null, null, 3000, 'top') 
                 break;
             default:
-                return setToast(I18n.t('connection_have_problem'), 'danger')
+                return setToast(getToastMessage(I18n.t('err_connection')), 'info', null, null, 3000, 'top')
                 break;
         }
     }
