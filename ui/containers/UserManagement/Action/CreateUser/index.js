@@ -15,7 +15,7 @@ import moment from 'moment';
 
 import TopDropdown from '../../components/DropDownList'
 import Border from '~/ui/elements/Border'
-
+import { getToastMessage } from '~/ui/shared/utils'
 import {
   InputField,
   CheckBoxField,
@@ -64,14 +64,14 @@ const formSelector = formValueSelector('CreateUserForm')
   }
   // console.warn(JSON.stringify(stateProps.listEmployee, null, 2));
   let permission = null
-      switch (employeeDetail.titleType) {
-          case 1:
-              permission = I18n.t('employee')
-              break
-          default:
-              permission = I18n.t('employee')
-              break
-      }
+  switch (employeeDetail.titleType) {
+    case 1:
+      permission = I18n.t('employee')
+      break
+    default:
+      permission = I18n.t('employee')
+      break
+  }
 
   return ({
     enableReinitialize: true,
@@ -91,15 +91,15 @@ const formSelector = formValueSelector('CreateUserForm')
   })
 })
 @reduxForm({
-    form: 'CreateUserForm',
-    // fields: ['name', 'email', 'phone'],
+  form: 'CreateUserForm',
+  // fields: ['name', 'email', 'phone'],
   // validate: validateField
 })
 export default class CreateUserContainer extends Component {
   constructor(props) {
 
-      console.log('step', 'constructor');
-      // let selectedPlaceId = props.selectedPlace.id
+    console.log('step', 'constructor');
+    // let selectedPlaceId = props.selectedPlace.id
     super(props)
     let currentJob = {
       id: 1,
@@ -119,7 +119,7 @@ export default class CreateUserContainer extends Component {
       // chosenListPlace: [],
       currentJob: currentJob,
       isLoading: false,
-      firstTimeResetPassword: false,      
+      firstTimeResetPassword: false,
       selectedPlaceId: props.selectedPlace.id,
     }
 
@@ -134,52 +134,52 @@ export default class CreateUserContainer extends Component {
 
   componentWillFocus() {
 
-      if (typeof this.props.route.params.id != "undefined") {
-          let employeeDetail = this.props.employeeDetail
+    if (typeof this.props.route.params.id != "undefined") {
+      let employeeDetail = this.props.employeeDetail
 
-          this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || {placeId:this.state.selectedPlaceId})
+      this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || { placeId: this.state.selectedPlaceId })
 
-          let permission = null
-          switch (employeeDetail.titleType) {
-              case 1:
-                  permission = I18n.t('employee')
-          }
-          this.setState({
-              // chosenListPlace: employeeDetail.listPlace,
-              currentJob: {
-                  id: employeeDetail.titleType,
-                  name: permission
-              },
-              firstTimeResetPassword: false,
-
-          })
-
-      } else {
-          this.props.actions.deleteGeneratedPassword()
-          this.placeDropdown.handleCheck({placeId:this.state.selectedPlaceId})
-          this.setState({
-              // chosenListPlace: [],
-              currentJob: {
-                  id: 1,
-                  name: I18n.t('employee')
-              },
-              fromTime: "07:00",
-              toTime: "20:00"
-          })
+      let permission = null
+      switch (employeeDetail.titleType) {
+        case 1:
+          permission = I18n.t('employee')
       }
+      this.setState({
+        // chosenListPlace: employeeDetail.listPlace,
+        currentJob: {
+          id: employeeDetail.titleType,
+          name: permission
+        },
+        firstTimeResetPassword: false,
+
+      })
+
+    } else {
+      this.props.actions.deleteGeneratedPassword()
+      this.placeDropdown.handleCheck({ placeId: this.state.selectedPlaceId })
+      this.setState({
+        // chosenListPlace: [],
+        currentJob: {
+          id: 1,
+          name: I18n.t('employee')
+        },
+        fromTime: "07:00",
+        toTime: "20:00"
+      })
+    }
 
   }
 
   _repairDefaultPlace() {
-      if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
-          this.setState({
-              selectedPlaceId: this.props.selectedPlace.id,
-          });
-      }
+    if (this.props.selectedPlace.id != this.state.selectedPlaceId) {
+      this.setState({
+        selectedPlaceId: this.props.selectedPlace.id,
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-     this._repairDefaultPlace();
+    this._repairDefaultPlace();
   }
 
   componentWillMount() {
@@ -267,30 +267,30 @@ export default class CreateUserContainer extends Component {
 
   onSubmitUser = (data) => {
     // console.log(data)
-        const errRet = validateField(data)
-        this.setState({
-            errorForm: errRet,            
-        })
-      // console.warn(JSON.stringify(errRet))
+    const errRet = validateField(data)
+    this.setState({
+      errorForm: errRet,
+    })
+    // console.warn(JSON.stringify(errRet))
 
-      let userInfo = {}
+    let userInfo = {}
     // if (this.state.chosenListPlace.length == 0) {
-      // console.log(this.state.selectedPlaceId)
+    // console.log(this.state.selectedPlaceId)
 
-      // if (this.props.formState.CreateUserForm.syncErrors) {
+    // if (this.props.formState.CreateUserForm.syncErrors) {
 
-      if (errRet.name || errRet.phone || errRet.email) {
-          this.props.actions.setToast(I18n.t('err_employee_info_invalid'), 'danger')
-          this._scrollPageUp()
-          // return;
-      } else if(!this.state.selectedPlaceId){
-        this.props.actions.setToast(I18n.t('err_need_address'), 'danger');
 
-    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {          
-        this.props.actions.setToast(I18n.t('err_need_create_password'), 'danger')
-        this._scrollPageDown();        
+    if (errRet.name || errRet.phone || errRet.email) {
+      this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
+      this._scrollPageUp()
+      // return;
+    } else if (!this.state.selectedPlaceId) {
+      this.props.actions.setToast(getToastMessage(I18n.t('err_need_address')), 'info', null, null, 3000, 'top')
+    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
+      this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
+      this._scrollPageDown();
     } else {
-      
+
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = data.name
       userInfo.phoneNumber = data.phone
@@ -311,9 +311,9 @@ export default class CreateUserContainer extends Component {
           this.getListEmployeeAfterSuccess(error)
         })
       } else {
-        if(this.props.generatedPassword){
+        if (this.props.generatedPassword) {
           userInfo.password = md5(this.props.generatedPassword)
-        } 
+        }
         userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
@@ -331,19 +331,19 @@ export default class CreateUserContainer extends Component {
     })
   }
 
-  
+
 
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
     // this.setDefaultTimeWork();
 
     let fromTime = this.state.fromTime
-    let toTime = this.state.toTime    
+    let toTime = this.state.toTime
     let listPlace = this.props.employeeDetail ? this.props.employeeDetail.listPlace : []
     let formState = null
     let nameError = null
     let nameTouched = false
-    let errorNameStyle = null    
+    let errorNameStyle = null
     let phoneError = null
     let phoneTouched = false
     let errorPhoneStyle = null
@@ -355,7 +355,7 @@ export default class CreateUserContainer extends Component {
     let errorForm = this.state.errorForm;
 
     if (typeof errorForm != "undefined") {
-      
+
       if (typeof errorForm != 'undefined' && typeof fields != "undefined") {
         // let errors = formState.syncErrors
         if (errorForm.name) {
@@ -395,13 +395,13 @@ export default class CreateUserContainer extends Component {
     return (
       <View style={{ paddingLeft: 15, paddingRight: 15 }}>
 
-        <RenderTextField label={I18n.t('full_name')} name="name"  errorStyle={errorNameStyle} />        
+        <RenderTextField label={I18n.t('full_name')} name="name" errorStyle={errorNameStyle} />
         {nameTouched && nameError}
 
-        <RenderTextField label={I18n.t('phone_number')} name="phone"  errorStyle={errorPhoneStyle} keyboardType="numeric" />        
+        <RenderTextField label={I18n.t('phone_number')} name="phone" errorStyle={errorPhoneStyle} keyboardType="numeric" />
         {phoneTouched && phoneError}
 
-        <RenderTextField label={I18n.t('email')} name="email"  errorStyle={errorEmailStyle} />   
+        <RenderTextField label={I18n.t('email')} name="email" errorStyle={errorEmailStyle} />
         {emailTouched && emailError}
 
         <View style={{ ...styles.inputContainer, zIndex: 100, marginBottom: 10, overflow: null }}>
@@ -447,9 +447,9 @@ export default class CreateUserContainer extends Component {
           </Grid>
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
-        <RenderGroup                            
+        <RenderGroup
           onReady={ref => this.placeDropdown = ref}
-          selectedPlaceId = {this.state.selectedPlaceId}
+          selectedPlaceId={this.state.selectedPlaceId}
         />
         <View style={styles.createPassBlock}>
           <Border color='rgba(0,0,0,0.5)' size={2} />
@@ -485,25 +485,25 @@ export default class CreateUserContainer extends Component {
     )
   }
 
-  _scrollPageUp(){
-      this.refs.myContent.scrollTo({x: 0, y: 0, animated: true});
+  _scrollPageUp() {
+    this.refs.myContent.scrollTo({ x: 0, y: 0, animated: true });
   }
 
-  _scrollPageDown(){
-      this.refs.myContent.scrollToEnd();
+  _scrollPageDown() {
+    this.refs.myContent.scrollToEnd();
   }
 
   render() {
-      // console.warn('render');    
-    const { handleSubmit } = this.props;    
+    // console.warn('render');    
+    const { handleSubmit } = this.props;
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
     return (
       <Container style={styles.container}>
-        <ScrollView style={{ backgroundColor: material.white500 }} 
+        <ScrollView style={{ backgroundColor: material.white500 }}
           keyboardShouldPersistTaps="always" ref="myContent">
-            {this.renderMainContainer()}
+          {this.renderMainContainer()}
         </ScrollView>
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
@@ -532,11 +532,11 @@ export default class CreateUserContainer extends Component {
         />
 
         <Modal
-            onCloseClick={()=>{}}
-            open={this.state.isLoading}>
-            <View style={styles.preload}>
-              <Text>Please waiting...</Text>
-            </View>
+          onCloseClick={() => { }}
+          open={this.state.isLoading}>
+          <View style={styles.preload}>
+            <Text>Please waiting...</Text>
+          </View>
         </Modal>
 
       </Container>
