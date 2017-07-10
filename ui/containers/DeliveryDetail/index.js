@@ -306,7 +306,9 @@ export default class extends Component {
                     <View style={styles.rowPadding}>
                         <Text medium bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
                     </View>
-                    <List dataArray={orderDetail.orderRowList}
+                    <List
+                        style={{marginBottom: 20}}
+                        dataArray={orderDetail.orderRowList}
                         renderRow={(item) => (
                             <ListItem style={styles.orderItem}>
                                 <View style={styles.cartLeft}>
