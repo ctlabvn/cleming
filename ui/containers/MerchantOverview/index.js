@@ -87,9 +87,9 @@ export default class MerchantOverview extends Component {
                             this.setState({loading: false})
                         )
                     }
+                }else{
+                    this.setState({ loading: false })
                 }
-                // this.setState({ loading: false })
-                // this.forceUpdate()
             }
         )
 
