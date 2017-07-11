@@ -137,7 +137,8 @@ export default  vi = {
 
     // Revenue Management Screen
     'revenue_management': 'Quản lý doanh thu',
-
+    'revenue_processing': 'Giao dịch đang xử lý',
+    'revenue_done': 'Giao dịch đã chuyển tiền',
 
     // Error
     'err_general': 'Có lỗi xảy ra, vui lòng thử lại sau.',

@@ -168,7 +168,6 @@ export default {
     revenueManagement: {
         title: 'Revenue Management',
         Page: RevenueManagement,
-        showTopDropdown: true,
         headerType: 'back',
     }
 }
