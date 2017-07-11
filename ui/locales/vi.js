@@ -136,6 +136,7 @@ export default  vi = {
     'connection_have_problem' : 'Không có kết nối đến máy chủ',
 
     // Revenue Management Screen
+    'revenue': 'doanh thu',
     'revenue_management': 'Quản lý doanh thu',
     'revenue_processing': 'Giao dịch đang xử lý',
     'revenue_done': 'Giao dịch đã chuyển tiền',

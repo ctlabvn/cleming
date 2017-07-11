@@ -27,8 +27,15 @@ import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 import RevenueManagement from './containers/RevenueManagement'
 
+import ComingSoon from './containers/ComingSoon'
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    comingSoon: {
+        title: 'In the future',
+        Page: ComingSoon,
+        headerType: 'back',
+    },
     about: {
         title: I18n.t('about'),
         Page: About,
@@ -166,7 +173,7 @@ export default {
     },
 
     revenueManagement: {
-        title: 'Revenue Management',
+        title: I18n.t('revenue_management'),
         Page: RevenueManagement,
         headerType: 'back',
     }
