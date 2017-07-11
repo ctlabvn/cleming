@@ -32,7 +32,7 @@ export default class extends React.PureComponent {
                 longitudeDelta: DEFAULT_MAP_DELTA.LONG,
             },
         }
-        this.maxZoom = 16
+        this.maxZoom = 14
 
         this.cluster = supercluster({
           radius: styles.markerCustomer.width * 2,
