@@ -4,10 +4,11 @@
 import React, { Component } from 'react'
 import {
     Button, List, ListItem, Switch, Spinner,
-    Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
+    Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row,
+    Text
 } from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
-import { Text, TouchableHighlight, InteractionManager } from 'react-native'
+import { TouchableHighlight, InteractionManager } from 'react-native'
 import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
@@ -299,14 +300,14 @@ class UserManagement extends Component {
                                     <TouchableHighlight
                                         underlayColor={material.white500}
                                         onPress={this.onUpdateInfoPress.bind(this)}>
-                                    <Text style={styles.rowText}>{I18n.t('page_change_info')}</Text>
+                                    <Text medium style={styles.rowText}>{I18n.t('page_change_info')}</Text>
                                     </TouchableHighlight>
                                 </Row>
                                 <Row style={{ alignItems: 'center' }}>
                                     <TouchableHighlight
                                         underlayColor={material.white500}
                                         onPress={this.onDeleteAccountPress.bind(this)}>
-                                    <Text style={styles.rowText}>{I18n.t('remove_account_from_list')}</Text>
+                                    <Text medium style={styles.rowText}>{I18n.t('remove_account_from_list')}</Text>
                                     </TouchableHighlight>
                                 </Row>
                             </Col>
@@ -333,14 +334,14 @@ class UserManagement extends Component {
                                 <Button
                                     onPress={this.onCancelModal.bind(this)}
                                     style={styles.modalButton}>
-                                    <Text style={styles.modalCancelButtonText}>Cancel</Text>
+                                    <Text medium style={styles.modalCancelButtonText}>Cancel</Text>
                                 </Button>
                             </Col>
                             <Col style={{ width: '25%' }}>
                                 <Button
                                     onPress={this.onSubmitModal.bind(this)}
                                     style={styles.modalButton}>
-                                    <Text style={styles.modalOkButtonText}>OK</Text>
+                                    <Text medium style={styles.modalOkButtonText}>OK</Text>
                                 </Button>
                             </Col>
                         </Row>
@@ -369,7 +370,7 @@ class UserManagement extends Component {
                             <Button
                                 onPress={this.onCreateUserPress.bind(this)}
                                 style={styles.addUserButton}>
-                                <Text style={styles.addUserText}>{I18n.t('add_account')}</Text>
+                                <Text medium style={styles.addUserText}>{I18n.t('add_account')}</Text>
                             </Button>)
                     }
                 }
