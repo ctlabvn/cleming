@@ -6,6 +6,12 @@ export default {
       route: 'userManagement',
       // icon: 'poll',
     },
+
+    {
+        name: I18n.t('revenue_management'),
+        route: 'revenueManagement',
+    },
+
     {
         name: I18n.t('about'),
         route: 'about',

@@ -25,6 +25,7 @@ import About from './containers/About'
 import I18n from '~/ui/I18n'
 import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
+import RevenueManagement from './containers/RevenueManagement'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -163,4 +164,11 @@ export default {
         Page: MapCluster,
         showTopDropdown: true,
     },
+
+    revenueManagement: {
+        title: 'Revenue Management',
+        Page: RevenueManagement,
+        showTopDropdown: true,
+        headerType: 'back',
+    }
 }

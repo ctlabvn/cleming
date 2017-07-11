@@ -135,6 +135,9 @@ export default  vi = {
     'can_not_add_account': 'Tài khoản không được thêm',
     'connection_have_problem' : 'Không có kết nối đến máy chủ',
 
+    // Revenue Management Screen
+    'revenue_management': 'Quản lý doanh thu',
+
 
     // Error
     'err_general': 'Có lỗi xảy ra, vui lòng thử lại sau.',
