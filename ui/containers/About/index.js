@@ -16,7 +16,7 @@ export default class extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Icon name="logo" style={styles.logoIcon}/>
                     <Text large style={{...styles.textTitle, marginTop: 15}}>
                         Giới thiệu

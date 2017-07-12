@@ -14,7 +14,7 @@ export default {
         let xDataVersion = 1
         let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
         let body = JSON.stringify({
-            userName: username,
+            userName: username.trim(),
             password: md5(password),
         })
         let xAuthStr = "" + xDataVersion + xVersion + xTimeStamp + SECRET_KEY + body
