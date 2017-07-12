@@ -423,7 +423,11 @@ export default class App extends Component {
     })
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      const { router, goBack } = this.props
+      const { router, goBack, drawerState, closeDrawer } = this.props
+      if (drawerState == 'opened'){
+        closeDrawer()
+        return true
+      }
       if (router.route === 'merchantOverview' || router.route === 'login') {
         return false
       }
@@ -434,6 +438,10 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
+    const { drawerState, closeDrawer } = this.props
+    if (drawerState == 'opened'){
+      closeDrawer()
+    }
     navigator.geolocation.clearWatch(this.watchID)
   }
 
