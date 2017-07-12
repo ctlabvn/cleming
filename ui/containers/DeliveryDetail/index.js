@@ -138,14 +138,14 @@ export default class extends Component {
     _renderStatusText(status) {
         switch (status) {
             case 'WAIT_CONFIRM':
-                return <Text warning big bold>{I18n.t('order_wait_confirm')}</Text>
+                return <Text warning large bold>{I18n.t('order_wait_confirm')}</Text>
             case 'CONFIRMED':
-                return <Text primary big bold>{I18n.t('order_confirmed')}</Text>
+                return <Text primary large bold>{I18n.t('order_confirmed')}</Text>
             case 'COMPLETED':
-                return <Text success big bold>{I18n.t('order_completed')}</Text>
+                return <Text success large bold>{I18n.t('order_completed')}</Text>
             case 'FAILED':
             case 'CANCELLED':
-                return <Text gray big bold>{I18n.t('order_cancelled')}</Text>
+                return <Text gray large bold>{I18n.t('order_cancelled')}</Text>
         }
     }
 
