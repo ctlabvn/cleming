@@ -110,7 +110,7 @@ export default class TopDropdownListValue extends Component {
                     renderRow={(item) => {
                         return (
                             <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
-                                <Text  numberOfLines={1} style={styles.dropdownListItemText}>vmtest{item.name}</Text>
+                                <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>
                             </ListItem>
                         )
                     }
