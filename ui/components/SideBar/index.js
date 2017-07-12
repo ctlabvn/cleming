@@ -74,7 +74,7 @@ export default class extends Component {
           style={styles.container}
         >          
           <View row style={styles.drawerCover}>                        
-            <Text bold style={styles.text}>More</Text>            
+            <Text bold style={styles.text}>Menu</Text>
           </View>
           <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
             <Icon name="close" style={styles.buttonIconClose} />
