@@ -7,7 +7,8 @@ export default {
         return apiGet('/transaction/merchantapp/list-direct', {placeId, fromTime, toTime, option, pageNumber}, xsession)
     },
     listPayWithClingme(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0, pageNumber=1) {
-        return apiGet('/transaction/merchantapp/list-clm', {placeId, fromTime, toTime, option}, xsession)
+        console.log('Call list CLM: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+        return apiGet('/transaction/merchantapp/list-clm', {placeId, fromTime, toTime, option, pageNumber}, xsession)
     },
     // /merchantapp/transaction-detail
     detail(xsession, dealTransactionId){
