@@ -66,7 +66,8 @@ export default {
     'deliveryDetail/:id': {
         title: I18n.t('page_delivery_detail'),
         Page: DeliveryDetail,
-        footerType: 'none'
+        footerType: 'none',
+        headerType: 'back',
     },
     report: {
         title: I18n.t('page_customer_statistic'),
