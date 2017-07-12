@@ -1,7 +1,6 @@
 import I18n from '~/ui/I18n'
 
-const REVENUE_PROCESSING = 1;
-const REVENUE_DONE = 2;
+import { REVENUE_PROCESSING, REVENUE_DONE } from '~/store/constants/app'
 
 export default {
     tabData: [
