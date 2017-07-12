@@ -33,7 +33,8 @@ export default {
     dropdownListItem: {
         borderBottomWidth: 0,
         justifyContent: 'center',
-        zIndex: 1000
+        zIndex: 1000,
+        paddingHorizontal: 25,
     },
     dropdownListItemText: {
         color: material.white500,
