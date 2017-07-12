@@ -196,6 +196,13 @@
 			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
 			remoteInfo = AirMaps;
 		};
+		24B1671B1F147BA400922787 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24B167171F147BA400922787 /* SGScandit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = SGScandit;
+		};
 		24DDD9871ECBF8FB00B391DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5049ADE382544156B9E7B833 /* RNDeviceInfo.xcodeproj */;
@@ -371,6 +378,7 @@
 		2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		249C7E267E804CFE99DAA97B /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
+		24B167171F147BA400922787 /* SGScandit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SGScandit.xcodeproj; path = "../node_modules/react-native-scandit/ios/SGScandit.xcodeproj"; sourceTree = "<group>"; };
 		24B26FB11ECD577900166C09 /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/MerchantApp-epmqigzjwbzslygualqwcpohipxa/Build/Products/Debug-iphonesimulator/React/libReact.a"; sourceTree = "<group>"; };
 		24D4A8D81EF0F9D800D66580 /* LaunchScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LaunchScreenController.h; path = MerchantApp/LaunchScreenController.h; sourceTree = "<group>"; };
 		24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LaunchScreenController.m; path = MerchantApp/LaunchScreenController.m; sourceTree = "<group>"; };
@@ -628,6 +636,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		24B167181F147BA400922787 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				24B1671C1F147BA400922787 /* libSGScandit.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		24DDD9451EC99A4F00B391DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -681,6 +697,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				24B167171F147BA400922787 /* SGScandit.xcodeproj */,
 				C2AC3B851ECDA46100611367 /* React.xcodeproj */,
 				247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -955,6 +972,10 @@
 					ProjectRef = F32476BA77CB4914933C9E90 /* RNSVG.xcodeproj */;
 				},
 				{
+					ProductGroup = 24B167181F147BA400922787 /* Products */;
+					ProjectRef = 24B167171F147BA400922787 /* SGScandit.xcodeproj */;
+				},
+				{
 					ProductGroup = 2473E1681F0F3B5600B47D74 /* Products */;
 					ProjectRef = 808613228A014F7FA08FA852 /* SMXCrashlytics.xcodeproj */;
 				},
@@ -1071,6 +1092,13 @@
 			fileType = archive.ar;
 			path = libAirMaps.a;
 			remoteRef = 24B166251F13692000922787 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		24B1671C1F147BA400922787 /* libSGScandit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSGScandit.a;
+			remoteRef = 24B1671B1F147BA400922787 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		24DDD9881ECBF8FB00B391DF /* libRNDeviceInfo.a */ = {
