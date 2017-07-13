@@ -1,10 +1,16 @@
 /**
- * ClingmeIcon icon set component.
- * Usage: <ClingmeIcon name="icon-name" size={20} color="#4F8EF7" />
+ * clingme_icon icon set component.
+ * Usage: <clingme_icon name="icon-name" size={20} color="#4F8EF7" />
  */
 
 import createIconSet from 'react-native-vector-icons/lib/create-icon-set';
 export const glyphMap = {
+  "help": 59710,
+  "bill-capture": 59709,
+  "nearby": 59708,
+  "list-p": 59707,
+  "box-uncheck": 59705,
+  "box-checked": 59706,
   "report2": 59704,
   "transaction": 59703,
   "cash": 59701,

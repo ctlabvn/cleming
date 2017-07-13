@@ -5,30 +5,31 @@ export default {
         {
             name: 'Quản lý khuyến mãi',
             route: 'comingSoon',
-            // icon: 'poll',
+            icon: 'deals',
         },
 
         {
             name: 'Quản lý cửa hàng',
             route: 'comingSoon',
-            // icon: 'poll',
+            icon: 'place-f',
         },
 
         {
             name: 'Phản hồi khách hàng',
             route: 'comingSoon',
-            // icon: 'poll',
+            icon: 'post',
         },
 
         {
             name: I18n.t('revenue'),
             route: 'revenueManagement',
+            icon: 'term',
         },
 
         {
             name: I18n.t('page_wallet'),
             route: 'wallet',
-            // icon: 'poll',
+            icon: 'clingme-wallet',
         },
         {
             name: I18n.t('withdraw'),
@@ -38,24 +39,25 @@ export default {
         {
             name: I18n.t('manage_account'),
             route: 'userManagement',
-            // icon: 'poll',
+            icon: 'account',
         },
 
         {
             name: 'Inbox',
             route: 'comingSoon',
-            // icon: 'poll',
+            icon: 'email-symbol',
         },
 
         {
             name: 'Trợ giúp',
             route: 'comingSoon',
-            // icon: 'poll',
+            icon: 'help',
         },
 
         {
             name: I18n.t('about'),
             route: 'about',
+            icon: 'info'
         },
         // {
         //   name: 'Quét QR Code',
