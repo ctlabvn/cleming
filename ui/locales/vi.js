@@ -62,6 +62,7 @@ export default  vi = {
     'page_add_account': 'Thêm tài khoản',
     'page_change_info': 'Thay đổi thông tin',
     'page_account_info': 'Thông tin tài khoản',
+    'page_wallet': 'Thanh toán với Clingme',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -181,5 +182,10 @@ export default  vi = {
     'month': 'tháng',
     'year': 'năm',
     'to': 'đến',
-    'info': 'Thông báo'
+    'info': 'Thông báo',
+
+    //Wallet
+    'balance': 'Số dư TK',
+    'withdraw': 'Rút tiền',
+    'view_detail': 'Xem chi tiết'
 }

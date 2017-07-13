@@ -26,11 +26,16 @@ import I18n from '~/ui/I18n'
 import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 import RevenueManagement from './containers/RevenueManagement'
-
+import Wallet from './containers/Wallet'
 import ComingSoon from './containers/ComingSoon'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    wallet: {
+        title: I18n.t('page_wallet'),
+        Page: Wallet,
+        headerType: 'back'
+    },
     comingSoon: {
         title: 'In the future',
         Page: ComingSoon,

@@ -26,8 +26,8 @@ export default {
         },
 
         {
-            name: 'Thanh toán với Clingme',
-            route: 'comingSoon',
+            name: I18n.t('page_wallet'),
+            route: 'wallet',
             // icon: 'poll',
         },
 
