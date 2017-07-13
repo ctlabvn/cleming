@@ -25,7 +25,8 @@ const requestGetProfile = createRequestSaga({
     (data) => replaceProfile(data),
   ],
   failure: [
-    () => setToast('Couldn\'t get profile', 'danger')
+      ()=> setToast(getToastMessage(I18n.t('could_not_get_profile')), 'danger', null, null, 3000, 'top')
+    // () => setToast('Couldn\'t get profile', 'danger')
   ],
 })
 
@@ -72,11 +73,11 @@ const requestUpdateProfile = createRequestSaga({
   key: 'updateProfile',
   success: [
     (data) => updateProfileToRedux(data),
-    () => setToast('Update profile successfully!'),
+      () => setToast(getToastMessage(I18n.t('update_profile_successfully')), 'info', null, null, 3000, 'top'),
     goBack,
   ],
   failure: [
-    () => setToast('Couldn\'t update profile', 'danger')
+    ( )=> setToast(getToastMessage(I18n.t('could_not_update_profile')), 'danger', null, null, 3000, 'top'),
   ],
 })
 
@@ -104,7 +105,7 @@ const requestUpdateEmployeeInfo = createRequestSaga({
   request: api.account.updateEmployeeInfo,
   key: 'updateEmployeeInfo',
   success: [
-
+      ()=> setToast(getToastMessage(I18n.t('update_employee_info_successfully')), 'info', null, null, 3000, 'top'),
   ],
   failure: [
     (error) => {
@@ -159,7 +160,8 @@ const requestUpdateOwnerAvatar = createRequestSaga({
     (data) => setUserAvatar(data),
   ],
   failure: [
-    () => setToast('Couldn\'t upload avatar', 'danger')
+      () => setToast(getToastMessage(I18n.t('Could_not_upload_avatar')), 'info', null, null, 3000, 'top')
+    // () => setToast('Couldn\'t upload avatar', 'danger')
   ],
 })
 

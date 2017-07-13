@@ -169,12 +169,22 @@ export default  vi = {
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
-    
+
+    // account
+    'could_not_get_profile' : 'Không lấy được thông tin',
+    'update_profile_successfully': 'Cập nhật thông tin thành công!',
+    'could_not_update_profile': 'Thông tin chưa được cập nhật',
+    'update_employee_info_successfully': 'Cập nhật thông tin thành công!',
+    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện',
 
     //utils
     'day': 'ngày',
     'month': 'tháng',
     'year': 'năm',
     'to': 'đến',
-    'info': 'Thông báo'
+    'info': 'Thông báo',
+
+    // network
+    'could_not_get_networks': 'Coudldn\'t get networks',
+    'could_not_get_business_network' : 'Couldn\'t get business network'
 }
