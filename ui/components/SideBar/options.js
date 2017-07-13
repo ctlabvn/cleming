@@ -30,6 +30,10 @@ export default {
             route: 'wallet',
             // icon: 'poll',
         },
+        {
+            name: I18n.t('withdraw'),
+            route: 'withdraw'
+        },
 
         {
             name: I18n.t('manage_account'),

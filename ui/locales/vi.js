@@ -63,6 +63,7 @@ export default  vi = {
     'page_change_info': 'Thay đổi thông tin',
     'page_account_info': 'Thông tin tài khoản',
     'page_wallet': 'Thanh toán với Clingme',
+    'page_wallet_detail': 'Chi tiết các thanh toán',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -187,5 +188,12 @@ export default  vi = {
     //Wallet
     'balance': 'Số dư TK',
     'withdraw': 'Rút tiền',
-    'view_detail': 'Xem chi tiết'
+    'view_detail': 'Xem chi tiết',
+    'money_credited': 'Tiền ghi có',
+    'debit': 'Tiền ghi nợ',
+    'money_withdrawn': 'Tiền đã rút',
+    'withdrawn_amount': 'Số tiền cần rút',
+    'receive_account': 'Tài khoản nhận tiền',
+    'err_money_not_empty':'Số tiền không được để trống.',
+    'err_money_must_number':'Số tiền phải ở dạng số.',
 }
