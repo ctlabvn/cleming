@@ -81,14 +81,16 @@ export default class extends Component {
           </Button>
           {options.listItems.map((item, index) =>
           <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
-            <Left>                  
+            <Left>  
+              <Icon name={item.icon} style={styles.icon} />                
               <Text style={styles.iconText}>{item.name}</Text>
             </Left>                
           </ListItem>
           )}
           
           <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
-            <Left>                  
+            <Left>    
+              <Icon name='sign_out' style={styles.icon} />              
               <Text style={styles.iconText}>{I18n.t('logout')}</Text>
             </Left>                
           </ListItem>

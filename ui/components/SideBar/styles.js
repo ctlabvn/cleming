@@ -26,7 +26,7 @@ export default {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',  
-    marginLeft: 0,      
+    marginLeft: 10,      
   },
   iconContainer: {
     width: 37,
@@ -51,6 +51,7 @@ export default {
   icon: {    
     width: 20,
     height: 20,
+    color: 'white'
   },
   editContainer:{
     flexDirection:'row',
