@@ -30,8 +30,15 @@ import ComingSoon from './containers/ComingSoon'
 import Wallet from './containers/Wallet'
 import WalletDetail from './containers/WalletDetail'
 import WithDraw from './containers/WithDraw'
+import BankAccount from './containers/BankAccount'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    bankAccount: {
+        title: I18n.t('page_bank_account'),
+        Page: BankAccount,
+        headerType: 'back',
+        footerType: 'none'
+    },
     withdraw: {
         title: I18n.t('withdraw'),
         Page: WithDraw,

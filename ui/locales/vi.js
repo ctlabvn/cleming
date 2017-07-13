@@ -64,6 +64,7 @@ export default  vi = {
     'page_account_info': 'Thông tin tài khoản',
     'page_wallet': 'Thanh toán với Clingme',
     'page_wallet_detail': 'Chi tiết các thanh toán',
+    'page_bank_account': 'Tài khoản ngân hàng',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -196,4 +197,12 @@ export default  vi = {
     'receive_account': 'Tài khoản nhận tiền',
     'err_money_not_empty':'Số tiền không được để trống.',
     'err_money_must_number':'Số tiền phải ở dạng số.',
+
+    // Bank Account
+    'account_owner': 'Tên chủ tài khoản',
+    'identity_card': 'Số CMND/Căn cước',
+    'account_number': 'Số tài khoản',
+    'bank_name': 'Tên ngân hàng',
+    'area': 'Khu vực',
+    'branch': 'Chi nhánh'
 }

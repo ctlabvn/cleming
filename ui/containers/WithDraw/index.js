@@ -66,7 +66,7 @@ export default class extends Component {
         this.setState({ moneyAmount: '' })
     }
     render() {
-
+        const {forwardTo} = this.props
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary }}>
@@ -93,7 +93,7 @@ export default class extends Component {
                 </View>
                 <View style={styles.pd10}>
                     <CardSelection listAccounts={this.accouts} ref='cardSelection' />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>forwardTo('bankAccount')}>
                         <View style={{ ...styles.bankLogoContainer, justifyContent: 'center', height: 50 }}>
                             <Text primary>+  {I18n.t('add_account')}</Text>
                         </View>
