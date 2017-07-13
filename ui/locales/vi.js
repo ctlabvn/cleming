@@ -171,11 +171,19 @@ export default  vi = {
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
 
     // account
-    'could_not_get_profile' : 'Không lấy được thông tin',
+    'could_not_get_profile' : 'Không lấy được thông tin.',
     'update_profile_successfully': 'Cập nhật thông tin thành công!',
-    'could_not_update_profile': 'Thông tin chưa được cập nhật',
+    'could_not_update_profile': 'Thông tin chưa được cập nhật.',
     'update_employee_info_successfully': 'Cập nhật thông tin thành công!',
-    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện',
+    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+
+    // vault
+
+    'could_not_get_vault_information': 'Không thể thu thập thông tin.',
+
+    // delegation
+
+    'could_not_get_list_delegation': 'Không lấy được danh sách.',
 
     //utils
     'day': 'ngày',
@@ -186,5 +194,6 @@ export default  vi = {
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
-    'could_not_get_business_network' : 'Couldn\'t get business network'
+    'could_not_get_network': 'Coudldn\'t get networks',
+    'Could_not_get_business_network' : 'Couldn\'t get business network'
 }

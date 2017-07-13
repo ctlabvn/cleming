@@ -32,7 +32,7 @@ const requestGetNetwork = createRequestSaga({
         (data, {args:[token, Id, Name]}) => replaceNetwork({Name, data:{...data, Id}}),           
     ],
     failure: [
-        () => setToast(getToastMessage(I18n.t('could_not_get_networks')), 'error', null, null, 3000, 'top')
+        () => setToast(getToastMessage(I18n.t('could_not_get_network')), 'error', null, null, 3000, 'top')
     ],
 })
 
@@ -43,7 +43,7 @@ const requestGetBusinessNetwork = createRequestSaga({
         (data) => replaceBusinessNetwork(data),           
     ],
     failure: [
-        () => setToast(getToastMessage(I18n.t('Could_not_get_networks')), 'error', null, null, 3000, 'top')
+        () => setToast(getToastMessage(I18n.t('Could_not_get_business_network')), 'error', null, null, 3000, 'top')
         // () => setToast('Couldn\'t get business network', 'error')
     ],
 })
