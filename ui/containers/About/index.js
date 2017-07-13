@@ -32,7 +32,7 @@ export default class extends Component {
                         Phiên bản
                     </Text>
                     <Text medium style={styles.textContent}>
-                        1.x
+                        0.9.0
                     </Text>
                     <Text large style={styles.textTitle}>
                         Liên hệ
