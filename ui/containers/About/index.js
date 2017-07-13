@@ -16,7 +16,7 @@ export default class extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     <Icon name="logo" style={styles.logoIcon}/>
                     <Text large style={{...styles.textTitle, marginTop: 15}}>
                         Giới thiệu
@@ -32,7 +32,7 @@ export default class extends Component {
                         Phiên bản
                     </Text>
                     <Text medium style={styles.textContent}>
-                        1.x
+                        0.9.0
                     </Text>
                     <Text large style={styles.textTitle}>
                         Liên hệ

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import App from './app'
 import { Provider } from 'react-redux'
 import configureStore from '~/store/config'
-import { forwardTo } from '~/store/actions/common'
+import { forwardTo, closeDrawer } from '~/store/actions/common'
 import Preload from './containers/Preload'
 
 export default class extends Component {
@@ -14,6 +14,7 @@ export default class extends Component {
 
   componentDidMount(){
     configureStore(store=> {
+      store.dispatch(closeDrawer())
       if(!__DEV__){
         const firstRoute = store.getState().auth.loggedIn ? 'merchantOverview' : 'login'
         store.dispatch(forwardTo(firstRoute, true))
