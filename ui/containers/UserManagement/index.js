@@ -309,6 +309,18 @@ class UserManagement extends Component {
                         type="radio"
                     />
                 </ListItem>
+                <ListItem noBorder style={{justifyContent:'center'}}>
+                        <Button
+                            onPress={this.onCancelModal.bind(this)}
+                            style={styles.modalButton}>
+                            <Text style={styles.modalCancelButtonText}>Cancel</Text>
+                        </Button>
+                        <Button
+                            onPress={this.onSubmitModal.bind(this)}
+                            style={styles.modalButton}>
+                            <Text style={styles.modalOkButtonText}>OK</Text>
+                        </Button>
+                </ListItem>
             </View>
         )
     }
