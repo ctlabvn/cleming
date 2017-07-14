@@ -237,7 +237,7 @@ export default class TransactionDetail extends Component {
                         </View>
                         <View style={styles.blockCenter}>
                             <Text medium gray>{I18n.t('clingme_fee')}</Text>
-                            <Text medium bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
+                            <Text large bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text medium>{I18n.t('customer')}</Text>

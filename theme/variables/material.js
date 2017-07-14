@@ -330,15 +330,15 @@ export default {
     },
 
     get textSizelarge() {
-        return this.textSizeMedium * 19/15;  // 19
+        return this.textSizeMedium * 20/15;  // 20
     },
 
     get textSizeBig() {
-        return this.textSizeMedium * 24/15;  // 24
+        return this.textSizeMedium * 32/15;  // 27
     },
 
     get textSizeGiant() {
-        return this.textSizeMedium * 48/15; // 48
+        return this.textSizeMedium * 50/15; // 52
     },
 
     // Title
