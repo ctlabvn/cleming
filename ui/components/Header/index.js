@@ -104,7 +104,7 @@ export default class extends Component {
       : leftIcon  
     )
     const center = (
-      typeof title ==="string" ? <Title full>{title}</Title> : title
+      typeof title ==="string" ? <Title bold full>{title}</Title> : title
     )
     const right = (rightIcon &&
       <Button transparent onPress={this._rightClick}>
