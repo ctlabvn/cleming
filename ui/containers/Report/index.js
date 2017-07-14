@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Container, Text} from "native-base";
-import {Dimensions, InteractionManager, View} from "react-native";
+import {Dimensions, InteractionManager, View, Image} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonActions from "~/store/actions/common";
@@ -12,6 +12,7 @@ import geoViewport from "@mapbox/geo-viewport";
 import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
 import {getSession} from "~/store/selectors/auth";
 import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
+import {customerMarker, merchantMarker} from "~/assets";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -172,7 +173,8 @@ export default class Report extends Component {
                                 <MapView.Marker key={key}
                                     coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
                                 >
-                                    <View style={styles.markerCustomer}>
+                                    <View style={styles.markerContainer}>
+                                        <Image source={customerMarker} style={styles.customerMaker} />
                                         <Text style={styles.markerCustomerText}>{marker.number}</Text>
                                     </View>
                                 </MapView.Marker>
@@ -182,8 +184,9 @@ export default class Report extends Component {
                             <MapView.Marker
                                 coordinate={{ latitude: this.state.focusMerchant.latitude, longitude: this.state.focusMerchant.longitude }}
                             >
-                                <View style={styles.markerMerchant}>
-                                </View>
+                                {/* <View style={styles.markerMerchant}>
+                                </View> */}
+                                <Image source={merchantMarker} style={styles.merchantMarker}/>
                             </MapView.Marker>
                         }
                         {/*{report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {

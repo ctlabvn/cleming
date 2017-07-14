@@ -52,4 +52,10 @@ export default {
     alignItems: 'center',
     alignSelf: 'flex-end'
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%'
+  }
 }

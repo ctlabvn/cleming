@@ -138,7 +138,6 @@ export default class PlaceOrderDetail extends Component {
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
 
-
         return (
             <Container>
 
@@ -152,12 +151,13 @@ export default class PlaceOrderDetail extends Component {
                             <Text
                                 medium
                                 grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            <View style={{right: 10, position: 'absolute'}}>
+                            
+                            {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                                  counting={this.state.counting}
                                                  countTo={bookTime}
                                 />
-                            </View>
+                            </View>}
                         </View>
                         <View>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
