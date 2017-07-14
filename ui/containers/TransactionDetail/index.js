@@ -16,6 +16,7 @@ import FeedbackDialog from "./FeedbackDialog";
 import FeedbackDialogClingme from "./FeedbackDialogClingme";
 import PopupInfo from "~/ui/components/PopupInfo";
 import Content from "~/ui/components/Content";
+import { ScrollView } from "react-native";
 import {
     DEFAULT_TIME_FORMAT,
     FEEDBACK_CLM_TRANSACTION,
@@ -215,7 +216,7 @@ export default class TransactionDetail extends Component {
                 payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
             }
             return (
-                <Content>
+                <ScrollView style={styles.scrollView}>
                     <View style={styles.contentRootChild}>
                         <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.props.denyReasonClm}
                             transactionCode={transactionInfo.transactionIdDisplay}
@@ -250,7 +251,7 @@ export default class TransactionDetail extends Component {
                             {helpBtn}
                         </View>*/}
                     </View>
-                </Content>
+                </ScrollView>
             )
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             return (
