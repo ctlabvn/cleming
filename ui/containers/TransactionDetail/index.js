@@ -156,19 +156,19 @@ export default class TransactionDetail extends Component {
     }
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
-            const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
-            // this._goToMiddlePage()
-            let transactionId = route.params.id
-            let transactionType = route.params.type
-            this.setState({ type: transactionType })
-            this._load(transactionId)
-            // No need frequently update, call one when component mount
-            if (!denyReason || denyReason.length == 0) {
-                getListDenyReason(xsession)
-            }
-            if (!denyReasonClm || denyReasonClm.length == 0) {
-                getDenyReasonClm(xsession)
-            }
+        const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
+        // this._goToMiddlePage()
+        let transactionId = route.params.id
+        let transactionType = route.params.type
+        this.setState({ type: transactionType })
+        this._load(transactionId)
+        // No need frequently update, call one when component mount
+        if (!denyReason || denyReason.length == 0) {
+            getListDenyReason(xsession)
+        }
+        if (!denyReasonClm || denyReasonClm.length == 0) {
+            getDenyReasonClm(xsession)
+        }
 
         // })
 
@@ -177,18 +177,18 @@ export default class TransactionDetail extends Component {
     // Go to Page 
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
-            const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
-            this._goToMiddlePage()
-            let transactionId = route.params.id
-            let transactionType = route.params.type
-            this.setState({ type: transactionType })
-            this._load(transactionId)
-            if (!denyReason || denyReason.length == 0) {
-                getListDenyReason(xsession)
-            }
-            if (!denyReasonClm || denyReasonClm.length == 0) {
-                getDenyReasonClm(xsession)
-            }
+        const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
+        this._goToMiddlePage()
+        let transactionId = route.params.id
+        let transactionType = route.params.type
+        this.setState({ type: transactionType })
+        this._load(transactionId)
+        if (!denyReason || denyReason.length == 0) {
+            getListDenyReason(xsession)
+        }
+        if (!denyReasonClm || denyReasonClm.length == 0) {
+            getDenyReasonClm(xsession)
+        }
         // })
 
     }
@@ -200,17 +200,18 @@ export default class TransactionDetail extends Component {
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
                 payStatus = <Text largeLight success bold>{I18n.t('paid')}</Text>
-                //Chưa sử dụng help
-                if (!transactionInfo.helpStatus) {
-                    helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                        <Text medium>{I18n.t('help')}</Text>
-                    </Button>
-                } else {
-                    helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
-                        <Text medium>{I18n.t('help')}</Text>
-                    </Button>
-                }
-
+                helpBtn =
+                    <View style={styles.rowPaddingFull}>
+                        <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                            <View style={styles.round20}>
+                                <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                            </View>
+                            <Text medium primary>{I18n.t('help')}</Text>
+                        </Button>
+                        <Button primary style={{ ...styles.feedbackClmTransaction, ...styles.backgroundPrimary }}>
+                            <Text medium white>{I18n.t('confirm')}</Text>
+                        </Button>
+                    </View>
             } else if (transactionInfo.transactionStatus == 2) {
                 payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
             }
@@ -246,9 +247,9 @@ export default class TransactionDetail extends Component {
                                 <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                             </View>
                         </View>
-                        {/*<View style={styles.rowCenter}>
+                        <View style={styles.rowCenter}>
                             {helpBtn}
-                        </View>*/}
+                        </View>
                     </View>
                 </Content>
             )
@@ -396,7 +397,7 @@ export default class TransactionDetail extends Component {
 
                             }
                         )
-                    }else{
+                    } else {
                         setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         goBack()
                         return
