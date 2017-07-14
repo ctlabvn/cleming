@@ -3,7 +3,8 @@ import material from '~/theme/variables/material'
 export default {
     container: {
         flex: 1,
-        padding: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
         backgroundColor: material.white500,
     },
 
