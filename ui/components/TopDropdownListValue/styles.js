@@ -35,6 +35,7 @@ export default {
         justifyContent: 'flex-start',
         zIndex: 1000,
         paddingHorizontal: 25,
+        height: 35,
     },
     dropdownListItemText: {
         color: material.white500,
