@@ -126,6 +126,5 @@ export default {
     rowText: {
         // color: material.gray500,
         color: material.gray500,
-        marginLeft: 15
     }
 }
