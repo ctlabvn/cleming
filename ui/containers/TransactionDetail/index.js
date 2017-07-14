@@ -339,8 +339,8 @@ export default class TransactionDetail extends Component {
                                             <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
                                         </View>
                                         <View style={styles.gridItem}>
-                                            <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
                                             <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
+                                            <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
                                         </View>
                                     </View>
                                 </View>

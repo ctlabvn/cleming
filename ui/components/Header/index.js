@@ -65,7 +65,7 @@ export default class extends Component {
       </Button>
     )
     const center = (
-      <Title full>{title}</Title>
+      <Title bold full>{title}</Title>
     )
     return this.renderHeader(left, center)    
   }
