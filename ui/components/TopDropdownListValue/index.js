@@ -46,9 +46,6 @@ export default class TopDropdownListValue extends Component {
 
     }
 
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
