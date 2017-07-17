@@ -326,7 +326,7 @@ export default {
     },
 
     get textSizelargeLight() {
-        return this.textSizeMedium * 16/15;  // 16
+        return this.textSizeMedium * 17/15;  // 16
     },
 
     get textSizelarge() {

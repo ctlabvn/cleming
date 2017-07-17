@@ -12,6 +12,9 @@ export default (variables = variable) => {
       '.bold': {
         fontWeight: '600',
       },
+      '.superBold': {
+        fontWeight: '800',
+      },
       '.active': {
         color: variables.tabBarActiveTextColor,
       },
