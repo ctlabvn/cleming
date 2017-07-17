@@ -183,10 +183,11 @@ export default class Report extends Component {
                         {(Object.keys(this.state.focusMerchant).length > 0) &&
                             <MapView.Marker
                                 coordinate={{ latitude: this.state.focusMerchant.latitude, longitude: this.state.focusMerchant.longitude }}
+                                image={merchantMarker}
                             >
                                 {/* <View style={styles.markerMerchant}>
                                 </View> */}
-                                <Image source={merchantMarker} style={styles.merchantMarker}/>
+                                {/* <Image source={merchantMarker} style={styles.merchantMarker}/> */}
                             </MapView.Marker>
                         }
                         {/*{report && report.map && report.map.listPlaceLocationDtos.map((marker, idx) => {
