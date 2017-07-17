@@ -40,10 +40,11 @@ export default class extends Component {
       refreshing: false,
       loading: false,
     }
-    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1)!=JSON.stringify(r2))})
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
   }
 
-  componentWillFocus() {getNotification
+  componentWillFocus() {
+    getNotification
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
     if (!notifications.data.length) {
@@ -51,7 +52,7 @@ export default class extends Component {
       this.setState({
         refreshing: false,
       })
-    }else{
+    } else {
       this.forceUpdate()
     }
   }
@@ -100,6 +101,7 @@ export default class extends Component {
   //   TRANSACTION_FEEDBACK: 9,
   //   ORDER_FEEDBACK: 11,
   //   ORDER_CANCELLED: 12,
+  // TRANSACTION_CLINGME: 10
   // }
 
 
@@ -107,8 +109,8 @@ export default class extends Component {
     switch (notifyType) {
       case NOTIFY_TYPE.NEW_BOOKING:
         return <Icon name="calendar" style={{ ...styles.icon, ...styles.warning }} />
-      // case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-      //   return <Icon name="clingme-wallet" style={styles.icon} />
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        return <Icon name="clingme-wallet" style={styles.icon} />
       case NOTIFY_TYPE.NEW_ORDER:
         return <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.warning }} />
       case NOTIFY_TYPE.ORDER_CANCELLED:
@@ -260,6 +262,28 @@ export default class extends Component {
             {border}
           </Body>
         )
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        return (
+          <Body>
+            <View>
+              <View>
+                <Text note style={styles.textGray}>{item.title}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <Text style={{color: material.blue600,}}>
+                  <Text style={{
+                    fontWeight: '900',
+                    color: material.blue600,
+                    fontSize: 24,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  </Text>
+              </View>
+
+            </View>
+            {border}
+          </Body>
+        )
       case NOTIFY_TYPE.ORDER_FEEDBACK:
         return (
           <Body>
@@ -313,17 +337,20 @@ export default class extends Component {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
     const { updateRead, session, updateReadOfline } = this.props
-    if (!notification.isRead){
+    if (!notification.isRead) {
       updateReadOfline(notification.notifyId)
       updateRead(session, notification.notifyId)
     }
-  
+
     // console.log(type, notification)
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        break
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
@@ -356,7 +383,7 @@ export default class extends Component {
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
                   onPress={() => this.handleNotiClick(item)}
                   key={item.notifyId}
-                  >
+                >
                   <View style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start'
