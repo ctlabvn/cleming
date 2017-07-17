@@ -3,6 +3,8 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { getToastMessage } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
 
 import {
     replaceListDelegation,    
@@ -16,7 +18,7 @@ const requestGetListDelegation = createRequestSaga({
         (data) => replaceListDelegation(data),           
     ],
     failure: [
-        () => setToast('Couldn\'t get list delegation', 'error')
+        () => setToast(getToastMessage(I18n.t('could_not_get_list_delegation')), 'error', null, null, 3000, 'top')
     ],
 })
 

@@ -69,8 +69,14 @@ export default{
         justifyContent: 'center',
         alignItems: 'center'
     },
+    markerContainer: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
     markerCustomerText: {
         color: material.white500,
+        position: 'absolute',
+        top: 20
     },
     markerMerchant: {
         width: 30,
@@ -78,6 +84,14 @@ export default{
         backgroundColor: material.orange500,
         borderRadius: 15,
     },
+    merchantMarker: {
+        width: 31,
+        height: 42,
+    },
+    customerMaker: {
+        width: 50,
+        height: 60
+    }
 
 
 }
