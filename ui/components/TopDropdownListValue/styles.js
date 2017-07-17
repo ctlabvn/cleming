@@ -34,11 +34,11 @@ export default {
         borderBottomWidth: 0,
         justifyContent: 'flex-start',
         zIndex: 1000,
-        paddingHorizontal: 25,
+        paddingHorizontal: 10,
         height: 35,
     },
     dropdownListItemText: {
-        color: material.white500,
+        color: material.white500,        
         // fontWeight: '100'
     },
     content: {

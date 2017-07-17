@@ -1,6 +1,6 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
+import { List, ListItem, Text, Icon, Thumbnail, Button, Input } from 'native-base'
 import { View, TouchableWithoutFeedback, BackAndroid, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
@@ -44,11 +44,10 @@ export default class TopDropdownListValue extends Component {
             }
         }
 
+        
+
     }
 
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
@@ -86,7 +85,25 @@ export default class TopDropdownListValue extends Component {
             console.log('Back Press Top Dropdown')
         })
     }
+
+    // searchByWord(word, data){
+    //     // calculate the sum of similarity by compare word by word        
+    //     const searchWord = convertVn(word.trim().toLowerCase())
+    //     const searchedData = data.map(item=>{
+    //         const compareWords = convertVn(item.name.trim().toLowerCase())
+    //         const longest = Math.max(searchWord.length, compareWords.length)
+    //         const distance = leven(searchWord, compareWords)
+    //         const point = (longest-distance)/longest
+    //         return {
+    //             item,
+    //             point,
+    //         }
+    //     })
+    //     return searchedData.sort((a,b)=>b.point-a.point).map(c=>c.item)
+    // }
+
     render() {
+
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { openningDropdown, selectedOption, dropdownValues } = this.state
         let maxHeight = openningDropdown ? (material.deviceHeight-material.toolbarHeight-260) : 0
@@ -97,9 +114,12 @@ export default class TopDropdownListValue extends Component {
         if (selectedOption && Object.keys(selectedOption).length > 0){
             dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
         }
+
+        // console.log('similarity', this.searchByWord('lang ha ha noi', dropdownValues))
+
         let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen:styles.ovarlayContainerClose
         return (
-            <View style={overlayStyle}>
+            <View style={overlayStyle}>                               
                 <List
                     contentContainerStyle={{ backgroundColor: material.primaryColor }}
                     dataArray={dropdownValues}
@@ -109,7 +129,7 @@ export default class TopDropdownListValue extends Component {
                     }}
                     renderRow={(item) => {
                         return (
-                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
+                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>                                
                                 <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>
                             </ListItem>
                         )

@@ -580,11 +580,12 @@ export default class App extends Component {
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
           <TopDropdown
+            app={this}
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
           />
           <TopDropdownListValue
-            onSelect={this._handleChangePlace}
+            onSelect={this._handleChangePlace}            
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
           />

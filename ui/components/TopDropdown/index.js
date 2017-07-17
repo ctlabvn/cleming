@@ -9,6 +9,7 @@ import material from '~/theme/variables/material'
 
 const { height, width } = Dimensions.get('window')
 
+
 export default class TopDropdown extends Component {
     constructor(props) {
         super(props)
@@ -50,9 +51,6 @@ export default class TopDropdown extends Component {
 
     }
 
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
