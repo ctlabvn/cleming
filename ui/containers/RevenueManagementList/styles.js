@@ -44,7 +44,15 @@ export default {
 
     icon: {
         color: material.orange500,
-        fontSize: 30,
+        fontSize: 32,
         padding: 25
+    },
+
+    revenueProcessing: {
+        color: material.orange500,
+    },
+
+    revenueDone: {
+        color: material.green500,
     },
 }

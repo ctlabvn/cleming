@@ -37,15 +37,23 @@ export default class extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = ({
-            currentTab: 1,
+            currentTab: REVENUE_PROCESSING,
+            colorStyle: styles.revenueProcessing,
             loading: false,
         })
     }
 
     _handlePressTab(data) {
+
+        let tab = data.tabID;
+        let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
+            (tab == REVENUE_DONE ? styles.revenueDone : null);
+
         this.setState({
             currentTab: data.tabID,
+            colorStyle: color,
         })
     }
 
@@ -55,20 +63,12 @@ export default class extends Component {
 
     _renderMoneyBand(money) {
         var moneyNumber;
-        var textColor = material.orange500;
-        switch (this.state.currentTab) {
-            case REVENUE_PROCESSING:
-                textColor = material.orange500;
-                break;
-            case REVENUE_DONE:
-                textColor = material.green500;
-                break;
-        }
-
         return (
             <View style={styles.moneyBand}>
                 <Text medium grayDark>Số tiền</Text>
-                <Text large style={{color: textColor}}><Text large superBold style={{color: textColor}}>{formatNumber(money)}</Text> đ</Text>
+                <Text large style={{...this.state.colorStyle}}>
+                    <Text large superBold style={{...this.state.colorStyle}}>{formatNumber(money)}</Text> đ
+                </Text>
             </View>
         )
     }
@@ -97,20 +97,11 @@ export default class extends Component {
                 break;
         }
 
-        switch (this.state.currentTab) {
-            case REVENUE_PROCESSING:
-                iconColor = material.orange500;
-                break;
-            case REVENUE_DONE:
-                iconColor = material.green500;
-                break;
-        }
-
         return (
             <ListItem style={styles.listItem} onPress={() => this._forwardToDetail()}>
                 <View>
                     <View style={styles.row}>
-                        <Icon name={iconName} style={{...styles.icon, color: iconColor}}/>
+                        <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
                         <View style={styles.itemContent}>
                             <View style={styles.subRow}>
                                 <Text largeLight bold grayDark>#<Text largeLight grayDark>{code}</Text></Text>
