@@ -86,6 +86,12 @@ export default class extends Component {
         const { app, news, order, markWillReload } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
+        //
+        let placeDropdownValue = app.topDropdown.getValue()
+        if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
+            let selectedPlace = placeDropdownValue.id
+            this.setState({selectedPlace: selectedPlace})
+        }
         //Effect within 1 munites from markTime
         if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
             markWillReload(false)
