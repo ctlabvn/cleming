@@ -21,9 +21,6 @@ import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
 
 import {
     TIME_FORMAT_WITHOUT_SECOND,
-    TRANSACTION_DIRECT_STATUS,
-    TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
 } from "~/store/constants/app";
 
 const DELIVERY = 'DELIVERY';
@@ -138,14 +135,14 @@ export default class extends Component {
             ]
         } else {
             return [
-                {code: 'CL113456', time: 1500007022, itemType: CLINGME_PAY, username: 'chicken', money: 350000},
-                {code: 'CL224567', time: 1500008103, itemType: CLINGME_PAY, username: 'dog', money: 950000},
-                {code: 'CL333333', time: 1500006126, itemType: DELIVERY, username: 'monkey', money: 750000},
-                {code: 'CL696969', time: 1500007126, itemType: CLINGME_PAY, username: 'horse', money: 850000},
-                {code: 'CL777777', time: 1500007022, itemType: DELIVERY, username: 'zebra', money: 650000},
-                {code: 'CL888888', time: 1500008103, itemType: DELIVERY, username: 'bird', money: 250000},
-                {code: 'CL999888', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 150000},
-                {code: 'CL999999', time: 1500007126, itemType: CLINGME_PAY, username: 'pig', money: 22000000},
+                {code: 'CL113456', time: 1500285550, itemType: CLINGME_PAY, username: 'chicken', money: 350000},
+                {code: 'CL224567', time: 1500193500, itemType: CLINGME_PAY, username: 'dog', money: 950000},
+                {code: 'CL333333', time: 1500192488, itemType: DELIVERY, username: 'monkey', money: 750000},
+                {code: 'CL696969', time: 1500057777, itemType: CLINGME_PAY, username: 'horse', money: 850000},
+                {code: 'CL777777', time: 1500077022, itemType: DELIVERY, username: 'zebra', money: 650000},
+                {code: 'CL888888', time: 1500008111, itemType: DELIVERY, username: 'bird', money: 250000},
+                {code: 'CL999888', time: 1500006222, itemType: DELIVERY, username: 'panda', money: 150000},
+                {code: 'CL999999', time: 1500007111, itemType: CLINGME_PAY, username: 'pig', money: 22000000},
             ]
         }
 

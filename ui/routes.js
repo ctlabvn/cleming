@@ -25,7 +25,7 @@ import About from './containers/About'
 import I18n from '~/ui/I18n'
 import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
-import RevenueManagement from './containers/RevenueManagement'
+import RevenueManagementList from './containers/RevenueManagementList'
 
 import ComingSoon from './containers/ComingSoon'
 
@@ -173,9 +173,9 @@ export default {
         showTopDropdown: true,
     },
 
-    revenueManagement: {
-        title: I18n.t('revenue_management'),
-        Page: RevenueManagement,
+    revenueManagementList: {
+        title: I18n.t('revenue'),
+        Page: RevenueManagementList,
         headerType: 'back',
     }
 }

@@ -22,7 +22,7 @@ export default {
 
         {
             name: I18n.t('revenue'),
-            route: 'revenueManagement',
+            route: 'revenueManagementList',
             icon: 'term',
         },
 
