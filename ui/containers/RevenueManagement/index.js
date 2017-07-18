@@ -64,7 +64,7 @@ export default class extends Component {
         return (
             <View style={styles.moneyBand}>
                 <Text medium grayDark>Số tiền</Text>
-                <Text large style={{color: textColor}}><Text large superBold style={{color: textColor}}>{money}</Text> đ</Text>
+                <Text large style={{color: textColor}}><Text large superBold style={{color: textColor}}>{formatNumber(money)}</Text> đ</Text>
             </View>
         )
     }
@@ -73,16 +73,27 @@ export default class extends Component {
 
         let {code, time, itemType, username, money} = item;
 
-        let type = 'Giao hàng';
-        let iconName = 'shiping-bike2'
+        let type = 'Giao hàng'; // default
+        let iconName = 'shiping-bike2'; // default
+        let iconColor = material.orange500; // default
+
         switch (itemType) {
             case DELIVERY:
-                type = 'Giao hàng'
-                iconName = 'shiping-bike2'
+                type = 'Giao hàng';
+                iconName = 'shiping-bike2';
                 break;
             case CLINGME_PAY:
-                type = 'Clingme Pay'
-                iconName = 'clingme-wallet'
+                type = 'Clingme Pay';
+                iconName = 'clingme-wallet';
+                break;
+        }
+
+        switch (this.state.currentTab) {
+            case REVENUE_PROCESSING:
+                iconColor = material.orange500;
+                break;
+            case REVENUE_DONE:
+                iconColor = material.green500;
                 break;
         }
 
@@ -90,7 +101,7 @@ export default class extends Component {
             <ListItem style={styles.listItem} onPress={() => alert('click')}>
                 <View>
                     <View style={styles.row}>
-                        <Icon name={iconName} style={styles.icon}/>
+                        <Icon name={iconName} style={{...styles.icon, color: iconColor}}/>
                         <View style={styles.itemContent}>
                             <View style={styles.subRow}>
                                 <Text largeLight bold grayDark>#<Text largeLight grayDark>{code}</Text></Text>
@@ -114,17 +125,36 @@ export default class extends Component {
     }
 
     _getListItemFake() {
-        return [
-            {code: 'CL123456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 500000},
-            {code: 'CL234567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 650000},
-            {code: 'CL345678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 800000},
-            {code: 'CL445677', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 900000},
-            {code: 'CL663456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 550000},
-            {code: 'CL994567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 450000},
-            {code: 'CL999678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 850000},
-            {code: 'CL999997', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 12000000},
-        ]
+        if (this.state.currentTab == REVENUE_PROCESSING) {
+            return [
+                {code: 'CL123456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 500000},
+                {code: 'CL234567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 650000},
+                {code: 'CL345678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 800000},
+                {code: 'CL445677', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 900000},
+                {code: 'CL663456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 550000},
+                {code: 'CL994567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 450000},
+                {code: 'CL999678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 850000},
+                {code: 'CL999997', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 12000000},
+            ]
+        } else {
+            return [
+                {code: 'CL113456', time: 1500007022, itemType: CLINGME_PAY, username: 'chicken', money: 350000},
+                {code: 'CL224567', time: 1500008103, itemType: CLINGME_PAY, username: 'dog', money: 950000},
+                {code: 'CL333333', time: 1500006126, itemType: DELIVERY, username: 'monkey', money: 750000},
+                {code: 'CL696969', time: 1500007126, itemType: CLINGME_PAY, username: 'horse', money: 850000},
+                {code: 'CL777777', time: 1500007022, itemType: DELIVERY, username: 'zebra', money: 650000},
+                {code: 'CL888888', time: 1500008103, itemType: DELIVERY, username: 'bird', money: 250000},
+                {code: 'CL999888', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 150000},
+                {code: 'CL999999', time: 1500007126, itemType: CLINGME_PAY, username: 'pig', money: 22000000},
+            ]
+        }
 
+    }
+
+    _getTotalMoney() {
+        let totalMoney = 0;
+        this._getListItemFake().map(data => {totalMoney += data.money})
+        return totalMoney;
     }
 
     _renderList() {
@@ -147,7 +177,7 @@ export default class extends Component {
                 <TabsWithNoti tabData={options.tabData} activeTab={1} onPressTab={this._handlePressTab.bind(this)}
                               ref='tabs'/>
                 <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter'/>
-                {this._renderMoneyBand('21.592.000')}
+                {this._renderMoneyBand(this._getTotalMoney())}
                 <Content padder onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}>
                     {this._renderList()}
                 </Content>
