@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import {Container, Text, List, ListItem} from 'native-base'
 import {View} from 'react-native'
 
+import * as commonAction from "~/store/actions/common";
+import * as authActions from "~/store/actions/auth";
+import { getSession } from "~/store/selectors/auth";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -25,6 +28,10 @@ import {
 
 const DELIVERY = 'DELIVERY';
 const CLINGME_PAY = 'CLINGME_PAY';
+
+@connect(state => ({
+    xsession: getSession(state),
+}), { ...commonAction, ...authActions, })
 
 export default class extends Component {
 
@@ -66,6 +73,11 @@ export default class extends Component {
         )
     }
 
+    _forwardToDetail(data) {
+        const { setToast, forwardTo } = this.props
+        forwardTo('revenueManagementDetail');
+    }
+
     _renderItem(item) {
 
         let {code, time, itemType, username, money} = item;
@@ -95,7 +107,7 @@ export default class extends Component {
         }
 
         return (
-            <ListItem style={styles.listItem} onPress={() => alert('click')}>
+            <ListItem style={styles.listItem} onPress={() => this._forwardToDetail()}>
                 <View>
                     <View style={styles.row}>
                         <Icon name={iconName} style={{...styles.icon, color: iconColor}}/>
