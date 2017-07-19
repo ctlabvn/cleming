@@ -75,7 +75,8 @@ export default class extends Component {
 
     _forwardToDetail(data) {
         const { setToast, forwardTo } = this.props
-        forwardTo('revenueManagementDetail');
+
+        forwardTo('revenueManagementDetail/'+this.state.currentTab);
     }
 
     _renderItem(item) {

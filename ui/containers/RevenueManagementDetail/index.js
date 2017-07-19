@@ -9,22 +9,27 @@ import Border from "~/ui/elements/Border";
 
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
 
+
+
 export default class extends Component {
 
     constructor(props) {
         super(props)
-
+        const { route } = this.props;
+        let tab = parseInt(route.params.tabId);
+        let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
+            (tab == REVENUE_DONE ? styles.revenueDone : null);
         this.state = {
-            currentTab: REVENUE_PROCESSING,
-            colorStyle: styles.revenueProcessing,
+            currentTab: tab,
+            colorStyle: color,
         }
     }
 
     componentWillFocus() {
-        let tab = REVENUE_DONE;
+        const { route } = this.props;
+        let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
-
         this.setState({
             currentTab: tab,
             colorStyle: color,
@@ -33,10 +38,10 @@ export default class extends Component {
 
     _renderTitle() {
         let text = {
-            title: 'Giao dịch đang xử lý',
-            content: 'Thời gian chuyển tiền dự tính: 18/07/2017',
+            title: '',
+            content: '',
         }
-        switch (this.state.currentTab) {
+        switch (parseInt(this.state.currentTab)) {
             case REVENUE_PROCESSING:
                 text = {
                     title: 'Giao dịch đang xử lý',

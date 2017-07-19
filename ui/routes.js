@@ -180,7 +180,7 @@ export default {
         headerType: 'back',
     },
 
-    revenueManagementDetail: {
+    'revenueManagementDetail/:tabId': {
         title: I18n.t('revenue_detail'),
         Page: RevenueManagementDetail,
         headerType: 'back',
