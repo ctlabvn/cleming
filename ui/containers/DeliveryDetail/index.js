@@ -208,6 +208,15 @@ export default class extends Component {
             && (orderDetail.orderInfo.orderRejectReason.note || orderDetail.orderInfo.orderRejectReason.reason)) {
             rejectReason = (orderDetail.orderInfo.orderRejectReason.note || orderDetail.orderInfo.orderRejectReason.reason)
         }
+
+        let otherRequire = chainParse(orderDetail, ['orderInfo', 'note']);
+        let otherRequireBlock = (
+            <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
+                <Text medium grayDark>{I18n.t('other_require')}</Text>
+                <Text largeLight bold grayDark>{chainParse(orderDetail, ['orderInfo', 'note'])}</Text>
+            </View>
+        )
+
         console.log('Reject Reason', rejectReason)
         return (
             <Container style={containerStyle}>
@@ -298,11 +307,9 @@ export default class extends Component {
                         </View>
                     }
 
-                    <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                        <Text medium grayDark>{I18n.t('other_require')}</Text>
-                        <Text largeLight bold grayDark>{chainParse(orderDetail, ['orderInfo', 'note'])}</Text>
-                    </View>
-                    <View style={styles.line} />
+                    {otherRequire != null ? otherRequireBlock : null}
+
+                    <View style={{...styles.line, marginTop: 5}} />
                     <View style={styles.rowPadding}>
                         <Text medium bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
                     </View>
