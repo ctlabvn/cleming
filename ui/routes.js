@@ -43,7 +43,7 @@ export default {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
         headerType: 'back',
-        showTopDropdown: true
+        showTopDropdown: true,
     },
     'transactionDetail/:id/:type': {
         title: I18n.t('page_transaction_detail'),
