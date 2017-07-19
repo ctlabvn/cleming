@@ -6,7 +6,7 @@ import {
     Button, List, ListItem, Switch, Spinner, CheckBox, Thumbnail,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text, Platform } from 'react-native'
+import { Text, Platform, Image } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 // var RNUploader = require('react-native-uploader');
@@ -182,7 +182,7 @@ export default class UpdateUserContainer extends Component {
                 <Content style={{backgroundColor: material.white500}}>
                     <View style={{paddingLeft: 15, paddingRight: 15}}>
                         <View style={styles.avatarContainer}>
-                            <CacheableImage
+                            <Image
                               style={styles.avatar}
                               placeholder={<Icon name="image" style={{width: 120, height: 120}} />}
                               source={{uri: this.props.user.avatar}} />

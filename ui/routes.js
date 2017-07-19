@@ -49,7 +49,8 @@ export default {
         title: I18n.t('page_transaction_detail'),
         Page: TransactionDetail,
         headerType: 'back',
-        footerType: 'none',        
+        footerType: 'none',      
+        disableCache: true,  
     },
     'transactionInputFeedback/:dealID/:reasonID': {
         title: '',

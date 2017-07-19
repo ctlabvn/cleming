@@ -48,69 +48,38 @@ class UserManagement extends Component {
             updateInfoChecked: false,
             deleteAccountChecked: false,
             isFetchingData: false,
+            showReload: false,
             // data: [],
             // rowIDOfEmployee: 0
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        // if (this.props.user != nextProps.user) {
-        //     let data = []
-        //     for (let i = 0; i < 1; i++) {
-        //         data.push({
-        //             owner: nextProps.user,
-        //             employeeList: nextProps.listEmployee
-        //         })
-        //     }
-
-        //     this.data = data
-        //     this.setState({
-        //         isFetchingData: false
-        //     })
-        //     // this.setState({
-        //     //     data: data
-        //     // }, () => {
-        //     //     this.setState({
-        //     //         isFetchingData: false
-        //     //     })
-        //     // })
-        // }
-    }
-
     _loadListEmployee(placeId) {
         const {getListEmployee, session, user} = this.props
-        getListEmployee(session, placeId, () => {
-            let data = []
-            for (let i = 0; i < 1; i++) {
-                data.push({
-                    owner: user,
-                    employeeList: this.props.listEmployee
+        getListEmployee(session, placeId, (err, data) => {
+
+            if(err){
+                this.setState({
+                    showReload: true,
                 })
-            }
-            this.data = data
-            this.setState({
-                isFetchingData: false
-            })
-            // this.setState({
-            //     data: data
-            // }, () => {
-            //     this.setState({
-            //         isFetchingData: false
-            //     })
-            // })
+            } else {
+                let data = []
+                for (let i = 0; i < 1; i++) {
+                    data.push({
+                        owner: user,
+                        employeeList: this.props.listEmployee,
+                    })
+                }            
+                this.data = data
+                this.setState({
+                    isFetchingData: false,
+                    showReload: false,
+                })
+            }            
         })
     }
 
     componentDidMount() {
-        // const {app} = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // let currentPlace = app.topDropdown.getValue()
-        // if (currentPlace && Object.keys(currentPlace).length>0){
-        //     this._loadListEmployee(currentPlace.id)
-        // }
-    }
-
-    componentWillMount() {
         this.componentWillFocus();
     }
 
@@ -120,28 +89,23 @@ class UserManagement extends Component {
         })
     }
 
-    componentWillFocus() {
+    reloadPlace(){
         const {app} = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // InteractionManager.runAfterInteractions(()=> {
         let currentPlace = app.topDropdown.getValue()
         if (currentPlace && Object.keys(currentPlace).length > 0) {
             this._loadListEmployee(currentPlace.id)
         }
+    }
+
+    componentWillFocus() {
+        const {app} = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // InteractionManager.runAfterInteractions(()=> {
+        this.reloadPlace()
         // })
     }
 
     onAccountPress(data, rowID) {
-        // this.setState({
-        //     employeeData: data,
-        //     rowIDOfEmployee: rowID
-        // }, () => {
-        //     this.setState({
-        //         modalOpen: true
-        //     })
-        // })
-
-
         this.employeeData = data
         this.rowIDOfEmployee = rowID
         this.setState({
@@ -358,7 +322,7 @@ class UserManagement extends Component {
     }
 
     render() {
-        const {place, selectedPlace} = this.props
+        const {place, selectedPlace, app} = this.props        
 
         if (this.state.isFetchingData) {
             return (
@@ -375,6 +339,11 @@ class UserManagement extends Component {
         }
         return (
             <Container>
+                {this.state.showReload && 
+                    <Button full danger onPress={()=>this.reloadPlace()}>
+                        <Text>{I18n.t('err_loading')}</Text>
+                    </Button>            
+                }
                 <Content style={{backgroundColor: material.white500}}>
                     <List
                         enableEmptySections={true}

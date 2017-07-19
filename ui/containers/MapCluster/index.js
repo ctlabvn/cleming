@@ -79,10 +79,6 @@ export default class extends React.PureComponent {
     let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
     let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
 
-    let placeIds = 559812    
-    let fromTime = 1499101200
-    let toTime = 1499705999
-
     // let placeIds = 559812    
     // let fromTime = 1499101200
     // let toTime = 1499705999

@@ -170,6 +170,7 @@ export default  vi = {
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
 
+
     // account
     'could_not_get_profile' : 'Không lấy được thông tin.',
     'update_profile_successfully': 'Cập nhật thông tin thành công!',
@@ -184,6 +185,10 @@ export default  vi = {
     // delegation
 
     'could_not_get_list_delegation': 'Không lấy được danh sách.',
+
+    
+    'err_loading': 'Lỗi tải dữ liệu, bạn hãy thử lại!',
+
 
     //utils
     'day': 'ngày',
