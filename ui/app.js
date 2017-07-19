@@ -236,28 +236,28 @@ export default class App extends Component {
         // this.header._search('')
         this.footer.show(footerType, router.route)
 
+        // always blur the old one if disableCache then remove
+        if(oldPage.disableCache){
+          // oldPage must be the last one          
+          this.navigator.state.routeStack.pop()                    
+        } else {
+          this.handleFocusableComponent(oldPage.path, false)  
+        }
+
         // return console.warn('Not found: ' + router.route)
         // check if page is mounted
         const destIndex = this.navigator.state.routeStack
           .findIndex(route => route.path === this.page.path)
 
         // console.log(this.navigator.state)      
-        if (destIndex !== -1) {
-          // trigger will focus, the first time should be did mount                   
-          this.handlePageWillFocus(path) 
+        if (destIndex !== -1) {          
+          // trigger will focus, the first time should be did mount          
+          this.handlePageWillFocus(path)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
           this.navigator.push({ title, path, showTopDropdown })
-        }
-
-        // trigger lost focus old page or remove it
-        if(oldPage.disableCache){
-          // remove from stack
-          
-        } else {
-          this.handleFocusableComponent(oldPage.path, false)  
-        }                
+        }       
 
       } else {
         // no need to push to route

@@ -50,6 +50,7 @@ export default {
         Page: TransactionDetail,
         headerType: 'back',
         footerType: 'none',        
+        disableCache: true,
     },
     'transactionInputFeedback/:dealID/:reasonID': {
         title: '',
