@@ -229,7 +229,7 @@ export default class TransactionDetail extends Component {
                             <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text medium gray>{I18n.t('order_number')}</Text>
+                            <Text medium gray>{I18n.t('transaction_number')}</Text>
                             <Text big bold>{transactionInfo.transactionIdDisplay}</Text>
                         </View>
                         <View style={styles.blockCenter}>
