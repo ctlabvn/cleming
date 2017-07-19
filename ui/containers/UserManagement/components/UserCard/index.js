@@ -2,6 +2,7 @@
  * Created by vjtc0n on 5/4/17.
  */
 import React, { Component } from 'react'
+import { Image } from 'react-native'
 import {
     Grid, Col, Row, Text
 } from 'native-base'
@@ -21,7 +22,7 @@ export default class UserCard extends Component {
         return (
             <Grid>
                 <Col style={{ width: '20%', justifyContent: 'center'}}>
-                    <CacheableImage style={styles.avatar} source={{uri: data.avatar}} />
+                    <Image style={styles.avatar} source={{uri: data.avatar}} />
                 </Col>
                 <Col style={{width: '80%'}}>
                     <Row style={{ height: '50%', alignItems: 'flex-start'}}>

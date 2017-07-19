@@ -226,7 +226,7 @@ export default class App extends Component {
     // console.log('Route will receive props', getPage(router.route))    
 
     if (router.route !== this.props.router.route) {
-      const oldPath = this.page.path
+      const oldPage = this.page
       this.page = getPage(router.route)
       const { headerType, footerType, title, path, showTopDropdown } = this.page
       this.topDropdown.show(showTopDropdown)
@@ -236,21 +236,29 @@ export default class App extends Component {
         // this.header._search('')
         this.footer.show(footerType, router.route)
 
+        // always blur the old one if disableCache then remove
+        if(oldPage.disableCache){
+          // oldPage must be the last one          
+          this.navigator.state.routeStack.pop()                    
+        } else {
+          this.handleFocusableComponent(oldPage.path, false)  
+        }
+
         // return console.warn('Not found: ' + router.route)
         // check if page is mounted
         const destIndex = this.navigator.state.routeStack
           .findIndex(route => route.path === this.page.path)
 
         // console.log(this.navigator.state)      
-        if (destIndex !== -1) {
-          // trigger will focus, the first time should be did mount
-          this.handleFocusableComponent(oldPath, false)
+        if (destIndex !== -1) {          
+          // trigger will focus, the first time should be did mount          
           this.handlePageWillFocus(path)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
           this.navigator.push({ title, path, showTopDropdown })
-        }
+        }       
+
       } else {
         // no need to push to route
         this.page = routes.notFound

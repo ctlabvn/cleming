@@ -265,8 +265,8 @@ export default class DateFilter extends Component {
 
         return (
             <View onLayout={()=>{
-                            if(this.scrollFisrtLoad && this.refs.dateFilterList){
-                             setTimeout(() => this.refs.dateFilterList.scrollToEnd({ animated: false }), 1000)
+                            if(this.scrollFisrtLoad){
+                             setTimeout(() => this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false }), 1000)
                             }
                             this.scrollFisrtLoad = false
                         }

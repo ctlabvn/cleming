@@ -156,6 +156,7 @@ export default class TransactionDetail extends Component {
     }
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
+
         const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
         // this._goToMiddlePage()
         let transactionId = route.params.id
@@ -169,6 +170,7 @@ export default class TransactionDetail extends Component {
         if (!denyReasonClm || denyReasonClm.length == 0) {
             getDenyReasonClm(xsession)
         }
+
 
         // })
 
