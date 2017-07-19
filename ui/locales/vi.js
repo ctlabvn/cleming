@@ -195,5 +195,8 @@ export default  vi = {
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
-    'Could_not_get_business_network' : 'Couldn\'t get business network'
+    'Could_not_get_business_network' : 'Couldn\'t get business network',
+
+    // notifications
+    'no_notification': 'Chưa có thông báo nào',
 }
