@@ -58,12 +58,12 @@ export default class CacheableImage extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextState === this.state && nextProps === this.props) {
-            return false
-        }
-        return true
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (nextState === this.state && nextProps === this.props) {
+    //         return false
+    //     }
+    //     return true
+    // }
     
     imageDownloadBegin(info) {
         switch (info.statusCode) {
