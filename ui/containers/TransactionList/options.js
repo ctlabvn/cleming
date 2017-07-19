@@ -42,5 +42,17 @@ export default {
           tabID: TRANSACTION_TYPE_CLINGME,
           text: I18n.t('transaction_type_clingme'),
       },
+  ],
+  tabDataClingme: [
+      {
+          tabID: TRANSACTION_TYPE_CLINGME,
+          text: I18n.t('transaction_type_clingme'),
+      }
+  ],
+  tabDataDirect: [
+      {
+          tabID: TRANSACTION_TYPE_DIRECT,
+          text: I18n.t('transaction_type_direct'),
+      }
   ]
 }

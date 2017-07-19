@@ -5,7 +5,7 @@ import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import { formatNumber, getToastMessage } from "~/ui/shared/utils";
+import { formatNumber, getToastMessage, chainParse } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
@@ -103,16 +103,16 @@ export default class TransactionDetail extends Component {
         // console.log('Confirming', clingmeId)
         const { xsession, confirmTransaction, transaction, setToast } = this.props
         console.log("trans", this.state.transactionInfo)
-        // confirmTransaction(xsession, this.state.transactionInfo.clingmeId,
-        //     (err, data) => {
-        //         if (data && data.updated && data.updated.data.success) {
-        //             let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
-        //             setToast(message, 'info', null, null, 3000, 'bottom')
-        //             // forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
-        //             this._load(this.state.transactionInfo.clingmeId)
-        //         }
-        //     }
-        // )
+        confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
+            (err, data) => {
+                console.log('Confirm Err', err)
+                console.log('Confirm Data', data)
+                if (chainParse(data, ['updated', 'data', 'success'])) {
+                    setToast(getToastMessage('Xác nhận thành công.'), 'info', null, null, 3000, 'top')
+                    this._load(this.state.transactionInfo.transactionId)
+                }
+            }
+        )
     }
     goPrevious = () => {
         const { xsession, transaction } = this.props
@@ -469,21 +469,15 @@ export default class TransactionDetail extends Component {
         )
     }
     _handleFeedbackClingme = (dealID, selectedValue, note) => {
-        // console.log('Deal ID zzz', dealID + '---' + selectedValue + '---' + note)
-        const { forwardTo, sendDenyReasonClm, xsession } = this.props
-        if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT) {
-            forwardTo('transactionInputFeedback/' + this.state.transactionInfo.clingmeId + '/' + selectedValue)
-        } else {
-            sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
-                (err, data) => {
-                    console.log('Deny Reason CLM', data)
-                    if (data && data.updated && data.updated.data) {
-                        this._load(this.state.transactionInfo.transactionId)
-                    }
+        const { forwardTo, sendDenyReasonClm, xsession, setToast } = this.props
+        sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
+            (err, data) => {
+                console.log('Deny Reason CLM', data)
+                if (chainParse(data, ['updated', 'data', 'success'])) {
+                    setToast(getToastMessage('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
                 }
-            )
-            // this.refs.popupInfo.show('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.')
-        }
+            }
+        )
     }
     _goToMiddlePage = () => {
         this.swiping = true

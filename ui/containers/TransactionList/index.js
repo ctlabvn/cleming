@@ -15,7 +15,7 @@ import Border from "~/ui/elements/Border";
 import moment from "moment";
 import { formatNumber } from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
-import { getSession } from "~/store/selectors/auth";
+import { getSession, getUser } from "~/store/selectors/auth";
 import { getNews } from "~/store/selectors/place";
 import { getListTransactionCLM, getListTransactionDirect } from "~/store/selectors/transaction";
 // import { getSelectedPlace } from '~/store/selectors/place'
@@ -25,22 +25,15 @@ import {
     TIME_FORMAT_WITHOUT_SECOND,
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
+    TRANSACTION_TYPE_DIRECT,
+    TRANSACTION_DISPLAY
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 
-// export const getListTransactionDirect = state => state.place.transaction.payDirect || []
-
-// export const getListTransactionCLM = state => state.place.transaction.payWithClingme || []
-
-// payDirect
-// payWithClingme
-
 @connect(state => ({
     xsession: getSession(state),
+    user: getUser(state),
     news: getNews(state),
-    // place: state.place,
-    // selectedPlace: getSelectedPlace(state),
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state)
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
@@ -48,10 +41,11 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentTab: TRANSACTION_TYPE_DIRECT,
+            currentTab: this._getDefaultActiveTab(),
             loading: false,
             loadingMore: false
         }
+        console.log('State constructor', this.state)
         this.isLoadingPlace = false
 
     }
@@ -127,16 +121,68 @@ export default class extends Component {
         } else {
             this.isLoadingPlace = true
         }
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-        // })
+        this._updateNews(news)
+    }
+
+    _updateNews = (newsData) => {
+        const {user} = this.props
+        console.log('User: ', user)
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+            default:
+                console.log('Case Both')
+                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                break
+            case TRANSACTION_DISPLAY.CLINGME:
+                console.log('Case CLM')
+                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                break
+            case TRANSACTION_DISPLAY.DIRECT:
+                console.log('Case Direct')
+                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                break
+        }
+    }
+    _getTabData = () => {
+        const {user} = this.props
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+            default:
+                return options.tabData
+            case TRANSACTION_DISPLAY.CLINGME: 
+                return options.tabDataClingme
+            case TRANSACTION_DISPLAY.DIRECT:
+                return options.tabDataDirect
+        }
+    }
+    _getDefaultActiveTab = () => {
+        const {user} = this.props
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+            case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return TRANSACTION_TYPE_DIRECT
+            case TRANSACTION_DISPLAY.CLINGME: 
+                return TRANSACTION_TYPE_CLINGME
+        }
+    }
+    _getTransactionFilterValue = () => {
+        const {user} = this.props
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+            case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return options.transactionFilterListDirect
+            case TRANSACTION_DISPLAY.CLINGME: 
+                return options.transactionFilterListClingme
+        }
     }
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const { app, news } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
+        this._updateNews(news)
         // })
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
@@ -147,7 +193,7 @@ export default class extends Component {
         } else {
             this.setState({ loading: true })
         }
-
+        console.log('_load', this.state)
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 (err, data) => {
@@ -173,8 +219,7 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
-                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
+                    this._updateNews(newsUpdate)
                 }
             }
         )
@@ -389,10 +434,10 @@ export default class extends Component {
                     selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <View style={{ height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_DIRECT} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                    <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDirect} ref='transactionFilter'
+                        listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />
                     <Content
                         padder

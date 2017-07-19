@@ -73,3 +73,9 @@ export const DEFAULT_MAP_DELTA = {
     LAT: 0.015,
     LONG: 0.015
 }
+
+export const TRANSACTION_DISPLAY = {
+    BOTH: 0,
+    CLINGME: 1,
+    DIRECT: 2,
+}
