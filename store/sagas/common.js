@@ -24,7 +24,7 @@ import {EXPIRED_ERROR_MESSAGE} from '~/store/constants/app'
 import {  
   API_TIMEOUT
 } from '~/store/constants/api'
-
+import { getToastMessage } from '~/ui/shared/utils'
 // create saga here
 // convenient way: [] instead of polymorph, such as item is not array then [item]
 // because later changes to code will be so easy, just add new row
@@ -128,7 +128,8 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
           yield put(setAuthState(false))       
           yield put(forwardTo('login', true))
           yield put(clearData())
-          yield put(setToast(EXPIRED_ERROR_MESSAGE, 'danger'))
+          // yield put(setToast(EXPIRED_ERROR_MESSAGE, 'danger'))
+          yield put(setToast(getToastMessage(EXPIRED_ERROR_MESSAGE), 'info', null, null, 3000, 'top'))
         }
       }
       // anyway, we should treat this as error to log

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { InteractionManager, Keyboard, Platform } from "react-native";
-import { Button, Col, Container, Form, Grid, Text, Thumbnail } from "native-base";
+import { InteractionManager, Keyboard, Platform, View } from "react-native";
+import { Button, Col, Container, Form, Grid, Text, Thumbnail, Toast } from "native-base";
 import styles from "./styles";
 import { connect } from "react-redux";
 import { Field, formValueSelector, reduxForm } from "redux-form";
@@ -22,8 +22,8 @@ import md5 from "md5";
 import DeviceInfo from "react-native-device-info";
 
 import GradientBackground from "~/ui/elements/GradientBackground";
-
-
+import I18n from '~/ui/I18n'
+import { getToastMessage } from '~/ui/shared/utils'
 const formSelector = formValueSelector('LoginForm')
 
 @connect(state => ({
@@ -32,10 +32,11 @@ const formSelector = formValueSelector('LoginForm')
     password: '',
   },
 
-  currentValues: formSelector(state, 'email', 'password'),
+  currentValues: formSelector(state, 'email', 'password', 'forgotEmail'),
   onSubmitFail: (errors, dispatch) => {
     for (let k in errors) {
-      return dispatch(commonActions.setToast(errors[k], 'warning'))
+      // setToast(getToastMessage(I18n.t('err_need_current_password')), 'info', null, null, 3000, 'top')
+      return dispatch(commonActions.setToast(getToastMessage(errors[k]), 'info', null, null, 3000, 'top'))
     }
   },
   session: authSelectors.getSession(state),
@@ -75,10 +76,10 @@ export default class extends Component {
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
     this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    this.setState({loading:true})
+    this.setState({ loading: true })
     this.props.login(email, password, xDevice, xUniqueDevice,
       (err, data) => {
-        this.setState({loading: false})
+        this.setState({ loading: false })
         if (!err) {
           this.props.change('password', '')
         }
@@ -88,12 +89,6 @@ export default class extends Component {
 
   _handleForgot = ({ forgotEmail }) => {
     Keyboard.dismiss()
-    const { setToast } = this.props
-    console.log('Handle Forgot', forgotEmail)
-    if (!forgotEmail || forgotEmail.trim() == "") {
-      setToast("Bạn cần nhập số điện thoại để lấy lại mật khẩu", "danger")
-      return
-    }
     this.props.resetPassword(forgotEmail, (err, data) => {
       if (!err) {
         this.setState({ showForgot: false, passwordFocus: true })
@@ -102,12 +97,9 @@ export default class extends Component {
   }
 
   _handleShowForgot = (e) => {
-    // const length = this.props.currentValues.email.length
     this.props.change('forgotEmail', this.props.currentValues.email)
     this.setState({
       showForgot: true,
-      // emailForgotFocus: true,
-      // emailSelection: { start: length, end: length } 
     })
   }
 
@@ -148,25 +140,28 @@ export default class extends Component {
   }
   _checkChangePassword(oldPassword, newPassword, reNewPassword) {
     const { setToast } = this.props
+    const { toastModal } = this.props.app
+
+    
     if (!oldPassword) {
-      setToast('Bạn phải nhập Mật khẩu hiện tại', 'danger')
+      setToast(getToastMessage(I18n.t('err_need_current_password')), 'info', null, null, 3000, 'top')
       return false
     }
     if (!newPassword) {
-      setToast('Bạn phải nhập Mật khẩu mới', 'danger')
+      setToast(getToastMessage(I18n.t('err_need_new_password')), 'info', null, null, 3000, 'top')
       return false
     }
     if (newPassword != reNewPassword) {
-      setToast('Hai mật khẩu bạn nhập không khớp nhau', 'danger')
+      setToast(getToastMessage(I18n.t('err_password_not_match')), 'info', null, null, 3000, 'top')
       return false
     }
     if (oldPassword == newPassword) {
-      setToast('Mật khẩu mới không được giống mật khẩu hiện tại', 'danger')
+      setToast(getToastMessage(I18n.t('err_new_password')), 'info', null, null, 3000, 'top')
       return false
     }
     // New password must 4-12 characters
     if (!newPassword.match(/^(\S){4,12}$/)) {
-      setToast('Mật khẩu có độ dài 4 - 12 kí tự.', 'danger')
+      setToast(getToastMessage('err_password_length'), 'info', null, null, 3000, 'top')
       return false
     }
     return true
@@ -217,12 +212,11 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
         <Text style={{ ...styles.label, marginTop: 50, marginBottom: 20 }}>
-          Bạn đang đăng nhập bằng mật khẩu tự động{"\n"}
-          Vui lòng tạo Mật khẩu riêng để bảo mật
-          </Text>
-        <Field name="oldPassword" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />
-        <Field name="newPassword" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />
-        <Field name="reNewPassword" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />
+          {I18n.t('first_login_hint')}
+        </Text>
+        <Field name="oldPassword" label={I18n.t('current_password')} secureTextEntry={true} component={InputField} />
+        <Field name="newPassword" label={I18n.t('new_password')} secureTextEntry={true} component={InputField} />
+        <Field name="reNewPassword" label={I18n.t('re_new_password')} secureTextEntry={true} component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
             <Button onPress={this._handleShowHome}
@@ -234,7 +228,7 @@ export default class extends Component {
           <Col style={{ width: '64%' }}>
             <Button onPress={handleSubmit(this._handleChangePassword)}
               style={styles.button}>
-              <Text>Cập nhật</Text>
+              <Text>{I18n.t('update')}</Text>
             </Button>
           </Col>
         </Grid>
@@ -242,19 +236,22 @@ export default class extends Component {
       </Form>
     )
   }
-
+  _isDisableSend(){
+    const {forgotEmail} = this.props.currentValues
+    return (!forgotEmail || forgotEmail.trim()=='')
+  }
   renderForgotForm() {
     const { handleSubmit } = this.props
     // const { emailForgotFocus, emailSelection } = this.state
     return (
       <Form style={styles.formForgot}>
-        <Text style={styles.labelForgot}>Lấy lại mật khẩu?</Text>
+        <Text style={styles.labelForgot}>{I18n.t('get_password')}</Text>
         <Field autoCapitalize="none" name="forgotEmail"
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
           secureTextEntry={false}
-          label="Nhập số điện thoại để lấy lại mật khẩu"
+          label={I18n.t('get_password_hint')}
           component={InputField} />
         <Grid>
           <Col style={{ width: '34%' }}>
@@ -265,9 +262,11 @@ export default class extends Component {
           </Col>
           <Col style={{ width: '2%' }} />
           <Col style={{ width: '64%' }}>
-            <Button onPress={handleSubmit(this._handleForgot)}
+            <Button 
+              disabled={(this._isDisableSend())}
+              onPress={handleSubmit(this._handleForgot)}
               style={styles.button}>
-              <Text>Gửi</Text>
+              <Text grayDisable={(this._isDisableSend())}>{I18n.t('send')}</Text>
             </Button>
           </Col>
         </Grid>
@@ -275,7 +274,10 @@ export default class extends Component {
       </Form>
     )
   }
-
+  _isDisableLogin(){
+    const {email, password} = this.props.currentValues
+    return (!email || !password || email.trim()=='' || password.trim()=='')
+  }
   renderLoginForm() {
     const { handleSubmit } = this.props
     const { passwordFocus, passwordSelection, emailFocus, emailSelection } = this.state
@@ -287,20 +289,22 @@ export default class extends Component {
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
-          label="Email/ Số điện thoại" component={InputField} />
+          label={I18n.t('email_phone')} component={InputField} />
         <Field name="password"
           autoFocus={passwordFocus}
           icon={(input, active) => input.value && active ? 'close' : false}
           iconStyle={{ color: material.black500 }}
           onIconPress={input => input.onChange('')}
-          initialSelection={passwordSelection} label="Mật khẩu" secureTextEntry={true} component={InputField} />
-        <Button onPress={handleSubmit(this._handleLogin)}
+          initialSelection={passwordSelection} label={I18n.t('password')} secureTextEntry={true} component={InputField} />
+        <Button
+          disabled={(this._isDisableLogin())}
+          onPress={handleSubmit(this._handleLogin)}
           style={styles.button}>
-          <Text>Đăng nhập</Text>
+          <Text grayDisable={(this._isDisableLogin())}>{I18n.t('login')}</Text>
         </Button>
 
         <Button onPress={this._handleShowForgot} transparent>
-          <Text style={styles.label}>Quên mật khẩu?</Text>
+          <Text style={styles.label}>{I18n.t('forgot_password')}</Text>
         </Button>
 
       </Form>
@@ -314,7 +318,7 @@ export default class extends Component {
     //     <Preload />
     //   )
     // }
-    if (this.state.loading){
+    if (this.state.loading) {
       return (<Preload />)
     }
     return (

@@ -22,11 +22,26 @@ export default (variables = variable) => {
         color: variables.noteTextColor,
         fontSize: variables.noteFontSize
       },
+      '.tiny': {
+        fontSize: material.textSizeTiny
+      },
       '.small': {
-        fontSize: variables.btnTextSizeSmall
+        fontSize: material.textSizeSmall
+      },
+      '.medium': {
+          fontSize: material.textSizeMedium
+      },
+      '.largeLight': {
+          fontSize: material.textSizelargeLight
       },
       '.large': {
-        fontSize: variables.btnTextSizeLarge
+          fontSize: material.textSizelarge
+      },
+      '.big': {
+          fontSize: material.textSizeBig
+      },
+      '.giant': {
+          fontSize: material.textSizeGiant
       },
       '.primary': {
         color: material.primaryColor
@@ -61,6 +76,9 @@ export default (variables = variable) => {
       '.center': {
         justifyContent: 'center'
       },
+      '.grayDisable': {
+        color: '#b3b3b3'
+      }
   };
 
   return textTheme;

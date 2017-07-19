@@ -1,5 +1,7 @@
 import material from '~/theme/variables/material'
-
+import React, { Component } from 'react'
+import {View} from 'react-native'
+import {Text} from 'native-base'
 export const getPopoverOptions = (popoverWidth, fromRect, arrowPadding = -5) => ({
   fromRect,
   // from center
@@ -39,6 +41,7 @@ export const formatNumber = str => {
 
 
 export const isValidEmail = (email) => {
+  email = email.trim();
   return email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null
 }
 
@@ -84,4 +87,11 @@ export const chainParse = (obj, attrArr) => {
     if (!cloneObj) return null 
   }
   return cloneObj
+}
+
+export const getToastMessage = (message) => {
+  console.log('Toast Mess', message)
+  return <View style={{ backgroundColor: 'rgba(0,0,0,0.7)', padding: 10, borderRadius: 5, marginTop: 50 }}>
+    <Text white>{message}</Text>
+  </View>
 }

@@ -21,7 +21,8 @@ import {
     DEFAULT_TIME_FORMAT,
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
-import {formatPhoneNumber, chainParse} from "~/ui/shared/utils";
+import {formatPhoneNumber, chainParse, getToastMessage} from "~/ui/shared/utils";
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     user: state.auth.user,
@@ -56,7 +57,7 @@ export default class PlaceOrderDetail extends Component {
                         this.setState({bookingDetail: bookingDetail})
                         return
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         this.props.forwardTo('merchantOverview')
                         return
                     }
@@ -85,7 +86,7 @@ export default class PlaceOrderDetail extends Component {
                         this.setState({bookingDetail: data.updated.bookingInfo})
                         return
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         this.props.forwardTo('merchantOverview')
                         return
                     }
@@ -114,7 +115,6 @@ export default class PlaceOrderDetail extends Component {
                     flex: 1
                 }}>
                     <Spinner />
-                    <Text small>Loading...</Text>
                 </View>
             )
         }
@@ -126,7 +126,7 @@ export default class PlaceOrderDetail extends Component {
                 <View style={styles.row} key={item.itemId}>
                     <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{item.itemName}:</Text>
                     <View style={styles.row}>
-                        <Text style={{...styles.normalText}}>SL: </Text>
+                        <Text style={{...styles.normalText}}>{I18n.t('number')}: </Text>
                         <Text
                             style={{...styles.normalText, ...styles.rightText, ...styles.boldText}}>{item.quantity}</Text>
                     </View>
@@ -137,7 +137,6 @@ export default class PlaceOrderDetail extends Component {
         let hourMinute = bookingDetail.deliveryHour + ':' + minute
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
-
 
         return (
             <Container>
@@ -150,169 +149,78 @@ export default class PlaceOrderDetail extends Component {
                     <View style={styles.placeContainer}>
                         <View style={{...styles.rowPaddingTB, ...styles.center}}>
                             <Text
+                                medium
                                 grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            <View style={{right: 10, position: 'absolute'}}>
+                            
+                            {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                                  counting={this.state.counting}
                                                  countTo={bookTime}
                                 />
-                            </View>
+                            </View>}
                         </View>
                         <View>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon}/>
-                                    <Text grayDark
+                                    <Text medium grayDark
                                           style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon}/>
-                                    <Text grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
+                                    <Text medium grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon}/>
-                                    <Text grayDark
+                                    <Text medium grayDark
                                           style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
                                 </View>
                                 <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon}/>
-                                    <Text grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
+                                    <Text medium grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Người đặt chỗ:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('booking_user')}:</Text>
                             <Text
+                                medium
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{chainParse(this.state.bookingDetail, ['userInfo', 'memberName'])}</Text>
                         </View>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Số điện thoại:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('phone_number')}:</Text>
                             <Text
+                                medium
                                 style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
                         </View>
                         <View style={styles.block}>
-                            <Text style={{...styles.normalText, ...styles.leftText}}>Yêu cầu riêng:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('require')}:</Text>
                             <Content>
-                                <Text style={{...styles.normalText, ...styles.leftText}}>
+                                <Text medium style={{...styles.normalText, ...styles.leftText}}>
                                     {this.state.bookingDetail.note}
                                 </Text>
                             </Content>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1}/>
                         <View style={styles.rowPaddingTB}>
-                            <Text style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>Đặt
-                                trước:</Text>
+                            <Text medium style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{I18n.t('pre_order')}:</Text>
                             <View style={styles.row}>
-                                <Text primary>SL: </Text>
-                                <Text primary style={{...styles.rightText, ...styles.boldText}}>{totalQuantity}</Text>
+                                <Text medium primary>{I18n.t('number')}: </Text>
+                                <Text medium primary style={{...styles.rightText, ...styles.boldText}}>{totalQuantity}</Text>
                             </View>
                         </View>
                         <Content>
                             {orderRow}
                         </Content>
-                        {/*{orderRow}*/}
-                        {/*<Grid>
-                         <Row style={{ height: '7%' }}>
-                         <Col style={{ alignItems: 'flex-end' }}>
-                         <Text style={{ ...styles.normalText }}>8:12:53</Text>
-                         </Col>
-                         <Col style={{ width: '5%' }} />
-                         <Col>
-                         <Text style={{ ...styles.normalText }}>10/03/17</Text>
-                         </Col>
-                         </Row>
-                         <Row style={{ flexDirection: 'column', height: '15%' }}>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         <View style={styles.row}>
-                         <View style={styles.column}>
-                         <Icon name='calendar' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('DD/MM')}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='history' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{moment(this.state.bookingDetail.bookDate).format('hh:mm')}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='friend' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>{this.state.bookingDetail.numberOfPeople}</Text>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} />
-                         <View style={styles.column}>
-                         <Icon name='want-feed' style={styles.icon} />
-                         <Text style={{ color: 'black' }}>2</Text>
-                         </View>
-                         </View>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Người đặt chỗ:</Text>
-                         </Left>
-                         <Right>
-                         <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.memberName}</Text>
-                         </Right>
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Số điện thoại:</Text>
-                         </Left>
-                         <Right>
-                         <Text style={{ ...styles.normalText, ...styles.boldText, ...styles.rightText }}>{this.state.bookingDetail.userInfo.phoneNumber}</Text>
-                         </Right>
-                         </Row>
-                         <Row style={{ height: '10%' }}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>Yêu cầu riêng:</Text>
-                         </Left>
-                         </Row>
-                         <Row style={{ height: '25%' }}>
-                         <Left>
-                         <Content>
-                         <Text style={{ ...styles.normalText, ...styles.leftText }}>
-                         {this.state.bookingDetail.note}
-                         </Text>
-                         </Content>
-                         </Left>
-                         </Row>
-                         <Row style={{ flexDirection: 'column', height: '2%', marginTop: 10 }}>
-                         <Border color='rgba(0,0,0,0.5)' size={1} />
-                         </Row>
-                         <Row style={{}}>
-                         <Left>
-                         <Text style={{ ...styles.normalText, ...styles.leftText, ...styles.boldText }}>Đặt trước:</Text>
-                         </Left>
-                         <Right style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                         <Text primary style={{}}>SL: </Text>
-                         <Text primary style={{ ...styles.rightText, ...styles.boldText }}>{totalQuantity}</Text>
-                         </Right>
-                         </Row>
-                         {orderRow}
-                         </Grid>*/}
                     </View>
-                    {/*<View style={styles.submitContainer}>
-                     <Grid>
-                     <Col>
-                     <Button style={{ ...styles.submitButton, ...styles.declineButton }}>
-                     <Text style={{ ...styles.declineText, ...styles.boldText }}>Từ chối</Text>
-                     </Button>
-                     </Col>
-                     <Col>
-                     <Button style={{ ...styles.submitButton, ...styles.acceptButton }}>
-                     <Text style={{ ...styles.boldText }}>Nhận đặt chỗ</Text>
-                     </Button>
-                     </Col>
-                     </Grid>
-                     </View>*/}
                     <View style={styles.codeContainer}>
-                        <Text style={{...styles.normalText, ...styles.codeTitleText}}>Mã đặt chỗ: </Text>
-                        <Text primary bold style={{...styles.codeText}}>#{this.state.bookingDetail.orderCode}</Text>
+                        <Text medium style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
+                        <Text large primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>
 

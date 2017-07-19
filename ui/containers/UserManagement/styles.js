@@ -96,7 +96,7 @@ export default {
         elevation: 0
     },
     modalContainer: {
-        height: 200,
+        // height: 200,
         width: '90%',
         backgroundColor: material.white500,
         borderRadius: 10,
@@ -108,6 +108,7 @@ export default {
         borderWidth: 0,
         shadowColor: material.white500,
         paddingRight: 0,
+        marginHorizontal: 20,
         elevation: 0
     },
     modalCancelButtonText: {
@@ -126,6 +127,5 @@ export default {
     rowText: {
         // color: material.gray500,
         color: material.gray500,
-        marginLeft: 15
     }
 }

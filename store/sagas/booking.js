@@ -5,6 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setBookingList } from '~/store/actions/booking'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
+import { getToastMessage } from '~/ui/shared/utils'
 const requestBookingList = createRequestSaga({
     request: api.booking.list,
     key: 'booking/list',
@@ -13,7 +14,7 @@ const requestBookingList = createRequestSaga({
         (data) => {
             console.log('Load booking', data)
             if (data.code) {
-                return setToast(GENERAL_ERROR_MESSAGE, 'error')
+                return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
             }
             return setBookingList(data.updated)
         }

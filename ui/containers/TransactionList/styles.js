@@ -145,10 +145,10 @@ export default {
         fontSize: 20
     },
     moneyNumberClingme: {
-        fontSize: 24
+        // fontSize: 24
     },
     transactionCodeClingme: {
-        fontSize: 16
+        // fontSize: 16
     },
     button: {
         paddingLeft: 0,

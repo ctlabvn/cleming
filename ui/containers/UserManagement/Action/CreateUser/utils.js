@@ -20,6 +20,7 @@ import {
 import styles from './styles'
 import material from '~/theme/variables/material'
 import { convertVn } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
 
 const namePattern = /^([A-Za-z_]{2,}\s)*[A-Za-z_]{2,}$/
 const usernameConstraints = {
@@ -68,31 +69,31 @@ export const validateField = (values) => {
   if(!values) return errors
   
   if (values.name.trim() == '') {
-    errors.name = "Bạn cần nhập Họ tên."
+    errors.name = I18n.t('err_name_empty')
       return errors;
   } else {
     // if (!_.isUndefined(validate({username: values.name}, usernameConstraints))) {
     //   errors.name = "Tên cần có ít nhất 2 ký tự, tối đa 1 dấu cách giữa các ký tự và không bao gồm các ký tự đặc biệt và số"
     // }
     if(!convertVn(values.name).match(namePattern)){
-      errors.name = "Tên cần có ít nhất 2 ký tự, không bao gồm các ký tự đặc biệt và số."
+      errors.name = I18n.t('err_name_invalid_format')
         return errors;
     }
   }
   
   if (values.phone.trim() == '') {
-    errors.phone = "Bạn cần nhập số điện thoại."
+    errors.phone = I18n.t('err_phone_empty')
       return errors;
   } else {
     if (!_.isUndefined(validate({phone: values.phone}, phoneConstraints))) {
-      errors.phone = "Bạn nhập chưa đúng định dạng số điện thoại."
+      errors.phone = I18n.t('err_phone_invalid_format')
         return errors;
     }
   }
   
   if (values.email.trim() != '') {
     if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
-      errors.email = "Bạn nhập chưa đúng định dạng email."
+      errors.email = I18n.t('err_email_invalid_format')
         return errors;
     }
   }
@@ -149,7 +150,7 @@ export class RenderGroup extends Component {
     return (
       <View style={{marginTop: 10}}>
         
-        <Text style={styles.leftAddressTitleText}>Danh sách địa điểm</Text>
+        <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
             
         
         {place.listPlace && place.listPlace.map((address,index) => (

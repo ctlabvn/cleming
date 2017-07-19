@@ -82,7 +82,9 @@ export default class extends Component {
         >
         <View style={{            
             flex: 1,
-            justifyContent: (position==='top') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start'
+            justifyContent: (position==='top'||position==='topCenter') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start',
+            // top: position==='topCenter' ? 0 : 30
+            // top: 30,
           }} >
             {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
         </View>

@@ -3,11 +3,9 @@
  */
 import React, { Component } from 'react'
 import {
-    Grid, Col, Row
+    Grid, Col, Row, Text
 } from 'native-base'
 import CacheableImage from '~/ui/components/CacheableImage'
-
-import { Text } from 'react-native'
 
 import styles from '../../styles'
 
@@ -21,11 +19,11 @@ export default class OwnerCard extends Component {
                 </Col>
                 <Col style={{ width: '80%'}}>
                     <Row style={{ height: '50%', alignItems: 'flex-end'}}>
-                        <Text style={styles.nameText}>{data.fullName}</Text>
+                        <Text medium style={styles.nameText}>{data.fullName}</Text>
                     </Row>
                     <Row style={{height: '50%'}}>
-                        {(data.accTitle == 1 ? <Text style={styles.subTitleText}>Owner</Text>
-                            : <Text style={styles.nameText}>{data.phoneNumber}</Text>)}
+                        {(data.accTitle == 1 ? <Text small style={styles.subTitleText}>Owner</Text>
+                            : <Text medium style={styles.nameText}>{data.phoneNumber}</Text>)}
                     </Row>
                 </Col>
             </Grid>

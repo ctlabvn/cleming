@@ -36,6 +36,7 @@ import md5 from 'md5'
 // import DeviceInfo from 'react-native-device-info'
 
 import { validate } from './utils'
+import I18n from '~/ui/I18n'
 
 @connect(state=>({
   session: authSelectors.getSession(state),
@@ -86,15 +87,14 @@ export default class extends Component {
     return (
       <Form style={styles.formForgot}>
         <Text style={{...styles.label, marginTop: 50, marginBottom: 20}}>
-          Đây là mục đổi mật khẩu cá nhân{"\n"}
-          Bạn có thể thay đổi mật khẩu riêng để bảo mật
+          {I18n.t('password_modifier_hint')}
         </Text>
-        <Field name="oldPassword" label="Mật khẩu hiện tại" secureTextEntry={true} component={InputField} />
-        <Field name="newPassword" label="Mật khẩu mới" secureTextEntry={true} component={InputField} />
-        <Field name="reNewPassword" label="Nhập lại Mật khẩu mới" secureTextEntry={true} component={InputField} />
+        <Field name="oldPassword" label={I18n.t('current_password')} secureTextEntry={true} component={InputField} />
+        <Field name="newPassword" label={I18n.t('new_password')} secureTextEntry={true} component={InputField} />
+        <Field name="reNewPassword" label={I18n.t('re_new_password')} secureTextEntry={true} component={InputField} />
         <Button onPress={handleSubmit(this._handleChangePassword)}
                 style={styles.button}>
-          <Text>Cập nhật</Text>
+          <Text>{I18n.t('update')}</Text>
         </Button>
       
       </Form>

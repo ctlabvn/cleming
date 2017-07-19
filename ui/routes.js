@@ -19,74 +19,69 @@ import PlaceOrderDetail from './containers/PlaceOrder/Detail'
 import Report from './containers/Report'
 import TransactionConfirm from './containers/TransactionConfirm'
 import TransactionInputFeedback from './containers/TransactionInputFeedback'
-
+// import ChartDemo from './containers/ChartDemo'
+import QRScanner from './containers/QRScanner'
+import About from './containers/About'
+import I18n from '~/ui/I18n'
 import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
+    about: {
+        title: I18n.t('about'),
+        Page: About,
+        headerType: 'back',
+    },
     merchantOverview: {
-        title: 'Merchant Name',
+        title: I18n.t('page_home'),
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true
     },
     transactionList: {
-        title: 'Danh sách giao dịch',
+        title: I18n.t('page_transaction_list'),
         Page: TransactionList,
         headerType: 'back',
         showTopDropdown: true
     },
     'transactionDetail/:id/:type': {
-        title: 'Chi tiết giao dịch',
+        title: I18n.t('page_transaction_detail'),
         Page: TransactionDetail,
         headerType: 'back',
         footerType: 'none',        
     },
-    'transactionConfirm' : {
-        title: 'Xác nhận giao dịch',
-        Page: TransactionConfirm,
-        headerType: 'back',
-        footerType: 'none',
-        PreLoad: false,
-    },
-    'transactionConfirmRight' : {
-        title: 'Xác nhận giao dịch',
-        Page: TransactionConfirm,
-        headerType: 'back',
-        footerType: 'none',
-        PreLoad: false,
-    },
     'transactionInputFeedback/:dealID/:reasonID': {
-        title: 'Giao dịch trả thiếu tiền',
+        title: '',
         Page: TransactionInputFeedback,
         headerType: 'back',
         footerType: 'none'
     },
     deliveryList: {
-        title: 'Danh sách giao hàng',
+        title: I18n.t('page_delivery_list'),
         Page: DeliveryList,
         headerType: 'back',
         showTopDropdown: true
     },
     'deliveryDetail/:id': {
-        title: 'Chi tiết giao hàng',
+        title: I18n.t('page_delivery_detail'),
         Page: DeliveryDetail,
-        footerType: 'none'
+        footerType: 'none',
+        headerType: 'back',
     },
     report: {
-        title: 'Khách hàng tiềm năng',
+        title: I18n.t('page_customer_statistic'),
         Page: Report,
         showTopDropdown: true
     },
     placeOrderList: {
-        title: 'Danh sách đặt chỗ',
+        title: I18n.t('page_booking_list'),
         Page: PlaceOrderList,
         headerType: 'back',
         showTopDropdown: true
     },
     'placeOrderDetail/:id': {
-        title: 'Chi tiết đặt chỗ',
+        title: I18n.t('page_booking_detail'),
         Page: PlaceOrderDetail,
         headerType: 'back',
         footerType: 'none',
@@ -98,42 +93,42 @@ export default {
         footerType: 'none',
     }, 
     notification: {
-        title: 'Notification center',
+        title: I18n.t('page_notification'),
         Page: Notification,
         headerType: 'home',
     },           
     login: {
-        title: 'Login',
+        title: '',
         Page: Login,        
         headerType: 'none',
         footerType: 'none',
     },
     changePassword: {
-        title: 'Đổi mật khẩu',
+        title: I18n.t('page_change_password'),
         Page: PasswordModifier,
         footerType: 'none',
         headerType: 'back',
     },
     userManagement: {
-        title: 'Quản lý tài khoản',
+        title: I18n.t('page_manage_account'),
         Page: UserManagement,
         footerType: 'none',
         showTopDropdown: true
     },
     'userManagement/action/createUser': {
-        title: 'Thêm tài khoản',
+        title: I18n.t('page_add_account'),
         Page: CreateUserContainer,
         footerType: 'none',
         headerType: 'back',
     },
     'userManagement/action/updateEmployeeInfo/:id': {
-        title: 'Thay đổi thông tin',
+        title: I18n.t('page_change_info'),
         Page: CreateUserContainer,
         footerType: 'none',
         headerType: 'back',
     },
     'userManagement/action/updateUser': {
-        title: 'Thông tin tài khoản',
+        title: I18n.t('page_account_info'),
         Page: UpdateUserContainer,
         footerType: 'none',
         headerType: 'back',
@@ -157,9 +152,9 @@ export default {
         footerType: 'none',
     },
    
-    chartDemo: {
-        title: 'Chart Demo',
-        Page: ChartDemo,
+    qrScanner: {
+        title: 'QR Scanner',
+        Page: QRScanner,
         headerType: 'back',
         footerType: 'none',
     },
@@ -167,7 +162,6 @@ export default {
     mapCluster: {
         title: 'Map Cluster Demo',
         Page: MapCluster,
-        headerType: 'back',
-        footerType: 'none',
+        showTopDropdown: true,
     },
 }

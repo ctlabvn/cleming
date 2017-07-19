@@ -3,6 +3,8 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { getToastMessage } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
 
 import {
     replaceNetworks, 
@@ -18,7 +20,8 @@ const requestGetNetworks = createRequestSaga({
         (data) => replaceNetworks(data),           
     ],
     failure: [
-        () => setToast('Couldn\'t get networks', 'error')
+        ()=> setToast(getToastMessage(I18n.t('could_not_get_networks')), 'error', null, null, 3000, 'top')
+        // () => setToast('Couldn\'t get networks', 'error')
     ],
 })
 
@@ -29,7 +32,7 @@ const requestGetNetwork = createRequestSaga({
         (data, {args:[token, Id, Name]}) => replaceNetwork({Name, data:{...data, Id}}),           
     ],
     failure: [
-        () => setToast('Couldn\'t get network', 'error')
+        () => setToast(getToastMessage(I18n.t('could_not_get_network')), 'error', null, null, 3000, 'top')
     ],
 })
 
@@ -40,7 +43,8 @@ const requestGetBusinessNetwork = createRequestSaga({
         (data) => replaceBusinessNetwork(data),           
     ],
     failure: [
-        () => setToast('Couldn\'t get business network', 'error')
+        () => setToast(getToastMessage(I18n.t('Could_not_get_business_network')), 'error', null, null, 3000, 'top')
+        // () => setToast('Couldn\'t get business network', 'error')
     ],
 })
 

@@ -6,7 +6,7 @@ import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, Lay
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
-
+import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
 
 export default class TopDropdown extends Component {
@@ -51,9 +51,6 @@ export default class TopDropdown extends Component {
 
     }
 
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
@@ -112,7 +109,7 @@ export default class TopDropdown extends Component {
             return (
                 <View style={containerStyleTopDown}>
                     <View style={styles.dropdownHeader}>
-                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>Đang tải địa điểm...</Text>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{I18n.t('loading_place')}</Text>
                     </View>
                 </View>
             )

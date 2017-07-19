@@ -36,7 +36,7 @@ export default {
     funnyToday: {
         color: 'rgba(0,0,0,0.5)',
         marginBottom: 10,
-        fontSize: 16,
+        // fontSize: 16,
         fontWeight: 'bold',
         marginTop: 10
     },

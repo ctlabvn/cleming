@@ -20,6 +20,7 @@ import Footer from '~/ui/components/Footer'
 import Popover from '~/ui/components/Popover'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
+import PopupInfo from '~/ui/components/PopupInfo'
 // router => render component base on url
 // history.push => location match => return component using navigator push
 import { matchPath } from 'react-router'
@@ -186,7 +187,7 @@ export default class App extends Component {
               this.props.getMerchantNews(this.props.xsession, currentPlace.id)
             }
             const title = notification.title ? notification.title + " " + notification.message : notification.alert
-            this.props.setToast(title, 'warning', this._handleNoti, notification)
+            this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
           }
         }
       },
@@ -206,10 +207,15 @@ export default class App extends Component {
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
         break
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.CLINGME)
+        break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
         break
       case NOTIFY_TYPE.NEW_ORDER:
+      case NOTIFY_TYPE.ORDER_REPUSH_1:
+      case NOTIFY_TYPE.ORDER_REPUSH_2:
         this.props.forwardTo('deliveryDetail/' + notificationData.param1)
         break
     }
@@ -417,7 +423,11 @@ export default class App extends Component {
     })
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
-      const { router, goBack } = this.props
+      const { router, goBack, drawerState, closeDrawer } = this.props
+      if (drawerState == 'opened'){
+        closeDrawer()
+        return true
+      }
       if (router.route === 'merchantOverview' || router.route === 'login') {
         return false
       }
@@ -428,6 +438,10 @@ export default class App extends Component {
   }
 
   componentWillUnmount() {
+    const { drawerState, closeDrawer } = this.props
+    if (drawerState == 'opened'){
+      closeDrawer()
+    }
     navigator.geolocation.clearWatch(this.watchID)
   }
 
@@ -576,6 +590,7 @@ export default class App extends Component {
           />
           <Toasts />
           <Popover ref={ref => this.popover = ref} />
+          <PopupInfo />
         </Drawer>
       </StyleProvider>
     )

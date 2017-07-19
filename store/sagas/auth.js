@@ -2,7 +2,8 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
-import { setToast, noop, forwardTo } from '~/store/actions/common'
+import { setToast, noop, forwardTo, showPopupInfo } from '~/store/actions/common'
+import { CONNECTION_ERROR_MESSAGE } from '~/store/constants/app'
 
 import {
     setAuthState,
@@ -16,7 +17,7 @@ import {
 } from '~/store/actions/account'
 
 import { closeDrawer } from '~/store/actions/common'
-
+import I18n from '~/ui/I18n'
 // const requestLogin = createRequestSaga({
 //     request: api.auth.login,
 //     key: 'login',
@@ -51,7 +52,19 @@ const requestLogin = createRequestSaga({
     ],
     failure: [
         // code : 1201
-        (data) => setToast('Email/Số Điện Thoại hoặc mật khẩu không đúng, vui lòng kiểm tra lại', 'danger')
+        (data) => {
+            if (data.code == 1203 || data.code == 1202){
+                return showPopupInfo(I18n.t('err_phone_email_incorrect'))
+            }else if(data.code == 1201){
+                return showPopupInfo(I18n.t('err_account_not_register'))
+            }else if (data.code == 1204){
+                return showPopupInfo(I18n.t('err_account_not_active'))
+            }else {
+                return showPopupInfo(CONNECTION_ERROR_MESSAGE)
+            }
+            
+        } 
+        
     ],
 })
 

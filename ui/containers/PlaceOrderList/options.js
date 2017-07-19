@@ -1,17 +1,18 @@
 import { BOOKING_WAITING_CONFIRM, BOOKING_CONFIRMED, BOOKING_CANCEL } from '~/store/constants/app'
+import I18n from '~/ui/I18n'
 export default {
     tabData : [
         {
             tabID: BOOKING_WAITING_CONFIRM,
-            text: 'Chờ xác nhận',
+            text: I18n.t('booking_wait_confirm'),
         },
         {
             tabID: BOOKING_CONFIRMED,
-            text: 'Đã xác nhận'
+            text: I18n.t('booking_confirmed')
         },
         {
             tabID: BOOKING_CANCEL,
-            text: 'Đã hủy'
+            text: I18n.t('booking_cancel')
         }
     ]
 }

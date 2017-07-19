@@ -14,7 +14,7 @@ export default {
         let xDataVersion = 1
         let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
         let body = JSON.stringify({
-            userName: username,
+            userName: username.trim(),
             password: md5(password),
         })
         let xAuthStr = "" + xDataVersion + xVersion + xTimeStamp + SECRET_KEY + body
@@ -36,9 +36,17 @@ export default {
             },
             body:body
         }).then(async (response) => {
-            const xsession = response.headers.map['x-session'][0]
+            const xsession = response.headers.map['x-session']
             const body = await response.json()
-            return {...body.updated.account, xsession}
+            console.log('Response', response)
+            console.log('Body', body)
+            if (xsession){
+                
+                return {...body.updated.account, xsession}
+            }
+            const {status, statusText} = response
+            return Promise.reject({message: statusText, status, ...body})
+            
         })
     },
 

@@ -23,6 +23,7 @@ import md5 from 'md5'
 import {  
   API_BASE
 } from '~/store/constants/api'
+import I18n from '~/ui/I18n'
 
 @connect(state=>({
   session: authSelectors.getSession(state),
@@ -73,7 +74,7 @@ export default class extends Component {
           style={styles.container}
         >          
           <View row style={styles.drawerCover}>                        
-            <Text bold style={styles.text}>More</Text>            
+            <Text bold style={styles.text}>Menu</Text>
           </View>
           <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
             <Icon name="close" style={styles.buttonIconClose} />
@@ -88,7 +89,7 @@ export default class extends Component {
           
           <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
             <Left>                  
-              <Text style={styles.iconText}>Đăng xuất</Text>
+              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
             </Left>                
           </ListItem>
         </Content>

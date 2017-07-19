@@ -27,6 +27,7 @@ import {
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT
 } from "~/store/constants/app";
+import I18n from '~/ui/I18n'
 
 // export const getListTransactionDirect = state => state.place.transaction.payDirect || []
 
@@ -212,23 +213,23 @@ export default class extends Component {
             default:
                 return (
                     <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
                                 <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text small bold grayDark>{item.userName}</Text>
+                                <Text medium bold grayDark>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text large bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
-                                <Text small primary>Đã thanh toán</Text>
-                                <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.clingmeId)}>
-                                    <Text bold primary>Xác nhận</Text>
+                                <Text small primary>{I18n.t('paid')}</Text>
+                                <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.transactionId)}>
+                                    <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
                             </View>
@@ -239,7 +240,7 @@ export default class extends Component {
             case 2:
                 return (
                     <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.clingmeId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
                     >
                         <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
@@ -248,10 +249,10 @@ export default class extends Component {
 
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text small grayDark>Khách hàng: <Text small bold grayDark>{item.userName}</Text></Text>
+                                <Text small grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text success small>Đã xác nhận</Text>
+                                <Text success small>{I18n.t('confirmed')}</Text>
                                 <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
@@ -271,7 +272,7 @@ export default class extends Component {
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
                     </View>
                 )
-                statusText = <Text small warning>Chờ phê duyệt</Text>
+                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
@@ -281,7 +282,7 @@ export default class extends Component {
                         <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
                     </View>
                 )
-                statusText = <Text small grayDark>Cashback thành công</Text>
+                statusText = <Text small grayDark>{I18n.t('cashback_success')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
@@ -291,7 +292,7 @@ export default class extends Component {
                         <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
                     </View>
                 )
-                statusText = <Text small error>Bị từ chối</Text>
+                statusText = <Text small error>{I18n.t('reject')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 moneyText = <Text bold gray style={styles.moneyNumber}></Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
@@ -302,7 +303,7 @@ export default class extends Component {
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
-                statusText = <Text small warning>Chờ phê duyệt</Text>
+                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         }
@@ -366,7 +367,7 @@ export default class extends Component {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                     <Spinner color={material.red500} />
-                    <Text>Loading...</Text>
+                    {/*<Text>Loading...</Text>*/}
                 </View>
             )
         }

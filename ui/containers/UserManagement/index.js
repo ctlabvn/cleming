@@ -1,14 +1,15 @@
 /**
  * Created by vjtc0n on 5/4/17.
  */
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Button, List, ListItem, Switch, Spinner,
-    Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
+    Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row,
+    Text
 } from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
-import { Text, TouchableHighlight, InteractionManager } from 'react-native'
-import { connect } from 'react-redux'
+import {TouchableHighlight, InteractionManager} from 'react-native'
+import {connect} from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
@@ -20,10 +21,10 @@ import * as accountActions from '~/store/actions/account'
 import * as authSelectors from '~/store/selectors/auth'
 import * as placeAction from '~/store/actions/place'
 import * as accountSelectors from '~/store/selectors/account'
-import { getSelectedPlace } from '~/store/selectors/place'
+import {getSelectedPlace} from '~/store/selectors/place'
 import TopDropdown from '~/ui/components/TopDropdown'
 import material from '~/theme/variables/material.js'
-
+import I18n from '~/ui/I18n'
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 
 @connect(state => ({
@@ -32,7 +33,7 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
     user: authSelectors.getUser(state),
     place: state.place,
     selectedPlace: getSelectedPlace(state),
-}), { ...commonActions, ...accountActions, ...placeAction })
+}), {...commonActions, ...accountActions, ...placeAction})
 
 class UserManagement extends Component {
     constructor(props) {
@@ -77,7 +78,7 @@ class UserManagement extends Component {
     }
 
     _loadListEmployee(placeId) {
-        const { getListEmployee, session, user } = this.props        
+        const {getListEmployee, session, user} = this.props
         getListEmployee(session, placeId, () => {
             let data = []
             for (let i = 0; i < 1; i++) {
@@ -99,6 +100,7 @@ class UserManagement extends Component {
             // })
         })
     }
+
     componentDidMount() {
         // const {app} = this.props
         // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
@@ -112,20 +114,20 @@ class UserManagement extends Component {
         this.componentWillFocus();
     }
 
-    componentWillBlur(){
+    componentWillBlur() {
         this.setState({
             isFetchingData: true
         })
     }
 
-    componentWillFocus(){
+    componentWillFocus() {
         const {app} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         // InteractionManager.runAfterInteractions(()=> {
-            let currentPlace = app.topDropdown.getValue()
-            if (currentPlace && Object.keys(currentPlace).length > 0) {
-                this._loadListEmployee(currentPlace.id)
-            }
+        let currentPlace = app.topDropdown.getValue()
+        if (currentPlace && Object.keys(currentPlace).length > 0) {
+            this._loadListEmployee(currentPlace.id)
+        }
         // })
     }
 
@@ -160,25 +162,25 @@ class UserManagement extends Component {
         return (
             <ListItem style={styles.listEmployeeItem}>
                 <Grid>
-                    <Col style={{ width: '20%', flexDirection: 'row' }}>
+                    <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
-                            <Row style={styles.topLeftGrid} />
-                            <Row style={{ ...styles.bottomLeftGridContainer }}>
-                                <View style={{ ...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength }} />
+                            <Row style={styles.topLeftGrid}/>
+                            <Row style={{...styles.bottomLeftGridContainer}}>
+                                <View style={{...styles.bottomLeftGrid, height: lastLeftVerticalBlueLineLength}}/>
                             </Row>
                         </Col>
                         <Col>
-                            <Row style={{ ...styles.topRightGrid, borderBottomWidth: 1 }} />
+                            <Row style={{...styles.topRightGrid, borderBottomWidth: 1}}/>
                             <Row style={styles.bottomRightGridContainer}>
-                                <View style={{ height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid }} />
+                                <View style={{height: lastRightVerticalBlueLineLength, ...styles.bottomRightGrid}}/>
                             </Row>
                         </Col>
                     </Col>
-                    <Col style={{ width: '80%', justifyContent: 'center' }}>
+                    <Col style={{width: '80%', justifyContent: 'center'}}>
                         <Button
                             onPress={this.onAccountPress.bind(this, data, rowID)}
                             style={styles.accountButton}>
-                            <UserCard data={data} />
+                            <UserCard data={data}/>
                         </Button>
                     </Col>
                 </Grid>
@@ -188,26 +190,26 @@ class UserManagement extends Component {
 
     renderBlueLineBelowOwner() {
         return (
-            <View style={{ height: 20 }}>
+            <View style={{height: 20}}>
                 <Grid>
-                    <Col style={{ width: '20%', flexDirection: 'row' }}>
+                    <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
-                            <Row style={styles.topLeftGrid} />
-                            <Row style={styles.bottomLeftGrid} />
+                            <Row style={styles.topLeftGrid}/>
+                            <Row style={styles.bottomLeftGrid}/>
                         </Col>
                         <Col>
-                            <Row style={styles.topRightGrid} />
-                            <Row style={styles.bottomRightGrid} />
+                            <Row style={styles.topRightGrid}/>
+                            <Row style={styles.bottomRightGrid}/>
                         </Col>
                     </Col>
-                    <Col style={{ width: '80%' }} />
+                    <Col style={{width: '80%'}}/>
                 </Grid>
             </View>
         )
     }
 
     onUpdateUserPress() {
-        const { forwardTo } = this.props
+        const {forwardTo} = this.props
         // this.props.setEmployee(null)
         forwardTo('userManagement/action/updateUser')
     }
@@ -225,13 +227,13 @@ class UserManagement extends Component {
                         <Button
                             onPress={this.onUpdateUserPress.bind(this)}
                             style={styles.ownerButton}>
-                            <OwnerCard data={data.owner} />
+                            <OwnerCard data={data.owner}/>
                         </Button>
                         {blueLineBelowOwner}
                         <List
                             removeClippedSubviews={false}
                             dataArray={data.employeeList}
-                            renderRow={this.renderEmployeeRow.bind(this)} />
+                            renderRow={this.renderEmployeeRow.bind(this)}/>
                     </Col>
                 </Grid>
             </ListItem>
@@ -259,7 +261,7 @@ class UserManagement extends Component {
     }
 
     onSubmitModal() {
-        const { forwardTo, selectedPlace, app } = this.props
+        const {forwardTo, selectedPlace, app} = this.props
         if (this.state.updateInfoChecked) {
             this.setState({
                 modalOpen: false,
@@ -270,7 +272,7 @@ class UserManagement extends Component {
             this.props.setEmployee(this.props.listEmployee[this.rowIDOfEmployee])
 
             forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
-        } else if (this.state.deleteAccountChecked) {            
+        } else if (this.state.deleteAccountChecked) {
             let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {
                 this._loadListEmployee(selectedPlace.id)
@@ -286,72 +288,45 @@ class UserManagement extends Component {
     renderModal() {
         return (
             <View style={styles.modalContainer}>
-                <Grid>
-                    <Col>
-                        <Row style={{ height: '30%', width: '90%', alignSelf: 'center', alignItems: 'center' }}>
-                            <View style={{ height: 35 }}>
-                                <UserCard data={this.employeeData} />
-                            </View>
-                        </Row>
-                        <Row style={{ height: '50%' }}>
-                            <Col style={{ width: '70%' }}>
-                                <Row style={{ alignItems: 'center' }}>
-                                    <TouchableHighlight
-                                        underlayColor={material.white500}
-                                        onPress={this.onUpdateInfoPress.bind(this)}>
-                                    <Text style={styles.rowText}>Thay đổi thông tin</Text>
-                                    </TouchableHighlight>
-                                </Row>
-                                <Row style={{ alignItems: 'center' }}>
-                                    <TouchableHighlight
-                                        underlayColor={material.white500}
-                                        onPress={this.onDeleteAccountPress.bind(this)}>
-                                    <Text style={styles.rowText}>Xoá tài khoản khỏi danh sách</Text>
-                                    </TouchableHighlight>
-                                </Row>
-                            </Col>
-                            <Col style={{ width: '30%' }}>
-                                <Row style={styles.rowCheckBox}>
-                                    <CheckBox
-                                        onPress={this.onUpdateInfoPress.bind(this)}
-                                        checked={this.state.updateInfoChecked}
-                                        type="radio"
-                                         />
-                                </Row>
-                                <Row style={styles.rowCheckBox}>
-                                    <CheckBox
-                                        onPress={this.onDeleteAccountPress.bind(this)}
-                                        checked={this.state.deleteAccountChecked}
-                                        type="radio"
-                                         />
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row style={{ height: '20%' }}>
-                            <Col style={{ width: '50%' }} />
-                            <Col style={{ width: '25%' }}>
-                                <Button
-                                    onPress={this.onCancelModal.bind(this)}
-                                    style={styles.modalButton}>
-                                    <Text style={styles.modalCancelButtonText}>Cancel</Text>
-                                </Button>
-                            </Col>
-                            <Col style={{ width: '25%' }}>
-                                <Button
-                                    onPress={this.onSubmitModal.bind(this)}
-                                    style={styles.modalButton}>
-                                    <Text style={styles.modalOkButtonText}>OK</Text>
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Grid>
+                <ListItem noBorder style={{height: 65}}>
+                    <UserCard data={this.employeeData}/>
+                </ListItem>
+                <ListItem noBorder onPress={this.onUpdateInfoPress.bind(this)}
+                          style={{justifyContent: 'space-between',zIndex:99}}>
+
+                    <Text medium style={styles.rowText}>{I18n.t('page_change_info')}</Text>
+                    <CheckBox
+                        disabled={true}
+                        checked={this.state.updateInfoChecked}
+                        type="radio"
+                    />
+                </ListItem>
+                <ListItem noBorder onPress={this.onDeleteAccountPress.bind(this)}
+                          style={{justifyContent: 'space-between'}}>
+                    <Text medium style={styles.rowText}>{I18n.t('remove_account_from_list')}</Text>
+                    <CheckBox
+                        checked={this.state.deleteAccountChecked}
+                        type="radio"
+                    />
+                </ListItem>
+                <ListItem noBorder style={{justifyContent:'center'}}>
+                        <Button
+                            onPress={this.onCancelModal.bind(this)}
+                            style={styles.modalButton}>
+                            <Text style={styles.modalCancelButtonText}>Cancel</Text>
+                        </Button>
+                        <Button
+                            onPress={this.onSubmitModal.bind(this)}
+                            style={styles.modalButton}>
+                            <Text style={styles.modalOkButtonText}>OK</Text>
+                        </Button>
+                </ListItem>
             </View>
         )
     }
 
     onCreateUserPress() {
-        const { forwardTo } = this.props
+        const {forwardTo} = this.props
         this.props.setEmployee(null)
         forwardTo('userManagement/action/createUser')
     }
@@ -369,7 +344,7 @@ class UserManagement extends Component {
                             <Button
                                 onPress={this.onCreateUserPress.bind(this)}
                                 style={styles.addUserButton}>
-                                <Text style={styles.addUserText}>Thêm tài khoản</Text>
+                                <Text medium style={styles.addUserText}>{I18n.t('add_account')}</Text>
                             </Button>)
                     }
                 }
@@ -383,26 +358,32 @@ class UserManagement extends Component {
     }
 
     render() {
-        const { place, selectedPlace } = this.props
+        const {place, selectedPlace} = this.props
 
         if (this.state.isFetchingData) {
             return (
-                <View style={{ backgroundColor: material.white500, width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Spinner color={material.primaryColor} />
+                <View style={{
+                    backgroundColor: material.white500,
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Spinner color={material.primaryColor}/>
                 </View>
             )
         }
         return (
             <Container>
-                <Content style={{ backgroundColor: material.white500 }}>
-                    <List                                                    
-                        enableEmptySections={true}                                            
-                        removeClippedSubviews={false}                        
-                        style={{ marginBottom: 50, marginTop: 20 }}
+                <Content style={{backgroundColor: material.white500}}>
+                    <List
+                        enableEmptySections={true}
+                        removeClippedSubviews={false}
+                        style={{marginBottom: 50, marginTop: 20}}
                         dataArray={this.data}
-                        renderRow={this.renderRow.bind(this)} />
+                        renderRow={this.renderRow.bind(this)}/>
                 </Content>
-                <Modal onCloseClick={e => this.setState({ modalOpen: false })} open={this.state.modalOpen}>
+                <Modal onCloseClick={e => this.setState({modalOpen: false})} open={this.state.modalOpen}>
                     {this.renderModal()}
                 </Modal>
                 {this.renderAddEmployeeButton()}

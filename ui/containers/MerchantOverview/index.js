@@ -18,6 +18,7 @@ import Content from "~/ui/components/Content";
 import {getSession, getUser} from "~/store/selectors/auth";
 import {getSelectedPlace} from "~/store/selectors/place";
 import material from "~/theme/variables/material.js";
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
@@ -86,9 +87,9 @@ export default class MerchantOverview extends Component {
                             this.setState({loading: false})
                         )
                     }
+                }else{
+                    this.setState({ loading: false })
                 }
-                // this.setState({ loading: false })
-                // this.forceUpdate()
             }
         )
 
@@ -105,7 +106,6 @@ export default class MerchantOverview extends Component {
         // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         // this._load()
         // })
-
         this.componentWillFocus()
     }
 
@@ -180,18 +180,18 @@ export default class MerchantOverview extends Component {
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
-                <Text style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
+                <Text largeLight style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
                 <View style={styles.menuContainer}>
                     {(place && place.news && place.news.transactionNews > -1) &&
                     <TouchableOpacity onPress={() => forwardTo('transactionList')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
-                                <Text style={{...styles.textLabelRightImage}}>Giao dịch</Text>
+                                <Text medium style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
-                                <View style={styles.badgeContainer}><Text small
-                                                                          style={styles.numberRight}>{this.renderTextCount(place.news.transactionNews)}</Text></View>
+                                <View style={styles.badgeContainer}>
+                                    <Text small style={styles.numberRight}>{this.renderTextCount(place.news.transactionNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
                         </View>
@@ -201,7 +201,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon}/>
-                                <Text style={{...styles.textLabelRightImage}}>Đặt chỗ</Text>
+                                <Text medium style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small
@@ -216,7 +216,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
-                                <Text style={{...styles.textLabelRightImage}}>Đặt giao hàng</Text>
+                                <Text medium style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small

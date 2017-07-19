@@ -21,7 +21,7 @@ export default {
   badgePadding: (platform === 'ios') ? 3 : 0,
 
     // Button
-  btnFontFamily: (platform === 'ios') ? 'Roboto' : 'Roboto_medium',
+  btnFontFamily: (platform === 'ios') ? 'Roboto' : 'Roboto',
   btnDisabledBg: '#b5b5b5',
   btnDisabledClr: '#f1f1f1',
 
@@ -108,7 +108,6 @@ export default {
   get iconSizeSmall() {
     return this.iconFontSize * 0.6;
   },
-
 
     // Card
   cardDefaultBg: '#fff',
@@ -314,8 +313,36 @@ export default {
   noteTextColor: '#a8a8a8',
   linkTextColor: '#448ccb',
 
+    get textSizeTiny() {
+        return this.textSizeMedium * 10/15;
+    },
+
+    get textSizeSmall() {
+      return this.textSizeMedium * 13/15;
+    },
+
+    get textSizeMedium() {
+        return this.fontSizeBase;  // this.fontSizeBase == 15
+    },
+
+    get textSizelargeLight() {
+        return this.textSizeMedium * 16/15;  // 16
+    },
+
+    get textSizelarge() {
+        return this.textSizeMedium * 20/15;  // 20
+    },
+
+    get textSizeBig() {
+        return this.textSizeMedium * 32/15;  // 32
+    },
+
+    get textSizeGiant() {
+        return this.textSizeMedium * 50/15; // 50
+    },
+
     // Title
-  titleFontfamily: (platform === 'ios') ? 'Roboto' : 'Roboto_medium',
+  titleFontfamily: (platform === 'ios') ? 'Roboto' : 'Roboto',
   titleFontSize: 15,
   subTitleFontSize: 14,
   subtitleColor: '#FFF',

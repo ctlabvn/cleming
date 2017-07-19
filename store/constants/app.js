@@ -1,3 +1,4 @@
+import I18n from '~/ui/I18n'
 export const TRANSACTION_TYPE_CLINGME = 1
 export const TRANSACTION_TYPE_DIRECT = 2
 export const ORDER_WAITING_CONFIRM = 0
@@ -39,6 +40,9 @@ export const NOTIFY_TYPE={
     TRANSACTION_FEEDBACK: 9,
     ORDER_FEEDBACK: 11,
     ORDER_CANCELLED: 12,
+    ORDER_REPUSH_1: 13,
+    ORDER_REPUSH_2: 14,
+    TRANSACTION_CLINGME: 10
 }
 
 export const TRANSACTION_TYPE={
@@ -60,11 +64,12 @@ export const DELIVERY_FEEDBACK = {
   CANCEL: 2
 }
 
-export const GENERAL_ERROR_MESSAGE = 'Có lỗi xảy ra, vui lòng thử lại sau'
-export const EXPIRED_ERROR_MESSAGE = 'Phiên làm việc đã hết, vui lòng đăng nhập lại'
+export const GENERAL_ERROR_MESSAGE = I18n.t('err_general')
+export const EXPIRED_ERROR_MESSAGE = I18n.t('err_expired')
+export const CONNECTION_ERROR_MESSAGE = I18n.t('err_connection')
 export const DETECT_LOCATION_INTERVAL = 180000 // 3 minute
 
 export const DEFAULT_MAP_DELTA = {
-    LAT: 0.05,
-    LONG: 0.05
+    LAT: 0.015,
+    LONG: 0.015
 }

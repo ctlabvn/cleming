@@ -5,7 +5,7 @@ import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import { formatNumber } from "~/ui/shared/utils";
+import { formatNumber, getToastMessage } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
@@ -26,6 +26,7 @@ import {
 } from "~/store/constants/app";
 import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
+import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
@@ -48,19 +49,19 @@ export default class TransactionDetail extends Component {
     _renderStatus(status) {
         switch (status) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return <Text bold warning>Giao dịch chờ phê duyệt</Text>
+                return <Text bold warning>{I18n.t('transaction_wait_confirm')}</Text>
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
-                return <Text bold success>Giao dịch thành công</Text>
+                return <Text bold success>{I18n.t('transaction_cashback_success')}</Text>
             case TRANSACTION_DIRECT_STATUS.REJECT:
-                return <Text bold error>Giao dịch bị từ chối</Text>
+                return <Text bold error>{I18n.t('transaction_reject')}</Text>
             default:
-                return <Text bold warning>Giao dịch chờ phê duyệt</Text>
+                return <Text bold warning>{I18n.t('transaction_wait_confirm')}</Text>
         }
     }
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>Không đồng ý</Text></Button>)
+                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>{I18n.t('transaction_not_accept')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -78,14 +79,14 @@ export default class TransactionDetail extends Component {
             console.log('Case 1 show', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
-                    <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                    <Text small style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
                     <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         } else {
             console.log('Case 2 hide', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
-                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>Số hóa đơn: </Text>
+                    <Text small transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>{I18n.t('bill_number')}: </Text>
                     <Text small transparent style={{ ...styles.invoice, ...styles.backgroundTransparent, color: 'transparent' }}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         }
@@ -117,12 +118,12 @@ export default class TransactionDetail extends Component {
         const { xsession, transaction } = this.props
         let index = 0, transactionId
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            transactionId = this.state.transactionInfo.clingmeId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+            transactionId = this.state.transactionInfo.transactionId
+            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
             if (index <= 0) return
             index--
             let preTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(preTrans.clingmeId)
+            this._load(preTrans.transactionId)
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
             index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
@@ -137,12 +138,12 @@ export default class TransactionDetail extends Component {
         const { xsession, transaction } = this.props
         let transactionId, index = 0
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            transactionId = this.state.transactionInfo.clingmeId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+            transactionId = this.state.transactionInfo.transactionId
+            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
             if (index >= transaction.payWithClingme.listTransaction.length - 1) return
             index++
             let nextTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(nextTrans.clingmeId)
+            this._load(nextTrans.transactionId)
 
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
@@ -198,20 +199,20 @@ export default class TransactionDetail extends Component {
             let payStatus, helpBtn = null
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text success bold>Đã thanh toán</Text>
+                payStatus = <Text largeLight success bold>{I18n.t('paid')}</Text>
                 //Chưa sử dụng help
                 if (!transactionInfo.helpStatus) {
                     helpBtn = <Button dark bordered style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                        <Text>Trợ giúp</Text>
+                        <Text medium>{I18n.t('help')}</Text>
                     </Button>
                 } else {
                     helpBtn = <Button light bordered style={styles.feedbackClmTransaction}>
-                        <Text>Trợ giúp</Text>
+                        <Text medium>{I18n.t('help')}</Text>
                     </Button>
                 }
 
             } else if (transactionInfo.transactionStatus == 2) {
-                payStatus = <Text success bold>Đã xác nhận</Text>
+                payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
             }
             return (
                 <Content>
@@ -222,32 +223,32 @@ export default class TransactionDetail extends Component {
                             dealTransactionId={transactionInfo.clingmeId}
                         />
                         <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                            <Text small style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>Số đơn hàng</Text>
-                            <Text bold style={{ fontSize: 24 }}>{transactionInfo.transactionIdDisplay}</Text>
+                            <Text medium gray>{I18n.t('order_number')}</Text>
+                            <Text big bold>{transactionInfo.transactionIdDisplay}</Text>
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text gray>Tổng tiền thanh toán</Text>
-                            <Text bold style={{ fontSize: 48 }}>{formatNumber(transactionInfo.moneyAmount)}</Text>
+                            <Text medium gray>{I18n.t('total_pay')}</Text>
+                            <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
                             {payStatus}
                         </View>
                         <View style={styles.blockCenter}>
-                            <Text bold>{formatNumber(10120)}</Text>
-                            <Text gray>Phí Clingme</Text>
+                            <Text medium gray>{I18n.t('clingme_fee')}</Text>
+                            <Text large bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                         </View>
                         <View style={styles.row}>
-                            <Text>Khách hàng</Text>
+                            <Text medium>{I18n.t('customer')}</Text>
                             <View style={styles.row}>
-                                <Text bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
+                                <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
                                 {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
                                 <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
                             </View>
                         </View>
-                        <View style={styles.rowCenter}>
+                        {/*<View style={styles.rowCenter}>
                             {helpBtn}
-                        </View>
+                        </View>*/}
                     </View>
                 </Content>
             )
@@ -267,7 +268,7 @@ export default class TransactionDetail extends Component {
                             </View>
                             <View style={styles.rowPadding}>
                                 <View style={styles.transactionContent}>
-                                    <Text small>Số giao dịch: </Text>
+                                    <Text small>{I18n.t('bill_number')}: </Text>
                                     <Text small primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                                 </View>
                                 <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
@@ -277,14 +278,14 @@ export default class TransactionDetail extends Component {
                             {this._renderStatus(transactionInfo.transactionStatus)}
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small style={styles.paymenMethodLabel}>Hình thức thanh toán:</Text>
+                            <Text small style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
                             <View style={styles.row}>
                                 <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
-                                <Text small bold style={styles.primary}>Thanh toán trực tiếp</Text>
+                                <Text small bold style={styles.primary}>{I18n.t('method_pay_direct')}</Text>
                             </View>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small style={styles.userLabel}>Khách hàng:</Text>
+                            <Text small style={styles.userLabel}>{I18n.t('customer')}:</Text>
                             <View style={styles.userContent}>
                                 <Text small bold>{transactionInfo.userName}</Text>
                                 {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
@@ -293,27 +294,27 @@ export default class TransactionDetail extends Component {
                         </View>
 
                         <View style={styles.rowPadding}>
-                            <Text small>Xem:</Text>
+                            <Text small>{I18n.t('view')}:</Text>
                             <Text small bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small>Đánh dấu:</Text>
+                            <Text small>{I18n.t('mark')}:</Text>
                             <Text small bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text small>Chụp hóa đơn:</Text>
+                            <Text small>{I18n.t('shot_bill')}:</Text>
                             <Text small bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.rowPadding}>
-                                <Text small>Xuất hóa đơn:</Text>
+                                <Text small>{I18n.t('export_bill')}:</Text>
                                 <Text small bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             </View>
                         }
 
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.invoiceBlock}>
-                                <Text small style={styles.invoiceLabel}>Số hóa đơn: </Text>
+                                <Text small style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
                                 <Text small style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                             </View>
                         }
@@ -324,22 +325,22 @@ export default class TransactionDetail extends Component {
                                     <View style={styles.rowSpaceAround}>
                                         <View style={styles.gridItem}>
                                             <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
-                                            <Text style={styles.labelInfo}>Tổng tiền hóa đơn</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
                                         </View>
                                         <View style={styles.gridItem}>
                                             <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
-                                            <Text style={styles.labelInfo}>Tỷ lệ giảm giá</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
                                         </View>
                                     </View>
                                     <View style={styles.rowSpaceAround}>
                                         <View style={styles.gridItem}>
 
                                             <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                            <Text style={styles.labelInfo}>Tổng tiền Cashback</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
                                         </View>
                                         <View style={styles.gridItem}>
                                             <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
-                                            <Text style={styles.labelInfo}>Phí Clingme</Text>
+                                            <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -369,9 +370,10 @@ export default class TransactionDetail extends Component {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
                     this.setState({ loading: false })
-                    console.log('ErrData', data)
+                    console.log('Load payCLM', data)
+                    console.log('Load payCLM', err)
                     if (err) {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -380,7 +382,7 @@ export default class TransactionDetail extends Component {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
                         if (transaction && transaction.payWithClingme) {
-                            let index = transaction.payWithClingme.listTransaction.findIndex(item => item.clingmeId == transactionId)
+                            let index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
                             if (index != -1) {
                                 hasPrevious = (index == 0) ? false : true
                                 hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
@@ -394,6 +396,10 @@ export default class TransactionDetail extends Component {
 
                             }
                         )
+                    }else{
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+                        goBack()
+                        return
                     }
                 })
         } else if (transactionType == TRANSACTION_TYPE_DIRECT) {
@@ -404,11 +410,11 @@ export default class TransactionDetail extends Component {
                     this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
-                            setToast('Giao dịch không tồn tại', 'danger')
+                            setToast(getToastMessage(I18n.t('err_transaction_not_exists')), 'info', null, null, 3000, 'top')
                             forwardTo('merchantOverview', true)
                             return
                         }
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         forwardTo('merchantOverview', true)
                         return
                     }
@@ -435,7 +441,7 @@ export default class TransactionDetail extends Component {
                             }
                         )
                     } else {
-                        setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         goBack()
                         return
                     }
@@ -520,7 +526,7 @@ export default class TransactionDetail extends Component {
                 // <LoadingModal loading={true} />
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                     <Spinner />
-                    <Text>Loading...</Text>
+                    {/*<Text>Loading...</Text>*/}
                 </View>
             )
         }
@@ -533,14 +539,14 @@ export default class TransactionDetail extends Component {
                 <Button dark transparent style={styles.buttonLeft}
                     onPress={() => this.goPreviousViewPager()}>
                     <Icon name="keyboard-arrow-left" style={styles.icon} />
-                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
+                    <Text medium style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         } else {
             btnPrev = (
                 <Button light disabled transparent style={styles.buttonLeft}>
                     <Icon name="keyboard-arrow-left" style={{ ...styles.icon, ...styles.disabled }} />
-                    <Text small style={styles.textPrev}>Giao dịch trước</Text>
+                    <Text medium style={styles.textPrev}>{I18n.t('prev_transaction')}</Text>
                 </Button>
             )
         }
@@ -548,14 +554,14 @@ export default class TransactionDetail extends Component {
         if (this.state.hasNext) {
             btnNext = (
                 <Button dark transparent style={styles.buttonRight} onPress={() => this.goNextViewPager()}>
-                    <Text small style={styles.textNext}>Giao dịch sau</Text>
+                    <Text medium style={styles.textNext}>{I18n.t('next_transaction')}</Text>
                     <Icon name="keyboard-arrow-right" style={styles.icon} />
                 </Button>
             )
         } else {
             btnNext = (
                 <Button light disabled transparent style={styles.buttonRight}>
-                    <Text small style={styles.textNext}>Giao dịch sau</Text>
+                    <Text small style={styles.textNext}>{I18n.t('next_transaction')}</Text>
                     <Icon name="keyboard-arrow-right" style={{ ...styles.icon, ...styles.disabled }} />
                 </Button>
             )

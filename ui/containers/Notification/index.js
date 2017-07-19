@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { LayoutAnimation } from 'react-native'
+import { LayoutAnimation, ListView } from 'react-native'
 import {
   Button, Container, ListItem, List, Spinner,
   Text, Item, View, Input, Left, Right, Body,
@@ -40,22 +40,30 @@ export default class extends Component {
       refreshing: false,
       loading: false,
     }
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
   }
 
   componentWillFocus() {
+    getNotification
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
-    console.log('Component Will Focus noty')
     if (!notifications.data.length) {
       getNotification(session, 1, () => getNotification(session, 2))
       this.setState({
         refreshing: false,
       })
+    } else {
+      this.forceUpdate()
     }
   }
 
   componentWillMount() {
-    this.componentWillFocus()
+    // this.componentWillFocus()
+    const { session, getNotification } = this.props
+    getNotification(session, 1, () => getNotification(session, 2))
+    this.setState({
+      refreshing: false,
+    })
   }
 
   _onRefresh = () => {
@@ -93,6 +101,7 @@ export default class extends Component {
   //   TRANSACTION_FEEDBACK: 9,
   //   ORDER_FEEDBACK: 11,
   //   ORDER_CANCELLED: 12,
+  // TRANSACTION_CLINGME: 10
   // }
 
 
@@ -100,8 +109,8 @@ export default class extends Component {
     switch (notifyType) {
       case NOTIFY_TYPE.NEW_BOOKING:
         return <Icon name="calendar" style={{ ...styles.icon, ...styles.warning }} />
-      // case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-      //   return <Icon name="clingme-wallet" style={styles.icon} />
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        return <Icon name="clingme-wallet" style={styles.icon} />
       case NOTIFY_TYPE.NEW_ORDER:
         return <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.warning }} />
       case NOTIFY_TYPE.ORDER_CANCELLED:
@@ -253,6 +262,28 @@ export default class extends Component {
             {border}
           </Body>
         )
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        return (
+          <Body>
+            <View>
+              <View>
+                <Text note style={styles.textGray}>{item.title}</Text>
+              </View>
+              <View style={styles.row}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <Text style={{color: material.blue600,}}>
+                  <Text style={{
+                    fontWeight: '900',
+                    color: material.blue600,
+                    fontSize: 24,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  </Text>
+              </View>
+
+            </View>
+            {border}
+          </Body>
+        )
       case NOTIFY_TYPE.ORDER_FEEDBACK:
         return (
           <Body>
@@ -306,17 +337,20 @@ export default class extends Component {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
     const { updateRead, session, updateReadOfline } = this.props
-    if (!notification.isRead){
+    if (!notification.isRead) {
       updateReadOfline(notification.notifyId)
       updateRead(session, notification.notifyId)
     }
-  
+
     // console.log(type, notification)
     switch (notifyType) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        break
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
@@ -340,13 +374,16 @@ export default class extends Component {
           style={styles.container} refreshing={this.state.refreshing}
         >
           {notifications &&
-            <List
+            <ListView
               removeClippedSubviews={false}
               pageSize={10}
-              dataArray={notifications.data} renderRow={(item) => {
+              dataSource={this.ds.cloneWithRows(notifications.data)}
+              renderRow={(item) => {
                 return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
-                  onPress={() => this.handleNotiClick(item)}>
+                  onPress={() => this.handleNotiClick(item)}
+                  key={item.notifyId}
+                >
                   <View style={{
                     justifyContent: 'space-between',
                     alignSelf: 'flex-start'

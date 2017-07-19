@@ -15,13 +15,14 @@ import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
 import options from "./options";
-import { formatNumber, formatPhoneNumber, chainParse } from "~/ui/shared/utils";
+import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
 import moment from "moment";
 import { getNews } from "~/store/selectors/place";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
+import I18n from '~/ui/I18n'
 import {
     DEFAULT_TIME_FORMAT,
     DELIVERY_FEEDBACK,
@@ -135,7 +136,7 @@ export default class extends Component {
     // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
-        const { session, getOrderList, clearOrderList, getMerchantNews } = this.props
+        const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
         const { selectedPlace } = this.state
         if (!selectedPlace) return
         if (isLoadMore) {
@@ -224,7 +225,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                 }
             }
         )
@@ -242,7 +243,7 @@ export default class extends Component {
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
-                    setToast(GENERAL_ERROR_MESSAGE, 'danger')
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                     this.clickCount = 0
                 }
             }
@@ -267,6 +268,7 @@ export default class extends Component {
             <View style={styles.row}>
                 <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
                 <Text
+                    medium
                     onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
                     style={styles.phoneNumber}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
             </View>
@@ -278,7 +280,7 @@ export default class extends Component {
                 statusBlock = (
                     <View style={styles.deliveryCodeBlock}>
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
-                        <Text style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 break
@@ -286,19 +288,17 @@ export default class extends Component {
                 statusBlock = (
                     <View style={styles.deliveryCodeBlock}>
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
-                        <Text style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 buttonActionBlock = (
                     <View style={styles.block}>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                         <View style={styles.row}>
-                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}><Text bold
-                                gray>Hủy
-                                giao hàng</Text></Button>
-                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}><Text bold
-                                primary>Đã
-                                giao hàng</Text></Button>
+                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}>
+                                <Text medium bold gray>{I18n.t('cancel_delivery')}</Text></Button>
+                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}>
+                                <Text medium bold primary>{I18n.t('delivered')}</Text></Button>
                         </View>
                     </View>
                 )
@@ -308,7 +308,7 @@ export default class extends Component {
                     <View style={styles.deliveryCodeBlock}>
                         {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
-                        <Text style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 break
@@ -318,13 +318,13 @@ export default class extends Component {
                     <View style={styles.deliveryCodeBlock}>
                         {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
                         <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
-                        <Text style={styles.grey}>{orderInfo.tranId}</Text>
+                        <Text medium style={styles.grey}>{orderInfo.tranId}</Text>
                     </View>
                 )
                 phoneNumberBlock = (
                     <View style={styles.row}>
                         <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
-                        <Text
+                        <Text medium
                             onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
                             style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
                     </View>
@@ -343,7 +343,7 @@ export default class extends Component {
                     <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
                         {statusBlock}
                         <View style={styles.row}>
-                            <Text style={styles.time}
+                            <Text medium style={styles.time}
                                 grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderInfo.status == 'CANCELLED' || orderInfo.status == 'FAILED') && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
@@ -361,8 +361,8 @@ export default class extends Component {
                 <View style={styles.block}>
                     <View style={{ width: '100%' }}>
                         <View style={styles.row}>
-                            <Text bold grayDark>Số món đặt giao hàng</Text>
-                            <Text grayDark>SL: <Text bold grayDark>{totalItem}</Text></Text>
+                            <Text medium bold grayDark>{I18n.t('number_order_item')}</Text>
+                            <Text medium grayDark>SL: <Text mediumbold grayDark>{totalItem}</Text></Text>
                         </View>
                     </View>
                 </View>
@@ -370,9 +370,10 @@ export default class extends Component {
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
                     <View style={styles.block}>
                         <View>
-                            <View style={styles.rowLeft}><Text bold grayDark style={styles.textLeft}>Ghi chú: </Text></View>
-                            <View style={styles.rowLeft}><Text grayDark
-                                style={styles.textLeft}>{orderInfo.note}</Text></View>
+                            <View style={styles.rowLeft}><Text medium bold grayDark style={styles.textLeft}>{I18n.t('note')}: </Text></View>
+                            <View style={styles.rowLeft}>
+                                <Text medium grayDark style={styles.textLeft}>{orderInfo.note}</Text>
+                            </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
                     </View>
@@ -381,17 +382,17 @@ export default class extends Component {
                     <View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
                         <View style={styles.row}>
                             <Icon name='account' style={styles.icon} />
-                            <Text grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
+                            <Text medium grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
                         </View>
                         {phoneNumberBlock}
                     </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text grayDark>Địa chỉ: {orderInfo.fullAddress}</Text>
+                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
                     </View>
                     <View style={styles.row}>
-                        <Text success>Đã thanh toán</Text>
-                        <Text bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
+                        <Text medium success>{I18n.t('paid')}</Text>
+                        <Text medium bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
                 {buttonActionBlock}

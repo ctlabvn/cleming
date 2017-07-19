@@ -7,16 +7,17 @@ export default {
         return apiGet('/transaction/merchantapp/list-direct', {placeId, fromTime, toTime, option, pageNumber}, xsession)
     },
     listPayWithClingme(xsession, placeId, fromTime=1320985607, toTime=1510374407, option=0, pageNumber=1) {
-        return apiGet('/transaction/merchantapp/list-clm', {placeId, fromTime, toTime, option}, xsession)
+        console.log('Call list CLM: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+        return apiGet('/transaction/merchantapp/list-clm', {placeId, fromTime, toTime, option, pageNumber}, xsession)
     },
     // /merchantapp/transaction-detail
     detail(xsession, dealTransactionId){
         console.log('Trans Detail API', xsession+'---'+dealTransactionId)
         return apiGet('/merchantapp/transaction-detail', {dealTransactionId}, xsession)
     },
-    detailPayWithClingme(xsession, clingmeId){
-        console.log('Tras Detail Clingme', xsession+'---'+clingmeId)
-        return apiGet('/merchantapp/payclm-detail', {clingmeId}, xsession)
+    detailPayWithClingme(xsession, transactionId){
+        console.log('Tras Detail Clingme', xsession+'---'+transactionId)
+        return apiGet('/merchantapp/payclm-detail', {transactionId}, xsession)
     },
     getDenyReason(xsession){
         return apiGet('/merchantapp/transaction-reason', {}, xsession)
