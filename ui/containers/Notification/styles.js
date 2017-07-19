@@ -1,4 +1,6 @@
 import material from '~/theme/variables/material'
+import { Dimensions } from 'react-native'
+const { height, width } = Dimensions.get('window');
 
 export default {
   container: {
@@ -57,5 +59,14 @@ export default {
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%'
-  }
+  },
+  emptyBlock: {
+      width: width,
+      height: height*3/4,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  underBack: {
+    color: material.gray400
+  },
 }
