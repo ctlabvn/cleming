@@ -32,7 +32,7 @@ export default {
     },
     dropdownListItem: {
         borderBottomWidth: 0,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         zIndex: 1000,
         paddingHorizontal: 25,
     },

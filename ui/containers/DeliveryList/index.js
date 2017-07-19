@@ -142,7 +142,7 @@ export default class extends Component {
     // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
-        const { session, getOrderList, clearOrderList, getMerchantNews } = this.props
+        const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
         const { selectedPlace } = this.state
         if (!selectedPlace) return
         if (isLoadMore) {
