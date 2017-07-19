@@ -102,17 +102,17 @@ export default class TransactionDetail extends Component {
     _confirmTransaction = () => {
         // console.log('Confirming', clingmeId)
         const { xsession, confirmTransaction, transaction, setToast } = this.props
-        console.log("trans", transaction)
-        confirmTransaction(xsession, this.state.transactionInfo.clingmeId,
-            (err, data) => {
-                if (data && data.updated && data.updated.data.success) {
-                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
-                    setToast(message, 'info', null, null, 3000, 'bottom')
-                    // forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
-                    this._load(this.state.transactionInfo.clingmeId)
-                }
-            }
-        )
+        console.log("trans", this.state.transactionInfo)
+        // confirmTransaction(xsession, this.state.transactionInfo.clingmeId,
+        //     (err, data) => {
+        //         if (data && data.updated && data.updated.data.success) {
+        //             let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Xác nhận thành công.</Text></View>
+        //             setToast(message, 'info', null, null, 3000, 'bottom')
+        //             // forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
+        //             this._load(this.state.transactionInfo.clingmeId)
+        //         }
+        //     }
+        // )
     }
     goPrevious = () => {
         const { xsession, transaction } = this.props
@@ -208,7 +208,9 @@ export default class TransactionDetail extends Component {
                             </View>
                             <Text medium primary>{I18n.t('help')}</Text>
                         </Button>
-                        <Button primary style={{ ...styles.feedbackClmTransaction, ...styles.backgroundPrimary }}>
+                        <Button primary style={{ ...styles.feedbackClmTransaction, ...styles.backgroundPrimary }}
+                            onPress={()=>this._confirmTransaction()}
+                        >
                             <Text medium white>{I18n.t('confirm')}</Text>
                         </Button>
                     </View>
@@ -472,11 +474,11 @@ export default class TransactionDetail extends Component {
         if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT) {
             forwardTo('transactionInputFeedback/' + this.state.transactionInfo.clingmeId + '/' + selectedValue)
         } else {
-            sendDenyReasonClm(xsession, this.state.transactionInfo.clingmeId, selectedValue, note,
+            sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
                 (err, data) => {
                     console.log('Deny Reason CLM', data)
                     if (data && data.updated && data.updated.data) {
-                        this._load(this.state.transactionInfo.clingmeId)
+                        this._load(this.state.transactionInfo.transactionId)
                     }
                 }
             )

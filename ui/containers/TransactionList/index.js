@@ -68,7 +68,6 @@ export default class extends Component {
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        return
         const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         this.setState({ currentTab: item.tabID },
@@ -128,7 +127,7 @@ export default class extends Component {
         } else {
             this.isLoadingPlace = true
         }
-        // news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
         news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
         // })
     }
@@ -136,7 +135,7 @@ export default class extends Component {
         // InteractionManager.runAfterInteractions(() => {
         const { app, news } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        // news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
+        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
         news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
         // })
     }
@@ -174,7 +173,7 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    // newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
+                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
                     newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
                 }
             }
