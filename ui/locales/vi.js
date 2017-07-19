@@ -170,6 +170,7 @@ export default  vi = {
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
     
+    'err_loading': 'Lỗi tải dữ liệu, bạn hãy thử lại!',
 
     //utils
     'day': 'ngày',
