@@ -168,7 +168,7 @@ export default class TransactionDetail extends Component {
             }
             if (!denyReasonClm || denyReasonClm.length == 0) {
                 getDenyReasonClm(xsession)
-            }
+            }            
 
         // })
 

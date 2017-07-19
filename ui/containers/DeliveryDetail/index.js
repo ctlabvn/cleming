@@ -75,7 +75,7 @@ export default class extends Component {
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
         const { app } = this.props
-        this._load()
+        this._load()        
         // })
     }
 
