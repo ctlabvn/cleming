@@ -5,10 +5,11 @@ import {View, ScrollView} from 'react-native'
 import { Text } from 'native-base'
 
 import Icon from '~/ui/elements/Icon'
-import {API_BASE} from '~/store/constants/api'
+import {MODE} from '~/store/constants/api'
 
 import {connect} from 'react-redux'
 import * as commonActions from '~/store/actions/common'
+import VersionNumber from 'react-native-version-number'
 
 @connect(null, commonActions)
 
@@ -33,7 +34,7 @@ export default class extends Component {
                         Phiên bản
                     </Text>
                     <Text medium style={styles.textContent}>
-                        1.0.22 {API_BASE == 'http://dev.clingme.net:9099' ? <Text small error> pre </Text> : ''}
+                        {VersionNumber.appVersion}{MODE == 'DEV' ? <Text small error>-PRE</Text> : ''}
                     </Text>
                     <Text large style={styles.textTitle}>
                         Liên hệ

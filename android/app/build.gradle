@@ -103,7 +103,7 @@ android {
         targetSdkVersion 22
         multiDexEnabled true
         versionCode 2
-        versionName "1.0.0"
+        versionName "1.0.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
