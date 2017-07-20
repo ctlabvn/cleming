@@ -237,6 +237,7 @@ export default class extends Component {
           </Body>
         )
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
         return (
           <Body>
             <View style={styles.listItemRow}>
@@ -262,28 +263,28 @@ export default class extends Component {
             {border}
           </Body>
         )
-      case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        return (
-          <Body>
-            <View>
-              <View>
-                <Text note style={styles.textGray}>{item.title}</Text>
-              </View>
-              <View style={styles.row}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-                <Text style={{color: material.blue600,}}>
-                  <Text style={{
-                    fontWeight: '900',
-                    color: material.blue600,
-                    fontSize: 24,
-                  }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-              </View>
-
-            </View>
-            {border}
-          </Body>
-        )
+      // case NOTIFY_TYPE.TRANSACTION_CLINGME:
+      //   return (
+      //     <Body>
+      //       <View>
+      //         <View>
+      //           <Text note style={styles.textGray}>{item.title}</Text>
+      //         </View>
+      //         <View style={styles.row}>
+      //           <Text bold style={styles.textGray}>{item.content}</Text>
+      //           <Text style={{color: material.blue600,}}>
+      //             <Text style={{
+      //               fontWeight: '900',
+      //               color: material.blue600,
+      //               fontSize: 24,
+      //             }}>{formatNumber(item.paramDouble1)}</Text>đ
+      //             </Text>
+      //         </View>
+      //
+      //       </View>
+      //       {border}
+      //     </Body>
+      //   )
       case NOTIFY_TYPE.ORDER_FEEDBACK:
         return (
           <Body>
