@@ -13,7 +13,7 @@ export default {
     {
       name: 'Khách hàng tiềm năng',
       route: 'report',
-      icon: 'report2',
+      icon: 'nearby',
     },
     {
       name: 'Notification',
