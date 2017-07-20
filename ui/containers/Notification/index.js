@@ -176,136 +176,118 @@ export default class extends Component {
       case NOTIFY_TYPE.NEW_ORDER:
         let fastDeliveryText = item.paramId3 ? <Text small style={{
           color: material.red500,
-          alignSelf: 'flex-end',
-          position: 'absolute',
-          top: 0,
-          right: 0,
         }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
         return (
-          <Body>
+            <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
+              <View style={styles.subRow}>
                 <Text note style={styles.textGray}>{item.title} </Text>
-                <Text bold style={styles.textGray}>{item.content}
-                </Text>
+                  {fastDeliveryText}
               </View>
-              {fastDeliveryText}
-              <View style={styles.rowEnd}>
-                <Icon name='want-feed' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
+
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                  <View style={styles.rowEnd}>
+                    <Icon name='want-feed' style={styles.icon}/>
+                    <Text bold>{item.paramId1}</Text>
+                  </View>
+
               </View>
             </View>
-
             {border}
 
-          </Body>)
+            </Body>
+      )
       case NOTIFY_TYPE.ORDER_CANCELLED:
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note error>{item.title} </Text>
+              <Text note error>{item.title} </Text>
+              <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
+                <View style={styles.rowEnd}>
+                  <Icon name='want-feed' style={styles.icon} />
+                  <Text bold>{item.paramId1}</Text>
+                </View>
               </View>
-              <View style={styles.rowEnd}>
-                <Icon name='want-feed' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
-              </View>
+
             </View>
             {border}
 
           </Body>)
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
         return (
-          <Body>
+            <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}
+              <Text note style={styles.textGray}>{item.title}</Text>
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <Text>
+                  <Text style={{
+                      fontWeight: '900',
+                      fontSize: 18,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
                 </Text>
               </View>
-
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-              }}>
-                <Text style={{
-                  fontWeight: '900',
-                  fontSize: 18,
-                }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-
             </View>
             {border}
-          </Body>
+            </Body>
         )
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
+          return (
+              <Body>
+              <View style={styles.listItemRow}>
+                <Text note style={styles.textGray}>{item.title}</Text>
+                <View style={styles.subRow}>
+                  <Text bold style={styles.textGray}>{item.content}</Text>
+
+                  <Text style={{ color: material.blue600,}}>
+                    <Text largeLight style={{
+                        fontWeight: '900',
+                        color: material.blue600,
+                    }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  </Text>
+                </View>
+              </View>
+              {border}
+              </Body>
+          )
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}
+              <Text note style={styles.textGray}>{item.title}</Text>
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+
+                <Text style={{ color: material.blue600,}}>
+                  <Text style={{
+                      fontWeight: '900',
+                      color: material.blue600,
+                      fontSize: 24,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
                 </Text>
               </View>
-
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-                color: material.blue600,
-              }}>
-                <Text style={{
-                  fontWeight: '900',
-                  color: material.blue600,
-                  fontSize: 24,
-                }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-
             </View>
             {border}
           </Body>
         )
-      // case NOTIFY_TYPE.TRANSACTION_CLINGME:
-      //   return (
-      //     <Body>
-      //       <View>
-      //         <View>
-      //           <Text note style={styles.textGray}>{item.title}</Text>
-      //         </View>
-      //         <View style={styles.row}>
-      //           <Text bold style={styles.textGray}>{item.content}</Text>
-      //           <Text style={{ color: material.blue600, }}>
-      //             <Text style={{
-      //               fontWeight: '900',
-      //               color: material.blue600,
-      //               fontSize: 24,
-      //             }}>{formatNumber(item.paramDouble1)}</Text>đ
-      //             </Text>
-      //         </View>
-
-      //       </View>
-      //       {border}
-      //     </Body>
-      //   )
       case NOTIFY_TYPE.ORDER_FEEDBACK:
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
+              <View style={styles.subRow}>
                 <Text note style={styles.textGray}>{item.title}</Text>
+                <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              </View>
+
+              <View style={styles.subRow}>
                 <Text numberOfLines={1} ellipsizeMode='tail'>
                   <Text bold style={styles.textGray}>{item.content}: </Text>
                   {item.paramStr2}
                 </Text>
               </View>
 
-              <Text small style={{
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
             </View>
             {border}
           </Body>
@@ -330,7 +312,7 @@ export default class extends Component {
             <View style={styles.subRow}>
               <Text bold style={styles.textGray}>{item.content}</Text>
               <Text note style={{...styles.textGray}}>
-                <Text style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
+                <Text largeLight style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
           </View>
