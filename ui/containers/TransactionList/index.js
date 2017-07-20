@@ -129,20 +129,17 @@ export default class extends Component {
 
     _updateNews = (newsData) => {
         const {user} = this.props
-        console.log('User: ', user)
+        console.log('USer: ', user)
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
             default:
-                console.log('Case Both')
                 newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
                 newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
                 break
             case TRANSACTION_DISPLAY.CLINGME:
-                console.log('Case CLM')
                 newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
                 break
             case TRANSACTION_DISPLAY.DIRECT:
-                console.log('Case Direct')
                 newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
                 break
         }
@@ -152,10 +149,13 @@ export default class extends Component {
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
             default:
+                console.log('Case Both')
                 return options.tabData
-            case TRANSACTION_DISPLAY.CLINGME: 
+            case TRANSACTION_DISPLAY.CLINGME:
+                console.log('Case Clingme') 
                 return options.tabDataClingme
             case TRANSACTION_DISPLAY.DIRECT:
+                console.log('Case Direct')
                 return options.tabDataDirect
         }
     }
@@ -202,7 +202,7 @@ export default class extends Component {
         }
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         this._updateNews(news)
-        // })
+        this.setState({currentTab: this._getDefaultActiveTab()})
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props

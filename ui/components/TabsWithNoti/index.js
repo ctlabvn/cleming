@@ -20,6 +20,16 @@ export default class TabsWithNoti extends Component {
             this.props.onPressTab(item)
         }
     }
+    componentWillReceiveProps(nextProps){
+        let activeTab = nextProps.activeTab || nextProps.tabData[0].tabID
+        console.log('Next Props: ', nextProps)
+        if (nextProps.tabData.length != this.state.tabData.length ||
+            nextProps.tabData[0].tabID != this.state.tabData[0].tabID
+        ){
+            this.setState({activeTab: activeTab, tabData: nextProps.tabData})
+        }
+        
+    }
     getActiveTab() {
         return this.state.activeTab
     }
