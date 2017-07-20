@@ -9,6 +9,7 @@ import * as commonActions from "~/store/actions/common";
 import * as placeActions from "~/store/actions/place";
 import * as orderSelectors from "~/store/selectors/order";
 import * as authSelectors from "~/store/selectors/auth";
+import * as metaActions from "~/store/actions/meta";
 import { InputField } from "~/ui/elements/Form";
 import Content from "~/ui/components/Content";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
@@ -31,13 +32,15 @@ import {
     ORDER_CANCEL,
     ORDER_SUCCESS,
     ORDER_WAITING_CONFIRM,
-    ORDER_WAITING_DELIVERY
+    ORDER_WAITING_DELIVERY,
+    SCREEN
 } from "~/store/constants/app";
 @connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-    news: getNews(state)
-}), { ...orderActions, ...commonActions, ...placeActions })
+    news: getNews(state),
+    meta: state.meta
+}), { ...orderActions, ...commonActions, ...placeActions, ...metaActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
@@ -83,7 +86,7 @@ export default class extends Component {
         // this.counting = true
         // InteractionManager.runAfterInteractions(() => {
         this.clickCount = 0
-        const { app, news, order, markWillReload } = this.props
+        const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
         //
@@ -99,6 +102,13 @@ export default class extends Component {
             this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
             this._load()
         }
+
+        if (meta[SCREEN.ORDER_LIST]){
+            console.log('Markload order list')
+            this._load()
+            clearMarkLoad(SCREEN.ORDER_LIST)
+        }
+
 
         news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
         news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
@@ -127,19 +137,6 @@ export default class extends Component {
 
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-    //         this.isLoadingPlace = false
-    //         let selectedPlace = nextProps.place.listPlace[0].placeId
-    //         this.setState({ selectedPlace: selectedPlace },
-    //             () => {
-    //                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
-    //                 this.loadPage(1, dateFilterData.from, dateFilterData.to)
-    //             }
-    //         )
-
-    //     }
-    // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
