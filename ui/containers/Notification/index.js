@@ -311,29 +311,32 @@ export default class extends Component {
         )
       default:
         return (
+          this._defaultContent(item)
+        )
+    }
+  }
+
+  _defaultContent(item) {
+      const border = <Border style={{
+          marginLeft: 15,
+          marginTop: 10,
+      }} color='rgba(0,0,0,0.5)' size={1} />
+
+      return (
           <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end',
-                ...styles.textGray
-              }}>
-                <Text style={{
-                  ...styles.textGray
-                }} bold>{formatNumber(item.paramDouble1)}</Text>đ
+          <View style={{...styles.listItemRow, flexDirection: 'column'}}>
+            <Text note style={styles.textGray}>{item.title}</Text>
+            <View style={styles.subRow}>
+              <Text bold style={styles.textGray}>{item.content}</Text>
+              <Text note style={{...styles.textGray}}>
+                <Text style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
+          </View>
 
-
-            {border}
+          {border}
           </Body>
-        )
-
-
-    }
+      )
   }
 
   handleNotiClick(notification) {

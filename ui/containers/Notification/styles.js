@@ -69,4 +69,10 @@ export default {
   underBack: {
     color: material.gray400
   },
+  subRow: {
+      height: '100%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row'
+  },
 }
