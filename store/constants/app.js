@@ -79,3 +79,10 @@ export const TRANSACTION_DISPLAY = {
     CLINGME: 1,
     DIRECT: 2,
 }
+
+export const SCREEN = {
+    TRANSACTION_LIST_DIRECT: 'transactionListDirect',
+    TRANSACTION_LIST_CLINGME: 'transactionListClingme',
+    ORDER_LIST: 'orderList',
+    BOOKING_LIST: 'bookingList'
+}

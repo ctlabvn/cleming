@@ -12,7 +12,8 @@ import Border from '~/ui/elements/Border'
 import { connect } from 'react-redux'
 import * as commonActions from '~/store/actions/common'
 import * as notificationActions from '~/store/actions/notification'
-
+import * as transactionAction from "~/store/actions/transaction"
+import * as metaAction from "~/store/actions/meta"
 import Icon from '~/ui/elements/Icon'
 import TimeAgo from '~/ui/components/TimeAgo'
 import * as commonSelectors from '~/store/selectors/common'
@@ -22,7 +23,7 @@ import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
 
-import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
 
@@ -32,7 +33,7 @@ import I18n from '~/ui/I18n'
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
   notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
-}), { ...commonActions, ...notificationActions })
+}), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 export default class extends Component {
 
   constructor(props) {
@@ -274,7 +275,7 @@ export default class extends Component {
       //         </View>
       //         <View style={styles.row}>
       //           <Text bold style={styles.textGray}>{item.content}</Text>
-      //           <Text style={{color: material.blue600,}}>
+      //           <Text style={{ color: material.blue600, }}>
       //             <Text style={{
       //               fontWeight: '900',
       //               color: material.blue600,
@@ -282,7 +283,7 @@ export default class extends Component {
       //             }}>{formatNumber(item.paramDouble1)}</Text>đ
       //             </Text>
       //         </View>
-      //
+
       //       </View>
       //       {border}
       //     </Body>
@@ -342,7 +343,7 @@ export default class extends Component {
   handleNotiClick(notification) {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
-    const { updateRead, session, updateReadOfline } = this.props
+    const { updateRead, session, updateReadOfline, markWillLoad } = this.props
     if (!notification.isRead) {
       updateReadOfline(notification.notifyId)
       updateRead(session, notification.notifyId)
@@ -354,17 +355,21 @@ export default class extends Component {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
         break
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.CLINGME)
+        markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
+        markWillLoad(SCREEN.BOOKING_LIST)
         break
       case NOTIFY_TYPE.NEW_ORDER:
       case NOTIFY_TYPE.ORDER_FEEDBACK:
       case NOTIFY_TYPE.ORDER_CANCELLED:
         this.props.forwardTo('deliveryDetail/' + paramLong3)
+        markWillLoad(SCREEN.ORDER_LIST)
         break
       default:
         break

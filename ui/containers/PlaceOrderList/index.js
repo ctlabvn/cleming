@@ -7,6 +7,7 @@ import DateFilter from "~/ui/components/DateFilter";
 import * as commonActions from "~/store/actions/common";
 import * as bookingActions from "~/store/actions/booking";
 import * as placeActions from "~/store/actions/place";
+import * as metaActions from "~/store/actions/meta";
 import {InputField} from "~/ui/elements/Form";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
@@ -27,15 +28,17 @@ import {
     DAY_WITHOUT_YEAR,
     DEFAULT_DATE_FORMAT,
     DEFAULT_HOUR_FORMAT,
-    DEFAULT_TIME_FORMAT
+    DEFAULT_TIME_FORMAT,
+    SCREEN
 } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
     modal: state.modal.modal,
-    news: getNews(state)
-}), { ...commonActions, ...bookingActions, ...placeActions }, null, { withRef: true })
+    news: getNews(state),
+    meta: state.meta
+}), { ...commonActions, ...bookingActions, ...placeActions, ...metaActions }, null, { withRef: true })
 export default class PlaceOrderList extends Component {
 
     constructor(props) {
@@ -277,14 +280,21 @@ export default class PlaceOrderList extends Component {
         // })
     }
     componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
-            const { app, news } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            this.setState({ counting: true })
-            if (news && news.bookingNews) {
-                this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+        const { app, news, clearMarkLoad } = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        this.setState({ counting: true })
+        if (news && news.bookingNews) {
+            this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+        }
+        if (meta[SCREEN.BOOKING_LIST]){
+            console.log('Markload booking')
+            let selectedPlace = app.topDropdown.getValue()
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
             }
-        // })
+            clearMarkLoad(SCREEN.BOOKING_LIST)
+        }
     }
     componentWillBlur() {
         // InteractionManager.runAfterInteractions(() => {

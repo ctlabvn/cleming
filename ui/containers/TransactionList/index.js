@@ -8,6 +8,7 @@ import * as commonAction from "~/store/actions/common";
 import * as transactionAction from "~/store/actions/transaction";
 import * as authActions from "~/store/actions/auth";
 import * as placeActions from "~/store/actions/place";
+import * as metaActions from "~/store/actions/meta";
 import TransactionFilter from "~/ui/components/TransactionFilter";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
@@ -26,7 +27,8 @@ import {
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT,
-    TRANSACTION_DISPLAY
+    TRANSACTION_DISPLAY,
+    SCREEN
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 
@@ -35,8 +37,9 @@ import I18n from '~/ui/I18n'
     user: getUser(state),
     news: getNews(state),
     payDirect: getListTransactionDirect(state),
-    payWithClingme: getListTransactionCLM(state)
-}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
+    payWithClingme: getListTransactionCLM(state),
+    meta: state.meta    
+}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -180,7 +183,23 @@ export default class extends Component {
     }
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
-        const { app, news } = this.props
+        const { app, news, meta, clearMarkLoad } = this.props
+        console.log('Meta', meta)
+        if (meta[SCREEN.TRANSACTION_LIST_DIRECT]){
+            console.log('Markload transaction direct')
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let currentPlace = app.topDropdown.getValue()
+            let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        }else if(meta[SCREEN.TRANSACTION_LIST_CLINGME]){
+            console.log('Markload transaction clingme')
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let currentPlace = app.topDropdown.getValue()
+            let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         this._updateNews(news)
         // })
