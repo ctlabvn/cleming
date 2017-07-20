@@ -6,7 +6,7 @@ import {
     Button, List, ListItem, Switch, Spinner, CheckBox, Thumbnail,
     Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
 } from 'native-base'
-import { Text, Platform, Image } from 'react-native'
+import { Text, Platform, Image, Keyboard } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 // var RNUploader = require('react-native-uploader');
@@ -163,6 +163,7 @@ export default class UpdateUserContainer extends Component {
     
     onSubmitUserInfo() {
       console.log(this.props.formValues)
+        Keyboard.dismiss();
       let data = {
         fullName: this.props.formValues.name || '',
         email: this.props.formValues.email,
