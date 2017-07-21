@@ -45,6 +45,7 @@ export default class TransactionDetail extends Component {
             page: 1 // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading
         }
         this.swiping = false
+        this.confirmCounter = 0
     }
     _renderStatus(status) {
         switch (status) {
@@ -101,14 +102,17 @@ export default class TransactionDetail extends Component {
     }
     _confirmTransaction = () => {
         // console.log('Confirming', clingmeId)
+        if (this.confirmCounter > 0) return
+        this.confirmCounter ++
         const { xsession, confirmTransaction, transaction, setToast } = this.props
         console.log("trans", this.state.transactionInfo)
         confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
             (err, data) => {
+                this.confirmCounter = 0
                 console.log('Confirm Err', err)
                 console.log('Confirm Data', data)
                 if (chainParse(data, ['updated', 'data', 'success'])) {
-                    setToast(getToastMessage('Xác nhận thành công.'), 'info', null, null, 3000, 'top')
+                    setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 3000, 'top')
                     this._load(this.state.transactionInfo.transactionId)
                 }
             }
@@ -180,6 +184,7 @@ export default class TransactionDetail extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
+        this.confirmCounter = 0
         this._goToMiddlePage()
         let transactionId = route.params.id
         let transactionType = route.params.type
@@ -210,7 +215,7 @@ export default class TransactionDetail extends Component {
                             </View>
                             <Text medium primary>{I18n.t('help')}</Text>
                         </Button>
-                        <Button primary style={{ ...styles.feedbackClmTransaction, ...styles.backgroundPrimary }}
+                        <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
                             onPress={()=>this._confirmTransaction()}
                         >
                             <Text medium white>{I18n.t('confirm')}</Text>
@@ -476,7 +481,7 @@ export default class TransactionDetail extends Component {
             (err, data) => {
                 console.log('Deny Reason CLM', data)
                 if (chainParse(data, ['updated', 'data', 'success'])) {
-                    setToast(getToastMessage('Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                    setToast(getToastMessage(I18n.t('feedback_message')), 'info', null, null, 3000, 'top')
                 }
             }
         )
