@@ -283,10 +283,10 @@ export default class extends Component {
                                 <Text medium bold grayDark>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text strong bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text grayDark><Text large bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text largeLight bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
                                 <Text medium primary>{I18n.t('paid')}</Text>

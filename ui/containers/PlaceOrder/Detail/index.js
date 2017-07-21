@@ -220,7 +220,7 @@ export default class PlaceOrderDetail extends Component {
                     </View>
                     <View style={styles.codeContainer}>
                         <Text medium style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
-                        <Text large primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
+                        <Text largeLight primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>
 

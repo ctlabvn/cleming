@@ -242,7 +242,7 @@ export default class extends Component {
                   <Text bold style={styles.textGray}>{item.content}</Text>
 
                   <Text style={{ color: material.blue600,}}>
-                    <Text largeLight style={{
+                    <Text strong style={{
                         fontWeight: '900',
                         color: material.blue600,
                     }}>{formatNumber(item.paramDouble1)}</Text>đ
@@ -312,7 +312,7 @@ export default class extends Component {
             <View style={styles.subRow}>
               <Text bold style={styles.textGray}>{item.content}</Text>
               <Text note style={{...styles.textGray}}>
-                <Text largeLight style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
+                <Text strong style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
           </View>
@@ -366,7 +366,7 @@ export default class extends Component {
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
         >
-            {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text largeLight bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
+            {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
             <ListView
               removeClippedSubviews={false}

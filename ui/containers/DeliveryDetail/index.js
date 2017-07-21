@@ -197,8 +197,8 @@ export default class extends Component {
                 </View>
                 <View style={styles.line} />
                 <View style={styles.rowPadding}>
-                    <Text largeLight grayDark>{I18n.t('total_pay')}: </Text>
-                    <Text largeLight bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                    <Text strong grayDark>{I18n.t('total_pay')}: </Text>
+                    <Text strong bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                 </View>
             </View>
         )
@@ -213,7 +213,7 @@ export default class extends Component {
         let otherRequireBlock = (
             <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
                 <Text medium grayDark>{I18n.t('other_require')}</Text>
-                <Text largeLight bold grayDark>{chainParse(orderDetail, ['orderInfo', 'note'])}</Text>
+                <Text strong bold grayDark>{chainParse(orderDetail, ['orderInfo', 'note'])}</Text>
             </View>
         )
 
@@ -273,13 +273,13 @@ export default class extends Component {
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
                         <Text medium  grayDark>{I18n.t('deliver_address')}</Text>
-                        <Text largeLight bold grayDark>{orderDetail.orderInfo.fullAddress}</Text>
+                        <Text strong bold grayDark>{orderDetail.orderInfo.fullAddress}</Text>
                     </View>
 
 
                     <View style={styles.rowPaddingTopLarge}>
                         <Text medium grayDark>{I18n.t('receive_user')}</Text>
-                        <Text largeLight bold grayDark>{chainParse(orderDetail, ['orderInfo', 'userInfo', 'memberName'])}</Text>
+                        <Text strong bold grayDark>{chainParse(orderDetail, ['orderInfo', 'userInfo', 'memberName'])}</Text>
                     </View>
                     <View style={styles.rowPaddingTopMedium}>
                         <Text medium grayDark>{I18n.t('phone_number')}</Text>
@@ -292,7 +292,7 @@ export default class extends Component {
                             <View style={styles.row}>
 
                                 <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
-                                <Text largeLight bold
+                                <Text strong bold
                                     primary>{formatPhoneNumber(chainParse(orderDetail, ['orderInfo', 'userInfo', 'phoneNumber']))}</Text>
 
                             </View>
@@ -325,7 +325,7 @@ export default class extends Component {
                                         <Text medium grayDark style={styles.textLeft}>{I18n.t('number_full')}: {item.quantity}</Text>
                                     </View>
                                 </View>
-                                <Text largeLight bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
+                                <Text strong bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
                             </ListItem>
                         )
                         }>

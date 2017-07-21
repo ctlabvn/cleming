@@ -201,7 +201,7 @@ export default class TransactionDetail extends Component {
             let payStatus, helpBtn = null
             // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
             if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text largeLight success bold>{I18n.t('paid')}</Text>
+                payStatus = <Text strong success bold>{I18n.t('paid')}</Text>
                 helpBtn =
                     <View style={styles.rowPaddingFull}>
                         <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
@@ -241,7 +241,7 @@ export default class TransactionDetail extends Component {
                         </View>
                         <View style={styles.blockCenter}>
                             <Text medium gray>{I18n.t('clingme_fee')}</Text>
-                            <Text large bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
+                            <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                         </View>
                         <View style={styles.row}>
                             <Text medium>{I18n.t('customer')}</Text>

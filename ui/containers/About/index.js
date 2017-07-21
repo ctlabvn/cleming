@@ -22,17 +22,17 @@ export default class extends Component {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Icon name="logo" style={styles.logoIcon}/>
-                    <Text large style={{...styles.textTitle, marginTop: 15}}>
+                    <Text largeLight style={{...styles.textTitle, marginTop: 15}}>
                         Giới thiệu
                     </Text>
                     <Text medium style={styles.textContent}>
-                        <Text largeLight bold style={styles.textRed}>Clingme</Text> – Đi Gần, Chọn Đúng; thấu hiểu hành
+                        <Text strong bold style={styles.textRed}>Clingme</Text> – Đi Gần, Chọn Đúng; thấu hiểu hành
                         vi người dùng để gợi ý, tư vấn những cửa hàng xung
                         quanh phù hợp, thuận tiện.
                         Qua đó, Clingme cũng mang lại những khách hàng mới và trung thành tới cho quý đối tác.
                     </Text>
                     <Text medium style={styles.textContent}>
-                        Ứng dụng <Text><Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> được
+                        Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> được
                         Clingme xây dựng dành riêng cho các đối tác hợp
                         tác bán hàng trên Clingme.
                         Với ứng dụng này, đối tác có thể:
@@ -81,19 +81,19 @@ export default class extends Component {
                             <Icon name="pin_location" style={{...styles.indicatorIcon, color: material.green400}}/>
                         </View>
                         <Text medium style={styles.textSubContent}>
-                            Đặc biệt hơn, Ứng dụng <Text><Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> còn cho phép đối tác tự tạo chương
+                            Đặc biệt hơn, Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> còn cho phép đối tác tự tạo chương
                             trình
                             ưu đãi và ngay lập tức tiếp cận tới hàng trăm ngàn người dùng Clingme.
                         </Text>
                     </View>
 
-                    <Text large style={styles.textTitle}>
+                    <Text largeLight style={styles.textTitle}>
                         Phiên bản
                     </Text>
                     <Text medium style={styles.textContent}>
                         {VersionNumber.appVersion}{MODE == 'DEV' && <Text><Text small error>-PRE</Text></Text>}
                     </Text>
-                    <Text large style={styles.textTitle}>
+                    <Text largeLight style={styles.textTitle}>
                         Liên hệ
                     </Text>
                     <Text medium style={{...styles.textContent, ...styles.textBlue}}>
