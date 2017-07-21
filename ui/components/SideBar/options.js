@@ -46,7 +46,7 @@ export default {
 
         {
             name: 'Trợ giúp',
-            route: 'comingSoon',
+            route: 'help',
             icon: 'help',
         },
 

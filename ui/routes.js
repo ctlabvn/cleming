@@ -145,6 +145,7 @@ export default {
     help:{
         title: 'Help',
         Page: Help,
+        headerType: 'back',
     },
     listdeal: {
         title: 'List Deal',
