@@ -158,7 +158,7 @@ export default class Report extends Component {
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='month' type='lite' />
                     <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
