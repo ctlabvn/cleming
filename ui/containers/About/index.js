@@ -91,7 +91,7 @@ export default class extends Component {
                         Phiên bản
                     </Text>
                     <Text medium style={styles.textContent}>
-                        {VersionNumber.appVersion}{MODE == 'DEV' && <Text small error>-PRE</Text>}
+                        {VersionNumber.appVersion}{MODE == 'DEV' && <Text><Text small error>-PRE</Text></Text>}
                     </Text>
                     <Text large style={styles.textTitle}>
                         Liên hệ
