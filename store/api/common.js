@@ -31,10 +31,7 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
     let xDataVersion = 1
     let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
     let xAuthStr = options.method == 'GET' ? ""+xDataVersion+xVersion+xTimeStamp+SECRET_KEY : ""+xDataVersion+xVersion+xTimeStamp+SECRET_KEY+options.body
-    console.log('Options FetchJSON', options)
-    console.log('xAUTH Str', xAuthStr)
     let xAuth = SHA256(xAuthStr).toString(CryptoJS.enc.Hex)
-    console.log('xAuth Hex', xAuth)
 
   return fetch(/^(?:https?)?:\/\//.test(url) ? url : base + url, {
     ...options,
