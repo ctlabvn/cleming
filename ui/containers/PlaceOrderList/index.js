@@ -280,13 +280,13 @@ export default class PlaceOrderList extends Component {
         // })
     }
     componentWillFocus() {
-        const { app, news, clearMarkLoad } = this.props
+        const { app, news, clearMarkLoad, meta } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         this.setState({ counting: true })
         if (news && news.bookingNews) {
             this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
         }
-        if (meta[SCREEN.BOOKING_LIST]){
+        if (meta && meta[SCREEN.BOOKING_LIST]){
             console.log('Markload booking')
             let selectedPlace = app.topDropdown.getValue()
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value

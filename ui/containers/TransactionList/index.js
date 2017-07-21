@@ -184,15 +184,14 @@ export default class extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const { app, news, meta, clearMarkLoad } = this.props
-        console.log('Meta', meta)
-        if (meta[SCREEN.TRANSACTION_LIST_DIRECT]){
+        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
             console.log('Markload transaction direct')
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let currentPlace = app.topDropdown.getValue()
             let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-        }else if(meta[SCREEN.TRANSACTION_LIST_CLINGME]){
+        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
             console.log('Markload transaction clingme')
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let currentPlace = app.topDropdown.getValue()

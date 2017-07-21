@@ -103,7 +103,7 @@ export default class extends Component {
             this._load()
         }
 
-        if (meta[SCREEN.ORDER_LIST]){
+        if (meta && meta[SCREEN.ORDER_LIST]){
             console.log('Markload order list')
             this._load()
             clearMarkLoad(SCREEN.ORDER_LIST)
