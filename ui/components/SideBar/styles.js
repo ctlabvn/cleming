@@ -68,7 +68,7 @@ export default {
     fontWeight: '300',    
     textAlign: 'center',    
     color: '#FFF',
-    marginLeft: 15,
+    marginLeft: 10,
   },
   iconTextLast: {
     color: '#ce2d30',
@@ -78,7 +78,7 @@ export default {
     fontSize: 20,
     width: 25,
     color: 'white',
-    marginLeft: 3,
+    marginLeft: 20,
     marginRight: 3
   }
 };
