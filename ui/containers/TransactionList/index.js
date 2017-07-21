@@ -289,7 +289,7 @@ export default class extends Component {
                                 <Text grayDark><Text large bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
-                                <Text small primary>{I18n.t('paid')}</Text>
+                                <Text medium primary>{I18n.t('paid')}</Text>
                                 <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.transactionId)}>
                                     <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
@@ -306,15 +306,15 @@ export default class extends Component {
                     >
                         <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text medium style={styles.timestamp} grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                                 <Text bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
 
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text small grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
+                                <Text medium grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
                             </View>
                             <View style={styles.rowPadding}>
-                                <Text success small>{I18n.t('confirmed')}</Text>
+                                <Text medium success>{I18n.t('confirmed')}</Text>
                                 <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
@@ -334,9 +334,9 @@ export default class extends Component {
                         <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
                     </View>
                 )
-                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
+                statusText = <Text medium warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                timeBlock = <Text medium style={styles.timestamp} grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
                 iconBlock = (
@@ -344,9 +344,9 @@ export default class extends Component {
                         <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
                     </View>
                 )
-                statusText = <Text small grayDark>{I18n.t('cashback_success')}</Text>
+                statusText = <Text medium grayDark>{I18n.t('cashback_success')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                timeBlock = <Text medium style={styles.timestamp} grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
                 iconBlock = (
@@ -354,7 +354,7 @@ export default class extends Component {
                         <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
                     </View>
                 )
-                statusText = <Text small error>{I18n.t('reject')}</Text>
+                statusText = <Text medium  error>{I18n.t('reject')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
                 moneyText = <Text bold gray style={styles.moneyNumber}></Text>
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
@@ -365,9 +365,9 @@ export default class extends Component {
                         <Icon name='order-history' style={styles.icon} />
                     </View>
                 )
-                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
+                statusText = <Text medium warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                timeBlock = <Text medium style={styles.timestamp} grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         }
         return (
             <ListItem
