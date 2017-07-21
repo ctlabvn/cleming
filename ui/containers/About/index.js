@@ -32,7 +32,7 @@ export default class extends Component {
                         Qua đó, Clingme cũng mang lại những khách hàng mới và trung thành tới cho quý đối tác.
                     </Text>
                     <Text medium style={styles.textContent}>
-                        Ứng dụng <Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text> được
+                        Ứng dụng <Text><Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> được
                         Clingme xây dựng dành riêng cho các đối tác hợp
                         tác bán hàng trên Clingme.
                         Với ứng dụng này, đối tác có thể:
@@ -81,7 +81,7 @@ export default class extends Component {
                             <Icon name="pin_location" style={{...styles.indicatorIcon, color: material.green400}}/>
                         </View>
                         <Text medium style={styles.textSubContent}>
-                            Đặc biệt hơn, Ứng dụng <Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text> còn cho phép đối tác tự tạo chương
+                            Đặc biệt hơn, Ứng dụng <Text><Text largeLight bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> còn cho phép đối tác tự tạo chương
                             trình
                             ưu đãi và ngay lập tức tiếp cận tới hàng trăm ngàn người dùng Clingme.
                         </Text>
