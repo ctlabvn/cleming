@@ -73,5 +73,12 @@ export default {
   iconTextLast: {
     color: '#ce2d30',
     paddingLeft: 20,
+  },
+  iconStyle: {
+    fontSize: 20,
+    width: 25,
+    color: 'white',
+    marginLeft: 3,
+    marginRight: 3
   }
 };

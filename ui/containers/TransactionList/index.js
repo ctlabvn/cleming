@@ -201,7 +201,29 @@ export default class extends Component {
         }
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         this._updateNews(news)
-        this.setState({currentTab: this._getDefaultActiveTab()})
+        this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
+    }
+    _isNeedUpdateTab(){
+        const {user} = this.props
+        let tabData = this.refs.tabs.getData()
+        console.log('Tab Data', tabData)
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+                if (tabData.length == 1){
+                    return true
+                }
+            case TRANSACTION_DISPLAY.DIRECT:
+                if (tabData.length == 2 || tabData[0].tabID != options.tabDataDirect){
+                    return true
+                }
+            case TRANSACTION_DISPLAY.CLINGME: 
+                if (tabData.length == 2 || tabData[0].tabID != options.tabDataClingme){
+                    return true
+                }
+            default:
+                return false
+        }
+        return true
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props

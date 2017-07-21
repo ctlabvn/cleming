@@ -408,7 +408,11 @@ export default {
         alignItems: 'center'
     },
     confirmButton: {
-        backgroundColor: material.primaryColor
+        backgroundColor: material.primaryColor,
+        width: '45%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     round20: {
         width: 20,

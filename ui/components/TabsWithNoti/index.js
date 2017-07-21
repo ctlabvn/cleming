@@ -14,6 +14,9 @@ export default class TabsWithNoti extends Component {
             tabData: props.tabData
         }
     }
+    getData = ()=>{
+        return this.state.tabData
+    }
     _handlePressTab(item) {
         if (this.state.activeTab != item.tabID) {
             this.setState({ activeTab: item.tabID })

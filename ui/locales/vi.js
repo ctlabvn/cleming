@@ -41,6 +41,8 @@ export default  vi = {
     'total_pay': 'Tổng tiền thanh toán',
     'order_number': 'Số đơn hàng',
     'help': 'Trợ giúp',
+    'confirm_success':'Xác nhận thành công.',
+    'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',
