@@ -37,6 +37,10 @@ export default class Report extends Component {
         this.showMap = false
         this.mapWidth = 0
         this.mapHeight = 0
+        if (props.app && props.app.topDropdown){
+            let selectedPlace = props.app.topDropdown.getValue()
+            this.currentPlace = selectedPlace.id
+        }
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
         const { xsession, getMapReport } = this.props
@@ -65,6 +69,7 @@ export default class Report extends Component {
     }
     _loadAndFocus(placeId, fromTime, toTime) {
         const { place, getMerchantNews, xsession } = this.props
+        this.currentPlace = placeId
         if (place && place.listPlace && place.listPlace.length > 0) {
             let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
             console.log('Focus Merchant', focusMerchant)

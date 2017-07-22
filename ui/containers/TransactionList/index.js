@@ -240,6 +240,7 @@ export default class extends Component {
         return false
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
+        this.currentPlace = placeId
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {

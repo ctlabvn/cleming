@@ -53,6 +53,10 @@ export default class PlaceOrderList extends Component {
         this.isLoadingPlace = false
         this.selectTab = BOOKING_WAITING_CONFIRM
         this.currentPlace = -1
+        if (props.app && props.app.topDropdown){
+            let selectedPlace = props.app.topDropdown.getValue()
+            this.currentPlace = selectedPlace.id
+        }
     }
 
     onDetailPlacePress() {
@@ -235,6 +239,7 @@ export default class PlaceOrderList extends Component {
     // resultNumber: int, //số lượng kết quả,
     // isLast: boolean, //có phải là trang cuối cùng hay không
     _load(placeId, fromTime, toTime, status, isLoadMore = false, page = 0) {
+        this.currentPlace = placeId
         const { xsession, clearBookingList, getMerchantNews } = this.props
         if (isLoadMore) {
             this.setState({ loadingMore: true })
