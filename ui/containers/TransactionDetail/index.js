@@ -62,7 +62,7 @@ export default class TransactionDetail extends Component {
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text white>{I18n.t('transaction_not_accept')}</Text></Button>)
+                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_not_accept')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -274,11 +274,11 @@ export default class TransactionDetail extends Component {
                     <View style={styles.container}>
                         <View style={styles.topPart}>
                             <View style={styles.rowPadding}>
-                                <Text medium>{transactionInfo.placeAddress}</Text>
+                                <Text grayDark medium>{transactionInfo.placeAddress}</Text>
                             </View>
                             <View style={styles.rowPadding}>
                                 <View style={styles.transactionContent}>
-                                    <Text medium>{I18n.t('bill_number')}: </Text>
+                                    <Text grayDark medium>{I18n.t('bill_number')}: </Text>
                                     <Text medium primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                                 </View>
                                 <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
@@ -288,44 +288,44 @@ export default class TransactionDetail extends Component {
                             {this._renderStatus(transactionInfo.transactionStatus)}
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text medium style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
+                            <Text medium grayDark style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
                             <View style={styles.row}>
                                 <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
                                 <Text medium bold style={styles.primary}>{I18n.t('method_pay_direct')}</Text>
                             </View>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text medium style={styles.userLabel}>{I18n.t('customer')}:</Text>
+                            <Text medium grayDark style={styles.userLabel}>{I18n.t('customer')}:</Text>
                             <View style={styles.userContent}>
-                                <Text medium bold>{transactionInfo.userName}</Text>
+                                <Text medium grayDark bold>{transactionInfo.userName}</Text>
                                 {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
                                 <Icon style={{ ...styles.icon, marginLeft: 7 }} name='account' />
                             </View>
                         </View>
 
                         <View style={styles.rowPadding}>
-                            <Text medium>{I18n.t('view')}:</Text>
-                            <Text medium bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text medium grayDark>{I18n.t('view')}:</Text>
+                            <Text medium grayDark bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text medium>{I18n.t('mark')}:</Text>
-                            <Text medium bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text medium grayDark>{I18n.t('mark')}:</Text>
+                            <Text medium grayDark bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         <View style={styles.rowPadding}>
-                            <Text medium>{I18n.t('shot_bill')}:</Text>
-                            <Text medium bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                            <Text medium grayDark>{I18n.t('shot_bill')}:</Text>
+                            <Text medium grayDark bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                         </View>
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.rowPadding}>
-                                <Text medium>{I18n.t('export_bill')}:</Text>
-                                <Text medium bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                                <Text medium grayDark>{I18n.t('export_bill')}:</Text>
+                                <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             </View>
                         }
 
                         {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                             <View style={styles.invoiceBlock}>
-                                <Text medium style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
-                                <Text medium style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
+                                <Text medium grayDark style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
+                                <Text medium grayDark style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                             </View>
                         }
                         <View style={styles.borderBlock}>
