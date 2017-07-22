@@ -52,6 +52,7 @@ export default class PlaceOrderList extends Component {
         }
         this.isLoadingPlace = false
         this.selectTab = BOOKING_WAITING_CONFIRM
+        this.currentPlace = -1
     }
 
     onDetailPlacePress() {
@@ -212,6 +213,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _handleTopDrowpdown = (item) => {
+        this.currentPlace = item.id
         const { booking, xsession, forwardTo } = this.props
         // setSelectedOption(item)
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -286,6 +288,9 @@ export default class PlaceOrderList extends Component {
         if (news && news.bookingNews) {
             this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
         }
+        let selectedPlace = app.topDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        
         if (meta && meta[SCREEN.BOOKING_LIST]){
             console.log('Markload booking')
             let selectedPlace = app.topDropdown.getValue()
@@ -294,6 +299,8 @@ export default class PlaceOrderList extends Component {
                 this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
             }
             clearMarkLoad(SCREEN.BOOKING_LIST)
+        }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
     }
     componentWillBlur() {

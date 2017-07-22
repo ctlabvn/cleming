@@ -93,17 +93,20 @@ export default class extends Component {
         let placeDropdownValue = app.topDropdown.getValue()
         if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
             let selectedPlace = placeDropdownValue.id
-            this.setState({selectedPlace: selectedPlace})
+            if (selectedPlace != this.state.selectedPlace){
+                this.setState({selectedPlace: selectedPlace},
+                    ()=>this._load()
+                )
+            }
         }
+        
         //Effect within 1 munites from markTime
         if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
             markWillReload(false)
             this.selectedStatus = ORDER_WAITING_DELIVERY
             this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
             this._load()
-        }
-
-        if (meta && meta[SCREEN.ORDER_LIST]){
+        }else if (meta && meta[SCREEN.ORDER_LIST]){
             console.log('Markload order list')
             this._load()
             clearMarkLoad(SCREEN.ORDER_LIST)
