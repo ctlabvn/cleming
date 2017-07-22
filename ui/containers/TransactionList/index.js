@@ -19,7 +19,6 @@ import Content from "~/ui/components/Content";
 import { getSession, getUser } from "~/store/selectors/auth";
 import { getNews } from "~/store/selectors/place";
 import { getListTransactionCLM, getListTransactionDirect } from "~/store/selectors/transaction";
-// import { getSelectedPlace } from '~/store/selectors/place'
 import options from "./options";
 import material from "~/theme/variables/material.js";
 import {
@@ -50,6 +49,7 @@ export default class extends Component {
         }
         console.log('State constructor', this.state)
         this.isLoadingPlace = false
+        this.currentPlace = -1
 
     }
     // need filter transaction type
@@ -100,6 +100,7 @@ export default class extends Component {
     _handleTopDrowpdown = (item) => {
         // setSelectedOption(item)
         console.log('Handle Change TopDropdown', item)
+        this.currentPlace = item.id
         const { xsession } = this.props
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
@@ -184,21 +185,21 @@ export default class extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const { app, news, meta, clearMarkLoad } = this.props
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
             console.log('Markload transaction direct')
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            let currentPlace = app.topDropdown.getValue()
-            let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
         }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
             console.log('Markload transaction clingme')
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            let currentPlace = app.topDropdown.getValue()
-            let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }else if(currentPlace.id != this.currentPlace){
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         }
+        
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         this._updateNews(news)
         this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
@@ -455,11 +456,6 @@ export default class extends Component {
                 </View>
             )
         }
-        // let dropdownValues = place.listPlace.map(item => ({
-        //     id: item.placeId,
-        //     name: item.address
-        // }))
-
         // let noData = null
         // if (transaction.listTransaction && transaction.listTransaction.length == 0) {
         //     noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>

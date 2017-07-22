@@ -32,6 +32,7 @@ export default class Report extends Component {
             },
             focusMerchant: {}
         }
+        this.currentPlace = -1
         this.isLoadingPlace = false
         this.showMap = false
         this.mapWidth = 0
@@ -63,7 +64,7 @@ export default class Report extends Component {
         }
     }
     _loadAndFocus(placeId, fromTime, toTime) {
-        const { place } = this.props
+        const { place, getMerchantNews, xsession } = this.props
         if (place && place.listPlace && place.listPlace.length > 0) {
             let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
             console.log('Focus Merchant', focusMerchant)
@@ -79,6 +80,7 @@ export default class Report extends Component {
         }
 
         this._requestMapData(placeId, fromTime, toTime)
+        getMerchantNews(xsession, placeId)
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -101,15 +103,16 @@ export default class Report extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
-            // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            // let selectedPlace = app.topDropdown.getValue()
-            // if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-            //     this.isLoadingPlace = true
-            //     return
-            // }
-            // setTimeout(() => {
-            //     this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-            // }, 500)
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let selectedPlace = app.topDropdown.getValue()  
+            console.log('Current Place:', this.currentPlace)
+            console.log('Selected Place:', selectedPlace)
+            if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                this.isLoadingPlace = true
+                return
+            }else if(this.currentPlace!=selectedPlace.id){
+                this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+            }
         })
     }
     _regionChange = (region) => {
@@ -131,6 +134,7 @@ export default class Report extends Component {
     }
 
     _handleTopDropdown = (item) => {
+        this.currentPlace = item.id
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._loadAndFocus(item.id, dateFilterData.from, dateFilterData.to)
     }
