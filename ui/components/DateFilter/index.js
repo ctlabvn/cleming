@@ -93,9 +93,11 @@ export default class DateFilter extends Component {
         // }, 0)
     }
 
-    componentDidUpdate() {
-        // this.refs.dateFilterList.scrollToEnd({ animated: false })
+    shouldComponentUpdate(nextProps, nextState){
+
+        return (this.state.currentSelectValue != nextState.currentSelectValue)
     }
+
     _getDataForFilter(filterType) {
         if (filterType == 'day') {
             // lastest 7 days
@@ -257,6 +259,7 @@ export default class DateFilter extends Component {
         }
     }
     render() {
+        console.log('Render dateFilter')
         const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
 

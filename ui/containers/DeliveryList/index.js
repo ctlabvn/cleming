@@ -112,10 +112,16 @@ export default class extends Component {
             clearMarkLoad(SCREEN.ORDER_LIST)
         }
 
-
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-
+        news && this.refs.tabs.updateMultipleNumber([
+            {
+                tabID: ORDER_WAITING_CONFIRM,
+                number: news.orderWaitConfirm
+            },
+            {
+                tabID: ORDER_WAITING_DELIVERY,
+                number: news.orderWaitDelivery
+            }
+        ])
         this.setState({ counting: true })
         // })
     }
@@ -125,8 +131,16 @@ export default class extends Component {
         const { app, news } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         this._load()
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+        news && this.refs.tabs.updateMultipleNumber([
+            {
+                tabID: ORDER_WAITING_CONFIRM,
+                number: news.orderWaitConfirm
+            },
+            {
+                tabID: ORDER_WAITING_DELIVERY,
+                number: news.orderWaitDelivery
+            }
+        ])
 
         // })
 

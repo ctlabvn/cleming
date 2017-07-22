@@ -31,7 +31,19 @@ export default class RadioPopup extends Component {
     _handlePressRadio(item) {
         this.setState({ selectedValue: item.value })
     }
+    _isDiff(item1, item2){
+        return ((item1.display!=item2.display) || (item1.value!=item2.value))
+    }
+    shouldComponentUpdate(nextProps, nextState){
+        return (this.state.modalVisible != nextState.modalVisible
+            || this.state.selectedValue != nextState.selectedValue
+            || this.state.listValue.length != nextState.listValue.length
+            || this._isDiff(this.state.listValue[0], nextState.listValue[0])
+        )
+    }
+
     render() {
+        console.log('Radio Popup render')
         const selectedValue = this.state.selectedValue || this.state.listValue[0].value
         return (
             <Modal

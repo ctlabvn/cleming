@@ -47,10 +47,13 @@ export default class extends Component {
             loading: false,
             loadingMore: false
         }
-        console.log('State constructor', this.state)
+        
         this.isLoadingPlace = false
         this.currentPlace = -1
-
+        if (props.app && props.app.topDropdown){
+            let selectedPlace = props.app.topDropdown.getValue()
+            this.currentPlace = selectedPlace.id
+        }
     }
     // need filter transaction type
     _handlePressFilter(item) {
@@ -130,12 +133,23 @@ export default class extends Component {
 
     _updateNews = (newsData) => {
         const {user} = this.props
-        console.log('USer: ', user)
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
             default:
-                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
-                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                newsData && this.refs.tabs.updateMultipleNumber(
+                    [
+                        {
+                            tabID: TRANSACTION_TYPE_CLINGME,
+                            number: newsData.payThroughClmNotifyNumber
+                        },
+                        {
+                            tabID: TRANSACTION_TYPE_DIRECT,
+                            number: newsData.payDirectionNotifyNumber
+                        }
+                    ]
+                )
                 break
             case TRANSACTION_DISPLAY.CLINGME:
                 newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
@@ -150,13 +164,10 @@ export default class extends Component {
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
             default:
-                console.log('Case Both')
                 return options.tabData
             case TRANSACTION_DISPLAY.CLINGME:
-                console.log('Case Clingme') 
                 return options.tabDataClingme
             case TRANSACTION_DISPLAY.DIRECT:
-                console.log('Case Direct')
                 return options.tabDataDirect
         }
     }
@@ -207,24 +218,26 @@ export default class extends Component {
     _isNeedUpdateTab(){
         const {user} = this.props
         let tabData = this.refs.tabs.getData()
-        console.log('Tab Data', tabData)
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
                 if (tabData.length == 1){
                     return true
                 }
+                break
             case TRANSACTION_DISPLAY.DIRECT:
-                if (tabData.length == 2 || tabData[0].tabID != options.tabDataDirect){
+                if (tabData.length == 2 || tabData[0].tabID != TRANSACTION_TYPE_DIRECT){
                     return true
                 }
+                break
             case TRANSACTION_DISPLAY.CLINGME: 
-                if (tabData.length == 2 || tabData[0].tabID != options.tabDataClingme){
+                if (tabData.length == 2 || tabData[0].tabID != TRANSACTION_TYPE_CLINGME){
                     return true
                 }
+                break
             default:
                 return false
         }
-        return true
+        return false
     }
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props
@@ -234,7 +247,6 @@ export default class extends Component {
         } else {
             this.setState({ loading: true })
         }
-        console.log('_load', this.state)
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 (err, data) => {

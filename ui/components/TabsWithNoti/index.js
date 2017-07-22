@@ -30,8 +30,29 @@ export default class TabsWithNoti extends Component {
         ){
             this.setState({activeTab: activeTab, tabData: nextProps.tabData})
         }
-        
     }
+    _isDiff = (item1, item2) => {
+        return (item1.tabID != item2.tabID 
+            || item1.text != item2.text
+            || (item1.number != item2.number)
+        )
+    }
+    _isArrDiff = (arr1, arr2) => {
+        if (arr1.length != arr2.length) return true
+        for (let i=0; i<arr1.length; i++){
+            if (this._isDiff(arr1[i], arr2[i])) return true
+        }
+        return false
+    }
+    shouldComponentUpdate(nextProps, nextState){
+
+        return (
+           this.state.activeTab != nextState.activeTab
+            || this.state.tabData.length != nextState.tabData.length
+            || this._isArrDiff(this.state.tabData, nextState.tabData)
+        )
+    }
+
     getActiveTab() {
         return this.state.activeTab
     }
@@ -39,11 +60,22 @@ export default class TabsWithNoti extends Component {
         this.setState({activeTab: tabID})
     }
     updateNumber(tabID, number) {
-        let tabData = this.state.tabData.slice()
+        let tabData = this.state.tabData.map(item=>Object.assign({}, item))
         let index = tabData.findIndex(item => item.tabID == tabID)
         tabData[index].number = number
         this.setState({ tabData: tabData })
     }
+
+    updateMultipleNumber = (data) => {
+        let tabData = this.state.tabData.map(item=>Object.assign({}, item))
+        // let index = tabData.findIndex(item => item.tabID == tabID)
+        for (let i=0; i<data.length; i++){
+            let index = tabData.findIndex(item => item.tabID == data[i].tabID)
+            tabData[index].number = data[i].number
+        }
+        this.setState({tabData: tabData})
+    }
+
 
     renderTextCount(isActive, number){
         const fontSize = +number > 99 ? 8 : 10
@@ -54,6 +86,7 @@ export default class TabsWithNoti extends Component {
     }
 
     render() {
+        console.log('Render TabsNoti')
         return (
             <View style={styles.tabBar}>
                 {this.state.tabData.map((tabItem) => {
