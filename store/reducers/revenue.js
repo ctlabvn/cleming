@@ -15,11 +15,11 @@ export const revenue = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 selectedItem: {
-                    code: 'CLpanda',
-                    time: 0,
-                    itemType: REVENUE_CLINGME_PAY,
-                    username: 'anonymous',
-                    money: 0
+                    code: payload.code,
+                    time: payload.time,
+                    itemType: payload.itemType,
+                    username: payload.username,
+                    money: payload.money,
                 },
             }
         default:

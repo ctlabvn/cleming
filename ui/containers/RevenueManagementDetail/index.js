@@ -11,8 +11,19 @@ import Border from "~/ui/elements/Border";
 import { getSelectedRevenueItem } from '~/store/selectors/revenue'
 import * as commonAction from "~/store/actions/common";
 
+import moment from "moment";
+import {formatNumber} from "~/ui/shared/utils";
+
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
 import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
+
+
+import {
+    TIME_FORMAT_WITHOUT_SECOND,
+    TRANSACTION_DIRECT_STATUS,
+    TRANSACTION_TYPE_CLINGME,
+    TRANSACTION_TYPE_DIRECT
+} from "~/store/constants/app";
 
 const defaultItem = {
     status: 'get item unsuccessfully!!!',
@@ -27,6 +38,7 @@ export default class extends Component {
     constructor(props) {
         super(props)
         const { route } = this.props;
+
         const item = this.props.selectedItem;
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
@@ -56,19 +68,27 @@ export default class extends Component {
             title: '',
             content: '',
         }
+
+        let time = moment(this.state.item.time * 1000).format(TIME_FORMAT_WITHOUT_SECOND);
+
         switch (parseInt(this.state.currentTab)) {
             case REVENUE_PROCESSING:
                 text = {
                     title: 'Giao dịch đang xử lý',
-                    content: 'Thời gian chuyển tiền dự tính: 18/07/2017',
+                    content: 'Thời gian chuyển tiền dự tính: ' + time,
                 }
                 break;
             case REVENUE_DONE:
                 text = {
                     title: 'Giao dịch đã chuyển tiền',
-                    content: 'Thời gian chuyển tiền:  15h30  18/07/2017',
+                    content: 'Thời gian chuyển tiền: ' + time,
                 }
                 break;
+            default:
+                text = {
+                    title: 'Giao dịch',
+                    content: 'Thời gian',
+            }
         }
 
         return (
@@ -101,12 +121,12 @@ export default class extends Component {
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <ListItem style={styles.row}>
                                 <Text medium style={styles.gray}>Doanh Thu</Text>
-                                <Text bold large style={styles.orange}>720.000 đ</Text>
+                                <Text bold large style={styles.orange}>{formatNumber(this.state.item.money)} đ</Text>
                             </ListItem>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <ListItem style={styles.row}>
                                 <Text medium style={styles.gray}>Tổng tiền giao dịch</Text>
-                                <Text bold large style={styles.gray}>800.000 đ</Text>
+                                <Text bold large style={styles.gray}>{formatNumber(this.state.item.money + 99000)} đ</Text>
                             </ListItem>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <ListItem style={styles.row}>
@@ -121,7 +141,7 @@ export default class extends Component {
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <ListItem style={styles.row}>
                                 <Text medium style={styles.gray}>Phí Clingme</Text>
-                                <Text bold large style={styles.gray}>80.000 đ</Text>
+                                <Text bold large style={styles.gray}>99.000 đ</Text>
                             </ListItem>
                         </View>
                     </View>
