@@ -1,11 +1,6 @@
 import auth from './auth'
 import account from './account'
-// import data from './data'
 import notification from './notification'
-// import campaign from './campaign'
-// import network from './network'
-// import delegation from './delegation'
-// import vault from './vault'
 import transaction from './transaction'
 import place from './place'
 import booking from './booking'
@@ -17,12 +12,7 @@ import report from './report'
 export default {
   auth,  
   account,
-  // data,
-  notification,
-  // campaign,
-  // network,
-  // delegation,
-  // vault,
+  notification,  
   transaction,
   place,
   booking,

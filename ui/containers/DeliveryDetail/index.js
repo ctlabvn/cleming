@@ -155,6 +155,7 @@ export default class extends Component {
             phoneNumber: phoneNumber
         })
     }
+    
     onModalClose = () => {
         this.setState({
             modalOpen: false
