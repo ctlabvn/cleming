@@ -101,24 +101,118 @@ export default class DateFilter extends Component {
     }
 
     _getDataForFilter(filterType) {
-        if (filterType == 'day') {
-            // lastest 7 days
-            return [6, 5, 4, 3, 2, 1, 0].map((item) => {
-                let now = moment().subtract(item, 'days')
-                let from = moment().subtract(item, 'days').startOf('day').unix()
-                let to = moment().subtract(item, 'days').endOf('day').unix()
+        // cache current moment
+        const current = moment()
+        switch(filterType) {
+            case 'day':
+                // lastest 7 days
+                return [6, 5, 4, 3, 2, 1, 0].map((item) => {
+                    const now = current.clone().subtract(item, 'days')                                        
+                    return {
+                        value: {
+                            from: now.startOf('day').unix(),
+                            to: now.endOf('day').unix()
+                        },
+                        display: now.format(DEFAULT_DATE_FORMAT)
+                    }
+                })
+            case 'week':
+                return [4, 3, 2, 1].map((item) => {
+                    const substractWeek = current.clone().subtract(item, 'weeks')
+                    let startWeek = substractWeek.clone().add(1, 'days').startOf('day')
+                    let endWeek = substractWeek.clone().add(7, 'days').endOf('day')
+                    return {
+                        value: {
+                            from: startWeek.unix(),
+                            to: endWeek.unix()
+                        },
+                        display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
+                    }
+                })
+            case 'month':
+                return [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((item) => {
+                    let currentMonth = current.clone().subtract(item, 'months')
+                    let startMonth = currentMonth.startOf('month')
+                    let endMonth = currentMonth.endOf('month')
+                    if (endMonth > current) {
+                        endMonth = current.clone().endOf('day')
+                    }
+                    return {
+                        value: {
+                            from: startMonth.unix(),
+                            to: endMonth.unix()
+                        },
+                        display: currentMonth.format(DEFAULT_MONTH_FORMAT)
+                    }
+                })
+            case 'quarter':
+                return [3, 2, 1, 0].map(item => {
+                    let currentQuarter = current.clone().subtract(item, 'quarters')
+                    let startQuarter = currentQuarter.startOf('quarter')
+                    let endQuarter = currentQuarter.clone().endOf('quarters')
+                    if (endQuarter > current) {
+                        endQuarter = current.clone().endOf('day')
+                    }
+                    return {
+                        value: {
+                            from: startQuarter.unix(),
+                            to: endQuarter.unix()
+                        },
+                        display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
+                    }
+                })
+            case 'half-year':
+                return [3, 1].map(item => {                    
+                    let startQuarter = current.clone().subtract(item, 'quarters').startOf('quarter')
+                    let endQuarter = startQuarter.clone().add(1, 'quarters').endOf('quarters')
+                    if (endQuarter > current) {
+                        endQuarter = current.clone().endOf('day')
+                    }
+                    return {
+                        value: {
+                            from: startQuarter.unix(),
+                            to: endQuarter.unix()
+                        },
+                        display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
+                    }
+                })
+
+            case 'year':
+                return [4, 3, 2, 1, 0].map((item) => {
+                    let currentYear = current.clone().subtract(item, 'years')
+                    let startYear = currentYear.clone().startOf('year')
+                    let endYear = currentYear.clone().endOf('year')
+                    if (endYear > current) {
+                        endYear = current.clone().endOf('day')
+                    }
+                    return {
+                        value: {
+                            from: startYear.unix(),
+                            to: endYear.unix()
+                        },
+                        display: currentYear.format(DEFAULT_YEAR_FORMAT)
+                    }
+                })
+        }
+    }
+
+    _getDefaultCurrnetSelectValue(filterType) {
+        const current = moment()
+        switch(filterType) {
+            case 'day':
+                let from = current.clone().startOf('day').unix()
+                let to = current.clone().endOf('day').unix()
                 return {
                     value: {
                         from: from,
                         to: to
                     },
-                    display: now.format(DEFAULT_DATE_FORMAT)
+                    display: current.format(DEFAULT_DATE_FORMAT)
                 }
-            })
-        } else if (filterType == 'week') {
-            return [4, 3, 2, 1].map((item) => {
-                let startWeek = moment().subtract(item, 'weeks').add(1, 'days').startOf('day')
-                let endWeek = moment().subtract(item, 'weeks').add(7, 'days').endOf('day')
+
+            case 'week':
+                let startWeek = current.clone().subtract(6, 'days').startOf('day')
+                let endWeek = current.endOf('day')
                 return {
                     value: {
                         from: startWeek.unix(),
@@ -126,143 +220,54 @@ export default class DateFilter extends Component {
                     },
                     display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
                 }
-            })
-        } else if (filterType == 'month') {
-            return [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((item) => {
-                let currentMonth = moment().subtract(item, 'months')
-                let startMonth = moment().subtract(item, 'months').startOf('month')
-                let endMonth = moment().subtract(item, 'months').endOf('month')
-                if (endMonth > moment()) {
-                    endMonth = moment().endOf('day')
-                }
+
+
+            case 'month':                
+                let startMonth = current.clone().startOf('month')
                 return {
                     value: {
                         from: startMonth.unix(),
-                        to: endMonth.unix()
+                        to: current.clone().endOf('day').unix()
                     },
-                    display: currentMonth.format(DEFAULT_MONTH_FORMAT)
+                    display: current.format(DEFAULT_MONTH_FORMAT)
                 }
-            })
-        } else if (filterType == 'quarter') {
-            return [3, 2, 1, 0].map(item => {
-                let currentQuarter = moment().subtract(item, 'quarters')
-                let startQuarter = moment().subtract(item, 'quarters').startOf('quarter')
-                let endQuarter = moment().subtract(item, 'quarters').endOf('quarters')
-                if (endQuarter > moment()) {
-                    endQuarter = moment().endOf('day')
-                }
-                return {
-                    value: {
-                        from: startQuarter.unix(),
-                        to: endQuarter.unix()
-                    },
-                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
-                }
-            })
-        } else if (filterType == 'half-year') {
-            return [3, 1].map(item => {
-                let currentQuarter = moment().subtract(item, 'quarters')
-                let startQuarter = moment().subtract(item, 'quarters').startOf('quarter')
-                let endQuarter = moment().subtract(item - 1, 'quarters').endOf('quarters')
-                if (endQuarter > moment()) {
-                    endQuarter = moment().endOf('day')
-                }
-                return {
-                    value: {
-                        from: startQuarter.unix(),
-                        to: endQuarter.unix()
-                    },
-                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endQuarter.format(DEFAULT_DATE_FORMAT)
-                }
-            })
 
-        } else if (filterType == 'year') {
-            return [4, 3, 2, 1, 0].map((item) => {
-                let currentYear = moment().subtract(item, 'years')
-                let startYear = moment().subtract(item, 'years').startOf('year')
-                let endYear = moment().subtract(item, 'years').endOf('year')
-                if (endYear > moment()) {
-                    endYear = moment().endOf('day')
+            case 'quarter':
+                let startQuarter = current.clone().startOf('quarters')
+                return {
+                    value: {
+                        from: startQuarter.unix(),
+                        to: current.clone().endOf('day').unix()
+                    },
+                    display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_DATE_FORMAT)
                 }
+
+            case 'half-year':
+                let startHalfYear = current.clone().subtract(1, 'quarters').startOf('quarters')
+                return {
+                    value: {
+                        from: startHalfYear.unix(),
+                        to: current.clone().endOf('day').unix()
+                    },
+                    display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_YEAR_FORMAT)
+                }
+
+            case 'year':
+                let startYear = current.clone().startOf('year')
                 return {
                     value: {
                         from: startYear.unix(),
-                        to: endYear.unix()
+                        to: current.clone().endOf('day').unix()
                     },
-                    display: currentYear.format(DEFAULT_YEAR_FORMAT)
+                    display: current.format(DEFAULT_YEAR_FORMAT)
                 }
-            })
         }
     }
-    _getDefaultCurrnetSelectValue(filterType) {
-        if (filterType == 'day') {
-            let now = moment()
-            let from = moment().startOf('day').unix()
-            let to = moment().endOf('day').unix()
-            return {
-                value: {
-                    from: from,
-                    to: to
-                },
-                display: now.format(DEFAULT_DATE_FORMAT)
-            }
-        } else if (filterType == 'week') {
-            let startWeek = moment().subtract(6, 'days').startOf('day')
-            let endWeek = moment().endOf('day')
-            return {
-                value: {
-                    from: startWeek.unix(),
-                    to: endWeek.unix()
-                },
-                display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
-            }
 
-
-        } else if (filterType == 'month') {
-            let current = moment()
-            let startMonth = moment().startOf('month')
-            return {
-                value: {
-                    from: startMonth.unix(),
-                    to: current.endOf('day').unix()
-                },
-                display: current.format(DEFAULT_MONTH_FORMAT)
-            }
-        } else if (filterType == 'quarter') {
-            let current = moment()
-            let startQuarter = moment().startOf('quarters')
-            return {
-                value: {
-                    from: startQuarter.unix(),
-                    to: current.endOf('day').unix()
-                },
-                display: startQuarter.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_DATE_FORMAT)
-            }
-        } else if (filterType == 'half-year') {
-            let current = moment()
-            let startHalfYear = moment().subtract(1, 'quarters').startOf('quarters')
-            return {
-                value: {
-                    from: startHalfYear.unix(),
-                    to: current.endOf('day').unix()
-                },
-                display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_YEAR_FORMAT)
-            }
-        } else if (filterType == 'year') {
-            let current = moment()
-            let startYear = moment().startOf('year')
-            return {
-                value: {
-                    from: startYear.unix(),
-                    to: current.endOf('day').unix()
-                },
-                display: current.format(DEFAULT_YEAR_FORMAT)
-            }
-        }
-    }
     render() {
         console.log('Render dateFilter')
-        const currentDateFilterDisplay = this.dateFilterListValue.filter((item) => item.value == this.state.currentDateFilter)[0].display
+        // find will not search through
+        const currentDateFilterDisplay = this.dateFilterListValue.find(item => item.value === this.state.currentDateFilter).display
         const _data = this._getDataForFilter(this.state.currentDateFilter)
 
         const data = this.ds.cloneWithRows(_data)
@@ -304,7 +309,10 @@ export default class DateFilter extends Component {
                                     onPress={() => this._handlePressDateFilter(rowData)}>
                                     <Text
                                         small
-                                        style={(rowData.value.from == currentSelectValue.value.from && rowData.value.to == currentSelectValue.value.to) ? styles.dateFilterListItemActive : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
+                                        style={(rowData.value.from == currentSelectValue.value.from 
+                                                && rowData.value.to == currentSelectValue.value.to) 
+                                            ? styles.dateFilterListItemActive 
+                                            : styles.dateFilterListItemDeactive}>{rowData.display}</Text>
                                 </TouchableOpacity>
                             )
                         }
