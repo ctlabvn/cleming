@@ -56,7 +56,7 @@ export default class extends Component {
                             </View>
                             <View style={styles.row}>
                                 <Text medium primary>{I18n.t('paid')}</Text>
-                                <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.transactionId)}>
+                                <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)} >
                                     <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
