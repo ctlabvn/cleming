@@ -32,7 +32,7 @@ import I18n from '~/ui/I18n'
 @connect(state => ({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
-  notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
+  // notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
 }), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 export default class extends Component {
 
@@ -358,7 +358,7 @@ export default class extends Component {
     }
   }
   render() {
-    let { notifications, notificationRequest } = this.props
+    let { notifications } = this.props
     return (
 
       <Container>
