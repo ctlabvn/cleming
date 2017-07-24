@@ -1,21 +1,34 @@
 import React, {Component} from 'react'
 import { View } from 'react-native'
+import { connect } from "react-redux";
+
 import {Container, Text, List, ListItem} from 'native-base'
 import Content from "~/ui/components/Content";
 import styles from './styles'
 import Icon from '~/ui/elements/Icon'
-
 import Border from "~/ui/elements/Border";
 
+import { getSelectedRevenueItem } from '~/store/selectors/revenue'
+import * as commonAction from "~/store/actions/common";
+
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
+import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
 
+const defaultItem = {
+    status: 'get item unsuccessfully!!!',
+}
 
+@connect(state => ({
+    selectedItem: (state.revenue ? getSelectedRevenueItem(state) : defaultItem),
+}), {...commonAction})
 
 export default class extends Component {
 
     constructor(props) {
         super(props)
         const { route } = this.props;
+        const item = this.props.selectedItem;
+        console.warn('constructor ' + JSON.stringify(item, null, 2));
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
@@ -27,6 +40,8 @@ export default class extends Component {
 
     componentWillFocus() {
         const { route } = this.props;
+        const item = this.props.selectedItem;
+        console.warn('constructor ' + JSON.stringify(item, null, 2));
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);

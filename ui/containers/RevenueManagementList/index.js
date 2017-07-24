@@ -5,6 +5,7 @@ import {View} from 'react-native'
 
 import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
+import * as revenueActions from "~/store/actions/revenue";
 import { getSession } from "~/store/selectors/auth";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
@@ -21,17 +22,18 @@ import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
+import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
 
 import {
     TIME_FORMAT_WITHOUT_SECOND,
 } from "~/store/constants/app";
 
-const DELIVERY = 'DELIVERY';
-const CLINGME_PAY = 'CLINGME_PAY';
+// const DELIVERY = 'DELIVERY';
+// const CLINGME_PAY = 'CLINGME_PAY';
 
 @connect(state => ({
     xsession: getSession(state),
-}), { ...commonAction, ...authActions, })
+}), { ...commonAction, ...authActions, ...revenueActions})
 
 export default class extends Component {
 
@@ -88,18 +90,26 @@ export default class extends Component {
         let iconColor = material.orange500; // default
 
         switch (itemType) {
-            case DELIVERY:
+            case REVENUE_DELIVERY:
                 type = 'Giao hàng';
                 iconName = 'shiping-bike2';
                 break;
-            case CLINGME_PAY:
+            case REVENUE_CLINGME_PAY:
                 type = 'Clingme Pay';
                 iconName = 'clingme-wallet';
                 break;
         }
 
+        handlePress = () => {
+            const { setSelectedRevenueItem } = this.props
+            // checkRevenueAction();
+            console.warn(JSON.stringify(item));
+            setSelectedRevenueItem(item);
+            this._forwardToDetail();
+        }
+
         return (
-            <ListItem style={styles.listItem} onPress={() => this._forwardToDetail()}>
+            <ListItem style={styles.listItem} onPress={handlePress}>
                 <View>
                     <View style={styles.row}>
                         <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
@@ -128,25 +138,25 @@ export default class extends Component {
     _getListItemFake() {
         if (this.state.currentTab == REVENUE_PROCESSING) {
             return [
-                {code: 'CL123456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 500000},
-                {code: 'CL234567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 650000},
-                {code: 'CL345678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 800000},
-                {code: 'CL445677', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 900000},
-                {code: 'CL663456', time: 1500007022, itemType: DELIVERY, username: 'tienvm', money: 550000},
-                {code: 'CL994567', time: 1500008103, itemType: CLINGME_PAY, username: 'frickimous', money: 450000},
-                {code: 'CL999678', time: 1500006126, itemType: DELIVERY, username: 'panda', money: 850000},
-                {code: 'CL999997', time: 1500007126, itemType: CLINGME_PAY, username: 'tienvm', money: 12000000},
+                {code: 'CL123456', time: 1500007022, itemType: REVENUE_DELIVERY, username: 'tienvm', money: 500000},
+                {code: 'CL234567', time: 1500008103, itemType: REVENUE_CLINGME_PAY, username: 'frickimous', money: 650000},
+                {code: 'CL345678', time: 1500006126, itemType: REVENUE_DELIVERY, username: 'panda', money: 800000},
+                {code: 'CL445677', time: 1500007126, itemType: REVENUE_CLINGME_PAY, username: 'tienvm', money: 900000},
+                {code: 'CL663456', time: 1500007022, itemType: REVENUE_DELIVERY, username: 'tienvm', money: 550000},
+                {code: 'CL994567', time: 1500008103, itemType: REVENUE_CLINGME_PAY, username: 'frickimous', money: 450000},
+                {code: 'CL999678', time: 1500006126, itemType: REVENUE_DELIVERY, username: 'panda', money: 850000},
+                {code: 'CL999997', time: 1500007126, itemType: REVENUE_CLINGME_PAY, username: 'tienvm', money: 12000000},
             ]
         } else {
             return [
-                {code: 'CL113456', time: 1500285550, itemType: CLINGME_PAY, username: 'chicken', money: 350000},
-                {code: 'CL224567', time: 1500193500, itemType: CLINGME_PAY, username: 'dog', money: 950000},
-                {code: 'CL333333', time: 1500192488, itemType: DELIVERY, username: 'monkey', money: 750000},
-                {code: 'CL696969', time: 1500057777, itemType: CLINGME_PAY, username: 'horse', money: 850000},
-                {code: 'CL777777', time: 1500077022, itemType: DELIVERY, username: 'zebra', money: 650000},
-                {code: 'CL888888', time: 1500008111, itemType: DELIVERY, username: 'bird', money: 250000},
-                {code: 'CL999888', time: 1500006222, itemType: DELIVERY, username: 'panda', money: 150000},
-                {code: 'CL999999', time: 1500007111, itemType: CLINGME_PAY, username: 'pig', money: 22000000},
+                {code: 'CL113456', time: 1500285550, itemType: REVENUE_CLINGME_PAY, username: 'chicken', money: 350000},
+                {code: 'CL224567', time: 1500193500, itemType: REVENUE_CLINGME_PAY, username: 'dog', money: 950000},
+                {code: 'CL333333', time: 1500192488, itemType: REVENUE_DELIVERY, username: 'monkey', money: 750000},
+                {code: 'CL696969', time: 1500057777, itemType: REVENUE_CLINGME_PAY, username: 'horse', money: 850000},
+                {code: 'CL777777', time: 1500077022, itemType: REVENUE_DELIVERY, username: 'zebra', money: 650000},
+                {code: 'CL888888', time: 1500008111, itemType: REVENUE_DELIVERY, username: 'bird', money: 250000},
+                {code: 'CL999888', time: 1500006222, itemType: REVENUE_DELIVERY, username: 'panda', money: 150000},
+                {code: 'CL999999', time: 1500007111, itemType: REVENUE_CLINGME_PAY, username: 'pig', money: 22000000},
             ]
         }
 
