@@ -17,7 +17,7 @@ import SideBar from './components/SideBar'
 import Preload from './containers/Preload'
 import Header from '~/ui/components/Header'
 import Footer from '~/ui/components/Footer'
-import Popover from '~/ui/components/Popover'
+// import Popover from '~/ui/components/Popover'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 import PopupInfo from '~/ui/components/PopupInfo'
@@ -621,7 +621,9 @@ export default class App extends Component {
             ref={ref => this.topDropdownListValue = ref}
           />
           <Toasts />
-          <Popover ref={ref => this.popover = ref} />
+          {
+          // <Popover ref={ref => this.popover = ref} />
+}
           <PopupInfo />
         </Drawer>
       </StyleProvider>
