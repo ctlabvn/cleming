@@ -8,9 +8,6 @@ import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
-import ListDeal from './containers/ListDeal'
-import DealsOverview from './containers/DealsOverview'
-import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
 import DeliveryDetail from './containers/DeliveryDetail'
 import TransactionDetail from './containers/TransactionDetail'
@@ -147,25 +144,7 @@ export default {
         title: 'Help',
         Page: Help,
         disableCache: false,
-    },
-    listdeal: {
-        title: 'List Deal',
-        Page: ListDeal,
-        disableCache: false,
-    },
-    dealsOverview: {
-        title: 'Deals Overview',
-        Page: DealsOverview,
-        footerType: 'none',
-        disableCache: false,
-    },
-    dealDetail: {
-        title: 'Deals Overview',
-        Page: DealDetail,
-        footerType: 'none',
-        disableCache: false,
-    },
-   
+    },    
     qrScanner: {
         title: 'QR Scanner',
         Page: QRScanner,

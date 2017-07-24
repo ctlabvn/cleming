@@ -47,6 +47,7 @@ export default class TransactionDetail extends Component {
         this.swiping = false
         this.confirmCounter = 0
     }
+
     _renderStatus(status) {
         switch (status) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
@@ -59,6 +60,7 @@ export default class TransactionDetail extends Component {
                 return <Text medium bold warning>{I18n.t('transaction_wait_confirm')}</Text>
         }
     }
+
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
@@ -74,6 +76,7 @@ export default class TransactionDetail extends Component {
                 return (<View key='bottomBlock'></View>)
         }
     }
+
     _renderInvoiceBlock(transactionInfo) {
         console.log('Go to function')
         if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
@@ -93,13 +96,16 @@ export default class TransactionDetail extends Component {
         }
 
     }
+
     _showReasonPopup = () => {
         console.log('Show reasion Popup', this.refs.feedBackDialog)
         this.refs.feedbackDialog.setModalVisible(true)
     }
+
     _showReasonPopupClingme = () => {
         this.refs.feedbackDialogClingme.setModalVisible(true)
     }
+
     _confirmTransaction = () => {
         // console.log('Confirming', clingmeId)
         if (this.confirmCounter > 0) return
@@ -118,6 +124,7 @@ export default class TransactionDetail extends Component {
             }
         )
     }
+
     goPrevious = () => {
         const { xsession, transaction } = this.props
         let index = 0, transactionId
@@ -158,6 +165,7 @@ export default class TransactionDetail extends Component {
             this._load(nextTrans.dealTransactionId)
         }
     }
+
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
 
@@ -200,178 +208,189 @@ export default class TransactionDetail extends Component {
 
     }
 
+    renderClingme(transactionInfo){
+        let payStatus, helpBtn = null
+        // "transactionStatus": int,    // 1 là đã thanh toán, 2 là đã xác nhận
+        if (transactionInfo.transactionStatus == 1) {
+            payStatus = <Text strong success bold>{I18n.t('paid')}</Text>
+            helpBtn =
+                <View style={styles.rowPaddingFull}>
+                    <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                        <View style={styles.round20}>
+                            <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                        </View>
+                        <Text medium primary>{I18n.t('help')}</Text>
+                    </Button>
+                    <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+                        onPress={()=>this._confirmTransaction()}
+                    >
+                        <Text medium white>{I18n.t('confirm')}</Text>
+                    </Button>
+                </View>
+        } else if (transactionInfo.transactionStatus == 2) {
+            payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
+        }
+        return (
+            <Content>
+                <View style={styles.contentRootChild}>
+                    <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.props.denyReasonClm}
+                        transactionCode={transactionInfo.transactionIdDisplay}
+                        onClickYes={this._handleFeedbackClingme}
+                        dealTransactionId={transactionInfo.clingmeId}
+                    />
+                    <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
+                        <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    <View style={styles.blockCenter}>
+                        <Text medium gray>{I18n.t('transaction_number')}</Text>
+                        <Text big bold>{transactionInfo.transactionIdDisplay}</Text>
+                    </View>
+                    <View style={styles.blockCenter}>
+                        <Text medium gray>{I18n.t('total_pay')}</Text>
+                        <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
+                        {payStatus}
+                    </View>
+                    <View style={styles.blockCenter}>
+                        <Text medium gray>{I18n.t('clingme_fee')}</Text>
+                        <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text medium>{I18n.t('customer')}</Text>
+                        <View style={styles.row}>
+                            <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
+                            {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
+                            <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
+                        </View>
+                    </View>
+                    <View style={styles.rowCenter}>
+                        {helpBtn}
+                    </View>
+                </View>
+            </Content>
+        )
+    }
+
+    renderDirect(transactionInfo){
+        return (
+            <Content ref='content' refreshing={true}>
+                <FeedbackDialog ref='feedbackDialog' listValue={this.props.denyReason}
+                    transactionCode={transactionInfo.dealTransactionIdDisplay}
+                    onClickYes={this._handleFeedback}
+                    dealTransactionId={transactionInfo.dealTransactionId}
+                />
+                <PopupPhotoView ref='popupPhotoView' />
+                <View style={styles.container}>
+                    <View style={styles.topPart}>
+                        <View style={styles.rowPadding}>
+                            <Text grayDark medium>{transactionInfo.placeAddress}</Text>
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <View style={styles.transactionContent}>
+                                <Text grayDark medium>{I18n.t('bill_number')}: </Text>
+                                <Text medium primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
+                            </View>
+                            <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
+                        </View>
+                    </View>
+                    <View style={{ ...styles.rowPadding, justifyContent: 'center' }}>
+                        {this._renderStatus(transactionInfo.transactionStatus)}
+                    </View>
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
+                        <View style={styles.row}>
+                            <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
+                            <Text medium bold style={styles.primary}>{I18n.t('method_pay_direct')}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark style={styles.userLabel}>{I18n.t('customer')}:</Text>
+                        <View style={styles.userContent}>
+                            <Text medium grayDark bold>{transactionInfo.userName}</Text>
+                            {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
+                            <Icon style={{ ...styles.icon, marginLeft: 7 }} name='account' />
+                        </View>
+                    </View>
+
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('view')}:</Text>
+                        <Text medium grayDark bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('mark')}:</Text>
+                        <Text medium grayDark bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('shot_bill')}:</Text>
+                        <Text medium grayDark bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                        <View style={styles.rowPadding}>
+                            <Text medium grayDark>{I18n.t('export_bill')}:</Text>
+                            <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        </View>
+                    }
+
+                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                        <View style={styles.invoiceBlock}>
+                            <Text medium grayDark style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
+                            <Text medium grayDark style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
+                        </View>
+                    }
+                    <View style={styles.borderBlock}>
+
+                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                            <View style={styles.invoiceDetailBlock}>
+                                <View style={styles.rowSpaceAround}>
+                                    <View style={styles.gridItem}>
+                                        <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
+                                        <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
+                                    </View>
+                                    <View style={styles.gridItem}>
+                                        <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
+                                        <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.rowSpaceAround}>
+                                    <View style={styles.gridItem}>
+
+                                        <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
+                                        <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
+                                    </View>
+                                    <View style={styles.gridItem}>
+                                        <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
+                                        <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        }
+                        <View style={{ width: '100%', backgroundColor: material.gray300, justifyContent: 'center' }}>
+                            <TouchableWithoutFeedback onPress={() => {
+                                this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
+                            }}>
+                                <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </View>
+
+                    <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
+                        {this._renderBottomAction(transactionInfo)}
+                    </View>
+                </View>
+            </Content>
+        )
+    }
+
     _renderContent() {
         let transactionInfo = this.state.transactionInfo
-        if (this.state.type == TRANSACTION_TYPE_CLINGME) {
-            let payStatus, helpBtn = null
-            // "transactionStatus": int,	// 1 là đã thanh toán, 2 là đã xác nhận
-            if (transactionInfo.transactionStatus == 1) {
-                payStatus = <Text strong success bold>{I18n.t('paid')}</Text>
-                helpBtn =
-                    <View style={styles.rowPaddingFull}>
-                        <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                            <View style={styles.round20}>
-                                <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                            </View>
-                            <Text medium primary>{I18n.t('help')}</Text>
-                        </Button>
-                        <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
-                            onPress={()=>this._confirmTransaction()}
-                        >
-                            <Text medium white>{I18n.t('confirm')}</Text>
-                        </Button>
-                    </View>
-            } else if (transactionInfo.transactionStatus == 2) {
-                payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
-            }
-            return (
-                <Content>
-                    <View style={styles.contentRootChild}>
-                        <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.props.denyReasonClm}
-                            transactionCode={transactionInfo.transactionIdDisplay}
-                            onClickYes={this._handleFeedbackClingme}
-                            dealTransactionId={transactionInfo.clingmeId}
-                        />
-                        <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
-                            <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                        <View style={styles.blockCenter}>
-                            <Text medium gray>{I18n.t('transaction_number')}</Text>
-                            <Text big bold>{transactionInfo.transactionIdDisplay}</Text>
-                        </View>
-                        <View style={styles.blockCenter}>
-                            <Text medium gray>{I18n.t('total_pay')}</Text>
-                            <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
-                            {payStatus}
-                        </View>
-                        <View style={styles.blockCenter}>
-                            <Text medium gray>{I18n.t('clingme_fee')}</Text>
-                            <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text medium>{I18n.t('customer')}</Text>
-                            <View style={styles.row}>
-                                <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
-                                {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
-                                <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
-                            </View>
-                        </View>
-                        <View style={styles.rowCenter}>
-                            {helpBtn}
-                        </View>
-                    </View>
-                </Content>
-            )
-        } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
-            return (
-                <Content ref='content' refreshing={true}>
-                    <FeedbackDialog ref='feedbackDialog' listValue={this.props.denyReason}
-                        transactionCode={transactionInfo.dealTransactionIdDisplay}
-                        onClickYes={this._handleFeedback}
-                        dealTransactionId={transactionInfo.dealTransactionId}
-                    />
-                    <PopupPhotoView ref='popupPhotoView' />
-                    <View style={styles.container}>
-                        <View style={styles.topPart}>
-                            <View style={styles.rowPadding}>
-                                <Text grayDark medium>{transactionInfo.placeAddress}</Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <View style={styles.transactionContent}>
-                                    <Text grayDark medium>{I18n.t('bill_number')}: </Text>
-                                    <Text medium primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
-                                </View>
-                                <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
-                            </View>
-                        </View>
-                        <View style={{ ...styles.rowPadding, justifyContent: 'center' }}>
-                            {this._renderStatus(transactionInfo.transactionStatus)}
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark style={styles.paymenMethodLabel}>{I18n.t('pay_method')}:</Text>
-                            <View style={styles.row}>
-                                <Icon name="cash" style={{ ...styles.icon, ...styles.primary, ...styles.marginRight }} />
-                                <Text medium bold style={styles.primary}>{I18n.t('method_pay_direct')}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark style={styles.userLabel}>{I18n.t('customer')}:</Text>
-                            <View style={styles.userContent}>
-                                <Text medium grayDark bold>{transactionInfo.userName}</Text>
-                                {/*<Thumbnail source={{ uri: 'http://mobi.clingme.vn:8090/images/resource_image/Clingme_icon_512.png' }} style={styles.avatar} />*/}
-                                <Icon style={{ ...styles.icon, marginLeft: 7 }} name='account' />
-                            </View>
-                        </View>
-
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('view')}:</Text>
-                            <Text medium grayDark bold>{moment(transactionInfo.viewDealTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('mark')}:</Text>
-                            <Text medium grayDark bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('shot_bill')}:</Text>
-                            <Text medium grayDark bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                            <View style={styles.rowPadding}>
-                                <Text medium grayDark>{I18n.t('export_bill')}:</Text>
-                                <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            </View>
-                        }
-
-                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                            <View style={styles.invoiceBlock}>
-                                <Text medium grayDark style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
-                                <Text medium grayDark style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
-                            </View>
-                        }
-                        <View style={styles.borderBlock}>
-
-                            {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                                <View style={styles.invoiceDetailBlock}>
-                                    <View style={styles.rowSpaceAround}>
-                                        <View style={styles.gridItem}>
-                                            <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
-                                            <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
-                                        </View>
-                                        <View style={styles.gridItem}>
-                                            <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
-                                            <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.rowSpaceAround}>
-                                        <View style={styles.gridItem}>
-
-                                            <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                            <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
-                                        </View>
-                                        <View style={styles.gridItem}>
-                                            <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
-                                            <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            }
-                            <View style={{ width: '100%', backgroundColor: material.gray300, justifyContent: 'center' }}>
-                                <TouchableWithoutFeedback onPress={() => {
-                                    this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
-                                }}>
-                                    <Image source={{ uri: transactionInfo.invoidImage }} style={{ resizeMode: 'cover', width: '100%', height: 500 }} />
-                                </TouchableWithoutFeedback>
-                            </View>
-                        </View>
-
-                        <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
-                            {this._renderBottomAction(transactionInfo)}
-                        </View>
-                    </View>
-                </Content>
-            )
+        switch(this.state.type){
+            case TRANSACTION_TYPE_CLINGME:
+                return this.renderClingme(transactionInfo)
+            case TRANSACTION_TYPE_DIRECT:
+                return this.renderDirect(transactionInfo)
+            // default:
         }
     }
+
     _load = (transactionId) => {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack } = this.props
         let transactionType = route.params.type
@@ -459,6 +478,7 @@ export default class TransactionDetail extends Component {
             )
         }
     }
+
     _handleFeedback = (dealTransactionId, reasonId, note) => {
         const { xsession, sendDenyReason, setToast } = this.props
         console.log('Feedback Handle', dealTransactionId + '---' + reasonId + '----' + note)
@@ -475,6 +495,7 @@ export default class TransactionDetail extends Component {
             }
         )
     }
+
     _handleFeedbackClingme = (dealID, selectedValue, note) => {
         const { forwardTo, sendDenyReasonClm, xsession, setToast } = this.props
         sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
@@ -486,16 +507,20 @@ export default class TransactionDetail extends Component {
             }
         )
     }
+
     _goToMiddlePage = () => {
         this.swiping = true
         this.refs.viewPager && this.refs.viewPager.setPageWithoutAnimation(1)
     }
+
     goNextViewPager() {
         this.refs.viewPager.setPage(2)
     }
+
     goPreviousViewPager() {
         this.refs.viewPager.setPage(0)
     }
+
     onSwipeViewPager(event) {
         if (this.swiping) {
             this.swiping = false
@@ -570,6 +595,7 @@ export default class TransactionDetail extends Component {
                 </Button>
             )
         }
+        
         return (
             <Container>
                 <PopupInfo ref='popupInfo' />

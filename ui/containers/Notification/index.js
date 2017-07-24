@@ -369,6 +369,7 @@ export default class extends Component {
             {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
             <ListView
+              enableEmptySections={true}
               removeClippedSubviews={false}
               pageSize={10}
               dataSource={this.ds.cloneWithRows(notifications.data)}

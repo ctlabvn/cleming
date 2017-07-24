@@ -132,13 +132,18 @@ export default class extends Component {
     }
 
     _updateNews = (newsData) => {
+        // guard code:
+        if(!newsData)
+            return
+
+        // then extract data
         const {user} = this.props
         switch(user.isPay){
             case TRANSACTION_DISPLAY.BOTH:
             default:
                 // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
                 // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
-                newsData && this.refs.tabs.updateMultipleNumber(
+                this.refs.tabs.updateMultipleNumber(
                     [
                         {
                             tabID: TRANSACTION_TYPE_CLINGME,
@@ -152,47 +157,54 @@ export default class extends Component {
                 )
                 break
             case TRANSACTION_DISPLAY.CLINGME:
-                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
                 break
             case TRANSACTION_DISPLAY.DIRECT:
-                newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
                 break
         }
     }
+
     _getTabData = () => {
         const {user} = this.props
-        switch(user.isPay){
-            case TRANSACTION_DISPLAY.BOTH:
-            default:
-                return options.tabData
+        switch(user.isPay){            
             case TRANSACTION_DISPLAY.CLINGME:
                 return options.tabDataClingme
             case TRANSACTION_DISPLAY.DIRECT:
                 return options.tabDataDirect
+            // default is all
+            // case TRANSACTION_DISPLAY.BOTH:
+            default:
+                return options.tabData
         }
     }
+
     _getDefaultActiveTab = () => {
         const {user} = this.props
-        switch(user.isPay){
-            case TRANSACTION_DISPLAY.BOTH:
-            case TRANSACTION_DISPLAY.DIRECT:
-            default:
-                return TRANSACTION_TYPE_DIRECT
+        switch(user.isPay){            
             case TRANSACTION_DISPLAY.CLINGME: 
                 return TRANSACTION_TYPE_CLINGME
+            // case TRANSACTION_DISPLAY.BOTH:
+            // case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return TRANSACTION_TYPE_DIRECT
         }
     }
+
+
     _getTransactionFilterValue = () => {
         const {user} = this.props
-        switch(user.isPay){
-            case TRANSACTION_DISPLAY.BOTH:
-            case TRANSACTION_DISPLAY.DIRECT:
-            default:
-                return options.transactionFilterListDirect
+        switch(user.isPay){            
             case TRANSACTION_DISPLAY.CLINGME: 
                 return options.transactionFilterListClingme
+            // case TRANSACTION_DISPLAY.BOTH:
+            // case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return options.transactionFilterListDirect
         }
     }
+
+
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const { app, news, meta, clearMarkLoad } = this.props
@@ -215,6 +227,7 @@ export default class extends Component {
         this._updateNews(news)
         this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
     }
+
     _isNeedUpdateTab(){
         const {user} = this.props
         let tabData = this.refs.tabs.getData()
@@ -239,6 +252,8 @@ export default class extends Component {
         }
         return false
     }
+
+    
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         this.currentPlace = placeId
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props

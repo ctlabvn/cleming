@@ -44,7 +44,7 @@ const formSelector = formValueSelector('CreateUserForm')
   session: authSelectors.getSession(state),
   // listEmployee: accountSelectors.getListEmployee(state),
   employeeDetail: accountSelectors.getCurrentEmployee(state),
-  place: state.place,
+  // place: state.place,
   generatedPassword: accountSelectors.getGeneratedPassword(state),
   // formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
   // formState: state.form,

@@ -16,7 +16,7 @@ import {customerMarker, merchantMarker} from "~/assets";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    booking: state.booking,
+    // booking: state.booking,
     report: state.report
 }), { ...commonActions, ...reportActions, ...placeActions })
 export default class Report extends Component {

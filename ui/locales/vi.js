@@ -1,4 +1,4 @@
-export default  vi = {
+export default {
     // Home Screen
     'transaction': 'Giao dịch',
     'booking': 'Đặt chỗ',
