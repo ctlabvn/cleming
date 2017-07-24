@@ -172,7 +172,7 @@ export default class TransactionDetail extends Component {
         const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
         // this._goToMiddlePage()
         let transactionId = route.params.id
-        let transactionType = route.params.type
+        let transactionType = +route.params.type
         this.setState({ type: transactionType })
         this._load(transactionId)
         // No need frequently update, call one when component mount
@@ -195,7 +195,7 @@ export default class TransactionDetail extends Component {
         this.confirmCounter = 0
         this._goToMiddlePage()
         let transactionId = route.params.id
-        let transactionType = route.params.type
+        let transactionType = +route.params.type
         this.setState({ type: transactionType })
         this._load(transactionId)
         if (!denyReason || denyReason.length == 0) {
@@ -386,8 +386,7 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_TYPE_CLINGME:
                 return this.renderClingme(transactionInfo)
             case TRANSACTION_TYPE_DIRECT:
-                return this.renderDirect(transactionInfo)
-            // default:
+                return this.renderDirect(transactionInfo)            
         }
     }
 
