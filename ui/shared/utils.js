@@ -98,3 +98,33 @@ export const getToastMessage = (message) => {
 export const getServerMode = (versionName) => {
   return (versionName.split(".").length == 3) ? 'PROD':'DEV'
 }
+
+export const _isArrDiff = (arr1, arr2, checkProperties) => {
+    if (arr1.length != arr2.length) return true
+    for (let i = 0; i < arr1.length; i++) {
+        if (_isDiff(arr1[i], arr2[i], checkProperties)) return true
+    }
+    return false
+}
+
+export const _isArrDiffPartial = (arr1, arr2, checkProperties) => {
+  let length1 = arr1.length
+  let length2 = arr2.length  
+  if (length1 != length2) return true
+  return (
+      _isDiff(arr1[0], arr2[0], checkProperties) 
+      || _isDiff(arr1[length1], arr2[length1], checkProperties)
+  )
+}
+
+export const _isDiff = (item1, item2, checkProperties) => {
+    if (!item1 && !item2) return false
+    if (!item1) return true
+    if (!item2) return true
+    for (let i=0; i<checkProperties.length; i++){
+      if (item1[checkProperties[i]] != item2[checkProperties[i]]){
+        return true
+      }
+    }
+    return false
+}

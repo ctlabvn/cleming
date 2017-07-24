@@ -18,7 +18,7 @@ import {
     SCREEN
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
-import {_isDiff} from './utils'
+import {_isDiff} from '~/ui/shared/utils'
 @connect(null, {forwardTo})
 export default class extends Component {
     constructor(props) {
@@ -26,7 +26,12 @@ export default class extends Component {
 
     }
     shouldComponentUpdate = (nextProps, nextState) => {
-        return _isDiff(this.props.data, nextProps.data)
+        return _isDiff(this.props.data, nextProps.data,
+            ['transactionType', 'transactionStatus', 'dealTransactionId', 
+                'dealTransactionIdDisplay',
+                'originPrice', 'invoiceTime', 'moneyNumberClingme'
+            ]
+        )
     }
     _renderTransactionPayWithClingmeItem(item) {
         //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
