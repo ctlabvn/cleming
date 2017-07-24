@@ -20,7 +20,7 @@ export default class TabsWithNoti extends Component {
     _handlePressTab(item) {
         if (this.state.activeTab != item.tabID) {
             this.setState({ activeTab: item.tabID })
-            this.props.onPressTab(item)
+            setTimeout(()=>this.props.onPressTab(item), 0)
         }
     }
     componentWillReceiveProps(nextProps){

@@ -79,8 +79,10 @@ export default class DateFilter extends Component {
         })
     }
     _handleYesDateFilter(item) {
-        this.setState({ currentDateFilter: item })
-        this.setState({ currentSelectValue: this._getDefaultCurrnetSelectValue(item) })
+        this.setState({ 
+            currentDateFilter: item,
+            currentSelectValue: this._getDefaultCurrnetSelectValue(item)
+        })
         setTimeout(() => {
             this.refs.dateFilterList.scrollToEnd({ animated: false })
             this.props.onPressFilter(this.state)
