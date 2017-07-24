@@ -49,10 +49,10 @@ export default class extends Component {
                                 <Text medium bold grayDark>{item.userName}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text strong bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
                             </View>
                             <View style={styles.rowCenter}>
-                                <Text grayDark><Text largeLight bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text strong grayDark><Text big bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
                                 <Text medium primary>{I18n.t('paid')}</Text>
@@ -74,7 +74,7 @@ export default class extends Component {
                         <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
                                 <Text medium style={styles.timestamp} grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
+                                <Text medium bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
 
                             </View>
                             <View style={styles.rowPadding}>
@@ -82,7 +82,7 @@ export default class extends Component {
                             </View>
                             <View style={styles.rowPadding}>
                                 <Text medium success>{I18n.t('confirmed')}</Text>
-                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                                <Text grayDark><Text strong bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
                         <Border color='rgba(0,0,0,0.5)' size={1} />
