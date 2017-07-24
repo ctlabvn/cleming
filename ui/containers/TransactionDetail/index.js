@@ -41,7 +41,7 @@ export default class TransactionDetail extends Component {
             transactionInfo: {},
             hasNext: false,
             hasPrevious: false,
-            loading: false,
+            // loading: false,
             page: 1 // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading
         }
         this.swiping = false
@@ -206,6 +206,12 @@ export default class TransactionDetail extends Component {
         }
         // })
 
+    }
+
+    componentWillBlur(){
+        // just to clear the view
+        // console.log('render')
+        this.setState({ transactionInfo: {} })
     }
 
     renderClingme(transactionInfo){
@@ -393,11 +399,11 @@ export default class TransactionDetail extends Component {
     _load = (transactionId) => {
         const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack } = this.props
         let transactionType = route.params.type
-        this.setState({ loading: true })
+        // this.setState({ loading: true })
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
-                    this.setState({ loading: false })
+                    // this.setState({ loading: false })
                     console.log('Load payCLM', data)
                     console.log('Load payCLM', err)
                     if (err) {
@@ -435,7 +441,7 @@ export default class TransactionDetail extends Component {
                 (err, data) => {
                     console.log('Loaded Detail', data)
                     console.log('Err', err)
-                    this.setState({ loading: false })
+                    // this.setState({ loading: false })
                     if (err) {
                         if (err.code == 1811 || err.code == 1812) {
                             setToast(getToastMessage(I18n.t('err_transaction_not_exists')), 'info', null, null, 3000, 'top')
