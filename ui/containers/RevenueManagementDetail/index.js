@@ -28,11 +28,11 @@ export default class extends Component {
         super(props)
         const { route } = this.props;
         const item = this.props.selectedItem;
-        console.warn('constructor ' + JSON.stringify(item, null, 2));
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
         this.state = {
+            item: item,
             currentTab: tab,
             colorStyle: color,
         }
@@ -41,11 +41,11 @@ export default class extends Component {
     componentWillFocus() {
         const { route } = this.props;
         const item = this.props.selectedItem;
-        console.warn('constructor ' + JSON.stringify(item, null, 2));
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
         this.setState({
+            item: item,
             currentTab: tab,
             colorStyle: color,
         })
@@ -84,16 +84,19 @@ export default class extends Component {
     }
 
     render() {
+
+        iconName = this.state.item.itemType == REVENUE_CLINGME_PAY ? 'clingme-wallet': 'shiping-bike2';
+
         return (
             <Container>
                 {this._renderTitle()}
                 <Content contentContainerStyle={{ alignItems:'center', justifyContent:'flex-start', flex: 1 }}>
                     <View style={{flexDirection: 'row', width:'100%'}}>
-                        <Icon name='clingme-wallet' style={{...styles.icon, ...this.state.colorStyle}}/>
+                        <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
                         <View style={{flex: 1}}>
                             <ListItem style={{...styles.row, marginTop: 10}}>
                                 <Text medium style={styles.gray}>Clingme Pay</Text>
-                                <Text bold large style={styles.gray}>#CL123456</Text>
+                                <Text bold large style={styles.gray}>#{this.state.item.code}</Text>
                             </ListItem>
                             <Border color='rgba(0,0,0,0.5)' size={1}/>
                             <ListItem style={styles.row}>

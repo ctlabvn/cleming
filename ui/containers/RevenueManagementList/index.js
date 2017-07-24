@@ -103,7 +103,6 @@ export default class extends Component {
         handlePress = () => {
             const { setSelectedRevenueItem } = this.props
             // checkRevenueAction();
-            console.warn(JSON.stringify(item));
             setSelectedRevenueItem(item);
             this._forwardToDetail();
         }

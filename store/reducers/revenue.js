@@ -10,7 +10,6 @@ const initialState = {
     },
 }
 export const revenue = (state = initialState, {type, payload}) => {
-    console.warn("check revenue reducer " + (payload ? ' payload is ok ' : 'payload is undefined'))
     switch (type) {
         case 'app/setSelectedRevenueItem':
             return {
