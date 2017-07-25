@@ -14,7 +14,7 @@ export default class DateFilter extends Component {
     constructor(props) {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        let defaultFilter = props.defaultFilter || 'week'
+        let defaultFilter = props.defaultFilter || 'day'
         this.state = {
             currentDateFilter: defaultFilter,
             currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter)
