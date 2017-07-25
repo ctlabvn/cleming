@@ -34,10 +34,10 @@ export default {
       }
   ],
   tabData: [
-      {
-          tabID: TRANSACTION_TYPE_CLINGME,
-          text: I18n.t('transaction_type_clingme'),
-      },
+    //   {
+    //       tabID: TRANSACTION_TYPE_CLINGME,
+    //       text: I18n.t('transaction_type_clingme'),
+    //   },
       {
           tabID: TRANSACTION_TYPE_DIRECT,
           text: I18n.t('transaction_type_direct'),

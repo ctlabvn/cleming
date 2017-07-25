@@ -58,8 +58,8 @@ export default class extends Component {
     render() {
         let now = moment().unix()
         let countDownMinute = Math.floor((this.state.countTo - now) / 60)
-        if (countDownMinute <= 0) {
-            return <View></View>
+        if (countDownMinute < 0) {
+            countDownMinute = 0
         }
         if (countDownMinute > this.state.baseMinute) {
             return <View></View>

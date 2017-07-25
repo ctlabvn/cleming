@@ -85,7 +85,7 @@ export default class extends Component {
         this.clickCount = 0
         const { app } = this.props
         // console.log('Content', this.content)
-        this.content && this.content.scrollToTop()
+        // this.content && this.content.scrollToTop()
         // this.refs.content._root.scrollToPosition({ x: 0, y: 0, animated: false })
         this.setState({ counting: true })
         this._load()
@@ -94,7 +94,7 @@ export default class extends Component {
 
     componentWillBlur() {
         // InteractionManager.runAfterInteractions(() => {
-        this.setState({ counting: false })
+        this.setState({ counting: false,  orderDetail:{}})
         // })
     }
 
