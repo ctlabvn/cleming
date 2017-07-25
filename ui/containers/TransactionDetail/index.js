@@ -602,7 +602,7 @@ export default class TransactionDetail extends Component {
         }
         
         return (
-            <Container>
+            <Container style={{backgroundColor: material.white500}}>
                 <PopupInfo ref='popupInfo' />
                 {/*<LoadingModal loading={this.state.loading} />*/}
                 <ViewPager style={{ flex: 1, height: '100%' }}
