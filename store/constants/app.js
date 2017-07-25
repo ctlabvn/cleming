@@ -70,8 +70,8 @@ export const CONNECTION_ERROR_MESSAGE = I18n.t('err_connection')
 export const DETECT_LOCATION_INTERVAL = 180000 // 3 minute
 
 export const DEFAULT_MAP_DELTA = {
-    LAT: 0.015,
-    LONG: 0.015
+    LAT: 0.004,
+    LONG: 0.004
 }
 
 export const TRANSACTION_DISPLAY = {

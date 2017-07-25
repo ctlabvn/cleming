@@ -351,10 +351,10 @@ export default class TransactionDetail extends Component {
                                         <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
                                         <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
                                     </View>
-                                    <View style={styles.gridItem}>
+                                    {/* <View style={styles.gridItem}>
                                         <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
                                         <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
-                                    </View>
+                                    </View> */}
                                 </View>
                                 <View style={styles.rowSpaceAround}>
                                     <View style={styles.gridItem}>
