@@ -17,4 +17,4 @@ export const storeTransparent = require('./images/store_without_background.png')
 export const storeFilled      = require('./images/store_with_background.jpg')
 
 export const customerMarker = require('./images/marker_customer.png')
-export const merchantMarker = require('./images/marker_merchant.png')
+export const merchantMarker = require('./images/marker_merchant_red.png')
