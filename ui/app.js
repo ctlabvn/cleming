@@ -232,6 +232,7 @@ export default class App extends Component {
         this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
         break
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
+      case NOTIFY_TYPE.TRANSACTION_CLINGME_REPUSH:
         this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:

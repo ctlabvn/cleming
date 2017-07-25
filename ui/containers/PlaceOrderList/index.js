@@ -55,7 +55,9 @@ export default class PlaceOrderList extends Component {
         this.currentPlace = -1
         if (props.app && props.app.topDropdown){
             let selectedPlace = props.app.topDropdown.getValue()
-            this.currentPlace = selectedPlace.id
+            if (selectedPlace && selectedPlace.id){
+                this.currentPlace = selectedPlace.id
+            }
         }
     }
 

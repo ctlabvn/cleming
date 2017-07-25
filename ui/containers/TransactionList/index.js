@@ -52,7 +52,9 @@ export default class extends Component {
         this.currentPlace = -1
         if (props.app && props.app.topDropdown){
             let selectedPlace = props.app.topDropdown.getValue()
-            this.currentPlace = selectedPlace.id
+            if (selectedPlace && selectedPlace.id){
+                this.currentPlace = selectedPlace.id
+            }
         }
     }
     // need filter transaction type
@@ -220,7 +222,7 @@ export default class extends Component {
             console.log('Markload transaction clingme')
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-        }else if(currentPlace.id != this.currentPlace){
+        }else if(currentPlace && currentPlace.id != this.currentPlace){
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         }
         
