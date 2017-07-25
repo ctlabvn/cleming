@@ -26,11 +26,11 @@ export default {
       },
       {
           value: 1,
-          display: I18n.t('paid')
+          display: I18n.t('not_confirm_yet')
       },
       {
           value: 2,
-          display: I18n.t('pay_complete')
+          display: I18n.t('confirmed')
       }
   ],
   tabData: [

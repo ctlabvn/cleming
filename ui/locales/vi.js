@@ -9,6 +9,7 @@ export default {
     'confirm': 'Xác nhận',
     'detail': 'Chi tiết',
     'confirmed': 'Đã xác nhận',
+    'not_confirm_yet': 'Chưa xác nhận',
     'customer': 'Khách hàng',
     'paid': 'Đã thanh toán',
     'all_transaction': 'Tất cả giao dịch',

@@ -55,7 +55,7 @@ export default class extends Component {
                                 <Text strong grayDark><Text big bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
-                                <Text medium primary>{I18n.t('paid')}</Text>
+                                <Text medium primary>{I18n.t('not_confirm_yet')}</Text>
                                 <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)} >
                                     <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
