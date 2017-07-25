@@ -48,10 +48,7 @@ class TransactionConfirmItem extends Component {
 }
 
 @connect(null, commonActions)
-export default class TransactionConfirm extends Component {
-    constructor(props) {
-        super(props)
-    }
+export default class TransactionConfirm extends Component {   
     goPrevious() {
         this.props.goBack()
     }

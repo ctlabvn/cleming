@@ -8,6 +8,7 @@ import * as commonAction from "~/store/actions/common";
 import * as transactionAction from "~/store/actions/transaction";
 import * as authActions from "~/store/actions/auth";
 import * as placeActions from "~/store/actions/place";
+import * as metaActions from "~/store/actions/meta";
 import TransactionFilter from "~/ui/components/TransactionFilter";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
@@ -15,45 +16,44 @@ import Border from "~/ui/elements/Border";
 import moment from "moment";
 import { formatNumber } from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
-import { getSession } from "~/store/selectors/auth";
+import { getSession, getUser } from "~/store/selectors/auth";
 import { getNews } from "~/store/selectors/place";
 import { getListTransactionCLM, getListTransactionDirect } from "~/store/selectors/transaction";
-// import { getSelectedPlace } from '~/store/selectors/place'
 import options from "./options";
 import material from "~/theme/variables/material.js";
 import {
     TIME_FORMAT_WITHOUT_SECOND,
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
+    TRANSACTION_TYPE_DIRECT,
+    TRANSACTION_DISPLAY,
+    SCREEN
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
-
-// export const getListTransactionDirect = state => state.place.transaction.payDirect || []
-
-// export const getListTransactionCLM = state => state.place.transaction.payWithClingme || []
-
-// payDirect
-// payWithClingme
-
+import ListTransaction from './TransactionListComponent'
 @connect(state => ({
     xsession: getSession(state),
+    user: getUser(state),
     news: getNews(state),
-    // place: state.place,
-    // selectedPlace: getSelectedPlace(state),
     payDirect: getListTransactionDirect(state),
-    payWithClingme: getListTransactionCLM(state)
-}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
+    payWithClingme: getListTransactionCLM(state),
+    meta: state.meta    
+}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentTab: TRANSACTION_TYPE_DIRECT,
+            currentTab: this._getDefaultActiveTab(),
             loading: false,
             loadingMore: false
         }
+        
         this.isLoadingPlace = false
-
+        this.currentPlace = -1
+        if (props.app && props.app.topDropdown){
+            let selectedPlace = props.app.topDropdown.getValue()
+            this.currentPlace = selectedPlace.id
+        }
     }
     // need filter transaction type
     _handlePressFilter(item) {
@@ -68,7 +68,6 @@ export default class extends Component {
     }
     // Not need filter transaction type
     _handlePressTab(item) {
-        return
         const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         this.setState({ currentTab: item.tabID },
@@ -104,6 +103,7 @@ export default class extends Component {
     _handleTopDrowpdown = (item) => {
         // setSelectedOption(item)
         console.log('Handle Change TopDropdown', item)
+        this.currentPlace = item.id
         const { xsession } = this.props
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
@@ -128,19 +128,135 @@ export default class extends Component {
         } else {
             this.isLoadingPlace = true
         }
-        // news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-        // })
+        this._updateNews(news)
     }
+
+    _updateNews = (newsData) => {
+        // guard code:
+        if(!newsData)
+            return
+
+        // then extract data
+        const {user} = this.props
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+            default:
+                // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                // newsData && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                this.refs.tabs.updateMultipleNumber(
+                    [
+                        {
+                            tabID: TRANSACTION_TYPE_CLINGME,
+                            number: newsData.payThroughClmNotifyNumber
+                        },
+                        {
+                            tabID: TRANSACTION_TYPE_DIRECT,
+                            number: newsData.payDirectionNotifyNumber
+                        }
+                    ]
+                )
+                break
+            case TRANSACTION_DISPLAY.CLINGME:
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsData.payThroughClmNotifyNumber)
+                break
+            case TRANSACTION_DISPLAY.DIRECT:
+                this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsData.payDirectionNotifyNumber)
+                break
+        }
+    }
+
+    _getTabData = () => {
+        const {user} = this.props
+        switch(user.isPay){            
+            case TRANSACTION_DISPLAY.CLINGME:
+                return options.tabDataClingme
+            case TRANSACTION_DISPLAY.DIRECT:
+                return options.tabDataDirect
+            // default is all
+            // case TRANSACTION_DISPLAY.BOTH:
+            default:
+                return options.tabData
+        }
+    }
+
+    _getDefaultActiveTab = () => {
+        const {user} = this.props
+        switch(user.isPay){            
+            case TRANSACTION_DISPLAY.CLINGME: 
+                return TRANSACTION_TYPE_CLINGME
+            // case TRANSACTION_DISPLAY.BOTH:
+            // case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return TRANSACTION_TYPE_DIRECT
+        }
+    }
+
+
+    _getTransactionFilterValue = () => {
+        const {user} = this.props
+        switch(user.isPay){            
+            case TRANSACTION_DISPLAY.CLINGME: 
+                return options.transactionFilterListClingme
+            // case TRANSACTION_DISPLAY.BOTH:
+            // case TRANSACTION_DISPLAY.DIRECT:
+            default:
+                return options.transactionFilterListDirect
+        }
+    }
+
+
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
-        const { app, news } = this.props
+        const { app, news, meta, clearMarkLoad } = this.props
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        // news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, news.payThroughClmNotifyNumber)
-        news && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, news.payDirectionNotifyNumber)
-        // })
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
+            console.log('Markload transaction direct')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
+            console.log('Markload transaction clingme')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }else if(currentPlace.id != this.currentPlace){
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        }
+        
+        
+        this._updateNews(news)
+        this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
     }
+
+    _isNeedUpdateTab(){
+        const {user} = this.props
+        let tabData = this.refs.tabs.getData()
+        switch(user.isPay){
+            case TRANSACTION_DISPLAY.BOTH:
+                if (tabData.length == 1){
+                    return true
+                }
+                break
+            case TRANSACTION_DISPLAY.DIRECT:
+                if (tabData.length == 2 || tabData[0].tabID != TRANSACTION_TYPE_DIRECT){
+                    return true
+                }
+                break
+            case TRANSACTION_DISPLAY.CLINGME: 
+                if (tabData.length == 2 || tabData[0].tabID != TRANSACTION_TYPE_CLINGME){
+                    return true
+                }
+                break
+            default:
+                return false
+        }
+        return false
+    }
+
+    
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
+        this.currentPlace = placeId
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {
@@ -148,7 +264,6 @@ export default class extends Component {
         } else {
             this.setState({ loading: true })
         }
-
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 (err, data) => {
@@ -174,8 +289,7 @@ export default class extends Component {
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
                     let newsUpdate = data.updated.data
-                    // newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_CLINGME, newsUpdate.payThroughClmNotifyNumber)
-                    newsUpdate && this.refs.tabs.updateNumber(TRANSACTION_TYPE_DIRECT, newsUpdate.payDirectionNotifyNumber)
+                    this._updateNews(newsUpdate)
                 }
             }
         )
@@ -206,158 +320,13 @@ export default class extends Component {
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
     }
-    _renderTransactionPayWithClingmeItem(item) {
-        //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
-        switch (item.transactionStatus) {
-            case 1:
-            default:
-                return (
-                    <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
-                    >
-                        <View style={styles.block}>
-                            <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text medium bold grayDark>{item.userName}</Text>
-                            </View>
-                            <View style={styles.rowCenter}>
-                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
-                            </View>
-                            <View style={styles.rowCenter}>
-                                <Text grayDark><Text large bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
-                            </View>
-                            <View style={styles.row}>
-                                <Text small primary>{I18n.t('paid')}</Text>
-                                <Button transparent style={styles.button} onPress={() => this.confirmTransaction(item.transactionId)}>
-                                    <Text medium bold primary>{I18n.t('detail')}</Text>
-                                    <Icon name='foward' style={styles.primary} />
-                                </Button>
-                            </View>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                    </ListItem>
-                )
-            case 2:
-                return (
-                    <ListItem style={styles.listItem}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
-                    >
-                        <View style={styles.blockConfirmed}>
-                            <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text bold grayDark style={styles.transactionCodeClingme}>{item.transactionIdDisplay}</Text>
 
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Text small grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Text success small>{I18n.t('confirmed')}</Text>
-                                <Text grayDark><Text bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
-                            </View>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                    </ListItem>
-                )
-        }
-    }
-
-    _renderTransactionItem(item) {
-        let iconBlock, statusText, transactionCode, timeBlock
-        let moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.originPrice)}đ</Text>
-        switch (item.transactionStatus) {
-            case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK: //chờ duyệt
-                iconBlock = (
-                    <View style={styles.iconBlock}>
-                        <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
-                    </View>
-                )
-                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
-                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                break
-            case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
-                iconBlock = (
-                    <View style={styles.iconBlock}>
-                        <Icon name='coin_mark' style={{ ...styles.icon, ...styles.success }} />
-                    </View>
-                )
-                statusText = <Text small grayDark>{I18n.t('cashback_success')}</Text>
-                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                break
-            case TRANSACTION_DIRECT_STATUS.REJECT: // bị từ chối
-                iconBlock = (
-                    <View style={styles.iconBlock}>
-                        <Icon name='unlike_s' style={{ ...styles.icon, ...styles.reject }} />
-                    </View>
-                )
-                statusText = <Text small error>{I18n.t('reject')}</Text>
-                transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                moneyText = <Text bold gray style={styles.moneyNumber}></Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                break
-            default:
-                iconBlock = (
-                    <View style={styles.iconBlock}>
-                        <Icon name='order-history' style={styles.icon} />
-                    </View>
-                )
-                statusText = <Text small warning>{I18n.t('wait_confirm')}</Text>
-                transactionCode = <Text bold>{item.dealTransactionIdDisplay}</Text>
-                timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-        }
-        return (
-            <ListItem
-                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionId + '/' + item.transactionType)}
-                style={styles.listItem}
-            >
-                <View style={styles.block}>
-                    <View style={{ ...styles.row, alignItems: 'flex-start' }}>
-                        {iconBlock}
-                        <View style={{ width: '100%', flex: 1 }}>
-                            <View style={styles.row}>
-                                {transactionCode}
-                                {timeBlock}
-                            </View>
-                            <View style={styles.row}>
-                                {statusText}
-                                {moneyText}
-                            </View>
-                        </View>
-                    </View>
-                </View>
-                {
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                }
-            </ListItem>
-        )
-    }
-
-    _renderRow(item) {
-        if (item.transactionType == TRANSACTION_TYPE_CLINGME) { // Over clingme
-            return this._renderTransactionPayWithClingmeItem(item)
-        } else { // Direct
-            return this._renderTransactionItem(item)
-        }
-    }
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props
         if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
-            return (<List dataArray={payWithClingme.listTransaction}
-                renderRow={(item) => {
-                    return this._renderRow(item)
-                }}
-                pageSize={10}
-            ></List>)
-        } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
-            return (
-                <List dataArray={payDirect.listTransaction}
-                    renderRow={(item) => {
-                        return this._renderRow(item)
-                    }}
-                    pageSize={10}></List>
-            )
+            return <ListTransaction key='listTrans' data={payWithClingme.listTransaction} />
+        } else {
+            return <ListTransaction key='listTrans' data={payDirect.listTransaction} />
         }
     }
     render() {
@@ -371,11 +340,6 @@ export default class extends Component {
                 </View>
             )
         }
-        // let dropdownValues = place.listPlace.map(item => ({
-        //     id: item.placeId,
-        //     name: item.address
-        // }))
-
         // let noData = null
         // if (transaction.listTransaction && transaction.listTransaction.length == 0) {
         //     noData = <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 50 }}><Text small>Không có dữ liệu.</Text></View>
@@ -390,10 +354,10 @@ export default class extends Component {
                     selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <View style={{ height: '100%' }}>
-                    <TabsWithNoti tabData={options.tabData} activeTab={TRANSACTION_TYPE_DIRECT} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+                    <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
-                        listValue={options.transactionFilterListDirect} ref='transactionFilter'
+                        listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />
                     <Content
                         padder

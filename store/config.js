@@ -40,7 +40,7 @@ sagaMiddleware.run(rootSaga)
 // Enable persistence, give the callback
 const configureStore = callback =>   {  
   // callback(store)
-  persistStore(store, {storage: AsyncStorage}, ()=> callback(store))
+  persistStore(store, {storage: AsyncStorage, blacklist:['form', 'ui', 'requests']}, ()=> callback(store))
     // .purge(['auth'])    
 }
 

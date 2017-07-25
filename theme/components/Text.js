@@ -31,6 +31,9 @@ export default (variables = variable) => {
       '.medium': {
           fontSize: material.textSizeMedium
       },
+      '.strong': {
+          fontSize: material.textSizeStrong
+      },
       '.largeLight': {
           fontSize: material.textSizelargeLight
       },

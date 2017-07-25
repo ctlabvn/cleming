@@ -16,7 +16,7 @@ import {customerMarker, merchantMarker} from "~/assets";
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    booking: state.booking,
+    // booking: state.booking,
     report: state.report
 }), { ...commonActions, ...reportActions, ...placeActions })
 export default class Report extends Component {
@@ -32,10 +32,15 @@ export default class Report extends Component {
             },
             focusMerchant: {}
         }
+        this.currentPlace = -1
         this.isLoadingPlace = false
         this.showMap = false
         this.mapWidth = 0
         this.mapHeight = 0
+        if (props.app && props.app.topDropdown){
+            let selectedPlace = props.app.topDropdown.getValue()
+            this.currentPlace = selectedPlace.id
+        }
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
         const { xsession, getMapReport } = this.props
@@ -63,7 +68,8 @@ export default class Report extends Component {
         }
     }
     _loadAndFocus(placeId, fromTime, toTime) {
-        const { place } = this.props
+        const { place, getMerchantNews, xsession } = this.props
+        this.currentPlace = placeId
         if (place && place.listPlace && place.listPlace.length > 0) {
             let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
             console.log('Focus Merchant', focusMerchant)
@@ -79,6 +85,7 @@ export default class Report extends Component {
         }
 
         this._requestMapData(placeId, fromTime, toTime)
+        getMerchantNews(xsession, placeId)
     }
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
@@ -98,19 +105,20 @@ export default class Report extends Component {
     }
 
     componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
-        //     const { app } = this.props
-        //     app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
-        //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        //     let selectedPlace = app.topDropdown.getValue()
-        //     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-        //         this.isLoadingPlace = true
-        //         return
-        //     }
-        //     setTimeout(() => {
-        //         this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-        //     }, 500)
-        // })
+        InteractionManager.runAfterInteractions(() => {
+            const { app } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let selectedPlace = app.topDropdown.getValue()  
+            console.log('Current Place:', this.currentPlace)
+            console.log('Selected Place:', selectedPlace)
+            if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
+                this.isLoadingPlace = true
+                return
+            }else if(this.currentPlace!=selectedPlace.id){
+                this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+            }
+        })
     }
     _regionChange = (region) => {
         this.setState({ region },
@@ -131,7 +139,7 @@ export default class Report extends Component {
     }
 
     _handleTopDropdown = (item) => {
-        console.log('Report dropdown change', item)
+        this.currentPlace = item.id
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._loadAndFocus(item.id, dateFilterData.from, dateFilterData.to)
     }
@@ -158,7 +166,7 @@ export default class Report extends Component {
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='week' type='lite' />
+                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='month' type='lite' />
                     <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}

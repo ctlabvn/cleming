@@ -180,7 +180,7 @@ export default class MerchantOverview extends Component {
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
-                <Text largeLight style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
+                <Text strong style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
                 <View style={styles.menuContainer}>
                     {(place && place.news && place.news.transactionNews > -1) &&
                     <TouchableOpacity onPress={() => forwardTo('transactionList')}>

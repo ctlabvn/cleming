@@ -25,8 +25,8 @@ import {formatPhoneNumber, chainParse, getToastMessage} from "~/ui/shared/utils"
 import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
-    user: state.auth.user,
-    place: state.place,
+    // user: state.auth.user,
+    // place: state.place,
     booking: state.booking
 }), {...commonActions, ...bookingActions, ...notificationActions})
 
@@ -40,39 +40,14 @@ export default class PlaceOrderDetail extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            const {getBookingDetail, app, xsession, updateRead, setToast} = this.props
-            let bookingId = this.props.route.params.id
-            let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
-            this.setState({counting: true})
-            getBookingDetail(xsession, bookingId,
-                (error, data) => {
-                    console.log('Err Booking detail', error)
-                    console.log('Booking Detail', data)
-                    if (data && data.updated) {
-                        let bookingDetail = data.updated.bookingInfo
-                        if (!bookingDetail.isReadCorrespond && bookingDetail.notifyIdCorrespond) {
-                            updateRead(xsession, bookingDetail.notifyIdCorrespond)
-                        }
-                        this.setState({bookingDetail: bookingDetail})
-                        return
-                    } else {
-                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
-                        this.props.forwardTo('merchantOverview')
-                        return
-                    }
-                }
-            )
-            // this.setState({ bookingDetail: bookingArr[0] })
-        })
-
+        this.componentWillFocus()
     }
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
             const {app, getBookingDetail, updateRead, xsession, setToast} = this.props
             let bookingId = this.props.route.params.id
-            let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
+            // let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
             this.setState({counting: true})
             getBookingDetail(xsession, bookingId,
                 (error, data) => {
@@ -220,7 +195,7 @@ export default class PlaceOrderDetail extends Component {
                     </View>
                     <View style={styles.codeContainer}>
                         <Text medium style={{...styles.normalText, ...styles.codeTitleText}}>{I18n.t('booking_code')}: </Text>
-                        <Text large primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
+                        <Text largeLight primary bold style={{...styles.codeText}}>{chainParse(this.state, ['bookingDetail', 'bookingClmCode'])}</Text>
                     </View>
                 </View>
 

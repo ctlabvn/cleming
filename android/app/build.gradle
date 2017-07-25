@@ -103,7 +103,7 @@ android {
         targetSdkVersion 22
         multiDexEnabled true
         versionCode 2
-        versionName "1.0.0"
+        versionName "1.0.0.6" 
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -149,6 +149,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-version-number')
     compile project(':react-native-i18n')
     compile project(':react-native-scandit')
     compile project(':react-native-fabric')

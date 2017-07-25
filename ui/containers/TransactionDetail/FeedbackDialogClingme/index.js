@@ -15,7 +15,6 @@ export default class FeedbackDialogClingme extends Component {
         let length = props.listValue? props.listValue.length : 0
         let listValue = props.listValue ? props.listValue.slice(0, length - 1) : []
         let otherValue = props.listValue ? props.listValue[length - 1] : {}
-        console.log('Constructor', listValue)
         this.state = {
             modalVisible: false,
             selectedValue: (listValue && listValue.length>0) ? listValue[0].reasonId : 0,

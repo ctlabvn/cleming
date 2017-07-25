@@ -1,4 +1,6 @@
 import material from '~/theme/variables/material'
+import { Dimensions } from 'react-native'
+const { height, width } = Dimensions.get('window');
 
 export default {
   container: {
@@ -16,7 +18,6 @@ export default {
     // width: '100%',   
     height: 50,
     marginLeft: 15,
-    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   titleContainer: {
@@ -34,7 +35,7 @@ export default {
   icon: {
     color: material.gray600,
     alignSelf: 'flex-start',
-    fontSize: 18,
+    fontSize: 20,
     marginLeft: 10,
     marginRight: 3
   },
@@ -50,12 +51,25 @@ export default {
   rowEnd: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-end'
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%'
-  }
+  },
+  emptyBlock: {
+      width: width,
+      height: height*3/4,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  underBack: {
+    color: material.gray400
+  },
+  subRow: {
+      justifyContent: 'space-between',
+      alignItems: 'flex-end',
+      flexDirection: 'row'
+  },
 }

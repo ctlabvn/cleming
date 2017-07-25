@@ -9,6 +9,7 @@ import * as commonActions from "~/store/actions/common";
 import * as placeActions from "~/store/actions/place";
 import * as orderSelectors from "~/store/selectors/order";
 import * as authSelectors from "~/store/selectors/auth";
+import * as metaActions from "~/store/actions/meta";
 import { InputField } from "~/ui/elements/Form";
 import Content from "~/ui/components/Content";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
@@ -23,6 +24,7 @@ import moment from "moment";
 import { getNews } from "~/store/selectors/place";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
 import I18n from '~/ui/I18n'
+import OrderItem from './OrderItem'
 import {
     DEFAULT_TIME_FORMAT,
     DELIVERY_FEEDBACK,
@@ -31,13 +33,15 @@ import {
     ORDER_CANCEL,
     ORDER_SUCCESS,
     ORDER_WAITING_CONFIRM,
-    ORDER_WAITING_DELIVERY
+    ORDER_WAITING_DELIVERY,
+    SCREEN
 } from "~/store/constants/app";
 @connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
-    news: getNews(state)
-}), { ...orderActions, ...commonActions, ...placeActions })
+    news: getNews(state),
+    meta: state.meta
+}), { ...orderActions, ...commonActions, ...placeActions, ...metaActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
 
@@ -83,20 +87,42 @@ export default class extends Component {
         // this.counting = true
         // InteractionManager.runAfterInteractions(() => {
         this.clickCount = 0
-        const { app, news, order, markWillReload } = this.props
+        const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
+        //
+        let placeDropdownValue = app.topDropdown.getValue()
+        if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
+            let selectedPlace = placeDropdownValue.id
+            if (selectedPlace != this.state.selectedPlace){
+                this.setState({selectedPlace: selectedPlace},
+                    ()=>this._load()
+                )
+            }
+        }
+        
         //Effect within 1 munites from markTime
         if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
             markWillReload(false)
             this.selectedStatus = ORDER_WAITING_DELIVERY
             this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
             this._load()
+        }else if (meta && meta[SCREEN.ORDER_LIST]){
+            console.log('Markload order list')
+            this._load()
+            clearMarkLoad(SCREEN.ORDER_LIST)
         }
 
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
-
+        news && this.refs.tabs.updateMultipleNumber([
+            {
+                tabID: ORDER_WAITING_CONFIRM,
+                number: news.orderWaitConfirm
+            },
+            {
+                tabID: ORDER_WAITING_DELIVERY,
+                number: news.orderWaitDelivery
+            }
+        ])
         this.setState({ counting: true })
         // })
     }
@@ -106,8 +132,16 @@ export default class extends Component {
         const { app, news } = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         this._load()
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, news.orderWaitConfirm)
-        news && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, news.orderWaitDelivery)
+        news && this.refs.tabs.updateMultipleNumber([
+            {
+                tabID: ORDER_WAITING_CONFIRM,
+                number: news.orderWaitConfirm
+            },
+            {
+                tabID: ORDER_WAITING_DELIVERY,
+                number: news.orderWaitDelivery
+            }
+        ])
 
         // })
 
@@ -121,19 +155,6 @@ export default class extends Component {
 
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
-    //         this.isLoadingPlace = false
-    //         let selectedPlace = nextProps.place.listPlace[0].placeId
-    //         this.setState({ selectedPlace: selectedPlace },
-    //             () => {
-    //                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value; //currentSelectValue
-    //                 this.loadPage(1, dateFilterData.from, dateFilterData.to)
-    //             }
-    //         )
-
-    //     }
-    // }
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
@@ -170,7 +191,7 @@ export default class extends Component {
         )
     }
 
-    onModalOpen(phoneNumber) {
+    onModalOpen = (phoneNumber) => {
         this.setState({
             modalOpen: true,
             phoneNumber: phoneNumber
@@ -256,150 +277,6 @@ export default class extends Component {
         this.refs.deliveryFeedbackDialog.show(posOrderId)
     }
 
-    _renderRow({ orderInfo, orderRowList }) {
-        const { forwardTo } = this.props
-        var statusBlock = null, buttonActionBlock = null
-        const status = this.selectedStatus
-        let totalItem = 0
-        if (orderRowList) {
-            totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
-        }
-        let phoneNumberBlock = (
-            <View style={styles.row}>
-                <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
-                <Text
-                    medium
-                    onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
-                    style={styles.phoneNumber}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
-            </View>
-        )
-
-        switch (orderInfo.status) {
-            case 'WAIT_CONFIRM':
-            default:
-                statusBlock = (
-                    <View style={styles.deliveryCodeBlock}>
-                        <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingConfirm }} />
-                        <Text medium style={styles.deliveryCodeWaitingConfirm}>{orderInfo.tranId}</Text>
-                    </View>
-                )
-                break
-            case 'CONFIRMED':
-                statusBlock = (
-                    <View style={styles.deliveryCodeBlock}>
-                        <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeWaitingDelivery }} />
-                        <Text medium style={styles.deliveryCodeWaitingDelivery}>{orderInfo.tranId}</Text>
-                    </View>
-                )
-                buttonActionBlock = (
-                    <View style={styles.block}>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                        <View style={styles.row}>
-                            <Button transparent onPress={() => this.showReasonPopup(orderInfo.clingmeId)}>
-                                <Text medium bold gray>{I18n.t('cancel_delivery')}</Text></Button>
-                            <Button transparent onPress={() => this._handleConfirmOrder(orderInfo.clingmeId)}>
-                                <Text medium bold primary>{I18n.t('delivered')}</Text></Button>
-                        </View>
-                    </View>
-                )
-                break
-            case 'COMPLETED':
-                statusBlock = (
-                    <View style={styles.deliveryCodeBlock}>
-                        {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                        <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.deliveryCodeSuccess }} />
-                        <Text medium style={styles.deliveryCodeSuccess}>{orderInfo.tranId}</Text>
-                    </View>
-                )
-                break
-            case 'FAILED':
-            case 'CANCELLED':
-                statusBlock = (
-                    <View style={styles.deliveryCodeBlock}>
-                        {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
-                        <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.grey }} />
-                        <Text medium style={styles.grey}>{orderInfo.tranId}</Text>
-                    </View>
-                )
-                phoneNumberBlock = (
-                    <View style={styles.row}>
-                        <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
-                        <Text medium
-                            onPress={this.onModalOpen.bind(this, chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
-                            style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
-                    </View>
-                )
-                break
-        }
-        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
-        let listItemStyle = (orderInfo.status != 'CANCELLED' && orderInfo.status != 'FAILED') ? styles.deliveryBlock : styles.deliveryBlockCacel
-        return (
-            <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
-                onPress={() => {
-                    forwardTo('deliveryDetail/' + orderInfo.clingmeId)
-                }
-                }>
-                <View style={styles.block}>
-                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
-                        {statusBlock}
-                        <View style={styles.row}>
-                            <Text medium style={styles.time}
-                                grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            {(orderInfo.status == 'CANCELLED' || orderInfo.status == 'FAILED') && (
-                                <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                            )}
-                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) 
-                                && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
-                                && <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                    counting={this.state.counting}
-                                    countTo={countTo}
-                                />}
-                        </View>
-                    </View>
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                <View style={styles.block}>
-                    <View style={{ width: '100%' }}>
-                        <View style={styles.row}>
-                            <Text medium bold grayDark>{I18n.t('number_order_item')}</Text>
-                            <Text medium grayDark>SL: <Text mediumbold grayDark>{totalItem}</Text></Text>
-                        </View>
-                    </View>
-                </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
-                {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
-                    <View style={styles.block}>
-                        <View>
-                            <View style={styles.rowLeft}><Text medium bold grayDark style={styles.textLeft}>{I18n.t('note')}: </Text></View>
-                            <View style={styles.rowLeft}>
-                                <Text medium grayDark style={styles.textLeft}>{orderInfo.note}</Text>
-                            </View>
-                        </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
-                    </View>
-                }
-                <View style={styles.block}>
-                    <View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
-                        <View style={styles.row}>
-                            <Icon name='account' style={styles.icon} />
-                            <Text medium grayDark>{chainParse(orderInfo, ['userInfo', 'memberName'])}</Text>
-                        </View>
-                        {phoneNumberBlock}
-                    </View>
-
-                    <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text medium success>{I18n.t('paid')}</Text>
-                        <Text medium bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
-                    </View>
-                </View>
-                {buttonActionBlock}
-            </ListItem>
-        )
-    }
-
     render() {
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
@@ -422,9 +299,15 @@ export default class extends Component {
                     refreshing={this.state.loading}
                     style={styles.contentContainer}
                 >
-                    {orderList && orderList.map(item => (
-                        this._renderRow(item)
-                    ))}
+                    {orderList && orderList.map(item => 
+                        <OrderItem data={item} 
+                            key={chainParse(item, ['orderInfo', 'tranId'])}
+                            onPressPhoneNumber = {this.onModalOpen}
+                            onShowReasonPopup = {this.showReasonPopup}
+                            onConfirmOrder = {this._handleConfirmOrder}
+                            counting={this.state.counting}
+                        />
+                    )}
                     {this.state.loadingMore &&
                         <Spinner />
                     }

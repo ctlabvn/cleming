@@ -12,7 +12,8 @@ import Border from '~/ui/elements/Border'
 import { connect } from 'react-redux'
 import * as commonActions from '~/store/actions/common'
 import * as notificationActions from '~/store/actions/notification'
-
+import * as transactionAction from "~/store/actions/transaction"
+import * as metaAction from "~/store/actions/meta"
 import Icon from '~/ui/elements/Icon'
 import TimeAgo from '~/ui/components/TimeAgo'
 import * as commonSelectors from '~/store/selectors/common'
@@ -22,15 +23,17 @@ import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
 
-import { NOTIFY_TYPE, TRANSACTION_TYPE } from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
+
+import I18n from '~/ui/I18n'
 
 @connect(state => ({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
-  notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
-}), { ...commonActions, ...notificationActions })
+  // notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
+}), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 export default class extends Component {
 
   constructor(props) {
@@ -173,113 +176,98 @@ export default class extends Component {
       case NOTIFY_TYPE.NEW_ORDER:
         let fastDeliveryText = item.paramId3 ? <Text small style={{
           color: material.red500,
-          alignSelf: 'flex-end',
-          position: 'absolute',
-          top: 0,
-          right: 0,
         }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
         return (
-          <Body>
+            <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
+              <View style={styles.subRow}>
                 <Text note style={styles.textGray}>{item.title} </Text>
-                <Text bold style={styles.textGray}>{item.content}
-                </Text>
+                  {fastDeliveryText}
               </View>
-              {fastDeliveryText}
-              <View style={styles.rowEnd}>
-                <Icon name='want-feed' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
+
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                  <View style={styles.rowEnd}>
+                    <Icon name='want-feed' style={styles.icon}/>
+                    <Text bold>{item.paramId1}</Text>
+                  </View>
+
               </View>
             </View>
-
             {border}
 
-          </Body>)
+            </Body>
+      )
       case NOTIFY_TYPE.ORDER_CANCELLED:
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note error>{item.title} </Text>
+              <Text note error>{item.title} </Text>
+              <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
+                <View style={styles.rowEnd}>
+                  <Icon name='want-feed' style={styles.icon} />
+                  <Text bold>{item.paramId1}</Text>
+                </View>
               </View>
-              <View style={styles.rowEnd}>
-                <Icon name='want-feed' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
-              </View>
+
             </View>
             {border}
 
           </Body>)
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
         return (
-          <Body>
+            <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}
+              <Text note style={styles.textGray}>{item.title}</Text>
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <Text>
+                  <Text style={{
+                      fontWeight: '900',
+                      fontSize: 18,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
                 </Text>
               </View>
-
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-              }}>
-                <Text style={{
-                  fontWeight: '900',
-                  fontSize: 18,
-                }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-
             </View>
             {border}
-          </Body>
+            </Body>
         )
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
+          return (
+              <Body>
+              <View style={styles.listItemRow}>
                 <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}
-                </Text>
-              </View>
+                <View style={styles.subRow}>
+                  <Text bold style={styles.textGray}>{item.content}</Text>
 
-              <Text style={{
-                alignSelf: 'flex-end',
-                marginRight: 0,
-                color: material.blue600,
-              }}>
-                <Text style={{
-                  fontWeight: '900',
-                  color: material.blue600,
-                  fontSize: 24,
-                }}>{formatNumber(item.paramDouble1)}</Text>đ
+                  <Text style={{ color: material.blue600,}}>
+                    <Text strong style={{
+                        fontWeight: '900',
+                        color: material.blue600,
+                    }}>{formatNumber(item.paramDouble1)}</Text>đ
                   </Text>
-
-            </View>
-            {border}
-          </Body>
-        )
+                </View>
+              </View>
+              {border}
+              </Body>
+          )
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
         return (
           <Body>
-            <View>
-              <View>
-                <Text note style={styles.textGray}>{item.title}</Text>
-              </View>
-              <View style={styles.row}>
+            <View style={styles.listItemRow}>
+              <Text note style={styles.textGray}>{item.title}</Text>
+              <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
-                <Text style={{color: material.blue600,}}>
-                  <Text style={{
-                    fontWeight: '900',
-                    color: material.blue600,
-                    fontSize: 24,
-                  }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-              </View>
 
+                <Text style={{ color: material.blue600,}}>
+                  <Text style={{
+                      fontWeight: '900',
+                      color: material.blue600,
+                      fontSize: 24,
+                  }}>{formatNumber(item.paramDouble1)}</Text>đ
+                </Text>
+              </View>
             </View>
             {border}
           </Body>
@@ -288,55 +276,56 @@ export default class extends Component {
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
+              <View style={styles.subRow}>
                 <Text note style={styles.textGray}>{item.title}</Text>
+                <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              </View>
+
+              <View style={styles.subRow}>
                 <Text numberOfLines={1} ellipsizeMode='tail'>
                   <Text bold style={styles.textGray}>{item.content}: </Text>
                   {item.paramStr2}
                 </Text>
               </View>
 
-              <Text small style={{
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
             </View>
             {border}
           </Body>
         )
       default:
         return (
+          this._defaultContent(item)
+        )
+    }
+  }
+
+  _defaultContent(item) {
+      const border = <Border style={{
+          marginLeft: 15,
+          marginTop: 10,
+      }} color='rgba(0,0,0,0.5)' size={1} />
+
+      return (
           <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-              </View>
-              <Text note style={{
-                alignSelf: 'flex-end',
-                ...styles.textGray
-              }}>
-                <Text style={{
-                  ...styles.textGray
-                }} bold>{formatNumber(item.paramDouble1)}</Text>đ
+          <View style={{...styles.listItemRow, flexDirection: 'column'}}>
+            <Text note style={styles.textGray}>{item.title}</Text>
+            <View style={styles.subRow}>
+              <Text bold style={styles.textGray}>{item.content}</Text>
+              <Text note style={{...styles.textGray}}>
+                <Text strong style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
+          </View>
 
-
-            {border}
+          {border}
           </Body>
-        )
-
-
-    }
+      )
   }
 
   handleNotiClick(notification) {
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
-    const { updateRead, session, updateReadOfline } = this.props
+    const { updateRead, session, updateReadOfline, markWillLoad } = this.props
     if (!notification.isRead) {
       updateReadOfline(notification.notifyId)
       updateRead(session, notification.notifyId)
@@ -348,24 +337,28 @@ export default class extends Component {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
         break
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
         this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.CLINGME)
+        markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
         this.props.forwardTo('placeOrderDetail/' + paramLong3)
+        markWillLoad(SCREEN.BOOKING_LIST)
         break
       case NOTIFY_TYPE.NEW_ORDER:
       case NOTIFY_TYPE.ORDER_FEEDBACK:
       case NOTIFY_TYPE.ORDER_CANCELLED:
         this.props.forwardTo('deliveryDetail/' + paramLong3)
+        markWillLoad(SCREEN.ORDER_LIST)
         break
       default:
         break
     }
   }
   render() {
-    let { notifications, notificationRequest } = this.props
+    let { notifications } = this.props
     return (
 
       <Container>
@@ -373,8 +366,10 @@ export default class extends Component {
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
         >
+            {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
             <ListView
+              enableEmptySections={true}
               removeClippedSubviews={false}
               pageSize={10}
               dataSource={this.ds.cloneWithRows(notifications.data)}

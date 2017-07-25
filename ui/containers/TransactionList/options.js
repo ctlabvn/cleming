@@ -26,18 +26,30 @@ export default {
       },
       {
           value: 1,
-          display: I18n.t('paid')
+          display: I18n.t('not_confirm_yet')
       },
       {
           value: 2,
-          display: I18n.t('pay_complete')
+          display: I18n.t('confirmed')
       }
   ],
   tabData: [
-    //   {
-    //       tabID: TRANSACTION_TYPE_CLINGME,
-    //       text: I18n.t('transaction_type_clingme'),
-    //   },
+      {
+          tabID: TRANSACTION_TYPE_DIRECT,
+          text: I18n.t('transaction_type_direct'),
+      },
+      {
+          tabID: TRANSACTION_TYPE_CLINGME,
+          text: I18n.t('transaction_type_clingme'),
+      },
+  ],
+  tabDataClingme: [
+      {
+          tabID: TRANSACTION_TYPE_CLINGME,
+          text: I18n.t('transaction_type_clingme'),
+      }
+  ],
+  tabDataDirect: [
       {
           tabID: TRANSACTION_TYPE_DIRECT,
           text: I18n.t('transaction_type_direct'),

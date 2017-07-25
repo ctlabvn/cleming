@@ -17,7 +17,7 @@ import SideBar from './components/SideBar'
 import Preload from './containers/Preload'
 import Header from '~/ui/components/Header'
 import Footer from '~/ui/components/Footer'
-import Popover from '~/ui/components/Popover'
+// import Popover from '~/ui/components/Popover'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 import PopupInfo from '~/ui/components/PopupInfo'
@@ -34,13 +34,14 @@ import * as authActions from '~/store/actions/auth'
 import * as placeActions from '~/store/actions/place'
 import * as locationActions from '~/store/actions/location'
 import * as notificationActions from '~/store/actions/notification'
+import * as metaActions from "~/store/actions/meta"
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL } from '~/store/constants/app'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 
@@ -81,7 +82,7 @@ const UIManager = NativeModules.UIManager
   location: state.location,
   selectedPlace: getSelectedPlace(state),
   xsession: getSession(state)
-}), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions })
+}), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions, ...metaActions })
 export default class App extends Component {
 
   // static configureScene(route) {
@@ -188,6 +189,7 @@ export default class App extends Component {
             }
             const title = notification.title ? notification.title + " " + notification.message : notification.alert
             this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
+            this._markWillLoad(notification)
           }
         }
       },
@@ -195,6 +197,28 @@ export default class App extends Component {
       senderID: SENDER_ID,
     })
   }
+  _markWillLoad = (notification) => {
+    const {markWillLoad} = this.props
+    let notificationData = notification.data
+    switch (notificationData.type) {
+      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
+      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
+        markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        break
+      case NOTIFY_TYPE.TRANSACTION_CLINGME:
+        markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        break
+      case NOTIFY_TYPE.NEW_BOOKING:
+        markWillLoad(SCREEN.BOOKING_LIST)
+        break
+      case NOTIFY_TYPE.NEW_ORDER:
+      case NOTIFY_TYPE.ORDER_REPUSH_1:
+      case NOTIFY_TYPE.ORDER_REPUSH_2:
+        markWillLoad(SCREEN.ORDER_LIST)
+        break
+    }
+  }
+
   _handleNoti = (notification) => {
     const { xsession, updateRead } = this.props
     if (notification.param2) {
@@ -226,7 +250,7 @@ export default class App extends Component {
     // console.log('Route will receive props', getPage(router.route))    
 
     if (router.route !== this.props.router.route) {
-      const oldPath = this.page.path
+      const oldPage = this.page
       this.page = getPage(router.route)
       const { headerType, footerType, title, path, showTopDropdown } = this.page
       this.topDropdown.show(showTopDropdown)
@@ -236,21 +260,29 @@ export default class App extends Component {
         // this.header._search('')
         this.footer.show(footerType, router.route)
 
+        // always blur the old one if disableCache then remove
+        if(oldPage.disableCache){
+          // oldPage must be the last one          
+          this.navigator.state.routeStack.pop()                    
+        } else {
+          this.handleFocusableComponent(oldPage.path, false)  
+        }
+
         // return console.warn('Not found: ' + router.route)
         // check if page is mounted
         const destIndex = this.navigator.state.routeStack
           .findIndex(route => route.path === this.page.path)
 
         // console.log(this.navigator.state)      
-        if (destIndex !== -1) {
-          // trigger will focus, the first time should be did mount
-          this.handleFocusableComponent(oldPath, false)
+        if (destIndex !== -1) {          
+          // trigger will focus, the first time should be did mount          
           this.handlePageWillFocus(path)
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
           this.navigator.push({ title, path, showTopDropdown })
-        }
+        }       
+
       } else {
         // no need to push to route
         this.page = routes.notFound
@@ -589,7 +621,9 @@ export default class App extends Component {
             ref={ref => this.topDropdownListValue = ref}
           />
           <Toasts />
-          <Popover ref={ref => this.popover = ref} />
+          {
+          // <Popover ref={ref => this.popover = ref} />
+}
           <PopupInfo />
         </Drawer>
       </StyleProvider>

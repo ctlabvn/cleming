@@ -29,6 +29,14 @@ export default {
         padding: 10,
         alignItems: 'center'
     },
+    rowPaddingFull: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 10,
+        paddingBottom: 10,
+        alignItems: 'center',
+        width: '100%'
+    },
 
     transactionContent: {
         flexDirection: 'row',
@@ -394,12 +402,31 @@ export default {
         flex: 1
     },
     feedbackClmTransaction: {
-        width: '40%',
+        // width: '40%',
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
     },
     confirmButton: {
-        backgroundColor: material.primaryColor
+        backgroundColor: material.primaryColor,
+        width: '45%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    round20: {
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: material.primaryColor,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 3
+    },
+    iconButton: {
+        fontSize: 15,
+        color: material.gray500,
     },
 }

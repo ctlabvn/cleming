@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.react.ReactApplication;
+import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.horcrux.svg.SvgPackage;
 import com.reactlibrary.SGScanditPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNVersionNumberPackage(),
             new SvgPackage(),
             new SGScanditPackage(),
             new ReactNativePushNotificationPackage(),

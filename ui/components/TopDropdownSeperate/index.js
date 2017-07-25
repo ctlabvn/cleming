@@ -93,7 +93,32 @@ export default class TopDropdown extends Component {
         this.close()
     }
 
+    _isDiff = (item1, item2) => {
+        if (!item1 && !item2) return false
+        if (!item1) return true
+        return (item1.id != item2.id || item1.name != item2.name)
+    }
+    _isArrDiff = (arr1, arr2) => {
+        if (arr1.length != arr2.length){
+            return true
+        }
+        for (let i=0; i<arr1.length; i++){
+            if (this._isDiff(arr1[i], arr2[i])) return true
+        }
+        return false
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        return (
+            this.state.show != nextState.show
+            || this.state.openningDropdown != nextState.openningDropdown
+            || this._isDiff(this.state.selectedOption, nextState.selectedOption)
+            || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
+        )
+    }
+
     render() {
+        console.log('Render TopDropdownSeperate')
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { openningDropdown, dropdownValues, selectedOption } = this.state
         let maxHeight = openningDropdown ? 150 : 0

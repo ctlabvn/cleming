@@ -22,9 +22,9 @@ export default {
     getDenyReason(xsession){
         return apiGet('/merchantapp/transaction-reason', {}, xsession)
     },
-    confirmTransaction(xsession, clingmeId, transactionType=1){
-        console.log('Transaction API Confirm', xsession+'---'+clingmeId+'---'+transactionType)
-        return apiPost('/merchantapp/payclm-confirm', {clingmeId, transactionType}, xsession)
+    confirmTransaction(xsession, payOfflineId, transactionType=1){
+        console.log('Transaction API Confirm', xsession+'---'+payOfflineId+'---'+transactionType)
+        return apiPost('/merchantapp/payclm-confirm', {payOfflineId, transactionType}, xsession)
     },
     getDenyReasonClm(xsession){
         return apiGet('/merchantapp/payclm-reason', {}, xsession)
