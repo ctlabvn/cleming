@@ -132,8 +132,8 @@ export default class DateFilter extends Component {
             case 'month':
                 return [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((item) => {
                     let currentMonth = current.clone().subtract(item, 'months')
-                    let startMonth = currentMonth.startOf('month')
-                    let endMonth = currentMonth.endOf('month')
+                    let startMonth = currentMonth.clone().startOf('month')
+                    let endMonth = currentMonth.clone().endOf('month')
                     if (endMonth > current) {
                         endMonth = current.clone().endOf('day')
                     }
@@ -272,7 +272,7 @@ export default class DateFilter extends Component {
 
         const data = this.ds.cloneWithRows(_data)
         var currentSelectValue = this.state.currentSelectValue.display ? this.state.currentSelectValue : this._getDefaultCurrnetSelectValue(this.state.currentDateFilter)
-
+        console.log('Current Select Value', currentSelectValue)
         return (
             <View onLayout={()=>{
                             if(this.scrollFisrtLoad){
@@ -303,6 +303,7 @@ export default class DateFilter extends Component {
                                     marginRight: 0
                                 }
                             }
+                            console.log('Row Data: ', rowData)
                             return (
                                 <TouchableOpacity
                                     style={{ marginRight: 20, ...lastItemStyle }}
