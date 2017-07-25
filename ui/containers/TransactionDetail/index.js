@@ -236,6 +236,7 @@ export default class TransactionDetail extends Component {
         } else if (transactionInfo.transactionStatus == 2) {
             payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
         }
+
         return (
             <Content>
                 <View style={styles.contentRootChild}>
@@ -264,8 +265,10 @@ export default class TransactionDetail extends Component {
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
                             <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
-                            {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
-                            <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
+
+                            {transactionInfo.avatarUrl!='' ?
+                                <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} /> :
+                                <Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />}
                         </View>
                     </View>
                     <View style={styles.rowCenter}>
