@@ -188,18 +188,18 @@ export default class extends Component {
         let moneyBlock = (
             <View>
                 <View style={styles.rowPadding}>
-                    <Text medium grayDark>{I18n.t('money')}:</Text>
+                    <Text medium bold grayDark>{I18n.t('money')}:</Text>
                     <Text medium bold grayDark>{formatNumber(orderDetail.orderInfo.price)}đ</Text>
                 </View>
                 <View style={styles.rowPadding}>
                     <Text medium grayDark>{I18n.t('ship_fee')}:</Text>
-                    <Text medium bold
+                    <Text medium
                         grayDark>{(orderDetail && orderDetail.orderInfo && orderDetail.orderInfo.shipPriceReal > 0) ? formatNumber(orderDetail.orderInfo.shipPriceReal) : 0}đ</Text>
                 </View>
                 <View style={styles.line} />
                 <View style={styles.rowPadding}>
-                    <Text strong grayDark>{I18n.t('total_pay')}: </Text>
-                    <Text strong bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                    <Text largeLight bold grayDark>{I18n.t('total_pay')}: </Text>
+                    <Text largeLight bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                 </View>
             </View>
         )

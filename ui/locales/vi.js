@@ -143,6 +143,7 @@ export default {
 
     // Revenue Management Screen
     'revenue': 'Doanh thu',
+    'revenue_detail': 'Chi tiết doanh thu',
     'revenue_management': 'Quản lý doanh thu',
     'revenue_processing': 'Giao dịch đang xử lý',
     'revenue_done': 'Giao dịch đã chuyển tiền',

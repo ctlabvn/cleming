@@ -22,7 +22,8 @@ import About from './containers/About'
 import I18n from '~/ui/I18n'
 import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
-import RevenueManagement from './containers/RevenueManagement'
+import RevenueManagementList from './containers/RevenueManagementList'
+import RevenueManagementDetail from './containers/RevenueManagementDetail'
 import ComingSoon from './containers/ComingSoon'
 import Wallet from './containers/Wallet'
 import WalletDetail from './containers/WalletDetail'
@@ -175,8 +176,7 @@ export default {
     help:{
         title: 'Help',
         Page: Help,
-        disableCache: false,
-    },    
+    },
     qrScanner: {
         title: 'QR Scanner',
         Page: QRScanner,
@@ -192,9 +192,15 @@ export default {
         disableCache: false,
     },
 
-    revenueManagement: {
-        title: I18n.t('revenue_management'),
-        Page: RevenueManagement,
+    revenueManagementList: {
+        title: I18n.t('revenue'),
+        Page: RevenueManagementList,
+        headerType: 'back',
+    },
+
+    'revenueManagementDetail/:tabId': {
+        title: I18n.t('revenue_detail'),
+        Page: RevenueManagementDetail,
         headerType: 'back',
     }
 }

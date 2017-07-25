@@ -338,11 +338,11 @@ export default {
     },
 
     get textSizeBig() {
-        return this.textSizeMedium * 32/15;  // 32
+        return this.textSizeMedium * 32/15;  // 27
     },
 
     get textSizeGiant() {
-        return this.textSizeMedium * 50/15; // 50
+        return this.textSizeMedium * 50/15; // 52
     },
 
     // Title

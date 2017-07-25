@@ -122,6 +122,7 @@ export default {
 
     textLabelRightImage: {
         color: material.textColor1,
+        fontWeight: '400',
     },
     loadingContainer: {
       backgroundColor: material.white500,

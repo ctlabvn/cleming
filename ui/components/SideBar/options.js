@@ -22,7 +22,7 @@ export default {
 
         {
             name: I18n.t('revenue'),
-            route: 'revenueManagement',
+            route: 'revenueManagementList',
             icon: 'term',
         },
 
@@ -50,7 +50,7 @@ export default {
 
         {
             name: 'Trợ giúp',
-            route: 'comingSoon',
+            route: 'help',
             icon: 'help',
         },
 

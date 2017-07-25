@@ -11,6 +11,7 @@ import { booking } from './booking'
 import { report } from './report'
 import { location } from './location'
 import { meta } from './meta'
+import { revenue } from './revenue'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
   form,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   location,
   modal,
   popupInfo,
-  meta
+  meta,
+  revenue
 })
 
 export default rootReducer

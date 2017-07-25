@@ -11,10 +11,13 @@ export default (variables = variable) => {
         alignSelf: 'stretch',
         width: variables.deviceWidth/2 + 25,              
     },
-    fontSize: variables.titleFontSize,
+    fontSize: variables.titleFontSize+1,
     fontFamily: variables.titleFontfamily,
     color: variables.titleFontColor,
     fontWeight: (Platform.OS==='ios') ? '600' : undefined,
+    '.bold': {
+        fontWeight: '500'
+      },
     textAlign: 'center'
   };
 

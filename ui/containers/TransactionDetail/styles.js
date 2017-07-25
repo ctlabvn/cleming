@@ -386,13 +386,17 @@ export default {
         alignItems: 'center',
         marginTop: 10
     },
+    scrollView: {
+        height: material.deviceHeight,
+        backgroundColor: material.white500,
+    },
     contentRootChild: {
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'flex-start',
         padding: 10,
         backgroundColor: material.white500,
-        height: material.deviceHeight
+        // height: material.deviceHeight
     },
     loadingContainer: { 
         backgroundColor: material.white500,
