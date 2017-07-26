@@ -303,7 +303,6 @@ export default class DateFilter extends Component {
                                     marginRight: 0
                                 }
                             }
-                            console.log('Row Data: ', rowData)
                             return (
                                 <TouchableOpacity
                                     style={{ marginRight: 20, ...lastItemStyle }}

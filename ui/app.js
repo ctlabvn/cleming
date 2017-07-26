@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackAndroid, NativeModules, Navigator, InteractionManager } from 'react-native'
-import { Drawer, StyleProvider, View } from 'native-base'
+import { BackAndroid, NativeModules, Navigator, InteractionManager, NetInfo } from 'react-native'
+import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 import URL from 'url-parse'
 
@@ -11,6 +11,7 @@ import material from '~/theme/variables/material'
 // import Container from './components/Container'
 // import Navigator from './components/Navigator'
 import Toasts from './components/Toasts'
+import ConnectionInfo from './components/ConnectionInfo'
 import AfterInteractions from './components/AfterInteractions'
 import PushNotification from 'react-native-push-notification'
 import SideBar from './components/SideBar'
@@ -38,7 +39,6 @@ import * as metaActions from "~/store/actions/meta"
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
-
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
@@ -410,7 +410,7 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router, setToast } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
       let listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -622,6 +622,7 @@ export default class App extends Component {
             ref={ref => this.topDropdownListValue = ref}
           />
           <Toasts />
+          <ConnectionInfo />
           {
           // <Popover ref={ref => this.popover = ref} />
 }

@@ -234,7 +234,11 @@ export default class extends Component {
                     width: '100%',
                     justifyContent: 'center'
                 }}>
-                    <Text white center bold>{orderDetail.orderInfo.placeInfo.address}</Text>
+                    <Text white center bold>{chainParse(orderDetail, ['orderInfo', 'placeInfo', 'address'])}
+                        {(parseFloat(chainParse(orderDetail, ['deliveryDistance'])) > 0) &&
+                            <Text> - {chainParse(orderDetail, ['deliveryDistance'])} km</Text>
+                        }
+                    </Text>
                 </View>
 
                 <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}
