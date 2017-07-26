@@ -38,9 +38,9 @@ export default class MerchantOverview extends Component {
     _load(showLoading = false) {
         console.log('Call _load merchantOverview')
         const {user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession, alreadyGotLocation} = this.props
-        if (user) {
-            this.props.app.header.show('home', user.chainName, user.avatar)
-        }
+        // if (user) {
+        //     this.props.app.header.show('home', user.chainName, user.avatar)
+        // }
         showLoading && this.setState({loading: true})
         let lat = 0, long = 0
         if (location && Object.keys(location).length > 1) {
@@ -112,9 +112,9 @@ export default class MerchantOverview extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const {app, place, user} = this.props
-        if (user) {
-            this.props.app.header.show('home', user.chainName, user.avatar)
-        }
+        // if (user) {
+        //     this.props.app.header.show('home', user.chainName, user.avatar)
+        // }
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         if (!place.listPlace || place.listPlace.length == 0) {
             console.log('Place List will focus', place.listPlace)
