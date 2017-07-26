@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from 'native-base'
-import { NetInfo } from 'react-native'
+import { NetInfo, Platform } from 'react-native'
 import Icon from "~/ui/elements/Icon"
 import * as metaActions from "~/store/actions/meta"
 import { connect } from 'react-redux'
@@ -20,10 +20,12 @@ export default class ConnectionInfo extends Component {
     }
     componentDidMount() {
         const {setConnectionStatus} = this.props
-        // NetInfo.isConnected.fetch().then(isConnected => {
-        //     let status = isConnected ? 'online' : 'offline'
-        //     setConnectionStatus(status)
-        // });
+        if (Platform.OS === 'android'){
+            NetInfo.isConnected.fetch().then(isConnected => {
+                let status = isConnected ? 'online' : 'offline'
+                setConnectionStatus(status)
+            });
+        }
         NetInfo.isConnected.addEventListener('change', (isConnected) => {
             console.log('connected', isConnected)
             let status = isConnected ? 'online' : 'offline'
