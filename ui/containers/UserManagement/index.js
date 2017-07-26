@@ -31,7 +31,7 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
     session: authSelectors.getSession(state),
     listEmployee: accountSelectors.getListEmployee(state),
     user: authSelectors.getUser(state),
-    place: state.place,
+    // place: state.place,
     selectedPlace: getSelectedPlace(state),
 }), {...commonActions, ...accountActions, ...placeAction})
 
@@ -358,7 +358,7 @@ class UserManagement extends Component {
     }
 
     render() {
-        const {place, selectedPlace} = this.props
+        const {selectedPlace} = this.props
 
         if (this.state.isFetchingData) {
             return (

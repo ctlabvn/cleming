@@ -46,9 +46,6 @@ export default class TopDropdownListValue extends Component {
 
     }
 
-    _handlePress(item) {
-        this.props.forwardTo(`notification/${item.user}`)
-    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
@@ -81,12 +78,37 @@ export default class TopDropdownListValue extends Component {
         this.props.onPressOverlay && this.props.onPressOverlay()
         this.close()
     }
+
+    _isDiff = (item1, item2) => {
+        if (!item1 && !item2) return false
+        if (!item1) return true
+        return (item1.id != item2.id || item1.name != item2.name)
+    }
+    _isArrDiff = (arr1, arr2) => {
+        if (arr1.length != arr2.length){
+            return true
+        }
+        for (let i=0; i<arr1.length; i++){
+            if (this._isDiff(arr1[i], arr2[i])) return true
+        }
+        return false
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+        return (
+            this.state.openningDropdown != nextState.openningDropdown
+            || this._isDiff(this.state.selectedOption, nextState.selectedOption)
+            || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
+        )
+    }
+
     componentDidMount(){
         BackAndroid.addEventListener('hardwareBackPress', () => {
             console.log('Back Press Top Dropdown')
         })
     }
     render() {
+        console.log('Render TopDropdownListValue')
         const { notifications, getNotificationRequest, getNotification } = this.props
         let { openningDropdown, selectedOption, dropdownValues } = this.state
         let maxHeight = openningDropdown ? (material.deviceHeight-material.toolbarHeight-260) : 0

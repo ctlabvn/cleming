@@ -17,9 +17,10 @@ export default class extends Component {
     componentDidMount() {
         this.startInterval()
     }
-    componentWillBlur() {
-        this.startInterval()
-    }
+    // componentWillBlur() {
+    //     // why not stop
+    //     this.stopInterval()
+    // }
     stopInterval() {
         console.log('Go to clear Interval')
         clearInterval(this.intervalID)

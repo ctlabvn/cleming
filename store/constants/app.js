@@ -46,7 +46,9 @@ export const NOTIFY_TYPE={
     ORDER_CANCELLED: 12,
     ORDER_REPUSH_1: 13,
     ORDER_REPUSH_2: 14,
-    TRANSACTION_CLINGME: 10
+    TRANSACTION_CLINGME: 10,
+    TRANSACTION_CLINGME_REPUSH: 15
+
 }
 
 export const TRANSACTION_TYPE={
@@ -74,6 +76,19 @@ export const CONNECTION_ERROR_MESSAGE = I18n.t('err_connection')
 export const DETECT_LOCATION_INTERVAL = 180000 // 3 minute
 
 export const DEFAULT_MAP_DELTA = {
-    LAT: 0.015,
-    LONG: 0.015
+    LAT: 0.004,
+    LONG: 0.004
+}
+
+export const TRANSACTION_DISPLAY = {
+    BOTH: 0,
+    CLINGME: 1,
+    DIRECT: 2,
+}
+
+export const SCREEN = {
+    TRANSACTION_LIST_DIRECT: 'transactionListDirect',
+    TRANSACTION_LIST_CLINGME: 'transactionListClingme',
+    ORDER_LIST: 'orderList',
+    BOOKING_LIST: 'bookingList'
 }

@@ -8,9 +8,6 @@ import CreateUserContainer from './containers/UserManagement/Action/CreateUser'
 import UpdateUserContainer from './containers/UserManagement/Action/UpdateUser'
 import TransactionList from './containers/TransactionList'
 import MerchantOverview from './containers/MerchantOverview'
-import ListDeal from './containers/ListDeal'
-import DealsOverview from './containers/DealsOverview'
-import DealDetail from './containers/DealDetail'
 import DeliveryList from './containers/DeliveryList'
 import DeliveryDetail from './containers/DeliveryDetail'
 import TransactionDetail from './containers/TransactionDetail'
@@ -41,6 +38,7 @@ export default {
         title: I18n.t('about'),
         Page: About,
         headerType: 'back',
+        disableCache: false,
     },
     merchantOverview: {
         title: I18n.t('page_home'),
@@ -52,19 +50,21 @@ export default {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
         headerType: 'back',
-        showTopDropdown: true
+        showTopDropdown: true,
     },
     'transactionDetail/:id/:type': {
         title: I18n.t('page_transaction_detail'),
         Page: TransactionDetail,
         headerType: 'back',
         footerType: 'none',        
+        disableCache: false,
     },
     'transactionInputFeedback/:dealID/:reasonID': {
         title: '',
         Page: TransactionInputFeedback,
         headerType: 'back',
-        footerType: 'none'
+        footerType: 'none',
+        disableCache: false,
     },
     deliveryList: {
         title: I18n.t('page_delivery_list'),
@@ -77,6 +77,7 @@ export default {
         Page: DeliveryDetail,
         footerType: 'none',
         headerType: 'back',
+        disableCache: false,
     },
     report: {
         title: I18n.t('page_customer_statistic'),
@@ -94,6 +95,7 @@ export default {
         Page: PlaceOrderDetail,
         headerType: 'back',
         footerType: 'none',
+        disableCache: false,
     },
     notFound: {
         title: 'Not Found',
@@ -111,68 +113,60 @@ export default {
         Page: Login,        
         headerType: 'none',
         footerType: 'none',
+        disableCache: false,
     },
     changePassword: {
         title: I18n.t('page_change_password'),
         Page: PasswordModifier,
         footerType: 'none',
         headerType: 'back',
+        disableCache: false,
     },
     userManagement: {
         title: I18n.t('page_manage_account'),
         Page: UserManagement,
         footerType: 'none',
-        showTopDropdown: true
+        showTopDropdown: true,
     },
     'userManagement/action/createUser': {
         title: I18n.t('page_add_account'),
         Page: CreateUserContainer,
         footerType: 'none',
         headerType: 'back',
+        disableCache: false,
     },
     'userManagement/action/updateEmployeeInfo/:id': {
         title: I18n.t('page_change_info'),
         Page: CreateUserContainer,
         footerType: 'none',
         headerType: 'back',
+        disableCache: false,
     },
     'userManagement/action/updateUser': {
         title: I18n.t('page_account_info'),
         Page: UpdateUserContainer,
         footerType: 'none',
         headerType: 'back',
+        disableCache: false,
     },
     help:{
         title: 'Help',
         Page: Help,
         headerType: 'back',
     },
-    listdeal: {
-        title: 'List Deal',
-        Page: ListDeal,
-    },
-    dealsOverview: {
-        title: 'Deals Overview',
-        Page: DealsOverview,
-        footerType: 'none',
-    },
-    dealDetail: {
-        title: 'Deals Overview',
-        Page: DealDetail,
-        footerType: 'none',
-    },
-   
     qrScanner: {
         title: 'QR Scanner',
         Page: QRScanner,
         headerType: 'back',
         footerType: 'none',
+        disableCache: false,
     },
 
     mapCluster: {
         title: 'Map Cluster Demo',
         Page: MapCluster,
         showTopDropdown: true,
+        disableCache: false,
     },
 
     revenueManagementList: {

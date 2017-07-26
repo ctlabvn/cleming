@@ -1,4 +1,4 @@
-export default  vi = {
+export default {
     // Home Screen
     'transaction': 'Giao dịch',
     'booking': 'Đặt chỗ',
@@ -9,6 +9,7 @@ export default  vi = {
     'confirm': 'Xác nhận',
     'detail': 'Chi tiết',
     'confirmed': 'Đã xác nhận',
+    'not_confirm_yet': 'Chưa xác nhận',
     'customer': 'Khách hàng',
     'paid': 'Đã thanh toán',
     'all_transaction': 'Tất cả giao dịch',
@@ -41,6 +42,8 @@ export default  vi = {
     'total_pay': 'Tổng tiền thanh toán',
     'order_number': 'Số đơn hàng',
     'help': 'Trợ giúp',
+    'confirm_success':'Xác nhận thành công.',
+    'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',
@@ -201,5 +204,8 @@ export default  vi = {
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
-    'Could_not_get_business_network' : 'Couldn\'t get business network'
+    'Could_not_get_business_network' : 'Couldn\'t get business network',
+
+    // notifications
+    'no_notification': 'Chưa nhận được thông báo nào',
 }

@@ -43,7 +43,19 @@ export default class TransactionFilter extends Component {
     getCurrentValue(){
         return this.state.selectValue
     }
+    
+    _isDiff(item1, item2){
+        return ((item1.display!=item2.display) || (item1.value!=item2.value))
+    }
+    shouldComponentUpdate(nextProps, nextState){
+        return (this._isDiff(this.state.selectValue, nextState.selectValue)
+            || this.state.listValue.length != nextState.listValue.length
+            || this._isDiff(this.state.listValue[0], nextState.listValue[0])
+            || this.state.indicatorNumber != nextState.indicatorNumber
+        )
+    }
     render() {
+        console.log('Render transactionFilter')
         return (
             <View style={styles.container}>
                 <RadioPopup ref='transactionTypePopup' listValue={this.state.listValue} onClickYes={this._handleYesFilterTransactionType.bind(this)} />

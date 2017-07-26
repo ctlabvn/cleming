@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "font": "node font-processor.js",
-    "build-android": "cd android && ./gradlew assembleRelease",
-    "install-android": "adb devices | awk '{if(NR==2) system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
+    "ba": "cd android && ./gradlew assembleRelease",
+    "ia": "adb devices | awk '{if(NR==2) system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
     "test": "jest"
   },
   "rnpm": {
@@ -41,6 +41,7 @@
     "react-native-svg": "^5.1.7",
     "react-native-swipe-gestures": "^1.0.2",
     "react-native-timeline-listview": "^0.2.0",
+    "react-native-version-number": "^0.1.2",
     "react-redux": "5.0.3",
     "react-router": "4.1.1",
     "redux": "3.6.0",

@@ -49,7 +49,7 @@ import I18n from '~/ui/I18n'
       return dispatch(commonActions.setToast(errors[k], 'warning'))
     }
   },
-  loginRequest: commonSelectors.getRequest(state, 'login'),
+  // loginRequest: commonSelectors.getRequest(state, 'login'),
   pushToken: authSelectors.gePushToken(state)
 }), {...commonActions, ...authActions, ...accountActions, resetForm:reset})
 @reduxForm({ form: 'ModifyPasswordForm', validate})
@@ -110,7 +110,7 @@ export default class extends Component {
   }
   
   render() {
-    const {forwardTo, loginRequest, pushToken} = this.props
+    const {forwardTo, pushToken} = this.props
     return (
       <Container style={styles.container}>
         
