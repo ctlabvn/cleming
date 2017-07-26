@@ -6,6 +6,8 @@ import * as metaActions from "~/store/actions/meta"
 import { connect } from 'react-redux'
 import { getRouter } from '~/store/selectors/common'
 import routes from '~/ui/routes'
+import I18n from '~/ui/I18n'
+
 @connect(state => ({
     meta: state.meta,
     router: getRouter(state),
@@ -33,7 +35,6 @@ export default class ConnectionInfo extends Component {
     render() {
         const { meta, router } = this.props
         let currentPage = routes[router.route]
-        console.log('Current Page: ', currentPage)
         let bottom =  (!currentPage || currentPage.footerType == 'none') ? 0 : 40
         if (meta.connectionStatus == 'offline') {
             return (
@@ -45,7 +46,7 @@ export default class ConnectionInfo extends Component {
                     zIndex: 100,
                     paddingLeft: 10
                 }}>
-                    <Text white>Không có kết nối với internet.</Text>
+                    <Text white>{I18n.t('no_internet')}</Text>
                     <Button transparent onPress={() => this._handleReload()}>
                         <Icon name='reload' style={{ color: 'white' }} />
                     </Button>
