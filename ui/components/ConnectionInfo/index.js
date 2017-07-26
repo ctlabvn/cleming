@@ -20,16 +20,14 @@ export default class ConnectionInfo extends Component {
     }
     componentDidMount() {
         const {setConnectionStatus} = this.props
-        NetInfo.isConnected.fetch().then(isConnected => {
+        // NetInfo.isConnected.fetch().then(isConnected => {
+        //     let status = isConnected ? 'online' : 'offline'
+        //     setConnectionStatus(status)
+        // });
+        NetInfo.isConnected.addEventListener('change', (isConnected) => {
+            console.log('connected', isConnected)
             let status = isConnected ? 'online' : 'offline'
             setConnectionStatus(status)
-        });
-        NetInfo.addEventListener('change', (reach) => {
-            if (reach == 'NONE') {
-                setConnectionStatus('offline')
-            }else{
-                setConnectionStatus('online')
-            }
         })
     }
     render() {
