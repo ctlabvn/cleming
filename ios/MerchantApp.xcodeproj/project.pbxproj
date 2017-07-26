@@ -891,8 +891,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = EUKQS3744F;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 9CATQ2N2W2;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1558,7 +1558,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = EUKQS3744F;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1593,10 +1593,10 @@
 					"-lc++",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.agiletech.clingmemerchant;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1611,7 +1611,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = EUKQS3744F;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1645,10 +1645,10 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.agiletech.clingmemerchant;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
