@@ -190,7 +190,7 @@ export default class extends Component {
                     <View style={{ ...styles.row, marginBottom: 5 }}>
                         <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress} 
                             {(parseFloat(orderInfo.deliveryDistance) > 0) &&
-                                <Text> - {orderInfo.deliveryDistance} km</Text>
+                                <Text> - <Text bold>{parseFloat(orderInfo.deliveryDistance).toFixed(2)} km</Text></Text>
                             }
                         </Text>
                     </View>
