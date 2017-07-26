@@ -4,7 +4,7 @@ import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
 import { View, TouchableWithoutFeedback, Animated, Easing, Modal } from 'react-native'
 import CheckBox from '~/ui/elements/CheckBox'
 import styles from './styles'
-
+import I18n from '~/ui/I18n'
 
 export default class RadioPopup extends Component {
     constructor(props) {
@@ -72,14 +72,14 @@ export default class RadioPopup extends Component {
                                 this.setModalVisible(!this.state.modalVisible)
                                 this.setState({selectedValue: this.cachedSelectValue})
                             }} style={styles.confirmButton}>
-                                <Text style={{color: 'grey'}}>Cancel</Text>
+                                <Text style={{color: 'grey'}}>{I18n.t('cancel')}</Text>
                             </Button>
                             <Button primary transparent onPress={() => {
                                 this.setModalVisible(!this.state.modalVisible)
                                 this.props.onClickYes(this.state.selectedValue)
                                 this.cachedSelectValue = this.state.selectedValue
                             }} style={styles.confirmButton}>
-                                <Text primary>OK</Text>
+                                <Text primary>{I18n.t('ok')}</Text>
                             </Button>
                         </View>
                     </View>

@@ -234,7 +234,7 @@ export default class extends Component {
                     width: '100%',
                     justifyContent: 'center'
                 }}>
-                    <Text white center bold>{orderDetail.orderInfo.placeInfo.address}</Text>
+                    <Text white center bold>{chainParse(orderDetail, ['orderInfo', 'placeInfo', 'address'])}</Text>
                 </View>
 
                 <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}
@@ -274,7 +274,11 @@ export default class extends Component {
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
                         <Text medium  grayDark>{I18n.t('deliver_address')}</Text>
-                        <Text strong bold grayDark>{orderDetail.orderInfo.fullAddress}</Text>
+                        <Text strong bold grayDark>{orderDetail.orderInfo.fullAddress}
+                            {(parseFloat(chainParse(orderDetail, ['orderInfo', 'deliveryDistance'])) > 0) &&
+                                <Text strong bold grayDark> - {parseFloat(chainParse(orderDetail, ['orderInfo', 'deliveryDistance'])).toFixed(2)} km</Text>
+                            }
+                        </Text>
                     </View>
 
 

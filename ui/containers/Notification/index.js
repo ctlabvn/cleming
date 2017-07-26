@@ -142,35 +142,20 @@ export default class extends Component {
         const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
         return (
           <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title} </Text>
-                <Text bold style={styles.textGray}>{item.content}
-                </Text>
-              </View>
-
-              {/*{minutesRemain > 0 && <Text small style={{
-                color: material.red500,
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>Còn {minutesRemain}'</Text>
-              }*/}
-              <Text small style={{
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
-              <View style={styles.rowEnd}>
-                <Icon name='friend' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
+            <View style={styles.listItemRow}> 
+              <View style={styles.subRow}>
+                  <Text note style={styles.textGray}>{item.title} </Text>
+                  <Text small>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
+                </View>
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <View style={styles.rowEnd}>
+                  <Icon name='friend' style={styles.icon} />
+                  <Text bold>{item.paramId1}</Text>
+                </View>
               </View>
             </View>
-
             {border}
-
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
