@@ -12,14 +12,17 @@ const CONFIG = {
   DEVICE: {    
     browserName: '',
     'appium-version': '1.6.5',
-    platformName: 'Android',// 'iOS',
-    // platformVersion: '10.3',
-    // deviceName: 'iPhone 5',
-    // app: '/Users/thanhtu/Library/Developer/Xcode/DerivedData/MerchantApp-epmqigzjwbzslygualqwcpohipxa/Build/Products/Release-iphonesimulator/Đối Tác.app'
-    appPackage: 'com.gigatum.merchantapp',
-    platformVersion: '5.0',
-    deviceName: 'E7AZCY370473',
-    app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
+    appPackage: 'com.gigatum.clingmemerchant',
+    platformName: 'iOS',
+    platformVersion: '10.3',
+    deviceName: 'iPhone 5',
+    app: __dirname + '/../ios/build/Build/Products/Debug-iphonesimulator/Đối Tác.app'
+    
+    // platformName: 'Android',
+    // appPackage: 'com.gigatum.merchantapp',
+    // platformVersion: '5.0',
+    // deviceName: 'E7AZCY370473',
+    // app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
   }
 }
 Object.freeze(CONFIG)
@@ -52,7 +55,7 @@ describe('appium', function () {
     //     // return el.click()
     //   })
     
-    setInterval(()=>{
+    // setInterval(()=>{
 
     driver.elementsByXPath('//*', function (err, elements) {
       elements.forEach(element => element.text().then(function (text) {
@@ -61,7 +64,7 @@ describe('appium', function () {
       }))
     })    
 
-    }, 5000)
+    // }, 5000)
   }) 
 })
 

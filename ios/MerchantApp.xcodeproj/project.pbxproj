@@ -1577,8 +1577,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
-					ode_modules,
-					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
@@ -1630,8 +1628,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
-					ode_modules,
-					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
