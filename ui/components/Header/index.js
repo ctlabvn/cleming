@@ -93,7 +93,7 @@ export default class extends Component {
       </Button>
     )*/
       let iconSource = leftIcon ? {uri: leftIcon} : this.props.user.avatar ? {uri: this.props.user.avatar} : storeFilled;
-      const left = <Thumbnail source={iconSource} style={{width: 40, height: 40, borderRadius: 20}}/>;
+      const left = <Thumbnail source={iconSource} style={styles.thumbnail}/>;
 
     return this.renderHeaderTitle(title, left)
   }
