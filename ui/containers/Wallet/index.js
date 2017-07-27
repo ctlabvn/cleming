@@ -175,7 +175,7 @@ export default class extends Component {
     }
 
     render() {
-
+        const {forwardTo} = this.props
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary }}>
@@ -189,7 +189,7 @@ export default class extends Component {
                         <Icon name='settings' style={{ ...styles.icon, ...styles.mr3 }} />
                         <Text white>Vietcombank *4321</Text>
                     </View>
-                    <Button bordered style={styles.borderWhite}>
+                    <Button bordered style={styles.borderWhite} onPress={()=>forwardTo('withDraw')}>
                         <Text white>{I18n.t('withdraw')}</Text>
                     </Button>
                 </View>

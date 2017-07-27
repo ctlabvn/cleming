@@ -24,7 +24,9 @@ import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 import RevenueManagementList from './containers/RevenueManagementList'
 import RevenueManagementDetail from './containers/RevenueManagementDetail'
-
+import Wallet from './containers/Wallet'
+import WalletDetail from './containers/WalletDetail'
+import WithDraw from './containers/WithDraw'
 import ComingSoon from './containers/ComingSoon'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
@@ -179,5 +181,22 @@ export default {
         title: I18n.t('revenue_detail'),
         Page: RevenueManagementDetail,
         headerType: 'back',
+    },
+
+    'wallet': {
+        title: I18n.t('page_wallet'),
+        Page: Wallet,
+        headerType: 'back',
+    },
+    'walletDetail': {
+        title: I18n.t('page_wallet_detail'),
+        Page: WalletDetail,
+        headerType: 'back',
+    },
+    'withDraw': {
+        title: I18n.t('page_bank_account'),
+        Page: WithDraw,
+        headerType: 'back',
+        footerType: 'none'
     }
 }

@@ -28,7 +28,7 @@ export default {
 
         {
             name: 'Thanh toán với Clingme',
-            route: 'comingSoon',
+            route: 'wallet',
             icon: 'clingme-wallet',
         },
 
