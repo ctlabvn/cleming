@@ -392,11 +392,9 @@ export default {
     },
     contentRootChild: {
         flexDirection: 'column',
-        flex: 1,
         justifyContent: 'flex-start',
         padding: 10,
         backgroundColor: material.white500,
-        // height: material.deviceHeight
     },
     loadingContainer: { 
         backgroundColor: material.white500,

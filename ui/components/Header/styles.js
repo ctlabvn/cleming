@@ -27,6 +27,11 @@ export default {
     fontSize: 18,
     // marginRight:-3    
   },
+  thumbnail: {
+      width: 40,
+      height: 40,
+      borderRadius: 20
+  },
   circleButton: {
     width: 30,
     height: 30,

@@ -188,7 +188,11 @@ export default class extends Component {
                     </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress}</Text>
+                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress} 
+                            {(parseFloat(orderInfo.deliveryDistance) > 0) &&
+                                <Text> - <Text bold>{parseFloat(orderInfo.deliveryDistance).toFixed(2)} km</Text></Text>
+                            }
+                        </Text>
                     </View>
                     <View style={styles.row}>
                         <Text medium success>{I18n.t('paid')}</Text>

@@ -39,7 +39,9 @@ export default class Report extends Component {
         this.mapHeight = 0
         if (props.app && props.app.topDropdown){
             let selectedPlace = props.app.topDropdown.getValue()
-            this.currentPlace = selectedPlace.id
+            if (selectedPlace && selectedPlace.id){
+                this.currentPlace = selectedPlace.id
+            }
         }
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
@@ -115,7 +117,7 @@ export default class Report extends Component {
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
-            }else if(this.currentPlace!=selectedPlace.id){
+            }else if(this.currenttPlace!=selectedPlace.id){
                 this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
             }
         })
@@ -126,7 +128,10 @@ export default class Report extends Component {
                 const { app } = this.props
                 let placeData = app.topDropdown.getValue()
                 let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-                this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+                if (placeData && placeData.id){
+                    this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+                }
+                
             }
         )
     }

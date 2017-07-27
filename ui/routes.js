@@ -106,7 +106,8 @@ export default {
     report: {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
-        showTopDropdown: true
+        showTopDropdown: true,
+        headerType: 'home',
     },
     placeOrderList: {
         title: I18n.t('page_booking_list'),
