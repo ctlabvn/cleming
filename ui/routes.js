@@ -24,35 +24,11 @@ import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 import RevenueManagementList from './containers/RevenueManagementList'
 import RevenueManagementDetail from './containers/RevenueManagementDetail'
+
 import ComingSoon from './containers/ComingSoon'
-import Wallet from './containers/Wallet'
-import WalletDetail from './containers/WalletDetail'
-import WithDraw from './containers/WithDraw'
-import BankAccount from './containers/BankAccount'
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
-    bankAccount: {
-        title: I18n.t('page_bank_account'),
-        Page: BankAccount,
-        headerType: 'back',
-        footerType: 'none'
-    },
-    withdraw: {
-        title: I18n.t('withdraw'),
-        Page: WithDraw,
-        headerType: 'back',
-        footerType: 'none'
-    },
-    walletDetail: {
-        title: I18n.t('page_wallet_detail'),
-        Page: WalletDetail,
-        headerType: 'back'
-    },
-    wallet: {
-        title: I18n.t('page_wallet'),
-        Page: Wallet,
-        headerType: 'back'
-    },
     comingSoon: {
         title: 'In the future',
         Page: ComingSoon,
@@ -106,8 +82,7 @@ export default {
     report: {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
-        showTopDropdown: true,
-        headerType: 'home',
+        showTopDropdown: true
     },
     placeOrderList: {
         title: I18n.t('page_booking_list'),
@@ -177,6 +152,7 @@ export default {
     help:{
         title: 'Help',
         Page: Help,
+        headerType: 'back',
     },
     qrScanner: {
         title: 'QR Scanner',

@@ -187,7 +187,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}>
@@ -201,7 +201,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small
@@ -216,7 +216,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small
