@@ -27,7 +27,9 @@ import RevenueManagementDetail from './containers/RevenueManagementDetail'
 import Wallet from './containers/Wallet'
 import WalletDetail from './containers/WalletDetail'
 import WithDraw from './containers/WithDraw'
+import BankAccount from './containers/BankAccount'
 import ComingSoon from './containers/ComingSoon'
+
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -196,6 +198,12 @@ export default {
     'withDraw': {
         title: I18n.t('page_bank_account'),
         Page: WithDraw,
+        headerType: 'back',
+        footerType: 'none'
+    },
+    'bankAccount': {
+        title: I18n.t('page_bank_account'),
+        Page: BankAccount,
         headerType: 'back',
         footerType: 'none'
     }
