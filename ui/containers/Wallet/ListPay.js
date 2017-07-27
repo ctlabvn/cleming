@@ -20,7 +20,7 @@ import {
 } from "~/store/constants/app";
 import PayItem from './PayItem'
 import I18n from '~/ui/I18n'
-
+import { _isArrDiffPartial } from '~/ui/shared/utils'
 
 @connect(state => ({
     xsession: getSession(state)
@@ -72,6 +72,11 @@ export default class extends Component {
         ]
     }
 
+    shouldComponentUpdate = (nextProps, nextState) => {
+        return _isArrDiffPartial(this.props.data, nextProps.data,
+            ['tranCode', 'tranTime', 'moneyAmount', 'tranType']
+        )
+    }
 
     render() {
         const { forwardTo, data } = this.props

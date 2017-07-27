@@ -18,3 +18,13 @@ export const setBalanceDetail = (data) => ({
     payload: data
 })
 
+export const getBanks = (...args) => ({
+    type: 'app/getBanks',
+    args
+})
+
+export const setBanks = (data) => ({
+    type: 'app/setBanks',
+    payload: data
+})
+

@@ -5,13 +5,9 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance,
+    setBalance, setBanks
 } from '~/store/actions/wallet'
 
-import {
-    setUserAvatar,
-    updateProfileToRedux
-} from '~/store/actions/auth'
 import { getToastMessage } from '~/ui/shared/utils'
 import I18n from '~/ui/I18n'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
@@ -40,7 +36,21 @@ const requestGetBalanceDetail = createRequestSaga({
     ]
 })
 
+const requestGetBanks = createRequestSaga({
+    request: api.wallet.banks,
+    key: 'app/getBanks',
+    success: [
 
+        (data) => {
+            if (data.data){
+                console.log('Bank Data: ', data)
+                return setBanks(data.data)
+            }
+        }
+    ],
+    failure: [
+    ]
+})
 
 
 // root saga reducer
@@ -53,6 +63,7 @@ export default [
         yield [
             takeLatest('app/getBalance', requestGetBalance),
             takeLatest('app/getBalanceDetail', requestGetBalanceDetail),
+            takeLatest('app/getBanks', requestGetBanks)
         ]
     },
 ]

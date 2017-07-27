@@ -5,9 +5,8 @@ import { InteractionManager, View, TouchableOpacity, Image } from "react-native"
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
-import * as transactionAction from "~/store/actions/transaction";
-import * as authActions from "~/store/actions/auth";
-import * as placeActions from "~/store/actions/place";
+import * as walletActions from "~/store/actions/wallet";
+
 import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import { formatNumber, getToastMessage } from "~/ui/shared/utils";
@@ -15,7 +14,7 @@ import Content from "~/ui/components/Content";
 import { getSession } from "~/store/selectors/auth";
 import CheckBox from '~/ui/elements/CheckBox'
 import material from "~/theme/variables/material.js";
-import CardSelection from './CardSelection'
+import BankSelection from './BankSelection'
 import {
     TIME_FORMAT_WITHOUT_SECOND,
     TRANSACTION_DIRECT_STATUS,
@@ -27,7 +26,8 @@ import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
-}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
+    bank: state.wallet.bank
+}), { ...commonAction, ...walletActions })
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -48,11 +48,13 @@ export default class extends Component {
         }
 
     }
-    _handlePressTab = (item) => {
-
+    componentDidMount = () => {
+        const {xsession, getBanks} = this.props
+        console.log('WithDraw did Mount')
+        getBanks(xsession)
     }
     _handlePressOk = () => {
-        console.log('Selected', this.refs.cardSelection.getSelected())
+        // console.log('Selected', this.bankSelection.getSelected())
         const {setToast} = this.props
         if (!this.state.moneyAmount || this.state.moneyAmount.trim == ''){
             setToast(getToastMessage(I18n.t('err_money_not_empty')), 'info', null, null, 2000, 'top')
@@ -65,8 +67,10 @@ export default class extends Component {
     _handlePressClear = () => {
         this.setState({ moneyAmount: '' })
     }
+    
     render() {
-        const {forwardTo} = this.props
+        const {forwardTo, bank} = this.props
+        console.log('Banks', bank)
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary }}>
@@ -92,7 +96,7 @@ export default class extends Component {
                     <Text gray>{I18n.t('receive_account')}</Text>
                 </View>
                 <View style={styles.pd10}>
-                    <CardSelection listAccounts={this.accouts} ref='cardSelection' />
+                    <BankSelection listAccounts={bank} ref={bankSelection=>this.bankSelection=bankSelection} />
                     <TouchableOpacity onPress={()=>forwardTo('bankAccount')}>
                         <View style={{ ...styles.bankLogoContainer, justifyContent: 'center', height: 50 }}>
                             <Text primary>+  {I18n.t('add_account')}</Text>

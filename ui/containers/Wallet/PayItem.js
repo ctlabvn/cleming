@@ -19,13 +19,20 @@ import {
     TRANSACTION_TYPE_DIRECT
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
-
+import {_isDiff} from '~/ui/shared/utils'
 
 @connect(null, { ...commonAction })
 export default class extends Component {
     constructor(props) {
         super(props)
     }
+
+    shouldComponentUpdate = (nextProps, nextState) => {
+        return _isDiff(this.props.data, nextProps.data,
+            ['tranCode', 'tranTime', 'moneyAmount', 'tranType']
+        )
+    }
+    
 
 
     render() {

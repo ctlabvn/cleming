@@ -1,15 +1,18 @@
-const initialState = {
-
+const initialWallet = {
+    bank: []
 }
-export const wallet = (state = initialState, { type, payload }) => {
+const initBank = []
+export const wallet = (state = initialWallet, { type, payload }) => {
   switch (type) {
     case 'app/setBalance':
         console.log('Set balance Paylaoad: ', payload)
         return {...state, ...payload.data}
+    case 'app/setBanks':
+        return {...state, bank: payload}
     case 'app/logout':
-        return {...state, ...initialState}
+        return {...state, ...initialWallet}
     case 'app/clearData':
-        return {...state, ...initialState}
+        return {...state, ...initialWallet}
     default:
       return state
   }

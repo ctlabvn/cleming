@@ -12,6 +12,7 @@ export default {
     },
 
     banks(xsession){
+        console.log('Get Banks API: ', xsession)
         return apiGet('/merchantapp/banks', {}, xsession)
     },
 
