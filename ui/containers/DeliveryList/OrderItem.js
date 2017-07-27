@@ -194,8 +194,9 @@ export default class extends Component {
                             }
                         </Text>
                     </View>
+
                     <View style={styles.row}>
-                        <Text medium success>{I18n.t('paid')}</Text>
+                        {(orderInfo.status != 'CANCELLED' ? <Text medium success>{I18n.t('paid')}</Text> : <View/>)}
                         <Text medium bold grayDark>{formatNumber(Math.round(orderInfo.moneyAmount))}đ</Text>
                     </View>
                 </View>
