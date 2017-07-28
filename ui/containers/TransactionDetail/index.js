@@ -295,7 +295,7 @@ export default class TransactionDetail extends Component {
                         </View>
                         <View style={styles.rowPadding}>
                             <View style={styles.transactionContent}>
-                                <Text grayDark medium>{I18n.t('bill_number')}: </Text>
+                                <Text grayDark medium>{I18n.t('transaction_number')}: </Text>
                                 <Text medium primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                             </View>
                             <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
