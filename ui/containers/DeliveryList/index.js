@@ -17,8 +17,6 @@ import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
 import options from "./options";
 import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
-import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
-import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
 import moment from "moment";
 import { getNews } from "~/store/selectors/place";

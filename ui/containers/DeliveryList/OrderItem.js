@@ -131,7 +131,7 @@ export default class extends Component {
                 )
                 break
         }
-        const countTo = orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
+        const countTo = orderInfo.clingmeCreatedTime + orderInfo.fastDeliveryTime
         let listItemStyle = (orderInfo.status != 'CANCELLED' && orderInfo.status != 'FAILED') ? styles.deliveryBlock : styles.deliveryBlockCacel
         return (
             <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
@@ -150,7 +150,7 @@ export default class extends Component {
                             )}
                             {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) 
                                 && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
-                                && <CircleCountdown baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                && <CircleCountdown baseMinute={parseInt(orderInfo.fastDeliveryTime/60)}
                                     counting={this.props.counting}
                                     countTo={countTo}
                                 />}
