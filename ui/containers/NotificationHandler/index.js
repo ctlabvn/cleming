@@ -9,12 +9,14 @@ import * as commonActions from '~/store/actions/common'
 import * as notificationActions from '~/store/actions/notification'
 import * as authActions from '~/store/actions/auth'
 import * as metaActions from "~/store/actions/meta"
+import * as placeActions from '~/store/actions/place'
 import { getSession } from '~/store/selectors/auth'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
-
+import { getSelectedPlace } from '~/store/selectors/place'
 @connect(state => ({
-  xsession: getSession(state)
-}), { ...commonActions, ...notificationActions, ...metaActions, ...authActions })
+  xsession: getSession(state),
+  selectedPlace: getSelectedPlace(state),
+}), { ...commonActions, ...notificationActions, ...metaActions, ...authActions, ...placeActions })
 export default class NotificationHandler extends Component {
 
   initPushNotification(options) {
