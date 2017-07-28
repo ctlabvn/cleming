@@ -20,8 +20,8 @@ const CONFIG = {
     
     platformName: 'Android',
     appPackage: 'com.gigatum.merchantapp',
-    platformVersion: '5.0',
-    deviceName: 'Custom Phone - 7.0.0 - API 24 - 768x1280',
+    platformVersion: '6.0.1',
+    deviceName: 'GGC00C08640E46A',
     app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
   }
 }
@@ -56,13 +56,11 @@ describe('appium', function () {
     //   })
     
     // setInterval(()=>{
-
-    driver.elementsByXPath('//*', function (err, elements) {
-      elements.forEach(element => element.text().then(function (text) {
-        console.log('text', text)      
-        console.log(element)  
-      }))
-    })    
+    const usernameXPath = '//android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.EditText[1]'
+    driver.waitForElementByAccessibilityId('login', wd.asserters.isDisplayed, 100000, 1000, (err, el)=>{
+      console.log(el)
+      el.text('ha@clingme.vn')    
+    })
 
     // }, 5000)
   }) 

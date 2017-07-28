@@ -131,7 +131,7 @@ export class RenderGroup extends Component {
   
   handleCheck(address){
 
-    console.log(this.children)
+    // console.log(this.children)
 
     if(address && address.placeId !== this.selectedPlaceId){
       let prevChild = this.children[this.selectedPlaceId]
@@ -145,16 +145,24 @@ export class RenderGroup extends Component {
   
   render() {
 
-    const {place} = this.props
+    const {place, onStartCapture} = this.props
       
     return (
-      <View style={{marginTop: 10}}>
+      <View style={{marginTop: 10}} onStartShouldSetResponderCapture={e=>onStartCapture && onStartCapture(this.listView.wrappedInstance.root)}>
         
         <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
             
+        <List style={{
+          height: 400
+        }}  
+            ref={ref=>this.listView = ref}
+
         
-        {place.listPlace && place.listPlace.map((address,index) => (
-              <ListItem key={index} 
+              enableEmptySections={true}
+              removeClippedSubviews={false}     
+              dataArray={place.listPlace}
+              renderRow={address=>      
+              <ListItem
                   onPress={()=>this.handleCheck(address)}
                   style={styles.listItem}>
                   <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
@@ -167,7 +175,7 @@ export class RenderGroup extends Component {
                       />
                   </View>
               </ListItem>
-          ))}
+          }/>
         
       </View>
     )

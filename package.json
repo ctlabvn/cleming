@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "font": "node font-processor.js",
     "ba": "cd android && ./gradlew assembleRelease",
-    "ia": "adb devices | awk '{if(NR==2) system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
+    "ia": "adb devices | awk 'NR>1 && $1 ~ /^[^:]+$/ { system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
     "test": "jest",
     "mocha": "mocha test",
     "appium": "appium"

@@ -355,8 +355,7 @@ export default class extends Component {
           {notifications &&
             <ListView
               enableEmptySections={true}
-              removeClippedSubviews={false}
-              pageSize={10}
+              removeClippedSubviews={false}              
               dataSource={this.ds.cloneWithRows(notifications.data)}
               renderRow={(item) => {
                 return <ListItem noBorder
