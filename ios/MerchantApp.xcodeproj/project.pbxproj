@@ -28,6 +28,7 @@
 		2330B8CA462A4CA9B76A5125 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E7DFD04D8C40A4B331C75C /* libRNI18n.a */; };
 		240B56E01F0F2FA8002AA476 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 240B56DF1F0F2FA8002AA476 /* libiconv.tbd */; };
 		240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 240B56E11F0F2FB1002AA476 /* libz.tbd */; };
+		240ED9921F2B567300C170F8 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AC3B911ECDA46200611367 /* libReact.a */; };
 		2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1401F0F378700B47D74 /* libc++.tbd */; };
 		2473E1451F0F387100B47D74 /* ScanditBarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1441F0F387100B47D74 /* ScanditBarcodeScanner.framework */; };
 		2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */; };
@@ -60,7 +61,6 @@
 		BA7868F002FF415CB5E8BC23 /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95520B41C93248FB9FB03B91 /* Comic Sans MS.ttf */; };
 		BB248036F59F493295B22DF1 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB89F0BFD62149D9A569B21D /* Rubik-Black.ttf */; };
 		BD63DB4CECD94D04871A39EC /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8F1E861292C447A9BB27BF7 /* Rubik-Italic.ttf */; };
-		C2AC3B721ECD9F7300611367 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AC3B701ECD9ED200611367 /* libReact.a */; };
 		C548C101BEA84CAA9570FC8E /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70C65EDA1E80427186E0162C /* SanFranciscoBold.ttf */; };
 		CD0BED0344B3404691C5F91D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EFD2F7D3DE74B87AEFC78C3 /* FontAwesome.ttf */; };
 		D0B0E99984E0446D848227A2 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E714978290A4C2E98FFE55D /* Rubik-Bold.ttf */; };
@@ -452,11 +452,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				240ED9921F2B567300C170F8 /* libReact.a in Frameworks */,
 				2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */,
 				2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */,
 				240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */,
 				240B56E01F0F2FA8002AA476 /* libiconv.tbd in Frameworks */,
-				C2AC3B721ECD9F7300611367 /* libReact.a in Frameworks */,
 				247A6ADE1EC95985004F9790 /* libRCTPushNotification.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -1465,12 +1465,16 @@
 					ode_modules,
 					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1514,12 +1518,16 @@
 					ode_modules,
 					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1567,6 +1575,8 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1582,8 +1592,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1617,6 +1627,8 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1631,8 +1643,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "48bea9c4-db40-487c-973c-226c7cf90ecd";
-				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
+				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
+				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
