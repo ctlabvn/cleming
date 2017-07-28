@@ -12,17 +12,17 @@ const CONFIG = {
   DEVICE: {    
     browserName: '',
     'appium-version': '1.6.5',
-    appPackage: 'com.gigatum.clingmemerchant',
-    platformName: 'iOS',
-    platformVersion: '10.3',
-    deviceName: 'iPhone 5',
-    app: __dirname + '/../ios/build/Build/Products/Debug-iphonesimulator/Đối Tác.app'
+    // appPackage: 'com.gigatum.clingmemerchant',
+    // platformName: 'iOS',
+    // platformVersion: '10.3',
+    // deviceName: 'iPhone 5',
+    // app: __dirname + '/../ios/build/Build/Products/Debug-iphonesimulator/Đối Tác.app'
     
-    // platformName: 'Android',
-    // appPackage: 'com.gigatum.merchantapp',
-    // platformVersion: '5.0',
-    // deviceName: 'E7AZCY370473',
-    // app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
+    platformName: 'Android',
+    appPackage: 'com.gigatum.merchantapp',
+    platformVersion: '5.0',
+    deviceName: 'Custom Phone - 7.0.0 - API 24 - 768x1280',
+    app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
   }
 }
 Object.freeze(CONFIG)

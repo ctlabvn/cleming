@@ -197,13 +197,6 @@
 			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
 			remoteInfo = RNFS;
 		};
-		24B166251F13692000922787 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
-			remoteInfo = AirMaps;
-		};
 		24B1671B1F147BA400922787 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 24B167171F147BA400922787 /* SGScandit.xcodeproj */;
@@ -397,7 +390,6 @@
 		2B97CB47DD99488EB2306242 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		2DEF85572158489B86FA4153 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		3321B54BFD13402DB921E32F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		3C5C514A69A2462F85901D18 /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		3EEE20D22539FF6A91C0EFE2 /* libPods-MerchantApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MerchantApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43ED0E733CB9474C9C183A81 /* RNVersionNumber.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVersionNumber.xcodeproj; path = "../node_modules/react-native-version-number/ios/RNVersionNumber.xcodeproj"; sourceTree = "<group>"; };
@@ -647,14 +639,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		24B166221F13691E00922787 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				24B166261F13692000922787 /* libAirMaps.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		24B167181F147BA400922787 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -735,7 +719,6 @@
 				5049ADE382544156B9E7B833 /* RNDeviceInfo.xcodeproj */,
 				808613228A014F7FA08FA852 /* SMXCrashlytics.xcodeproj */,
 				3C5C514A69A2462F85901D18 /* RNI18n.xcodeproj */,
-				394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */,
 				43ED0E733CB9474C9C183A81 /* RNVersionNumber.xcodeproj */,
 			);
 			name = Libraries;
@@ -865,6 +848,7 @@
 				C6403E8CBE162A26A8CEE5AE /* [CP] Embed Pods Frameworks */,
 				60A5B3D52678B576ED8D953C /* [CP] Copy Pods Resources */,
 				240B54231F09EB3F002AA476 /* ShellScript */,
+				240ED9371F2ADF3E00C170F8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -919,10 +903,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 24B166221F13691E00922787 /* Products */;
-					ProjectRef = 394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */;
-				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1116,13 +1096,6 @@
 			fileType = archive.ar;
 			path = libRNFS.a;
 			remoteRef = 24A09E0C1EB202B100E72448 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		24B166261F13692000922787 /* libAirMaps.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAirMaps.a;
-			remoteRef = 24B166251F13692000922787 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		24B1671C1F147BA400922787 /* libSGScandit.a */ = {
@@ -1355,6 +1328,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 07805769a7b75b2efdda71a2b65bbfc2823b5c20 c6b1c321645b20a1502efb416536a2d73f46906391ea1384992223fa18e7c1ea";
+		};
+		240ED9371F2ADF3E00C170F8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"writing to $INFOPLIST\"\nPLISTCMD=\"Add :SERVER_IP string $(ifconfig | grep inet\\ | tail -1 | cut -d \" \" -f 2)\"\necho -n \"$INFOPLIST\" | xargs -0 /usr/libexec/PlistBuddy -c \"$PLISTCMD\" || true\nPLISTCMD=\"Set :SERVER_IP $(ifconfig | grep inet\\ | tail -1 | cut -d \" \" -f 2)\"\necho -n \"$INFOPLIST\" | xargs -0 /usr/libexec/PlistBuddy -c \"$PLISTCMD\" || true";
 		};
 		500949AC6A64E0C00A2FFCCE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

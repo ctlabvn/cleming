@@ -230,9 +230,12 @@ export default class CreateUserContainer extends Component {
   }
 
   onGeneratedPasswordPress() {
+
+    this.props.actions.setToast(getToastMessage(I18n.t('is_processing')), 'info', null, null, 3000, 'top')
+
     this.props.actions.getGeneratedPassword(this.props.session, () => {
       this.setState({
-        firstTimeResetPassword: true
+        firstTimeResetPassword: true,
       })
     })
   }
