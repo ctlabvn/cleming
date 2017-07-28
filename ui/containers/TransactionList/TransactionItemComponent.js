@@ -123,7 +123,7 @@ export default class extends Component {
                 )
                 statusText = <Text medium error>{I18n.t('reject')}</Text>
                 transactionCode = <Text bold grayDark>{item.dealTransactionIdDisplay}</Text>
-                moneyText = <Text bold gray style={styles.moneyNumber}></Text>
+                moneyText = null
                 timeBlock = <Text style={styles.timestamp} small grayDark>{moment(item.boughtTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 break
             default:
@@ -151,9 +151,12 @@ export default class extends Component {
                                 {timeBlock}
                             </View>
                             <View style={styles.row}>
-                                {statusText}
-                                {moneyText}
+                                {statusText}                                
                             </View>
+                            {moneyText && <View style={styles.row}>
+                                <Text>Số tiền:</Text>
+                                {moneyText}
+                            </View>}
                         </View>
                     </View>
                 </View>
