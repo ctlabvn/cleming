@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, List, ListItem, Spinner, Text, Item, Input } from "native-base";
-import { InteractionManager, View, TouchableOpacity, Image } from "react-native";
+import { InteractionManager, View, TouchableOpacity, Image, Keyboard } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -15,34 +15,17 @@ import { getSession } from "~/store/selectors/auth";
 import CheckBox from '~/ui/elements/CheckBox'
 import material from "~/theme/variables/material.js";
 import BankSelection from './BankSelection'
-import {
-    TIME_FORMAT_WITHOUT_SECOND,
-    TRANSACTION_DIRECT_STATUS,
-    TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
-} from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 
 
 @connect(state => ({
     xsession: getSession(state),
-    bank: state.wallet.bank
+    bank: state.wallet.bank,
+    wallet: state.wallet
 }), { ...commonAction, ...walletActions })
 export default class extends Component {
     constructor(props) {
         super(props)
-        this.accouts = [
-            {
-                url: 'http://mtalent.com.vn//admin/webroot/upload/image/files/logo-06-05.jpg',
-                number: '*4321',
-                id: 1
-            },
-            {
-                url: 'http://www.underconsideration.com/brandnew/archives/vietcombank_big.jpg',
-                number: '*1234',
-                id: 2
-            },
-        ]
         this.state = {
             moneyAmount: ''
         }
@@ -50,12 +33,11 @@ export default class extends Component {
     }
     componentDidMount = () => {
         const {xsession, getBanks} = this.props
-        console.log('WithDraw did Mount')
         getBanks(xsession)
     }
     _handlePressOk = () => {
         // console.log('Selected', this.bankSelection.getSelected())
-        const {setToast} = this.props
+        const {setToast, cashout, xsession} = this.props
         if (!this.state.moneyAmount || this.state.moneyAmount.trim == ''){
             setToast(getToastMessage(I18n.t('err_money_not_empty')), 'info', null, null, 2000, 'top')
             return
@@ -63,20 +45,32 @@ export default class extends Component {
             setToast(getToastMessage(I18n.t('err_money_must_number')), 'info', null, null, 2000, 'top')
             return
         }
+        let selectedBank = this.bankSelection.getSelected()
+        cashout(xsession, selectedBank.bankId, selectedBank.accountNumber, this.state.moneyAmount,
+            (err, data) => {
+                if (data && data.data && data.data.success){
+                    Keyboard.dismiss()
+                    this._handlePressClear()
+                    setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 2000, 'top')
+                }else{
+                    Keyboard.dismiss()
+                }
+            }
+        )
+        
     }
     _handlePressClear = () => {
         this.setState({ moneyAmount: '' })
     }
     
     render() {
-        const {forwardTo, bank} = this.props
-        console.log('Banks', bank)
+        const {forwardTo, bank, wallet} = this.props
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary }}>
                     <Text white>{I18n.t('balance')}</Text>
                     <Text white>
-                        <Text white bold style={styles.moneyNumber}>{formatNumber(16100000)}</Text>đ
+                        <Text white bold style={styles.banmoneyNumber}>{formatNumber(wallet.moneyAmount)}</Text>đ
                     </Text>
                 </View>
                 <View style={styles.rowPadding}>

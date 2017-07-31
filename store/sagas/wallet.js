@@ -61,6 +61,10 @@ const requestGetBanks = createRequestSaga({
     ]
 })
 
+const requestCashout = createRequestSaga({
+    request: api.wallet.cashout,
+    key: 'app/cashout',
+})
 
 // root saga reducer
 export default [
@@ -72,7 +76,8 @@ export default [
         yield [
             takeLatest('app/getBalance', requestGetBalance),
             takeLatest('app/getBalanceDetail', requestGetBalanceDetail),
-            takeLatest('app/getBanks', requestGetBanks)
+            takeLatest('app/getBanks', requestGetBanks),
+            takeLatest('app/cashout', requestCashout)
         ]
     },
 ]

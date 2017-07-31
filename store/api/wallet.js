@@ -17,7 +17,8 @@ export default {
         return apiGet('/merchantapp/banks', {}, xsession)
     },
 
-    cashout(xsession){
+    cashout(xsession, bankId, accountNumber, moneyAmount){
+        console.log('Cashout API', bankId+'---'+ accountNumber+'---'+ moneyAmount)
         return apiPost('/merchantapp/cashout', {bankId, accountNumber, moneyAmount}, xsession)
     }, 
     

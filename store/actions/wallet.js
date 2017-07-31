@@ -28,3 +28,7 @@ export const setBanks = (data) => ({
     payload: data
 })
 
+export const cashout = (...args) => ({
+    type: 'app/cashout',
+    args
+})
