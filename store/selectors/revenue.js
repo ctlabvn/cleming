@@ -4,4 +4,6 @@ export const getListRevenueProcessing = state => state.revenue.listProcessing ||
 
 export const getListRevenueDone = state => state.revenue.listDone || {error: 'revenue list done is null'}
 
+export const getListRevenue = state => state.revenue.list || {error: 'revenue list is null'}
+
 export const getDetail = state => state.revenue.detail || {error: 'revenue detail is null'}

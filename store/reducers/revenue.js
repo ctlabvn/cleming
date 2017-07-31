@@ -11,13 +11,7 @@ export const revenue = (state = initialState, {type, payload}) => {
         case 'app/setSelectedRevenueItem':
             return {
                 ...state,
-                selectedItem: {
-                    code: payload.code,
-                    time: payload.time,
-                    itemType: payload.itemType,
-                    username: payload.username,
-                    money: payload.money,
-                },
+                selectedItem: payload,
             }
         case 'app/setListRevenueProcessing':
             return {
@@ -28,6 +22,11 @@ export const revenue = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 listDone: payload,
+            }
+        case 'app/setListRevenue':
+            return {
+                ...state,
+                list: payload,
             }
         case 'app/setDetailRevenue':
             return {

@@ -15,9 +15,19 @@ export const setListRevenueDone = (list) => ({
     payload: list,
 })
 
+export const setListRevenue = (list) => ({
+    type: 'app/setListRevenue',
+    payload: list,
+})
+
 export const setDetailRevenue = (detail) => ({
     type: 'app/setDetailRevenue',
     payload: detail,
+})
+
+export const getRevenueList= (...args) => ({
+    type: 'revenue/list',
+    args
 })
 
 export const getRevenueListProcessing= (...args) => ({

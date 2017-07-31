@@ -5,10 +5,10 @@ export const ORDER_WAITING_CONFIRM = 0
 export const ORDER_WAITING_DELIVERY = 1
 export const ORDER_SUCCESS = 2
 export const ORDER_CANCEL = 3
-export const REVENUE_PROCESSING = 1;
-export const REVENUE_DONE = 2;
-export const REVENUE_DELIVERY = 'REVENUE_DELIVERY';
-export const REVENUE_CLINGME_PAY = 'REVENUE_CLINGME_PAY';
+export const REVENUE_PROCESSING = 0;
+export const REVENUE_DONE = 1;
+export const REVENUE_DELIVERY = 1;
+export const REVENUE_CLINGME_PAY = 2;
 
 //  "transactionStatus": int,	// Trạng thái của hoá đơn, 0 và 3 là đang chờ Clingme xử lý, 1 là thành công, 2 là bị từ chối, 4 là chờ merchant phê duyệt, 5 là merchant đã xem và khiếu nại
 export const TRANSACTION_DIRECT_STATUS = {

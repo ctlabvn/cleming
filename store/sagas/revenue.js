@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListRevenueProcessing, setListRevenueDone, setDetailRevenue } from '~/store/actions/revenue'
+import { setListRevenueProcessing, setListRevenueDone, setListRevenue, setDetailRevenue } from '~/store/actions/revenue'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
 
@@ -39,6 +39,18 @@ const requestListRevenueDone = createRequestSaga({
     ],
 })
 
+const requestListRevenue = createRequestSaga({
+    request: api.revenue.list,
+    key: 'revenue/list',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            console.log('Load list revenue ', data)
+            return setListRevenue(data.updated.data)
+        }
+    ],
+})
+
 const requestRevenueDetail = createRequestSaga({
         request: api.revenue.detail,
         key: 'revenue/detail',
@@ -51,7 +63,7 @@ const requestRevenueDetail = createRequestSaga({
             }
         ],
         failure: [
-            () => setToast(getToastMessage('detail failed'), 'info', null, null, 3000, 'top')
+            (data) => setToast(getToastMessage(I18n.t('err_general')), 'info', null, null, 3000, 'top'),
         ],
 })
 
@@ -60,6 +72,7 @@ export default [
         yield [
             takeLatest('revenue/listProcessing', requestListRevenueProcessing),
             takeLatest('revenue/listDone', requestListRevenueDone),
+            takeLatest('revenue/list', requestListRevenue),
             takeLatest('revenue/detail', requestRevenueDetail),
         ]
     },
