@@ -55,7 +55,7 @@ requestDenyReason = createRequestSaga({
     ],
 })
 
-requestSendDenyReason = createRequestSaga({
+const requestSendDenyReason = createRequestSaga({
     request: api.transaction.sendDenyReason,
     key: 'transaction/sendDenyReason',
     cancel: 'app/logout',
