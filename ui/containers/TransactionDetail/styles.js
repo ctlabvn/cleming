@@ -391,6 +391,7 @@ export default {
         justifyContent: 'flex-start',
         padding: 10,
         backgroundColor: material.white500,
+        paddingBottom: 50
     },
     loadingContainer: { 
         backgroundColor: material.white500,

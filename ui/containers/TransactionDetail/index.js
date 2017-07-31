@@ -22,17 +22,19 @@ import {
     GENERAL_ERROR_MESSAGE,
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
+    TRANSACTION_TYPE_DIRECT,
+    SCREEN
 } from "~/store/constants/app";
 import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
 import I18n from '~/ui/I18n'
+import * as metaAction from "~/store/actions/meta"
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
     denyReason: state.transaction.denyReason,
     denyReasonClm: state.transaction.denyReasonClm
-}), { ...transactionActions, ...commonActions, ...notificationActions })
+}), { ...transactionActions, ...commonActions, ...notificationActions, ...metaAction })
 export default class TransactionDetail extends Component {
     constructor(props) {
         super(props)
@@ -110,7 +112,7 @@ export default class TransactionDetail extends Component {
         // console.log('Confirming', clingmeId)
         if (this.confirmCounter > 0) return
         this.confirmCounter ++
-        const { xsession, confirmTransaction, transaction, setToast } = this.props
+        const { xsession, confirmTransaction, transaction, setToast, markWillLoad } = this.props
         console.log("trans", this.state.transactionInfo)
         confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
             (err, data) => {
@@ -119,6 +121,7 @@ export default class TransactionDetail extends Component {
                 console.log('Confirm Data', data)
                 if (chainParse(data, ['updated', 'data', 'success'])) {
                     setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 3000, 'top')
+                    markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
                     this._load(this.state.transactionInfo.transactionId)
                 }
             }
@@ -245,7 +248,7 @@ export default class TransactionDetail extends Component {
                         onClickYes={this._handleFeedbackClingme}
                         dealTransactionId={transactionInfo.clingmeId}
                     />
-                    <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
+                    <View style={{ ...styles.block, alignSelf: 'flex-start' }}>
                         <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
