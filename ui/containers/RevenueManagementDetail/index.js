@@ -8,8 +8,10 @@ import styles from './styles'
 import Icon from '~/ui/elements/Icon'
 import Border from "~/ui/elements/Border";
 
-import { getSelectedRevenueItem } from '~/store/selectors/revenue'
+import { getSelectedRevenueItem, getDetail } from '~/store/selectors/revenue'
 import * as commonAction from "~/store/actions/common";
+import * as revenueActions from "~/store/actions/revenue";
+import { getSession } from "~/store/selectors/auth";
 
 import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
@@ -30,8 +32,10 @@ const defaultItem = {
 }
 
 @connect(state => ({
+    xsession: getSession(state),
     selectedItem: (state.revenue ? getSelectedRevenueItem(state) : defaultItem),
-}), {...commonAction})
+    detail: state.revenue,
+}), {...commonAction, ...revenueActions})
 
 export default class extends Component {
 
@@ -48,6 +52,10 @@ export default class extends Component {
             currentTab: tab,
             colorStyle: color,
         }
+        const { xsession, getRevenueDetail } = this.props
+        getRevenueDetail(xsession, (err, data) => {
+            // console.warn('Loaded detail', data)
+        });
     }
 
     componentWillFocus() {

@@ -1,13 +1,10 @@
 import {REVENUE_CLINGME_PAY} from '~/store/constants/app'
 
 const initialState = {
-    selectedItem: {
-        code: 'CL000000',
-        time: 0,
-        itemType: REVENUE_CLINGME_PAY,
-        username: 'anonymous',
-        money: 0
-    },
+    selectedItem: {},
+    listRevenueProcessing: {},
+    listRevenueDone: {},
+    detail: {}
 }
 export const revenue = (state = initialState, {type, payload}) => {
     switch (type) {
@@ -21,6 +18,26 @@ export const revenue = (state = initialState, {type, payload}) => {
                     username: payload.username,
                     money: payload.money,
                 },
+            }
+        case 'app/setListRevenueProcessing':
+            return {
+                ...state,
+                listProcessing: payload,
+            }
+        case 'app/setListRevenueDone':
+            return {
+                ...state,
+                listDone: payload,
+            }
+        case 'app/setDetailRevenue':
+            return {
+                ...state,
+                detail: payload,
+            }
+        case 'app/logout':
+            return {
+                ...state,
+                ...initialState
             }
         default:
             return state;

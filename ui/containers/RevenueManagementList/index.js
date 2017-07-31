@@ -33,6 +33,7 @@ import {
 
 @connect(state => ({
     xsession: getSession(state),
+    revenue: state.revenue,
 }), { ...commonAction, ...authActions, ...revenueActions})
 
 export default class extends Component {
@@ -44,6 +45,10 @@ export default class extends Component {
             currentTab: REVENUE_PROCESSING,
             colorStyle: styles.revenueProcessing,
             loading: false,
+        })
+        const { xsession, getRevenueListProcessing } = this.props;
+        getRevenueListProcessing(xsession, (err, data) => {
+            // console.warn('data get list revenue processing ' + JSON.stringify(data));
         })
     }
 
