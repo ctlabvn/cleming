@@ -8,6 +8,7 @@ export default {
     },
 
     balanceDetail(xsession, fromTime, toTime, option=1, pageNumber=1){
+        console.log('API Balance Detail: ', xsession+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
         return apiGet('/merchantapp/balance-detail', {fromTime, toTime, option, pageNumber}, xsession)
     },
 

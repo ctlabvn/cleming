@@ -39,7 +39,6 @@ export default class extends Component {
         const { forwardTo } = this.props
         const item = this.props.data
         const {ITEM_TYPE} = options
-        console.log('Item type', options)
         let iconBlock, typeText, moneyText
 
         switch (item.tranType) {
@@ -68,7 +67,7 @@ export default class extends Component {
                     </View>
                 )
                 typeText = <Text grayDark>Cashback</Text>
-                moneyText = <Text bold grayDark style={styles.moneyNumber}>-{formatNumber(item.moneyAmount)}đ</Text>
+                moneyText = <Text bold grayDark style={styles.moneyNumber}>{formatNumber(item.moneyAmount)}đ</Text>
                 break
             case 'cashout':
                 iconBlock = (

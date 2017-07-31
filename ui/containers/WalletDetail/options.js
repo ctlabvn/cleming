@@ -1,5 +1,7 @@
 import { TRANSACTION_TYPE_CLINGME, TRANSACTION_TYPE_DIRECT } from '~/store/constants/app'
 import I18n from '~/ui/I18n'
+
+
 export default {
   tabData: [
       {
@@ -14,5 +16,7 @@ export default {
           tabID: 3,
           text: I18n.t('money_withdrawn')
       }
-  ]
+  ],
+
+  
 }

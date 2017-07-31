@@ -5,7 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance, setBanks
+    setBalance, setBanks, setBalanceDetail
 } from '~/store/actions/wallet'
 
 import { getToastMessage } from '~/ui/shared/utils'
@@ -19,7 +19,10 @@ const requestGetBalance = createRequestSaga({
     success: [
         (data) => {
             console.log('Balance: ', data)
-            return setBalance(data)
+            if (data.data){
+                return setBalance(data.data)
+            }
+            return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
         }
     ],
     failure: [
@@ -30,7 +33,13 @@ const requestGetBalanceDetail = createRequestSaga({
     request: api.wallet.balanceDetail,
     key: 'app/getBalanceDetail',
     success: [
-
+        (data) => {
+            console.log('Balance Detail: ', data)
+            if (data.data){
+                return setBalanceDetail(data.data)
+            }
+            return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+        }
     ],
     failure: [
     ]
