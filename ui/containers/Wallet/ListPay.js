@@ -73,6 +73,8 @@ export default class extends Component {
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
+        if (!this.props.data && !nextProps.data) return false
+        if (!this.props.data || !nextProps.data) return true
         return _isArrDiffPartial(this.props.data, nextProps.data,
             ['tranCode', 'tranTime', 'moneyAmount', 'tranType']
         )

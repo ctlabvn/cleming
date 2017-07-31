@@ -10,7 +10,6 @@ import Border from "~/ui/elements/Border";
 import moment from "moment";
 import { formatNumber } from "~/ui/shared/utils";
 import { getSession } from "~/store/selectors/auth";
-
 import material from "~/theme/variables/material.js";
 import {
     TIME_FORMAT_WITHOUT_SECOND,
@@ -20,6 +19,7 @@ import {
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import {_isDiff} from '~/ui/shared/utils'
+import  options from './options'
 
 @connect(null, { ...commonAction })
 export default class extends Component {
@@ -38,10 +38,12 @@ export default class extends Component {
     render() {
         const { forwardTo } = this.props
         const item = this.props.data
+        const {ITEM_TYPE} = options
+        console.log('Item type', options)
         let iconBlock, typeText, moneyText
 
         switch (item.tranType) {
-            case 'order': //chờ duyệt
+            case ITEM_TYPE.ORDER: //chờ duyệt
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='shiping-bike2' style={{ ...styles.iconLarge, ...styles.primary }} />
@@ -50,7 +52,7 @@ export default class extends Component {
                 typeText = <Text grayDark>Giao hàng</Text>
                 moneyText = <Text bold grayDark style={styles.moneyNumber}>+{formatNumber(item.moneyAmount)}đ</Text>
                 break
-            case 'clm_pay': // thành công
+            case ITEM_TYPE.CLINGME_PAY: // thành công
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='clingme-wallet' style={{ ...styles.iconLarge, ...styles.primary }} />
@@ -59,7 +61,7 @@ export default class extends Component {
                 typeText = <Text grayDark>Clingme Pay</Text>
                 moneyText = <Text bold grayDark style={styles.moneyNumber}>+{formatNumber(item.moneyAmount)}đ</Text>
                 break
-            case 'cashback':
+            case ITEM_TYPE.CASHBACK:
                 iconBlock = (
                     <View style={styles.iconBlock}>
                         <Icon name='coin_mark' style={{ ...styles.iconLarge, ...styles.success }} />
