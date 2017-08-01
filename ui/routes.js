@@ -49,7 +49,7 @@ export default {
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
-        headerType: 'back',
+        headerType: 'home',
         showTopDropdown: true,
     },
     'transactionDetail/:id/:type': {
@@ -82,7 +82,8 @@ export default {
     report: {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
-        showTopDropdown: true
+        showTopDropdown: true,
+        headerType: 'home',
     },
     placeOrderList: {
         title: I18n.t('page_booking_list'),

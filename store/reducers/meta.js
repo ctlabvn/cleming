@@ -8,6 +8,8 @@ export const meta = (state = initialState, {type, payload}) => {
     case 'app/clearMarkLoad':
       data[payload] = false
       return {...state, ...data}
+    case 'app/setConnectionStatus': 
+      return {...state, connectionStatus: payload}
     default:
       return state
   }

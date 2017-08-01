@@ -127,6 +127,7 @@ export default {
     'list_place': 'Danh sách địa điểm',
     'change_password': 'Thay đổi mật khẩu',
     'ok': 'Đồng ý',
+    'cancel': 'Hủy bỏ', 
     'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
 
     // Change Password In App
@@ -185,7 +186,10 @@ export default {
     'update_profile_successfully': 'Cập nhật thông tin thành công!',
     'could_not_update_profile': 'Thông tin chưa được cập nhật.',
     'update_employee_info_successfully': 'Cập nhật thông tin thành công!',
-    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'create_password_failed' : 'Tạo mật khẩu không thành công.',
+    'create_password_successfully' : 'Tạo mật khẩu thành công.',
+    'is_processing' : 'Đang xử lý.',
 
     // vault
 
@@ -209,4 +213,5 @@ export default {
 
     // notifications
     'no_notification': 'Chưa nhận được thông báo nào',
+    'no_internet': 'Không có kết nối với internet.'
 }

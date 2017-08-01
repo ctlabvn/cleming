@@ -41,24 +41,24 @@ export default class extends Component {
 
     this.state = {
       refreshing: false,
-      loading: false,
+      loading: false,      
     }
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
   }
 
   componentWillFocus() {
-    getNotification
+    
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
     if (!notifications.data.length) {
-      getNotification(session, 1, () => getNotification(session, 2))
-      this.setState({
-        refreshing: false,
-      })
-    } else {
-      this.forceUpdate()
-    }
+      getNotification(session, 1, () => getNotification(session, 2))      
+    } 
+
+    this.setState({
+      refreshing: false,      
+    })
   }
+
 
   componentWillMount() {
     // this.componentWillFocus()
@@ -142,35 +142,20 @@ export default class extends Component {
         const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
         return (
           <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.titleContainer}>
-                <Text note style={styles.textGray}>{item.title} </Text>
-                <Text bold style={styles.textGray}>{item.content}
-                </Text>
-              </View>
-
-              {/*{minutesRemain > 0 && <Text small style={{
-                color: material.red500,
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>Còn {minutesRemain}'</Text>
-              }*/}
-              <Text small style={{
-                alignSelf: 'flex-end',
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
-              <View style={styles.rowEnd}>
-                <Icon name='friend' style={styles.icon} />
-                <Text bold>{item.paramId1}</Text>
+            <View style={styles.listItemRow}> 
+              <View style={styles.subRow}>
+                  <Text note style={styles.textGray}>{item.title} </Text>
+                  <Text small>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
+                </View>
+              <View style={styles.subRow}>
+                <Text bold style={styles.textGray}>{item.content}</Text>
+                <View style={styles.rowEnd}>
+                  <Icon name='friend' style={styles.icon} />
+                  <Text bold>{item.paramId1}</Text>
+                </View>
               </View>
             </View>
-
             {border}
-
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
@@ -358,7 +343,8 @@ export default class extends Component {
     }
   }
   render() {
-    let { notifications } = this.props
+    let { notifications } = this.props        
+
     return (
 
       <Container>
@@ -370,8 +356,7 @@ export default class extends Component {
           {notifications &&
             <ListView
               enableEmptySections={true}
-              removeClippedSubviews={false}
-              pageSize={10}
+              removeClippedSubviews={false}              
               dataSource={this.ds.cloneWithRows(notifications.data)}
               renderRow={(item) => {
                 return <ListItem noBorder

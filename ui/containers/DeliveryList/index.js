@@ -17,14 +17,13 @@ import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
 import options from "./options";
 import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
-import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
-import CircleCountdown from "~/ui/components/CircleCountdown";
 import CallModal from "~/ui/components/CallModal";
 import moment from "moment";
 import { getNews } from "~/store/selectors/place";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
 import I18n from '~/ui/I18n'
 import OrderItem from './OrderItem'
+import { getRouter } from '~/store/selectors/common'
 import {
     DEFAULT_TIME_FORMAT,
     DELIVERY_FEEDBACK,
@@ -40,7 +39,8 @@ import {
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
     news: getNews(state),
-    meta: state.meta
+    meta: state.meta,
+    router: getRouter(state),
 }), { ...orderActions, ...commonActions, ...placeActions, ...metaActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
@@ -66,6 +66,14 @@ export default class extends Component {
         this.interval = 0
         this.isLoadingPlace = false
         this.clickCount = 0
+    }
+    componentWillReceiveProps(nextProps){
+        const {meta} = nextProps
+        const {clearMarkLoad, router} = this.props
+        if (meta && meta[SCREEN.ORDER_LIST] && router && router.route == "deliveryList"){
+            this._load()
+            clearMarkLoad(SCREEN.ORDER_LIST)
+        }
     }
 
     _load() {
@@ -241,8 +249,6 @@ export default class extends Component {
         const { updateOrderStatus, setToast, session } = this.props
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
             (err, data) => {
-                console.log('Data update status', data)
-                console.log('Error update order status', err)
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {

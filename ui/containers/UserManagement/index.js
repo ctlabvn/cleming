@@ -10,6 +10,7 @@ import {
 import CheckBox from '~/ui/elements/CheckBox'
 import {TouchableHighlight, InteractionManager} from 'react-native'
 import {connect} from 'react-redux'
+import Preload from '~/ui/containers/Preload'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
@@ -51,30 +52,6 @@ class UserManagement extends Component {
             // data: [],
             // rowIDOfEmployee: 0
         }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // if (this.props.user != nextProps.user) {
-        //     let data = []
-        //     for (let i = 0; i < 1; i++) {
-        //         data.push({
-        //             owner: nextProps.user,
-        //             employeeList: nextProps.listEmployee
-        //         })
-        //     }
-
-        //     this.data = data
-        //     this.setState({
-        //         isFetchingData: false
-        //     })
-        //     // this.setState({
-        //     //     data: data
-        //     // }, () => {
-        //     //     this.setState({
-        //     //         isFetchingData: false
-        //     //     })
-        //     // })
-        // }
     }
 
     _loadListEmployee(placeId) {
@@ -361,18 +338,9 @@ class UserManagement extends Component {
         const {selectedPlace} = this.props
 
         if (this.state.isFetchingData) {
-            return (
-                <View style={{
-                    backgroundColor: material.white500,
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <Spinner color={material.primaryColor}/>
-                </View>
-            )
+            return <Preload/>
         }
+        
         return (
             <Container>
                 <Content style={{backgroundColor: material.white500}}>

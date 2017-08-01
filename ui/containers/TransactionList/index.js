@@ -31,13 +31,15 @@ import {
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import ListTransaction from './TransactionListComponent'
+import { getRouter } from '~/store/selectors/common'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
     news: getNews(state),
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state),
-    meta: state.meta    
+    meta: state.meta,
+    router: getRouter(state),  
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
@@ -206,6 +208,34 @@ export default class extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        const { app, clearMarkLoad, router } = this.props
+        const { meta } = nextProps
+        if (!router || router.route != 'transactionList'){
+            console.log('Not in transList')
+            return
+        }
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.state.currentTab == TRANSACTION_TYPE_DIRECT){
+            console.log('Case reload tranDirect')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.state.currentTab == TRANSACTION_TYPE_CLINGME){
+            console.log('Case reload tranClm')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const {router} = this.props
+        if (!router || router.route != 'transactionList'){
+            return false
+        }
+        return true
+    }
 
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
