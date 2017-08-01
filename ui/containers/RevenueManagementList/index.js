@@ -66,25 +66,19 @@ export default class extends Component {
 
         fromTime = dateFilter.currentSelectValue.value.from;
         toTime = dateFilter.currentSelectValue.value.to;
-        // console.warn('loadData from time ' + moment(fromTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)
-        // + ' to time ' + moment(toTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND))
         option = this.state.currentTab;
         pageNumber = loadMore && revenueData && (revenueData.totalPage > revenueData.pageNumber) ? revenueData.pageNumber + 1 : 1;
-        // pageNumber = 1;
-
-        // console.warn('page number' + loadMore + ':' + !!revenueData + ':' + (revenueData.totalPage > revenueData.pageNumber) + '\n' + JSON.stringify(pageNumber))
-        // console.warn(revenueData.totalPage + ' > ' + revenueData.pageNumber + ' is ' + (revenueData.totalPage > revenueData.pageNumber));
-        console.warn('page Number ' + pageNumber);
 
         const { xsession, getRevenueList, setRevenueData } = this.props;
 
+        this.setState({loading: true});
         getRevenueList(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
             if (err) setRevenueData({});
             if (data) {
-                // setRevenueData(data.data);
-                console.warn('data ' + JSON.stringify(data.data));
-                
-                setRevenueData(loadMore ? {...revenueData, ...data.data} : data.data);
+
+                if (loadMore) data.data.listRevenueItem = [...revenueData.listRevenueItem, ...data.data.listRevenueItem];
+
+                setRevenueData(data.data);
             }
 
             this.setState({loading: false});
@@ -107,7 +101,7 @@ export default class extends Component {
     }
 
     _handlePressFilter(data) {
-        this.setState({ loading: true });
+        // this.setState({ loading: true });
         this._loadData(false, data);
     }
 
@@ -200,19 +194,18 @@ export default class extends Component {
         const { revenueData } = this.props;
         if (!revenueData) return <Text medium bold warning> Data is null! </Text>
         let listItem = revenueData.listRevenueItem;
-        if (!listItem.length) return <Text medium bold warning> {I18n.t('have_no_data')} </Text>
+        if (!listItem) return <Text medium bold warning> {I18n.t('have_no_data')} </Text>
         return (<List dataArray={listItem}
                       renderRow={(item) => {return this._renderItem(item)}}
                       pageSize={10}/>)
     }
 
     _loadMore() {
-        console.warn('load more');
         this._loadData(true);
     }
 
     _onRefresh() {
-        this.setState({loading: true})
+        // this.setState({loading: true})
         this._loadData();
     }
 
