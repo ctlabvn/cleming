@@ -20,7 +20,7 @@ import {
 } from "~/store/constants/app";
 import PayItem from './PayItem'
 import I18n from '~/ui/I18n'
-import { _isArrDiffPartial } from '~/ui/shared/utils'
+import { _isArrDiffPartial, _isArrDiff } from '~/ui/shared/utils'
 
 @connect(state => ({
     xsession: getSession(state)
@@ -28,54 +28,12 @@ import { _isArrDiffPartial } from '~/ui/shared/utils'
 export default class extends Component {
     constructor(props) {
         super(props)
-        this.fakeData = [
-            {
-                tranType: 'order',
-                tranTime: 1499915671,
-                userName: 'User Name',
-                moneyAmount: 400000,
-                tranCode: '#CLM12345'
-
-            },
-            {
-                tranType: 'clm_pay',
-                tranTime: 1499915671,
-                userName: 'User Name',
-                moneyAmount: 1400000,
-                tranCode: '#CLM12345'
-
-            },
-            {
-                tranType: 'cashback',
-                tranTime: 1499915671,
-                userName: 'User Name',
-                moneyAmount: 2500000,
-                tranCode: '#CLM12345'
-
-            },
-            {
-                tranType: 'cashout',
-                tranTime: 1499915671,
-                userName: 'User Name',
-                moneyAmount: 370000,
-                tranCode: '#CLM12345'
-
-            },
-            {
-                tranType: 'cashout_auto',
-                tranTime: 1499915671,
-                userName: 'User Name',
-                moneyAmount: 1260000,
-                tranCode: '#CLM12345'
-
-            },
-        ]
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
         if (!this.props.data && !nextProps.data) return false
         if (!this.props.data || !nextProps.data) return true
-        return _isArrDiffPartial(this.props.data, nextProps.data,
+        return _isArrDiff(this.props.data, nextProps.data,
             ['tranCode', 'tranTime', 'moneyAmount', 'tranType']
         )
     }

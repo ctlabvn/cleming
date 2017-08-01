@@ -43,7 +43,7 @@ export default class extends Component {
     _load = (from, to, page = 1) => {
         const { xsession, getBalance } = this.props
         this.setState({ loading: true })
-        getBalance(xsession, from, to,
+        getBalance(xsession, from, to, page,
             () => this.setState({ loading: false })
         )
     }
@@ -59,6 +59,12 @@ export default class extends Component {
         this._load(dateFilterData.from, dateFilterData.to)
     }
 
+    _loadMore = () => {
+        const {wallet} = this.props
+        if (wallet.pageNumber >= wallet.totalPage) return
+        let dateFilterData = this.dateFilter.getData().currentSelectValue.value
+        this._load(dateFilterData.from, dateFilterData.to, wallet.pageNumber+1)
+    }
 
     render() {
         const { forwardTo, wallet } = this.props
@@ -89,6 +95,7 @@ export default class extends Component {
                 <Content style={styles.content}
                     onRefresh={this._onRefresh}
                     refreshing={this.state.loading}
+                    onEndReached={this._loadMore}
                 >
                     <ListPay data={wallet.listRevenueItem} />
                 </Content>
