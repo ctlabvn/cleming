@@ -322,27 +322,27 @@ export default {
     },
 
     get textSizeMedium() {
-        return this.fontSizeBase;  // this.fontSizeBase == 15
+        return this.fontSizeBase + 1;  // this.fontSizeBase == 16
     },
 
     get textSizeStrong() {
-        return this.textSizeMedium * 17/15;  // 16
+        return this.textSizeMedium * 17/15;
     },
 
     get textSizelargeLight() {
-        return this.textSizeMedium * 20/15;  // 20
+        return this.textSizeMedium * 20/15;
     },
 
     get textSizelarge() {
-        return this.textSizeMedium * 25/15;  // 25
+        return this.textSizeMedium * 25/15;
     },
 
     get textSizeBig() {
-        return this.textSizeMedium * 32/15;  // 32
+        return this.textSizeMedium * 32/15;
     },
 
     get textSizeGiant() {
-        return this.textSizeMedium * 50/15; // 50
+        return this.textSizeMedium * 50/15;
     },
 
     // Title
