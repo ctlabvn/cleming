@@ -53,7 +53,7 @@ export default {
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
-        headerType: 'back',
+        headerType: 'home',
         showTopDropdown: true,
     },
     'transactionDetail/:id/:type': {

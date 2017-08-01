@@ -10,7 +10,7 @@ export default class extends Component {
     }
 
     shouldComponentUpdate = (nextProps, nextState) => {
-        return _isArrDiffPartial(this.props.data, nextProps.data, 
+        return _isArrDiff(this.props.data, nextProps.data, 
             ['transactionType', 'transactionStatus', 'dealTransactionId', 'dealTransactionIdDisplay',
                 'originPrice', 'invoiceTime', 'moneyNumberClingme'
             ]

@@ -28,10 +28,12 @@
 		2330B8CA462A4CA9B76A5125 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E7DFD04D8C40A4B331C75C /* libRNI18n.a */; };
 		240B56E01F0F2FA8002AA476 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 240B56DF1F0F2FA8002AA476 /* libiconv.tbd */; };
 		240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 240B56E11F0F2FB1002AA476 /* libz.tbd */; };
+		240ED9921F2B567300C170F8 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AC3B911ECDA46200611367 /* libReact.a */; };
 		2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1401F0F378700B47D74 /* libc++.tbd */; };
 		2473E1451F0F387100B47D74 /* ScanditBarcodeScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E1441F0F387100B47D74 /* ScanditBarcodeScanner.framework */; };
 		2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */; };
 		247A6ADE1EC95985004F9790 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 247A6AC91EC9593F004F9790 /* libRCTPushNotification.a */; };
+		248A49C11F2EEEF5003C57ED /* MerchantUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 248A49C01F2EEEF5003C57ED /* MerchantUITests.swift */; };
 		24D4A8DA1EF0F9D800D66580 /* LaunchScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8D91EF0F9D800D66580 /* LaunchScreenController.m */; };
 		24D4A8DD1EF1021000D66580 /* HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A8DC1EF1021000D66580 /* HexColor.m */; };
 		289F59D8BA964BD399874D17 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE2F6EC9EB794CB3962D52D7 /* Zocial.ttf */; };
@@ -60,7 +62,6 @@
 		BA7868F002FF415CB5E8BC23 /* Comic Sans MS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95520B41C93248FB9FB03B91 /* Comic Sans MS.ttf */; };
 		BB248036F59F493295B22DF1 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB89F0BFD62149D9A569B21D /* Rubik-Black.ttf */; };
 		BD63DB4CECD94D04871A39EC /* Rubik-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8F1E861292C447A9BB27BF7 /* Rubik-Italic.ttf */; };
-		C2AC3B721ECD9F7300611367 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2AC3B701ECD9ED200611367 /* libReact.a */; };
 		C548C101BEA84CAA9570FC8E /* SanFranciscoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70C65EDA1E80427186E0162C /* SanFranciscoBold.ttf */; };
 		CD0BED0344B3404691C5F91D /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EFD2F7D3DE74B87AEFC78C3 /* FontAwesome.ttf */; };
 		D0B0E99984E0446D848227A2 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E714978290A4C2E98FFE55D /* Rubik-Bold.ttf */; };
@@ -190,19 +191,19 @@
 			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
 			remoteInfo = "RCTPushNotification-tvOS";
 		};
+		248A49C31F2EEEF5003C57ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = MerchantApp;
+		};
 		24A09E0C1EB202B100E72448 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2DEF85572158489B86FA4153 /* RNFS.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
 			remoteInfo = RNFS;
-		};
-		24B166251F13692000922787 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
-			remoteInfo = AirMaps;
 		};
 		24B1671B1F147BA400922787 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -369,7 +370,7 @@
 		0F6779C4FFD09DA3802F43B9 /* Pods-MerchantApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MerchantApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MerchantApp/Pods-MerchantApp.debug.xcconfig"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* MerchantApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MerchantApp.app; path = "Đối Tác.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Đối Tác.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Đối Tác.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = MerchantApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = MerchantApp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -385,6 +386,9 @@
 		2473E1441F0F387100B47D74 /* ScanditBarcodeScanner.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScanditBarcodeScanner.framework; path = ScanditSDK/ScanditBarcodeScanner.framework; sourceTree = "<group>"; };
 		2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		247A6AB81EC9593F004F9790 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		248A49BE1F2EEEF5003C57ED /* MerchantUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MerchantUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		248A49C01F2EEEF5003C57ED /* MerchantUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantUITests.swift; sourceTree = "<group>"; };
+		248A49C21F2EEEF5003C57ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		249C7E267E804CFE99DAA97B /* Arial Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Arial Black.ttf"; path = "../node_modules/native-base/Fonts/Arial Black.ttf"; sourceTree = "<group>"; };
 		24B167171F147BA400922787 /* SGScandit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SGScandit.xcodeproj; path = "../node_modules/react-native-scandit/ios/SGScandit.xcodeproj"; sourceTree = "<group>"; };
 		24B26FB11ECD577900166C09 /* libReact.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libReact.a; path = "../../../../../../Library/Developer/Xcode/DerivedData/MerchantApp-epmqigzjwbzslygualqwcpohipxa/Build/Products/Debug-iphonesimulator/React/libReact.a"; sourceTree = "<group>"; };
@@ -397,7 +401,6 @@
 		2B97CB47DD99488EB2306242 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		2DEF85572158489B86FA4153 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		3321B54BFD13402DB921E32F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		3C5C514A69A2462F85901D18 /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		3EEE20D22539FF6A91C0EFE2 /* libPods-MerchantApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MerchantApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43ED0E733CB9474C9C183A81 /* RNVersionNumber.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVersionNumber.xcodeproj; path = "../node_modules/react-native-version-number/ios/RNVersionNumber.xcodeproj"; sourceTree = "<group>"; };
@@ -460,11 +463,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				240ED9921F2B567300C170F8 /* libReact.a in Frameworks */,
 				2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */,
 				2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */,
 				240B56E21F0F2FB1002AA476 /* libz.tbd in Frameworks */,
 				240B56E01F0F2FA8002AA476 /* libiconv.tbd in Frameworks */,
-				C2AC3B721ECD9F7300611367 /* libReact.a in Frameworks */,
 				247A6ADE1EC95985004F9790 /* libRCTPushNotification.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -486,6 +489,13 @@
 				F2E27CF025B641B1B0E563F5 /* libSMXCrashlytics.a in Frameworks */,
 				2330B8CA462A4CA9B76A5125 /* libRNI18n.a in Frameworks */,
 				1D3A651CBF994454ACA8D474 /* libRNVersionNumber.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		248A49BB1F2EEEF5003C57ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,18 +649,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		248A49BF1F2EEEF5003C57ED /* MerchantUITests */ = {
+			isa = PBXGroup;
+			children = (
+				248A49C01F2EEEF5003C57ED /* MerchantUITests.swift */,
+				248A49C21F2EEEF5003C57ED /* Info.plist */,
+			);
+			path = MerchantUITests;
+			sourceTree = "<group>";
+		};
 		24A09DF01EB202B100E72448 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				24A09E0D1EB202B100E72448 /* libRNFS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		24B166221F13691E00922787 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				24B166261F13692000922787 /* libAirMaps.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -735,7 +746,6 @@
 				5049ADE382544156B9E7B833 /* RNDeviceInfo.xcodeproj */,
 				808613228A014F7FA08FA852 /* SMXCrashlytics.xcodeproj */,
 				3C5C514A69A2462F85901D18 /* RNI18n.xcodeproj */,
-				394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */,
 				43ED0E733CB9474C9C183A81 /* RNVersionNumber.xcodeproj */,
 			);
 			name = Libraries;
@@ -757,6 +767,7 @@
 				13B07FAE1A68108700A75B9A /* MerchantApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MerchantAppTests */,
+				248A49BF1F2EEEF5003C57ED /* MerchantUITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				DB15A7F1854E47FE9A615591 /* Resources */,
 				24DDD9451EC99A4F00B391DF /* Frameworks */,
@@ -769,8 +780,9 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* MerchantApp.app */,
+				13B07F961A680F5B00A75B9A /* Đối Tác.app */,
 				00E356EE1AD99517003FC87E /* MerchantAppTests.xctest */,
+				248A49BE1F2EEEF5003C57ED /* MerchantUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -865,6 +877,7 @@
 				C6403E8CBE162A26A8CEE5AE /* [CP] Embed Pods Frameworks */,
 				60A5B3D52678B576ED8D953C /* [CP] Copy Pods Resources */,
 				240B54231F09EB3F002AA476 /* ShellScript */,
+				240ED9371F2ADF3E00C170F8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -873,8 +886,26 @@
 			);
 			name = MerchantApp;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* MerchantApp.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Đối Tác.app */;
 			productType = "com.apple.product-type.application";
+		};
+		248A49BD1F2EEEF5003C57ED /* MerchantUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 248A49EA1F2EEEF5003C57ED /* Build configuration list for PBXNativeTarget "MerchantUITests" */;
+			buildPhases = (
+				248A49BA1F2EEEF5003C57ED /* Sources */,
+				248A49BB1F2EEEF5003C57ED /* Frameworks */,
+				248A49BC1F2EEEF5003C57ED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				248A49C41F2EEEF5003C57ED /* PBXTargetDependency */,
+			);
+			name = MerchantUITests;
+			productName = MerchantUITests;
+			productReference = 248A49BE1F2EEEF5003C57ED /* MerchantUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -882,12 +913,13 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 820;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = B2T9Y9TK29;
+						DevelopmentTeam = 9CATQ2N2W2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -901,9 +933,15 @@
 								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
+					};
+					248A49BD1F2EEEF5003C57ED = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = EUKQS3744F;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
 			};
@@ -919,10 +957,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 24B166221F13691E00922787 /* Products */;
-					ProjectRef = 394CF858CC9D43B7A70FFB4E /* AirMaps.xcodeproj */;
-				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1008,6 +1042,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* MerchantApp */,
 				00E356ED1AD99517003FC87E /* MerchantAppTests */,
+				248A49BD1F2EEEF5003C57ED /* MerchantUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1116,13 +1151,6 @@
 			fileType = archive.ar;
 			path = libRNFS.a;
 			remoteRef = 24A09E0C1EB202B100E72448 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		24B166261F13692000922787 /* libAirMaps.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAirMaps.a;
-			remoteRef = 24B166251F13692000922787 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		24B1671C1F147BA400922787 /* libSGScandit.a */ = {
@@ -1326,6 +1354,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		248A49BC1F2EEEF5003C57ED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1355,6 +1390,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" 07805769a7b75b2efdda71a2b65bbfc2823b5c20 c6b1c321645b20a1502efb416536a2d73f46906391ea1384992223fa18e7c1ea";
+		};
+		240ED9371F2ADF3E00C170F8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "INFOPLIST=\"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\necho \"writing to $INFOPLIST\"\nPLISTCMD=\"Add :SERVER_IP string $(ifconfig | grep inet\\ | tail -1 | cut -d \" \" -f 2)\"\necho -n \"$INFOPLIST\" | xargs -0 /usr/libexec/PlistBuddy -c \"$PLISTCMD\" || true\nPLISTCMD=\"Set :SERVER_IP $(ifconfig | grep inet\\ | tail -1 | cut -d \" \" -f 2)\"\necho -n \"$INFOPLIST\" | xargs -0 /usr/libexec/PlistBuddy -c \"$PLISTCMD\" || true";
 		};
 		500949AC6A64E0C00A2FFCCE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1423,6 +1471,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		248A49BA1F2EEEF5003C57ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				248A49C11F2EEEF5003C57ED /* MerchantUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1435,6 +1491,11 @@
 			isa = PBXTargetDependency;
 			name = React;
 			targetProxy = 24773D381EF7864E00429A1D /* PBXContainerItemProxy */;
+		};
+		248A49C41F2EEEF5003C57ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* MerchantApp */;
+			targetProxy = 248A49C31F2EEEF5003C57ED /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1455,7 +1516,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = B2T9Y9TK29;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1475,14 +1536,20 @@
 					"$(SRCROOT)/../node_modules/react-native-scandit/ios",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
-					"$(SRCROOT)..\node_modules\neact-native-mapslibios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1506,7 +1573,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = B2T9Y9TK29;
+				DEVELOPMENT_TEAM = 9CATQ2N2W2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
@@ -1522,14 +1589,20 @@
 					"$(SRCROOT)/../node_modules/react-native-scandit/ios",
 					"$(SRCROOT)/../node_modules/react-native-fabric/ios/SMXCrashlytics",
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
-					"$(SRCROOT)..\node_modules\neact-native-mapslibios/**",
+					"$(SRCROOT)..",
+					ode_modules,
+					"eact-native-mapslibios/**",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1553,7 +1626,6 @@
 			baseConfigurationReference = 0F6779C4FFD09DA3802F43B9 /* Pods-MerchantApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = MerchantApp/MerchantApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Hung Lai (FA7Y8ZETLC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -1578,6 +1650,8 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1604,7 +1678,6 @@
 			baseConfigurationReference = 84DFC60D8FDD94BB944F77C5 /* Pods-MerchantApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = MerchantApp/MerchantApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Hung Lai (FA7Y8ZETLC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -1629,6 +1702,8 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)..",
 					"$(SRCROOT)/../node_modules/react-native-version-number/ios",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-maps/lib/ios/**",
 				);
 				INFOPLIST_FILE = MerchantApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1646,6 +1721,52 @@
 				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
 				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		248A49C51F2EEEF5003C57ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = EUKQS3744F;
+				INFOPLIST_FILE = MerchantUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.MerchantUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MerchantApp;
+			};
+			name = Debug;
+		};
+		248A49C61F2EEEF5003C57ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = EUKQS3744F;
+				INFOPLIST_FILE = MerchantUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.MerchantUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MerchantApp;
 			};
 			name = Release;
 		};
@@ -1756,6 +1877,15 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		248A49EA1F2EEEF5003C57ED /* Build configuration list for PBXNativeTarget "MerchantUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				248A49C51F2EEEF5003C57ED /* Debug */,
+				248A49C61F2EEEF5003C57ED /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

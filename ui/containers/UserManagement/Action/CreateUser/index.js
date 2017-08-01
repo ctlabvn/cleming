@@ -41,57 +41,17 @@ const formSelector = formValueSelector('CreateUserForm')
 
 
 @connect(state => ({
-  session: authSelectors.getSession(state),
-  // listEmployee: accountSelectors.getListEmployee(state),
+  session: authSelectors.getSession(state),  
   employeeDetail: accountSelectors.getCurrentEmployee(state),
-  // place: state.place,
-  generatedPassword: accountSelectors.getGeneratedPassword(state),
-  // formValues: formSelector(state, 'name', 'email', 'phone', 'permission'),
-  // formState: state.form,
+  initialValues: accountSelectors.getCurrentEmployeeValues(state),
+  generatedPassword: accountSelectors.getGeneratedPassword(state),  
   selectedPlace: getSelectedPlace(state)
 }), dispatch => ({
   actions: bindActionCreators({ ...accountActions, ...commonActions, resetForm: reset }, dispatch)
-}), (stateProps, dispatchProps, ownProps) => {
-
-  let employeeDetail = stateProps.employeeDetail || {
-    // console.log('@connect employeeDetail.fromTime : toTime ' + employeeDetail.fromTimeWork + ' : ' + employeeDetail.toTimeWork);
-    userName: '',
-    email: '',
-    phoneNumber: '',
-    titleType: 1,
-    fromTimeWork: "07:00",
-    toTimeWork: "20:00",
-  }
-  // console.warn(JSON.stringify(stateProps.listEmployee, null, 2));
-  let permission = null
-  switch (employeeDetail.titleType) {
-    case 1:
-      permission = I18n.t('employee')
-      break
-    default:
-      permission = I18n.t('employee')
-      break
-  }
-
-  return ({
-    enableReinitialize: true,
-    initialValues: {
-      // GroupAddress: stateProps.place.listPlace,
-      name: employeeDetail.userName,
-      email: employeeDetail.email,
-      phone: employeeDetail.phoneNumber ? employeeDetail.phoneNumber : '',
-    },
-    // permission: {
-    //   id: employeeDetail.titleType,
-    //   name: permission
-    // },
-    fromTimeWork: employeeDetail.fromTimeWork,
-    toTimeWork: employeeDetail.toTimeWork,
-    ...ownProps, ...stateProps, ...dispatchProps,
-  })
-})
+}))
 @reduxForm({
   form: 'CreateUserForm',
+  enableReinitialize: true,
   // fields: ['name', 'email', 'phone'],
   // validate: validateField
 })
@@ -105,24 +65,23 @@ export default class CreateUserContainer extends Component {
       id: 1,
       name: I18n.t('employee')
     }
-
+    
     this.state = {
       jobModalOpen: false,
       permissionModalOpen: false,
       fromTimeVisible: false,
       toTimeVisible: false,
-      fromTime: props.fromTimeWork,
-      toTime: props.toTimeWork,
+      fromTime: props.initialValues.fromTimeWork || '07:00',
+      toTime: props.initialValues.toTimeWork || '20:00',
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
       // chosenListPlace: [],
-      currentJob: currentJob,
+      currentJob,
       isLoading: false,
       firstTimeResetPassword: false,
       selectedPlaceId: props.selectedPlace.id,
     }
-
   }
 
   componentWillBlur() {
@@ -230,9 +189,12 @@ export default class CreateUserContainer extends Component {
   }
 
   onGeneratedPasswordPress() {
+
+    this.props.actions.setToast(getToastMessage(I18n.t('is_processing')), 'info', null, null, 3000, 'top')
+
     this.props.actions.getGeneratedPassword(this.props.session, () => {
       this.setState({
-        firstTimeResetPassword: true
+        firstTimeResetPassword: true,
       })
     })
   }
@@ -448,6 +410,13 @@ export default class CreateUserContainer extends Component {
         </View>
         <Border color='rgba(0,0,0,0.5)' size={2} />
         <RenderGroup
+          onStartCapture={listView=>{                            
+              if (listView.scrollProperties.offset === 0 && this.state.enableScrollViewScroll === false) {
+                this.setState({ enableScrollViewScroll: true });
+              } else {
+                this.setState({ enableScrollViewScroll: false });
+              }
+          }}
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId={this.state.selectedPlaceId}
         />
@@ -499,12 +468,20 @@ export default class CreateUserContainer extends Component {
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
+
     return (
       <Container style={styles.container}>
-        <ScrollView style={{ backgroundColor: material.white500 }}
-          keyboardShouldPersistTaps="always" ref="myContent">
-          {this.renderMainContainer()}
-        </ScrollView>
+        <View 
+          onStartShouldSetResponderCapture={() => {
+            this.setState({ enableScrollViewScroll: true });
+          }}
+        >
+          <ScrollView style={{ backgroundColor: material.white500 }}
+            scrollEnabled={this.state.enableScrollViewScroll}
+            keyboardShouldPersistTaps="always" ref="myContent">
+            {this.renderMainContainer()}
+          </ScrollView>
+        </View>
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
           style={{ ...styles.submitButton }}>

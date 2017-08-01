@@ -41,24 +41,24 @@ export default class extends Component {
 
     this.state = {
       refreshing: false,
-      loading: false,
+      loading: false,      
     }
     this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
   }
 
   componentWillFocus() {
-    getNotification
+    
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
     if (!notifications.data.length) {
-      getNotification(session, 1, () => getNotification(session, 2))
-      this.setState({
-        refreshing: false,
-      })
-    } else {
-      this.forceUpdate()
-    }
+      getNotification(session, 1, () => getNotification(session, 2))      
+    } 
+
+    this.setState({
+      refreshing: false,      
+    })
   }
+
 
   componentWillMount() {
     // this.componentWillFocus()
@@ -343,7 +343,8 @@ export default class extends Component {
     }
   }
   render() {
-    let { notifications } = this.props
+    let { notifications } = this.props        
+
     return (
 
       <Container>
@@ -355,8 +356,7 @@ export default class extends Component {
           {notifications &&
             <ListView
               enableEmptySections={true}
-              removeClippedSubviews={false}
-              pageSize={10}
+              removeClippedSubviews={false}              
               dataSource={this.ds.cloneWithRows(notifications.data)}
               renderRow={(item) => {
                 return <ListItem noBorder

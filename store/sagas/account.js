@@ -96,8 +96,10 @@ const requestGetGeneratedPassword = createRequestSaga({
   key: 'getGeneratedPassword',
   success: [
     (data) => setGeneratedPassword(data),
+      ()=> setToast(getToastMessage(I18n.t('create_password_successfully')), 'info', null, null, 3000, 'top'),
   ],
   failure: [
+      ()=> setToast(getToastMessage(I18n.t('create_password_failed')), 'info', null, null, 3000, 'top'),
   ],
 })
 
@@ -160,7 +162,7 @@ const requestUpdateOwnerAvatar = createRequestSaga({
     (data) => setUserAvatar(data),
   ],
   failure: [
-      () => setToast(getToastMessage(I18n.t('Could_not_upload_avatar')), 'info', null, null, 3000, 'top')
+      () => setToast(getToastMessage(I18n.t('could_not_upload_avatar')), 'info', null, null, 3000, 'top')
     // () => setToast('Couldn\'t upload avatar', 'danger')
   ],
 })

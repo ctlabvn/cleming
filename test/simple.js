@@ -12,17 +12,17 @@ const CONFIG = {
   DEVICE: {    
     browserName: '',
     'appium-version': '1.6.5',
-    appPackage: 'com.gigatum.clingmemerchant',
-    platformName: 'iOS',
-    platformVersion: '10.3',
-    deviceName: 'iPhone 5',
-    app: __dirname + '/../ios/build/Build/Products/Debug-iphonesimulator/Đối Tác.app'
+    // appPackage: 'com.gigatum.clingmemerchant',
+    // platformName: 'iOS',
+    // platformVersion: '10.3',
+    // deviceName: 'iPhone 5',
+    // app: __dirname + '/../ios/build/Build/Products/Debug-iphonesimulator/Đối Tác.app'
     
-    // platformName: 'Android',
-    // appPackage: 'com.gigatum.merchantapp',
-    // platformVersion: '5.0',
-    // deviceName: 'E7AZCY370473',
-    // app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
+    platformName: 'Android',
+    appPackage: 'com.gigatum.merchantapp',
+    platformVersion: '6.0.1',
+    deviceName: 'GGC00C08640E46A',
+    app: '/Users/thanhtu/MyProjects/Nodejs/reactjs/Clingme/MerchantApp/android/app/build/outputs/apk/app-release.apk'
   }
 }
 Object.freeze(CONFIG)
@@ -56,13 +56,11 @@ describe('appium', function () {
     //   })
     
     // setInterval(()=>{
-
-    driver.elementsByXPath('//*', function (err, elements) {
-      elements.forEach(element => element.text().then(function (text) {
-        console.log('text', text)      
-        console.log(element)  
-      }))
-    })    
+    const usernameXPath = '//android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.view.ViewGroup[1]/android.widget.ScrollView[1]/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.widget.EditText[1]'
+    driver.waitForElementByAccessibilityId('login', wd.asserters.isDisplayed, 100000, 1000, (err, el)=>{
+      console.log(el)
+      el.text('ha@clingme.vn')    
+    })
 
     // }, 5000)
   }) 

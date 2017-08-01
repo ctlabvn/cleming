@@ -188,7 +188,10 @@ export default {
     'update_profile_successfully': 'Cập nhật thông tin thành công!',
     'could_not_update_profile': 'Thông tin chưa được cập nhật.',
     'update_employee_info_successfully': 'Cập nhật thông tin thành công!',
-    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'create_password_failed' : 'Tạo mật khẩu không thành công.',
+    'create_password_successfully' : 'Tạo mật khẩu thành công.',
+    'is_processing' : 'Đang xử lý.',
 
     // vault
 
