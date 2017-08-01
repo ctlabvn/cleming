@@ -5,8 +5,8 @@ export const ORDER_WAITING_CONFIRM = 0
 export const ORDER_WAITING_DELIVERY = 1
 export const ORDER_SUCCESS = 2
 export const ORDER_CANCEL = 3
-export const REVENUE_PROCESSING = 0;
-export const REVENUE_DONE = 1;
+export const REVENUE_PROCESSING = 1;
+export const REVENUE_DONE = 2;
 export const REVENUE_DELIVERY = 1;
 export const REVENUE_CLINGME_PAY = 2;
 
