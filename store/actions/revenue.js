@@ -20,6 +20,11 @@ export const setListRevenue = (list) => ({
     payload: list,
 })
 
+export const setRevenueData = (data) => ({
+    type: 'app/setRevenueData',
+    payload: data,
+})
+
 export const setDetailRevenue = (detail) => ({
     type: 'app/setDetailRevenue',
     payload: detail,

@@ -33,6 +33,11 @@ export const revenue = (state = initialState, {type, payload}) => {
                 ...state,
                 detail: payload,
             }
+        case 'app/setRevenueData':
+            return {
+                ...state,
+                revenueData: payload,
+            }
         case 'app/logout':
             return {
                 ...state,

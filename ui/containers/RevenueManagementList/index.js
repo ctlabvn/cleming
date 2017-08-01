@@ -7,6 +7,7 @@ import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
 import * as revenueActions from "~/store/actions/revenue";
 import { getSession } from "~/store/selectors/auth";
+import { getRevenueData } from "~/store/selectors/revenue";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -35,7 +36,7 @@ import {
 
 @connect(state => ({
     xsession: getSession(state),
-    revenue: state.revenue,
+    revenueData: getRevenueData(state),
 }), { ...commonAction, ...authActions, ...revenueActions})
 
 export default class extends Component {
@@ -46,7 +47,7 @@ export default class extends Component {
         this.state = ({
             currentTab: REVENUE_PROCESSING,
             colorStyle: styles.revenueProcessing,
-            loading: false,
+            loading: true,
         })
     }
 
@@ -58,19 +59,35 @@ export default class extends Component {
         this._loadData();
     }
 
-    _loadData() {
-        let dateFilter = this.refs.dateFilter.getData();
+    _loadData(loadMore = false, dateFilter = this.refs.dateFilter.getData()) {
+
+        const { revenueData } = this.props;
+        if (loadMore && (revenueData.totalPage == revenueData.pageNumber)) return;
+
         fromTime = dateFilter.currentSelectValue.value.from;
         toTime = dateFilter.currentSelectValue.value.to;
+        // console.warn('loadData from time ' + moment(fromTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)
+        // + ' to time ' + moment(toTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND))
         option = this.state.currentTab;
-        pageNumber = 1;
+        pageNumber = loadMore && revenueData && (revenueData.totalPage > revenueData.pageNumber) ? revenueData.pageNumber + 1 : 1;
+        // pageNumber = 1;
 
-        const { xsession, getRevenueList } = this.props;
+        // console.warn('page number' + loadMore + ':' + !!revenueData + ':' + (revenueData.totalPage > revenueData.pageNumber) + '\n' + JSON.stringify(pageNumber))
+        // console.warn(revenueData.totalPage + ' > ' + revenueData.pageNumber + ' is ' + (revenueData.totalPage > revenueData.pageNumber));
+        console.warn('page Number ' + pageNumber);
+
+        const { xsession, getRevenueList, setRevenueData } = this.props;
 
         getRevenueList(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
-            // console.warn('get list ' + JSON.stringify(data.data.listRevenueItem));
-            this.setState({ data: data.data })
+            if (err) setRevenueData({});
+            if (data) {
+                // setRevenueData(data.data);
+                console.warn('data ' + JSON.stringify(data.data));
+                
+                setRevenueData(loadMore ? {...revenueData, ...data.data} : data.data);
+            }
 
+            this.setState({loading: false});
         })
     }
 
@@ -81,6 +98,7 @@ export default class extends Component {
             (tab == REVENUE_DONE ? styles.revenueDone : null);
 
         this.setState({
+            loading: true,
             currentTab: data.tabID,
             colorStyle: color,
         })
@@ -89,8 +107,8 @@ export default class extends Component {
     }
 
     _handlePressFilter(data) {
-        // console.warn(JSON.stringify(data.currentSelectValue.value));
-        this._loadData();
+        this.setState({ loading: true });
+        this._loadData(false, data);
     }
 
     _renderMoneyBand(money) {
@@ -163,21 +181,25 @@ export default class extends Component {
     }
 
     _getListItem() {
-        if (this.state.data) return this.state.data.listRevenueItem;
+        if (loading) return;
+        const { revenueData } = this.props;
+        if (revenueData && revenueData.revenueList) return revenueData.revenueList;
+        // if (this.state.data) return this.state.data.listRevenueItem;
     }
 
     _getTotalMoney() {
-        if (this.state.data) {
-            return this.state.data.totalMoney;
+        const { revenueData } = this.props;
+        if (revenueData) {
+            return revenueData.totalMoney;
         } else {
             return 0;
         }
     }
 
     _renderContent() {
-        const { data } = this.state;
-        if (!this.state.data) return <Text medium bold warning> Data is null! </Text>
-        let listItem = this.state.data.listRevenueItem;
+        const { revenueData } = this.props;
+        if (!revenueData) return <Text medium bold warning> Data is null! </Text>
+        let listItem = revenueData.listRevenueItem;
         if (!listItem.length) return <Text medium bold warning> {I18n.t('have_no_data')} </Text>
         return (<List dataArray={listItem}
                       renderRow={(item) => {return this._renderItem(item)}}
@@ -185,10 +207,12 @@ export default class extends Component {
     }
 
     _loadMore() {
-
+        console.warn('load more');
+        this._loadData(true);
     }
 
     _onRefresh() {
+        this.setState({loading: true})
         this._loadData();
     }
 
@@ -199,7 +223,7 @@ export default class extends Component {
                               ref='tabs'/>
                 <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter'/>
                 {this._renderMoneyBand(this._getTotalMoney())}
-                <Content padder onEndReached={() => this._loadMore} onRefresh={()=>this._onRefresh()} refreshing={this.state.loading}>
+                <Content padder onEndReached={() => this._loadMore()} onRefresh={()=>this._onRefresh()} refreshing={this.state.loading}>
                     {this._renderContent()}
                 </Content>
             </Container>
