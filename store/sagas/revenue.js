@@ -7,38 +7,6 @@ import { setListRevenueProcessing, setListRevenueDone, setListRevenue, setDetail
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
 
-const requestListRevenueProcessing = createRequestSaga({
-    request: api.revenue.listProcessing,
-    key: 'revenue/listProcessing',
-    cancel: 'app/logout',
-    success: [
-        (data) => {
-            console.log('Load list revenue processing', data)
-            if (data.code) {
-                return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
-            }
-            return setListRevenueProcessing(data.updated.data)
-        }
-    ],
-
-    failure: [
-        () => {
-        }
-    ]
-})
-
-const requestListRevenueDone = createRequestSaga({
-    request: api.revenue.listDone,
-    key: 'revenue/listDone',
-    cancel: 'app/logout',
-    success: [
-        (data) => {
-            console.log('Load list revenue done', data)
-            return setListRevenueDone(data.updated.data)
-        }
-    ],
-})
-
 const requestListRevenue = createRequestSaga({
     request: api.revenue.list,
     key: 'revenue/list',
@@ -70,8 +38,6 @@ const requestRevenueDetail = createRequestSaga({
 export default [
     function* fetchWatcher() {
         yield [
-            takeLatest('revenue/listProcessing', requestListRevenueProcessing),
-            takeLatest('revenue/listDone', requestListRevenueDone),
             takeLatest('revenue/list', requestListRevenue),
             takeLatest('revenue/detail', requestRevenueDetail),
         ]
