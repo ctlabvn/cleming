@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListRevenueProcessing, setListRevenueDone, setListRevenue, setDetailRevenue } from '~/store/actions/revenue'
+import { setRevenueData, setDetailRevenue } from '~/store/actions/revenue'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
 
@@ -14,7 +14,7 @@ const requestListRevenue = createRequestSaga({
     success: [
         (data) => {
             console.log('Load list revenue ', data)
-            return setListRevenue(data.updated.data)
+            return setRevenueData(data)
         }
     ],
 })
@@ -26,8 +26,7 @@ const requestRevenueDetail = createRequestSaga({
         success: [
             (data) => {
                 console.log('Load detail revenue', data)
-                setToast(getToastMessage(JSON.stringify(data)), 'info', null, null, 3000, 'top')
-                return setDetailRevenue(data.updated.data)
+                return setDetailRevenue(data)
             }
         ],
         failure: [
