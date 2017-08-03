@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Container, Text, List, ListItem} from 'native-base'
+import {Container, Text, List, ListItem, Spinner} from 'native-base'
 import {View} from 'react-native'
 
 import * as commonAction from "~/store/actions/common";
@@ -48,6 +48,7 @@ export default class extends Component {
             currentTab: REVENUE_PROCESSING,
             colorStyle: styles.revenueProcessing,
             loading: true,
+            loadMore: false,
         })
     }
 
@@ -56,7 +57,7 @@ export default class extends Component {
     }
 
     componentWillFocus() {
-        this._loadData();
+        // this._loadData();
     }
 
     _loadData(loadMore = false, dateFilter = this.refs.dateFilter.getData()) {
@@ -71,16 +72,16 @@ export default class extends Component {
 
         const { xsession, getRevenueList, setRevenueData } = this.props;
 
-        this.setState({loading: true});
+        this.setState({loading: !loadMore, loadMore: loadMore});
         getRevenueList(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
             if (err) setRevenueData({});
             if (data) {
                 if (loadMore) data.data.listRevenueItem = [...revenueData.listRevenueItem, ...data.data.listRevenueItem];
-
+                console.warn(JSON.stringify(data.data.totalPage));
                 setRevenueData(data.data);
             }
 
-            this.setState({loading: false});
+            this.setState({loading: false, loadMore: false});
         })
     }
 
@@ -217,6 +218,7 @@ export default class extends Component {
                 {this._renderMoneyBand(this._getTotalMoney())}
                 <Content padder onEndReached={() => this._loadMore()} onRefresh={()=>this._onRefresh()} refreshing={this.state.loading}>
                     {this._renderContent()}
+                    {this.state.loadMore && <Spinner/>}
                 </Content>
             </Container>
         )

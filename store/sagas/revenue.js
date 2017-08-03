@@ -11,12 +11,6 @@ const requestListRevenue = createRequestSaga({
     request: api.revenue.list,
     key: 'revenue/list',
     cancel: 'app/logout',
-    success: [
-        (data) => {
-            console.log('Load list revenue ', data)
-            return setRevenueData(data)
-        }
-    ],
 })
 
 const requestRevenueDetail = createRequestSaga({
