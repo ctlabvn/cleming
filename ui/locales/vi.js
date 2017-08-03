@@ -213,5 +213,6 @@ export default {
 
     // notifications
     'no_notification': 'Chưa nhận được thông báo nào',
-    'no_internet': 'Không có kết nối với internet.'
+    'no_internet': 'Không có kết nối với internet.',
+    'confirm_exit': 'Bạn có chắc muốn thoát?'
 }

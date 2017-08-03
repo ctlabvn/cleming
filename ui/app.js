@@ -22,6 +22,7 @@ import Footer from '~/ui/components/Footer'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 import PopupInfo from '~/ui/components/PopupInfo'
+import PopupConfirm from '~/ui/components/PopupConfirm'
 import NotificationHandler from './containers/NotificationHandler'
 // router => render component base on url
 // history.push => location match => return component using navigator push
@@ -45,7 +46,7 @@ import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
-
+import I18n from '~/ui/I18n'
 const NoTransition = {
   opacity: {
     from: 1,
@@ -339,7 +340,8 @@ export default class App extends Component {
         return true
       }
       if (router.route === 'merchantOverview' || router.route === 'login') {
-        return false
+        this.popupConfirm.show(I18n.t('confirm_exit'))
+        return true
       }
       // go back
       goBack()
@@ -505,6 +507,7 @@ export default class App extends Component {
           // <Popover ref={ref => this.popover = ref} />
 }
           <PopupInfo />
+          <PopupConfirm ref={ref=>this.popupConfirm = ref} onOk={()=>BackAndroid.exitApp()}/>
         </Drawer>
       </StyleProvider>
     )
