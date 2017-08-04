@@ -22,5 +22,11 @@ export default {
         return apiPost('/merchantapp/cashout', {bankId, accountNumber, moneyAmount}, xsession)
     }, 
     
-
+    addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
+        console.log('Add Bank API: ', xsession+'---'+accountName+'---'+idNumber+'---'+accountNumber+'---'+bankId+'---'+area+'---'+branchName)
+        return apiPost('/merchantapp/add-bank', {accountName, idNumber, accountNumber, bankId, area, branchName}, xsession)
+    },
+    listBank(xsession){
+        return apiGet('/merchantapp/list-bank', {}, xsession)
+    }
 }

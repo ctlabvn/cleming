@@ -5,7 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance, setBanks, setBalanceDetail
+    setBalance, setBanks, setBalanceDetail, setListBank
 } from '~/store/actions/wallet'
 
 import { getToastMessage } from '~/ui/shared/utils'
@@ -35,7 +35,7 @@ const requestGetBalanceDetail = createRequestSaga({
     success: [
         (data) => {
             console.log('Balance Detail: ', data)
-            if (data.data){
+            if (data && data.data){
                 return setBalanceDetail(data.data)
             }
             return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
@@ -51,8 +51,8 @@ const requestGetBanks = createRequestSaga({
     success: [
 
         (data) => {
-            if (data.data){
-                console.log('Bank Data: ', data)
+            console.log('Data: ', data)
+            if (data && data.data){
                 return setBanks(data.data)
             }
         }
@@ -66,6 +66,24 @@ const requestCashout = createRequestSaga({
     key: 'app/cashout',
 })
 
+const requestAddBank = createRequestSaga({
+    request: api.wallet.addBank,
+    key: 'app/addBank',
+})
+
+const requestGetListBank = createRequestSaga({
+    request: api.wallet.listBank,
+    key: 'app/getListBank',
+    success: [
+
+        (data) => {
+            if (data.data){
+                console.log('Bank Data: ', data)
+                return setListBank(data.data)
+            }
+        }
+    ],
+})
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -77,7 +95,9 @@ export default [
             takeLatest('app/getBalance', requestGetBalance),
             takeLatest('app/getBalanceDetail', requestGetBalanceDetail),
             takeLatest('app/getBanks', requestGetBanks),
-            takeLatest('app/cashout', requestCashout)
+            takeLatest('app/cashout', requestCashout),
+            takeLatest('app/addBank', requestAddBank),
+            takeLatest('app/getListBank', requestGetListBank)
         ]
     },
 ]

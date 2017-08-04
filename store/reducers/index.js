@@ -12,7 +12,7 @@ import { report } from './report'
 import { location } from './location'
 import { revenue } from './revenue'
 import { meta } from './meta'
-import {wallet, wallet_detail} from './wallet'
+import {banks, wallet, wallet_detail} from './wallet'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
   form,
@@ -38,7 +38,8 @@ const rootReducer = combineReducers({
   revenue,
   meta,
   wallet,
-  wallet_detail
+  wallet_detail,
+  banks
 })
 
 export default rootReducer

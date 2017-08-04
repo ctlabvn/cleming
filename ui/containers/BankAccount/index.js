@@ -3,11 +3,8 @@ import { connect } from "react-redux";
 import { Button, Container, List, ListItem, Spinner, Text, Item, Input, Form } from "native-base";
 import { InteractionManager, View, TouchableOpacity, Image, KeyboardAvoidingView } from "react-native";
 import styles from "./styles";
-import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
-import * as transactionAction from "~/store/actions/transaction";
-import * as authActions from "~/store/actions/auth";
-import * as placeActions from "~/store/actions/place";
+import * as walletAction from '~/store/actions/wallet'
 import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import { formatNumber, getToastMessage } from "~/ui/shared/utils";
@@ -28,17 +25,35 @@ import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
-}), { ...commonAction, ...transactionAction, ...authActions, ...placeActions })
+}), { ...commonAction, ...walletAction })
 @reduxForm({ form: 'BankAccountForm' })
 export default class extends Component {
     constructor(props) {
         super(props)
     }
-    _handlePressOk = () => {
-        
+    _handlePressOk = (input) => {
+        console.log('Form Input: ', input)
+        const {account_number, account_owner, area, bank_name, branch, identity_card} = input
+        const {addBank, xsession} = this.props
+        addBank(xsession, account_owner, identity_card, account_number, 1, area, branch,
+            (err, data) => {
+                console.log('Add bank Err', err)
+                console.log('Add bank data', data)
+            }
+        )
+        // addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
+    }
+    componentDidMount(){
+        const {xsession, getListBank} = this.props
+        getListBank(xsession, 
+            (err, data) => {
+                console.log('List Bank Err: ', err)
+                console.log('List Bank Data: ', data)
+            }
+        )
     }
     render() {
-
+        const {handleSubmit} = this.props
         return (
             <Container style={styles.container}>
                 <Content style={styles.content}>
@@ -100,7 +115,7 @@ export default class extends Component {
                         />
                     </Form>
                 </Content>
-                <Button style={styles.okBtn} onPress={() => this._handlePressOk()}>
+                <Button style={styles.okBtn} onPress={handleSubmit(this._handlePressOk)}>
                     <Text white>OK</Text>
                 </Button>
             </Container>
