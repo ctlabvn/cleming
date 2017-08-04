@@ -1,3 +1,7 @@
-export const getListTransactionDirect = state => state.transaction.payDirect || {}
+import { initialState } from '~/store/reducers/transaction'
 
-export const getListTransactionCLM = state => state.transaction.payWithClingme || {}
+export const getListTransactionDirect = state => 
+  state.transaction.payDirect || initialState.payDirect
+
+export const getListTransactionCLM = state => 
+  state.transaction.payWithClingme || initialState.payWithClingme
