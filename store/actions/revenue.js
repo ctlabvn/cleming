@@ -5,20 +5,6 @@ export const setSelectedRevenueItem = (item) => ({
 
 // setListRevenueProcessing, setListRevenueDone, setDetailRevenue
 
-export const setListRevenueProcessing = (list) => ({
-    type: 'app/setListRevenueProcessing',
-    payload: list,
-})
-
-export const setListRevenueDone = (list) => ({
-    type: 'app/setListRevenueDone',
-    payload: list,
-})
-
-export const setListRevenue = (list) => ({
-    type: 'app/setListRevenue',
-    payload: list,
-})
 
 export const setRevenueData = (data) => ({
     type: 'app/setRevenueData',
@@ -32,16 +18,6 @@ export const setDetailRevenue = (detail) => ({
 
 export const getRevenueList= (...args) => ({
     type: 'revenue/list',
-    args
-})
-
-export const getRevenueListProcessing= (...args) => ({
-    type: 'revenue/listProcessing',
-    args
-})
-
-export const getRevenueListDone= (...args) => ({
-    type: 'revenue/listDone',
     args
 })
 

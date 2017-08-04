@@ -64,7 +64,6 @@ export default class extends Component {
                     detail: data.data
                 });
             } else {
-                console.warn(JSON.stringify(err));
                 this.setState({
                     isLoading: false,
                 })
