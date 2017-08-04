@@ -148,16 +148,12 @@ export class RenderGroup extends Component {
     const {place, onStartCapture} = this.props
       
     return (
-      <View style={{marginTop: 10}} onStartShouldSetResponderCapture={e=>onStartCapture && onStartCapture(this.listView.wrappedInstance.root)}>
+      <View style={{marginTop: 10}}>
         
         <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
             
-        <List style={{
-          height: 400
-        }}  
+        <List 
             ref={ref=>this.listView = ref}
-
-        
               enableEmptySections={true}
               removeClippedSubviews={false}     
               dataArray={place.listPlace}
