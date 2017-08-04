@@ -8,6 +8,7 @@ import * as walletAction from '~/store/actions/wallet'
 import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import { formatNumber, getToastMessage } from "~/ui/shared/utils";
+import SearchableDropdown from '~/ui/components/SearchableDropdown'
 import Content from "~/ui/components/Content";
 import { getSession } from "~/store/selectors/auth";
 import CheckBox from '~/ui/elements/CheckBox'
@@ -25,11 +26,13 @@ import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
+    banks: state.banks
 }), { ...commonAction, ...walletAction })
 @reduxForm({ form: 'BankAccountForm' })
 export default class extends Component {
     constructor(props) {
         super(props)
+        this.listBank = []
     }
     _handlePressOk = (input) => {
         console.log('Form Input: ', input)
@@ -53,10 +56,18 @@ export default class extends Component {
         )
     }
     render() {
-        const {handleSubmit} = this.props
+        const {handleSubmit, banks} = this.props
+        if (banks.length > 0 && this.listBank.length == 0){
+            this.listBank = banks.map(item=>({
+                id: item.bankId,
+                name: item.displayName
+            }))
+            console.log('List Bank', this.listBank)
+        }
         return (
             <Container style={styles.container}>
                 <Content style={styles.content}>
+                    <SearchableDropdown dropdownValues={this.listBank}/>
                     <Form style={styles.form}>
                         <Text gray>{I18n.t('account_owner')}</Text>
                         <Field autoCapitalize="none" name="account_owner"
