@@ -19,11 +19,16 @@ export default class extends Component {
 
     render() {
         console.log('Render List Component')
+        const {data, ...props} = this.props
         return (
             <View>
                 <List dataArray={this.props.data}
                     renderRow={(item) => (<ItemComponent data={item} />)}
                     pageSize={10}
+                    style={{
+                        height: 300
+                    }}
+                    {...props}
                 ></List>
             </View>
         )

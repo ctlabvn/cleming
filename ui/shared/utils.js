@@ -2,7 +2,9 @@ import material from '~/theme/variables/material'
 import React, { Component } from 'react'
 import {View} from 'react-native'
 import {Text} from 'native-base'
+
 import { Platform } from 'react-native'
+
 export const getPopoverOptions = (popoverWidth, fromRect, arrowPadding = -5) => ({
   fromRect,
   // from center

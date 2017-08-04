@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "font": "node font-processor.js",
     "ba": "cd android && ./gradlew assembleRelease",
-    "ia": "adb devices | awk 'NR>1 && $1 ~ /^[^:]+$/ { system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-release.apk\") }'",
+    "ia": "adb devices | awk 'NR>1 && $1 ~ /^[^:]+$/ { system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-armeabi-v7a-release.apk\") }'",
     "test": "jest",
     "mocha": "mocha test",
     "appium": "appium"
@@ -21,6 +21,7 @@
     "@shoutem/theme": "0.9.0",
     "crypto-js": "3.1.9-1",
     "i18n-js": "1.0.0",
+    "leven": "^2.1.0",
     "md5": "2.2.1",
     "moment": "2.18.1",
     "native-base": "2.1.0",

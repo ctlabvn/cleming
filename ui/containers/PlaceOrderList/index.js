@@ -241,8 +241,10 @@ export default class PlaceOrderList extends Component {
     // resultNumber: int, //số lượng kết quả,
     // isLast: boolean, //có phải là trang cuối cùng hay không
     _load(placeId, fromTime, toTime, status, isLoadMore = false, page = 0) {
+
         this.currentPlace = placeId
         const { xsession, clearBookingList, getMerchantNews } = this.props
+
         if (isLoadMore) {
             this.setState({ loadingMore: true })
         } else {
@@ -269,6 +271,7 @@ export default class PlaceOrderList extends Component {
             }
         )
     }
+
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
             const { app, news } = this.props

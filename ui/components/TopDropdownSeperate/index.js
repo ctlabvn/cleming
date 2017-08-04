@@ -1,6 +1,6 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
+import { List, ListItem, Text, Icon, Thumbnail, Button, Input, Item } from 'native-base'
 import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
@@ -8,6 +8,9 @@ import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
+
+import leven from 'leven'
+import { convertVn } from '~/ui/shared/utils'
 
 export default class TopDropdown extends Component {
     constructor(props) {
@@ -26,7 +29,8 @@ export default class TopDropdown extends Component {
             // fadeAnim: new Animated.Value(0),
             selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
-            show: false
+            show: false,
+            searchString: '',
         }
     }
 
@@ -52,10 +56,17 @@ export default class TopDropdown extends Component {
     }
 
     updateDropdownValues(dropdownValues) {
-        this.setState({ dropdownValues: dropdownValues })
+        this.setState({ 
+            dropdownValues: dropdownValues,
+            searchString: '',
+        })
     }
     updateSelectedOption(selectedOption) {
-        this.setState({ selectedOption: selectedOption, openningDropdown: false })
+        this.setState({ 
+            selectedOption: selectedOption, 
+            openningDropdown: false,
+            searchString: '', 
+        })
         this.state.callback && this.state.callback(selectedOption)
     }
     setCallbackPlaceChange(callback){
@@ -93,6 +104,7 @@ export default class TopDropdown extends Component {
         this.close()
     }
 
+
     _isDiff = (item1, item2) => {
         if (!item1 && !item2) return false
         if (!item1) return true
@@ -115,6 +127,26 @@ export default class TopDropdown extends Component {
             || this._isDiff(this.state.selectedOption, nextState.selectedOption)
             || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
         )
+    }
+
+    _search = (searchString)=>{            
+        const  data = this.state.dropdownValues
+        const searchWord = convertVn(this.state.searchString.trim().toLowerCase())
+        const searchedData = data.map(item=>{
+            const compareWords = convertVn(item.name.trim().toLowerCase())
+            const longest = Math.max(searchWord.length, compareWords.length)
+            const distance = leven(searchWord, compareWords)
+            const point = (longest-distance)/longest
+            return {
+                item,
+                point,
+            }
+        })
+        const listPlace = searchedData.sort((a,b)=>b.point-a.point)
+            .slice(0, 10).map(c=>c.item)
+        // console.log(listPlace)
+        this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
+        // this.setState({searchString})
     }
 
     render() {
@@ -161,6 +193,12 @@ export default class TopDropdown extends Component {
                             right: 10,                            
                         }} />
                         </View>
+                        {openningDropdown && <Item style={styles.searchContainer}>                              
+                              <Input initialValue={this.state.searchString} 
+                                autoCorrect={false} onChangeText={this._search} 
+                                placeholderTextColor="#fff" style={styles.searchInput} 
+                                placeholder="Search Place" />                        
+                          </Item>}
                     </TouchableOpacity>
                 </View>
             </View>

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
-import { requests, toast, drawer, router, search, modal, popupInfo } from './common'
+import { requests, toast, drawer, router, modal, popupInfo } from './common'
 import { auth } from './auth'
 import { account } from './account'
 import { notification } from './notification'
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
     // ui reducer should be placed here    
     toast,
     drawer,
-    search,
+    // search,
   }),  
   requests, 
   router,

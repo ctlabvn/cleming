@@ -18,7 +18,7 @@ import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 @connect(state=>({
     user: getUser(state),
-  searchString: commonSelectors.getSearchString(state),
+  // searchString: commonSelectors.getSearchString(state),
 }), commonActions)
 export default class extends Component {
 
@@ -49,11 +49,11 @@ export default class extends Component {
     Keyboard.dismiss()
   }
 
-  _search = (value, force=false)=>{
-    if((this.props.searchString !== value) || force) {
-      this.props.search(value)
-    } 
-  }
+  // _search = (value, force=false)=>{
+  //   if((this.props.searchString !== value) || force) {
+  //     this.props.search(value)
+  //   } 
+  // }
   
   _rightClick = (e)=>{
     const {onRightClick} = this.props
@@ -73,18 +73,18 @@ export default class extends Component {
   }
 
   // public data not event
-  renderHeaderSearch(iconName="menu"){    
-    const center = (
-      <Item style={styles.searchContainer}>
-          <Icon name="search" style={styles.searchIcon} />
-          <Input value={this.props.searchString} 
-            autoCorrect={false} onChangeText={this._search} 
-            placeholderTextColor="#a7e7ff" style={styles.searchInput} 
-            placeholder="Regit Search" />                        
-      </Item>
-    )
-    return this.renderHeaderTitle(center, "cloud-upload")    
-  }
+  // renderHeaderSearch(iconName="menu"){    
+  //   const center = (
+  //     <Item style={styles.searchContainer}>
+  //         <Icon name="search" style={styles.searchIcon} />
+  //         <Input value={this.props.searchString} 
+  //           autoCorrect={false} onChangeText={this._search} 
+  //           placeholderTextColor="#a7e7ff" style={styles.searchInput} 
+  //           placeholder="Regit Search" />                        
+  //     </Item>
+  //   )
+  //   return this.renderHeaderTitle(center, "cloud-upload")    
+  // }
 
   renderHeaderHome(title, leftIcon){
     /*const left = (
