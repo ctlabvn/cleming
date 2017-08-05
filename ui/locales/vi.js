@@ -179,6 +179,10 @@ export default {
     'err_not_master': 'Mời bạn liên hệ chủ cửa hàng để nhận lại mật khẩu đăng nhập.',
     'err_phone_exists': 'Số điện thoại đã tồn tại.',
     'err_email_exists': 'Địa chỉ email đã tồn tại.',
+
+    'err_field_must_not_empty': 'Trường này không được để trống.',
+    'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
+    'err_identity_card_must_be_number': 'Sai định dạng Số CMND/Căn cước.',
     
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
@@ -228,6 +232,7 @@ export default {
     'bank_name': 'Tên ngân hàng',
     'area': 'Khu vực',
     'branch': 'Chi nhánh',
+    'add_bank_success': 'Chúng tôi đã nhận được yêu cầu tạo tài khoản của bạn và sẽ xử lí trong thời gian sớm nhất.',
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',

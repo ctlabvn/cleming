@@ -84,6 +84,9 @@ export default (variables = variable) => {
       },
       '.grayDisable': {
         color: '#b3b3b3'
+      },
+      '.black': {
+        color: 'black'
       }
   };
 

@@ -2,9 +2,10 @@ import material from '~/theme/variables/material'
 export default {
 
     container: {
-        margin: 10, 
         backgroundColor: material.gray300,
-        borderRadius: 4
+        borderRadius: 4,
+        marginTop: 10,
+        marginBottom: 10
     },
     dropdown:{
         justifyContent:'space-between',
@@ -12,10 +13,6 @@ export default {
         alignItems: 'center',     
         width: '100%',
         margin: 10
-    },
-    dropdownSelectedValue:{
-        alignSelf: 'center',
-        fontWeight: 'bold'
     },
     dropdownIcon:{
         position: 'absolute',

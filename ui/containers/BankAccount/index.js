@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, List, ListItem, Spinner, Text, Item, Input, Form } from "native-base";
-import { InteractionManager, View, TouchableOpacity, Image, KeyboardAvoidingView } from "react-native";
+import { InteractionManager, View, TouchableOpacity, KeyboardAvoidingView, Keyboard} from "react-native";
 import styles from "./styles";
 import * as commonAction from "~/store/actions/common";
 import * as walletAction from '~/store/actions/wallet'
@@ -13,38 +13,42 @@ import Content from "~/ui/components/Content";
 import { getSession } from "~/store/selectors/auth";
 import CheckBox from '~/ui/elements/CheckBox'
 import material from "~/theme/variables/material.js";
-import { Field, formValueSelector, reduxForm } from "redux-form"
-import { InputField } from "~/ui/elements/Form"
-import {
-    TIME_FORMAT_WITHOUT_SECOND,
-    TRANSACTION_DIRECT_STATUS,
-    TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
-} from "~/store/constants/app";
+import { Field, formValueSelector, reduxForm, reset } from "redux-form"
+import { InputFieldWithErr } from "~/ui/elements/Form"
+import { chainParse } from "~/ui/shared/utils"
+import { GENERAL_ERROR_MESSAGE } from "~/store/constants/app"
 import I18n from '~/ui/I18n'
-
+import {validate} from './validate'
 
 @connect(state => ({
     xsession: getSession(state),
-    banks: state.banks
-}), { ...commonAction, ...walletAction })
-@reduxForm({ form: 'BankAccountForm' })
+    banks: state.banks,
+}), { ...commonAction, ...walletAction, resetForm:reset })
+@reduxForm({ form: 'BankAccountForm', validate })
+
 export default class extends Component {
     constructor(props) {
         super(props)
         this.listBank = []
     }
     _handlePressOk = (input) => {
-        console.log('Form Input: ', input)
-        const {account_number, account_owner, area, bank_name, branch, identity_card} = input
-        const {addBank, xsession} = this.props
-        addBank(xsession, account_owner, identity_card, account_number, 1, area, branch,
+        const {account_number, account_owner, area, branch, identity_card} = input
+        const {addBank, xsession, setToast} = this.props
+        if (!this.bankDropdown || !this.bankDropdown.getValue() || !this.bankDropdown.getValue().id) return
+        let bankID = this.bankDropdown.getValue().id
+        addBank(xsession, account_owner, identity_card, account_number, bankID, area, branch,
             (err, data) => {
                 console.log('Add bank Err', err)
                 console.log('Add bank data', data)
+                if (chainParse(data, ['data', 'success'])){
+                    setToast(getToastMessage(I18n.t('add_bank_success')), 'danger', null, null, 3000, 'top')
+                    this.props.resetForm('BankAccountForm')
+                    Keyboard.dismiss()
+                }else{
+                    setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'danger', null, null, 2000, 'top')
+                }
             }
         )
-        // addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
     }
     componentDidMount(){
         const {xsession, getListBank} = this.props
@@ -67,23 +71,22 @@ export default class extends Component {
         return (
             <Container style={styles.container}>
                 <Content style={styles.content}>
-                    <SearchableDropdown dropdownValues={this.listBank}/>
                     <Form style={styles.form}>
                         <Text gray>{I18n.t('account_owner')}</Text>
                         <Field autoCapitalize="none" name="account_owner"
                             icon={(input, active) => input.value && active ? 'close' : false}
                             iconStyle={{ color: material.black500 }}
                             onIconPress={input => input.onChange('')}
-                            component={InputField}
+                            component={InputFieldWithErr}
                             style={styles.inputItem}
                         />
-
+                        {}
                         <Text gray>{I18n.t('identity_card')}</Text>
                         <Field name="identity_card"
                             icon={(input, active) => input.value && active ? 'close' : false}
                             iconStyle={{ color: material.black500 }}
                             onIconPress={input => input.onChange('')}
-                            component={InputField}
+                            component={InputFieldWithErr}
                             style={styles.inputItem}
                             keyboardType="numeric"
                         />
@@ -93,26 +96,20 @@ export default class extends Component {
                             icon={(input, active) => input.value && active ? 'close' : false}
                             iconStyle={{ color: material.black500 }}
                             onIconPress={input => input.onChange('')}
-                            component={InputField}
+                            component={InputFieldWithErr}
                             style={styles.inputItem}
                             keyboardType="numeric" 
                         />
 
                         <Text gray>{I18n.t('bank_name')}</Text>
-                        <Field name="bank_name"
-                            icon={(input, active) => input.value && active ? 'close' : false}
-                            iconStyle={{ color: material.black500 }}
-                            onIconPress={input => input.onChange('')}
-                            component={InputField}
-                            style={styles.inputItem}
-                        />
+                        <SearchableDropdown dropdownValues={this.listBank} ref={ref => this.bankDropdown = ref}/>
 
                         <Text gray>{I18n.t('area')}</Text>
                         <Field name="area"
                             icon={(input, active) => input.value && active ? 'close' : false}
                             iconStyle={{ color: material.black500 }}
                             onIconPress={input => input.onChange('')}
-                            component={InputField}
+                            component={InputFieldWithErr}
                             style={styles.inputItem}
                         />
 
@@ -121,7 +118,7 @@ export default class extends Component {
                             icon={(input, active) => input.value && active ? 'close' : false}
                             iconStyle={{ color: material.black500 }}
                             onIconPress={input => input.onChange('')}
-                            component={InputField}
+                            component={InputFieldWithErr}
                             style={styles.inputItem}
                         />
                     </Form>

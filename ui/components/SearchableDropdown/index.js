@@ -24,6 +24,10 @@ export default class SearchableDropdown extends Component {
         this.setState({showing: true})
     }
 
+    getValue = () => {
+        return this.state.selectedOption
+    }
+
     componentWillReceiveProps = (nextProps) => {
         if (!this.state.dropdownValues || this.state.dropdownValues.length == 0){
             this.setState({
@@ -55,11 +59,11 @@ export default class SearchableDropdown extends Component {
             return <View />
         }
         return (
-            <View style={styles.container}>
+            <View style={{...styles.container, ...this.props.style}}>
                 <View>
                     <Button onPress={() => this._handlePress()} transparent style={styles.selectContainer}>
-                        <Text medium gray numberOfLines={1} style={styles.dropdownSelectedValue}>{chainParse(this.state, ['selectedOption', 'name'])}</Text>
-                        <Icon name="keyboard-arrow-down" style={styles.icon}/>
+                        <Text black numberOfLines={1}>{chainParse(this.state, ['selectedOption', 'name'])}</Text>
+                        <Icon name="foward" style={styles.icon}/>
                     </Button>
                     <Modal 
                         animationType={"none"}
@@ -73,7 +77,7 @@ export default class SearchableDropdown extends Component {
                         }}>
                             <View style={styles.modalContainer}>
                                 <View style={styles.rowPadding}>
-                                    <Icon name='search' style={styles.icon} />
+                                    <Icon name='places' style={styles.icon} />
                                     <TextInput placeholder='Nhập từ khoá ...'
                                             style={styles.input}
                                             underlineColorAndroid={'transparent'}
