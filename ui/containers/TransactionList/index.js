@@ -212,7 +212,6 @@ export default class extends Component {
         const { app, clearMarkLoad, router } = this.props
         const { meta } = nextProps
         if (!router || router.route != 'transactionList'){
-            console.log('Not in transList')
             return
         }
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value

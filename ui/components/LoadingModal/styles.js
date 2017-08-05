@@ -4,11 +4,12 @@ export default {
         height: '100%',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.3)'
     },
     modalContainer: {
         padding: 10,
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'white',
         borderRadius: 4,
     },
     spinner: {

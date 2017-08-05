@@ -41,10 +41,8 @@ export default class SearchableDropdown extends Component {
         if (!text || text.trim() == ''){
             this.setState({dropdownValues : this.props.dropdownValues})
         }
-        console.log('Text Change', text.length)
         let dropdownValues = this.props.dropdownValues.slice()
         let searchResult = dropdownValues.filter(item =>item.name.toLowerCase().indexOf(text.toLowerCase().trim())!=-1)
-        console.log('Search Result: ', searchResult)
         this.setState({dropdownValues : searchResult})
     }
 

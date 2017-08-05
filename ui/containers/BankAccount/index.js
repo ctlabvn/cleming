@@ -19,7 +19,7 @@ import { chainParse } from "~/ui/shared/utils"
 import { GENERAL_ERROR_MESSAGE } from "~/store/constants/app"
 import I18n from '~/ui/I18n'
 import {validate} from './validate'
-
+import LoadingModal from "~/ui/components/LoadingModal"
 @connect(state => ({
     xsession: getSession(state),
     banks: state.banks,
@@ -30,16 +30,21 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.listBank = []
+        this.state = {
+            loading: false
+        }
     }
     _handlePressOk = (input) => {
         const {account_number, account_owner, area, branch, identity_card} = input
         const {addBank, xsession, setToast} = this.props
         if (!this.bankDropdown || !this.bankDropdown.getValue() || !this.bankDropdown.getValue().id) return
         let bankID = this.bankDropdown.getValue().id
+        this.setState({loading: true})
         addBank(xsession, account_owner, identity_card, account_number, bankID, area, branch,
             (err, data) => {
                 console.log('Add bank Err', err)
                 console.log('Add bank data', data)
+                this.setState({loading: false})
                 if (chainParse(data, ['data', 'success'])){
                     setToast(getToastMessage(I18n.t('add_bank_success')), 'danger', null, null, 3000, 'top')
                     this.props.resetForm('BankAccountForm')
@@ -70,6 +75,7 @@ export default class extends Component {
         }
         return (
             <Container style={styles.container}>
+                <LoadingModal loading = {this.state.loading} />
                 <Content style={styles.content}>
                     <Form style={styles.form}>
                         <Text gray>{I18n.t('account_owner')}</Text>
