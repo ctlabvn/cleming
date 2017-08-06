@@ -129,22 +129,24 @@ export default class TopDropdown extends Component {
         )
     }
 
-    _search = (searchString)=>{            
+    search(searchString){            
         const  data = this.state.dropdownValues
-        const searchWord = convertVn(this.state.searchString.trim().toLowerCase())
+        
+        const searchWord = convertVn(searchString.trim().toLowerCase())
         const searchedData = data.map(item=>{
-            const compareWords = convertVn(item.name.trim().toLowerCase())
-            const longest = Math.max(searchWord.length, compareWords.length)
-            const distance = leven(searchWord, compareWords)
+            const compareWord = convertVn(item.name.trim().toLowerCase())
+            const longest = Math.max(searchWord.length, compareWord.length)
+            const distance = leven(searchWord, compareWord)
             const point = (longest-distance)/longest
+            // console.log(distance + ':'+ longest, searchWord, compareWord)     
             return {
                 item,
                 point,
             }
         })
         const listPlace = searchedData.sort((a,b)=>b.point-a.point)
-            .slice(0, 10).map(c=>c.item)
-        // console.log(listPlace)
+            .slice(0, 5).map(c=>c.item)   
+
         this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
         // this.setState({searchString})
     }
@@ -194,8 +196,9 @@ export default class TopDropdown extends Component {
                         }} />
                         </View>
                         {openningDropdown && <Item style={styles.searchContainer}>                              
-                              <Input initialValue={this.state.searchString} 
-                                autoCorrect={false} onChangeText={this._search} 
+                              <Input autoCapitalize="none" defaultValue={this.state.searchString} 
+                                autoCorrect={false} 
+                                onChangeText={text => this.search(text)}
                                 placeholderTextColor="#fff" style={styles.searchInput} 
                                 placeholder="Search Place" />                        
                           </Item>}

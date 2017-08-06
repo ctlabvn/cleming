@@ -301,7 +301,7 @@ export default class extends Component {
                 />
                 <Content
                     contentContainerStyle={styles.contentContainerStyle}
-                    onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                    
                     refreshing={this.state.loading}
                     style={styles.contentContainer}
                 >

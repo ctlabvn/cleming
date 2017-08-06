@@ -1,4 +1,4 @@
-import color from 'color';
+// import color from 'color';
 import { Platform, Dimensions, PixelRatio } from 'react-native';
 
 const deviceHeight = Dimensions.get('window').height;
@@ -216,9 +216,9 @@ export default {
   toolbarTextColor: '#fff',
   toolbarDefaultBorder: '#3F51B5',
   iosStatusbar: 'light-content',
-  get statusBarColor() {
-    return color(this.toolbarDefaultBg).darken(0.2).hexString();
-  },
+  // get statusBarColor() {
+  //   return color(this.toolbarDefaultBg).darken(0.2).hexString();
+  // },
 
 
     // Icon
@@ -290,9 +290,9 @@ export default {
 
   radioColor: '#7e7e7e',
 
-  get radioSelectedColor() {
-    return color(this.radioColor).darken(0.2).hexString();
-  },
+  // get radioSelectedColor() {
+  //   return color(this.radioColor).darken(0.2).hexString();
+  // },
 
 
     // Spinner
@@ -360,9 +360,9 @@ export default {
   borderWidth: (1/PixelRatio.getPixelSizeForLayoutSize(1)),
   contentPadding: 10,
 
-  get darkenHeader() {
-    return color(this.tabBgColor).darken(0.03).hexString();
-  },
+  // get darkenHeader() {
+  //   return color(this.tabBgColor).darken(0.03).hexString();
+  // },
 
   dropdownBg: '#000',
   dropdownLinkColor: '#414142',

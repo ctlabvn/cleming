@@ -4,32 +4,30 @@ import { View } from "react-native";
 import I18n from '~/ui/I18n'
 import ItemComponent from './TransactionItemComponent'
 import {_isArrDiff, _isArrDiffPartial} from '~/ui/shared/utils'
+import EnhancedListView from '~/ui/components/EnhancedListView'
 export default class extends Component {
-    constructor(props) {
-        super(props)
-    }
+    // constructor(props) {
+    //     super(props)
+    // }
 
-    shouldComponentUpdate = (nextProps, nextState) => {
-        return _isArrDiff(this.props.data, nextProps.data, 
-            ['transactionType', 'transactionStatus', 'dealTransactionId', 'dealTransactionIdDisplay',
-                'originPrice', 'invoiceTime', 'moneyNumberClingme'
-            ]
-        )
-    }
+    // shouldComponentUpdate = (nextProps, nextState) => {
+    //     return _isArrDiff(this.props.data, nextProps.data, 
+    //         ['transactionType', 'transactionStatus', 'dealTransactionId', 'dealTransactionIdDisplay',
+    //             'originPrice', 'invoiceTime', 'moneyNumberClingme'
+    //         ]
+    //     )
+    // }
 
     render() {
         console.log('Render List Component')
         const {data, ...props} = this.props
         return (
             <View>
-                <List dataArray={this.props.data}
+                <EnhancedListView dataArray={this.props.data}
                     renderRow={(item) => (<ItemComponent data={item} />)}
-                    pageSize={10}
-                    style={{
-                        height: 300
-                    }}
+                    keyExtractor={item=>item.dealTransactionId}
                     {...props}
-                ></List>
+                />
             </View>
         )
     }

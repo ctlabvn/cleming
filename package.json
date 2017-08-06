@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "font": "node font-processor.js",
-    "ba": "cd android && ./gradlew assembleRelease",
+    "ba": "npm run font && cd android && ./gradlew assembleRelease",
     "ia": "adb devices | awk 'NR>1 && $1 ~ /^[^:]+$/ { system(\"adb -s \" $1 \" install -r android/app/build/outputs/apk/app-armeabi-v7a-release.apk\") }'",
     "test": "jest",
     "mocha": "mocha test",
@@ -41,6 +41,7 @@
     "react-native-push-notification": "3.0.0",
     "react-native-responsive-image": "2.1.0",
     "react-native-scandit": "git+https://github.com/salathegroup/react-native-scandit.git",
+    "react-native-sglistview": "^0.4.3",
     "react-native-svg": "5.1.7",
     "react-native-swipe-gestures": "1.0.2",
     "react-native-timeline-listview": "0.2.0",

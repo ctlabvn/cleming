@@ -144,6 +144,7 @@ export default class TopDropdownListValue extends Component {
         return (
             <View style={overlayStyle}>                               
                 <List
+                    keyboardShouldPersistTaps="always"
                     contentContainerStyle={{ backgroundColor: material.primaryColor }}
                     dataArray={dropdownValues}
                     style={{

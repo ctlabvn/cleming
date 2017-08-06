@@ -111,18 +111,20 @@ export default {
     searchContainer: {    
         // backgroundColor: '#0085b6',
         borderColor:'#fff',
-        borderRadius: 5,     
-        marginTop: 5,       
-        paddingHorizontal: 0,
-        marginHorizontal: 20,    
+        borderRadius: 0,     
+        marginTop: 5,               
+        marginRight: 25,            
+        marginLeft: 25,        
+        borderWidth: 0.5,
         height:30,    
-        flexDirection:'row',  
+        flexDirection:'row',        
       },
       searchInput:{
         fontSize: 14,
-        height: 30,    
+        height: material.platform === 'ios' ? 30 : 50,
         borderWidth: 0,
-        color:'#fff'
+        marginLeft:-5,
+        color:'#fff',        
       },
 
 }

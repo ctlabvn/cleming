@@ -415,6 +415,7 @@ export default class extends Component {
              key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
         
     }
+    
     render() {
         console.log('Render TransactionList')
         const { forwardTo, payDirect, payWithClingme } = this.props
@@ -445,15 +446,16 @@ export default class extends Component {
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />
-                    <View
+                    <Content
                         padder
-                        
+                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                        refreshing={this.state.loading}
                     >
                         {this._renderList()}
                         {this.state.loadingMore && <Spinner color={material.red500} />}
                         {/*{noData}
                         {moreData}*/}
-                    </View>
+                    </Content>
 
                 </View>
             </Container>
