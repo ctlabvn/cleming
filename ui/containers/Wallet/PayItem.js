@@ -33,7 +33,36 @@ export default class extends Component {
         )
     }
     
+    _handlePressListItem = (item) => {
+        const {forwardTo} = this.props
+        const {ITEM_TYPE} = options
+        console.log('Press Item', item)
+        switch (item.tranType) {
+            case ITEM_TYPE.ORDER: //chờ duyệt
+                forwardTo('revenueManagementDetail/'+ITEM_TYPE.ORDER)
+                break
+            case ITEM_TYPE.CLINGME_PAY: // thành công
+                forwardTo('revenueManagementDetail/'+ITEM_TYPE.CLINGME_PAY)
+                break
+            case ITEM_TYPE.CASHBACK:
+               
+                break
+            case 'cashout':
+                
+                break
 
+            case 'cashout_auto': // bị từ chối
+                
+                break
+            default:
+                iconBlock = (
+                    <View style={styles.iconBlock}>
+                        <Icon name='order-history' style={styles.iconLarge} />
+                    </View>
+                )
+
+        }
+    }
 
     render() {
         const { forwardTo } = this.props
@@ -99,6 +128,7 @@ export default class extends Component {
         return (
             <ListItem
                 style={styles.listItem}
+                onPress={()=>this._handlePressListItem(item)}
             >
                 <View style={styles.block}>
                     <View style={{ ...styles.row, alignItems: 'flex-start' }}>

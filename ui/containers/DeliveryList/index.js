@@ -24,6 +24,7 @@ import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbac
 import I18n from '~/ui/I18n'
 import OrderItem from './OrderItem'
 import { getRouter } from '~/store/selectors/common'
+import LoadingModal from "~/ui/components/LoadingModal"
 import {
     DEFAULT_TIME_FORMAT,
     DELIVERY_FEEDBACK,
@@ -59,7 +60,8 @@ export default class extends Component {
             loadingMore: false,
             modalOpen: false,
             counting: true,
-            phoneNumber: ''
+            phoneNumber: '',
+            processing: false
         }
         // this.counting = true
         this.selectedStatus = 0
@@ -263,10 +265,12 @@ export default class extends Component {
         console.log('Before Check Click', this.clickCount)
         if (this.clickCount > 0) return
         console.log('After Check Click', this.clickCount)
+        this.setState({processing: true})
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.OK,
             (err, data) => {
                 console.log('Data update status', data)
                 console.log('Error update order status', err)
+                this.setState({processing: false})
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
@@ -288,6 +292,7 @@ export default class extends Component {
         const { orderList } = order
         return (
             <Container style={styles.container}>
+                <LoadingModal loading = {this.state.processing} text={I18n.t('processing')}/>
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
                 <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />

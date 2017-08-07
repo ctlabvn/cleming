@@ -11,6 +11,9 @@ export default {
         padding: 10,
         backgroundColor: 'white',
         borderRadius: 4,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     spinner: {
         width: 40,
