@@ -473,7 +473,7 @@ export default class CreateUserContainer extends Component {
       <Container style={styles.container}>
         <View 
           onStartShouldSetResponderCapture={() => {
-            this.setState({ enableScrollViewScroll: true });
+            // this.setState({ enableScrollViewScroll: true });
           }}
         >
           <ScrollView style={{ backgroundColor: material.white500 }}
