@@ -75,7 +75,7 @@ export default {
     dropdownListItem:{
         borderBottomWidth: 0,
         justifyContent: 'center',
-        zIndex: 1000
+        zIndex: 1000,    
     },  
     dropdownListItemText:{
         color: material.white500,
@@ -113,7 +113,7 @@ export default {
         borderColor:'#fff',
         borderRadius: 0,     
         marginTop: 5,               
-        marginRight: 25,            
+        marginRight: 20,            
         marginLeft: 25,        
         borderWidth: 0.5,
         height:30,    
