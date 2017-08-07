@@ -134,7 +134,7 @@ export default class PlaceOrderList extends Component {
                 <Grid>
                     <Row style={{ height: '70%' }}>
                         <Button
-                            onPress={() => this.props.forwardTo('placeOrderDetail/' + item.orderCode)}
+                            onPress={() => this.props.forwardTo('placeOrderDetail/' + item.clingmeId)}
                             style={listButtonStyle}>
                             <View style={styles.rowPadding}>
                                 {orderCodeBlock}
