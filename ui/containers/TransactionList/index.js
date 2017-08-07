@@ -448,7 +448,7 @@ export default class extends Component {
                     />
                     <Content
                         padder
-                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                        onRefresh={this._onRefresh}
                         refreshing={this.state.loading}
                     >
                         {this._renderList()}

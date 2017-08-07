@@ -28,7 +28,7 @@ export default {
         flexDirection:'column',
         width: '100%',
         elevation: 100,
-        justifyContent: 'center',
+        justifyContent: 'center',        
         // flex: 1,
         // height: material.deviceHeight,
         // top: material.toolbarHeight+50
@@ -49,7 +49,7 @@ export default {
         backgroundColor: material.primaryColor,
         flexDirection: 'row',
         paddingTop: 15,
-        paddingBottom: 15,            
+        paddingBottom: 15,                    
         height: 50
     },
     dropdownSelectedValue:{        

@@ -150,9 +150,7 @@ export default class TopDropdown extends Component {
             this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
         } else {
             this.props.app.topDropdownListValue.updateDropdownValues(data)
-        }
-        
-        // this.setState({searchString})
+        }                
     }
 
     render() {
@@ -199,7 +197,7 @@ export default class TopDropdown extends Component {
                             right: 10,                            
                         }} />
                         </View>
-                        {openningDropdown && <Item style={styles.searchContainer}>                              
+                        {openningDropdown && material.platform === 'ios' && <Item style={styles.searchContainer}>                              
                               <Input autoCapitalize="none" defaultValue={this.state.searchString} 
                                 autoCorrect={false} 
                                 onChangeText={text => this.search(text)}
