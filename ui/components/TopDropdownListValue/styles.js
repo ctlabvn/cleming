@@ -36,7 +36,7 @@ export default {
         zIndex: 1000,
         paddingLeft: 10,
         paddingRight: 10,
-        height: 35,
+        height: 50,
     },
     dropdownListItemText: {
         color: material.white500,        
