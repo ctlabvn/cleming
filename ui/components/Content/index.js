@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RefreshControl } from 'react-native'
+import { RefreshControl, ScrollView, KeyboardAvoidingView } from 'react-native'
 import {         
     Content, 
     View,    
@@ -14,9 +14,10 @@ export default class extends Component {
   }
 
   scrollToTop=()=>{
+    this.content.scrollTo({x:0,y:0})
     // console.log('content' ,this.content._root, this.content.wrappedInstance._root)
       // this.refs.content._root.scrollToPosition(0, 0, false)
-      this.content && this.content.wrappedInstance && this.content.wrappedInstance._root && this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
+      // this.content && this.content.wrappedInstance && this.content.wrappedInstance._root && this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
   }
 
   render() {
@@ -27,7 +28,7 @@ export default class extends Component {
     }
     
     return (                             
-      <Content
+      <ScrollView
           ref={ref=>this.content = ref}
         onScroll={(e)=>{    
           const offsetY = e.nativeEvent.contentOffset.y     
@@ -40,9 +41,11 @@ export default class extends Component {
         }}        
        {...props} >
         <View padder={padder}>
+        <KeyboardAvoidingView>
           {children}
+          </KeyboardAvoidingView>
         </View>
-      </Content>    
+      </ScrollView>    
     )
   }
 }
