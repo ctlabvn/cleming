@@ -33,7 +33,6 @@ const defaultItem = {
 
 @connect(state => ({
     xsession: getSession(state),
-    selectedItem: (state.revenue ? getSelectedRevenueItem(state) : defaultItem),
     revenue: state.revenue,
 }), {...commonAction, ...revenueActions})
 
@@ -55,8 +54,12 @@ export default class extends Component {
     }
 
     _loadRevenueDetail() {
-        const { xsession, getRevenueDetail, selectedItem } = this.props
-        const {tranId} = selectedItem;
+        const { xsession, getRevenueDetail, selectedItem, route } = this.props
+        const tranId = route.params.tranId;
+        // const transactionId = route.params.tranId;
+        // const {tranId} = selectedItem;
+        //
+        // console.warn('tranId' + JSON.stringify(transactionId) + '--' + JSON.stringify(tranId));
         getRevenueDetail(xsession, tranId, (err, data) => {
             if (data && data.data) {
                 this.setState({
@@ -150,7 +153,7 @@ export default class extends Component {
         const {detail} = this.state
 
         const revenueItem = detail ? detail : this._defaultDetail();
-        const { selectedItem } = this.props;
+        // const { selectedItem } = this.props;
 
         iconName = revenueItem.tranType == REVENUE_CLINGME_PAY ? 'clingme-wallet': 'shiping-bike2';
 
@@ -161,12 +164,12 @@ export default class extends Component {
             <View style={{flex: 1}}>
                 <ListItem style={{...styles.row, marginTop: 10}}>
                     <Text medium style={styles.gray}>Clingme Pay</Text>
-                    <Text bold large style={styles.gray}>{revenueItem.tranCode || selectedItem.tranCode}</Text>
+                    <Text bold large style={styles.gray}>{revenueItem.tranCode}</Text>
                 </ListItem>
                 <Border color='rgba(0,0,0,0.5)' size={1}/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Doanh Thu</Text>
-                    <Text bold large style={styles.orange}>{formatNumber(revenueItem.revenueMoney || selectedItem.moneyAmount)} đ</Text>
+                    <Text bold large style={styles.orange}>{formatNumber(revenueItem.revenueMoney)} đ</Text>
                 </ListItem>
                 <Border color='rgba(0,0,0,0.5)' size={1}/>
                 <ListItem style={styles.row}>

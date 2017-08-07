@@ -34,7 +34,8 @@ export default {
         borderBottomWidth: 0,
         justifyContent: 'flex-start',
         zIndex: 1000,
-        paddingHorizontal: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
         height: 35,
     },
     dropdownListItemText: {
