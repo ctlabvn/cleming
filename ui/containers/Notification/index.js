@@ -27,6 +27,8 @@ import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
 
+import EnhancedListView from '~/ui/components/EnhancedListView'
+
 import I18n from '~/ui/I18n'
 
 @connect(state => ({
@@ -47,7 +49,7 @@ export default class extends Component {
   }
 
   componentWillFocus() {
-    
+    this.content.scrollToTop()
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
     if (!notifications.data.length) {
@@ -349,14 +351,14 @@ export default class extends Component {
 
       <Container>
         <Content
+          ref={ref=>this.content=ref}
           onEndReached={this._loadMore} onRefresh={this._onRefresh}
           style={styles.container} refreshing={this.state.refreshing}
         >
             {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
-            <List
-              enableEmptySections={true}
-              removeClippedSubviews={false}              
+            <EnhancedListView            
+              keyExtractor={item=>item.notifyId}                         
               dataArray={notifications.data}
               renderRow={(item) => {
                 return <ListItem noBorder
