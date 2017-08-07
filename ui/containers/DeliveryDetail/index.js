@@ -138,14 +138,14 @@ export default class extends Component {
     _renderStatusText(status) {
         switch (status) {
             case 'WAIT_CONFIRM':
-                return <Text warning large bold>{I18n.t('order_wait_confirm')}</Text>
+                return <Text warning largeLight bold>{I18n.t('order_wait_confirm')}</Text>
             case 'CONFIRMED':
-                return <Text primary large bold>{I18n.t('order_confirmed')}</Text>
+                return <Text primary largeLight bold>{I18n.t('order_confirmed')}</Text>
             case 'COMPLETED':
-                return <Text success large bold>{I18n.t('order_completed')}</Text>
+                return <Text success largeLight bold>{I18n.t('order_completed')}</Text>
             case 'FAILED':
             case 'CANCELLED':
-                return <Text gray large bold>{I18n.t('order_cancelled')}</Text>
+                return <Text gray strong bold>{I18n.t('order_cancelled')}</Text>
         }
     }
 
@@ -198,8 +198,8 @@ export default class extends Component {
                 </View>
                 <View style={styles.line} />
                 <View style={styles.rowPadding}>
-                    <Text largeLight bold grayDark>{I18n.t('total_pay')}: </Text>
-                    <Text largeLight bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
+                    <Text strong bold grayDark>{I18n.t('total_pay')}: </Text>
+                    <Text strong bold error>{formatNumber(orderDetail.orderInfo.moneyAmount)}đ</Text>
                 </View>
             </View>
         )
@@ -244,7 +244,7 @@ export default class extends Component {
                         {this._renderStatusText(orderDetail.orderInfo.status)}
                         <View style={styles.row}>
                             <Text medium grayDark
-                                style={{ marginRight: 5 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                                style={{ marginRight: 5, marginTop: 3 }}>{moment(orderDetail.orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
                                 (orderDetail.orderInfo.status == 'WAIT_CONFIRM' || orderDetail.orderInfo.status == 'CONFIRMED')
                                 &&
@@ -274,9 +274,9 @@ export default class extends Component {
                     <View style={styles.line} />
                     <View style={{ ...styles.block, paddingBottom: 0 }}>
                         <Text medium  grayDark>{I18n.t('deliver_address')}</Text>
-                        <Text strong bold grayDark>{orderDetail.orderInfo.fullAddress}
+                        <Text medium bold grayDark>{orderDetail.orderInfo.fullAddress}
                             {(parseFloat(chainParse(orderDetail, ['orderInfo', 'deliveryDistance'])) > 0) &&
-                                <Text strong bold grayDark> - {parseFloat(chainParse(orderDetail, ['orderInfo', 'deliveryDistance'])).toFixed(2)} km</Text>
+                                <Text medium bold grayDark> - {parseFloat(chainParse(orderDetail, ['orderInfo', 'deliveryDistance'])).toFixed(2)} km</Text>
                             }
                         </Text>
                     </View>
