@@ -127,7 +127,7 @@ export default {
     'list_place': 'Danh sách địa điểm',
     'change_password': 'Thay đổi mật khẩu',
     'ok': 'Đồng ý',
-    'cancel': 'Hủy bỏ', 
+    'cancel': 'Bỏ qua',
     'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
 
     // Change Password In App
