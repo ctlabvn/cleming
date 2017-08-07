@@ -411,7 +411,7 @@ export default class extends Component {
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props
         
-        return <ListTransaction onRefresh={this._onRefresh}
+        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh}
              key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
         
     }
@@ -446,17 +446,12 @@ export default class extends Component {
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />
-                    <Content                        
-                        padder
-                        onRefresh={this._onRefresh}
-                        onEndReached={this._loadMore}
-                        refreshing={this.state.loading}
-                    >
+                   
                         {this._renderList()}
                         {this.state.loadingMore && <Spinner color={material.red500} />}
                         {/*{noData}
                         {moreData}*/}
-                    </Content>
+                    
 
                 </View>
             </Container>
