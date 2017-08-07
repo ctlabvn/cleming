@@ -56,10 +56,6 @@ export default class extends Component {
     _loadRevenueDetail() {
         const { xsession, getRevenueDetail, selectedItem, route } = this.props
         const tranId = route.params.tranId;
-        // const transactionId = route.params.tranId;
-        // const {tranId} = selectedItem;
-        //
-        // console.warn('tranId' + JSON.stringify(transactionId) + '--' + JSON.stringify(tranId));
         getRevenueDetail(xsession, tranId, (err, data) => {
             if (data && data.data) {
                 this.setState({
