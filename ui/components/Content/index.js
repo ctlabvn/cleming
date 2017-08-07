@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RefreshControl, ScrollView } from 'react-native'
+import { RefreshControl, ScrollView, KeyboardAvoidingView } from 'react-native'
 import {         
     Content, 
     View,    
@@ -41,7 +41,9 @@ export default class extends Component {
         }}        
        {...props} >
         <View padder={padder}>
+        <KeyboardAvoidingView>
           {children}
+          </KeyboardAvoidingView>
         </View>
       </ScrollView>    
     )
