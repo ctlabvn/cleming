@@ -9,8 +9,7 @@ export default class EnhancedListView extends Component {
     super(props)
 
     if (props.dataArray && props.renderRow) {
-      const keyExtractor = props.keyExtractor || (r=>r)
-      const rowHasChanged = props.rowHasChanged || ((r1, r2) => keyExtractor(r1) !== keyExtractor(r2));
+      const rowHasChanged = (r1, r2) => this._rowHasChanged(r1, r2)
       const ds = new ListView.DataSource({ rowHasChanged })
       this.state = {
         dataSource: ds.cloneWithRows(props.dataArray),
@@ -19,6 +18,24 @@ export default class EnhancedListView extends Component {
       this.state = {}
     }
 
+  }
+
+  _rowHasChanged = (r1, r2) => {
+    const {keyExtractor, rowHasChanged, keyExtractorArr} = this.props
+    if (rowHasChanged) return true
+    if (!keyExtractor && !keyExtractorArr){
+      return r1 != r2
+    }
+    if (keyExtractor){
+      return (keyExtractor(r1) !== keyExtractor(r2))
+    }
+    if (!keyExtractorArr || keyExtractorArr.length == 0) return false
+    for (let i=0; i < keyExtractorArr.length; i++){
+      if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
+        return true 
+      }
+    }
+    return false
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,8 +60,8 @@ export default class EnhancedListView extends Component {
       stickyHeaderIndices={[]}
       onEndReachedThreshold={1}
       scrollRenderAheadDistance={1}
-      pageSize={1}       
-        {...props}        
+      pageSize={1}
+        {...props}
       />
     )
   }
