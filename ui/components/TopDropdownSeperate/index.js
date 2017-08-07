@@ -49,10 +49,11 @@ export default class TopDropdown extends Component {
                 this.setState({ selectedOption: nextProps.dropdownValues[0] })
             }
         }
-        if (this.state.openningDropdown) {
-            this.setState({ openningDropdown: false })
-        }
 
+        // panda edited
+        // if (this.state.openningDropdown) {
+        //     this.setState({ openningDropdown: false })
+        // }
     }
 
     updateDropdownValues(dropdownValues) {
@@ -186,25 +187,27 @@ export default class TopDropdown extends Component {
         }
         return (
             <View style={containerStyleTopDown}>
-                <View style={styles.dropdownHeader}>
+                <View style={openningDropdown ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
+
                     <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
                         <View>
-                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>                    
-                        <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
-                            color: material.white500,
-                            position: 'absolute',     
-                            marginTop: -5,                                                   
-                            right: 10,                            
-                        }} />
+                            <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>
+                                <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
+                                    color: material.white500,
+                                    position: 'absolute',
+                                    marginTop: -5,
+                                    right: 10,
+                                }} />
+
                         </View>
-                        {openningDropdown && material.platform === 'ios' && <Item style={styles.searchContainer}>                              
-                              <Input autoCapitalize="none" defaultValue={this.state.searchString} 
-                                autoCorrect={false} 
-                                onChangeText={text => this.search(text)}
-                                placeholderTextColor="#fff" style={styles.searchInput} 
-                                placeholder="Search Place" />                        
-                          </Item>}
                     </TouchableOpacity>
+                    {openningDropdown && <Item style={styles.searchContainer}>
+                        <Input autoCapitalize="none" defaultValue={this.state.searchString}
+                               autoCorrect={false}
+                               onChangeText={text => this.search(text)}
+                               placeholderTextColor="#fff" style={styles.searchInput}
+                               placeholder="Search Place" /></Item>}
+
                 </View>
             </View>
         )
