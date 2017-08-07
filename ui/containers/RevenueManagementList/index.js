@@ -76,8 +76,7 @@ export default class extends Component {
         getRevenueList(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
             if (err) setRevenueData({});
             if (data) {
-                if (loadMore) data.data.listRevenueItem = [...revenueData.listRevenueItem, ...data.data.listRevenueItem];
-                console.warn(JSON.stringify(data.data.totalPage));
+                if (loadMore && !!data && !!data.data) data.data.listRevenueItem = [...revenueData.listRevenueItem, ...data.data.listRevenueItem];
                 setRevenueData(data.data);
             }
 

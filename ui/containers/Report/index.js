@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Container, Text} from "native-base";
+import {Container, Text, Spinner} from "native-base";
 import {Dimensions, InteractionManager, View, Image} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
@@ -30,7 +30,8 @@ export default class Report extends Component {
                 latitudeDelta: DEFAULT_MAP_DELTA.LAT,
                 longitudeDelta: DEFAULT_MAP_DELTA.LONG,
             },
-            focusMerchant: {}
+            focusMerchant: {},
+            hideMap: false,
         }
         this.currentPlace = -1
         this.isLoadingPlace = false
@@ -114,6 +115,9 @@ export default class Report extends Component {
             let selectedPlace = app.topDropdown.getValue()  
             console.log('Current Place:', this.currentPlace)
             console.log('Selected Place:', selectedPlace)
+            this.setState({
+                hideMap: false,
+            })
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
@@ -122,6 +126,14 @@ export default class Report extends Component {
             }
         })
     }
+
+
+    componentWillBlur(){
+        this.setState({
+            hideMap: true,
+        })
+    }
+
     _regionChange = (region) => {
         this.setState({ region },
             () => {
@@ -172,7 +184,8 @@ export default class Report extends Component {
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
                     <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='month' type='lite' />
-                    <MapView
+                    
+                    {this.state.hideMap ? <Spinner/> : <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}
@@ -215,6 +228,8 @@ export default class Report extends Component {
 
                         })}*/}
                     </MapView>
+
+                }
 
                 </View>
             </Container>

@@ -354,12 +354,12 @@ export default class extends Component {
 
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props
-        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
-            return <ListTransaction key='listTrans' data={payWithClingme.listTransaction} />
-        } else {
-            return <ListTransaction key='listTrans' data={payDirect.listTransaction} />
-        }
+        
+        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh}
+             key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
+        
     }
+    
     render() {
         console.log('Render TransactionList')
         const { forwardTo, payDirect, payWithClingme } = this.props

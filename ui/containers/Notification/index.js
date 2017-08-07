@@ -43,7 +43,7 @@ export default class extends Component {
       refreshing: false,
       loading: false,      
     }
-    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
+    // this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
   }
 
   componentWillFocus() {
@@ -354,10 +354,10 @@ export default class extends Component {
         >
             {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
-            <ListView
+            <List
               enableEmptySections={true}
               removeClippedSubviews={false}              
-              dataSource={this.ds.cloneWithRows(notifications.data)}
+              dataArray={notifications.data}
               renderRow={(item) => {
                 return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}

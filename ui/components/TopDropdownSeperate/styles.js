@@ -107,6 +107,24 @@ export default {
     },
     get backdropClose() {
         return {...this.backdrop, opacity:0}
-    }
+    },
+    searchContainer: {    
+        // backgroundColor: '#0085b6',
+        borderColor:'#fff',
+        borderRadius: 0,     
+        marginTop: 5,               
+        marginRight: 25,            
+        marginLeft: 25,        
+        borderWidth: 0.5,
+        height:30,    
+        flexDirection:'row',        
+      },
+      searchInput:{
+        fontSize: 14,
+        height: material.platform === 'ios' ? 30 : 50,
+        borderWidth: 0,
+        marginLeft:-5,
+        color:'#fff',        
+      },
 
 }
