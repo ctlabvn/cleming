@@ -56,8 +56,10 @@ export default class EnhancedListView extends Component {
     // console.log(props)
     return(
       <SGListView 
+      
       initialListSize={1}
       stickyHeaderIndices={[]}
+      removeClippedSubviews={true}
       onEndReachedThreshold={1}
       scrollRenderAheadDistance={1}
       pageSize={1}

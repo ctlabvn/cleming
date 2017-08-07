@@ -47,11 +47,21 @@ export default {
     dropdownHeader:{
         justifyContent:'center',
         backgroundColor: material.primaryColor,
-        flexDirection: 'row',
+        // flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,                    
-        height: 50
+        height: 50,
     },
+
+    dropdownHeaderPlus:{
+        justifyContent:'center',
+        backgroundColor: material.primaryColor,
+        // flexDirection: 'row',
+        paddingTop: 15,
+        paddingBottom: 15,
+        height: 100,
+    },
+
     dropdownSelectedValue:{        
         color: material.white500,
         fontWeight: 'bold',      
@@ -112,7 +122,7 @@ export default {
         // backgroundColor: '#0085b6',
         borderColor:'#fff',
         borderRadius: 0,     
-        marginTop: 5,               
+        marginTop: 20,
         marginRight: 20,            
         marginLeft: 25,        
         borderWidth: 0.5,
@@ -124,7 +134,8 @@ export default {
         height: material.platform === 'ios' ? 30 : 50,
         borderWidth: 0,
         marginLeft:-5,
-        color:'#fff',        
+        paddingLeft: 20,
+        color:'#fff',
       },
 
 }
