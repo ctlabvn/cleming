@@ -116,10 +116,9 @@ export default class extends Component {
         )
     }
 
-    _forwardToDetail(data) {
+    _forwardToDetail(tabId, tranId) {
         const { setToast, forwardTo } = this.props
-
-        forwardTo('revenueManagementDetail/'+this.state.currentTab);
+        forwardTo('revenueManagementDetail/' + tabId + "/" + tranId);
     }
 
     _renderItem(item) {
@@ -141,9 +140,7 @@ export default class extends Component {
         }
 
         handlePress = () => {
-            const { setSelectedRevenueItem } = this.props
-            setSelectedRevenueItem(item);
-            this._forwardToDetail();
+            this._forwardToDetail(this.state.currentTab , tranId);
         }
 
         return (
