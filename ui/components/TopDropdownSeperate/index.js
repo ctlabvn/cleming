@@ -130,24 +130,28 @@ export default class TopDropdown extends Component {
     }
 
     search(searchString){            
-        const  data = this.state.dropdownValues
-        
+        const  data = this.state.dropdownValues        
         const searchWord = convertVn(searchString.trim().toLowerCase())
-        const searchedData = data.map(item=>{
-            const compareWord = convertVn(item.name.trim().toLowerCase())
-            const longest = Math.max(searchWord.length, compareWord.length)
-            const distance = leven(searchWord, compareWord)
-            const point = (longest-distance)/longest
-            // console.log(distance + ':'+ longest, searchWord, compareWord)     
-            return {
-                item,
-                point,
-            }
-        })
-        const listPlace = searchedData.sort((a,b)=>b.point-a.point)
-            .slice(0, 5).map(c=>c.item)   
+        if(searchWord) {
+            const searchedData = data.map(item=>{
+                const compareWord = convertVn(item.name.trim().toLowerCase())
+                const longest = Math.max(searchWord.length, compareWord.length)
+                const distance = leven(searchWord, compareWord)
+                const point = (longest-distance)/longest
+                // console.log(distance + ':'+ longest, searchWord, compareWord)     
+                return {
+                    item,
+                    point,
+                }
+            })
+            const listPlace = searchedData.sort((a,b)=>b.point-a.point)
+                .slice(0, 5).map(c=>c.item)   
 
-        this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
+            this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
+        } else {
+            this.props.app.topDropdownListValue.updateDropdownValues(data)
+        }
+        
         // this.setState({searchString})
     }
 
