@@ -30,12 +30,14 @@ import { formatNumber } from '~/ui/shared/utils'
 import EnhancedListView from '~/ui/components/EnhancedListView'
 
 import I18n from '~/ui/I18n'
+const checkProperties=['notifyId', 'isRead']
 
 @connect(state => ({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
   // notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
 }), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
+
 export default class extends Component {
 
   constructor(props) {
@@ -358,7 +360,8 @@ export default class extends Component {
             {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
             <EnhancedListView            
-              keyExtractor={item=>item.notifyId}                         
+              keyExtractorArr={checkProperties}
+              rowHasChanged={true}            
               dataArray={notifications.data}
               renderRow={(item) => {
                 return <ListItem noBorder
