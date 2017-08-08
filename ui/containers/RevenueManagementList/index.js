@@ -150,7 +150,7 @@ export default class extends Component {
                         <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
                         <View style={styles.itemContent}>
                             <View style={styles.subRow}>
-                                <Text largeLight bold grayDark>{tranCode}</Text>
+                                <Text largeLight bold grayDark>#{tranCode}</Text>
                                 <Text medium grayDark>{moment(parseInt(tranTime) * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             </View>
 
