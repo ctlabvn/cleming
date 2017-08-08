@@ -160,7 +160,7 @@ export default class extends Component {
             <View style={{flex: 1}}>
                 <ListItem style={{...styles.row, marginTop: 10}}>
                     <Text medium style={styles.gray}>Clingme Pay</Text>
-                    <Text bold large style={styles.gray}>{revenueItem.tranCode}</Text>
+                    <Text bold large style={styles.gray}>#{revenueItem.tranCode}</Text>
                 </ListItem>
                 <Border color='rgba(0,0,0,0.5)' size={1}/>
                 <ListItem style={styles.row}>
