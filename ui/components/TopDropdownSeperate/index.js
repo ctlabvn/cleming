@@ -31,6 +31,7 @@ export default class TopDropdown extends Component {
             dropdownValues: props.dropdownValues || [],
             show: false,
             searchString: '',
+            placeholderText: I18n.t('search'),
         }
     }
 
@@ -154,6 +155,10 @@ export default class TopDropdown extends Component {
         }                
     }
 
+    _setPlaceholderText(text = ''){
+        this.setState({placeholderText: text});
+    }
+
     render() {
         console.log('Render TopDropdownSeperate')
         const { notifications, getNotificationRequest, getNotification } = this.props
@@ -205,8 +210,8 @@ export default class TopDropdown extends Component {
                         <Input autoCapitalize="none" defaultValue={this.state.searchString}
                                autoCorrect={false}
                                onChangeText={text => this.search(text)}
-                               placeholderTextColor="#fff" style={styles.searchInput}
-                               placeholder="Search Place" /></Item>}
+                               placeholderTextColor={material.gray600} style={styles.searchInput}
+                               placeholder={this.state.placeholderText}/></Item>}
 
                 </View>
             </View>
