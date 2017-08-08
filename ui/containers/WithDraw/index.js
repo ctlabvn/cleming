@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, List, ListItem, Spinner, Text, Item, Input } from "native-base";
-import { InteractionManager, View, TouchableOpacity, Image, Keyboard } from "react-native";
+import { InteractionManager, View, TouchableOpacity, Image, Keyboard, ScrollView } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -90,7 +90,9 @@ export default class extends Component {
                     <Text gray>{I18n.t('receive_account')}</Text>
                 </View>
                 <View style={styles.pd10}>
-                    <BankSelection listAccounts={bank} ref={bankSelection=>this.bankSelection=bankSelection} />
+                    <ScrollView>
+                        <BankSelection listAccounts={bank} ref={bankSelection=>this.bankSelection=bankSelection} />
+                    </ScrollView>
                     <TouchableOpacity onPress={()=>forwardTo('bankAccount')}>
                         <View style={{ ...styles.bankLogoContainer, justifyContent: 'center', height: 50 }}>
                             <Text primary>+  {I18n.t('add_account')}</Text>

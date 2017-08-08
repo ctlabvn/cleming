@@ -28,12 +28,14 @@ export default class extends Component {
             <View >
                 {listAccounts
                     && Object.keys(listAccounts).length > 0
-                    && listAccounts.map((item) => (
-                    <TouchableOpacity key={item.bankId} onPress={()=>this._handlePress(item)}>
+                    && listAccounts.map((item, index) => (
+                    <TouchableOpacity key={index} onPress={()=>this._handlePress(item)}>
                         <View style={styles.bankLogoContainer}>
                             <Image source={{ uri: item.bankIcon }} style={styles.bankLogo} />
                             <Text style={{ textAlign: 'center' }}>{item.accountNumber}</Text>
-                            <CheckBox type="radio" checked={(item.bankId == this.state.selectedAccount.bankId)} />
+                            <CheckBox type="radio" checked={(item.accountNumber == this.state.selectedAccount.accountNumber)}
+                                onPress={()=>this._handlePress(item)}
+                            />
                         </View>
                     </TouchableOpacity>
                 ))}

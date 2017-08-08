@@ -5,6 +5,7 @@ export default {
         backgroundColor: material.white500,
         flexDirection: 'column',
         height: '100%',
+        paddingBottom: 40
     },
     content: {
         backgroundColor: material.gray300
