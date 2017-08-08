@@ -24,6 +24,8 @@ export default class extends Component {
         return (
             
                 <EnhancedListView dataArray={this.props.data}
+                    premptiveLoading={1}
+                    // scrollRenderAheadDistance={3}
                     renderRow={(item) => (<ItemComponent data={item} />)}
                     keyExtractor={item=>item.dealTransactionId}
                     {...props}
