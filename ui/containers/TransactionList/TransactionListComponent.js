@@ -22,13 +22,13 @@ export default class extends Component {
         console.log('Render List Component')
         const {data, ...props} = this.props
         return (
-            <View>
+            
                 <EnhancedListView dataArray={this.props.data}
                     renderRow={(item) => (<ItemComponent data={item} />)}
                     keyExtractor={item=>item.dealTransactionId}
                     {...props}
                 />
-            </View>
+            
         )
     }
 }
