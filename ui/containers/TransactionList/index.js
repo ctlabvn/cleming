@@ -354,7 +354,7 @@ export default class extends Component {
 
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props   
-        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh}
+        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}
              key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
     }
     
