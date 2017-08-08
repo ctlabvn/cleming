@@ -46,7 +46,9 @@ export default class TopDropdownListValue extends Component {
 
     }
 
-
+    setDefaultDropdownValues(dropdownValues) {
+        if (!this.state.defaultDropdownValues) this.setState({ defaultDropdownValues: dropdownValues })
+    }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
@@ -73,7 +75,10 @@ export default class TopDropdownListValue extends Component {
         this.setState({ selectedOption: item })
         this.props.onSelect && this.props.onSelect(item)
         // this.toggle()
-        this.setState({ openningDropdown: false })
+        this.setState({
+            openningDropdown: false,
+            dropdownValues: this.state.defaultDropdownValues
+        })
     }
     _handlePressOverlay = () => {
         this.props.onPressOverlay && this.props.onPressOverlay()

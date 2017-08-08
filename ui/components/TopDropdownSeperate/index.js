@@ -33,6 +33,8 @@ export default class TopDropdown extends Component {
             searchString: '',
             placeholderText: I18n.t('search'),
         }
+
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -132,7 +134,8 @@ export default class TopDropdown extends Component {
     }
 
     search(searchString){            
-        const  data = this.state.dropdownValues        
+        const  data = this.state.dropdownValues
+        this.props.app.topDropdownListValue.setDefaultDropdownValues(data)
         const searchWord = convertVn(searchString.trim().toLowerCase())
         if(searchWord) {
             const searchedData = data.map(item=>{
@@ -210,7 +213,7 @@ export default class TopDropdown extends Component {
                         <Input autoCapitalize="none" defaultValue={this.state.searchString}
                                autoCorrect={false}
                                onChangeText={text => this.search(text)}
-                               placeholderTextColor={material.gray600} style={styles.searchInput}
+                               placeholderTextColor={material.gray500} style={styles.searchInput}
                                placeholder={this.state.placeholderText}/></Item>}
 
                 </View>

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { ListView, ScrollView, Platform } from 'react-native';
+import { ListView, ScrollView, Platform, RefreshControl } from 'react-native';
 import SGListViewCell from './components/SGListViewCell';
 
 import { PrivateMethods } from './utils'
@@ -180,10 +180,15 @@ export default class SGListView extends Component {
   }
 
   render() {
+    const {refreshing, onRefresh, ...props} = this.props    
+    // show refresh control
+    if(onRefresh){
+      props.refreshControl = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} title="Loading..." />
+    }
     // console.log('render list')
     return (
       <ListView
-        {...this.props}
+        {...props}
         ref="nativeListView"
         dataSource={this.state.dataSource}
         renderScrollComponent={this.renderScrollComponent.bind(this)}
