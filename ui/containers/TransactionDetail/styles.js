@@ -230,7 +230,8 @@ export default {
         backgroundColor: 'transparent'
     },
     invoiceDetailBlock: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
         // flexWrap: 'wrap'
     },
 
