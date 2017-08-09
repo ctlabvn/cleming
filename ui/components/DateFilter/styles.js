@@ -7,7 +7,7 @@ export default {
         backgroundColor: material.white500
     },
     stickPart: {
-        paddingRight: 15,
+        paddingRight: 5,
         borderRightColor: material.primaryColor,
         borderRightWidth: 1,
         flexDirection: 'row',
@@ -17,8 +17,8 @@ export default {
     calendarIcon: {
         color: material.primaryColor,
         fontSize: 20,
-        marginRight: 9,
-        marginLeft: 10,
+        marginRight: 2,
+        marginLeft: 2,
     },
     filterIntevalLabel: {
         color: material.primaryColor,
@@ -45,6 +45,31 @@ export default {
         color: material.primaryColor,
         fontWeight: 'bold',
         padding: 5
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flex: 1
+    },
+    calendarSelector: {
+        padding: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginRight: 5,
+        borderWidth: 1,
+        borderColor: material.primaryColor,
+        borderRadius: 4,
+        flex: 1
+    },
+    buttonCustomDateFilter: {
+        backgroundColor: material.primaryColor, 
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 7,
+        paddingRight: 7,
+        height: 30
+                        
     }
 
 
