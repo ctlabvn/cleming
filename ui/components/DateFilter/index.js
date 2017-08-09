@@ -389,7 +389,10 @@ export default class DateFilter extends Component {
                       onCancel={()=>this._onCancelStartDate()}
                       mode='date'
                       datePickerModeAndroid='calendar'
-                      date={this.state.startDate}
+                    date={this.state.startDate}
+                        titleIOS={I18n.t('choose_start_date')}
+                        confirmTextIOS={I18n.t('ok')}
+                        cancelTextIOS={I18n.t('cancel')}
                     />
                 <DateTimePicker
                       isVisible={this.state.isShowingEndDate}
@@ -398,6 +401,9 @@ export default class DateFilter extends Component {
                       mode='date'
                       datePickerModeAndroid='calendar'
                       date={this.state.endDate}
+                      titleIOS={I18n.t('choose_end_date')}
+                        confirmTextIOS={I18n.t('ok')}
+                        cancelTextIOS={I18n.t('cancel')}
                     />
                 <RadioPopup ref='dateFilterTypePopup' listValue={this.dateFilterListValue} selectedValue={this.state.currentDateFilter} onClickYes={this._handleYesDateFilter.bind(this)} />
                 <View style={styles.row}>

@@ -215,6 +215,8 @@ export default {
     'to': 'đến',
     'info': 'Thông báo',
     'custom': 'Tuỳ chỉnh',
+    'choose_start_date': 'Chọn ngày bắt đầu',
+    'choose_end_date': 'Chọn ngày kết thúc',
 
     //Wallet
     'balance': 'Số dư TK',
