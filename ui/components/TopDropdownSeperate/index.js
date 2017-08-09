@@ -97,7 +97,10 @@ export default class TopDropdown extends Component {
         // Need before toggle
         this.props.onPressIcon && this.props.onPressIcon(this.state.openningDropdown)
         this.toggle()
+
+        this.props.app.topDropdownListValue.setDefaultDropdownValues(this.state.dropdownValues)
     }
+
     _handlePress(item) {
         this.setState({ selectedOption: item })
         this.props.onSelect && this.props.onSelect(item)
@@ -135,7 +138,6 @@ export default class TopDropdown extends Component {
 
     search(searchString){            
         const  data = this.state.dropdownValues
-        this.props.app.topDropdownListValue.setDefaultDropdownValues(data)
         const searchWord = convertVn(searchString.trim().toLowerCase())
         if(searchWord) {
             const searchedData = data.map(item=>{
