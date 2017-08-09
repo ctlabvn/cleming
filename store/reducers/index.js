@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
-import { requests, toast, drawer, router, search, modal, popupInfo } from './common'
+import { requests, toast, drawer, router, modal, popupInfo } from './common'
 import { auth } from './auth'
 import { account } from './account'
 import { notification } from './notification'
@@ -10,8 +10,9 @@ import { order } from './order'
 import { booking } from './booking'
 import { report } from './report'
 import { location } from './location'
-import { meta } from './meta'
 import { revenue } from './revenue'
+import { meta } from './meta'
+import {banks, wallet, wallet_detail} from './wallet'
 // a rootReducer is like a single state, key is function return a sub state value
 const rootReducer = combineReducers({    
   form,
@@ -19,7 +20,7 @@ const rootReducer = combineReducers({
     // ui reducer should be placed here    
     toast,
     drawer,
-    search,
+    // search,
   }),  
   requests, 
   router,
@@ -34,8 +35,11 @@ const rootReducer = combineReducers({
   location,
   modal,
   popupInfo,
+  revenue,
   meta,
-  revenue
+  wallet,
+  wallet_detail,
+  banks
 })
 
 export default rootReducer

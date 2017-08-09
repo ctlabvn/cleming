@@ -2,14 +2,16 @@ import React, {Component} from 'react'
 import { View } from 'react-native'
 import { connect } from "react-redux";
 
-import {Container, Text, List, ListItem} from 'native-base'
+import {Container, Text, List, ListItem, Spinner} from 'native-base'
 import Content from "~/ui/components/Content";
 import styles from './styles'
 import Icon from '~/ui/elements/Icon'
 import Border from "~/ui/elements/Border";
 
-import { getSelectedRevenueItem } from '~/store/selectors/revenue'
+import { getSelectedRevenueItem, getDetail } from '~/store/selectors/revenue'
 import * as commonAction from "~/store/actions/common";
+import * as revenueActions from "~/store/actions/revenue";
+import { getSession } from "~/store/selectors/auth";
 
 import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
@@ -26,12 +28,13 @@ import {
 } from "~/store/constants/app";
 
 const defaultItem = {
-    status: 'get item unsuccessfully!!!',
+    tranId: '',
 }
 
 @connect(state => ({
-    selectedItem: (state.revenue ? getSelectedRevenueItem(state) : defaultItem),
-}), {...commonAction})
+    xsession: getSession(state),
+    revenue: state.revenue,
+}), {...commonAction, ...revenueActions})
 
 export default class extends Component {
 
@@ -39,28 +42,51 @@ export default class extends Component {
         super(props)
         const { route } = this.props;
 
-        const item = this.props.selectedItem;
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
         this.state = {
-            item: item,
+            isLoading: true,
             currentTab: tab,
             colorStyle: color,
+            detail: this._defaultDetail(),
         }
+    }
+
+    _loadRevenueDetail() {
+        const { xsession, getRevenueDetail, selectedItem, route } = this.props
+        const tranId = route.params.tranId;
+        getRevenueDetail(xsession, tranId, (err, data) => {
+            if (data && data.data) {
+                this.setState({
+                    isLoading: false,
+                    detail: data.data
+                });
+            } else {
+                this.setState({
+                    isLoading: false,
+                })
+            }
+        });
+    }
+
+    componentWillMount() {
+        this._loadRevenueDetail();
     }
 
     componentWillFocus() {
         const { route } = this.props;
-        const item = this.props.selectedItem;
         let tab = parseInt(route.params.tabId);
         let color = tab == REVENUE_PROCESSING ? styles.revenueProcessing :
             (tab == REVENUE_DONE ? styles.revenueDone : null);
         this.setState({
-            item: item,
+            isLoading: true,
             currentTab: tab,
             colorStyle: color,
+            detail: this._defaultDetail(),
         })
+
+        this._loadRevenueDetail();
     }
 
     _renderTitle() {
@@ -69,7 +95,7 @@ export default class extends Component {
             content: '',
         }
 
-        let time = moment(this.state.item.time * 1000).format(TIME_FORMAT_WITHOUT_SECOND);
+        let time = this.state.detail ? moment(this.state.detail.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND) : '';
 
         switch (parseInt(this.state.currentTab)) {
             case REVENUE_PROCESSING:
@@ -103,48 +129,73 @@ export default class extends Component {
         )
     }
 
+    _defaultDetail() {
+        return {
+            tranTime: '',
+            tranType: REVENUE_CLINGME_PAY,
+            tranCode: '',
+            revenueMoney: '',
+            tranMoney: '',
+            shipMoney: '',
+            paidMoney: '',
+            chargeMoney: '',
+        }
+    }
+
     render() {
 
-        iconName = this.state.item.itemType == REVENUE_CLINGME_PAY ? 'clingme-wallet': 'shiping-bike2';
+        // iconName = this.state.item.itemType == REVENUE_CLINGME_PAY ? 'clingme-wallet': 'shiping-bike2';
+
+        const {detail} = this.state
+
+        const revenueItem = detail ? detail : this._defaultDetail();
+        // const { selectedItem } = this.props;
+
+        iconName = revenueItem.tranType == REVENUE_CLINGME_PAY ? 'clingme-wallet': 'shiping-bike2';
+
+        const spinner =  <Spinner/>
+
+        const content = <View style={{flexDirection: 'row', width:'100%'}}>
+            <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
+            <View style={{flex: 1}}>
+                <ListItem style={{...styles.row, marginTop: 10}}>
+                    <Text medium style={styles.gray}>Clingme Pay</Text>
+                    <Text bold large style={styles.gray}>#{revenueItem.tranCode}</Text>
+                </ListItem>
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <ListItem style={styles.row}>
+                    <Text medium style={styles.gray}>Doanh Thu</Text>
+                    <Text bold large style={styles.orange}>{formatNumber(revenueItem.revenueMoney)} đ</Text>
+                </ListItem>
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <ListItem style={styles.row}>
+                    <Text medium style={styles.gray}>Tổng tiền giao dịch</Text>
+                    <Text bold large style={styles.gray}>{formatNumber(revenueItem.tranMoney)} đ</Text>
+                </ListItem>
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <ListItem style={styles.row}>
+                    <Text medium style={styles.gray}>Tiền vận chuyển</Text>
+                    <Text bold large style={styles.gray}>{formatNumber(revenueItem.shipMoney)} đ</Text>
+                </ListItem>
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <ListItem style={styles.row}>
+                    <Text medium style={styles.gray}>Tiền đã thu</Text>
+                    <Text bold large style={styles.gray}>{formatNumber(revenueItem.paidMoney)} đ</Text>
+                </ListItem>
+                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <ListItem style={styles.row}>
+                    <Text medium style={styles.gray}>Phí Clingme</Text>
+                    <Text bold large style={styles.gray}>{formatNumber(revenueItem.chargeMoney)} đ</Text>
+                </ListItem>
+            </View>
+        </View>
 
         return (
             <Container>
                 {this._renderTitle()}
                 <Content contentContainerStyle={{ alignItems:'center', justifyContent:'flex-start', flex: 1 }}>
-                    <View style={{flexDirection: 'row', width:'100%'}}>
-                        <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
-                        <View style={{flex: 1}}>
-                            <ListItem style={{...styles.row, marginTop: 10}}>
-                                <Text medium style={styles.gray}>Clingme Pay</Text>
-                                <Text bold large style={styles.gray}>#{this.state.item.code}</Text>
-                            </ListItem>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
-                            <ListItem style={styles.row}>
-                                <Text medium style={styles.gray}>Doanh Thu</Text>
-                                <Text bold large style={styles.orange}>{formatNumber(this.state.item.money)} đ</Text>
-                            </ListItem>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
-                            <ListItem style={styles.row}>
-                                <Text medium style={styles.gray}>Tổng tiền giao dịch</Text>
-                                <Text bold large style={styles.gray}>{formatNumber(this.state.item.money + 99000)} đ</Text>
-                            </ListItem>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
-                            <ListItem style={styles.row}>
-                                <Text medium style={styles.gray}>Tiền vận chuyển</Text>
-                                <Text bold large style={styles.gray}>0 đ</Text>
-                            </ListItem>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
-                            <ListItem style={styles.row}>
-                                <Text medium style={styles.gray}>Tiền đã thu</Text>
-                                <Text bold large style={styles.gray}>0 đ</Text>
-                            </ListItem>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
-                            <ListItem style={styles.row}>
-                                <Text medium style={styles.gray}>Phí Clingme</Text>
-                                <Text bold large style={styles.gray}>99.000 đ</Text>
-                            </ListItem>
-                        </View>
-                    </View>
+                    {(this.state.isLoading ? spinner : content)}
+
                 </Content>
             </Container>
         )

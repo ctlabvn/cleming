@@ -24,35 +24,15 @@ import ChartDemo from './containers/ChartDemo'
 import MapCluster from './containers/MapCluster'
 import RevenueManagementList from './containers/RevenueManagementList'
 import RevenueManagementDetail from './containers/RevenueManagementDetail'
-import ComingSoon from './containers/ComingSoon'
 import Wallet from './containers/Wallet'
 import WalletDetail from './containers/WalletDetail'
 import WithDraw from './containers/WithDraw'
 import BankAccount from './containers/BankAccount'
+import ComingSoon from './containers/ComingSoon'
+
+
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
-    bankAccount: {
-        title: I18n.t('page_bank_account'),
-        Page: BankAccount,
-        headerType: 'back',
-        footerType: 'none'
-    },
-    withdraw: {
-        title: I18n.t('withdraw'),
-        Page: WithDraw,
-        headerType: 'back',
-        footerType: 'none'
-    },
-    walletDetail: {
-        title: I18n.t('page_wallet_detail'),
-        Page: WalletDetail,
-        headerType: 'back'
-    },
-    wallet: {
-        title: I18n.t('page_wallet'),
-        Page: Wallet,
-        headerType: 'back'
-    },
     comingSoon: {
         title: 'In the future',
         Page: ComingSoon,
@@ -73,7 +53,7 @@ export default {
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
-        headerType: 'back',
+        headerType: 'home',
         showTopDropdown: true,
     },
     'transactionDetail/:id/:type': {
@@ -176,6 +156,7 @@ export default {
     help:{
         title: 'Help',
         Page: Help,
+        headerType: 'back',
     },
     qrScanner: {
         title: 'QR Scanner',
@@ -198,9 +179,32 @@ export default {
         headerType: 'back',
     },
 
-    'revenueManagementDetail/:tabId': {
+    'revenueManagementDetail/:tabId/:tranId': {
         title: I18n.t('revenue_detail'),
         Page: RevenueManagementDetail,
         headerType: 'back',
+    },
+
+    'wallet': {
+        title: I18n.t('page_wallet'),
+        Page: Wallet,
+        headerType: 'back',
+    },
+    'walletDetail': {
+        title: I18n.t('page_wallet_detail'),
+        Page: WalletDetail,
+        headerType: 'back',
+    },
+    'withDraw': {
+        title: I18n.t('page_bank_account'),
+        Page: WithDraw,
+        headerType: 'back',
+        footerType: 'none'
+    },
+    'bankAccount': {
+        title: I18n.t('page_bank_account'),
+        Page: BankAccount,
+        headerType: 'back',
+        footerType: 'none'
     }
 }

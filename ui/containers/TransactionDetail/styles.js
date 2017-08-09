@@ -230,7 +230,8 @@ export default {
         backgroundColor: 'transparent'
     },
     invoiceDetailBlock: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
         // flexWrap: 'wrap'
     },
 
@@ -392,11 +393,10 @@ export default {
     },
     contentRootChild: {
         flexDirection: 'column',
-        flex: 1,
         justifyContent: 'flex-start',
         padding: 10,
         backgroundColor: material.white500,
-        // height: material.deviceHeight
+        paddingBottom: 50
     },
     loadingContainer: { 
         backgroundColor: material.white500,

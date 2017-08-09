@@ -2,6 +2,9 @@ import material from '~/theme/variables/material'
 import React, { Component } from 'react'
 import {View} from 'react-native'
 import {Text} from 'native-base'
+
+import { Platform } from 'react-native'
+
 export const getPopoverOptions = (popoverWidth, fromRect, arrowPadding = -5) => ({
   fromRect,
   // from center
@@ -96,7 +99,13 @@ export const getToastMessage = (message) => {
 }
 
 export const getServerMode = (versionName) => {
-  return (versionName.split(".").length == 3) ? 'PROD':'DEV'
+  let splitArr = versionName.split(".")
+  if (Platform.OS == 'android'){
+    return (splitArr.length == 3) ? 'PROD':'DEV'
+  }else{
+    return (splitArr[splitArr.length-1] % 2 == 0) ? 'PROD':'DEV' 
+  }
+  
 }
 
 export const _isArrDiff = (arr1, arr2, checkProperties) => {

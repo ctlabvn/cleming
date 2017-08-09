@@ -7,8 +7,8 @@ export const ORDER_SUCCESS = 2
 export const ORDER_CANCEL = 3
 export const REVENUE_PROCESSING = 1;
 export const REVENUE_DONE = 2;
-export const REVENUE_DELIVERY = 'REVENUE_DELIVERY';
-export const REVENUE_CLINGME_PAY = 'REVENUE_CLINGME_PAY';
+export const REVENUE_DELIVERY = 1;
+export const REVENUE_CLINGME_PAY = 2;
 
 //  "transactionStatus": int,	// Trạng thái của hoá đơn, 0 và 3 là đang chờ Clingme xử lý, 1 là thành công, 2 là bị từ chối, 4 là chờ merchant phê duyệt, 5 là merchant đã xem và khiếu nại
 export const TRANSACTION_DIRECT_STATUS = {
@@ -30,8 +30,8 @@ export const DEFAULT_MONTH_FORMAT = 'MM/YYYY'
 export const DAY_WITHOUT_YEAR = 'DD/MM'
 export const DEFAULT_YEAR_FORMAT = 'YYYY'
 export const DEFAULT_HOUR_FORMAT = 'HH:mm'
-export const DEFAULT_TIME_FORMAT = 'HH:mm:ss  D/M/YY'
-export const TIME_FORMAT_WITHOUT_SECOND = 'HH:mm  D/M/YY'
+export const DEFAULT_TIME_FORMAT = 'HH:mm:ss  DD/MM/YY'
+export const TIME_FORMAT_WITHOUT_SECOND = 'HH:mm  DD/MM/YY'
 export const NOTIFY_TYPE={
     COMMENT: 1,
     PAY: 2,
@@ -46,7 +46,9 @@ export const NOTIFY_TYPE={
     ORDER_CANCELLED: 12,
     ORDER_REPUSH_1: 13,
     ORDER_REPUSH_2: 14,
-    TRANSACTION_CLINGME: 10
+    TRANSACTION_CLINGME: 10,
+    TRANSACTION_CLINGME_REPUSH: 15
+
 }
 
 export const TRANSACTION_TYPE={

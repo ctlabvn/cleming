@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackAndroid, NativeModules, Navigator, InteractionManager } from 'react-native'
-import { Drawer, StyleProvider, View } from 'native-base'
+import { BackAndroid, NativeModules, Navigator, InteractionManager, NetInfo } from 'react-native'
+import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 import URL from 'url-parse'
 
@@ -11,6 +11,7 @@ import material from '~/theme/variables/material'
 // import Container from './components/Container'
 // import Navigator from './components/Navigator'
 import Toasts from './components/Toasts'
+import ConnectionInfo from './components/ConnectionInfo'
 import AfterInteractions from './components/AfterInteractions'
 import PushNotification from 'react-native-push-notification'
 import SideBar from './components/SideBar'
@@ -21,6 +22,8 @@ import Footer from '~/ui/components/Footer'
 import TopDropdown from '~/ui/components/TopDropdownSeperate'
 import TopDropdownListValue from '~/ui/components/TopDropdownListValue'
 import PopupInfo from '~/ui/components/PopupInfo'
+import PopupConfirm from '~/ui/components/PopupConfirm'
+import NotificationHandler from './containers/NotificationHandler'
 // router => render component base on url
 // history.push => location match => return component using navigator push
 import { matchPath } from 'react-router'
@@ -38,13 +41,12 @@ import * as metaActions from "~/store/actions/meta"
 import { getSession } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
-
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
-
+import I18n from '~/ui/I18n'
 const NoTransition = {
   opacity: {
     from: 1,
@@ -128,38 +130,6 @@ export default class App extends Component {
     return sceneConfig
   }
 
-  initPushNotification(options) {
-    PushNotification.configure({
-      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications) 
-      // senderID: "YOUR GCM SENDER ID",
-
-      // IOS ONLY (optional): default: all - Permissions to register.
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true
-      },
-
-      // Should the initial notification be popped automatically
-      // default: true
-      popInitialNotification: true,
-
-      /**
-        * (optional) default: true
-        * - Specified if permissions (ios) and token (android and ios) will requested or not,
-        * - if not, you must call PushNotification.requestPermissions() later
-        */
-      requestPermissions: true,
-
-      ...options,
-    })
-  }
-
-  showNotification(options) {
-    // trigger local notification, like fetch from push server
-    return PushNotification.localNotification(options)
-  }
-
   constructor(props) {
     super(props)
     // default is not found page, render must show error
@@ -170,79 +140,6 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
-    this.initPushNotification({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: (token) => {
-        this.props.setPushToken(token.token)
-      },
-
-      // (required) Called when a remote or local notification is opened or received
-      onNotification: (notification) => {
-        console.log('NOTIFICATION:', notification)
-        if (notification.userInteraction) {
-          this._handleNoti(notification)
-        } else {
-          if (this.props.xsession) {
-            let currentPlace = this.props.selectedPlace
-            if (currentPlace && currentPlace.id) {
-              this.props.getMerchantNews(this.props.xsession, currentPlace.id)
-            }
-            const title = notification.title ? notification.title + " " + notification.message : notification.alert
-            this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
-            this._markWillLoad(notification)
-          }
-        }
-      },
-
-      senderID: SENDER_ID,
-    })
-  }
-  _markWillLoad = (notification) => {
-    const {markWillLoad} = this.props
-    let notificationData = notification.data
-    switch (notificationData.type) {
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
-      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
-        markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-        break
-      case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-        break
-      case NOTIFY_TYPE.NEW_BOOKING:
-        markWillLoad(SCREEN.BOOKING_LIST)
-        break
-      case NOTIFY_TYPE.NEW_ORDER:
-      case NOTIFY_TYPE.ORDER_REPUSH_1:
-      case NOTIFY_TYPE.ORDER_REPUSH_2:
-        markWillLoad(SCREEN.ORDER_LIST)
-        break
-    }
-  }
-
-  _handleNoti = (notification) => {
-    const { xsession, updateRead } = this.props
-    if (notification.param2) {
-      updateRead(xsession, param2)
-    }
-    console.log('Call handle Noti')
-    let notificationData = notification.data
-    switch (notificationData.type) {
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
-      case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
-        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
-        break
-      case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.CLINGME)
-        break
-      case NOTIFY_TYPE.NEW_BOOKING:
-        this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
-        break
-      case NOTIFY_TYPE.NEW_ORDER:
-      case NOTIFY_TYPE.ORDER_REPUSH_1:
-      case NOTIFY_TYPE.ORDER_REPUSH_2:
-        this.props.forwardTo('deliveryDetail/' + notificationData.param1)
-        break
-    }
   }
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
@@ -332,24 +229,6 @@ export default class App extends Component {
 
   // we can use events to pass between header and footer and page via App container or store
   _renderPage = (route) => {
-    // if (this.page.path && route.path !== this.page.path) {
-    //   // console.log('will focus')
-    // } else {
-    //   // we only pass this.page, route and navigator is for mapping or some event like will focus ...
-    //   // first time not show please waiting
-    //   // if (!this.navigator || this.page.Preload === false) {
-    //   //   return this.renderComponentFromPage(this.page)
-    //   // }
-    // console.log('Page', route)
-    // console.log('APJS Topdopdpwm', this.topDropdown)
-    // if (this.topDropdown){
-    //   if (route.showTopDropdown){
-    //     this.topDropdown.show(true)
-    //   }else{
-    //     this.topDropdown.show(false)
-    //   }
-    // }
-
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
         {this.renderComponentFromPage(this.page)}
@@ -409,7 +288,7 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router, setToast } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
       let listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -461,7 +340,8 @@ export default class App extends Component {
         return true
       }
       if (router.route === 'merchantOverview' || router.route === 'login') {
-        return false
+        this.popupConfirm.show(I18n.t('confirm_exit'))
+        return true
       }
       // go back
       goBack()
@@ -612,19 +492,23 @@ export default class App extends Component {
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
           <TopDropdown
+            app={this}
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
           />
           <TopDropdownListValue
-            onSelect={this._handleChangePlace}
+            onSelect={this._handleChangePlace}            
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
           />
           <Toasts />
+          <NotificationHandler />
+          <ConnectionInfo />
           {
           // <Popover ref={ref => this.popover = ref} />
 }
           <PopupInfo />
+          <PopupConfirm ref={ref=>this.popupConfirm = ref} onOk={()=>BackAndroid.exitApp()}/>
         </Drawer>
       </StyleProvider>
     )

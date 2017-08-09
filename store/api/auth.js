@@ -38,8 +38,6 @@ export default {
         }).then(async (response) => {
             const xsession = response.headers.map['x-session']
             const body = await response.json()
-            console.log('Response', response)
-            console.log('Body', body)
             if (xsession){
                 
                 return {...body.updated.account, xsession}

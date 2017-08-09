@@ -31,13 +31,15 @@ import {
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import ListTransaction from './TransactionListComponent'
+import { getRouter } from '~/store/selectors/common'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
     news: getNews(state),
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state),
-    meta: state.meta    
+    meta: state.meta,
+    router: getRouter(state),  
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
@@ -52,7 +54,9 @@ export default class extends Component {
         this.currentPlace = -1
         if (props.app && props.app.topDropdown){
             let selectedPlace = props.app.topDropdown.getValue()
-            this.currentPlace = selectedPlace.id
+            if (selectedPlace && selectedPlace.id){
+                this.currentPlace = selectedPlace.id
+            }
         }
     }
     // need filter transaction type
@@ -204,8 +208,35 @@ export default class extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        const { app, clearMarkLoad, router } = this.props
+        const { meta } = nextProps
+        if (!router || router.route != 'transactionList'){
+            return
+        }
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.state.currentTab == TRANSACTION_TYPE_DIRECT){
+            console.log('Case reload tranDirect')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.state.currentTab == TRANSACTION_TYPE_CLINGME){
+            console.log('Case reload tranClm')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }
+    }
 
-    componentWillFocus() {
+    shouldComponentUpdate(nextProps, nextState) {
+        const {router} = this.props
+        if (!router || router.route != 'transactionList'){
+            return false
+        }
+        return true
+    }
+
+    componentWillFocus() {        
         // InteractionManager.runAfterInteractions(() => {
         const { app, news, meta, clearMarkLoad } = this.props
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -220,7 +251,7 @@ export default class extends Component {
             console.log('Markload transaction clingme')
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-        }else if(currentPlace.id != this.currentPlace){
+        }else if(currentPlace && currentPlace.id != this.currentPlace){
             this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         }
         
@@ -322,13 +353,11 @@ export default class extends Component {
     }
 
     _renderList() {
-        const { transaction, payWithClingme, payDirect } = this.props
-        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
-            return <ListTransaction key='listTrans' data={payWithClingme.listTransaction} />
-        } else {
-            return <ListTransaction key='listTrans' data={payDirect.listTransaction} />
-        }
+        const { transaction, payWithClingme, payDirect } = this.props   
+        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}
+             key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
     }
+    
     render() {
         console.log('Render TransactionList')
         const { forwardTo, payDirect, payWithClingme } = this.props
@@ -359,16 +388,12 @@ export default class extends Component {
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />
-                    <Content
-                        padder
-                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
-                        refreshing={this.state.loading}
-                    >
+                   
                         {this._renderList()}
                         {this.state.loadingMore && <Spinner color={material.red500} />}
                         {/*{noData}
                         {moreData}*/}
-                    </Content>
+                    
 
                 </View>
             </Container>

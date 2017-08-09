@@ -22,17 +22,19 @@ import {
     GENERAL_ERROR_MESSAGE,
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
-    TRANSACTION_TYPE_DIRECT
+    TRANSACTION_TYPE_DIRECT,
+    SCREEN
 } from "~/store/constants/app";
 import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
 import I18n from '~/ui/I18n'
+import * as metaAction from "~/store/actions/meta"
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
     denyReason: state.transaction.denyReason,
     denyReasonClm: state.transaction.denyReasonClm
-}), { ...transactionActions, ...commonActions, ...notificationActions })
+}), { ...transactionActions, ...commonActions, ...notificationActions, ...metaAction })
 export default class TransactionDetail extends Component {
     constructor(props) {
         super(props)
@@ -64,7 +66,7 @@ export default class TransactionDetail extends Component {
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_not_accept')}</Text></Button>)
+                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_complain')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -110,7 +112,7 @@ export default class TransactionDetail extends Component {
         // console.log('Confirming', clingmeId)
         if (this.confirmCounter > 0) return
         this.confirmCounter ++
-        const { xsession, confirmTransaction, transaction, setToast } = this.props
+        const { xsession, confirmTransaction, transaction, setToast, markWillLoad } = this.props
         console.log("trans", this.state.transactionInfo)
         confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
             (err, data) => {
@@ -119,6 +121,7 @@ export default class TransactionDetail extends Component {
                 console.log('Confirm Data', data)
                 if (chainParse(data, ['updated', 'data', 'success'])) {
                     setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 3000, 'top')
+                    markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
                     this._load(this.state.transactionInfo.transactionId)
                 }
             }
@@ -236,6 +239,7 @@ export default class TransactionDetail extends Component {
         } else if (transactionInfo.transactionStatus == 2) {
             payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
         }
+
         return (
             <Content>
                 <View style={styles.contentRootChild}>
@@ -244,7 +248,7 @@ export default class TransactionDetail extends Component {
                         onClickYes={this._handleFeedbackClingme}
                         dealTransactionId={transactionInfo.clingmeId}
                     />
-                    <View style={{ ...styles.blockCenter, alignSelf: 'flex-start' }}>
+                    <View style={{ ...styles.block, alignSelf: 'flex-start' }}>
                         <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
@@ -264,8 +268,10 @@ export default class TransactionDetail extends Component {
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
                             <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
-                            {/*<Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />*/}
-                            <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} />
+
+                            {transactionInfo.avatarUrl!='' ?
+                                <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} /> :
+                                <Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />}
                         </View>
                     </View>
                     <View style={styles.rowCenter}>
@@ -292,7 +298,7 @@ export default class TransactionDetail extends Component {
                         </View>
                         <View style={styles.rowPadding}>
                             <View style={styles.transactionContent}>
-                                <Text grayDark medium>{I18n.t('bill_number')}: </Text>
+                                <Text grayDark medium>{I18n.t('transaction_number')}: </Text>
                                 <Text medium primary bold>{transactionInfo.dealTransactionIdDisplay}</Text>
                             </View>
                             <Icon name="coin_mark" style={{ ...styles.icon, ...styles.success }} />
@@ -357,11 +363,11 @@ export default class TransactionDetail extends Component {
                                     </View> */}
                                 </View>
                                 <View style={styles.rowSpaceAround}>
-                                    <View style={styles.gridItem}>
+                                    {/*<View style={styles.gridItem}>*/}
 
-                                        <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                        <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
-                                    </View>
+                                        {/*<Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>*/}
+                                        {/*<Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>*/}
+                                    {/*</View>*/}
                                     <View style={styles.gridItem}>
                                         <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
                                         <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
@@ -602,7 +608,7 @@ export default class TransactionDetail extends Component {
         }
         
         return (
-            <Container>
+            <Container style={{backgroundColor: material.white500}}>
                 <PopupInfo ref='popupInfo' />
                 {/*<LoadingModal loading={this.state.loading} />*/}
                 <ViewPager style={{ flex: 1, height: '100%' }}

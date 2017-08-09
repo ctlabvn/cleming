@@ -36,6 +36,7 @@ export default {
     'transaction_cashback_success': 'Giao dịch thành công',
     'transaction_reject': 'Giao dịch bị từ chối',
     'transaction_not_accept': 'Không đồng ý',
+    'transaction_complain': 'Khiếu nại',
     'method_pay_direct': 'Thanh toán trực tiếp',
     'transaction_type_clingme': 'Trả qua Clingme',
     'transaction_type_direct': 'Trả trực tiếp',
@@ -130,6 +131,7 @@ export default {
     'list_place': 'Danh sách địa điểm',
     'change_password': 'Thay đổi mật khẩu',
     'ok': 'Đồng ý',
+    'cancel': 'Bỏ qua',
     'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
 
     // Change Password In App
@@ -147,6 +149,7 @@ export default {
     'revenue_management': 'Quản lý doanh thu',
     'revenue_processing': 'Giao dịch đang xử lý',
     'revenue_done': 'Giao dịch đã chuyển tiền',
+    'have_no_data': 'Chưa có dữ liệu.',
 
     // Error
     'err_general': 'Có lỗi xảy ra, vui lòng thử lại sau.',
@@ -177,6 +180,10 @@ export default {
     'err_not_master': 'Mời bạn liên hệ chủ cửa hàng để nhận lại mật khẩu đăng nhập.',
     'err_phone_exists': 'Số điện thoại đã tồn tại.',
     'err_email_exists': 'Địa chỉ email đã tồn tại.',
+
+    'err_field_must_not_empty': 'Trường này không được để trống.',
+    'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
+    'err_identity_card_must_be_number': 'Sai định dạng Số CMND/Căn cước.',
     
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
@@ -187,7 +194,10 @@ export default {
     'update_profile_successfully': 'Cập nhật thông tin thành công!',
     'could_not_update_profile': 'Thông tin chưa được cập nhật.',
     'update_employee_info_successfully': 'Cập nhật thông tin thành công!',
-    'Could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'could_not_upload_avatar': 'Không cập nhật được ảnh đại diện.',
+    'create_password_failed' : 'Tạo mật khẩu không thành công.',
+    'create_password_successfully' : 'Tạo mật khẩu thành công.',
+    'is_processing' : 'Đang xử lý.',
 
     // vault
 
@@ -201,6 +211,7 @@ export default {
     'day': 'ngày',
     'month': 'tháng',
     'year': 'năm',
+    'week': 'tuần',
     'to': 'đến',
     'info': 'Thông báo',
 
@@ -223,6 +234,7 @@ export default {
     'bank_name': 'Tên ngân hàng',
     'area': 'Khu vực',
     'branch': 'Chi nhánh',
+    'add_bank_success': 'Chúng tôi đã nhận được yêu cầu tạo tài khoản của bạn và sẽ xử lí trong thời gian sớm nhất.',
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
@@ -230,4 +242,10 @@ export default {
 
     // notifications
     'no_notification': 'Chưa nhận được thông báo nào',
+    'no_internet': 'Không có kết nối với internet.',
+    'confirm_exit': 'Bạn có chắc muốn thoát?',
+    'processing': 'Đang xử lý ...',
+
+    // topDropDown
+    'search': 'Tìm kiếm',
 }

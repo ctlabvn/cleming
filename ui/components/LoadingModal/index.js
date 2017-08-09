@@ -30,6 +30,7 @@ export default class FeedbackDialogClingme extends Component {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <Spinner color='#00a9d4' style={styles.spinner}/>
+                        <Text primary>{this.props.text}</Text>
                     </View>
                 </View>
             </Modal>

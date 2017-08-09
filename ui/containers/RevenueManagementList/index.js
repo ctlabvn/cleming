@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Container, Text, List, ListItem} from 'native-base'
+import {Container, Text, List, ListItem, Spinner} from 'native-base'
 import {View} from 'react-native'
 
 import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
 import * as revenueActions from "~/store/actions/revenue";
 import { getSession } from "~/store/selectors/auth";
+import { getRevenueData } from "~/store/selectors/revenue";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -24,6 +25,8 @@ import {formatNumber} from "~/ui/shared/utils";
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
 import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
 
+import I18n from '~/ui/I18n'
+
 import {
     TIME_FORMAT_WITHOUT_SECOND,
 } from "~/store/constants/app";
@@ -33,6 +36,7 @@ import {
 
 @connect(state => ({
     xsession: getSession(state),
+    revenueData: getRevenueData(state),
 }), { ...commonAction, ...authActions, ...revenueActions})
 
 export default class extends Component {
@@ -43,7 +47,40 @@ export default class extends Component {
         this.state = ({
             currentTab: REVENUE_PROCESSING,
             colorStyle: styles.revenueProcessing,
-            loading: false,
+            loading: true,
+            loadMore: false,
+        })
+    }
+
+    componentDidMount() {
+        this._loadData();
+    }
+
+    componentWillFocus() {
+        // this._loadData();
+    }
+
+    _loadData(loadMore = false, dateFilter = this.refs.dateFilter.getData()) {
+
+        const { revenueData } = this.props;
+        if (loadMore && (revenueData.totalPage == revenueData.pageNumber)) return;
+
+        fromTime = dateFilter.currentSelectValue.value.from;
+        toTime = dateFilter.currentSelectValue.value.to;
+        option = this.state.currentTab;
+        pageNumber = loadMore && revenueData && (revenueData.totalPage > revenueData.pageNumber) ? revenueData.pageNumber + 1 : 1;
+
+        const { xsession, getRevenueList, setRevenueData } = this.props;
+
+        this.setState({loading: !loadMore, loadMore: loadMore});
+        getRevenueList(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
+            if (err) setRevenueData({});
+            if (data) {
+                if (loadMore && !!data && !!data.data) data.data.listRevenueItem = [...revenueData.listRevenueItem, ...data.data.listRevenueItem];
+                setRevenueData(data.data);
+            }
+
+            this.setState({loading: false, loadMore: false});
         })
     }
 
@@ -54,13 +91,17 @@ export default class extends Component {
             (tab == REVENUE_DONE ? styles.revenueDone : null);
 
         this.setState({
+            loading: true,
             currentTab: data.tabID,
             colorStyle: color,
         })
+
+        this._loadData();
     }
 
     _handlePressFilter(data) {
-
+        // this.setState({ loading: true });
+        this._loadData(false, data);
     }
 
     _renderMoneyBand(money) {
@@ -75,21 +116,19 @@ export default class extends Component {
         )
     }
 
-    _forwardToDetail(data) {
+    _forwardToDetail(tabId, tranId) {
         const { setToast, forwardTo } = this.props
-
-        forwardTo('revenueManagementDetail/'+this.state.currentTab);
+        forwardTo('revenueManagementDetail/' + tabId + "/" + tranId);
     }
 
     _renderItem(item) {
-
-        let {code, time, itemType, username, money} = item;
+        let {tranId, tranCode, tranTime, tranType, userName, userId, moneyAmount} = item
 
         let type = 'Giao hàng'; // default
         let iconName = 'shiping-bike2'; // default
         let iconColor = material.orange500; // default
 
-        switch (itemType) {
+        switch (tranType) {
             case REVENUE_DELIVERY:
                 type = 'Giao hàng';
                 iconName = 'shiping-bike2';
@@ -101,10 +140,7 @@ export default class extends Component {
         }
 
         handlePress = () => {
-            const { setSelectedRevenueItem } = this.props
-            // checkRevenueAction();
-            setSelectedRevenueItem(item);
-            this._forwardToDetail();
+            this._forwardToDetail(this.state.currentTab , tranId);
         }
 
         return (
@@ -114,8 +150,8 @@ export default class extends Component {
                         <Icon name={iconName} style={{...styles.icon, ...this.state.colorStyle}}/>
                         <View style={styles.itemContent}>
                             <View style={styles.subRow}>
-                                <Text largeLight bold grayDark>#<Text largeLight grayDark>{code}</Text></Text>
-                                <Text medium grayDark>{moment(time * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text largeLight bold grayDark>#{tranCode}</Text>
+                                <Text medium grayDark>{moment(parseInt(tranTime) * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             </View>
 
                             <View style={styles.subRow}>
@@ -123,8 +159,8 @@ export default class extends Component {
                             </View>
 
                             <View style={styles.subRow}>
-                                <Text medium grayDark>{username}</Text>
-                                <Text largeLight grayDark><Text largeLight bold>+{formatNumber(money)}</Text> đ</Text>
+                                <Text medium grayDark>{userName}</Text>
+                                <Text largeLight grayDark><Text largeLight bold>+{formatNumber(parseInt(moneyAmount))}</Text> đ</Text>
                             </View>
                         </View>
                     </View>
@@ -134,62 +170,51 @@ export default class extends Component {
         )
     }
 
-    _getListItemFake() {
-        if (this.state.currentTab == REVENUE_PROCESSING) {
-            return [
-                {code: 'CL123456', time: 1500007022, itemType: REVENUE_DELIVERY, username: 'tienvm', money: 500000},
-                {code: 'CL234567', time: 1500008103, itemType: REVENUE_CLINGME_PAY, username: 'frickimous', money: 650000},
-                {code: 'CL345678', time: 1500006126, itemType: REVENUE_DELIVERY, username: 'panda', money: 800000},
-                {code: 'CL445677', time: 1500007126, itemType: REVENUE_CLINGME_PAY, username: 'tienvm', money: 900000},
-                {code: 'CL663456', time: 1500007022, itemType: REVENUE_DELIVERY, username: 'tienvm', money: 550000},
-                {code: 'CL994567', time: 1500008103, itemType: REVENUE_CLINGME_PAY, username: 'frickimous', money: 450000},
-                {code: 'CL999678', time: 1500006126, itemType: REVENUE_DELIVERY, username: 'panda', money: 850000},
-                {code: 'CL999997', time: 1500007126, itemType: REVENUE_CLINGME_PAY, username: 'tienvm', money: 12000000},
-            ]
-        } else {
-            return [
-                {code: 'CL113456', time: 1500285550, itemType: REVENUE_CLINGME_PAY, username: 'chicken', money: 350000},
-                {code: 'CL224567', time: 1500193500, itemType: REVENUE_CLINGME_PAY, username: 'dog', money: 950000},
-                {code: 'CL333333', time: 1500192488, itemType: REVENUE_DELIVERY, username: 'monkey', money: 750000},
-                {code: 'CL696969', time: 1500057777, itemType: REVENUE_CLINGME_PAY, username: 'horse', money: 850000},
-                {code: 'CL777777', time: 1500077022, itemType: REVENUE_DELIVERY, username: 'zebra', money: 650000},
-                {code: 'CL888888', time: 1500008111, itemType: REVENUE_DELIVERY, username: 'bird', money: 250000},
-                {code: 'CL999888', time: 1500006222, itemType: REVENUE_DELIVERY, username: 'panda', money: 150000},
-                {code: 'CL999999', time: 1500007111, itemType: REVENUE_CLINGME_PAY, username: 'pig', money: 22000000},
-            ]
-        }
-
+    _getListItem() {
+        if (loading) return;
+        const { revenueData } = this.props;
+        if (revenueData && revenueData.revenueList) return revenueData.revenueList;
+        // if (this.state.data) return this.state.data.listRevenueItem;
     }
 
     _getTotalMoney() {
-        let totalMoney = 0;
-        this._getListItemFake().map(data => {totalMoney += data.money})
-        return totalMoney;
+        const { revenueData } = this.props;
+        if (revenueData) {
+            return revenueData.totalMoney;
+        } else {
+            return 0;
+        }
     }
 
-    _renderList() {
-        return (<List dataArray={this._getListItemFake()}
+    _renderContent() {
+        const { revenueData } = this.props;
+        if (!revenueData) return <Text medium bold warning> Data is null! </Text>
+        let listItem = revenueData.listRevenueItem;
+        if (!listItem) return <Text medium bold warning> {I18n.t('have_no_data')} </Text>
+        return (<List dataArray={listItem}
                       renderRow={(item) => {return this._renderItem(item)}}
                       pageSize={10}/>)
     }
 
     _loadMore() {
-
+        this._loadData(true);
     }
 
     _onRefresh() {
-
+        // this.setState({loading: true})
+        this._loadData();
     }
 
     render() {
         return (
             <Container style={styles.container}>
-                <TabsWithNoti tabData={options.tabData} activeTab={1} onPressTab={this._handlePressTab.bind(this)}
+                <TabsWithNoti tabData={options.tabData} activeTab={REVENUE_PROCESSING} onPressTab={this._handlePressTab.bind(this)}
                               ref='tabs'/>
                 <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter'/>
                 {this._renderMoneyBand(this._getTotalMoney())}
-                <Content padder onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}>
-                    {this._renderList()}
+                <Content padder onEndReached={() => this._loadMore()} onRefresh={()=>this._onRefresh()} refreshing={this.state.loading}>
+                    {this._renderContent()}
+                    {this.state.loadMore && <Spinner/>}
                 </Content>
             </Container>
         )

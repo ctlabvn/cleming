@@ -8,6 +8,7 @@ import {
 
 import * as commonSelectors from '~/store/selectors/common'
 import * as commonActions from '~/store/actions/common'
+import {getUser} from "~/store/selectors/auth";
 
 import Icon from '~/ui/elements/Icon'
 import styles from './styles'
@@ -16,7 +17,8 @@ import { storeTransparent, storeFilled } from '~/assets'
 import {Keyboard, TouchableWithoutFeedback} from 'react-native'
 
 @connect(state=>({
-  searchString: commonSelectors.getSearchString(state),
+    user: getUser(state),
+  // searchString: commonSelectors.getSearchString(state),
 }), commonActions)
 export default class extends Component {
 
@@ -47,11 +49,11 @@ export default class extends Component {
     Keyboard.dismiss()
   }
 
-  _search = (value, force=false)=>{
-    if((this.props.searchString !== value) || force) {
-      this.props.search(value)
-    } 
-  }
+  // _search = (value, force=false)=>{
+  //   if((this.props.searchString !== value) || force) {
+  //     this.props.search(value)
+  //   } 
+  // }
   
   _rightClick = (e)=>{
     const {onRightClick} = this.props
@@ -71,28 +73,28 @@ export default class extends Component {
   }
 
   // public data not event
-  renderHeaderSearch(iconName="menu"){    
-    const center = (
-      <Item style={styles.searchContainer}>
-          <Icon name="search" style={styles.searchIcon} />
-          <Input value={this.props.searchString} 
-            autoCorrect={false} onChangeText={this._search} 
-            placeholderTextColor="#a7e7ff" style={styles.searchInput} 
-            placeholder="Regit Search" />                        
-      </Item>
-    )
-    return this.renderHeaderTitle(center, "cloud-upload")    
-  }
+  // renderHeaderSearch(iconName="menu"){    
+  //   const center = (
+  //     <Item style={styles.searchContainer}>
+  //         <Icon name="search" style={styles.searchIcon} />
+  //         <Input value={this.props.searchString} 
+  //           autoCorrect={false} onChangeText={this._search} 
+  //           placeholderTextColor="#a7e7ff" style={styles.searchInput} 
+  //           placeholder="Regit Search" />                        
+  //     </Item>
+  //   )
+  //   return this.renderHeaderTitle(center, "cloud-upload")    
+  // }
 
-  renderHeaderHome(title, leftIcon='~/assests/images/store_without_background.png'){
+  renderHeaderHome(title, leftIcon){
     /*const left = (
       <Button noPadder transparent style={styles.circleButton} onPress={this._leftClick}>
         <Icon style={styles.circleIcon} name={leftIcon}/>
       </Button>
     )*/
-    const left = (
-      <Thumbnail source={{uri: leftIcon}} style={{width: 40, height: 40, borderRadius: 20}}/>
-    )
+      let iconSource = leftIcon ? {uri: leftIcon} : this.props.user.avatar ? {uri: this.props.user.avatar} : storeFilled;
+      const left = <Thumbnail source={iconSource} style={styles.thumbnail}/>;
+
     return this.renderHeaderTitle(title, left)
   }
 

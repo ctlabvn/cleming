@@ -6,7 +6,7 @@ export default {
         zIndex: 500,
         elevation: 5,
         position: 'absolute',
-        top: material.toolbarHeight + 50,
+        top: material.toolbarHeight + 100,
         right: 0,
         left: 0,
         bottom: 0
@@ -34,11 +34,12 @@ export default {
         borderBottomWidth: 0,
         justifyContent: 'flex-start',
         zIndex: 1000,
-        paddingHorizontal: 25,
-        height: 35,
+        paddingLeft: 10,
+        paddingRight: 10,
+        height: 50,
     },
     dropdownListItemText: {
-        color: material.white500,
+        color: material.white500,        
         // fontWeight: '100'
     },
     content: {

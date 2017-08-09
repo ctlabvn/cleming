@@ -1,6 +1,6 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
-import { List, ListItem, Text, Icon, Thumbnail, Button } from 'native-base'
+import { List, ListItem, Text, Icon, Thumbnail, Button, Input, Item } from 'native-base'
 import { View, TouchableOpacity, TouchableWithoutFeedback, Animated, Easing, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
@@ -8,6 +8,9 @@ import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
+
+import leven from 'leven'
+import { convertVn } from '~/ui/shared/utils'
 
 export default class TopDropdown extends Component {
     constructor(props) {
@@ -26,8 +29,12 @@ export default class TopDropdown extends Component {
             // fadeAnim: new Animated.Value(0),
             selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
-            show: false
+            show: false,
+            searchString: '',
+            placeholderText: I18n.t('search'),
         }
+
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,17 +52,25 @@ export default class TopDropdown extends Component {
                 this.setState({ selectedOption: nextProps.dropdownValues[0] })
             }
         }
-        if (this.state.openningDropdown) {
-            this.setState({ openningDropdown: false })
-        }
 
+        // panda edited
+        // if (this.state.openningDropdown) {
+        //     this.setState({ openningDropdown: false })
+        // }
     }
 
     updateDropdownValues(dropdownValues) {
-        this.setState({ dropdownValues: dropdownValues })
+        this.setState({ 
+            dropdownValues: dropdownValues,
+            searchString: '',
+        })
     }
     updateSelectedOption(selectedOption) {
-        this.setState({ selectedOption: selectedOption, openningDropdown: false })
+        this.setState({ 
+            selectedOption: selectedOption, 
+            openningDropdown: false,
+            searchString: '', 
+        })
         this.state.callback && this.state.callback(selectedOption)
     }
     setCallbackPlaceChange(callback){
@@ -93,6 +108,7 @@ export default class TopDropdown extends Component {
         this.close()
     }
 
+
     _isDiff = (item1, item2) => {
         if (!item1 && !item2) return false
         if (!item1) return true
@@ -115,6 +131,35 @@ export default class TopDropdown extends Component {
             || this._isDiff(this.state.selectedOption, nextState.selectedOption)
             || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
         )
+    }
+
+    search(searchString){            
+        const  data = this.state.dropdownValues
+        this.props.app.topDropdownListValue.setDefaultDropdownValues(data)
+        const searchWord = convertVn(searchString.trim().toLowerCase())
+        if(searchWord) {
+            const searchedData = data.map(item=>{
+                const compareWord = convertVn(item.name.trim().toLowerCase())
+                const longest = Math.max(searchWord.length, compareWord.length)
+                const distance = leven(searchWord, compareWord)
+                const point = (longest-distance)/longest
+                // console.log(distance + ':'+ longest, searchWord, compareWord)     
+                return {
+                    item,
+                    point,
+                }
+            })
+            const listPlace = searchedData.sort((a,b)=>b.point-a.point)
+                .slice(0, 5).map(c=>c.item)   
+
+            this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
+        } else {
+            this.props.app.topDropdownListValue.updateDropdownValues(data)
+        }                
+    }
+
+    _setPlaceholderText(text = ''){
+        this.setState({placeholderText: text});
     }
 
     render() {
@@ -150,18 +195,27 @@ export default class TopDropdown extends Component {
         }
         return (
             <View style={containerStyleTopDown}>
-                <View style={styles.dropdownHeader}>
+                <View style={openningDropdown ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
+
                     <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
                         <View>
-                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>                    
-                        <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
-                            color: material.white500,
-                            position: 'absolute',     
-                            marginTop: -5,                                                   
-                            right: 10,                            
-                        }} />
+                            <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>
+                                <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
+                                    color: material.white500,
+                                    position: 'absolute',
+                                    marginTop: -5,
+                                    right: 10,
+                                }} />
+
                         </View>
                     </TouchableOpacity>
+                    {openningDropdown && <Item style={styles.searchContainer}>
+                        <Input autoCapitalize="none" defaultValue={this.state.searchString}
+                               autoCorrect={false}
+                               onChangeText={text => this.search(text)}
+                               placeholderTextColor={material.gray300} style={styles.searchInput}
+                               placeholder={this.state.placeholderText}/></Item>}
+
                 </View>
             </View>
         )

@@ -11,22 +11,31 @@ export default class extends Component {
             selectedAccount: props.listAccounts[0]
         }
     }
+    componentWillReceiveProps = (nextProps) => {
+        if (!this.state.selectedAccount){
+            this.setState({selectedAccount: nextProps.listAccounts[0]})
+        }
+    }
     _handlePress = (item) => {
-        console.log('Pressing Card Selection', item)
         this.setState({selectedAccount:item})
     }
     getSelected(){
         return this.state.selectedAccount
     }
     render() {
+        const {listAccounts} = this.props
         return (
             <View >
-                {this.props.listAccounts.map((item) => (
-                    <TouchableOpacity key={item.id} onPress={()=>this._handlePress(item)}>
+                {listAccounts
+                    && Object.keys(listAccounts).length > 0
+                    && listAccounts.map((item, index) => (
+                    <TouchableOpacity key={index} onPress={()=>this._handlePress(item)}>
                         <View style={styles.bankLogoContainer}>
-                            <Image source={{ uri: item.url }} style={styles.bankLogo} />
-                            <Text style={{ textAlign: 'center' }}>{item.number}</Text>
-                            <CheckBox type="radio" checked={(item.id == this.state.selectedAccount.id)} />
+                            <Image source={{ uri: item.bankIcon }} style={styles.bankLogo} />
+                            <Text style={{ textAlign: 'center' }}>{item.accountNumber}</Text>
+                            <CheckBox type="radio" checked={(item.accountNumber == this.state.selectedAccount.accountNumber)}
+                                onPress={()=>this._handlePress(item)}
+                            />
                         </View>
                     </TouchableOpacity>
                 ))}

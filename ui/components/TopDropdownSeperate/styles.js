@@ -28,7 +28,7 @@ export default {
         flexDirection:'column',
         width: '100%',
         elevation: 100,
-        justifyContent: 'center',
+        justifyContent: 'center',        
         // flex: 1,
         // height: material.deviceHeight,
         // top: material.toolbarHeight+50
@@ -47,11 +47,21 @@ export default {
     dropdownHeader:{
         justifyContent:'center',
         backgroundColor: material.primaryColor,
-        flexDirection: 'row',
+        // flexDirection: 'row',
         paddingTop: 15,
-        paddingBottom: 15,            
-        height: 50
+        paddingBottom: 15,                    
+        height: 50,
     },
+
+    dropdownHeaderPlus:{
+        justifyContent:'center',
+        backgroundColor: material.primaryColor,
+        // flexDirection: 'row',
+        paddingTop: 15,
+        paddingBottom: 15,
+        height: 100,
+    },
+
     dropdownSelectedValue:{        
         color: material.white500,
         fontWeight: 'bold',      
@@ -75,7 +85,7 @@ export default {
     dropdownListItem:{
         borderBottomWidth: 0,
         justifyContent: 'center',
-        zIndex: 1000
+        zIndex: 1000,    
     },  
     dropdownListItemText:{
         color: material.white500,
@@ -107,6 +117,25 @@ export default {
     },
     get backdropClose() {
         return {...this.backdrop, opacity:0}
-    }
+    },
+    searchContainer: {    
+        // backgroundColor: '#0085b6',
+        borderColor:'#fff',
+        borderRadius: 0,     
+        marginTop: 20,
+        marginRight: 20,            
+        marginLeft: 25,        
+        borderWidth: 0.5,
+        height:30,    
+        flexDirection:'row',        
+      },
+      searchInput:{
+        fontSize: 14,
+        height: material.platform === 'ios' ? 30 : 50,
+        borderWidth: 0,
+        marginLeft:-5,
+        paddingLeft: 20,
+        color:'#fff',
+      },
 
 }

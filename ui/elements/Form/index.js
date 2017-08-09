@@ -36,6 +36,33 @@ export const InputField = ({ input, label, meta: { active, touched, error, warni
   )
 }
 
+export const InputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
+  return (
+    <View>
+      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
+        {addon}
+        <Input   
+          placeholder={label}    
+          {...input}
+          placeholderTextColor={material.inputColorPlaceholder}
+          {...custom}
+          style={{...styles.input, ...inputStyle}}     
+        />    
+        {iconName && <Icon
+          onPress={e=>onIconPress && onIconPress(input, active)}
+          style={{...styles.inputIcon, ...iconStyle}}
+          name={iconName}
+        />}
+      </Item>
+      <View>
+        {touched && <Text small error>{error}</Text>}
+      </View>
+    </View>
+  )
+}
+
+
 export const CheckBoxField = ({ input, label, meta: { touched, error, warning }, style, checkboxStyle, labelStyle, ...custom }) => (  
   <View style={{...styles.checkboxContainer, ...style}} >      
     <CheckBox

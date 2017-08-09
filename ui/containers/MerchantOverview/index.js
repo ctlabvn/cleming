@@ -38,9 +38,9 @@ export default class MerchantOverview extends Component {
     _load(showLoading = false) {
         console.log('Call _load merchantOverview')
         const {user, app, place, location, setSelectedOption, selectedPlace, getListPlace, getMerchantNews, xsession, alreadyGotLocation} = this.props
-        if (user) {
-            this.props.app.header.show('home', user.chainName, user.avatar)
-        }
+        // if (user) {
+        //     this.props.app.header.show('home', user.chainName, user.avatar)
+        // }
         showLoading && this.setState({loading: true})
         let lat = 0, long = 0
         if (location && Object.keys(location).length > 1) {
@@ -112,9 +112,9 @@ export default class MerchantOverview extends Component {
     componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
         const {app, place, user} = this.props
-        if (user) {
-            this.props.app.header.show('home', user.chainName, user.avatar)
-        }
+        // if (user) {
+        //     this.props.app.header.show('home', user.chainName, user.avatar)
+        // }
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         if (!place.listPlace || place.listPlace.length == 0) {
             console.log('Place List will focus', place.listPlace)
@@ -187,7 +187,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}>
@@ -201,7 +201,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small
@@ -216,7 +216,7 @@ export default class MerchantOverview extends Component {
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
-                                <Text largeLight style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
                             </View>
                             <View style={styles.rightBlock}>
                                 <View style={styles.badgeContainer}><Text small

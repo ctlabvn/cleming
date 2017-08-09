@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   payDirect: {
     totalPage: 1,
     pageNumber: 1,

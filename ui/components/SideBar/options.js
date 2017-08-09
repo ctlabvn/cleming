@@ -27,13 +27,9 @@ export default {
         },
 
         {
-            name: I18n.t('page_wallet'),
+            name: 'Thanh toán với Clingme',
             route: 'wallet',
             icon: 'clingme-wallet',
-        },
-        {
-            name: I18n.t('withdraw'),
-            route: 'withdraw'
         },
 
         {
@@ -68,6 +64,4 @@ export default {
         //   route: 'mapCluster',
         // }
     ]
-
-
 }
