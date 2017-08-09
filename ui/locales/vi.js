@@ -213,6 +213,7 @@ export default {
     'week': 'tuần',
     'to': 'đến',
     'info': 'Thông báo',
+    'custom': 'Tuỳ chỉnh',
 
     //Wallet
     'balance': 'Số dư TK',
