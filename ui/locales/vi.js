@@ -210,6 +210,7 @@ export default {
     'day': 'ngày',
     'month': 'tháng',
     'year': 'năm',
+    'week': 'tuần',
     'to': 'đến',
     'info': 'Thông báo',
 

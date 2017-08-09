@@ -29,6 +29,10 @@ export default class DateFilter extends Component {
                 display: `7 ${I18n.t('day')}`
             },
             {
+                value: '2weeks',
+                display: `2 ${I18n.t('week')}`
+            },
+            {
                 value: 'month',
                 display: `1 ${I18n.t('month')}`
             },
@@ -40,10 +44,10 @@ export default class DateFilter extends Component {
                 value: 'half-year',
                 display: `6 ${I18n.t('month')}`
             },
-            {
-                value: 'year',
-                display: `1 ${I18n.t('year')}`
-            }
+            // {
+            //     value: 'year',
+            //     display: `1 ${I18n.t('year')}`
+            // }
         ]
         if (props.type == 'lite') {
             this.dateFilterListValue = [
@@ -72,6 +76,7 @@ export default class DateFilter extends Component {
         this.refs.dateFilterTypePopup.setModalVisible(true)
     }
     _handlePressDateFilter(item) {
+        console.log('Press DateFilter: ', item)
         this.setState({ currentSelectValue: item })
         this.props.onPressFilter({
             currentDateFilter: this.state.currentDateFilter,
@@ -129,6 +134,20 @@ export default class DateFilter extends Component {
                         display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
                     }
                 })
+            case '2weeks':
+                return [4, 3, 2, 1].map((item) => {
+                    const substractWeek = current.clone().subtract(item*2, 'weeks')
+                    let startWeek = substractWeek.clone().add(1, 'days').startOf('day')
+                    let endWeek = substractWeek.clone().add(14, 'days').endOf('day')
+                    return {
+                        value: {
+                            from: startWeek.unix(),
+                            to: endWeek.unix()
+                        },
+                        display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
+                    }
+                })
+
             case 'month':
                 return [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((item) => {
                     let currentMonth = current.clone().subtract(item, 'months')
@@ -177,22 +196,22 @@ export default class DateFilter extends Component {
                     }
                 })
 
-            case 'year':
-                return [4, 3, 2, 1, 0].map((item) => {
-                    let currentYear = current.clone().subtract(item, 'years')
-                    let startYear = currentYear.clone().startOf('year')
-                    let endYear = currentYear.clone().endOf('year')
-                    if (endYear > current) {
-                        endYear = current.clone().endOf('day')
-                    }
-                    return {
-                        value: {
-                            from: startYear.unix(),
-                            to: endYear.unix()
-                        },
-                        display: currentYear.format(DEFAULT_YEAR_FORMAT)
-                    }
-                })
+            // case 'year':
+            //     return [4, 3, 2, 1, 0].map((item) => {
+            //         let currentYear = current.clone().subtract(item, 'years')
+            //         let startYear = currentYear.clone().startOf('year')
+            //         let endYear = currentYear.clone().endOf('year')
+            //         if (endYear > current) {
+            //             endYear = current.clone().endOf('day')
+            //         }
+            //         return {
+            //             value: {
+            //                 from: startYear.unix(),
+            //                 to: endYear.unix()
+            //             },
+            //             display: currentYear.format(DEFAULT_YEAR_FORMAT)
+            //         }
+            //     })
         }
     }
 
@@ -221,6 +240,16 @@ export default class DateFilter extends Component {
                     display: startWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + endWeek.format(DEFAULT_DATE_FORMAT)
                 }
 
+            case '2weeks':
+                let star2tWeek = current.clone().subtract(13, 'days').startOf('day')
+                let end2Week = current.endOf('day')
+                return {
+                    value: {
+                        from: star2tWeek.unix(),
+                        to: end2Week.unix()
+                    },
+                    display: star2tWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + end2Week.format(DEFAULT_DATE_FORMAT)
+                }
 
             case 'month':                
                 let startMonth = current.clone().startOf('month')
@@ -252,15 +281,15 @@ export default class DateFilter extends Component {
                     display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_YEAR_FORMAT)
                 }
 
-            case 'year':
-                let startYear = current.clone().startOf('year')
-                return {
-                    value: {
-                        from: startYear.unix(),
-                        to: current.clone().endOf('day').unix()
-                    },
-                    display: current.format(DEFAULT_YEAR_FORMAT)
-                }
+            // case 'year':
+            //     let startYear = current.clone().startOf('year')
+            //     return {
+            //         value: {
+            //             from: startYear.unix(),
+            //             to: current.clone().endOf('day').unix()
+            //         },
+            //         display: current.format(DEFAULT_YEAR_FORMAT)
+            //     }
         }
     }
 
