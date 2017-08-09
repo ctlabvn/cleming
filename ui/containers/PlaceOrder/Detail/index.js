@@ -6,6 +6,9 @@ import {InteractionManager} from "react-native";
 import moment from "moment";
 import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
+
+import CallModal from "~/ui/components/CallModal";
+
 import * as commonActions from "~/store/actions/common";
 import * as bookingActions from "~/store/actions/booking";
 import * as notificationActions from "~/store/actions/notification";
@@ -35,7 +38,8 @@ export default class PlaceOrderDetail extends Component {
         super(props)
         this.state = {
             bookingDetail: {},
-            counting: true
+            counting: true,
+            modalOpen: false,
         }
     }
 
@@ -78,6 +82,19 @@ export default class PlaceOrderDetail extends Component {
 
     }
 
+    onModalOpen(phoneNumber) {
+        this.setState({
+            modalOpen: true,
+            phoneNumber: phoneNumber
+        })
+    }
+
+    onModalClose() {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
     render() {
         console.log('Render Booking Detail')
         if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
@@ -113,8 +130,20 @@ export default class PlaceOrderDetail extends Component {
         let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
 
+        phoneNumberBlock = (<View style={styles.row}>
+            <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+            <Text medium
+                  style={{...styles.rightText}}
+                  onPress={this.onModalOpen.bind(this, chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}
+                  warning>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
+        </View>)
+
         return (
             <Container>
+                <CallModal
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={this.onModalClose.bind(this)}
+                    open={this.state.modalOpen} />
 
                 <View style={styles.merchantAddress}>
                     <Text small white>{this.state.bookingDetail.placeInfo.address}</Text>
@@ -169,9 +198,7 @@ export default class PlaceOrderDetail extends Component {
                         </View>
                         <View style={styles.rowPaddingTB}>
                             <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('phone_number')}:</Text>
-                            <Text
-                                medium
-                                style={{...styles.normalText, ...styles.boldText, ...styles.rightText}}>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
+                            {phoneNumberBlock}
                         </View>
                         <View style={styles.block}>
                             <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('require')}:</Text>
