@@ -145,7 +145,7 @@ export default class extends Component {
                         <View style={styles.row}>
                             <Text medium style={styles.time}
                                 grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            {(orderInfo.status == 'CANCELLED' || orderInfo.status == 'FAILED') && (
+                            {(orderInfo.status == 'CANCELLED') && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
                             {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) 

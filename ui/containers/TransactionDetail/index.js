@@ -66,7 +66,7 @@ export default class TransactionDetail extends Component {
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_not_accept')}</Text></Button>)
+                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_complain')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -363,11 +363,11 @@ export default class TransactionDetail extends Component {
                                     </View> */}
                                 </View>
                                 <View style={styles.rowSpaceAround}>
-                                    <View style={styles.gridItem}>
+                                    {/*<View style={styles.gridItem}>*/}
 
-                                        <Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>
-                                        <Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>
-                                    </View>
+                                        {/*<Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>*/}
+                                        {/*<Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>*/}
+                                    {/*</View>*/}
                                     <View style={styles.gridItem}>
                                         <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
                                         <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
