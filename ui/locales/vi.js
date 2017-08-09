@@ -36,6 +36,7 @@ export default {
     'transaction_cashback_success': 'Giao dịch thành công',
     'transaction_reject': 'Giao dịch bị từ chối',
     'transaction_not_accept': 'Không đồng ý',
+    'transaction_complain': 'Khiếu nại',
     'method_pay_direct': 'Thanh toán trực tiếp',
     'transaction_type_clingme': 'Trả qua Clingme',
     'transaction_type_direct': 'Trả trực tiếp',
