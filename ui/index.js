@@ -4,7 +4,9 @@ import { Provider } from 'react-redux'
 import configureStore from '~/store/config'
 import { forwardTo, closeDrawer } from '~/store/actions/common'
 import Preload from './containers/Preload'
-
+import {View, Platform} from 'react-native'
+import material from '~/theme/variables/material'
+import Icon from "~/ui/elements/Icon"
 export default class extends Component {
 
   constructor(props) {
@@ -30,8 +32,28 @@ export default class extends Component {
 
   render() {        
     // should have a pre-load page
-    if(!this.store)
-      return ( <Preload message=""/> )
+    if(!this.store){
+      if (Platform.OS =='ios'){
+        return ( <Preload message=""/> )
+      }else{
+        return (
+          <View style={{
+            flexDirection: 'column', 
+            backgroundColor: material.primaryColor, 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            flex: 1
+          }}>
+            <Icon name="logo" style={{
+                color: material.white500,
+                fontSize: 60,
+            }}/>
+          </View>
+        )
+      }
+      
+    }
+      
 
     return (
       <Provider store={this.store}>
