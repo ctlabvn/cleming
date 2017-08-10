@@ -140,6 +140,7 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
+    this.listPlace = []
   }
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
@@ -289,14 +290,14 @@ export default class App extends Component {
   }
   componentDidMount() {
     const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router, setToast } = this.props
-    if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-      let listPlace = place.listPlace.map(item => ({
+    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length == 0) {
+      this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
         name: item.address
       }))
-      this.topDropdown.updateDropdownValues(listPlace)
+      // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
-      this.topDropdownListValue.updateDropdownValues(listPlace)
+      this.topDropdownListValue.updateDropdownValues(this.listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
 
@@ -317,21 +318,21 @@ export default class App extends Component {
       },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      console.log('Position Change', position)
-      if (!location || Object.keys(location).length == 0 || !location.alreadyGotLocation) {
-        this.updatePlaceList(position.coords.latitude, position.coords.longitude)
-        alreadyGotLocation()
-      }
-      let now = new Date().getTime()
-      // Save location when nerver detect location yet, or last detection longer than 2 minutes
-      if (!location || Object.keys(location).length == 0 ||
-        (location.lastDetect && (now - location.lastDetect > DETECT_LOCATION_INTERVAL))) {
-        console.log('Saving Position')
-        saveCurrentLocation(position.coords)
-      }
+    // this.watchID = navigator.geolocation.watchPosition((position) => {
+    //   console.log('Position Change', position)
+    //   if (!location || Object.keys(location).length == 0 || !location.alreadyGotLocation) {
+    //     this.updatePlaceList(position.coords.latitude, position.coords.longitude)
+    //     alreadyGotLocation()
+    //   }
+    //   let now = new Date().getTime()
+    //   // Save location when nerver detect location yet, or last detection longer than 2 minutes
+    //   if (!location || Object.keys(location).length == 0 ||
+    //     (location.lastDetect && (now - location.lastDetect > DETECT_LOCATION_INTERVAL))) {
+    //     console.log('Saving Position')
+    //     saveCurrentLocation(position.coords)
+    //   }
 
-    })
+    // })
 
     BackAndroid.addEventListener('hardwareBackPress', () => {
       const { router, goBack, drawerState, closeDrawer } = this.props
@@ -354,7 +355,7 @@ export default class App extends Component {
     if (drawerState == 'opened'){
       closeDrawer()
     }
-    navigator.geolocation.clearWatch(this.watchID)
+    // navigator.geolocation.clearWatch(this.watchID)
   }
 
   handleFocusableComponent(path, focus = true) {
@@ -421,13 +422,11 @@ export default class App extends Component {
 
   _handleChangePlace = (item) => {
     const { setSelectedOption } = this.props
-    console.log('Place change APPJS', item)
     this.topDropdown.updateSelectedOption(item)
     this.header.showOverlay(false)
     setSelectedOption(item)
   }
   _handlePressIcon = (openning) => {
-    console.log('Handle Press Icon APPJS')
     if (openning) {
       this.topDropdownListValue.close()
       this.header.showOverlay(false)
@@ -437,19 +436,23 @@ export default class App extends Component {
     }
   }
   _handlePressOverlay = () => {
-    console.log('Handle Press Overlay APPJS')
     this.topDropdown.close()
     this.header.showOverlay(false)
   }
   _handlePressHeaderOverlay = () => {
-    console.log('Press header overlay')
     this.topDropdown.close()
     this.topDropdownListValue.close()
     this.header.showOverlay(false)
   }
   render() {
-    const { router, drawerState, closeDrawer, place } = this.props
+    const { router, drawerState, closeDrawer, place, selectedPlace } = this.props
     const { title, path, headerType, footerType, showTopDropdown } = this.page
+    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
+      this.listPlace = place.listPlace.map(item => ({
+        id: item.placeId,
+        name: item.address
+      }))
+    }
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -495,11 +498,13 @@ export default class App extends Component {
             app={this}
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
+            selectedOption={selectedPlace}
           />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}            
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
+            dropdownValues={this.listPlace}
           />
           <Toasts />
           <NotificationHandler />

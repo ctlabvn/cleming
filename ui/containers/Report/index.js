@@ -13,6 +13,7 @@ import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
 import {getSession} from "~/store/selectors/auth";
 import {DEFAULT_MAP_DELTA} from "~/store/constants/app";
 import {customerMarker, merchantMarker} from "~/assets";
+import moment from 'moment'
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
@@ -44,6 +45,8 @@ export default class Report extends Component {
                 this.currentPlace = selectedPlace.id
             }
         }
+        this.toTime = moment().unix()
+        this.fromTime = moment().subtract(3, 'months').unix()
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
         const { xsession, getMapReport } = this.props
@@ -51,6 +54,7 @@ export default class Report extends Component {
         let minLo = this.state.region.longitude - this.state.region.longitudeDelta
         let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
         let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
+
         const { height, width } = Dimensions.get('window')
         const bounds = [
             minLo,
@@ -94,14 +98,14 @@ export default class Report extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let selectedPlace = app.topDropdown.getValue()
             if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                 this.isLoadingPlace = true
                 return
             }
             setTimeout(() => {
-                this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+                this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
             }, 500)
 
         })
@@ -111,10 +115,8 @@ export default class Report extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let selectedPlace = app.topDropdown.getValue()  
-            console.log('Current Place:', this.currentPlace)
-            console.log('Selected Place:', selectedPlace)
             this.setState({
                 hideMap: false,
             })
@@ -122,7 +124,7 @@ export default class Report extends Component {
                 this.isLoadingPlace = true
                 return
             }else if(this.currenttPlace!=selectedPlace.id){
-                this._loadAndFocus(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+                this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
             }
         })
     }
@@ -139,9 +141,8 @@ export default class Report extends Component {
             () => {
                 const { app } = this.props
                 let placeData = app.topDropdown.getValue()
-                let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
                 if (placeData && placeData.id){
-                    this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+                    this._requestMapData(placeData.id, this.fromTime, this.toTime)
                 }
                 
             }
@@ -157,8 +158,8 @@ export default class Report extends Component {
 
     _handleTopDropdown = (item) => {
         this.currentPlace = item.id
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        this._loadAndFocus(item.id, dateFilterData.from, dateFilterData.to)
+        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        this._loadAndFocus(item.id, this.fromTime, this.toTime)
     }
     _handleOnLayoutMap = e => {
         const { width, height } = e.nativeEvent.layout
@@ -170,7 +171,7 @@ export default class Report extends Component {
         const { app } = this.props
         let placeData = app.topDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
-        this._requestMapData(placeData.id, dateFilterData.from, dateFilterData.to)
+        this._requestMapData(placeData.id, this.fromTime, this.toTime)
     }
 
     _sum(arr) {
@@ -180,11 +181,10 @@ export default class Report extends Component {
     render() {
         const { report, place } = this.props
         // console.log('Focus Merchant Render', report.map)
+        // <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='month' type='lite' />
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
-                    <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' defaultFilter='month' type='lite' />
-                    
                     {this.state.hideMap ? <Spinner/> : <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}

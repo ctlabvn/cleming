@@ -37,6 +37,11 @@ export default {
             route: 'userManagement',
             icon: 'account',
         },
+        {
+            name: I18n.t('page_setting'),
+            route: 'setting',
+            icon: 'setting',
+        },
 
         {
             name: 'Inbox',

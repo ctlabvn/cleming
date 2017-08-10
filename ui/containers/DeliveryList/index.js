@@ -36,6 +36,7 @@ import {
     ORDER_WAITING_DELIVERY,
     SCREEN
 } from "~/store/constants/app";
+import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     order: orderSelectors.getOrder(state),
     session: authSelectors.getSession(state),
@@ -157,13 +158,13 @@ export default class extends Component {
 
     }
 
-    componentWillBlur() {
-        // this.counting = false
-        // InteractionManager.runAfterInteractions(() => {
-        this.setState({ counting: false })
-        // })
+    // componentWillBlur() {
+    //     // this.counting = false
+    //     // InteractionManager.runAfterInteractions(() => {
+    //     this.setState({ counting: false })
+    //     // })
 
-    }
+    // }
 
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
@@ -305,13 +306,12 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
-                <Content
-                    contentContainerStyle={styles.contentContainerStyle}
-                    onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                <ListViewExtend
+                    onEndReached={this._loadMore} 
+                    onRefresh={this._onRefresh}
                     refreshing={this.state.loading}
-                    style={styles.contentContainer}
-                >
-                    {orderList && orderList.map(item => 
+                    dataArray={orderList}
+                    renderRow={(item) => (
                         <OrderItem data={item} 
                             key={chainParse(item, ['orderInfo', 'tranId'])}
                             onPressPhoneNumber = {this.onModalOpen}
@@ -320,10 +320,10 @@ export default class extends Component {
                             counting={this.state.counting}
                         />
                     )}
-                    {this.state.loadingMore &&
-                        <Spinner />
-                    }
-                </Content>
+                />
+                {this.state.loadingMore &&
+                    <Spinner />
+                }
             </Container>
         )
     }
