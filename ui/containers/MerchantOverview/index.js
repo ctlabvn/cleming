@@ -57,7 +57,7 @@ export default class MerchantOverview extends Component {
                         name: item.address
                     }))
 
-                    app.topDropdown.updateDropdownValues(listPlace)
+                    // app.topDropdown.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDropdownValues(listPlace)
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
