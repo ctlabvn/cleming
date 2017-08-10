@@ -1,3 +1,4 @@
+import material from '~/theme/variables/material'
 export default {
 	container: {
 		flex: 1,
@@ -7,5 +8,10 @@ export default {
 	row: {
 		paddingTop: 5,
 		paddingBottom: 5
+	},
+	underlineItem: {
+		paddingBottom: 5,
+		borderColor: material.gray200,
+		borderBottomWidth: 1
 	}
 }

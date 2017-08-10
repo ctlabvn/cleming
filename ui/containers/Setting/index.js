@@ -39,10 +39,12 @@ export default class Setting extends Component {
     render() {
         return (
 
-            <Container style={styles.container}>
-                <Text style={styles.row}>Thời gian duyệt Cashback</Text>
-                <View style={styles.row}>
-                    <BadgeSelector listValues={this.listValue} selectedValue={this.selectValue}/>
+            <Container style={styles.container}>  
+                <View style={styles.underlineItem}>
+                    <Text style={styles.row}>Thời gian duyệt Cashback</Text>
+                    <View style={styles.row}>
+                        <BadgeSelector listValues={this.listValue} selectedValue={this.selectValue}/>
+                    </View>
                 </View>
             </Container>
 

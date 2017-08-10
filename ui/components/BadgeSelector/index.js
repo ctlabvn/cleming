@@ -16,8 +16,10 @@ export default class BadgeSelector extends Component {
     return (
       <View style={styles.row}>
         {this.props.listValues.map(item=>(
-          <TouchableWithoutFeedback onPress={()=>this._handleSelect(item)}>
-            <Text style={(this.state.selectedValue.id == item.id) ? styles.selectItem : styles.item}>{item.name}</Text>
+          <TouchableWithoutFeedback onPress={()=>this._handleSelect(item)} key={item.id}>
+            <View>
+              <Text style={(this.state.selectedValue.id == item.id) ? styles.selectItem : styles.item}>{item.name}</Text>
+            </View>
           </TouchableWithoutFeedback>
         ))}
       </View> 
