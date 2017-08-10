@@ -28,7 +28,7 @@ import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from '~/ui/shared/utils'
 
 import EnhancedListView from '~/ui/components/EnhancedListView'
-
+import ListViewExtend from '~/ui/components/ListViewExtend'
 import I18n from '~/ui/I18n'
 const checkProperties=['notifyId', 'isRead']
 
@@ -51,7 +51,7 @@ export default class extends Component {
   }
 
   componentWillFocus() {
-    this.content.scrollToTop()
+    // this.content.scrollToTop()
     // make it like before    
     const { session, notifications, getNotification, app } = this.props
     if (!notifications.data.length) {
@@ -88,13 +88,6 @@ export default class extends Component {
       this.setState({ loading: true })
       getNotification(session, notifications.page + 1, () => this.setState({ loading: false }))
     }
-  }
-
-  _handleNotiRead = (e) => {
-    this.props.app.showNotification({
-      title: "My Push Token",
-      message: this.props.app.pushToken,
-    })
   }
   // export const NOTIFY_TYPE = {
   //   COMMENT: 1,
@@ -352,17 +345,15 @@ export default class extends Component {
     return (
 
       <Container>
-        <Content
-          ref={ref=>this.content=ref}
-          onEndReached={this._loadMore} onRefresh={this._onRefresh}
-          style={styles.container} refreshing={this.state.refreshing}
-        >
-            {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
+          {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
-            <EnhancedListView            
+            <ListViewExtend            
               keyExtractorArr={checkProperties}
-              rowHasChanged={true}            
+              rowHasChanged={true}       
               dataArray={notifications.data}
+              onEndReached={this._loadMore} 
+              onRefresh={this._onRefresh}
+              refreshing={this.state.refreshing}
               renderRow={(item) => {
                 return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
@@ -384,7 +375,6 @@ export default class extends Component {
           }
           {this.state.loading && <Spinner />}
 
-        </Content>
 
 
       </Container>
