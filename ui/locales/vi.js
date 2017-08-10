@@ -69,6 +69,7 @@ export default {
     'page_wallet': 'Thanh toán với Clingme',
     'page_wallet_detail': 'Chi tiết các thanh toán',
     'page_bank_account': 'Tài khoản ngân hàng',
+    'page_setting': 'Cài đặt',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',

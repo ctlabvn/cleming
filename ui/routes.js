@@ -29,7 +29,7 @@ import WalletDetail from './containers/WalletDetail'
 import WithDraw from './containers/WithDraw'
 import BankAccount from './containers/BankAccount'
 import ComingSoon from './containers/ComingSoon'
-
+import Setting from './containers/Setting'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -204,6 +204,12 @@ export default {
     'bankAccount': {
         title: I18n.t('page_bank_account'),
         Page: BankAccount,
+        headerType: 'back',
+        footerType: 'none'
+    },
+    'setting': {
+        title: I18n.t('page_setting'),
+        Page: Setting,
         headerType: 'back',
         footerType: 'none'
     }
