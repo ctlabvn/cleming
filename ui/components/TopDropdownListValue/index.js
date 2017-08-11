@@ -68,7 +68,6 @@ export default class TopDropdownListValue extends Component {
     close() {
         this.setState({
             openningDropdown: false,
-            dropdownValues: this.props.dropdownValues
         })
     }
     componentWillMount() {
@@ -77,6 +76,7 @@ export default class TopDropdownListValue extends Component {
     _handlePress(item) {
         this.state.selectedOption = item
         this.props.onSelect && this.props.onSelect(item)
+        this.state.dropdownValues = this.props.dropdownValues
         // this.toggle()
 
         this.close();
