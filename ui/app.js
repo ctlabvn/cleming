@@ -173,9 +173,9 @@ export default class App extends Component {
 
         // console.log(this.navigator.state)      
         if (destIndex !== -1) {          
-          // trigger will focus, the first time should be did mount          
-          this.handlePageWillFocus(path)
+          // trigger will focus, the first time should be did mount                    
           this.navigator._jumpN(destIndex - this.navigator.state.presentedIndex)
+          this.handlePageWillFocus(path)
         } else {
           this.navigator.state.presentedIndex = this.navigator.state.routeStack.length
           this.navigator.push({ title, path, showTopDropdown })
