@@ -32,6 +32,7 @@ import {
     SCREEN
 } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
+import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
@@ -197,6 +198,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _loadMore = () => {
+        console.log('On load More Booking')
         const { booking, app } = this.props
         if (booking.isLast) return
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -359,23 +361,18 @@ export default class PlaceOrderList extends Component {
                     onCloseClick={this.onModalClose.bind(this)}
                     open={this.state.modalOpen} />
                 <View style={{ height: '100%' }}>
-                    {/*<View style={styles.merchantAddress}>
-                    <Text small white>33 Nguyễn Chí Thanh, Ba Đình, Hà Nội</Text>
-                </View>*/}
                     <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab} />
                     <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
-                    <Content
-                        padder
-                        onEndReached={this._loadMore} onRefresh={this._onRefresh}
+
+                    <ListViewExtend
+                        onEndReached={this._loadMore} 
+                        onRefresh={this._onRefresh}
                         refreshing={this.state.loading}
-                    >
-                        <List dataArray={booking.bookingList}
-                            renderRow={(item) => this._renderBookingItem(item)}
-                            pageSize={10}
-                        />
-                        {this.state.loadingMore && <Spinner color={material.red500} />}
-                    </Content>
+                        dataArray={booking.bookingList}
+                        renderRow={(item) => this._renderBookingItem(item)}
+                    />
+                    {this.state.loadingMore && <Spinner color={material.red500} />}
                 </View>
             </View >
         )
