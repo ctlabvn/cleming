@@ -75,9 +75,10 @@ export default class TopDropdownListValue extends Component {
 
     }
     _handlePress(item) {
-        this.setState({ selectedOption: item })
+        this.state.selectedOption = item
         this.props.onSelect && this.props.onSelect(item)
         // this.toggle()
+
         this.close();
     }
     _handlePressOverlay = () => {
