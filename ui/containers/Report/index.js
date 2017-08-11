@@ -4,6 +4,9 @@ import {Container, Text, Spinner} from "native-base";
 import {Dimensions, InteractionManager, View, Image} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
+
+import Preload from "~/ui/containers/Preload";
+
 import * as commonActions from "~/store/actions/common";
 import * as reportActions from "~/store/actions/report";
 import * as placeActions from "~/store/actions/place";
@@ -21,6 +24,8 @@ import moment from 'moment'
     report: state.report
 }), { ...commonActions, ...reportActions, ...placeActions })
 export default class Report extends Component {
+
+
 
     constructor(props) {
         super(props)
@@ -131,6 +136,7 @@ export default class Report extends Component {
 
 
     componentWillBlur(){
+        console.log('blur map')
         this.setState({
             hideMap: true,
         })
@@ -185,7 +191,7 @@ export default class Report extends Component {
         return (
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
-                    {this.state.hideMap ? <Spinner/> : <MapView
+                    {this.state.hideMap ? <Preload/> : <MapView
                         region={this.state.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}

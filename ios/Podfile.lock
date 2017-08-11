@@ -7,41 +7,41 @@ PODS:
   - GoogleMaps/Base (2.1.1)
   - GoogleMaps/Maps (2.1.1):
     - GoogleMaps/Base
-  - React (0.42.3):
-    - React/Core (= 0.42.3)
-  - react-native-google-maps (0.15.0):
+  - React (0.44.0):
+    - React/Core (= 0.44.0)
+  - react-native-google-maps (0.15.3):
     - GoogleMaps (= 2.1.1)
     - React
-  - react-native-maps (0.15.0):
+  - react-native-maps (0.15.3):
     - React
-  - React/Core (0.42.3):
+  - React/Core (0.44.0):
     - React/cxxreact
-    - Yoga (= 0.42.3.React)
-  - React/cxxreact (0.42.3):
+    - Yoga (= 0.44.0.React)
+  - React/cxxreact (0.44.0):
     - React/jschelpers
-  - React/jschelpers (0.42.3)
-  - React/RCTActionSheet (0.42.3):
+  - React/jschelpers (0.44.0)
+  - React/RCTActionSheet (0.44.0):
     - React/Core
-  - React/RCTAnimation (0.42.3):
+  - React/RCTAnimation (0.44.0):
     - React/Core
-  - React/RCTGeolocation (0.42.3):
+  - React/RCTGeolocation (0.44.0):
     - React/Core
-  - React/RCTImage (0.42.3):
+  - React/RCTImage (0.44.0):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.42.3):
+  - React/RCTLinkingIOS (0.44.0):
     - React/Core
-  - React/RCTNetwork (0.42.3):
+  - React/RCTNetwork (0.44.0):
     - React/Core
-  - React/RCTSettings (0.42.3):
+  - React/RCTSettings (0.44.0):
     - React/Core
-  - React/RCTText (0.42.3):
+  - React/RCTText (0.44.0):
     - React/Core
-  - React/RCTVibration (0.42.3):
+  - React/RCTVibration (0.44.0):
     - React/Core
-  - React/RCTWebSocket (0.42.3):
+  - React/RCTWebSocket (0.44.0):
     - React/Core
-  - Yoga (0.42.3.React)
+  - Yoga (0.44.0.React)
 
 DEPENDENCIES:
   - Crashlytics
@@ -77,10 +77,10 @@ SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
-  React: 35e039680feacd0563677d49ba410112d2748559
-  react-native-google-maps: 2178143ab0c02406ccc41a578edfd45f42a3eb15
-  react-native-maps: b9fd04cf693b9059c6fae00eb16203f7d5b69878
-  Yoga: 86ce777665c8259b94ef8dbea76b84634237f4ea
+  React: d2077cc20245ccdc8bfe1fdc002f2003318ae8d8
+  react-native-google-maps: f8780ca7802588d0ccd3a83c522a81f433bc1b4a
+  react-native-maps: 6a886202fb8af8568615501c0f9f933ca282a7a3
+  Yoga: a92a5d8e128905bf9f29c82f870192a6e873dd98
 
 PODFILE CHECKSUM: 47eb97306f2d6d3f0d5d7df24216c11594851051
 

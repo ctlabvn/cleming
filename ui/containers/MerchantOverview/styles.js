@@ -77,7 +77,7 @@ export default {
         borderRadius: 2,
         padding: 10,
         marginBottom: 10,
-        height: 60, 
+        height: 60,         
         width: '100%'
     },
     leftBlock: {
@@ -136,7 +136,7 @@ export default {
         flex: 1, 
         flexDirection: 'column', 
         justifyContent: 'flex-start',
-        padding: 5
+        padding: 5,        
     }
 
 }

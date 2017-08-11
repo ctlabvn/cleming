@@ -5,17 +5,18 @@ export default {
         // minHeight: 200,
         // backgroundColor: 'white',
         // borderRadius: 4,
-        // flexDirection: 'column',
+        flexDirection: 'column',
         // alignSelf: 'center',
-        // alignItems: 'flex-start',
-        // justifyContent: 'space-between',
+        alignItems: 'center',
+        justifyContent: 'center',
         // padding: 10,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.7)' 
+        backgroundColor: 'rgba(0,0,0,0.7)',
+
     },
     modalContainer: {
-        marginTop: '30%',
+        // marginTop: '30%',
         width: '80%',
         minHeight: 200,
         backgroundColor: 'white',

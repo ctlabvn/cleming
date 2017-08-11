@@ -1,7 +1,7 @@
 import React, { PureComponent, Component } from 'react'
 import { connect } from 'react-redux'
 import { List, ListItem, Text, Icon, Thumbnail, Button, Input } from 'native-base'
-import { View, TouchableWithoutFeedback, BackAndroid, LayoutAnimation, Platform, Dimensions } from 'react-native'
+import { View, TouchableWithoutFeedback, BackHandler, LayoutAnimation, Platform, Dimensions } from 'react-native'
 
 import styles from './styles'
 import Content from '~/ui/components/Content'
@@ -109,9 +109,9 @@ export default class TopDropdownListValue extends Component {
     }
 
     componentDidMount(){
-        BackAndroid.addEventListener('hardwareBackPress', () => {
-            console.log('Back Press Top Dropdown')
-        })
+        // BackHandler.addEventListener('hardwareBackPress', () => {
+        //     console.log('Back Press Top Dropdown')
+        // })
     }
 
     // searchByWord(word, data){

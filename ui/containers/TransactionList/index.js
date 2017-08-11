@@ -39,7 +39,7 @@ import { getRouter } from '~/store/selectors/common'
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state),
     meta: state.meta,
-    router: getRouter(state),  
+    // router: getRouter(state),  
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
@@ -209,11 +209,11 @@ export default class extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        const { app, clearMarkLoad, router } = this.props
+        const { app, clearMarkLoad } = this.props
         const { meta } = nextProps
-        if (!router || router.route != 'transactionList'){
-            return
-        }
+        // if (!router || router.route != 'transactionList'){
+        //     return
+        // }
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
@@ -228,13 +228,13 @@ export default class extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        const {router} = this.props
-        if (!router || router.route != 'transactionList'){
-            return false
-        }
-        return true
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     const {router} = this.props
+    //     if (!router || router.route != 'transactionList'){
+    //         return false
+    //     }
+    //     return true
+    // }
 
     componentWillFocus() {        
         // InteractionManager.runAfterInteractions(() => {

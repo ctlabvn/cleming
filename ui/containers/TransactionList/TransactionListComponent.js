@@ -24,9 +24,10 @@ export default class extends Component {
         console.log('Render List Component')
         const {data, ...props} = this.props
         return (
-                <ListViewExtend dataArray={this.props.data}
+                <EnhancedListView dataArray={this.props.data}
                     renderRow={(item) => (<ItemComponent data={item} />)}
-                    keyExtractorArr={checkProperties}
+                    keyExtractor={item=>item.dealId}                    
+                    // keyExtractorArr={checkProperties}
                     {...props}
                 />
             

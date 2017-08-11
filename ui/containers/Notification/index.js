@@ -347,11 +347,12 @@ export default class extends Component {
       <Container>
           {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
-            <ListViewExtend            
-              keyExtractorArr={checkProperties}
+            <EnhancedListView            
+              // keyExtractorArr={checkProperties}
+              keyExtractor={item=>item.notifyId}
               rowHasChanged={true}       
               dataArray={notifications.data}
-              onEndReached={this._loadMore} 
+               
               onRefresh={this._onRefresh}
               refreshing={this.state.refreshing}
               renderRow={(item) => {

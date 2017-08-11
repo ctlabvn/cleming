@@ -20,7 +20,7 @@ export default class extends Component {
     }
   }
 
-  tabClick(route){
+  tabClick(route){    
     const {onTabClick} = this.props
     onTabClick && onTabClick(this.state.type, route)
   }

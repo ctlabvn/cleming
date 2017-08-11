@@ -181,10 +181,10 @@ export default class MerchantOverview extends Component {
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
                 <Text strong style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
-                <View style={styles.menuContainer}>
+                
                     {(place && place.news && place.news.transactionNews > -1) &&
-                    <TouchableOpacity onPress={() => forwardTo('transactionList')}>
-                        <View style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('transactionList')}>
+                        
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
@@ -194,11 +194,10 @@ export default class MerchantOverview extends Component {
                                     <Text small style={styles.numberRight}>{this.renderTextCount(place.news.transactionNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
-                        </View>
+                        
                     </TouchableOpacity>}
                     {(place && place.news && place.news.bookingNews > -1) &&
-                    <TouchableOpacity onPress={() => forwardTo('placeOrderList')}>
-                        <View style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('placeOrderList')}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
@@ -208,12 +207,10 @@ export default class MerchantOverview extends Component {
                                                                           style={styles.numberRight}>{this.renderTextCount(place.news.bookingNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
-                        </View>
                     </TouchableOpacity>}
 
                     {(place && place.news && place.news.orderNews > -1) &&
-                    <TouchableOpacity onPress={() => forwardTo('deliveryList')}>
-                        <View style={styles.menuItem}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('deliveryList')}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
@@ -223,9 +220,8 @@ export default class MerchantOverview extends Component {
                                                                           style={styles.numberRight}>{this.renderTextCount(place.news.orderNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
-                        </View>
                     </TouchableOpacity>}
-                </View>
+                
             </View>
             // </Content>
         )
