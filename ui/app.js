@@ -298,6 +298,7 @@ export default class App extends Component {
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
       this.topDropdownListValue.updateDropdownValues(this.listPlace)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
 
