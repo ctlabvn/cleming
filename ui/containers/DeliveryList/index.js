@@ -251,8 +251,10 @@ export default class extends Component {
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
         console.log('Feedback Order', posOrderId + '---' + reasonId + '---' + note)
         const { updateOrderStatus, setToast, session } = this.props
+        this.setState({processing: true})
         updateOrderStatus(session, posOrderId, DELIVERY_FEEDBACK.CANCEL, reasonId, note,
             (err, data) => {
+                this.setState({processing: false})
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     this._load()
                 } else {
