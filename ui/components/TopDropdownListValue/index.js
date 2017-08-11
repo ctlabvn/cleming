@@ -71,8 +71,9 @@ export default class TopDropdownListValue extends Component {
         this.setState({ openningDropdown: true })
     }
     close() {
+        // console.warn(this.state.defaultDropdownValues.length);
         this.setState({
-            dropdownValues: this.state.defaultDropdownValues,
+            dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
         })
     }

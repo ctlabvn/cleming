@@ -50,7 +50,9 @@ export default class TopDropdown extends Component {
     }
     toggle() {
         // LayoutAnimation.easeInEaseOut()
-        this.setState({ openningDropdown: !this.state.openningDropdown })
+        this.setState({
+            openningDropdown: !this.state.openningDropdown,
+        })
     }
     close() {
         this.setState({ openningDropdown: false })
