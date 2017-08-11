@@ -59,6 +59,7 @@ export default class MerchantOverview extends Component {
 
                     // app.topDropdown.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDropdownValues(listPlace)
+                    app.topDropdownListValue.updateDefaultDropdownValues(listPlace)
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}

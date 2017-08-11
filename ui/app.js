@@ -349,7 +349,7 @@ export default class App extends Component {
   }
   componentDidMount() {
     const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router, setToast } = this.props
-    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length == 0) {
+    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
         name: item.address
@@ -357,6 +357,7 @@ export default class App extends Component {
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
       this.topDropdownListValue.updateDropdownValues(this.listPlace)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
 

@@ -47,11 +47,16 @@ export default class TopDropdownListValue extends Component {
     }
 
     getValues = () => {
-        return this.props.dropdownValues
+        return this.state.defaultDropdownValues
     }
     updateDropdownValues(dropdownValues) {
         this.setState({ dropdownValues: dropdownValues })
     }
+
+    updateDefaultDropdownValues(defaultDropdownValues) {
+        this.setState({ defaultDropdownValues: defaultDropdownValues})
+    }
+
     updateSelectedOption(selectedOption) {
         this.setState({ selectedOption: selectedOption })
     }
@@ -66,18 +71,21 @@ export default class TopDropdownListValue extends Component {
         this.setState({ openningDropdown: true })
     }
     close() {
+        // console.warn(this.state.defaultDropdownValues.length);
         this.setState({
+            dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
-            dropdownValues: this.props.dropdownValues
         })
     }
     componentWillMount() {
 
     }
     _handlePress(item) {
-        this.setState({ selectedOption: item })
+        this.state.selectedOption = item
         this.props.onSelect && this.props.onSelect(item)
+        this.state.dropdownValues = this.props.dropdownValues
         // this.toggle()
+
         this.close();
     }
     _handlePressOverlay = () => {
