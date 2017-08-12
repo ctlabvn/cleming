@@ -86,18 +86,14 @@ export default class App extends Component {
 
   constructor(props) {
     super(props)
-    // default is not found page, render must show error
-    this.page = getPage(props.url) || routes.notFound
-    // this.prevPage = null
     this.pageInstances = new Map()
-    // this.pageWrapperInstances = {}
     this.watchID = 0
     this.firstTime = true
     this.timer = null
     this.listPlace = []    
   }
 
-  _transitionScene = (prevIndex, index, thisNavigator) => {    
+  _transitionScene = (prevIndex, index, thisNavigator) => {   
     // animate for tab, other just show hide    
     const prevRoute = thisNavigator.routeStack[prevIndex]
     const route = thisNavigator.routeStack[index]
@@ -147,28 +143,18 @@ export default class App extends Component {
     // process for route change only
 
     if (url !== this.props.url) {
-      // url may differ in param order but it is just like refresh page,
-      // and only update when param changed
-      // const oldPage = this.page
-      this.page = getPage(url)
-      const { Page, ...route } = this.page
-      
-      if (this.page) {
-        // show header and footer, and clear search string
-          
+      const route = getPage(url)
+      if (route) {
+        // show header and footer, and clear search string          
         this.navigator.navigate(route)
         this.header.show(route.headerType, route.title)        
         this.footer.show(route.footerType, route.path)
-        this.topDropdown.show(route.showTopDropdown)
-        
-
+        this.topDropdown.show(route.showTopDropdown)        
       } else {
         // no need to push to route
-        this.page = routes.notFound
         this.props.setToast('Scene not found: ' + url, 'danger')
       }      
-    }
-    
+    }    
 
     // check drawer
     if (drawerState !== this.props.drawerState) {
@@ -181,18 +167,6 @@ export default class App extends Component {
     return false
   }
 
-  // will assign visible props for page, and only render when it is visible
-  // initializePage(ref, route) {
-  //   if (ref && route.path) {
-  //     this.pageInstances[route.path] = ref
-
-  //     // ref.state.visible = true
-
-  //     // ref.visible = true
-  //     // const fn = ref.shouldComponentUpdate
-  //     // ref.shouldComponentUpdate = (nextProps, nextState) => (fn ? fn.call(ref) : true) && ref.visible
-  //   }
-  // }
 
   handleFocusableComponent(ref, focus = true){
     // do not loop forever
@@ -221,11 +195,10 @@ export default class App extends Component {
   }
 
 
-  _handlePageWillFocus = ({path, disableCache}) => {   
+  _handlePageWillFocus = (route) => {   
     // should not re-render via params, let it - re-mount
     // let component = this.pageInstances.get(path)
-    // if(component){
-    //   const { Page, ...route } = this.page      
+    // if(component){       
     //   const propsChanged = !shallowEqual(route.params, component.props.route.params)
     //     || !shallowEqual(route.query, component.props.route.query)
     //   if (propsChanged) {
@@ -235,39 +208,21 @@ export default class App extends Component {
     //   }           
     // }
     
-    this.handleFocusableComponent(this.pageInstances.get(path), true)
+    this.handleFocusableComponent(this.pageInstances.get(route.path), true)
   }
 
-  // initializePageWrapper(ref, route) {
-  //   if (ref && route.path) {
-  //     this.pageWrapperInstances[route.path] = ref._root
-  //   }
-  // }
-
-  // // render a component from current page, then pass the params to Page
-  // renderComponentFromPage(route) {    
-  //   return (
-  //     <View style={{ paddingTop: route.showTopDropdown ? 50 : 0, flex: 1 }}>
-  //       <Page route={route} app={this} ref={page=>this.navigator._pageRefs[] = page} />
-  //     </View>
-  //   )
-  // }
-
   // we can use events to pass between header and footer and page via App container or store
-  _renderPage = (index) => {
-    // console.log(index)
-    const {Page, ...route} = this.page
+  _renderPage = (route) => {    
     const component = (
-      <AfterInteractions firstTime={this.firstTime} placeholder={this.page.Preload || <Preload />}>
+      <AfterInteractions firstTime={this.firstTime} placeholder={route.Preload || <Preload />}>
         <View style={{ paddingTop: route.showTopDropdown ? 50 : 0, flex: 1 }}>
-          <Page route={route} app={this} ref={ref=> this.pageInstances.set(route.path, ref)} />
+          <route.Page route={route} app={this} ref={ref=> this.pageInstances.set(route.path, ref)} />
         </View>
       </AfterInteractions>
     )
 
     this.firstTime = false
-    return component
-    // }
+    return component    
   }
 
   _onLeftClick = (type) => {
@@ -334,8 +289,6 @@ export default class App extends Component {
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     // }
 
-    // this.page = getPage(url)    
-    // this.topDropdown.show(this.page.showTopDropdown)
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -420,8 +373,9 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { drawerState, closeDrawer, place, selectedPlace, disableCache } = this.props
-    const { Page, ...route } = this.page
+    const { drawerState, closeDrawer, place, selectedPlace, disableCache, url } = this.props
+    const route = getPage(url) || routes.notFound
+
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -455,10 +409,7 @@ export default class App extends Component {
           content={<SideBar />}
           onClose={closeDrawer}
         >
-          {
-            // each Page will overide StatusBar
-            // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
-          }
+        
           <Header type={route.headerType} title={route.title} onLeftClick={this._onLeftClick} 
             onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
             app={this} onPressOverlay={this._handlePressHeaderOverlay}

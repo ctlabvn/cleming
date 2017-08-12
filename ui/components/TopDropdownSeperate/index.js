@@ -125,7 +125,7 @@ export default class TopDropdown extends Component {
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         
         // is shown?
-        containerStyleTopDown.opacity = show ? 1 : 0
+        containerStyleTopDown.top = show ? material.toolbarHeight : -material.deviceHeight
        
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>

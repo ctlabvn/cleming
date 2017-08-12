@@ -16,11 +16,12 @@ export default class Navigator extends Component {
   constructor(props) {
     super(props);
     // use scenes array because we will not cache too many
-    this.scenes = [this._renderScene(props.initialRoute, 0)];    
+    this.scenes = [this._renderScene(props.initialRoute)];    
     this.routeStack = [props.initialRoute]    
     this.presentedIndex = 0
     this.blurIndex = -1    
-    this._sceneRefs = []
+    // should be private
+    this._sceneRefs = new Map()
   }  
 
   componentDidUpdate(){    
@@ -32,13 +33,18 @@ export default class Navigator extends Component {
     return false
   }
 
+  getScene(index){
+    const route = this.routeStack[index]
+    return route ? this._sceneRefs.get(route.path) : null
+  }
+
   enable(index, enabled = true){
-    let scene = this._sceneRefs[index]      
+    let scene = this.getScene(index)      
     scene && scene.setNativeProps({pointerEvents: enabled ? 'auto' : 'none'})
   }
 
   freeze(index, freezed = true){
-    let scene = this._sceneRefs[index]      
+    let scene = this.getScene(index)      
     scene && scene.setNativeProps({
       [Platform.OS === 'android' 
         ? 'renderToHardwareTextureAndroid' 
@@ -48,7 +54,7 @@ export default class Navigator extends Component {
   }
 
   translate(index, translateX){
-    let scene = this._sceneRefs[index]
+    let scene = this.getScene(index)      
     scene && scene.setNativeProps({
       style: {
         transform: [
@@ -72,14 +78,14 @@ export default class Navigator extends Component {
       if (destIndex === -1) {
         destIndex = this.routeStack.length          
         this.routeStack.push(route)
-        this.scenes.push(this._renderScene(route, destIndex));
+        this.scenes.push(this._renderScene(route));
         updated = 1
       }              
 
       if(oldRoute.disableCache){
         // remove route then re-get index        
         this.routeStack.splice(this.blurIndex, 1)    
-        this._sceneRefs.splice(this.blurIndex, 1) 
+        this._sceneRefs.delete(oldRoute.path) 
         this.scenes.splice(this.blurIndex, 1)       
         // delete so we can re-render it later
         // this._renderedSceneMap.delete(oldRoute.path)       
@@ -108,14 +114,14 @@ export default class Navigator extends Component {
     }
   }
 
-  _renderScene(route, i) {
+  _renderScene(route) {
     return (
       <View
         collapsable={false}
         key={route.path}
-        ref={scene => this._sceneRefs[i] = scene}
+        ref={scene => this._sceneRefs.set(route.path, scene)}
         style={styles.scene}>
-        {this.props.renderScene(i)}  
+        {this.props.renderScene(route)}  
       </View>
     );
   }
