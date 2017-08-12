@@ -101,20 +101,16 @@ export default class App extends Component {
     // animate for tab, other just show hide    
     const prevRoute = thisNavigator.routeStack[prevIndex]
     const route = thisNavigator.routeStack[index]
-    const prevTabIndex = prevRoute && routes[prevRoute.path].tabIndex    
-    const tabIndex = route && routes[route.path].tabIndex      
-
     // show current scene then wait for transition
-    // thisNavigator.show(index, true)
-    // disable prevScene      
+    // disable prevScene, means that we can do any action on this view    
     thisNavigator.enable(prevIndex, false)
-
-    if(tabIndex !== undefined && prevTabIndex !== undefined){
+    // check animation type
+    if(prevRoute.tabIndex !== undefined && route.tabIndex !== undefined){
       // animate like tab, 
       // show index first then prepare for animate
       // when complete animation, let pointerEvents = 'auto' other 'none'
       // if tabIndex > preTabIndex from right to left, else from left to right
-      const prefix = tabIndex > prevTabIndex ? 1 : - 1
+      const prefix = route.tabIndex > prevRoute.tabIndex ? 1 : - 1
       let enter = new Animated.Value(40 * prefix)    
       
       // start freeze
