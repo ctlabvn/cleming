@@ -116,14 +116,16 @@ export default class TopDropdown extends Component {
 
     render() {
         console.log('Render TopDropdownSeperate')
-        const { notifications, getNotificationRequest, getNotification } = this.props
+        const { notifications, getNotificationRequest, getNotification, show } = this.props
         let { openningDropdown, selectedOption } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
-   
+        
+        // is shown?
+        containerStyleTopDown.opacity = show ? 1 : 0
        
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
