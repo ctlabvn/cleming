@@ -176,15 +176,20 @@ export default class MerchantOverview extends Component {
         )
     }
 
+    navigate(route){
+        this.props.replaceFooterRoute(1, route)
+        this.props.forwardTo(route)
+    }
+
     renderMainContainer() {
-        const {handleSubmit, submitting, forwardTo, place} = this.props
+        const {handleSubmit, submitting, place} = this.props
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
                 <Text strong style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
                 
                     {(place && place.news && place.news.transactionNews > -1) &&
-                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('transactionList')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('transactionList')}>
                         
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
@@ -198,7 +203,7 @@ export default class MerchantOverview extends Component {
                         
                     </TouchableOpacity>}
                     {(place && place.news && place.news.bookingNews > -1) &&
-                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('placeOrderList')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('placeOrderList')}>
                             <View style={styles.leftBlock}>
                                 <Icon name='calendar-checked' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
@@ -211,7 +216,7 @@ export default class MerchantOverview extends Component {
                     </TouchableOpacity>}
 
                     {(place && place.news && place.news.orderNews > -1) &&
-                    <TouchableOpacity style={styles.menuItem} onPress={() => forwardTo('deliveryList')}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('deliveryList')}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
@@ -230,7 +235,7 @@ export default class MerchantOverview extends Component {
 
     render() {
         console.log('Rendering MerchantOverview')
-        const {handleSubmit, submitting, forwardTo, place, selectedPlace} = this.props
+        const {handleSubmit, submitting, place, selectedPlace} = this.props
 
         let mainContainer = null
         if (place && place.listPlace) {
@@ -240,11 +245,11 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
-                    <View style={styles.contentContainer}>
+                 <View style={styles.contentContainer}>
                         <GradientBackground colors={[material.blue400, material.blue600]}/>
                         <Image source={storeTransparent} style={{resizeMode: 'contain', height: 120}}/>
                     </View>
+                <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>                   
                     {mainContainer}
                 </Content>
             </Container>

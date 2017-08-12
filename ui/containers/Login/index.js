@@ -78,11 +78,13 @@ export default class extends Component {
     Keyboard.dismiss()
     this.setState({ loading: true })
     this.props.login(email, password, xDevice, xUniqueDevice,
-      (err, data) => {
-        this.setState({ loading: false })
+      (err, data) => {        
         if (!err) {
           this.props.change('password', '')
+        } else {
+          this.setState({ loading: false })
         }
+
       }
     )
   }

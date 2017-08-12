@@ -15,3 +15,8 @@ export const clearBookingList = (...args)=>({
     type: 'booking/clear',
     args
 })
+
+export const updateDateFilter = (payload) => ({
+  type: 'booking/updateDateFilter',
+  payload,
+}) 

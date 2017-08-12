@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Grid, List, ListItem, Row, Spinner, Text} from "native-base";
-import {InteractionManager, View} from "react-native";
+import {InteractionManager, View, FlatList} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonActions from "~/store/actions/common";
@@ -93,7 +93,7 @@ export default class PlaceOrderList extends Component {
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
                     <Text medium warning bold>{item.bookingClmCode}</Text>
-                </View >)
+                </View>)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
                     <Text medium
@@ -117,7 +117,7 @@ export default class PlaceOrderList extends Component {
                 orderCodeBlock = (<View style={styles.row}>
                     <Icon name='calendar-checked' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
                     <Text medium bold style={styles.gray}>{item.bookingClmCode}</Text>
-                </View >)
+                </View>)
                 phoneNumberBlock = (<View style={styles.row}>
                     <Icon name='phone' style={{ ...styles.icon, ...styles.gray, ...styles.iconLeft }} />
                     <Text medium
@@ -131,12 +131,10 @@ export default class PlaceOrderList extends Component {
 
         return (
 
-            <ListItem style={listItemStyle}>
-                <Grid>
-                    <Row style={{ height: '70%' }}>
-                        <Button
-                            onPress={() => this.props.forwardTo('placeOrderDetail/' + item.clingmeId)}
-                            style={listButtonStyle}>
+            <ListItem style={listItemStyle} onPress={() => this.props.forwardTo('placeOrderDetail/' + item.clingmeId)}>
+                
+                    <View style={{ flex: 7 }}>
+                                                                                
                             <View style={styles.rowPadding}>
                                 {orderCodeBlock}
                                 <View style={styles.rowCenter}>
@@ -170,19 +168,19 @@ export default class PlaceOrderList extends Component {
                                 </View>
                             </View>
                             <Border color='rgba(0,0,0,0.5)' size={1} />
-                        </Button>
-                    </Row>
-                    <Row style={{ flexDirection: 'column', height: '30%' }}>
-                        <View style={{ ...styles.rowPadding }}>
-                            <View style={styles.row}>
-                                <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
-                                <Text grayDark medium>{chainParse(item, ['userInfo', 'memberName'])}</Text>
-                            </View>
-                            {phoneNumberBlock}
+                        
+                    </View>
+                    
+                    <View style={{ ...styles.rowPadding, flex:3 }}>
+                        <View style={styles.row}>
+                            <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
+                            <Text grayDark medium>{chainParse(item, ['userInfo', 'memberName'])}</Text>
                         </View>
-                    </Row>
-                </Grid>
-            </ListItem >
+                        {phoneNumberBlock}
+                    </View>
+                    
+                
+            </ListItem>
         )
     }
 
@@ -228,6 +226,9 @@ export default class PlaceOrderList extends Component {
         this._load(item.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
     }
     _handlePressFilter(item) {
+
+        this.props.updateDateFilter(item.currentDateFilter)
+
         const { booking, app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -276,44 +277,44 @@ export default class PlaceOrderList extends Component {
 
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
-            const { app, news } = this.props
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            selectedPlace = app.topDropdown.getValue()
+            // const { app, news } = this.props
+            // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            // selectedPlace = app.topDropdown.getValue()
 
-            // let currentPlace = this.refs.placeDropdown.getValue()
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            // this.counting = true
-            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-            } else {
-                this.isLoadingPlace = true
-            }
-            if (news && news.bookingNews) {
-                this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
-            }
+            // // let currentPlace = this.refs.placeDropdown.getValue()
+            // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // // this.counting = true
+            // if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+            //     this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+            // } else {
+            //     this.isLoadingPlace = true
+            // }
+            // if (news && news.bookingNews) {
+            //     this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+            // }
         // })
     }
     componentWillFocus() {
-        const { app, news, clearMarkLoad, meta } = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        this.setState({ counting: true })
-        if (news && news.bookingNews) {
-            this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
-        }
-        let selectedPlace = app.topDropdown.getValue()
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        // const { app, news, clearMarkLoad, meta } = this.props
+        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        // this.setState({ counting: true })
+        // if (news && news.bookingNews) {
+        //     this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+        // }
+        // let selectedPlace = app.topDropdown.getValue()
+        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         
-        if (meta && meta[SCREEN.BOOKING_LIST]){
-            console.log('Markload booking')
-            let selectedPlace = app.topDropdown.getValue()
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-            }
-            clearMarkLoad(SCREEN.BOOKING_LIST)
-        }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
-            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        }
+        // if (meta && meta[SCREEN.BOOKING_LIST]){
+        //     console.log('Markload booking')
+        //     let selectedPlace = app.topDropdown.getValue()
+        //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        //     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+        //         this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        //     }
+        //     clearMarkLoad(SCREEN.BOOKING_LIST)
+        // }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
+        //     this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        // }
     }
     componentWillBlur() {
         // InteractionManager.runAfterInteractions(() => {
@@ -333,6 +334,8 @@ export default class PlaceOrderList extends Component {
     //     }
     // }
     render() {
+
+        console.log('render booking list')
         const { booking, place } = this.props
         if (!booking) {
             return (
@@ -363,18 +366,19 @@ export default class PlaceOrderList extends Component {
                 <View style={{ height: '100%' }}>
                     <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab} />
-                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
+                    <DateFilter defaultFilter={booking.currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
 
-                    <ListViewExtend
+                    <FlatList
                         onEndReached={this._loadMore} 
+                        keyExtractor={item=>item.clingmeId}
                         onRefresh={this._onRefresh}
                         refreshing={this.state.loading}
-                        dataArray={booking.bookingList}
-                        renderRow={(item) => this._renderBookingItem(item)}
+                        data={booking.bookingList}
+                        renderItem={({item}) => this._renderBookingItem(item)}
                     />
                     {this.state.loadingMore && <Spinner color={material.red500} />}
                 </View>
-            </View >
+            </View>
         )
     }
 }

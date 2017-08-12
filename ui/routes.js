@@ -75,8 +75,9 @@ export default {
     deliveryList: {
         title: I18n.t('page_delivery_list'),
         Page: DeliveryList,
-        headerType: 'back',
-        showTopDropdown: true
+        headerType: 'home',
+        showTopDropdown: true,
+        tabIndex: 1,
     },
     'deliveryDetail/:id': {
         title: I18n.t('page_delivery_detail'),
@@ -84,18 +85,13 @@ export default {
         footerType: 'none',
         headerType: 'back',
         disableCache: true ,
-    },
-    report: {
-        title: I18n.t('page_customer_statistic'),
-        Page: Report,
-        showTopDropdown: true,
-        tabIndex: 2,
-    },
+    },    
     placeOrderList: {
         title: I18n.t('page_booking_list'),
         Page: PlaceOrderList,
-        headerType: 'back',
-        showTopDropdown: true
+        headerType: 'home',
+        showTopDropdown: true,
+        tabIndex: 1,
     },
     'placeOrderDetail/:id': {
         title: I18n.t('page_booking_detail'),
@@ -104,12 +100,12 @@ export default {
         footerType: 'none',
         disableCache: true ,
     },
-    notFound: {
-        title: 'Not Found',
-        Page: NotFound,
-        headerType: 'none',
-        footerType: 'none',
-    }, 
+    report: {
+        title: I18n.t('page_customer_statistic'),
+        Page: Report,
+        showTopDropdown: true,
+        tabIndex: 2,
+    },    
     notification: {
         title: I18n.t('page_notification'),
         Page: Notification,
@@ -135,6 +131,7 @@ export default {
         Page: UserManagement,
         footerType: 'none',
         showTopDropdown: true,
+        disableCache: true ,
     },
     'userManagement/action/createUser': {
         title: I18n.t('page_add_account'),
@@ -162,33 +159,29 @@ export default {
         Page: Help,
         headerType: 'back',
     },
-    qrScanner: {
-        title: 'QR Scanner',
-        Page: QRScanner,
-        headerType: 'back',
-        footerType: 'none',
-        disableCache: true ,
-    },
-
-    mapCluster: {
-        title: 'Map Cluster Demo',
-        Page: MapCluster,
-        showTopDropdown: true,
-        disableCache: true ,
-    },
-
+    // qrScanner: {
+    //     title: 'QR Scanner',
+    //     Page: QRScanner,
+    //     headerType: 'back',
+    //     footerType: 'none',
+    //     disableCache: true ,
+    // },
+    // mapCluster: {
+    //     title: 'Map Cluster Demo',
+    //     Page: MapCluster,
+    //     showTopDropdown: true,
+    //     disableCache: true ,
+    // },
     revenueManagementList: {
         title: I18n.t('revenue'),
         Page: RevenueManagementList,
         headerType: 'back',
     },
-
     'revenueManagementDetail/:tabId/:tranId': {
         title: I18n.t('revenue_detail'),
         Page: RevenueManagementDetail,
         headerType: 'back',
     },
-
     'wallet': {
         title: I18n.t('page_wallet'),
         Page: Wallet,
@@ -216,5 +209,11 @@ export default {
         Page: Setting,
         headerType: 'back',
         footerType: 'none'
-    }
+    },
+    notFound: {
+        title: 'Not Found',
+        Page: NotFound,
+        headerType: 'none',
+        footerType: 'none',
+    }, 
 }

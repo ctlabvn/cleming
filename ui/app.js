@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated } from 'react-native'
+import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated, Easing } from 'react-native'
 import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 import URL from 'url-parse'
@@ -48,8 +48,10 @@ import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from 
 import I18n from '~/ui/I18n'
 
 const getPage = (url) => {
-  for (route in routes) {
-    const pathname = url.split('?')[0]
+  // guard code
+  if(!url) return null
+  const pathname = url.split('?')[0]
+  for (route in routes) {    
     const match = matchPath(pathname, {
       path: route,
       exact: true,
@@ -61,6 +63,13 @@ const getPage = (url) => {
       return { ...routes[route], ...match, url, pathname, query }
     }
   }
+}
+
+const animateOption = {
+  toValue: 0,
+  duration: 500,
+  easing: Easing.bezier(0.2833, 0.99, 0.31833, 0.99),
+  useNativeDriver: true, 
 }
 
 const UIManager = NativeModules.UIManager
@@ -88,12 +97,18 @@ export default class App extends Component {
     this.listPlace = []    
   }
 
-  _transitionScene = (prevIndex, index) => {    
-    // animate for tab, other just show hide
-    const prevRoute = this.navigator.routeStack[prevIndex]
-    const route = this.navigator.routeStack[index]
+  _transitionScene = (prevIndex, index, thisNavigator) => {    
+    // animate for tab, other just show hide    
+    const prevRoute = thisNavigator.routeStack[prevIndex]
+    const route = thisNavigator.routeStack[index]
     const prevTabIndex = prevRoute && routes[prevRoute.path].tabIndex    
-    const tabIndex = route && routes[route.path].tabIndex        
+    const tabIndex = route && routes[route.path].tabIndex      
+
+    // show current scene then wait for transition
+    // thisNavigator.show(index, true)
+    // disable prevScene      
+    thisNavigator.enable(prevIndex, false)
+
     if(tabIndex !== undefined && prevTabIndex !== undefined){
       // animate like tab, 
       // show index first then prepare for animate
@@ -101,33 +116,35 @@ export default class App extends Component {
       // if tabIndex > preTabIndex from right to left, else from left to right
       const prefix = tabIndex > prevTabIndex ? 1 : - 1
       let enter = new Animated.Value(40 * prefix)    
-      // disable prevScene      
-      this.navigator.enable(prevIndex, false)      
-      Animated.timing(enter, {
-        toValue: 0,
-        duration: 150,
-        useNativeDriver: true, 
-      }).start()
+      
+      // start freeze
+      thisNavigator.freeze(prevIndex)
+      thisNavigator.freeze(index)
+
+      // start animation
+      Animated.timing(enter, animateOption).start()
 
       const animatedListenerId = enter.addListener(({value})=>{     
-        const translateX = Math.round(value)   
-        this.navigator.transitionBetween(prevIndex, index, translateX, prefix)        
-        if(translateX === 0) {          
-          this.navigator.enable(index)
+        const translateX = Math.round(value)           
+        thisNavigator.transitionBetween(prevIndex, index, translateX, 1)        
+        if(translateX === 0) {                    
+          // now ready
+          // stop freeze
+          thisNavigator.freeze(prevIndex, false)
+          thisNavigator.freeze(index, false)
+
+          // then enable it
+          thisNavigator.enable(index)
           enter.removeListener(animatedListenerId)
         }
       })
     } else {
-      // make sure it can show/hide
-      this.navigator.show(index, true)
-      this.navigator.show(prevIndex, false)            
+      // make sure it can show/hide   
+      thisNavigator.transitionBetween(prevIndex, index, 0)
+      thisNavigator.enable(index)           
     }
     
   }
-
-    // this._pageRefs = [];
-
-
 
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ url, drawerState }) {
@@ -309,17 +326,17 @@ export default class App extends Component {
   }
   componentDidMount() {
     const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast, url } = this.props
-    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
+    // if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
         name: item.address
       }))
-      // this.topDropdown.updateDropdownValues(listPlace)
+      // this.topDropdown.updateDropdownValues(listPlace)      
       this.topDropdown.updateSelectedOption(selectedPlace)
       this.topDropdownListValue.updateDropdownValues(this.listPlace)
       this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
-    }
+    // }
 
     // this.page = getPage(url)    
     // this.topDropdown.show(this.page.showTopDropdown)
@@ -409,7 +426,6 @@ export default class App extends Component {
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, disableCache } = this.props
     const { Page, ...route } = this.page
-    console.log(route)
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -460,7 +476,8 @@ export default class App extends Component {
             onBlur={this._handlePageWillBlur}
             transition={this._transitionScene}
           />
-          <Footer type={route.footerType} route={route.path} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
+          <Footer type={route.footerType} route={route.path} onTabClick={this._onTabClick} 
+            onItemRef={ref => this.footer = ref} />          
           <TopDropdown
             app={this}
             ref={ref => this.topDropdown = ref}

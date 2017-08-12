@@ -1,7 +1,8 @@
 export const initialState = {  
   listPlace: [],
   news: {},
-  selectedOption: {}
+  selectedOption: {},
+  currentDateFilter: 'day',
 }
 export const place = (state = initialState, {type, payload}) => {
   switch (type) {   

@@ -95,6 +95,11 @@ export const search = (payload) => ({
   payload,
 })
 
+export const replaceFooterRoute = (index, route) => ({
+  type: 'app/replaceFooterRoute',
+  payload: {index, route},
+})
+
 export const openModal = () => ({
   type: 'app/openModal'
 })

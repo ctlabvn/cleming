@@ -30,6 +30,7 @@ export default class extends Component {
     return (                             
       <ScrollView
           ref={ref=>this.content = ref}
+          scrollEventThrottle={50}
         onScroll={(e)=>{    
           const offsetY = e.nativeEvent.contentOffset.y     
           const contentHeight= e.nativeEvent.contentSize.height

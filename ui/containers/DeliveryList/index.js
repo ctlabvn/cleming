@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, ListItem, Spinner, Text } from "native-base";
-import { InteractionManager, View } from "react-native";
+import { InteractionManager, View, FlatList } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as orderActions from "~/store/actions/order";
@@ -42,7 +42,7 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     session: authSelectors.getSession(state),
     news: getNews(state),
     meta: state.meta,
-    router: getRouter(state),
+    // router: getRouter(state), // can get direct from app, state, but should not connect    
 }), { ...orderActions, ...commonActions, ...placeActions, ...metaActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
@@ -71,88 +71,88 @@ export default class extends Component {
         this.clickCount = 0
     }
     componentWillReceiveProps(nextProps){
-        const {meta} = nextProps
-        const {clearMarkLoad, router} = this.props
-        if (meta && meta[SCREEN.ORDER_LIST] && router && router.route == "deliveryList"){
-            this._load()
-            clearMarkLoad(SCREEN.ORDER_LIST)
-        }
+        // const {meta} = nextProps
+        // const {clearMarkLoad, router} = this.props
+        // if (meta && meta[SCREEN.ORDER_LIST] && router && router.route == "deliveryList"){
+        //     this._load()
+        //     clearMarkLoad(SCREEN.ORDER_LIST)
+        // }
     }
 
     _load() {
         // InteractionManager.runAfterInteractions(() => {
-        const { order, getOrderDenyReason, session } = this.props
-        let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
-        if (!this.state.selectedPlace) {
-            this.isLoadingPlace = true
-        }
-        // load list content
-        this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
-        if (!order.denyReason || order.denyReason.length == 0) {
-            getOrderDenyReason(session)
-        }
+        // const { order, getOrderDenyReason, session } = this.props
+        // let dateFilter = this.refs.dateFilter.getData(); //currentSelectValue
+        // if (!this.state.selectedPlace) {
+        //     this.isLoadingPlace = true
+        // }
+        // // load list content
+        // this.loadPage(1, dateFilter.currentSelectValue.value.from, dateFilter.currentSelectValue.value.to)
+        // if (!order.denyReason || order.denyReason.length == 0) {
+        //     getOrderDenyReason(session)
+        // }
         // })
     }
 
     componentWillFocus() {
         // this.counting = true
         // InteractionManager.runAfterInteractions(() => {
-        this.clickCount = 0
-        const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        let now = new Date().getTime()
-        //
-        let placeDropdownValue = app.topDropdown.getValue()
-        if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
-            let selectedPlace = placeDropdownValue.id
-            if (selectedPlace != this.state.selectedPlace){
-                this.setState({selectedPlace: selectedPlace},
-                    ()=>this._load()
-                )
-            }
-        }
+        // this.clickCount = 0
+        // const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
+        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // let now = new Date().getTime()
+        // //
+        // let placeDropdownValue = app.topDropdown.getValue()
+        // if (placeDropdownValue && Object.keys(placeDropdownValue).length > 0) {
+        //     let selectedPlace = placeDropdownValue.id
+        //     if (selectedPlace != this.state.selectedPlace){
+        //         this.setState({selectedPlace: selectedPlace},
+        //             ()=>this._load()
+        //         )
+        //     }
+        // }
         
-        //Effect within 1 munites from markTime
-        if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
-            markWillReload(false)
-            this.selectedStatus = ORDER_WAITING_DELIVERY
-            this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
-            this._load()
-        }else if (meta && meta[SCREEN.ORDER_LIST]){
-            console.log('Markload order list')
-            this._load()
-            clearMarkLoad(SCREEN.ORDER_LIST)
-        }
+        // //Effect within 1 munites from markTime
+        // if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
+        //     markWillReload(false)
+        //     this.selectedStatus = ORDER_WAITING_DELIVERY
+        //     this.refs.tabs.setActiveTab(ORDER_WAITING_DELIVERY)
+        //     this._load()
+        // }else if (meta && meta[SCREEN.ORDER_LIST]){
+        //     console.log('Markload order list')
+        //     this._load()
+        //     clearMarkLoad(SCREEN.ORDER_LIST)
+        // }
 
-        news && this.refs.tabs.updateMultipleNumber([
-            {
-                tabID: ORDER_WAITING_CONFIRM,
-                number: news.orderWaitConfirm
-            },
-            {
-                tabID: ORDER_WAITING_DELIVERY,
-                number: news.orderWaitDelivery
-            }
-        ])
-        this.setState({ counting: true })
+        // news && this.refs.tabs.updateMultipleNumber([
+        //     {
+        //         tabID: ORDER_WAITING_CONFIRM,
+        //         number: news.orderWaitConfirm
+        //     },
+        //     {
+        //         tabID: ORDER_WAITING_DELIVERY,
+        //         number: news.orderWaitDelivery
+        //     }
+        // ])
+        // this.setState({ counting: true })
         // })
     }
 
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
-        const { app, news } = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        this._load()
-        news && this.refs.tabs.updateMultipleNumber([
-            {
-                tabID: ORDER_WAITING_CONFIRM,
-                number: news.orderWaitConfirm
-            },
-            {
-                tabID: ORDER_WAITING_DELIVERY,
-                number: news.orderWaitDelivery
-            }
-        ])
+        // const { app, news } = this.props
+        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // this._load()
+        // news && this.refs.tabs.updateMultipleNumber([
+        //     {
+        //         tabID: ORDER_WAITING_CONFIRM,
+        //         number: news.orderWaitConfirm
+        //     },
+        //     {
+        //         tabID: ORDER_WAITING_DELIVERY,
+        //         number: news.orderWaitDelivery
+        //     }
+        // ])
 
         // })
 
@@ -246,6 +246,8 @@ export default class extends Component {
         this.loadPage(1, dateFilter.from, dateFilter.to)
     }
     _handlePressFilter = (item) => {
+        // update dateFilter for delivery list
+        this.props.updateDateFilter(item.currentDateFilter)
         this.loadPage(1, item.currentSelectValue.value.from, item.currentSelectValue.value.to)
     }
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
@@ -292,6 +294,9 @@ export default class extends Component {
     }
 
     render() {
+
+        console.log('render delivery list')
+
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
         return (
@@ -299,7 +304,7 @@ export default class extends Component {
                 <LoadingModal loading = {this.state.processing} text={I18n.t('processing')}/>
                 <TabsWithNoti tabData={options.tabData}
                     activeTab={0} onPressTab={this._handlePressTab} ref='tabs' />
-                <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+                <DateFilter defaultFilter={order.currentDateFilter} onPressFilter={this._handlePressFilter} ref='dateFilter' />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}
@@ -308,12 +313,13 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
-                <ListViewExtend
+                <FlatList
                     onEndReached={this._loadMore} 
                     onRefresh={this._onRefresh}
                     refreshing={this.state.loading}
-                    dataArray={orderList}
-                    renderRow={(item) => (
+                    data={orderList}
+                    keyExtractor={item=>item.orderInfo.clingmeId}
+                    renderItem={({item}) => (
                         <OrderItem data={item} 
                             key={chainParse(item, ['orderInfo', 'tranId'])}
                             onPressPhoneNumber = {this.onModalOpen}

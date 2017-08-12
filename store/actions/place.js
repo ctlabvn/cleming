@@ -29,8 +29,8 @@ export const setMerchantNews = (news) => ({
 })
 
 
-
 export const setSelectedOption = (selected)=>({
   type: 'place/setSelectedOption',
   payload: selected
 })
+     

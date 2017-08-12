@@ -345,8 +345,7 @@ export default class extends Component {
     return (
 
       <Container>
-          {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
-          {notifications &&
+          {notifications.hasMore ?
             <FlatList            
               // keyExtractorArr={checkProperties}
               keyExtractor={item=>item.notifyId}
@@ -373,9 +372,13 @@ export default class extends Component {
                 </ListItem>
               }
               } />
+              : <View style={styles.emptyBlock}>
+                  <Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text>
+              </View>
           }
-          {this.state.loading && <Spinner />}
 
+
+          {this.state.loading && <Spinner />}
 
 
       </Container>

@@ -40,3 +40,8 @@ export const markWillReload = (reload) => ({
   type: 'order/markReloadFlag',
   payload: reload
 })
+
+export const updateDateFilter = (payload) => ({
+  type: 'order/updateDateFilter',
+  payload,
+})      

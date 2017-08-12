@@ -63,3 +63,8 @@ export const setDenyReasonClm = (reason) => ({
   type: 'transaction/setDenyReasonClm',
   payload: reason
 })
+
+export const updateDateFilter = (payload) => ({
+  type: 'transaction/updateDateFilter',
+  payload,
+}) 

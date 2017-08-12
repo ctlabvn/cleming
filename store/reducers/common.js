@@ -62,6 +62,18 @@ export const drawer = (state = {drawerState: 'closed'}, { type }) => {
   }
 }
 
+export const footerRoutes = (state = ['merchantOverview','transactionList','report','notification'], {type, payload})=>{
+  switch (type) {
+    case 'app/replaceFooterRoute':
+      // clone array
+      const newState = state.slice(0)
+      newState[payload.index] = payload.route
+      return newState
+    default:
+      return state
+  }
+}
+
 export const search = (state = null, { type, payload }) => {
   switch(type){
     case 'app/search':

@@ -36,6 +36,7 @@ import { getRouter } from '~/store/selectors/common'
     xsession: getSession(state),
     user: getUser(state),
     news: getNews(state),
+    currentDateFilter: state.transaction.currentDateFilter,
     payDirect: getListTransactionDirect(state),
     payWithClingme: getListTransactionCLM(state),
     meta: state.meta,
@@ -59,9 +60,12 @@ export default class extends Component {
             }
         }
     }
+    
     // need filter transaction type
     _handlePressFilter(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
+        this.props.updateDateFilter(item.currentDateFilter)
+
         const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = item.currentSelectValue.value
@@ -120,19 +124,19 @@ export default class extends Component {
 
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
-        const { app, news } = this.props
-        let selectedPlace = app.topDropdown.getValue()
-        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        // let currentPlace = this.refs.placeDropdown.getValue()
-        let transactionFilterComponent = this.refs.transactionFilter
-        let transactionFilter = transactionFilterComponent.getCurrentValue()
-        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-        } else {
-            this.isLoadingPlace = true
-        }
-        this._updateNews(news)
+        // const { app, news } = this.props
+        // let selectedPlace = app.topDropdown.getValue()
+        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        // // let currentPlace = this.refs.placeDropdown.getValue()
+        // let transactionFilterComponent = this.refs.transactionFilter
+        // let transactionFilter = transactionFilterComponent.getCurrentValue()
+        // if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+        //     this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        // } else {
+        //     this.isLoadingPlace = true
+        // }
+        // this._updateNews(news)
     }
 
     _updateNews = (newsData) => {
@@ -209,23 +213,23 @@ export default class extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        const { app, clearMarkLoad } = this.props
-        const { meta } = nextProps
-        // if (!router || router.route != 'transactionList'){
-        //     return
+        // const { app, clearMarkLoad } = this.props
+        // const { meta } = nextProps
+        // // if (!router || router.route != 'transactionList'){
+        // //     return
+        // // }
+        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        // let currentPlace = app.topDropdown.getValue()
+        // let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        // if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.state.currentTab == TRANSACTION_TYPE_DIRECT){
+        //     console.log('Case reload tranDirect')
+        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        //     clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        // }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.state.currentTab == TRANSACTION_TYPE_CLINGME){
+        //     console.log('Case reload tranClm')
+        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        //     clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
         // }
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        let currentPlace = app.topDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.state.currentTab == TRANSACTION_TYPE_DIRECT){
-            console.log('Case reload tranDirect')
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.state.currentTab == TRANSACTION_TYPE_CLINGME){
-            console.log('Case reload tranClm')
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-        }
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -237,27 +241,27 @@ export default class extends Component {
     // }
 
     componentWillFocus() {        
-        // InteractionManager.runAfterInteractions(() => {
-        const { app, news, meta, clearMarkLoad } = this.props
-        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        let currentPlace = app.topDropdown.getValue()
-        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
-            console.log('Markload transaction direct')
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
-            console.log('Markload transaction clingme')
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-        }else if(currentPlace && currentPlace.id != this.currentPlace){
-            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-        }
+        // // InteractionManager.runAfterInteractions(() => {
+        // const { app, news, meta, clearMarkLoad } = this.props
+        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        // let currentPlace = app.topDropdown.getValue()
+        // let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        // if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
+        //     console.log('Markload transaction direct')
+        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        //     clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        // }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
+        //     console.log('Markload transaction clingme')
+        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        //     clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        // }else if(currentPlace && currentPlace.id != this.currentPlace){
+        //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+        // }
         
         
-        this._updateNews(news)
-        this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
+        // this._updateNews(news)
+        // this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
     }
 
     _isNeedUpdateTab(){
@@ -360,7 +364,7 @@ export default class extends Component {
     
     render() {
         console.log('Render TransactionList')
-        const { forwardTo, payDirect, payWithClingme } = this.props
+        const { forwardTo, payDirect, payWithClingme, currentDateFilter } = this.props
         if (!payDirect && !payWithClingme) {
             return (
                 <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -384,7 +388,7 @@ export default class extends Component {
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <View style={{ height: '100%' }}>
                     <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
-                    <DateFilter onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
+                    <DateFilter defaultFilter={currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={this._getTransactionFilterValue()} ref='transactionFilter'
                     />

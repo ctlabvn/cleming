@@ -23,25 +23,12 @@ export default class Navigator extends Component {
   }  
 
   componentDidUpdate(){    
-    // must provide this one, after update we will move it smoothly
-    this.props.transition(this.blurIndex, this.presentedIndex)
-    // this.show(this.presentedIndex, true)
-    // this.show(this.blurIndex, false)
-    // for sure
-    // for(let i=0; i < this._sceneRefs.length; i++){      
-    //   if(i !== this.presentedIndex){        
-    //     this.show(i, false)
-    //   } 
-    // }    
+    // must provide this one, after update we will move it smoothly    
+    this.props.transition(this.blurIndex, this.presentedIndex, this)
+  }
 
-    // this.enter.setValue(40)
-
-    // Animated.timing(this.enter, {
-    //   toValue: 0,
-    //   duration: 200,
-    //   useNativeDriver: true, // <-- Add this
-    // }).start();
-
+  shouldComponentUpdate(nextProps) {
+    return false
   }
 
   enable(index, enabled = true){
@@ -49,14 +36,13 @@ export default class Navigator extends Component {
     scene && scene.setNativeProps({pointerEvents: enabled ? 'auto' : 'none'})
   }
 
-  show(index, isShown){
-    let scene = this._sceneRefs[index]    
-
+  freeze(index, freezed = true){
+    let scene = this._sceneRefs[index]      
     scene && scene.setNativeProps({
-      style: {
-        opacity: isShown ? 1 : 0,
-        zIndex: isShown ? 1 : 0,        
-      }
+      [material.platform === 'android' 
+        ? 'renderToHardwareTextureAndroid' 
+        : 'shouldRasterizeIOS'
+      ]: freezed
     })
   }
 
@@ -71,7 +57,7 @@ export default class Navigator extends Component {
     })
   }
 
-  transitionBetween(prevIndex, index, translateX, prefix){
+  transitionBetween(prevIndex, index, translateX, prefix = 1){
     this.translate(index, translateX)
     this.translate(prevIndex, translateX - prefix * material.deviceWidth)    
   }

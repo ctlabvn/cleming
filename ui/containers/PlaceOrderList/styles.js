@@ -13,7 +13,7 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '100%'
+        // width: '100%'
     },
     rowPaddingTB: {
         paddingTop: 10,
@@ -23,7 +23,7 @@ export default {
         alignItems: 'center'
     },
     row: {
-        flexDirection: 'row',
+        flexDirection: 'row',        
         justifyContent: 'space-between',
     },
     rowCenter: {
@@ -111,6 +111,7 @@ export default {
     },
     listItem: {
         flexDirection: 'column',
+        width: '100%',
         paddingRight: 0,
         paddingBottom: 0,
         marginLeft: 0,

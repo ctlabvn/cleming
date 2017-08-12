@@ -364,8 +364,7 @@ export default class DateFilter extends Component {
             currentSelectValue: this.state.currentSelectValue
         })
     }
-    render() {
-        console.log('Render dateFilter')
+    render() {        
         // find will not search through
         const currentDateFilter = this.dateFilterListValue.find(item => item.value === this.state.currentDateFilter)
         const currentDateFilterDisplay = currentDateFilter.display

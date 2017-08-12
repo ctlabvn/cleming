@@ -22,7 +22,7 @@ export default class TopDropdown extends Component {
         this.state = {
             openningDropdown: false,
             selectedOption: selectedOption,
-            show: !!props.show,
+            // show: !!props.show,
             searchString: '',
             placeholderText: I18n.t('search'),
         }
@@ -36,13 +36,20 @@ export default class TopDropdown extends Component {
             openningDropdown: false,
             searchString: '', 
         })
-        this.state.callback && this.state.callback(selectedOption)
+        this.callback && this.callback(selectedOption)
     }
+
     setCallbackPlaceChange(callback){
-        this.setState({callback: callback})
+        this.callback = callback
     }
+
     show(showState){
-        this.setState({show:showState})
+        // this.setState({show:showState})
+        this.container.setNativeProps({
+            style:{
+                opacity: showState ? 1 : 0
+            }
+        })
     }
 
     getValue() {
@@ -76,6 +83,7 @@ export default class TopDropdown extends Component {
 
     search(searchString){            
         const  data = this.props.app.topDropdownListValue.getValues()
+        if(!data) return
         const searchWord = convertVn(searchString.trim().toLowerCase())
         if(searchWord) {
             const searchedData = data.map(item=>{
@@ -102,6 +110,10 @@ export default class TopDropdown extends Component {
         this.setState({placeholderText: text});
     }
 
+    renderContent(){
+
+    }
+
     render() {
         console.log('Render TopDropdownSeperate')
         const { notifications, getNotificationRequest, getNotification } = this.props
@@ -111,21 +123,17 @@ export default class TopDropdown extends Component {
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
-        if (!this.state.show){
-            return <View />
-        }
-        if (!selectedOption || !selectedOption.name) {
-            return (
-                <View style={containerStyleTopDown}>
-                    <View style={styles.dropdownHeader}>
+   
+       
+        return (
+            <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
+
+            {(!selectedOption || !selectedOption.name) 
+                ? <View style={styles.dropdownHeader}>
                         <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{I18n.t('loading_place')}</Text>
                     </View>
-                </View>
-            )
-        }
-        return (
-            <View style={containerStyleTopDown}>
-                <View style={openningDropdown ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
+
+                : <View style={openningDropdown ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
 
                     <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
                         <View>
@@ -146,7 +154,7 @@ export default class TopDropdown extends Component {
                                placeholderTextColor={material.gray300} style={styles.searchInput}
                                placeholder={this.state.placeholderText}/></Item>}
 
-                </View>
+                </View>}
             </View>
         )
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux'
 import {         
     Footer, FooterTab, Button,         
     Text, Badge, View,
@@ -9,6 +9,9 @@ import Icon from '~/ui/elements/Icon'
 import options from './options'
 import styles from './styles'
 
+@connect(state=>({
+  footerRoutes: state.footerRoutes, 
+}))
 export default class extends Component {
 
   constructor(props) {
@@ -18,6 +21,10 @@ export default class extends Component {
       type: props.type,
       route: props.route,
     }
+  }
+
+  componentDidMount(){
+    this.props.onItemRef && this.props.onItemRef(this)
   }
 
   tabClick(route){    
@@ -33,10 +40,10 @@ export default class extends Component {
     return (                                     
         <Footer>
             <FooterTab style={styles.container}>
-              {options.footerItems.map((item, index)=>
-                <Button onPress={e=>this.tabClick(item.route)} textSmall key={index}>                        
-                    <Icon name={item.icon} style={
-                      item.route === route  ? styles.footerIconActive : styles.footerIcon
+              {this.props.footerRoutes.map((item, index) =>
+                <Button onPress={e=>this.tabClick(item)} textSmall key={item}>                        
+                    <Icon name={options.footerIcons[index]} style={
+                      item === route  ? styles.footerIconActive : styles.footerIcon
                     } />                    
                 </Button>
               )}

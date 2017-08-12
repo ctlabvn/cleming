@@ -10,11 +10,17 @@ export const initialState = {
     pageNumber: 1,
     listTransaction: [],
     totalRecord: 0
-  }
+  },
+
+  currentDateFilter: 'day',
 
 }
 export const transaction = (state = initialState, { type, payload }) => {
   switch (type) {
+
+    case 'transaction/updateDateFilter':
+      return {...state, currentDateFilter: payload}    
+
     case 'app/setListTransaction':
       return {
         ...state,
