@@ -65,13 +65,6 @@ const getPage = (url) => {
   }
 }
 
-const animateOption = {
-  toValue: 0,
-  duration: 500,
-  easing: Easing.bezier(0.2833, 0.99, 0.31833, 0.99),
-  useNativeDriver: true, 
-}
-
 const UIManager = NativeModules.UIManager
 
 @connect(state => ({
@@ -118,7 +111,10 @@ export default class App extends Component {
       thisNavigator.freeze(index)
 
       // start animation
-      Animated.timing(enter, animateOption).start()
+      Animated.spring(enter, {
+        toValue: 0,
+        useNativeDriver: true, 
+      }).start()
 
       const animatedListenerId = enter.addListener(({value})=>{     
         const translateX = Math.round(value)           
