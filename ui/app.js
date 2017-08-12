@@ -65,6 +65,13 @@ const getPage = (url) => {
   }
 }
 
+const animatedOption = {
+  toValue: 0,
+  duration: 200,
+  easing: Easing.bezier(0.075, 0.82, 0.165, 1),
+  useNativeDriver: true, 
+}
+
 const UIManager = NativeModules.UIManager
 
 @connect(state => ({
@@ -98,7 +105,7 @@ export default class App extends Component {
     // disable prevScene, means that we can do any action on this view    
     thisNavigator.enable(prevIndex, false)
     // check animation type
-    if(prevRoute.tabIndex !== undefined && route.tabIndex !== undefined){
+    if(prevRoute && prevRoute.tabIndex !== undefined && route.tabIndex !== undefined){
       // animate like tab, 
       // show index first then prepare for animate
       // when complete animation, let pointerEvents = 'auto' other 'none'
@@ -111,10 +118,7 @@ export default class App extends Component {
       thisNavigator.freeze(index)
 
       // start animation
-      Animated.spring(enter, {
-        toValue: 0,
-        useNativeDriver: true, 
-      }).start()
+      Animated.timing(enter, animatedOption).start()
 
       const animatedListenerId = enter.addListener(({value})=>{     
         const translateX = Math.round(value)           
