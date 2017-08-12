@@ -8,7 +8,7 @@ const CLINGME_DEV_SERVER = 'http://dev.clingme.net:9099'
 const CLINGME_PRODUCT_SERVER = 'http://sale.clingme.vn:9868'
 
 // waring before build app
-export const MODE = getServerMode(VersionNumber.appVersion)
+export const MODE = 'DEV'// getServerMode(VersionNumber.appVersion)
 
 export const API_BASE = (MODE == 'DEV') ? CLINGME_DEV_SERVER : CLINGME_PRODUCT_SERVER
 export const SENDER_ID = '1075989080862'

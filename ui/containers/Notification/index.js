@@ -53,14 +53,14 @@ export default class extends Component {
   componentWillFocus() {
     // this.content.scrollToTop()
     // make it like before    
-    const { session, notifications, getNotification, app } = this.props
-    if (!notifications.data.length) {
-      getNotification(session, 1, () => getNotification(session, 2))      
-    } 
+    // const { session, notifications, getNotification, app } = this.props
+    // if (!notifications.data.length) {
+    //   getNotification(session, 1, () => getNotification(session, 2))      
+    // } 
 
-    this.setState({
-      refreshing: false,      
-    })
+    // this.setState({
+    //   refreshing: false,      
+    // })
   }
 
 

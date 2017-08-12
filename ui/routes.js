@@ -48,13 +48,15 @@ export default {
         title: I18n.t('page_home'),
         Page: MerchantOverview,
         headerType: 'home',
-        showTopDropdown: true
+        showTopDropdown: true,
+        tabIndex: 0,
     },
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
+        tabIndex: 1,
     },
     'transactionDetail/:id/:type': {
         title: I18n.t('page_transaction_detail'),
@@ -86,7 +88,8 @@ export default {
     report: {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
-        showTopDropdown: true
+        showTopDropdown: true,
+        tabIndex: 2,
     },
     placeOrderList: {
         title: I18n.t('page_booking_list'),
@@ -111,6 +114,7 @@ export default {
         title: I18n.t('page_notification'),
         Page: Notification,
         headerType: 'home',
+        tabIndex: 3,
     },           
     login: {
         title: '',

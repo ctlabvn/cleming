@@ -5,8 +5,11 @@
 // The initial application state, we need to store it in localStorage for later reload
 // this is called static, later all state will be re-hydrate, but first time we need to know
 // if this user is logged before
-const initialState = {  
-  loggedIn: false
+export const initialState = {  
+  loggedIn: false,
+  user: {
+
+  }
 }
 const img = 'https://facebook.github.io/react/img/logo_og.png'
 // Takes care of changing the application state

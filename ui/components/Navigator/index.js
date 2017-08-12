@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { InteractionManager, View, LayoutAnimation } from 'react-native'
+import { InteractionManager, View } from 'react-native'
 import shallowEqual from 'fbjs/lib/shallowEqual'
 import styles from './styles'
+import material from '~/theme/variables/material'
 
 export default class Navigator extends Component {
 
@@ -17,14 +18,41 @@ export default class Navigator extends Component {
   
     this.routeStack = [props.initialRoute]    
     this.presentedIndex = 0
-    // this.blurIndex = -1
+    this.blurIndex = -1
     this._sceneRefs = [];
-    // this._pageRefs = [];
+    
+  }  
+
+  componentDidUpdate(){    
+    // must provide this one, after update we will move it smoothly
+    this.props.transition(this.blurIndex, this.presentedIndex)
+    // this.show(this.presentedIndex, true)
+    // this.show(this.blurIndex, false)
+    // for sure
+    // for(let i=0; i < this._sceneRefs.length; i++){      
+    //   if(i !== this.presentedIndex){        
+    //     this.show(i, false)
+    //   } 
+    // }    
+
+    // this.enter.setValue(40)
+
+    // Animated.timing(this.enter, {
+    //   toValue: 0,
+    //   duration: 200,
+    //   useNativeDriver: true, // <-- Add this
+    // }).start();
+
+  }
+
+  enable(index, enabled = true){
+    let scene = this._sceneRefs[index]      
+    scene && scene.setNativeProps({pointerEvents: enabled ? 'auto' : 'none'})
   }
 
   show(index, isShown){
-    let wrapper = this._sceneRefs[index]        
-    wrapper && wrapper.setNativeProps({
+    let scene = this._sceneRefs[index]        
+    scene && scene.setNativeProps({
       style: {
         opacity: isShown ? 1 : 0,
         zIndex: isShown ? 1 : 0,        
@@ -32,46 +60,38 @@ export default class Navigator extends Component {
     })
   }
 
-  componentDidUpdate(){
-    // console.log(this.presentedIndex, this.blurIndex)
-    // this.setFocus(this.presentedIndex, true)
-    this.show(this.presentedIndex, true)
-    // this.show(this.blurIndex, false)
-    // for sure
-    for(let i=0; i < this._sceneRefs.length; i++){      
-      if(i !== this.presentedIndex){        
-        this.show(i, false)
-      } 
-    }
+  translate(index, translateX){
+    let scene = this._sceneRefs[index]
+    scene && scene.setNativeProps({
+      style: {
+        transform: [
+          {translateX},
+        ],     
+      }
+    })
   }
 
-  // handleFocusableComponent(index, focus = true) {
-  //   // do not loop forever
-  //   // const method = focus ? 'componentWillFocus' : 'componentWillBlur'
-  //   // let whatdog = 10    
-  //   let ref = this._sceneRefs[index].props.children
-  //   this.props.handleFocusableComponent(ref)
-  // }
-
-  // getSceneComponent(index){
-  //   return this._sceneRefs[index].props.children
-  // }
+  transitionBetween(prevIndex, index, translateX, prefix){
+    this.translate(index, translateX)
+    this.translate(prevIndex, translateX - prefix * material.deviceWidth)    
+  }
 
   navigate(route) {        
     const destIndex = this.routeStack.findIndex(item => item.path === route.path)
     if(destIndex !== this.presentedIndex){
+      this.blurIndex = this.presentedIndex
       if (destIndex !== -1) {        
         const oldRoute = this.routeStack[this.presentedIndex]
         // console.log(oldRoute)
         if(oldRoute.disableCache){
           // remove route then re-get index        
           this.routeStack.splice(this.presentedIndex)    
-          this._sceneRefs.splice(this.presentedIndex)          
-          // this._pageRefs.splice(this.presentedIndex)   
+          this._sceneRefs.splice(this.presentedIndex)     
+          // this.show(this.blurIndex, false)     
+          this.blurIndex = -1
           this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex                    
           this.forceUpdate() 
-        } else {
-          // this.blurIndex = this.presentedIndex
+        } else {          
           this.presentedIndex = destIndex    
           this.componentDidUpdate()    
         }              
@@ -84,8 +104,7 @@ export default class Navigator extends Component {
         this.presentedIndex = this.routeStack.length          
         this.routeStack.push(route)
         this.forceUpdate() 
-      }        
-         
+      }              
     }
   }
 

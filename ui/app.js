@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackHandler, NativeModules, InteractionManager, NetInfo } from 'react-native'
+import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated } from 'react-native'
 import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 import URL from 'url-parse'
@@ -45,19 +45,7 @@ import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
-// import buildStyleInterpolator from 'react-native/Libraries/Utilities/buildStyleInterpolator'
 import I18n from '~/ui/I18n'
-// const NoTransition = {
-//   opacity: {
-//     from: 1,
-//     to: 1,
-//     min: 1,
-//     max: 1,
-//     type: 'linear',
-//     extrapolate: false,
-//     round: 100,
-//   },
-// }
 
 const getPage = (url) => {
   for (route in routes) {
@@ -87,49 +75,6 @@ const UIManager = NativeModules.UIManager
 }), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions, ...metaActions })
 export default class App extends Component {
 
-  // static configureScene(route) {
-  //   // const { animationType = material.platform === 'android' ? 'PushFromRight' : 'PushFromRight' } = routes[route.path] || {}
-  //   const animationType = routes[route.path] || 'PushFromRight'
-  //   // return Navigator.SceneConfigs[animationType]
-  //   // Navigator.SceneConfigs[animationType]
-  //   // use default as PushFromRight, do not use HorizontalSwipeJump or it can lead to swipe horizontal unwanted
-  //   const sceneConfig = {
-  //     ...Navigator.SceneConfigs[animationType],
-  //     gestures: null,
-  //     defaultTransitionVelocity: 20,
-  //   }
-
-  //   // if (material.platform === 'android') {
-  //   //   sceneConfig.animationInterpolators = {
-  //   //     into: buildStyleInterpolator(NoTransition),
-  //   //     out: buildStyleInterpolator(NoTransition),
-  //   //   }
-  //   // }
-
-  //   return sceneConfig
-  // }
-
-  // static configureScene(route) {
-
-  //   const { animationType = 'FadeAndroid' } = routes[route.path] || {}
-
-
-  //   const sceneConfig = {
-  //     // ...Navigator.SceneConfigs[animationType],
-  //     gestures: null,
-  //     defaultTransitionVelocity: 20,
-  //   }
-
-  //   // if (material.platform === 'android') {
-  //     sceneConfig.animationInterpolators = {
-  //       into: buildStyleInterpolator(NoTransition),
-  //       out: buildStyleInterpolator(NoTransition),
-  //     }
-  //   // }
-
-  //   return sceneConfig
-  // }
-
   constructor(props) {
     super(props)
     // default is not found page, render must show error
@@ -140,8 +85,49 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
-    this.listPlace = []
+    this.listPlace = []    
   }
+
+  _transitionScene = (prevIndex, index) => {
+    // animate for tab, other just show hide
+    const prevRoute = this.navigator.routeStack[prevIndex]
+    const route = this.navigator.routeStack[index]
+    const prevTabIndex = prevRoute && routes[prevRoute.path].tabIndex
+    const tabIndex = route && routes[route.path].tabIndex        
+    if(tabIndex !== undefined && prevTabIndex !== undefined){
+      // animate like tab, 
+      // show index first then prepare for animate
+      // when complete animation, let pointerEvents = 'auto' other 'none'
+      // if tabIndex > preTabIndex from right to left, else from left to right
+      const prefix = tabIndex > prevTabIndex ? 1 : - 1
+      let enter = new Animated.Value(40 * prefix)    
+      // disable prevScene      
+      this.navigator.enable(prevIndex, false)      
+      Animated.timing(enter, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true, 
+      }).start()
+
+      const animatedListenerId = enter.addListener(({value})=>{     
+        const translateX = Math.round(value)   
+        this.navigator.transitionBetween(prevIndex, index, translateX, prefix)        
+        if(translateX === 0) {          
+          this.navigator.enable(index)
+          enter.removeListener(animatedListenerId)
+        }
+      })
+    } else {
+      this.navigator.show(index, true)
+      this.navigator.show(prevIndex, false)
+    }
+    
+  }
+
+    // this._pageRefs = [];
+
+
+
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
@@ -333,6 +319,7 @@ export default class App extends Component {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true)
   }
+
   updatePlaceList(lat, long) {
     const { place, setSelectedOption, selectedPlace, getListPlace, xsession } = this.props
 
@@ -418,7 +405,7 @@ export default class App extends Component {
       closeDrawer()
     }
     // navigator.geolocation.clearWatch(this.watchID)
-    BackHandler.removeEventListener('hardwareBackPress', this._handleBack)
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBack)    
   }
 
   
@@ -497,6 +484,7 @@ export default class App extends Component {
             renderScene={this._renderPage}
             onFocus={this._handlePageWillFocus}
             onBlur={this._handlePageWillBlur}
+            transition={this._transitionScene}
           />
           <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
           <TopDropdown
