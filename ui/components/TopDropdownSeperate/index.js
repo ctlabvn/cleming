@@ -47,7 +47,8 @@ export default class TopDropdown extends Component {
         // this.setState({show:showState})
         this.container.setNativeProps({
             style:{
-                opacity: showState ? 1 : 0
+                opacity: showState ? 1 : 0,
+                zIndex: showState ? 1 : 0,
             }
         })
     }
