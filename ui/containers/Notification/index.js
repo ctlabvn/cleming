@@ -351,7 +351,7 @@ export default class extends Component {
               keyExtractor={item=>item.notifyId}
               rowHasChanged={true}       
               data={notifications.data}
-               
+              removeClippedSubviews={false}
               onRefresh={this._onRefresh}
               refreshing={this.state.refreshing}
               renderItem={({item}) => {
