@@ -65,7 +65,12 @@ export const drawer = (state = {drawerState: 'closed'}, { type }) => {
 export const footerRoutes = (state = ['merchantOverview','transactionList','report','notification'], {type, payload})=>{
   switch (type) {
     case 'app/replaceFooterRoute':
-      // clone array
+      
+      if(payload.route === state[payload.index]){        
+        return state
+      }
+
+      // clone array if changed
       const newState = state.slice(0)
       newState[payload.index] = payload.route
       return newState
