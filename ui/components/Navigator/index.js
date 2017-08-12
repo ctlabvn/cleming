@@ -8,14 +8,15 @@ export default class Navigator extends Component {
 
   static propTypes = {       
     renderScene: PropTypes.func.isRequired,
-    initialRoute: PropTypes.object,    
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    initialRoute: PropTypes.object.isRequired,    
   }
 
   constructor(props) {
     super(props);
-    
-    this._renderedSceneMap = new Map();
-  
+    // use scenes array because we will not cache too many
+    this.scenes = [this._renderScene(props.initialRoute, 0)];    
     this.routeStack = [props.initialRoute]    
     this.presentedIndex = 0
     this.blurIndex = -1    
@@ -71,15 +72,17 @@ export default class Navigator extends Component {
       if (destIndex === -1) {
         destIndex = this.routeStack.length          
         this.routeStack.push(route)
+        this.scenes.push(this._renderScene(route, destIndex));
         updated = 1
       }              
 
       if(oldRoute.disableCache){
         // remove route then re-get index        
         this.routeStack.splice(this.blurIndex, 1)    
-        this._sceneRefs.splice(this.blurIndex, 1)        
+        this._sceneRefs.splice(this.blurIndex, 1) 
+        this.scenes.splice(this.blurIndex, 1)       
         // delete so we can re-render it later
-        this._renderedSceneMap.delete(oldRoute.path)       
+        // this._renderedSceneMap.delete(oldRoute.path)       
         this.blurIndex = -1
         this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex                    
         // remove then update, so no blur needed
@@ -110,10 +113,7 @@ export default class Navigator extends Component {
       <View
         collapsable={false}
         key={route.path}
-        ref={(scene) => {
-          if(!this._sceneRefs[i])
-            this._sceneRefs[i] = scene;
-        }}
+        ref={scene => this._sceneRefs[i] = scene}
         style={styles.scene}>
         {this.props.renderScene(i)}  
       </View>
@@ -121,23 +121,10 @@ export default class Navigator extends Component {
   }
 
   render() {
-    // console.log('vai')
-    // const newRenderedSceneMap = new Map();
-    const scenes = this.routeStack.map((route, index) => {
-      let renderedScene;
-      if (this._renderedSceneMap.has(route.path)){
-        renderedScene = this._renderedSceneMap.get(route.path);
-      } else {
-        renderedScene = this._renderScene(route, index);
-        this._renderedSceneMap.set(route.path, renderedScene);
-      }      
-      return renderedScene;
-    });
-    // update scene map
     return (
       <View
         style={styles.container}>
-        {scenes}
+        {this.scenes}
       </View>        
     );
   }
