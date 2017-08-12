@@ -44,11 +44,10 @@ export default class TopDropdown extends Component {
     }
 
     show(showState){
-        // this.setState({show:showState})
+        // for sure should set top to negative of deviceHeight
         this.container.setNativeProps({
             style:{
-                opacity: showState ? 1 : 0,
-                zIndex: showState ? 1 : 0,
+                top: showState ? material.toolbarHeight : -material.deviceHeight,                 
             }
         })
     }
