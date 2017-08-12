@@ -17,6 +17,10 @@ import material from '~/theme/variables/material'
 
 export default class extends Component {
 
+    componentWillMount(){
+        console.log('about again')
+    }
+
     render() {
         return (
             <View style={styles.container}>

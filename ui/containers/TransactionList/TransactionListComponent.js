@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { List } from "native-base";
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
 import I18n from '~/ui/I18n'
 import ItemComponent from './TransactionItemComponent'
 import {_isArrDiff, _isArrDiffPartial} from '~/ui/shared/utils'
-import EnhancedListView from '~/ui/components/EnhancedListView'
+// import EnhancedListView from '~/ui/components/EnhancedListView'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 const checkProperties = ['dealTransactionId', 'transactionId', 'transactionStatus']
 export default class extends Component {
@@ -24,9 +24,9 @@ export default class extends Component {
         console.log('Render List Component')
         const {data, ...props} = this.props
         return (
-                <EnhancedListView dataArray={this.props.data}
-                    renderRow={(item) => (<ItemComponent data={item} />)}
-                    keyExtractor={item=>item.dealId}                    
+                <FlatList data={this.props.data}
+                    renderItem={({item}) => (<ItemComponent data={item} />)}
+                    keyExtractor={(item, index)=>index}
                     // keyExtractorArr={checkProperties}
                     {...props}
                 />

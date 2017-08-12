@@ -22,7 +22,7 @@ export default class TopDropdown extends Component {
         this.state = {
             openningDropdown: false,
             selectedOption: selectedOption,
-            show: false,
+            show: !!props.show,
             searchString: '',
             placeholderText: I18n.t('search'),
         }

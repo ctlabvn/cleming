@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { LayoutAnimation, ListView } from 'react-native'
+import { LayoutAnimation, ListView, FlatList } from 'react-native'
 import {
   Button, Container, ListItem, List, Spinner,
   Text, Item, View, Input, Left, Right, Body,
@@ -347,15 +347,15 @@ export default class extends Component {
       <Container>
           {notifications.data.length == 0 && <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
           {notifications &&
-            <EnhancedListView            
+            <FlatList            
               // keyExtractorArr={checkProperties}
               keyExtractor={item=>item.notifyId}
               rowHasChanged={true}       
-              dataArray={notifications.data}
+              data={notifications.data}
                
               onRefresh={this._onRefresh}
               refreshing={this.state.refreshing}
-              renderRow={(item) => {
+              renderItem={({item}) => {
                 return <ListItem noBorder
                   style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
                   onPress={() => this.handleNotiClick(item)}

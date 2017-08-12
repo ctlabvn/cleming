@@ -45,8 +45,8 @@ export default class extends Component {
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 this.clickCount = 0
-                console.log('Order Err', err)
-                console.log('Order Data', data)
+                // console.log('Order Err', err)
+                // console.log('Order Data', data)
                 if (err) {
                     if (err.code == 1522) {
                         setToast(getToastMessage(I18n.t('err_order_not_exists')), 'info', null, null, 3000, 'top')
@@ -77,6 +77,7 @@ export default class extends Component {
         const { app } = this.props
         this._load()        
         // })
+        
     }
 
     componentWillFocus() {
@@ -183,7 +184,7 @@ export default class extends Component {
         if (orderDetail.orderRowList) {
             totalItem = orderDetail.orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
-        console.log('Order detail instate', orderDetail)
+        // console.log('Order detail instate', orderDetail)
         const countTo = orderDetail.orderInfo.clingmeCreatedTime + BASE_COUNTDOWN_ORDER_MINUTE * 60
         let moneyBlock = (
             <View>
@@ -218,7 +219,7 @@ export default class extends Component {
             </View>
         )
 
-        console.log('Reject Reason', rejectReason)
+        // console.log('Reject Reason', rejectReason)
         return (
             <Container style={containerStyle}>
                 <DeliveryFeedbackDialog ref='deliveryFeedbackDialog'

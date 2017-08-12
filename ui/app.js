@@ -66,7 +66,7 @@ const getPage = (url) => {
 const UIManager = NativeModules.UIManager
 
 @connect(state => ({
-  router: getRouter(state),
+  url: getRouter(state).route,
   drawerState: getDrawerState(state),
   place: state.place,
   location: state.location,
@@ -78,7 +78,7 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     // default is not found page, render must show error
-    this.page = getPage(props.router.route) || routes.notFound
+    this.page = getPage(props.url) || routes.notFound
     // this.prevPage = null
     this.pageInstances = new Map()
     // this.pageWrapperInstances = {}
@@ -88,11 +88,11 @@ export default class App extends Component {
     this.listPlace = []    
   }
 
-  _transitionScene = (prevIndex, index) => {
+  _transitionScene = (prevIndex, index) => {    
     // animate for tab, other just show hide
     const prevRoute = this.navigator.routeStack[prevIndex]
     const route = this.navigator.routeStack[index]
-    const prevTabIndex = prevRoute && routes[prevRoute.path].tabIndex
+    const prevTabIndex = prevRoute && routes[prevRoute.path].tabIndex    
     const tabIndex = route && routes[route.path].tabIndex        
     if(tabIndex !== undefined && prevTabIndex !== undefined){
       // animate like tab, 
@@ -118,8 +118,9 @@ export default class App extends Component {
         }
       })
     } else {
+      // make sure it can show/hide
       this.navigator.show(index, true)
-      this.navigator.show(prevIndex, false)
+      this.navigator.show(prevIndex, false)            
     }
     
   }
@@ -129,60 +130,31 @@ export default class App extends Component {
 
 
   // replace view from stack, hard code but have high performance
-  componentWillReceiveProps({ router, drawerState }) {
+  componentWillReceiveProps({ url, drawerState }) {
     // process for route change only
-    // console.log('Route will receive props', getPage(router.route))    
 
-    if (router.route !== this.props.router.route) {
+    if (url !== this.props.url) {
+      // url may differ in param order but it is just like refresh page,
+      // and only update when param changed
       // const oldPage = this.page
-      this.page = getPage(router.route)
-      const { headerType, footerType, title, path, showTopDropdown, disableCache } = this.page
+      this.page = getPage(url)
+      const { Page, ...route } = this.page
       
       if (this.page) {
         // show header and footer, and clear search string
           
-        // InteractionManager.runAfterInteractions(()=>{
-          this.navigator.navigate({ title, path, showTopDropdown, disableCache })
-          this.header.show(headerType, title)        
-          this.footer.show(footerType, router.route)
-          this.topDropdown.show(showTopDropdown)
-        // })
-        
-
-        // always blur the old one if disableCache then remove
-        // if(oldPage.disableCache){
-        //   // oldPage must be the last one          
-        //   this.navigator.state.routeStack.pop()                    
-        // } else {
-        //   // this.handleFocusableComponent(oldPage.path, false)  
-        // }
-
-        // return console.warn('Not found: ' + router.route)
-        // check if page is mounted
-        // const destIndex = this.navigator.state.routeStack
-        //   .findIndex(route => route.path === this.page.path)
-
-        // // console.log(this.navigator.state)      
-        // if (destIndex !== -1) {          
-        //   // trigger will focus, the first time should be did mount                    
-        //   this.navigator.transitionTo(destIndex)
-        //   this.handlePageWillFocus(path)
-        // } else {
-        //   const presentedIndex = this.navigator.state.routeStack.length          
-        //   this.navigator.push({ title, path, showTopDropdown })
-        //   this.navigator.transitionTo(presentedIndex)
-        // }     
+        this.navigator.navigate(route)
+        this.header.show(route.headerType, route.title)        
+        this.footer.show(route.footerType, route.path)
+        this.topDropdown.show(route.showTopDropdown)
         
 
       } else {
         // no need to push to route
         this.page = routes.notFound
-        this.props.setToast('Route not found: ' + router.route, 'danger')
-      }
-
-      
+        this.props.setToast('Scene not found: ' + url, 'danger')
+      }      
     }
-
     
 
     // check drawer
@@ -237,18 +209,20 @@ export default class App extends Component {
 
 
   _handlePageWillFocus = ({path, disableCache}) => {   
-    //AfterInteractions>View
-    let component = this.pageInstances.get(path)
-    if(component){
-      const { Page, ...route } = this.page
-      const propsChanged = !shallowEqual(route.params, component.props.route.params)
-        || !shallowEqual(route.query, component.props.route.query)
-      if (propsChanged) {
-        Object.assign(component.props.route, route)
-      }   
-      this.handleFocusableComponent(component, true)  
-    }
+    // should not re-render via params, let it - re-mount
+    // let component = this.pageInstances.get(path)
+    // if(component){
+    //   const { Page, ...route } = this.page      
+    //   const propsChanged = !shallowEqual(route.params, component.props.route.params)
+    //     || !shallowEqual(route.query, component.props.route.query)
+    //   if (propsChanged) {
+    //     // this page will re-render if route change
+    //     Object.assign(component.props.route, route)        
+    //     component.forceUpdate()
+    //   }           
+    // }
     
+    this.handleFocusableComponent(this.pageInstances.get(path), true)
   }
 
   // initializePageWrapper(ref, route) {
@@ -301,15 +275,14 @@ export default class App extends Component {
     }
   }
 
-  _onTabClick = (type, route) => {
-    // if(route.path === this.props.router.route)
-    if(route !== this.props.router.route){
+  _onTabClick = (type, url) => {
+    if(url !== this.props.url){
       const { forwardTo } = this.props
       switch (type) {
         case 'none':
           return false
         default:
-          return forwardTo(route)
+          return forwardTo(url)
       }
     }
   }
@@ -335,7 +308,7 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, router, setToast } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast, url } = this.props
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -348,9 +321,8 @@ export default class App extends Component {
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     }
 
-    this.page = getPage(router.route)
-    const { showTopDropdown } = this.page
-    this.topDropdown.show(showTopDropdown)
+    // this.page = getPage(url)    
+    // this.topDropdown.show(this.page.showTopDropdown)
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -385,12 +357,12 @@ export default class App extends Component {
   }
 
   _handleBack = () => {
-    const { router, goBack, drawerState, closeDrawer } = this.props
+    const { url, goBack, drawerState, closeDrawer } = this.props
       if (drawerState == 'opened'){
         closeDrawer()
         return true
       }
-      if (router.route === 'merchantOverview' || router.route === 'login') {
+      if (url === 'merchantOverview' || url === 'login') {
         this.popupConfirm.show(I18n.t('confirm_exit'))
         return true
       }
@@ -435,8 +407,9 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { router, drawerState, closeDrawer, place, selectedPlace, disableCache } = this.props
-    const { title, path, headerType, footerType, showTopDropdown } = this.page
+    const { drawerState, closeDrawer, place, selectedPlace, disableCache } = this.props
+    const { Page, ...route } = this.page
+    console.log(route)
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -474,24 +447,26 @@ export default class App extends Component {
             // each Page will overide StatusBar
             // <StatusBar hidden={ this.page.hiddenBar || (drawerState === 'opened' && material.platform === 'ios')} translucent />          
           }
-          <Header type={headerType} title={title} onLeftClick={this._onLeftClick} onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
+          <Header type={route.headerType} title={route.title} onLeftClick={this._onLeftClick} 
+            onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
             app={this} onPressOverlay={this._handlePressHeaderOverlay}
           />
 
           <Navigator ref={ref => this.navigator = ref}
             // configureScene={this.constructor.configureScene}
-            initialRoute={{ title, path, showTopDropdown, disableCache }}
+            initialRoute={route}
             renderScene={this._renderPage}
             onFocus={this._handlePageWillFocus}
             onBlur={this._handlePageWillBlur}
             transition={this._transitionScene}
           />
-          <Footer type={footerType} route={router.route} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
+          <Footer type={route.footerType} route={route.path} onTabClick={this._onTabClick} ref={ref => this.footer = ref} />          
           <TopDropdown
             app={this}
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
             selectedOption={selectedPlace}
+            show={route.showTopDropdown}
           />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}            
