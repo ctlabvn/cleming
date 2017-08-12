@@ -134,7 +134,6 @@ export default class Navigator extends Component {
       return renderedScene;
     });
     // update scene map
-    // this._renderedSceneMap = newRenderedSceneMap;
     return (
       <View
         style={styles.container}>
