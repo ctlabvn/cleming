@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { InteractionManager, View } from 'react-native'
-import shallowEqual from 'fbjs/lib/shallowEqual'
+import { View, Platform, Dimensions } from 'react-native'
 import styles from './styles'
-import material from '~/theme/variables/material'
+
+const deviceWidth = Dimensions.get('window').width
 
 export default class Navigator extends Component {
 
@@ -39,7 +39,7 @@ export default class Navigator extends Component {
   freeze(index, freezed = true){
     let scene = this._sceneRefs[index]      
     scene && scene.setNativeProps({
-      [material.platform === 'android' 
+      [Platform.OS === 'android' 
         ? 'renderToHardwareTextureAndroid' 
         : 'shouldRasterizeIOS'
       ]: freezed
@@ -59,7 +59,7 @@ export default class Navigator extends Component {
 
   transitionBetween(prevIndex, index, translateX, prefix = 1){
     this.translate(index, translateX)
-    this.translate(prevIndex, translateX - prefix * material.deviceWidth)    
+    this.translate(prevIndex, translateX - prefix * deviceWidth)    
   }
 
   navigate(route) {        
