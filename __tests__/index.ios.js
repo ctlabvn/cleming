@@ -1,6 +1,5 @@
 import 'react-native';
 import React from 'react';
-import { matchPath } from 'react-router';
 import URL from 'url-parse'
 
 const routes = {

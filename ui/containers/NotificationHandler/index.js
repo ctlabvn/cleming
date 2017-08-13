@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'native-base'
 import PushNotification from 'react-native-push-notification'
-import { matchPath } from 'react-router'
 import { connect } from 'react-redux'
 
 import { SENDER_ID } from '~/store/constants/api'
