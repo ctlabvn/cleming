@@ -26,7 +26,6 @@ import PopupConfirm from '~/ui/components/PopupConfirm'
 import NotificationHandler from './containers/NotificationHandler'
 // router => render component base on url
 // history.push => location match => return component using navigator push
-// import { matchPath } from 'react-router'
 import { connect } from 'react-redux'
 
 import { SENDER_ID } from '~/store/constants/api'
@@ -103,10 +102,7 @@ export default class App extends Component {
       
       // start freeze
       thisNavigator.freeze(prevIndex)
-      thisNavigator.freeze(index)
-
-      // start animation
-      Animated.timing(enter, animatedOption).start()
+      thisNavigator.freeze(index)      
 
       const animatedListenerId = enter.addListener(({value})=>{     
         const translateX = Math.round(value)           
@@ -122,6 +118,10 @@ export default class App extends Component {
           enter.removeListener(animatedListenerId)
         }
       })
+
+      // start animation
+      Animated.timing(enter, animatedOption).start()
+
     } else {
       // make sure it can show/hide   
       thisNavigator.transitionBetween(prevIndex, index, 0)
@@ -179,17 +179,17 @@ export default class App extends Component {
   }
 
   
-  _handlePageWillBlur = ({path, cache}) => {    
+  _handlePageWillBlur = ({routeName, cache}) => {    
     if(cache)
-      this.handleFocusableComponent(this.pageInstances.get(path), false)      
+      this.handleFocusableComponent(this.pageInstances.get(routeName), false)      
     else
-      this.pageInstances.delete(path)
+      this.pageInstances.delete(routeName)
   }
 
 
   _handlePageWillFocus = (route) => {   
     // should not re-render via params, let it - re-mount
-    // let component = this.pageInstances.get(path)
+    // let component = this.pageInstances.get(route.routeName)
     // if(component){       
     //   const propsChanged = !shallowEqual(route.params, component.props.route.params)
     //     || !shallowEqual(route.query, component.props.route.query)
