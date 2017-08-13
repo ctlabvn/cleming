@@ -1,28 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { ListView, Platform, RefreshControl } from 'react-native';
 
-class RefreshControlExtend extends Component {
-
-  static defaultProps = {
-    title: 'Loading...',
-  }
-
-  constructor(props) {
-    super(props);
-  
-    this.state = {
-      refreshing: false
-    };
-  }
-
-  render(){
-    const {onRefresh, title} = this.props
-    return (
-      <RefreshControl refreshing={this.state.refreshing} onRefresh={onRefresh} title={title} />
-    )
-  }
-}
-
 export default class ListViewExtend extends Component {
 
   constructor(props) {
@@ -37,6 +15,8 @@ export default class ListViewExtend extends Component {
     } else {
       this.state = {}
     }
+
+    this.state.refreshing = false
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -74,19 +54,20 @@ export default class ListViewExtend extends Component {
   }
 
   showRefresh(refreshing){
-    this.refreshControl && this.refreshControl.setState({refreshing})
+    this.setState({refreshing})
   }
 
   render() {
     const {onRefresh, ...props} = this.props    
     // show refresh control
-    if(onRefresh){
-      props.refreshControl = <RefreshControlExtend onRefresh={onRefresh} ref={ref=>this.refreshControl = ref} />
-    }
+    // if(onRefresh){
+    //   props.refreshControl = <RefreshControlExtend onRefresh={onRefresh} ref={ref=>this.refreshControl = ref} />
+    // }
     return (
-      <ListView
-        ref={ref=>this.listview=ref}
+      <ListView        
         {...props}
+        refreshControl = {<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
+        ref={ref=>this.listview=ref}
         enableEmptySections={true}
         dataSource={this.state.dataSource}
         onEndReachedThreshold={10}

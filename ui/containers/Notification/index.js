@@ -69,7 +69,7 @@ export default class extends Component {
   }
 
   _loadMore = () => {
-    if (this.spinner.state.shown || this.listview.refreshControl.state.refreshing)
+    if (this.spinner.state.shown || this.listview.state.refreshing)
       return
     // console.log('load more')
     const { session, notifications, getNotification } = this.props

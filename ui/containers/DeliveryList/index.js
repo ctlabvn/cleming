@@ -229,7 +229,7 @@ export default class extends Component {
 
     _loadMore = () => {
         console.log('Call loadMore')
-        if (this.listview.refreshControl.state.refreshing || this.spinner.state.shown)
+        if (this.listview.state.refreshing || this.spinner.state.shown)
             return
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value

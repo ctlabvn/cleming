@@ -38,7 +38,6 @@ export default class extends PureComponent {
       }
 
   renderNotificationContent(item) {    
-    console.log('render item')
     switch (item.notifyType) {
 
       case NOTIFY_TYPE.NEW_BOOKING:
