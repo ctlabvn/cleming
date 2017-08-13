@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, ListItem, Spinner, Text } from "native-base";
-import { InteractionManager, View, FlatList } from "react-native";
+import { InteractionManager, View } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as orderActions from "~/store/actions/order";
@@ -158,13 +158,14 @@ export default class extends Component {
 
     }
 
-    // componentWillBlur() {
-    //     // this.counting = false
-    //     // InteractionManager.runAfterInteractions(() => {
-    //     this.setState({ counting: false })
-    //     // })
+    componentWillBlur() {
+        this.listview.scrollToTop()
+        // this.counting = false
+        // InteractionManager.runAfterInteractions(() => {
+        // this.setState({ counting: false })
+        // })
 
-    // }
+    }
 
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
@@ -313,13 +314,14 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
-                <FlatList
+                <ListViewExtend
+                    onItemRef={ref=>this.listview=ref}
                     onEndReached={this._loadMore} 
                     onRefresh={this._onRefresh}
                     refreshing={this.state.loading}
-                    data={orderList}
+                    dataArray={orderList}
                     keyExtractor={item=>item.orderInfo.clingmeId}
-                    renderItem={({item}) => (
+                    renderRow={(item) => (
                         <OrderItem data={item} 
                             key={chainParse(item, ['orderInfo', 'tranId'])}
                             onPressPhoneNumber = {this.onModalOpen}

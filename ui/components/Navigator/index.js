@@ -20,7 +20,7 @@ export default class Navigator extends Component {
     this.routeStack = [props.initialRoute]    
     this.presentedIndex = 0
     this.blurIndex = -1    
-    // should be private
+    // should be private, reference use map, stack use array
     this._sceneRefs = new Map()
   }  
 
@@ -82,7 +82,11 @@ export default class Navigator extends Component {
         updated = 1
       }              
 
-      if(oldRoute.disableCache){
+      if(oldRoute.cache){
+        this.presentedIndex = destIndex    
+        // blur as soon as possible    
+        this.props.onBlur(oldRoute)
+      } else {                  
         // remove route then re-get index        
         this.routeStack.splice(this.blurIndex, 1)    
         this._sceneRefs.delete(oldRoute.path) 
@@ -93,10 +97,6 @@ export default class Navigator extends Component {
         this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex                    
         // remove then update, so no blur needed
         updated = 2 
-      } else {          
-        this.presentedIndex = destIndex    
-        // blur as soon as possible    
-        this.props.onBlur(oldRoute)
       }
 
       if(updated > 0){

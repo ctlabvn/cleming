@@ -35,6 +35,14 @@ export default class ListViewExtend extends Component {
     return false
   }
 
+  scrollToTop(){
+    this.listview.scrollTo({x:0,y:0,animated:false})
+  }
+
+  componentDidMount(){
+    this.props.onItemRef && this.props.onItemRef(this)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.state.dataSource) {
       this.setState({
@@ -42,8 +50,6 @@ export default class ListViewExtend extends Component {
       });
     }
   }
-
-
 
   render() {
     const {refreshing, onRefresh, ...props} = this.props    
@@ -53,6 +59,7 @@ export default class ListViewExtend extends Component {
     }
     return (
       <ListView
+        ref={ref=>this.listview=ref}
         {...props}
         enableEmptySections={true}
         dataSource={this.state.dataSource}

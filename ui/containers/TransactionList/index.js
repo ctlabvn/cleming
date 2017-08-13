@@ -264,6 +264,10 @@ export default class extends Component {
         // this._isNeedUpdateTab() && this.setState({currentTab: this._getDefaultActiveTab()})
     }
 
+    componentWillBlur(){
+        this.listview.scrollToTop()
+    }
+
     _isNeedUpdateTab(){
         const {user} = this.props
         let tabData = this.refs.tabs.getData()
@@ -358,8 +362,11 @@ export default class extends Component {
 
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props   
-        return <ListTransaction onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}
-             key='listTrans' data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
+        return <ListTransaction onItemRef={ref=>this.listview=ref} 
+                ListFooterComponent={()=>this.state.loadingMore ? <Spinner color={material.red500} /> : null}
+                onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}
+             itemKey={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? 'transactionId' : 'dealTransactionId'}
+             data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
     }
     
     render() {
@@ -394,7 +401,7 @@ export default class extends Component {
                     />
                    
                         {this._renderList()}
-                        {this.state.loadingMore && <Spinner color={material.red500} />}
+                        
                         {/*{noData}
                         {moreData}*/}
                     

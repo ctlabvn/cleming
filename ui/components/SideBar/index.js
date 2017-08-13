@@ -69,16 +69,15 @@ export default class extends Component {
     // // render profile
     // const avatar = {uri: (API_BASE + profile.PhotoUrl)}
     return (      
-        <Content
-          bounces={false}
-          style={styles.container}
-        >          
-          <View row style={styles.drawerCover}>                        
+
+      <View style={styles.container}>    
+          <View row style={styles.drawerCover}> 
             <Text bold style={styles.text}>Menu</Text>
+             <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
+              <Icon name="close" style={styles.buttonIconClose} />
+            </Button>
           </View>
-          <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
-            <Icon name="close" style={styles.buttonIconClose} />
-          </Button>
+        <Content bounces={false}>                  
           {options.listItems.map((item, index) =>
           <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
             <Left>
@@ -87,6 +86,30 @@ export default class extends Component {
             </Left>                
           </ListItem>
           )}
+          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
+            <Left>
+              <Icon name='sign_out' style={styles.iconStyle} />
+              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
+            </Left>                
+          </ListItem>
+          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
+            <Left>
+              <Icon name='sign_out' style={styles.iconStyle} />
+              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
+            </Left>                
+          </ListItem>
+          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
+            <Left>
+              <Icon name='sign_out' style={styles.iconStyle} />
+              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
+            </Left>                
+          </ListItem>
+          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
+            <Left>
+              <Icon name='sign_out' style={styles.iconStyle} />
+              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
+            </Left>                
+          </ListItem>
           
           <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
             <Left>
@@ -95,6 +118,7 @@ export default class extends Component {
             </Left>                
           </ListItem>
         </Content>
+        </View>
       
     );
   }

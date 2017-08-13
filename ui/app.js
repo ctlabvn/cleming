@@ -187,11 +187,11 @@ export default class App extends Component {
   }
 
   
-  _handlePageWillBlur = ({path, disableCache}) => {    
-    if(disableCache)
-      this.pageInstances.delete(path)
+  _handlePageWillBlur = ({path, cache}) => {    
+    if(cache)
+      this.handleFocusableComponent(this.pageInstances.get(path), false)      
     else
-      this.handleFocusableComponent(this.pageInstances.get(path), false)
+      this.pageInstances.delete(path)
   }
 
 
@@ -373,7 +373,7 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { drawerState, closeDrawer, place, selectedPlace, disableCache, url } = this.props
+    const { drawerState, closeDrawer, place, selectedPlace, url } = this.props
     const route = getPage(url) || routes.notFound
 
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
@@ -405,7 +405,8 @@ export default class App extends Component {
             },
           })}
           openDrawerOffset={0.27}
-          tweenDuration={20}
+          tweenDuration={300}
+          tweenEasing="easeOutCubic"
           content={<SideBar />}
           onClose={closeDrawer}
         >

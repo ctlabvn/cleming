@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { LayoutAnimation, ListView, FlatList } from 'react-native'
 import {
   Button, Container, ListItem, List, Spinner,
   Text, Item, View, Input, Left, Right, Body,
@@ -22,14 +21,11 @@ import * as notificationSelectors from '~/store/selectors/notification'
 import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
-
-import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
-import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
-import { formatNumber } from '~/ui/shared/utils'
-
-import EnhancedListView from '~/ui/components/EnhancedListView'
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import I18n from '~/ui/I18n'
+
+import NotificationItem from './NotificationItem'
 const checkProperties=['notifyId', 'isRead']
 
 @connect(state => ({
@@ -46,15 +42,18 @@ export default class extends Component {
     this.state = {
       refreshing: false,
       loading: false,      
-    }
-    // this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => (JSON.stringify(r1) != JSON.stringify(r2)) })
+    }    
+  }
+
+  componentWillBlur(){
+    this.listview.scrollToTop()
   }
 
   componentWillFocus() {
     // this.content.scrollToTop()
     // make it like before    
     // const { session, notifications, getNotification, app } = this.props
-    // if (!notifications.data.length) {
+    // if (notifications.hasMore && !notifications.data.length) {
     //   getNotification(session, 1, () => getNotification(session, 2))      
     // } 
 
@@ -66,11 +65,11 @@ export default class extends Component {
 
   componentWillMount() {
     // this.componentWillFocus()
-    const { session, getNotification } = this.props
-    getNotification(session, 1, () => getNotification(session, 2))
-    this.setState({
-      refreshing: false,
-    })
+    const { session, getNotification, notifications } = this.props
+
+    if (notifications.hasMore && !notifications.data.length) {
+      getNotification(session, 1, () => getNotification(session, 2))      
+    }    
   }
 
   _onRefresh = () => {
@@ -89,212 +88,16 @@ export default class extends Component {
       getNotification(session, notifications.page + 1, () => this.setState({ loading: false }))
     }
   }
-  // export const NOTIFY_TYPE = {
-  //   COMMENT: 1,
-  //   PAY: 2,
-  //   NEW_BILL: 3,
-  //   DEAL_EXPIRED: 4,
-  //   TRANSACTION_DIRECT_WAITING: 5,
-  //   TRANSACTION_DIRECT_SUCCESS: 7,
-  //   NEW_BOOKING: 6,
-  //   NEW_ORDER: 8,
-  //   TRANSACTION_FEEDBACK: 9,
-  //   ORDER_FEEDBACK: 11,
-  //   ORDER_CANCELLED: 12,
-  // TRANSACTION_CLINGME: 10
-  // }
-
-
-  renderNotificationIcon({ notifyType }) {
-    switch (notifyType) {
-      case NOTIFY_TYPE.NEW_BOOKING:
-        return <Icon name="calendar" style={{ ...styles.icon, ...styles.warning }} />
-      case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        return <Icon name="clingme-wallet" style={styles.icon} />
-      case NOTIFY_TYPE.NEW_ORDER:
-        return <Icon name='shiping-bike2' style={{ ...styles.icon, ...styles.warning }} />
-      case NOTIFY_TYPE.ORDER_CANCELLED:
-        return <Icon name="shiping-bike2" style={{ ...styles.icon, ...styles.error }} />
-      // case NOTIFY_TYPE.WAITING:
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
-        return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-        return <Icon name="term" style={{ ...styles.icon }} />
-      case NOTIFY_TYPE.ORDER_FEEDBACK:
-        return <Icon name="comment" style={{ ...styles.icon }} />
-      default:
-        return <Icon name="order-history" style={{ ...styles.icon, color: material.orange500 }} />
-    }
-  }
-
-  renderNotificationContent(item) {
-    const border = <Border style={{
-      marginLeft: 15,
-      marginTop: 10,
-    }} color='rgba(0,0,0,0.5)' size={1} />
-
-    switch (item.notifyType) {
-
-      case NOTIFY_TYPE.NEW_BOOKING:
-        const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
-        return (
-          <Body>
-            <View style={styles.listItemRow}> 
-              <View style={styles.subRow}>
-                  <Text note style={styles.textGray}>{item.title} </Text>
-                  <Text small>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
-                </View>
-              <View style={styles.subRow}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-                <View style={styles.rowEnd}>
-                  <Icon name='friend' style={styles.icon} />
-                  <Text bold>{item.paramId1}</Text>
-                </View>
-              </View>
-            </View>
-            {border}
-          </Body>
-        )
-      case NOTIFY_TYPE.NEW_ORDER:
-        let fastDeliveryText = item.paramId3 ? <Text small style={{
-          color: material.red500,
-        }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
-        return (
-            <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.subRow}>
-                <Text note style={styles.textGray}>{item.title} </Text>
-                  {fastDeliveryText}
-              </View>
-
-              <View style={styles.subRow}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-                  <View style={styles.rowEnd}>
-                    <Icon name='want-feed' style={styles.icon}/>
-                    <Text bold>{item.paramId1}</Text>
-                  </View>
-
-              </View>
-            </View>
-            {border}
-
-            </Body>
-      )
-      case NOTIFY_TYPE.ORDER_CANCELLED:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>
-              <Text note error>{item.title} </Text>
-              <View style={styles.subRow}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-                <View style={styles.rowEnd}>
-                  <Icon name='want-feed' style={styles.icon} />
-                  <Text bold>{item.paramId1}</Text>
-                </View>
-              </View>
-
-            </View>
-            {border}
-
-          </Body>)
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
-        return (
-            <Body>
-            <View style={styles.listItemRow}>
-              <Text note style={styles.textGray}>{item.title}</Text>
-              <View style={styles.subRow}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-                <Text>
-                  <Text style={{
-                      fontWeight: '900',
-                      fontSize: 18,
-                  }}>{formatNumber(item.paramDouble1)}</Text>đ
-                </Text>
-              </View>
-            </View>
-            {border}
-            </Body>
-        )
-      case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
-          return (
-              <Body>
-              <View style={styles.listItemRow}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <View style={styles.subRow}>
-                  <Text bold style={styles.textGray}>{item.content}</Text>
-
-                  <Text style={{ color: material.blue600,}}>
-                    <Text strong style={{
-                        fontWeight: '900',
-                        color: material.blue600,
-                    }}>{formatNumber(item.paramDouble1)}</Text>đ
-                  </Text>
-                </View>
-              </View>
-              {border}
-              </Body>
-          )
-      case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>
-              <Text note style={styles.textGray}>{item.title}</Text>
-              <View style={styles.subRow}>
-                <Text bold style={styles.textGray}>{item.content}</Text>
-
-                <Text style={{ color: material.blue600,}}>
-                  <Text style={{
-                      fontWeight: '900',
-                      color: material.blue600,
-                      fontSize: 24,
-                  }}>{formatNumber(item.paramDouble1)}</Text>đ
-                </Text>
-              </View>
-            </View>
-            {border}
-          </Body>
-        )
-      case NOTIFY_TYPE.ORDER_FEEDBACK:
-        return (
-          <Body>
-            <View style={styles.listItemRow}>
-              <View style={styles.subRow}>
-                <Text note style={styles.textGray}>{item.title}</Text>
-                <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
-              </View>
-
-              <View style={styles.subRow}>
-                <Text numberOfLines={1} ellipsizeMode='tail'>
-                  <Text bold style={styles.textGray}>{item.content}: </Text>
-                  {item.paramStr2}
-                </Text>
-              </View>
-
-            </View>
-            {border}
-          </Body>
-        )
-      default:
-        return (
-          this._defaultContent(item)
-        )
-    }
-  }
 
   _defaultContent(item) {
-      const border = <Border style={{
-          marginLeft: 15,
-          marginTop: 10,
-      }} color='rgba(0,0,0,0.5)' size={1} />
-
       return (
           <Body>
-          <View style={{...styles.listItemRow, flexDirection: 'column'}}>
+          <View style={styles.listItemRow}>
             <Text note style={styles.textGray}>{item.title}</Text>
             <View style={styles.subRow}>
               <Text bold style={styles.textGray}>{item.content}</Text>
-              <Text note style={{...styles.textGray}}>
-                <Text strong style={{...styles.textGray}} bold>{formatNumber(item.paramDouble1)}</Text>đ
+              <Text note style={styles.textGray}>
+                <Text strong style={styles.textGray} bold>{formatNumber(item.paramDouble1)}</Text>đ
               </Text>
             </View>
           </View>
@@ -304,7 +107,7 @@ export default class extends Component {
       )
   }
 
-  handleNotiClick(notification) {
+  _handleNotiClick=(notification) =>{
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
     const { updateRead, session, updateReadOfline, markWillLoad } = this.props
@@ -340,47 +143,27 @@ export default class extends Component {
     }
   }
   render() {
-    let { notifications } = this.props        
-
+    const { notifications } = this.props        
     return (
 
       <Container>
           {notifications.hasMore ?
-            <FlatList            
-              // keyExtractorArr={checkProperties}
-              keyExtractor={item=>item.notifyId}
-              rowHasChanged={true}       
-              data={notifications.data}
-              removeClippedSubviews={false}
-              onRefresh={this._onRefresh}
-              refreshing={this.state.refreshing}
-              renderItem={({item}) => {
-                return <ListItem noBorder
-                  style={{ ...styles.listItemContainer, backgroundColor: item.isRead ? material.gray300 : 'white' }}
-                  onPress={() => this.handleNotiClick(item)}
-                  key={item.notifyId}
-                >
-                  <View style={{
-                    justifyContent: 'space-between',
-                    alignSelf: 'flex-start'
-                  }}>
-                    {this.renderNotificationIcon(item)}
-                    {!item.isRead && <View style={styles.circle} />}
-                  </View>
-                  {this.renderNotificationContent(item)}
+        <ListViewExtend     
+          onItemRef={ref=>this.listview=ref}
+          keyExtractor={item=>item.notifyId}
+          dataArray={notifications.data}
+          onRefresh={this._onRefresh}
+          refreshing={this.state.refreshing}
+          onEndReached={this._loadMore}  
+          renderRow={(item) => <NotificationItem item={item} onNotiClick={this._handleNotiClick} />}
+        />
 
-                </ListItem>
-              }
-              } />
-              : <View style={styles.emptyBlock}>
-                  <Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text>
-              </View>
+        : <View style={styles.emptyBlock}>
+              <Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text>
+            </View>
           }
 
-
           {this.state.loading && <Spinner />}
-
-
       </Container>
 
     )

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { List } from "native-base";
-import { View, FlatList } from "react-native";
+import { View } from "react-native";
 import I18n from '~/ui/I18n'
 import ItemComponent from './TransactionItemComponent'
 import {_isArrDiff, _isArrDiffPartial} from '~/ui/shared/utils'
@@ -22,11 +22,12 @@ export default class extends Component {
 
     render() {
         console.log('Render List Component')
-        const {data, ...props} = this.props
+        const {data, itemKey, ...props} = this.props
+        // console.log(itemKey)
         return (
-                <FlatList data={this.props.data}
-                    renderItem={({item}) => (<ItemComponent data={item} />)}
-                    keyExtractor={(item, index)=>index}
+                <ListViewExtend dataArray={this.props.data}
+                    renderRow={(item) => (<ItemComponent data={item} />)}
+                    keyExtractor={(item)=>item[itemKey]}
                     // keyExtractorArr={checkProperties}
                     {...props}
                 />

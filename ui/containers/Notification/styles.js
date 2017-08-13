@@ -13,6 +13,17 @@ export default {
     marginRight: 0,
     // paddingTop:0,
     paddingBottom: 0,
+    backgroundColor: '#fff',
+  },
+  get listItemContainerRead(){
+    return {
+      ...this.listItemContainer,
+      backgroundColor: material.gray300,
+    }
+  },
+  listItemContent: {
+    justifyContent: 'space-between',
+    alignSelf: 'flex-start'
   },
   listItemRow: {
     // width: '100%',   
@@ -42,11 +53,17 @@ export default {
   textGray: {
     color: material.titleContainer
   },
-  warning: {
-    color: material.orange500
+  get iconWarning() {
+    return {
+      ...this.icon,
+      color: material.orange500,
+    }    
   },
-  error: {
-    color: material.red500
+   get iconError() {
+    return {
+      ...this.icon,
+      color: material.red500,
+    }    
   },
   rowEnd: {
     flexDirection: 'row',
@@ -72,4 +89,20 @@ export default {
       alignItems: 'flex-end',
       flexDirection: 'row'
   },
+  textWaiting:{
+      fontWeight: '900',
+      fontSize: 18,
+  },
+  textBlue:{ 
+    color: material.blue600
+  },
+  textClingme: {
+      fontWeight: '900',
+      color: material.blue600,
+      fontSize: 24,
+  },
+  border:{
+      marginLeft: 15,
+      marginTop: 10,
+  }
 }

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Grid, List, ListItem, Row, Spinner, Text} from "native-base";
-import {InteractionManager, View, FlatList} from "react-native";
+import {InteractionManager, View} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonActions from "~/store/actions/common";
@@ -317,8 +317,9 @@ export default class PlaceOrderList extends Component {
         // }
     }
     componentWillBlur() {
+        this.listview.scrollToTop()
         // InteractionManager.runAfterInteractions(() => {
-            this.setState({ counting: false })
+            // this.setState({ counting: false })
         // })
     }
     
@@ -368,13 +369,14 @@ export default class PlaceOrderList extends Component {
                         onPressTab={this._handlePressTab} />
                     <DateFilter defaultFilter={booking.currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
 
-                    <FlatList
+                    <ListViewExtend
+                        onItemRef={ref=>this.listview=ref}
                         onEndReached={this._loadMore} 
                         keyExtractor={item=>item.clingmeId}
                         onRefresh={this._onRefresh}
                         refreshing={this.state.loading}
-                        data={booking.bookingList}
-                        renderItem={({item}) => this._renderBookingItem(item)}
+                        dataArray={booking.bookingList}
+                        renderRow={(item) => this._renderBookingItem(item)}
                     />
                     {this.state.loadingMore && <Spinner color={material.red500} />}
                 </View>
