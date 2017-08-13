@@ -31,7 +31,7 @@ import {
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import ListTransaction from './TransactionListComponent'
-import { getRouter } from '~/store/selectors/common'
+// import { getRouter } from '~/store/selectors/common'
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state),
@@ -119,7 +119,7 @@ export default class extends Component {
     }
     confirmTransaction = (clingmeId) => {
         const { confirmTransaction, xsession, setToast, forwardTo } = this.props
-        forwardTo('transactionDetail/' + clingmeId + '/' + TRANSACTION_TYPE_CLINGME)
+        forwardTo('transactionDetail', {id: clingmeId, type: TRANSACTION_TYPE_CLINGME})
     }
 
     componentDidMount() {

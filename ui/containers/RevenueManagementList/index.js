@@ -118,7 +118,7 @@ export default class extends Component {
 
     _forwardToDetail(tabId, tranId) {
         const { setToast, forwardTo } = this.props
-        forwardTo('revenueManagementDetail/' + tabId + "/" + tranId);
+        forwardTo('revenueManagementDetail', {tabId, tranId});
     }
 
     _renderItem(item) {

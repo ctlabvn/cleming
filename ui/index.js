@@ -7,6 +7,7 @@ import Preload from './containers/Preload'
 import {View, Platform} from 'react-native'
 import material from '~/theme/variables/material'
 import Icon from "~/ui/elements/Icon"
+import { initialRouteName, initialAuthRouteName } from '~/store/constants/app'
 export default class extends Component {
 
   constructor(props) {
@@ -18,7 +19,7 @@ export default class extends Component {
     configureStore(store=> {
       store.dispatch(closeDrawer())
       if(!__DEV__){
-        const firstRoute = store.getState().auth.loggedIn ? 'merchantOverview' : 'login'
+        const firstRoute = store.getState().auth.loggedIn ? initialAuthRouteName : initialRouteName
         store.dispatch(forwardTo(firstRoute, true))
       }
       this.store = store

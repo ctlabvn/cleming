@@ -248,7 +248,7 @@ class UserManagement extends Component {
             // update current user
             this.props.setEmployee(this.props.listEmployee[this.rowIDOfEmployee])
 
-            forwardTo(`userManagement/action/updateEmployeeInfo/${this.rowIDOfEmployee}`)
+            forwardTo('userManagement/action/updateEmployeeInfo', {id: this.rowIDOfEmployee})
         } else if (this.state.deleteAccountChecked) {
             let currentPlace = app.topDropdown.getValue()
             this.props.deleteEmployeeInfo(this.props.session, this.props.listEmployee[this.rowIDOfEmployee].bizAccountId, () => {

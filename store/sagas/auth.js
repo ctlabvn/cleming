@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, showPopupInfo } from '~/store/actions/common'
-import { CONNECTION_ERROR_MESSAGE } from '~/store/constants/app'
+import { CONNECTION_ERROR_MESSAGE, initialAuthRouteName } from '~/store/constants/app'
 
 import {
     setAuthState,
@@ -43,7 +43,7 @@ const requestLogin = createRequestSaga({
         (data) => setAuthState(true),
         (data) => {
             if (data.firstLogin == 0) {
-                return forwardTo('merchantOverview', true)
+                return forwardTo(initialAuthRouteName, true)
             } else {
                 return noop("nothing")
             }

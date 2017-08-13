@@ -4,6 +4,8 @@ import {
   MARK_REQUEST_FAILED,
   MARK_REQUEST_CANCELLED
 } from '~/store/constants/actions'
+
+import { initialAuthRouteName, initialRouteName } from '~/store/constants/app'
 // we defined reducer to change state to state with action
 
 // these reducer is used for many pages
@@ -90,22 +92,32 @@ export const search = (state = null, { type, payload }) => {
 
 // should always be payload for faster copy and paste
 // we write our own route, only replace, do not use special function like jumpTo, it can be replaced by modal
-export const router = (state = {route:'login', stack:[]}, { type, payload }) => {  
+const initialRouterState = {
+  current:{
+    routeName: initialRouteName
+  }, 
+  stack:[]
+}
+const defaultRoute = {
+  routeName: initialAuthRouteName
+}
+export const router = (state = initialRouterState, { type, payload }) => {  
   switch(type) {
     case 'navigate/push':      
       // max stack is 20 items :D
-      return state.route === payload 
+      return state.current.routeName === payload.routeName 
       ? state 
-      : {route:payload, stack: [state.route, ...(state.stack.length > 19 ? state.stack.slice(0, -1) : state.stack)]}
+      : {current: payload, stack: [state.current, ...(state.stack.length > 19 ? state.stack.slice(0, -1) : state.stack)]}
     case 'navigate/reset':
-      return {route:payload, stack:[]}
+      // for select we can return default because no mutate, next time we will return new array, just for check
+      return {current: payload, stack: initialRouterState.stack}
     case 'navigate/pop':      
       // prevent back forever      
-      return {route:state.stack[0] || 'merchantOverview', stack:state.stack.slice(1)}
+      return {current: state.stack[0] || defaultRoute, stack: state.stack.slice(1)}
     case 'app/logout':
-      return {route:'login', stack:[]}
+      return initialRouterState
     case 'app/clearData':
-      return {route:'login', stack:[]}
+      return initialRouterState
     default:
       return state
   }  

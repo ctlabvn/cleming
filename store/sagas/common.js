@@ -20,7 +20,7 @@ import {
 } from '~/store/actions/auth'
 
 import api from '~/store/api'
-import {EXPIRED_ERROR_MESSAGE} from '~/store/constants/app'
+import {EXPIRED_ERROR_MESSAGE, initialRouteName} from '~/store/constants/app'
 import {  
   API_TIMEOUT
 } from '~/store/constants/api'
@@ -126,7 +126,7 @@ export const createRequestSaga = ({request, key, start, stop, success, failure, 
           // call logout user because we do not have refresh token
           yield put(removeLoggedUser())
           yield put(setAuthState(false))       
-          yield put(forwardTo('login', true))
+          yield put(forwardTo(initialRouteName, true))
           yield put(clearData())
           // yield put(setToast(EXPIRED_ERROR_MESSAGE, 'danger'))
           yield put(setToast(getToastMessage(EXPIRED_ERROR_MESSAGE), 'info', null, null, 3000, 'top'))

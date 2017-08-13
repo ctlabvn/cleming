@@ -106,7 +106,7 @@ export default class NotificationHandler extends Component {
   }
 
   _handleNoti = (notification) => {
-    const { xsession, updateRead } = this.props
+    const { xsession, updateRead, forwardTo } = this.props
     if (notification.param2) {
       updateRead(xsession, param2)
     }
@@ -115,19 +115,19 @@ export default class NotificationHandler extends Component {
     switch (notificationData.type) {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
-        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.DIRECT)
+        forwardTo('transactionDetail', {id: notificationData.param1, type: TRANSACTION_TYPE.DIRECT})
         break
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
       case NOTIFY_TYPE.TRANSACTION_CLINGME_REPUSH:
-        this.props.forwardTo('transactionDetail/' + notificationData.param1 + '/' + TRANSACTION_TYPE.CLINGME)
+        forwardTo('transactionDetail', {id: notificationData.param1, type: TRANSACTION_TYPE.CLINGME})
         break
       case NOTIFY_TYPE.NEW_BOOKING:
-        this.props.forwardTo('placeOrderDetail/' + notificationData.param1)
+        forwardTo('placeOrderDetail', {id: notificationData.param1})
         break
       case NOTIFY_TYPE.NEW_ORDER:
       case NOTIFY_TYPE.ORDER_REPUSH_1:
       case NOTIFY_TYPE.ORDER_REPUSH_2:
-        this.props.forwardTo('deliveryDetail/' + notificationData.param1)
+        forwardTo('deliveryDetail', {id: notificationData.param1})
         break
     }
   }

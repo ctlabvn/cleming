@@ -41,7 +41,7 @@ export default class extends Component {
                 return (
                     <ListItem style={styles.listItem}
                         key={item.transactionId}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail', {id: item.transactionId, type: item.transactionType})}
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
@@ -56,7 +56,7 @@ export default class extends Component {
                             </View>
                             <View style={styles.row}>
                                 <Text medium primary>{I18n.t('not_confirm_yet')}</Text>
-                                <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)} >
+                                <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail', {id: item.transactionId, type: item.transactionType})} >
                                     <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
                                 </Button>
@@ -69,7 +69,7 @@ export default class extends Component {
                 return (
                     <ListItem style={styles.listItem}
                         key={item.transactionId}
-                        onPress={() => this.props.forwardTo('transactionDetail/' + item.transactionId + '/' + item.transactionType)}
+                        onPress={() => this.props.forwardTo('transactionDetail', {id: item.transactionId, type: item.transactionType})}
                     >
                         <View style={styles.blockConfirmed}>
                             <View style={styles.rowPadding}>
@@ -139,7 +139,7 @@ export default class extends Component {
         return (
             <ListItem
                 key={item.dealTransactionId}
-                onPress={() => this.props.forwardTo('transactionDetail/' + item.dealTransactionId + '/' + item.transactionType)}
+                onPress={() => this.props.forwardTo('transactionDetail', {id: item.dealTransactionId, type: item.transactionType})}
                 style={styles.listItem}
             >
                 <View style={styles.block}>

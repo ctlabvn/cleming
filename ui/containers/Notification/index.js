@@ -110,7 +110,7 @@ export default class extends Component {
   _handleNotiClick=(notification) =>{
     console.log('Notification Press', notification)
     const { notifyType, paramLong3 } = notification
-    const { updateRead, session, updateReadOfline, markWillLoad } = this.props
+    const { updateRead, session, updateReadOfline, markWillLoad, forwardTo } = this.props
     if (!notification.isRead) {
       updateReadOfline(notification.notifyId)
       updateRead(session, notification.notifyId)
@@ -121,21 +121,21 @@ export default class extends Component {
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
       case NOTIFY_TYPE.TRANSACTION_FEEDBACK:
-        this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.DIRECT)
+        forwardTo('transactionDetail', {id: paramLong3, type: TRANSACTION_TYPE.DIRECT})
         markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
         break
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
-        this.props.forwardTo('transactionDetail/' + paramLong3 + '/' + TRANSACTION_TYPE.CLINGME)
+        forwardTo('transactionDetail', {id: paramLong3, type: TRANSACTION_TYPE.CLINGME})
         markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
         break
       case NOTIFY_TYPE.NEW_BOOKING:
-        this.props.forwardTo('placeOrderDetail/' + paramLong3)
+        forwardTo('placeOrderDetail', {id: paramLong3})
         markWillLoad(SCREEN.BOOKING_LIST)
         break
       case NOTIFY_TYPE.NEW_ORDER:
       case NOTIFY_TYPE.ORDER_FEEDBACK:
       case NOTIFY_TYPE.ORDER_CANCELLED:
-        this.props.forwardTo('deliveryDetail/' + paramLong3)
+        forwardTo('deliveryDetail', {id: paramLong3})
         markWillLoad(SCREEN.ORDER_LIST)
         break
       default:

@@ -23,10 +23,22 @@ export const log = (data, type='table') => ({
 })
 
 // Little helper function to abstract going to different pages
-export const forwardTo = (route, reset=false) => ({
-  type: 'navigate/' + (reset ? 'reset' : 'push'),
-  payload: route,
-})
+export const navigate = (routeName, params, reset=false) => {
+  const action = {
+    type: 'navigate/' + (reset ? 'reset' : 'push'),
+    payload: {
+      routeName,
+    }
+  }
+  // only update object
+  if(typeof params === 'object') 
+    action.payload.params = params
+
+  return action
+}
+
+export const forwardTo = (routeName, params) => navigate(routeName, params, false)
+export const resetTo = (routeName, params) => navigate(routeName, params, true)
 
 export const goBack = () => ({
   type: 'navigate/pop',

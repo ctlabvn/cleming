@@ -23,7 +23,7 @@ import { getNews } from "~/store/selectors/place";
 import DeliveryFeedbackDialog from "~/ui/containers/DeliveryList/DeliveryFeedbackDialog";
 import I18n from '~/ui/I18n'
 import OrderItem from './OrderItem'
-import { getRouter } from '~/store/selectors/common'
+// import { getRouter } from '~/store/selectors/common'
 import LoadingModal from "~/ui/components/LoadingModal"
 import {
     DEFAULT_TIME_FORMAT,

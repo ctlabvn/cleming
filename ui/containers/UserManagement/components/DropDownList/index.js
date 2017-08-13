@@ -11,7 +11,7 @@ import Content from '~/ui/components/Content'
 
 export default class TopDropdown extends PureComponent {
   _handlePress(item) {
-    this.props.forwardTo(`notification/${item.user}`)
+    this.props.forwardTo('notification', item)
   }
   constructor(props) {
     super(props)

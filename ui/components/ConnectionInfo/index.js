@@ -11,7 +11,6 @@ import I18n from '~/ui/I18n'
 @connect(state => ({
     meta: state.meta,
     router: getRouter(state),
-    router: getRouter(state)
 }), { ...metaActions })
 
 export default class ConnectionInfo extends Component {
@@ -34,7 +33,7 @@ export default class ConnectionInfo extends Component {
     }
     render() {
         const { meta, router } = this.props
-        let currentPage = routes[router.route]
+        let currentPage = routes[router.current.routeName]
         let bottom =  (!currentPage || currentPage.footerType == 'none') ? 0 : 40
         if (meta.connectionStatus == 'offline') {
             return (

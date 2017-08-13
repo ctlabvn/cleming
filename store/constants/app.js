@@ -92,3 +92,6 @@ export const SCREEN = {
     ORDER_LIST: 'orderList',
     BOOKING_LIST: 'bookingList'
 }
+
+export const initialRouteName = 'login'
+export const initialAuthRouteName = 'merchantOverview' 

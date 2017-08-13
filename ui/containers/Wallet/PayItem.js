@@ -39,10 +39,10 @@ export default class extends Component {
         console.log('Press Item', item)
         switch (item.tranType) {
             case ITEM_TYPE.ORDER: //chờ duyệt
-                forwardTo('revenueManagementDetail/'+ITEM_TYPE.ORDER+'/'+item.tranId)
+                forwardTo('revenueManagementDetail', {tabId: ITEM_TYPE.ORDER, tranId: item.tranId})
                 break
             case ITEM_TYPE.CLINGME_PAY: // thành công
-                forwardTo('revenueManagementDetail/'+ITEM_TYPE.CLINGME_PAY+'/'+item.tranId)
+                forwardTo('revenueManagementDetail', {tabId: ITEM_TYPE.CLINGME_PAY, tranId: item.tranId})
                 break
             case ITEM_TYPE.CASHBACK:
                

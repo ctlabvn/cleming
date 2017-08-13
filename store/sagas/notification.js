@@ -32,7 +32,7 @@ export default [
     function* fetchWatcher() {
         // use takeLatest instead of take every, so double click in short time will not trigger more fork
         yield [
-            takeLatest('app/getNotification', requestGetNotification),
+            takeEvery('app/getNotification', requestGetNotification),
             takeLatest('notification/updateReadStatus', requestUpdateReadStatus)            
         ]
     },

@@ -35,7 +35,7 @@ export default class Navigator extends Component {
 
   getScene(index){
     const route = this.routeStack[index]
-    return route ? this._sceneRefs.get(route.path) : null
+    return route ? this._sceneRefs.get(route.routeName) : null
   }
 
   enable(index, enabled = true){
@@ -70,7 +70,7 @@ export default class Navigator extends Component {
   }
 
   navigate(route) {        
-    let destIndex = this.routeStack.findIndex(item => item.path === route.path)
+    let destIndex = this.routeStack.findIndex(item => item.routeName === route.routeName)
     const oldRoute = this.routeStack[this.presentedIndex]    
     if(destIndex !== this.presentedIndex){
       this.blurIndex = this.presentedIndex
@@ -89,10 +89,10 @@ export default class Navigator extends Component {
       } else {                  
         // remove route then re-get index        
         this.routeStack.splice(this.blurIndex, 1)    
-        this._sceneRefs.delete(oldRoute.path) 
+        this._sceneRefs.delete(oldRoute.routeName) 
         this.scenes.splice(this.blurIndex, 1)       
         // delete so we can re-render it later
-        // this._renderedSceneMap.delete(oldRoute.path)       
+        // this._renderedSceneMap.delete(oldRoute.routeName)       
         this.blurIndex = -1
         this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex                    
         // remove then update, so no blur needed
@@ -118,8 +118,8 @@ export default class Navigator extends Component {
     return (
       <View
         collapsable={false}
-        key={route.path}
-        ref={scene => this._sceneRefs.set(route.path, scene)}
+        key={route.routeName}
+        ref={scene => this._sceneRefs.set(route.routeName, scene)}
         style={styles.scene}>
         {this.props.renderScene(route)}  
       </View>

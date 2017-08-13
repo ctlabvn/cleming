@@ -131,7 +131,7 @@ export default class PlaceOrderList extends Component {
 
         return (
 
-            <ListItem style={listItemStyle} onPress={() => this.props.forwardTo('placeOrderDetail/' + item.clingmeId)}>
+            <ListItem style={listItemStyle} onPress={() => this.props.forwardTo('placeOrderDetail', {id: item.clingmeId})}>
                 
                     <View style={{ flex: 7 }}>
                                                                                 

@@ -27,14 +27,12 @@ import I18n from '~/ui/I18n'
 
 @connect(state=>({
   session: authSelectors.getSession(state),
-  profile: accountSelectors.getProfile(state),
-  user: authSelectors.getUser(state),
+  // user: authSelectors.getUser(state),
   pushToken: authSelectors.gePushToken(state),
 }), {...authActions, ...commonActions})
 export default class extends Component {  
 
   _handleLogout = (e) => {    
-
     const { closeDrawer, setAuthState, forwardTo, removeLoggedUser, session, logout } = this.props
     closeDrawer()
     removeLoggedUser()
@@ -48,7 +46,7 @@ export default class extends Component {
   }
 
   navigateTo(route) {
-    const {forwardTo, closeDrawer, user} = this.props
+    const {forwardTo, closeDrawer} = this.props
     // if (user.accTitle != 1 && route == 'userManagement') {
     //   closeDrawer()
     //   forwardTo('userManagement/action/updateUser')
@@ -62,18 +60,13 @@ export default class extends Component {
   }
 
   render() {
-    const {profile, forwardTo, closeDrawer} = this.props    
-    // if(!profile)
-    //   return (<Spinner color="green" />)
-    // // by default it is flex, so do not set flex portion
-    // // render profile
-    // const avatar = {uri: (API_BASE + profile.PhotoUrl)}
+    
     return (      
 
       <View style={styles.container}>    
           <View row style={styles.drawerCover}> 
             <Text bold style={styles.text}>Menu</Text>
-             <Button onPress={closeDrawer} transparent style={styles.buttonClose}>
+             <Button onPress={this.props.closeDrawer} transparent style={styles.buttonClose}>
               <Icon name="close" style={styles.buttonIconClose} />
             </Button>
           </View>
@@ -91,32 +84,7 @@ export default class extends Component {
               <Icon name='sign_out' style={styles.iconStyle} />
               <Text style={styles.iconText}>{I18n.t('logout')}</Text>
             </Left>                
-          </ListItem>
-          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
-            <Left>
-              <Icon name='sign_out' style={styles.iconStyle} />
-              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
-            </Left>                
-          </ListItem>
-          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
-            <Left>
-              <Icon name='sign_out' style={styles.iconStyle} />
-              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
-            </Left>                
-          </ListItem>
-          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
-            <Left>
-              <Icon name='sign_out' style={styles.iconStyle} />
-              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
-            </Left>                
-          </ListItem>
-          
-          <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
-            <Left>
-              <Icon name='sign_out' style={styles.iconStyle} />
-              <Text style={styles.iconText}>{I18n.t('logout')}</Text>
-            </Left>                
-          </ListItem>
+          </ListItem>          
         </Content>
         </View>
       

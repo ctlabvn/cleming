@@ -136,7 +136,7 @@ export default class extends Component {
         return (
             <ListItem noBorder style={listItemStyle} key={orderInfo.clingmeId}
                 onPress={() => {
-                    forwardTo('deliveryDetail/' + orderInfo.clingmeId)
+                    forwardTo('deliveryDetail', {id: orderInfo.clingmeId})
                 }
                 }>
                 <View style={styles.block}>

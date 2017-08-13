@@ -3,7 +3,7 @@ import shallowEqual from 'fbjs/lib/shallowEqual'
 import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated, Easing } from 'react-native'
 import { Drawer, StyleProvider, View, Text } from 'native-base'
 
-import URL from 'url-parse'
+// import URL from 'url-parse'
 
 import getTheme from '~/theme/components'
 import material from '~/theme/variables/material'
@@ -26,7 +26,7 @@ import PopupConfirm from '~/ui/components/PopupConfirm'
 import NotificationHandler from './containers/NotificationHandler'
 // router => render component base on url
 // history.push => location match => return component using navigator push
-import { matchPath } from 'react-router'
+// import { matchPath } from 'react-router'
 import { connect } from 'react-redux'
 
 import { SENDER_ID } from '~/store/constants/api'
@@ -43,26 +43,18 @@ import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import { NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN } from '~/store/constants/app'
+import { 
+  NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN,
+  initialAuthRouteName, initialRouteName,
+} from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
 import I18n from '~/ui/I18n'
 
-const getPage = (url) => {
-  // guard code
-  if(!url) return null
-  const pathname = url.split('?')[0]
-  for (route in routes) {    
-    const match = matchPath(pathname, {
-      path: route,
-      exact: true,
-      strict: false,
-    })
-    if (match) {
-      // update query and pathname
-      const { query } = new URL(url, null, true)
-      return { ...routes[route], ...match, url, pathname, query }
-    }
-  }
+const getPage = (route) => {
+  let match = routes[route.routeName]
+  // update routeName and params if found
+  match && Object.assign(match, route)
+  return match
 }
 
 const animatedOption = {
@@ -73,9 +65,9 @@ const animatedOption = {
 }
 
 const UIManager = NativeModules.UIManager
-
+// should check reference instead of real data
 @connect(state => ({
-  url: getRouter(state).route,
+  router: getRouter(state),
   drawerState: getDrawerState(state),
   place: state.place,
   location: state.location,
@@ -139,20 +131,20 @@ export default class App extends Component {
   }
 
   // replace view from stack, hard code but have high performance
-  componentWillReceiveProps({ url, drawerState }) {
+  componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
 
-    if (url !== this.props.url) {
-      const route = getPage(url)
+    if (router.current.routeName !== this.props.router.current.routeName) {
+      const route = getPage(router.current)
       if (route) {
         // show header and footer, and clear search string          
         this.navigator.navigate(route)
         this.header.show(route.headerType, route.title)        
-        this.footer.show(route.footerType, route.path)
+        this.footer.show(route.footerType, route.routeName)
         this.topDropdown.show(route.showTopDropdown)        
       } else {
         // no need to push to route
-        this.props.setToast('Scene not found: ' + url, 'danger')
+        this.props.setToast('Scene not found: ' + router.current.routeName, 'danger')
       }      
     }    
 
@@ -208,7 +200,7 @@ export default class App extends Component {
     //   }           
     // }
     
-    this.handleFocusableComponent(this.pageInstances.get(route.path), true)
+    this.handleFocusableComponent(this.pageInstances.get(route.routeName), true)
   }
 
   // we can use events to pass between header and footer and page via App container or store
@@ -216,7 +208,7 @@ export default class App extends Component {
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={route.Preload || <Preload />}>
         <View style={{ paddingTop: route.showTopDropdown ? 50 : 0, flex: 1 }}>
-          <route.Page route={route} app={this} ref={ref=> this.pageInstances.set(route.path, ref)} />
+          <route.Page route={route} app={this} ref={ref=> this.pageInstances.set(route.routeName, ref)} />
         </View>
       </AfterInteractions>
     )
@@ -243,14 +235,15 @@ export default class App extends Component {
     }
   }
 
-  _onTabClick = (type, url) => {
-    if(url !== this.props.url){
+  _onTabClick = (type, routeName) => {
+    if(routeName !== this.props.router.current.routeName){
       const { forwardTo } = this.props
       switch (type) {
         case 'none':
           return false
         default:
-          return forwardTo(url)
+          // if not check, we can still forward without navigating, but takes a little time
+          return forwardTo(routeName)
       }
     }
   }
@@ -276,7 +269,7 @@ export default class App extends Component {
       })
   }
   componentDidMount() {
-    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast, url } = this.props
+    const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast } = this.props
     // if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
@@ -323,12 +316,12 @@ export default class App extends Component {
   }
 
   _handleBack = () => {
-    const { url, goBack, drawerState, closeDrawer } = this.props
+    const { router, goBack, drawerState, closeDrawer } = this.props
       if (drawerState == 'opened'){
         closeDrawer()
         return true
       }
-      if (url === 'merchantOverview' || url === 'login') {
+      if (router.current.routeName === initialRouteName || router.current.routeName === initialAuthRouteName) {
         this.popupConfirm.show(I18n.t('confirm_exit'))
         return true
       }
@@ -373,8 +366,8 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
   render() {
-    const { drawerState, closeDrawer, place, selectedPlace, url } = this.props
-    const route = getPage(url) || routes.notFound
+    const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
+    const route = getPage(router.current) || routes.notFound
 
     if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
       this.listPlace = place.listPlace.map(item => ({
@@ -424,7 +417,7 @@ export default class App extends Component {
             onBlur={this._handlePageWillBlur}
             transition={this._transitionScene}
           />
-          <Footer type={route.footerType} route={route.path} onTabClick={this._onTabClick} 
+          <Footer type={route.footerType} route={route.routeName} onTabClick={this._onTabClick} 
             onItemRef={ref => this.footer = ref} />          
           <TopDropdown
             app={this}

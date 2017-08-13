@@ -59,13 +59,13 @@ export default {
         tabIndex: 1,
         cache: true,
     },
-    'transactionDetail/:id/:type': {
+    transactionDetail: {
         title: I18n.t('page_transaction_detail'),
         Page: TransactionDetail,
         headerType: 'back',
         footerType: 'none',                
     },
-    'transactionInputFeedback/:dealID/:reasonID': {
+    'transactionInputFeedback': {
         title: '',
         Page: TransactionInputFeedback,
         headerType: 'back',
@@ -79,7 +79,7 @@ export default {
         tabIndex: 1,
         cache: true,
     },
-    'deliveryDetail/:id': {
+    deliveryDetail: {
         title: I18n.t('page_delivery_detail'),
         Page: DeliveryDetail,
         footerType: 'none',
@@ -93,7 +93,7 @@ export default {
         tabIndex: 1,
         cache: true,
     },
-    'placeOrderDetail/:id': {
+    placeOrderDetail: {
         title: I18n.t('page_booking_detail'),
         Page: PlaceOrderDetail,
         headerType: 'back',
@@ -137,7 +137,7 @@ export default {
         footerType: 'none',
         headerType: 'back',        
     },
-    'userManagement/action/updateEmployeeInfo/:id': {
+    'userManagement/action/updateEmployeeInfo': {
         title: I18n.t('page_change_info'),
         Page: CreateUserContainer,
         footerType: 'none',
@@ -170,34 +170,34 @@ export default {
         Page: RevenueManagementList,
         headerType: 'back',
     },
-    'revenueManagementDetail/:tabId/:tranId': {
+    revenueManagementDetail: {
         title: I18n.t('revenue_detail'),
         Page: RevenueManagementDetail,
         headerType: 'back',
     },
-    'wallet': {
+    wallet: {
         title: I18n.t('page_wallet'),
         Page: Wallet,
         headerType: 'back',
     },
-    'walletDetail': {
+    walletDetail: {
         title: I18n.t('page_wallet_detail'),
         Page: WalletDetail,
         headerType: 'back',
     },
-    'withDraw': {
+    withDraw: {
         title: I18n.t('page_bank_account'),
         Page: WithDraw,
         headerType: 'back',
         footerType: 'none'
     },
-    'bankAccount': {
+    bankAccount: {
         title: I18n.t('page_bank_account'),
         Page: BankAccount,
         headerType: 'back',
         footerType: 'none'
     },
-    'setting': {
+    setting: {
         title: I18n.t('page_setting'),
         Page: Setting,
         headerType: 'back',
