@@ -106,7 +106,7 @@ export default class App extends Component {
 
       const animatedListenerId = enter.addListener(({value})=>{     
         const translateX = Math.round(value)           
-        thisNavigator.transitionBetween(prevIndex, index, translateX, 1)        
+        thisNavigator.transitionBetween(prevIndex, index, translateX, prefix)        
         if(translateX === 0) {                    
           // now ready
           // stop freeze

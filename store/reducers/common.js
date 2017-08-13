@@ -104,10 +104,10 @@ const defaultRoute = {
 export const router = (state = initialRouterState, { type, payload }) => {  
   switch(type) {
     case 'navigate/push':      
-      // max stack is 20 items :D
+      // max stack is 3 items :D detail of detail
       return state.current.routeName === payload.routeName 
       ? state 
-      : {current: payload, stack: [state.current, ...(state.stack.length > 19 ? state.stack.slice(0, -1) : state.stack)]}
+      : {current: payload, stack: [state.current, ...(state.stack.length > 2 ? state.stack.slice(0, -1) : state.stack)]}
     case 'navigate/reset':
       // for select we can return default because no mutate, next time we will return new array, just for check
       return {current: payload, stack: initialRouterState.stack}
