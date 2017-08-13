@@ -1,6 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import { ListView, Platform, RefreshControl } from 'react-native';
 
+class RefreshControlExtend extends Component {
+
+  static defaultProps = {
+    title: 'Loading...',
+  }
+
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      refreshing: false
+    };
+  }
+
+  render(){
+    const {onRefresh, title} = this.props
+    return (
+      <RefreshControl refreshing={this.state.refreshing} onRefresh={onRefresh} title={title} />
+    )
+  }
+}
+
 export default class ListViewExtend extends Component {
 
   constructor(props) {
@@ -26,12 +48,12 @@ export default class ListViewExtend extends Component {
     if (keyExtractor){
       return (keyExtractor(r1) !== keyExtractor(r2))
     }
-    if (!keyExtractorArr || keyExtractorArr.length == 0) return false
-    for (let i=0; i < keyExtractorArr.length; i++){
-      if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
-        return true 
-      }
-    }
+    // if (!keyExtractorArr || keyExtractorArr.length == 0) return false
+    // for (let i=0; i < keyExtractorArr.length; i++){
+    //   if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
+    //     return true 
+    //   }
+    // }
     return false
   }
 
@@ -51,11 +73,15 @@ export default class ListViewExtend extends Component {
     }
   }
 
+  showRefresh(refreshing){
+    this.refreshControl && this.refreshControl.setState({refreshing})
+  }
+
   render() {
-    const {refreshing, onRefresh, ...props} = this.props    
+    const {onRefresh, ...props} = this.props    
     // show refresh control
     if(onRefresh){
-      props.refreshControl = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} title="Loading..." />
+      props.refreshControl = <RefreshControlExtend onRefresh={onRefresh} ref={ref=>this.refreshControl = ref} />
     }
     return (
       <ListView

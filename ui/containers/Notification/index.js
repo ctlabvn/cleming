@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Button, Container, ListItem, List, Spinner,
+  Button, Container, ListItem, List,
   Text, Item, View, Input, Left, Right, Body,
 } from 'native-base'
 
@@ -22,6 +22,7 @@ import options from './options'
 import styles from './styles'
 import material from '~/theme/variables/material'
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import Spinner from '~/ui/components/Spinner'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import I18n from '~/ui/I18n'
 
@@ -36,15 +37,6 @@ const checkProperties=['notifyId', 'isRead']
 
 export default class extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      refreshing: false,
-      loading: false,      
-    }    
-  }
-
   componentWillBlur(){
     this.listview.scrollToTop()
   }
@@ -56,10 +48,6 @@ export default class extends Component {
     // if (notifications.hasMore && !notifications.data.length) {
     //   getNotification(session, 1, () => getNotification(session, 2))      
     // } 
-
-    // this.setState({
-    //   refreshing: false,      
-    // })
   }
 
 
@@ -74,18 +62,22 @@ export default class extends Component {
 
   _onRefresh = () => {
     const { session, getNotification } = this.props
-    this.setState({ refreshing: true })
-    getNotification(session, 1, () => getNotification(session, 2, () => this.setState({ refreshing: false })))
+    this.listview.showRefresh(true)
+    getNotification(session, 1, () => getNotification(session, 2, 
+      () => this.listview.showRefresh(false)
+    ))
   }
 
   _loadMore = () => {
-    if (this.state.loading || this.state.refreshing)
+    if (this.spinner.state.shown || this.listview.refreshControl.state.refreshing)
       return
     // console.log('load more')
     const { session, notifications, getNotification } = this.props
     if (notifications.hasMore) {
-      this.setState({ loading: true })
-      getNotification(session, notifications.page + 1, () => this.setState({ loading: false }))
+      this.spinner.show(true)
+      getNotification(session, notifications.page + 1, 
+        () => this.spinner.show(false)
+      )
     }
   }
 
@@ -142,18 +134,19 @@ export default class extends Component {
         break
     }
   }
+
   render() {
     const { notifications } = this.props        
     return (
 
       <Container>
-          {notifications.hasMore ?
+          {
+            notifications.hasMore ?
         <ListViewExtend     
           onItemRef={ref=>this.listview=ref}
           keyExtractor={item=>item.notifyId}
           dataArray={notifications.data}
           onRefresh={this._onRefresh}
-          refreshing={this.state.refreshing}
           onEndReached={this._loadMore}  
           renderRow={(item) => <NotificationItem item={item} onNotiClick={this._handleNotiClick} />}
         />
@@ -163,7 +156,7 @@ export default class extends Component {
             </View>
           }
 
-          {this.state.loading && <Spinner />}
+         <Spinner ref={ref=>this.spinner=ref} />
       </Container>
 
     )

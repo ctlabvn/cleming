@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, ListItem, Spinner, Text } from "native-base";
+import { Button, Container, ListItem, Text } from "native-base";
 import { InteractionManager, View } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
@@ -12,6 +12,7 @@ import * as authSelectors from "~/store/selectors/auth";
 import * as metaActions from "~/store/actions/meta";
 import { InputField } from "~/ui/elements/Form";
 import Content from "~/ui/components/Content";
+import Spinner from '~/ui/components/Spinner'
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Border from "~/ui/elements/Border";
 import Icon from "~/ui/elements/Icon";
@@ -57,8 +58,6 @@ export default class extends Component {
         }
         this.state = {
             selectedPlace: selectedPlace,
-            loading: false,
-            loadingMore: false,
             modalOpen: false,
             counting: true,
             phoneNumber: '',
@@ -173,18 +172,16 @@ export default class extends Component {
         const { selectedPlace } = this.state
         if (!selectedPlace) return
         if (isLoadMore) {
-            this.setState({ loadingMore: true })
+            this.spinner.show(true)
         } else {
             // clearOrderList()
-            this.setState({ loading: true })
+            this.listview.showRefresh(true)
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
-            (err, data) => {
-                this.setState({
-                    loading: false,
-                    loadingMore: false,
-                })
+            (err, data) => {                
+                this.listview.showRefresh(false)
+                this.spinner.show(false)
                 this.clickCount = 0
             })
         //update noti Number
@@ -232,7 +229,7 @@ export default class extends Component {
 
     _loadMore = () => {
         console.log('Call loadMore')
-        if (this.state.loading || this.state.loadingMore)
+        if (this.listview.refreshControl.state.refreshing || this.spinner.state.shown)
             return
         const { order } = this.props
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value
@@ -318,7 +315,6 @@ export default class extends Component {
                     onItemRef={ref=>this.listview=ref}
                     onEndReached={this._loadMore} 
                     onRefresh={this._onRefresh}
-                    refreshing={this.state.loading}
                     dataArray={orderList}
                     keyExtractor={item=>item.orderInfo.clingmeId}
                     renderRow={(item) => (
@@ -331,9 +327,9 @@ export default class extends Component {
                         />
                     )}
                 />
-                {this.state.loadingMore &&
-                    <Spinner />
-                }
+
+                <Spinner ref={ref=>this.spinner=ref} />
+
             </Container>
         )
     }

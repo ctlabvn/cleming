@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Container, Text} from "native-base";
-import {ActivityIndicator, Image, InteractionManager, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Image, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 import * as commonActions from "~/store/actions/common";
 import * as placeAction from "~/store/actions/place";
@@ -250,7 +250,7 @@ export default class MerchantOverview extends Component {
                         <Image source={storeTransparent} style={{resizeMode: 'contain', height: 120}}/>
                     </View>
                 <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>                   
-                    {mainContainer}
+                    {mainContainer}                    
                 </Content>
             </Container>
         )

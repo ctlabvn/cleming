@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, List, ListItem, Spinner, Text } from "native-base";
+import { Button, Container, List, ListItem, Text } from "native-base";
 import { InteractionManager, View } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
@@ -11,6 +11,7 @@ import * as placeActions from "~/store/actions/place";
 import * as metaActions from "~/store/actions/meta";
 import TransactionFilter from "~/ui/components/TransactionFilter";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Spinner from '~/ui/components/Spinner'
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
@@ -45,11 +46,7 @@ import ListTransaction from './TransactionListComponent'
 export default class extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            currentTab: this._getDefaultActiveTab(),
-            loading: false,
-            loadingMore: false
-        }
+        this.currentTab = this._getDefaultActiveTab()        
         
         this.isLoadingPlace = false
         this.currentPlace = -1
@@ -78,21 +75,21 @@ export default class extends Component {
     _handlePressTab(item) {
         const { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
-        this.setState({ currentTab: item.tabID },
-            () => {
+        this.currentTab = item.tabID
+            // () => {
                 // let currentPlace = this.refs.placeDropdown.getValue()
-                let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-                if (item.tabID == TRANSACTION_TYPE_CLINGME) { // Trả qua Clingme
-                    this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
-                } else { // Trả trực tiếp
-                    this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
-                }
-                if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-                    this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
-                }
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        if (item.tabID == TRANSACTION_TYPE_CLINGME) { // Trả qua Clingme
+            this.refs.transactionFilter.updateFilter(options.transactionFilterListClingme)
+        } else { // Trả trực tiếp
+            this.refs.transactionFilter.updateFilter(options.transactionFilterListDirect)
+        }
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
+        }
 
-            }
-        )
+            // }
+        // )
 
     }
 
@@ -221,11 +218,11 @@ export default class extends Component {
         // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         // let currentPlace = app.topDropdown.getValue()
         // let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        // if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.state.currentTab == TRANSACTION_TYPE_DIRECT){
+        // if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.currentTab == TRANSACTION_TYPE_DIRECT){
         //     console.log('Case reload tranDirect')
         //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         //     clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-        // }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.state.currentTab == TRANSACTION_TYPE_CLINGME){
+        // }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.currentTab == TRANSACTION_TYPE_CLINGME){
         //     console.log('Case reload tranClm')
         //     this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
         //     clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
@@ -299,23 +296,25 @@ export default class extends Component {
         const { xsession, getListTransaction, getListTransactionPayWithClingme, payWithClingme, payDirect, getMerchantNews } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {
-            this.setState({ loadingMore: true })
+            this.spinner.show(true)
         } else {
-            this.setState({ loading: true })
+            this.listview.showRefresh(true)
         }
-        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
+        if (this.currentTab == TRANSACTION_TYPE_CLINGME) {
             getListTransactionPayWithClingme(xsession, placeId, fromTime, toTime, filter, page,
                 (err, data) => {
-                    this.setState({ loading: false, loadingMore: false })
+                    this.listview.showRefresh(false)
+                    this.spinner.show(false)
                     if (data && data.updated && data.updated.data) {
                         transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
                     }
                 }
             )
-        } else if (this.state.currentTab == TRANSACTION_TYPE_DIRECT) {
+        } else if (this.currentTab == TRANSACTION_TYPE_DIRECT) {
             getListTransaction(xsession, placeId, fromTime, toTime, filter, page,
                 (err, data) => {
-                    this.setState({ loading: false, loadingMore: false })
+                    this.listview.showRefresh(false)
+                    this.spinner.show(false)
                     if (data && data.updated && data.updated.data) {
                         transactionFilterComponent.updateIndicatorNumber(data.updated.data.totalRecord)
                     }
@@ -337,7 +336,7 @@ export default class extends Component {
     _loadMore = () => {
         const { transaction, payWithClingme, payDirect, app } = this.props
         let pageNumber, totalPage
-        if (this.state.currentTab == TRANSACTION_TYPE_CLINGME) {
+        if (this.currentTab == TRANSACTION_TYPE_CLINGME) {
             pageNumber = payWithClingme.pageNumber
             totalPage = payWithClingme.totalPage
         } else {
@@ -363,10 +362,9 @@ export default class extends Component {
     _renderList() {
         const { transaction, payWithClingme, payDirect } = this.props   
         return <ListTransaction onItemRef={ref=>this.listview=ref} 
-                ListFooterComponent={()=>this.state.loadingMore ? <Spinner color={material.red500} /> : null}
-                onEndReached={this._loadMore} onRefresh={this._onRefresh} refreshing={this.state.loading}
-             itemKey={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? 'transactionId' : 'dealTransactionId'}
-             data={this.state.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
+                onEndReached={this._loadMore} onRefresh={this._onRefresh} 
+             itemKey={this.currentTab == TRANSACTION_TYPE_CLINGME ? 'transactionId' : 'dealTransactionId'}
+             data={this.currentTab == TRANSACTION_TYPE_CLINGME ? payWithClingme.listTransaction : payDirect.listTransaction} />
     }
     
     render() {
@@ -393,7 +391,7 @@ export default class extends Component {
                 {/*<TopDropdown ref='placeDropdown' dropdownValues={dropdownValues}
                     selectedOption={selectedPlace}
                     onSelect={this._handleTopDrowpdown.bind(this)} />*/}
-                <View style={{ height: '100%' }}>
+                <View style={{ flex: 1 }}>
                     <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
                     <DateFilter defaultFilter={currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
@@ -401,7 +399,7 @@ export default class extends Component {
                     />
                    
                         {this._renderList()}
-                        
+                        <Spinner ref={ref=>this.spinner=ref} color={material.red500}/>
                         {/*{noData}
                         {moreData}*/}
                     

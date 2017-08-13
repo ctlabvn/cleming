@@ -192,30 +192,30 @@ export default class TransactionDetail extends Component {
     }
 
     // Go to Page 
-    componentWillFocus() {
+    // componentWillFocus() {
         // InteractionManager.runAfterInteractions(() => {
-        const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
-        this.confirmCounter = 0
-        this._goToMiddlePage()
-        let transactionId = route.params.id
-        let transactionType = +route.params.type
-        this.setState({ type: transactionType })
-        this._load(transactionId)
-        if (!denyReason || denyReason.length == 0) {
-            getListDenyReason(xsession)
-        }
-        if (!denyReasonClm || denyReasonClm.length == 0) {
-            getDenyReasonClm(xsession)
-        }
+        // const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
+        // this.confirmCounter = 0
+        // this._goToMiddlePage()
+        // let transactionId = route.params.id
+        // let transactionType = +route.params.type
+        // this.setState({ type: transactionType })
+        // this._load(transactionId)
+        // if (!denyReason || denyReason.length == 0) {
+        //     getListDenyReason(xsession)
+        // }
+        // if (!denyReasonClm || denyReasonClm.length == 0) {
+        //     getDenyReasonClm(xsession)
+        // }
         // })
 
-    }
+    // }
 
-    componentWillBlur(){
-        // just to clear the view
-        // console.log('render')
-        this.setState({ transactionInfo: {} })
-    }
+    // componentWillBlur(){
+    //     // just to clear the view
+    //     // console.log('render')
+    //     this.setState({ transactionInfo: {} })
+    // }
 
     renderClingme(transactionInfo){
         let payStatus, helpBtn = null

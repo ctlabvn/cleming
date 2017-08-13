@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Button, Grid, List, ListItem, Row, Spinner, Text} from "native-base";
+import {Button, Grid, List, ListItem, Row, Text} from "native-base";
 import {InteractionManager, View} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
@@ -10,6 +10,7 @@ import * as placeActions from "~/store/actions/place";
 import * as metaActions from "~/store/actions/meta";
 import {InputField} from "~/ui/elements/Form";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Spinner from '~/ui/components/Spinner'
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
@@ -45,8 +46,6 @@ export default class PlaceOrderList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            loadingMore: false,
-            loading: false,
             modalOpen: false,
             phoneNumber: '',
             counting: true
@@ -185,7 +184,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _onRefresh = () => {
-        this.setState({ loading: true })
+        this.listview.showRefresh(true)
         let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -249,16 +248,17 @@ export default class PlaceOrderList extends Component {
         const { xsession, clearBookingList, getMerchantNews } = this.props
 
         if (isLoadMore) {
-            this.setState({ loadingMore: true })
+            this.spinner.show(true)
         } else {
             // clearBookingList()
-            this.setState({ loading: true })
+            this.listview.showRefresh(true)
         }
         this.props.getBookingList(this.props.xsession, placeId,
             fromTime, toTime, status, page,
             (err, data) => {
                 console.log('Load Order', data)
-                this.setState({ loading: false, loadingMore: false })
+                this.spinner.show(false)
+                this.listview.showRefresh(false)
             }
         )
         getMerchantNews(xsession, placeId,
@@ -293,6 +293,8 @@ export default class PlaceOrderList extends Component {
             //     this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
             // }
         // })
+
+        
     }
     componentWillFocus() {
         // const { app, news, clearMarkLoad, meta } = this.props
@@ -373,12 +375,14 @@ export default class PlaceOrderList extends Component {
                         onItemRef={ref=>this.listview=ref}
                         onEndReached={this._loadMore} 
                         keyExtractor={item=>item.clingmeId}
-                        onRefresh={this._onRefresh}
-                        refreshing={this.state.loading}
+                        onRefresh={this._onRefresh}                        
                         dataArray={booking.bookingList}
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
-                    {this.state.loadingMore && <Spinner color={material.red500} />}
+                    
+                    <Spinner color={material.red500} ref={ref=>this.spinner=ref}/>
+
+
                 </View>
             </View>
         )
