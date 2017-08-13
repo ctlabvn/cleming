@@ -16,6 +16,10 @@ export default class extends Component {
     }
   }
 
+  componentDidMount(){
+    this.props.onItemRef && this.props.onItemRef(this)
+  }
+
   show(shown){
     this.setState({shown})
   }

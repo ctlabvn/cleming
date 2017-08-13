@@ -294,7 +294,7 @@ export default class PlaceOrderList extends Component {
             // }
         // })
 
-        
+
     }
     componentWillFocus() {
         // const { app, news, clearMarkLoad, meta } = this.props
@@ -380,7 +380,7 @@ export default class PlaceOrderList extends Component {
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
                     
-                    <Spinner color={material.red500} ref={ref=>this.spinner=ref}/>
+                    <Spinner color={material.red500} onItemRef={ref=>this.spinner=ref}/>
 
 
                 </View>

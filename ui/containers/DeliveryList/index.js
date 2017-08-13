@@ -328,7 +328,7 @@ export default class extends Component {
                     )}
                 />
 
-                <Spinner ref={ref=>this.spinner=ref} />
+                <Spinner onItemRef={ref=>this.spinner=ref} />
 
             </Container>
         )
