@@ -30,15 +30,17 @@ export default class Report extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            region: {
-                latitude: 21.0461027,
-                longitude: 105.7955732,
-                latitudeDelta: DEFAULT_MAP_DELTA.LAT,
-                longitudeDelta: DEFAULT_MAP_DELTA.LONG,
-            },
             focusMerchant: {},
             hideMap: false,
         }
+
+        this.region = {
+            latitude: 21.0461027,
+            longitude: 105.7955732,
+            latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+            longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+        }
+
         this.currentPlace = -1
         this.isLoadingPlace = false
         this.showMap = false
@@ -55,10 +57,10 @@ export default class Report extends Component {
     }
     _requestMapData(placeIds, fromTime, toTime, callback) {
         const { xsession, getMapReport } = this.props
-        let minLa = this.state.region.latitude - this.state.region.latitudeDelta
-        let minLo = this.state.region.longitude - this.state.region.longitudeDelta
-        let maxLa = this.state.region.latitude + this.state.region.latitudeDelta
-        let maxLo = this.state.region.longitude + this.state.region.longitudeDelta
+        let minLa = this.region.latitude - this.region.latitudeDelta
+        let minLo = this.region.longitude - this.region.longitudeDelta
+        let maxLa = this.region.latitude + this.region.latitudeDelta
+        let maxLo = this.region.longitude + this.region.longitudeDelta
 
         const { height, width } = Dimensions.get('window')
         const bounds = [
@@ -85,20 +87,27 @@ export default class Report extends Component {
         if (place && place.listPlace && place.listPlace.length > 0) {
             let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
             console.log('Focus Merchant', focusMerchant)
-            this.setState({
-                region: {
-                    latitude: focusMerchant.latitude,
-                    longitude: focusMerchant.longitude,
-                    latitudeDelta: DEFAULT_MAP_DELTA.LAT,
-                    longitudeDelta: DEFAULT_MAP_DELTA.LONG,
-                },
+            this.region = {
+                latitude: focusMerchant.latitude,
+                longitude: focusMerchant.longitude,
+                latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+                longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+            }
+            this.setState({                
                 focusMerchant: focusMerchant
-            })
+            }, ()=>{
+                this.mapview && this.mapview.animateToRegion(this.region)
+            })            
         }
 
         this._requestMapData(placeId, fromTime, toTime)
         getMerchantNews(xsession, placeId)
     }
+
+    // componentDidUpdate(){
+        // this.mapview.animateToRegion(this.region)
+    // }
+
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const { app } = this.props
@@ -129,7 +138,9 @@ export default class Report extends Component {
                 this.isLoadingPlace = true
                 return
             }else if(this.currenttPlace!=selectedPlace.id){
-                this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
+                setTimeout(() => {
+                    this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
+                }, 500)
             }
         })
     }
@@ -143,16 +154,14 @@ export default class Report extends Component {
     }
 
     _regionChange = (region) => {
-        this.setState({ region },
-            () => {
-                const { app } = this.props
-                let placeData = app.topDropdown.getValue()
-                if (placeData && placeData.id){
-                    this._requestMapData(placeData.id, this.fromTime, this.toTime)
-                }
-                
-            }
-        )
+        this.region = region
+            
+        const { app } = this.props
+        let placeData = app.topDropdown.getValue()
+        if (placeData && placeData.id){
+            this._requestMapData(placeData.id, this.fromTime, this.toTime)
+        }
+        
     }
 
     onRegionChangeComplete = (region) => {
@@ -192,7 +201,8 @@ export default class Report extends Component {
             <Container style={styles.container}>
                 <View style={{ height: '100%' }} >
                     {this.state.hideMap ? <Preload/> : <MapView
-                        region={this.state.region}
+                        ref={ref=>this.mapview=ref}
+                        // initialRegion={this.region}
                         provider={PROVIDER_GOOGLE}
                         style={{ width: '100%', height: '100%' }}
                         onRegionChangeComplete={this.onRegionChangeComplete}
