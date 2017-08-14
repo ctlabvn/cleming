@@ -95,6 +95,8 @@ export default class Report extends Component {
             }
             this.setState({                
                 focusMerchant: focusMerchant
+            }, ()=>{
+                this.mapview && this.mapview.animateToRegion(this.region)
             })            
         }
 
@@ -102,9 +104,9 @@ export default class Report extends Component {
         getMerchantNews(xsession, placeId)
     }
 
-    componentDidUpdate(){
-        this.mapview.animateToRegion(this.region)
-    }
+    // componentDidUpdate(){
+        // this.mapview.animateToRegion(this.region)
+    // }
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
