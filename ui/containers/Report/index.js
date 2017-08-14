@@ -138,7 +138,9 @@ export default class Report extends Component {
                 this.isLoadingPlace = true
                 return
             }else if(this.currenttPlace!=selectedPlace.id){
-                this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
+                setTimeout(() => {
+                    this._loadAndFocus(selectedPlace.id, this.fromTime, this.toTime)
+                }, 500)
             }
         })
     }
