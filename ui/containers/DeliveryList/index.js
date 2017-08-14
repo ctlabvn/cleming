@@ -157,7 +157,7 @@ export default class extends Component {
     }
 
     componentWillBlur() {
-        this.listview.scrollToTop()
+        this.listview && this.listview.scrollToTop()
         // this.counting = false
         // InteractionManager.runAfterInteractions(() => {
         // this.setState({ counting: false })

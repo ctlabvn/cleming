@@ -319,7 +319,7 @@ export default class PlaceOrderList extends Component {
         }
     }
     componentWillBlur() {
-        this.listview.scrollToTop()
+        this.listview && this.listview.scrollToTop()
         // InteractionManager.runAfterInteractions(() => {
             // this.setState({ counting: false })
         // })

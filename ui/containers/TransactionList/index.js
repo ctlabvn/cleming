@@ -158,7 +158,7 @@ export default class extends Component {
     }
 
     componentWillBlur(){
-        this.listview.scrollToTop()
+        this.listview && this.listview.scrollToTop()
     }
 
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
