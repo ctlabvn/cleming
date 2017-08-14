@@ -96,7 +96,6 @@ export default class extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            console.log('Did Mount')
             const { app } = this.props
             let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
@@ -104,7 +103,6 @@ export default class extends Component {
             let transactionFilterComponent = this.refs.transactionFilter
             let transactionFilter = transactionFilterComponent.getCurrentValue()
             if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-                console.log('Load: ')
                 this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to)
             } else {
                 this.isLoadingPlace = true
@@ -113,25 +111,22 @@ export default class extends Component {
 
     }
 
-    // componentWillReceiveProps(nextProps){
-    //     const { app, clearMarkLoad } = this.props
-    //     const { meta } = nextProps
-    //     // if (!router || router.route != 'transactionList'){
-    //     //     return
-    //     // }
-    //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-    //     let currentPlace = app.topDropdown.getValue()
-    //     let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-    //     if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT] && this.currentTab == TRANSACTION_TYPE_DIRECT){
-    //         console.log('Case reload tranDirect')
-    //         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-    //         clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-    //     }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME] && this.currentTab == TRANSACTION_TYPE_CLINGME){
-    //         console.log('Case reload tranClm')
-    //         this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
-    //         clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-    //     }
-    // }
+    componentWillReceiveProps(nextProps){
+        const { app, clearMarkLoad } = this.props
+        const { meta } = nextProps
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        let currentPlace = app.topDropdown.getValue()
+        let transactionFilter = this.refs.transactionFilter.getCurrentValue()
+        if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
+            console.log('Case reload tranDirect')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+        }else if(meta && meta[SCREEN.TRANSACTION_LIST_CLINGME]){
+            console.log('Case reload tranClm')
+            this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
+            clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
+        }
+    }
 
     // shouldComponentUpdate(nextProps, nextState) {
     //     const {router} = this.props

@@ -69,14 +69,14 @@ export default class extends Component {
         this.isLoadingPlace = false
         this.clickCount = 0
     }
-    // componentWillReceiveProps(nextProps){
-    //     const {meta} = nextProps
-    //     const {clearMarkLoad, router} = this.props
-    //     if (meta && meta[SCREEN.ORDER_LIST] && router && router.route == "deliveryList"){
-    //         this._load()
-    //         clearMarkLoad(SCREEN.ORDER_LIST)
-    //     }
-    // }
+    componentWillReceiveProps(nextProps){
+        const {meta} = nextProps
+        const {clearMarkLoad} = this.props
+        if (meta && meta[SCREEN.ORDER_LIST]){
+            this._load()
+            clearMarkLoad(SCREEN.ORDER_LIST)
+        }
+    }
 
     _load() {
         InteractionManager.runAfterInteractions(() => {
