@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm } from '~/store/actions/transaction'
+import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm, setListAllTransaction } from '~/store/actions/transaction'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
 const requestListTransaction = createRequestSaga({
@@ -20,6 +20,22 @@ const requestListTransaction = createRequestSaga({
         }
     ],
 })
+
+const requestListAllTransaction = createRequestSaga({
+    request: api.transaction.listAll,
+    key: 'transaction/listAll',
+    cancel: 'app/logout',
+    success: [
+        (data) => {
+            if (data.code) {
+                return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+            }
+            return setListAllTransaction(data.data)
+        }
+    ],
+})
+
+
 requestListTransactionPayWithClingme = createRequestSaga({
     request: api.transaction.listPayWithClingme,
     key: 'transaction/listPayWithClingme',
@@ -87,6 +103,7 @@ export default [
     function* fetchWatcher() {
         yield [
             takeLatest('transaction/list', requestListTransaction),
+            takeLatest('transaction/listAll', requestListAllTransaction),
             takeLatest('transaction/listPayWithClingme', requestListTransactionPayWithClingme),
             takeLatest('transaction/detail', requestTransactionDetail),
             takeLatest('transaction/denyReason', requestDenyReason),

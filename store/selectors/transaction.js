@@ -5,3 +5,6 @@ export const getListTransactionDirect = state =>
 
 export const getListTransactionCLM = state => 
   state.transaction.payWithClingme || initialState.payWithClingme
+
+export const getListTransaction = state => state.transaction.listTransaction
+

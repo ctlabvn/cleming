@@ -1,24 +1,14 @@
 export const initialState = {
-  payDirect: {
-    totalPage: 1,
-    pageNumber: 1,
-    listTransaction: [],
-    totalRecord: 0
-  },
-  payWithClingme: {
-    totalPage: 1,
-    pageNumber: 1,
-    listTransaction: [],
-    totalRecord: 0
-  },
-
+  totalPage: 1,
+  pageNumber: 1,
+  listTransaction: [],
+  totalRecord: 0,
   currentDateFilter: 'day',
-
 }
 export const transaction = (state = initialState, { type, payload }) => {
   switch (type) {
 
-    case 'transaction/updateDateFilter':
+    case 'transa,ction/updateDateFilter':
       return {...state, currentDateFilter: payload}    
 
     case 'app/setListTransaction':
@@ -30,6 +20,14 @@ export const transaction = (state = initialState, { type, payload }) => {
           totalRecord: payload.totalRecord,
           listTransaction: payload.pageNumber > 1 ? [...state.payDirect.listTransaction, ...payload.listDealTransactionDirect] : payload.listDealTransactionDirect
         }
+      }
+    case 'app/setListAllTransaction':
+      return {
+        ...state,
+        pageNumber: payload.pageNumber,
+        totalPage: payload.totalPage,
+        totalRecord: payload.totalRecord,
+        listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listTransaction] : payload.listTransaction
       }
     case 'app/setListTransactionPayWithClingme':
       return {

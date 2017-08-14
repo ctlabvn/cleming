@@ -38,7 +38,7 @@ const checkProperties=['notifyId', 'isRead']
 export default class extends Component {
 
   componentWillBlur(){
-    this.listview.scrollToTop()
+    this.listview && this.listview.scrollToTop()
   }
 
   componentWillFocus() {
