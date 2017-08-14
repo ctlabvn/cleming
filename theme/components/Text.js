@@ -87,6 +87,16 @@ export default (variables = variable) => {
       },
       '.black': {
         color: 'black'
+      },
+      '.blue': {
+          color: material.blue500
+      },
+      '.red': {
+          color: material.red500
+      },
+      '.underline': {
+          borderBottomColor: material.blue500,
+          borderBottomWidth: 1,
       }
   };
 

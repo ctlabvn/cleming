@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 
 import styles from './styles'
-import {View, ScrollView} from 'react-native'
-import {Text} from 'native-base'
+import {View, ScrollView, Linking, TouchableHighlight} from 'react-native'
+import {Text, Button} from 'native-base'
 
 import Icon from '~/ui/elements/Icon'
 import {MODE} from '~/store/constants/api'
@@ -10,20 +10,49 @@ import {MODE} from '~/store/constants/api'
 import {connect} from 'react-redux'
 import * as commonActions from '~/store/actions/common'
 import VersionNumber from 'react-native-version-number'
+import CallModal from '~/ui/components/CallModal'
+import {formatPhoneNumber} from '~/ui/shared/utils'
 
 import material from '~/theme/variables/material'
 
 @connect(null, commonActions)
 
 export default class extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            modalOpen: false,
+            phoneNumber: '02432121837'
+        }
+    }
 
-    componentWillMount(){
+    componentWillMount() {
         console.log('about again')
+    }
+
+    _openCallModal() {
+        this.setState({
+            modalOpen: true,
+        })
+    }
+
+    _closeCallModal() {
+        this.setState({
+            modalOpen: false,
+        })
+    }
+
+    _openFanPage() {
+        Linking.openURL('https://www.facebook.com/app.clingme');
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <CallModal
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={() => this._closeCallModal()}
+                    open={this.state.modalOpen}/>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Icon name="logo" style={styles.logoIcon}/>
                     <Text largeLight style={{...styles.textTitle, marginTop: 15}}>
@@ -36,7 +65,8 @@ export default class extends Component {
                         Qua đó, Clingme cũng mang lại những khách hàng mới và trung thành tới cho quý đối tác.
                     </Text>
                     <Text medium style={styles.textContent}>
-                        Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> được
+                        Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme - Đối
+                        tác"</Text></Text> được
                         Clingme xây dựng dành riêng cho các đối tác hợp
                         tác bán hàng trên Clingme.
                         Với ứng dụng này, đối tác có thể:
@@ -85,7 +115,8 @@ export default class extends Component {
                             <Icon name="pin_location" style={{...styles.indicatorIcon, color: material.green400}}/>
                         </View>
                         <Text medium style={styles.textSubContent}>
-                            Đặc biệt hơn, Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme - Đối tác"</Text></Text> còn cho phép đối tác tự tạo chương
+                            Đặc biệt hơn, Ứng dụng <Text><Text strong bold style={styles.textBlueDark}>"Clingme -
+                            Đối tác"</Text></Text> còn cho phép đối tác tự tạo chương
                             trình
                             ưu đãi và ngay lập tức tiếp cận tới hàng trăm ngàn người dùng Clingme.
                         </Text>
@@ -97,12 +128,35 @@ export default class extends Component {
                     <Text medium style={styles.textContent}>
                         {VersionNumber.appVersion}{MODE == 'DEV' && <Text><Text small error>-PRE</Text></Text>}
                     </Text>
+
                     <Text largeLight style={styles.textTitle}>
                         Liên hệ
                     </Text>
-                    <Text medium style={{...styles.textContent, ...styles.textBlue}}>
-                        support@gigatum.com
+                    <Text medium style={{...styles.textContent}}>
+                        Công ty Cổ phần Gigatum Việt Nam{'\n'}
+                        Hà Nội: Phòng 707, tòa nhà VET, 98 Hoàng Quốc Việt, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội, Việt
+                        Nam.{'\n'}
+                        TP. Hồ Chí Minh: Tầng 5, tòa nhà GB Building, 78-80 Cách Mạng Tháng 8, Phường 6, Quận 3, TP. Hồ
+                        Chí Minh, Việt Nam.
                     </Text>
+                    <View style={styles.viewContent}>
+                        <Text medium grayDark>Hotline: </Text>
+                        <TouchableHighlight onPress={()=>this._openCallModal()}>
+                            <Text medium red>{formatPhoneNumber(this.state.phoneNumber)}</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={styles.viewContent}>
+                        <Text medium grayDark>Email: </Text>
+                        <Text medium blue>support@gigatum.com</Text>
+                    </View>
+                    <View style={styles.viewContent}>
+                        <Text medium grayDark>Fanpage: </Text>
+                        <TouchableHighlight underlayColor={material.white500} onPress={() => this._openFanPage()}>
+                            <Text blue underline>www.facebook.com/app.clingme</Text>
+                        </TouchableHighlight>
+                        {/*<Text style={{...styles.textBlue, ...styles.textUnderline}}>www.facebook.com/app.clingme</Text>*/}
+                    </View>
+
                     <Text medium style={styles.textContent}>
                         Clingme được thành lập từ 2013 với mục tiêu đem đến cho các nhà bán hàng kênh bán hàng hiệu quả
                         và nhanh chóng.

@@ -56,6 +56,13 @@ export default {
         fontWeight: 'normal',
     },
 
+    viewContent: {
+        marginTop: 10,
+        marginBottom: 0,
+        marginLeft: 3,
+        flexDirection: 'row',
+    },
+
     textSubContent: {
         marginTop: 10,
         marginBottom: 0,
@@ -67,6 +74,10 @@ export default {
 
     textBlue: {
         color: material.blue500,
+    },
+    textUnderline: {
+        borderBottomColor: material.blue500,
+        borderBottomWidth: 1,
     },
     textBlueDark: {
         color: material.blue600,
