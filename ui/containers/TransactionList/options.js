@@ -33,6 +33,21 @@ export default {
           display: I18n.t('confirmed')
       }
   ],
+  transactionFilter: [
+      {
+          value: 0,
+          display: I18n.t('all_transaction')
+      },
+      {
+          value: 1,
+          display: 'Trả qua Clingme'
+      },
+      {
+          value: 2,
+          display: 'Trả trực tiếp'
+      }
+  ],
+
   tabData: [
       {
           tabID: TRANSACTION_TYPE_DIRECT,

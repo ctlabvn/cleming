@@ -1,4 +1,14 @@
 // use best comment like this
+export const getListAllTransaction= (...args) => ({
+  type: 'transaction/listAll',
+  args
+})
+
+export const setListAllTransaction = (listTransaction) => ({
+  type: 'app/setListAllTransaction',
+  payload: listTransaction, 
+})
+
 export const getListTransaction= (...args) => ({
   type: 'transaction/list',
   args
