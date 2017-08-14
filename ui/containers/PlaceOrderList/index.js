@@ -170,7 +170,7 @@ export default class PlaceOrderList extends Component {
                         
                     </View>
                     
-                    <View style={{ ...styles.rowPadding, flex:3 }}>
+                    <View style={{ ...styles.rowPadding, width: '100%' }}>
                         <View style={styles.row}>
                             <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
                             <Text grayDark medium>{chainParse(item, ['userInfo', 'memberName'])}</Text>
@@ -276,50 +276,50 @@ export default class PlaceOrderList extends Component {
     }
 
     componentDidMount() {
-        // InteractionManager.runAfterInteractions(() => {
-            // const { app, news } = this.props
-            // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            // selectedPlace = app.topDropdown.getValue()
+        InteractionManager.runAfterInteractions(() => {
+            const { app, news } = this.props
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            selectedPlace = app.topDropdown.getValue()
 
-            // // let currentPlace = this.refs.placeDropdown.getValue()
-            // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            // // this.counting = true
-            // if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-            //     this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-            // } else {
-            //     this.isLoadingPlace = true
-            // }
-            // if (news && news.bookingNews) {
-            //     this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
-            // }
-        // })
+            // let currentPlace = this.refs.placeDropdown.getValue()
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            // this.counting = true
+            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+            } else {
+                this.isLoadingPlace = true
+            }
+            if (news && news.bookingNews) {
+                this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+            }
+        })
 
 
     }
     componentWillFocus() {
-        // const { app, news, clearMarkLoad, meta } = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        // this.setState({ counting: true })
-        // if (news && news.bookingNews) {
-        //     this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
-        // }
-        // let selectedPlace = app.topDropdown.getValue()
-        // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+        const { app, news, clearMarkLoad, meta } = this.props
+        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        this.setState({ counting: true })
+        if (news && news.bookingNews) {
+            this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
+        }
+        let selectedPlace = app.topDropdown.getValue()
+        let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         
-        // if (meta && meta[SCREEN.BOOKING_LIST]){
-        //     console.log('Markload booking')
-        //     let selectedPlace = app.topDropdown.getValue()
-        //     let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        //     if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-        //         this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        //     }
-        //     clearMarkLoad(SCREEN.BOOKING_LIST)
-        // }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
-        //     this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
-        // }
+        if (meta && meta[SCREEN.BOOKING_LIST]){
+            console.log('Markload booking')
+            let selectedPlace = app.topDropdown.getValue()
+            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+                this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+            }
+            clearMarkLoad(SCREEN.BOOKING_LIST)
+        }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
+            this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
+        }
     }
     componentWillBlur() {
-        this.listview.scrollToTop()
+        this.listview && this.listview.scrollToTop()
         // InteractionManager.runAfterInteractions(() => {
             // this.setState({ counting: false })
         // })
@@ -347,21 +347,8 @@ export default class PlaceOrderList extends Component {
                 </View>
             )
         }
-
-        // GET PLACE LIST
-        // let dropdownValues = place.listPlace.map(item => ({
-        //     id: item.placeId,
-        //     name: item.address
-        // }))
-
         return (
             <View style={styles.container}>
-                {/*<TopDropdown
-                    modalOpen={this.props.modal}
-                    ref='placeDropdown'
-                    dropdownValues={dropdownValues}
-                    selectedOption={selectedPlace}
-                    onSelect={this._handleTopDrowpdown.bind(this)} />*/}
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={this.onModalClose.bind(this)}

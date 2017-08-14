@@ -35,6 +35,10 @@ export default {
     sendDenyReasonClm(xsession, clingmeId, reasonId, note='', amountMoney=0){
         console.log('Send Deny CLM API', xsession+'---'+clingmeId+'---'+reasonId+'---'+note+'---'+amountMoney)
         return apiPost('/merchantapp/payclm-help', {clingmeId, reasonId, note, amountMoney}, xsession)
+    },
+    listAll(xsession, placeId, fromTime, toTime, tranType=0, pageNumber=0){
+        console.log('List All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+tranType+'---'+pageNumber)
+        return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
     }
 
 }

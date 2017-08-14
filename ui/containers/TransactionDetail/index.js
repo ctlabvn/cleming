@@ -133,18 +133,18 @@ export default class TransactionDetail extends Component {
         let index = 0, transactionId
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.transactionId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
+            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
             if (index <= 0) return
             index--
-            let preTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(preTrans.transactionId)
+            let preTrans = transaction.listTransaction[index]
+            this._load(preTrans.tranId)
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-            index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
+            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
             if (index <= 0) return
             index--
-            let preTrans = transaction.payDirect.listTransaction[index]
-            this._load(preTrans.dealTransactionId)
+            let preTrans = transaction.listTransaction[index]
+            this._load(preTrans.tranId)
         }
     }
 
@@ -153,19 +153,19 @@ export default class TransactionDetail extends Component {
         let transactionId, index = 0
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.transactionId
-            index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
-            if (index >= transaction.payWithClingme.listTransaction.length - 1) return
+            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
+            if (index >= transaction.listTransaction.length - 1) return
             index++
-            let nextTrans = transaction.payWithClingme.listTransaction[index]
-            this._load(nextTrans.transactionId)
+            let nextTrans = transaction.listTransaction[index]
+            this._load(nextTrans.tranId)
 
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-            index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
-            if (index >= transaction.payDirect.listTransaction.length - 1) return
+            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
+            if (index >= transaction.listTransaction.length - 1) return
             index++
-            let nextTrans = transaction.payDirect.listTransaction[index]
-            this._load(nextTrans.dealTransactionId)
+            let nextTrans = transaction.listTransaction[index]
+            this._load(nextTrans.tranId)
         }
     }
 
@@ -421,11 +421,11 @@ export default class TransactionDetail extends Component {
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
-                        if (transaction && transaction.payWithClingme) {
-                            let index = transaction.payWithClingme.listTransaction.findIndex(item => item.transactionId == transactionId)
+                        if (transaction) {
+                            let index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
                             if (index != -1) {
                                 hasPrevious = (index == 0) ? false : true
-                                hasNext = (index == transaction.payWithClingme.listTransaction.length - 1) ? false : true
+                                hasNext = (index == transaction.listTransaction.length - 1) ? false : true
                             }
                         }
                         // console.log('Start Set State/')
@@ -461,12 +461,12 @@ export default class TransactionDetail extends Component {
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
                         let hasNext = false, hasPrevious = false
-                        if (transaction && transaction.payDirect) {
-                            let index = transaction.payDirect.listTransaction.findIndex(item => item.dealTransactionId == transactionId)
+                        if (transaction) {
+                            let index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
                             // console.log('Index DIRECT', index)
                             if (index != -1) {
                                 hasPrevious = (index == 0) ? false : true
-                                hasNext = (index == transaction.payDirect.listTransaction.length - 1) ? false : true
+                                hasNext = (index == transaction.listTransaction.length - 1) ? false : true
                             }
 
                         }
