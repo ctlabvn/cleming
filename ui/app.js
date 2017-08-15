@@ -134,7 +134,6 @@ export default class App extends Component {
       // make sure it can show/hide   
       thisNavigator.transitionBetween(prevIndex, index, 0)
       thisNavigator.enable(index)           
-      this.topDropdown.show(route.showTopDropdown)       
     }
     
   }
