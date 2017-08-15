@@ -93,17 +93,18 @@ export default class PlaceOrderDetail extends Component {
     render() {
         console.log('Render Booking Detail')
         if (!this.state.bookingDetail) {
-            return (
-                <View style={{
-                    backgroundColor: material.white500,
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flex: 1
-                }}>
-                    <Spinner />
-                </View>
-            )
+            return null
+            // return (
+            //     <View style={{
+            //         backgroundColor: material.white500,
+            //         flexDirection: 'column',
+            //         alignItems: 'center',
+            //         justifyContent: 'center',
+            //         flex: 1
+            //     }}>
+            //         <Spinner />
+            //     </View>
+            // )
         }
         const {bookingDetail} = this.state
         let orderRow = null

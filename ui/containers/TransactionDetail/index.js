@@ -562,13 +562,14 @@ export default class TransactionDetail extends Component {
         console.log('Render TransactionDetail')
         const { route } = this.props
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
-            return (
-                // <LoadingModal loading={true} />
-                <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                    <Spinner />
-                    {/*<Text>Loading...</Text>*/}
-                </View>
-            )
+            // return (
+            //     // <LoadingModal loading={true} />
+            //     <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            //         <Spinner />
+            //         {/*<Text>Loading...</Text>*/}
+            //     </View>
+            // )
+            return null
         }
         let transactionInfo = this.state.transactionInfo
         console.log('Trans Info', transactionInfo)

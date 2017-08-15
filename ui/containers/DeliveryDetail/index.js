@@ -168,17 +168,18 @@ export default class extends Component {
         console.log('Render DeliveryDetail')
         const { route, order } = this.props
         if (!this.state.orderDetail) {
-            return (
-                <View style={{
-                    backgroundColor: material.white500,
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100%'
-                }}>
-                    <Spinner />
-                </View>
-            )
+            return null
+            // return (
+            //     <View style={{
+            //         backgroundColor: material.white500,
+            //         flexDirection: 'column',
+            //         alignItems: 'center',
+            //         justifyContent: 'center',
+            //         height: '100%'
+            //     }}>
+            //         <Spinner />
+            //     </View>
+            // )
         }
         const orderDetail = this.state.orderDetail
         let totalItem = 0
