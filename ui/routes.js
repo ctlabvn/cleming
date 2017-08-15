@@ -32,6 +32,7 @@ import ComingSoon from './containers/ComingSoon'
 import Setting from './containers/Setting'
 import CashoutAccount from './containers/CashoutAccount'
 import CashoutHistory from './containers/CashoutHistory'
+import Checking from './containers/Checking'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -221,6 +222,11 @@ export default {
         Page: CashoutHistory,
         headerType: 'back',
         footerType: 'none',
-    }
-
+    },
+    checking: {
+        title: I18n.t('checking'),
+        Page: Checking,
+        headerType: 'back',
+        footerType: 'none',
+    },
 }

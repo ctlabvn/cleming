@@ -260,4 +260,10 @@ export default {
 
     // topDropDown
     'search': 'Tìm kiếm',
+
+    // Checking
+    'checking': 'Đối soát',
+
+    // Cashout
+    'cashout_account': 'Tài khoản cashout',
 }
