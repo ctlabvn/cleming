@@ -18,6 +18,7 @@ export default class ListViewExtend extends Component {
 
     this.state.refreshing = false
     this.scrollTop = 0
+    this.up = true
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -39,8 +40,9 @@ export default class ListViewExtend extends Component {
   }
 
   scrollToTop(){
-    // hack with enough amount
-    this.scrollTop = this.scrollTop === 0 ? 1 : 0
+    // hack with enough amount, just make sure content will not be removed
+    this.scrollTop += this.up ? 1 : -1
+    this.up = !this.up
     // console.log(scrollTop)
     this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})    
   }
@@ -70,6 +72,7 @@ export default class ListViewExtend extends Component {
     return (
       <ListView        
         {...props}
+        onMomentumScrollEnd={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
         refreshControl = {<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
