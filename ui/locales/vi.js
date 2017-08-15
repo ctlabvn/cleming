@@ -267,4 +267,7 @@ export default {
     // Cashout
     'cashout_account': 'Tài khoản cashout',
     'all_places': 'Tất cả địa điểm',
+
+    // Transaction History
+    'transaction_history': 'Lịch sử giao dịch'
 }

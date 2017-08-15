@@ -48,7 +48,8 @@ export default class extends Component {
     }
 
     _handlePressSumRevenue() {
-        // alert('click');
+        const { forwardTo } = this.props
+        forwardTo('transactionHistory');
     }
 
     _renderMoneyBand(money) {
