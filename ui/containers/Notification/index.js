@@ -36,11 +36,7 @@ const checkProperties=['notifyId', 'isRead']
 }), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 
 export default class extends Component {
-
-  componentWillBlur(){
-    this.listview && this.listview.scrollToTop()
-  }
-
+  
   componentWillFocus() {
     // this.content.scrollToTop()
     // make it like before    
@@ -48,6 +44,7 @@ export default class extends Component {
     // if (notifications.hasMore && !notifications.data.length) {
     //   getNotification(session, 1, () => getNotification(session, 2))      
     // } 
+    this.listview && this.listview.scrollToTop()
   }
 
 
