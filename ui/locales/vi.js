@@ -215,6 +215,7 @@ export default {
     'year': 'năm',
     'week': 'tuần',
     'to': 'đến',
+    'hour': 'giờ',
     'info': 'Thông báo',
     'custom': 'Tuỳ chỉnh',
     'choose_start_date': 'Chọn ngày bắt đầu',
