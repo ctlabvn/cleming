@@ -136,7 +136,7 @@ export default class extends Component {
         // this.setState({ counting: true })
         })
 
-        this.listview && this.listview.scrollToTop()
+        this.listview && this.listview.swing()
     }
 
     componentDidMount() {

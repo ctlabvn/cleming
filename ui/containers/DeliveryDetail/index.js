@@ -29,9 +29,9 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            orderDetail: {},
-            counting: false,
-            loading: false,
+            orderDetail: null,
+            // counting: false,
+            // loading: false,
             modalOpen: false,
             phoneNumber: ''
         }
@@ -41,7 +41,7 @@ export default class extends Component {
     _load() {
         const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead, order, getOrderDenyReason } = this.props
         let deliveryId = route.params.id
-        this.setState({ loading: true })
+        // this.setState({ loading: true })
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 this.clickCount = 0
@@ -58,7 +58,8 @@ export default class extends Component {
                     return
                 }
                 if (data && data.updated) {
-                    this.setState({ orderDetail: data.updated, loading: false })
+                    // this.setState({ orderDetail: data.updated, loading: false })
+                    this.setState({ orderDetail: data.updated })
                     if (data.updated.orderInfo && !data.updated.orderInfo.isReadCorrespond
                         && data.updated.orderInfo.notifyIdCorrespond) {
                         updateRead(xsession, data.updated.orderInfo.notifyIdCorrespond)
@@ -80,24 +81,24 @@ export default class extends Component {
         
     }
 
-    componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
-        console.log('Will focus DeliveryDetail')
-        this.clickCount = 0
-        const { app } = this.props
-        // console.log('Content', this.content)
-        // this.content && this.content.scrollToTop()
-        // this.refs.content._root.scrollToPosition({ x: 0, y: 0, animated: false })
-        this.setState({ counting: true })
-        this._load()
-        // })
-    }
+    // componentWillFocus() {
+    //     // InteractionManager.runAfterInteractions(() => {
+    //     console.log('Will focus DeliveryDetail')
+    //     this.clickCount = 0
+    //     const { app } = this.props
+    //     // console.log('Content', this.content)
+    //     // this.content && this.content.scrollToTop()
+    //     // this.refs.content._root.scrollToPosition({ x: 0, y: 0, animated: false })
+    //     this.setState({ counting: true })
+    //     this._load()
+    //     // })
+    // }
 
-    componentWillBlur() {
-        // InteractionManager.runAfterInteractions(() => {
-        this.setState({ counting: false,  orderDetail:{}})
-        // })
-    }
+    // componentWillBlur() {
+    //     // InteractionManager.runAfterInteractions(() => {
+    //     this.setState({ counting: false,  orderDetail:{}})
+    //     // })
+    // }
 
     _handleFeedbackOrder = (posOrderId, reasonId, note) => {
         const { updateOrderStatus, setToast, xsession, markWillReload, forwardTo } = this.props
@@ -166,7 +167,7 @@ export default class extends Component {
     render() {
         console.log('Render DeliveryDetail')
         const { route, order } = this.props
-        if (!this.state || !this.state.orderDetail || Object.keys(this.state.orderDetail).length == 0) {
+        if (!this.state.orderDetail) {
             return (
                 <View style={{
                     backgroundColor: material.white500,
@@ -251,7 +252,7 @@ export default class extends Component {
                                 &&
                                 <CircleCountdown
                                     baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
-                                    counting={this.state.counting}
+                                    counting={true}
                                     countTo={countTo}
                                 />}
                         </View>

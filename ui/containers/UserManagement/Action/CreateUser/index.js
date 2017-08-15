@@ -84,50 +84,50 @@ export default class CreateUserContainer extends Component {
     }
   }
 
-  componentWillBlur() {
-    // console.log('step', 'componentWillBlur');    
-    this.props.actions.resetForm('CreateUserForm')
-    this._scrollPageUp()
-  }
+  // componentWillBlur() {
+  //   // console.log('step', 'componentWillBlur');    
+  //   this.props.actions.resetForm('CreateUserForm')
+  //   this._scrollPageUp()
+  // }
 
 
-  componentWillFocus() {
+  // componentWillFocus() {
 
-    if (typeof this.props.route.params.id != "undefined") {
-      let employeeDetail = this.props.employeeDetail
+  //   if (typeof this.props.route.params.id != "undefined") {
+  //     let employeeDetail = this.props.employeeDetail
 
-      this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || { placeId: this.state.selectedPlaceId })
+  //     this.placeDropdown.handleCheck(employeeDetail.listPlace[0] || { placeId: this.state.selectedPlaceId })
 
-      let permission = null
-      switch (employeeDetail.titleType) {
-        case 1:
-          permission = I18n.t('employee')
-      }
-      this.setState({
-        // chosenListPlace: employeeDetail.listPlace,
-        currentJob: {
-          id: employeeDetail.titleType,
-          name: permission
-        },
-        firstTimeResetPassword: false,
+  //     let permission = null
+  //     switch (employeeDetail.titleType) {
+  //       case 1:
+  //         permission = I18n.t('employee')
+  //     }
+  //     this.setState({
+  //       // chosenListPlace: employeeDetail.listPlace,
+  //       currentJob: {
+  //         id: employeeDetail.titleType,
+  //         name: permission
+  //       },
+  //       firstTimeResetPassword: false,
 
-      })
+  //     })
 
-    } else {
-      this.props.actions.deleteGeneratedPassword()
-      this.placeDropdown.handleCheck({ placeId: this.state.selectedPlaceId })
-      this.setState({
-        // chosenListPlace: [],
-        currentJob: {
-          id: 1,
-          name: I18n.t('employee')
-        },
-        fromTime: "07:00",
-        toTime: "20:00"
-      })
-    }
+  //   } else {
+  //     this.props.actions.deleteGeneratedPassword()
+  //     this.placeDropdown.handleCheck({ placeId: this.state.selectedPlaceId })
+  //     this.setState({
+  //       // chosenListPlace: [],
+  //       currentJob: {
+  //         id: 1,
+  //         name: I18n.t('employee')
+  //       },
+  //       fromTime: "07:00",
+  //       toTime: "20:00"
+  //     })
+  //   }
 
-  }
+  // }
 
   _repairDefaultPlace() {
     if (this.props.selectedPlace.id != this.state.selectedPlaceId) {

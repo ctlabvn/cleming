@@ -320,7 +320,7 @@ export default class PlaceOrderList extends Component {
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
 
-        this.listview && this.listview.scrollToTop()
+        this.listview && this.listview.swing()
 
     }
     componentWillBlur() {

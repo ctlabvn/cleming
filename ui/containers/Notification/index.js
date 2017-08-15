@@ -44,7 +44,7 @@ export default class extends Component {
     // if (notifications.hasMore && !notifications.data.length) {
     //   getNotification(session, 1, () => getNotification(session, 2))      
     // } 
-    this.listview && this.listview.scrollToTop()
+    this.listview && this.listview.swing()
   }
 
 

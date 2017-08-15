@@ -39,7 +39,7 @@ export default class ListViewExtend extends Component {
     return false
   }
 
-  scrollToTop(){
+  swing(){
     // hack with enough amount, just make sure content will not be removed
     this.scrollTop += this.up ? 1 : -1
     this.up = !this.up

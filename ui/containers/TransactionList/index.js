@@ -156,11 +156,10 @@ export default class extends Component {
             }
         })
 
-        this.listview && this.listview.scrollToTop()
+        this.listview && this.listview.swing()
     }
 
     // componentWillBlur(){
-    //     this.listview && this.listview.scrollToTop()
     // }
 
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {

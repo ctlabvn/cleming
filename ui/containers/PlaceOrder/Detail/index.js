@@ -37,22 +37,18 @@ export default class PlaceOrderDetail extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            bookingDetail: {},
-            counting: true,
+            bookingDetail: null,
             modalOpen: false,
         }
     }
 
-    componentDidMount() {
-        this.componentWillFocus()
-    }
 
-    componentWillFocus() {
+    componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const {app, getBookingDetail, updateRead, xsession, setToast} = this.props
             let bookingId = this.props.route.params.id
             // let bookingArr = this.props.booking.bookingList.filter(item => item.orderCode == bookingId)
-            this.setState({counting: true})
+            // this.setState({counting: true})
             getBookingDetail(xsession, bookingId,
                 (error, data) => {
                     console.log('Err Booking Detail', error)
@@ -75,12 +71,11 @@ export default class PlaceOrderDetail extends Component {
         })
     }
 
-    componentWillBlur() {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({counting: false})
-        })
+    // componentWillBlur() {
+    //     InteractionManager.runAfterInteractions(() => {
+    //     })
 
-    }
+    // }
 
     onModalOpen(phoneNumber) {
         this.setState({
@@ -97,7 +92,7 @@ export default class PlaceOrderDetail extends Component {
 
     render() {
         console.log('Render Booking Detail')
-        if (!this.state || !this.state.bookingDetail || Object.keys(this.state.bookingDetail).length == 0) {
+        if (!this.state.bookingDetail) {
             return (
                 <View style={{
                     backgroundColor: material.white500,
@@ -158,7 +153,7 @@ export default class PlaceOrderDetail extends Component {
                             
                             {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
-                                                 counting={this.state.counting}
+                                                 counting={true}
                                                  countTo={bookTime}
                                 />
                             </View>}
