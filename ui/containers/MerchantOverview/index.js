@@ -79,6 +79,12 @@ export default class MerchantOverview extends Component {
                         alreadyGotLocation()
                     }
 
+                    if (listPlace.length > 1){
+                        app.topDropdown.setIsMultiple(true)
+                    }else{
+                        app.topDropdown.setIsMultiple(false)
+                    }
+
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         getMerchantNews(xsession, data.updated.data[0].placeId,
                             this.setState({loading: false})

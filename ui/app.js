@@ -134,7 +134,6 @@ export default class App extends Component {
       // make sure it can show/hide   
       thisNavigator.transitionBetween(prevIndex, index, 0)
       thisNavigator.enable(index)           
-      this.topDropdown.show(route.showTopDropdown)       
     }
     
   }
@@ -288,6 +287,11 @@ export default class App extends Component {
       }))
       // this.topDropdown.updateDropdownValues(listPlace)      
       this.topDropdown.updateSelectedOption(selectedPlace)
+      if (this.listPlace.length > 1){
+        this.topDropdown.setIsMultiple(true)
+      }else{
+        this.topDropdown.setIsMultiple(false)
+      }
       this.topDropdownListValue.updateDropdownValues(this.listPlace)
       this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
@@ -379,13 +383,10 @@ export default class App extends Component {
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
     const route = getPage(router.current) || routes.notFound
-
-    if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length ==0) {
-      this.listPlace = place.listPlace.map(item => ({
-        id: item.placeId,
-        name: item.address
-      }))
-    }
+    this.listPlace = place.listPlace.map(item => ({
+      id: item.placeId,
+      name: item.address
+    }))
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -435,6 +436,7 @@ export default class App extends Component {
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
             selectedOption={selectedPlace}
+            dropdownValues={this.listPlace}
             show={route.showTopDropdown}
           />
           <TopDropdownListValue
