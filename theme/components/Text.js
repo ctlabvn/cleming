@@ -94,6 +94,12 @@ export default (variables = variable) => {
       '.red': {
           color: material.red500
       },
+      '.orange': {
+          color: material.orange500
+      },
+      '.green': {
+          color: material.green500
+      },
       '.underline': {
           borderBottomColor: material.blue500,
           borderBottomWidth: 1,
