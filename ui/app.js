@@ -99,14 +99,22 @@ export default class App extends Component {
       // if tabIndex > preTabIndex from right to left, else from left to right
       const prefix = route.tabIndex > prevRoute.tabIndex ? 1 : - 1
       let enter = new Animated.Value(40 * prefix)    
-      
+      const shouldAnamiteTopDropdown = route.showTopDropdown !== prevRoute.showTopDropdown
       // start freeze
       thisNavigator.freeze(prevIndex)
       thisNavigator.freeze(index)      
 
       const animatedListenerId = enter.addListener(({value})=>{     
-        const translateX = Math.round(value)           
-        thisNavigator.transitionBetween(prevIndex, index, translateX, prefix)        
+        let translateX = Math.round(value)  
+        // too small to animate         
+        if(Math.abs(translateX) < 2) 
+          translateX = 0 
+        
+        thisNavigator.transitionBetween(prevIndex, index, translateX, prefix)     
+        // update top dropdown translateX, it is small and no need to freeze
+        if(shouldAnamiteTopDropdown)
+          this.topDropdown.translate(route.showTopDropdown ? translateX : translateX - prefix * material.deviceWidth)                  
+        
         if(translateX === 0) {                    
           // now ready
           // stop freeze
@@ -126,6 +134,7 @@ export default class App extends Component {
       // make sure it can show/hide   
       thisNavigator.transitionBetween(prevIndex, index, 0)
       thisNavigator.enable(index)           
+      this.topDropdown.show(route.showTopDropdown)       
     }
     
   }
@@ -141,6 +150,8 @@ export default class App extends Component {
         this.navigator.navigate(route)
         this.header.show(route.headerType, route.title)        
         this.footer.show(route.footerType, route.routeName)
+
+        // we will animate this for better transition
         this.topDropdown.show(route.showTopDropdown)        
       } else {
         // no need to push to route

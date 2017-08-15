@@ -45,9 +45,15 @@ export default class TopDropdown extends Component {
 
     show(showState){
         // for sure should set top to negative of deviceHeight
+        this.translate(showState ? 0 : material.deviceWidth)
+    }
+
+    translate(translateX){        
         this.container.setNativeProps({
-            style:{
-                top: showState ? material.toolbarHeight : -material.deviceHeight,                 
+            style: {
+                transform: [
+                  {translateX},
+                ],     
             }
         })
     }
