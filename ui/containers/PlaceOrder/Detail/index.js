@@ -131,11 +131,11 @@ export default class PlaceOrderDetail extends Component {
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
 
         phoneNumberBlock = (<View style={styles.row}>
-            <Icon name='phone' style={{ ...styles.icon, ...styles.warning, ...styles.iconLeft }} />
+            <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
             <Text medium
                   style={{...styles.rightText}}
                   onPress={this.onModalOpen.bind(this, chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}
-                  warning>{formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
+                  warning> {formatPhoneNumber(chainParse(this.state.bookingDetail, ['userInfo', 'phoneNumber']))}</Text>
         </View>)
 
         return (

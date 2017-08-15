@@ -61,6 +61,10 @@ export default {
     fontSize: 20,
     color: material.gray500
   },
+  phoneIcon: {
+      fontSize: 20,
+      color: material.orange500
+  },
   leftText: {
     marginLeft: 15
   },
