@@ -65,17 +65,15 @@ export default class ListViewExtend extends Component {
 
   render() {
     const {onRefresh, ...props} = this.props    
-    // show refresh control
-    // if(onRefresh){
-    //   props.refreshControl = <RefreshControlExtend onRefresh={onRefresh} ref={ref=>this.refreshControl = ref} />
-    // }
+    // always override for performance
     return (
       <ListView        
         {...props}
-        onMomentumScrollEnd={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
-        refreshControl = {<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
+        onScroll={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
+        refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
+        removeClippedSubviews={true}
         dataSource={this.state.dataSource}
         onEndReachedThreshold={10}
       />
