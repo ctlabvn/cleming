@@ -75,7 +75,7 @@ export default class extends Component {
                     onEndReached={() => this._loadMore()}
                     onRefresh={() => this._onRefresh()}
                     refreshing={this.state.loading}>
-                    <Text strong bold gray style={{borderBottomWidth: 1}}>
+                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
                         Doanh thu
                     </Text>
                     <View style={{marginRight: 20}}>
@@ -99,14 +99,14 @@ export default class extends Component {
                         <Icon name='foward' style={{fontSize: 20, color: material.orange500}}/>
                     </View>
 
-                    <Text strong bold gray style={{borderBottomWidth: 1}}>
+                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
                         Phí Clingme
                     </Text>
                     <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
                         <Text strong bold grayDark orange>4.265.000</Text>
                     </View>
 
-                    <Text strong bold gray style={{borderBottomWidth: 1}}>
+                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
                         Đối soát
                     </Text>
                     <View>
