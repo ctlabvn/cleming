@@ -10,15 +10,20 @@ export default class BadgeSelector extends Component {
     }
   }
   _handleSelect = (item) => {
-    this.setState({selectedValue:item})
+    // this.setState({selectedValue:item})
+    this.props.onSelect && this.props.onSelect(item)
+  }
+  setSelect(id){
+    this.setState({selectedValue:id})
   }
   render() {
+    if (!this.props.listValues) return <View />
     return (
       <View style={styles.row}>
         {this.props.listValues.map(item=>(
           <TouchableWithoutFeedback onPress={()=>this._handleSelect(item)} key={item.id}>
             <View>
-              <Text style={(this.state.selectedValue.id == item.id) ? styles.selectItem : styles.item}>{item.name}</Text>
+              <Text style={(this.state.selectedValue == item.id) ? styles.selectItem : styles.item}>{item.name}</Text>
             </View>
           </TouchableWithoutFeedback>
         ))}

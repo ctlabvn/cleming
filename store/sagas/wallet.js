@@ -8,6 +8,8 @@ import {
     setBalance, setBanks, setBalanceDetail, setListBank
 } from '~/store/actions/wallet'
 
+import {setSettingHour} from '~/store/actions/setting'
+
 import { getToastMessage } from '~/ui/shared/utils'
 import I18n from '~/ui/I18n'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
@@ -84,6 +86,24 @@ const requestGetListBank = createRequestSaga({
         }
     ],
 })
+
+const requestGetSettingHour = createRequestSaga({
+    request: api.setting.getSettingHour,
+    key: 'app/getSettingHour',
+    success: [
+        (data) => {
+            if (data.data){
+                return setSettingHour(data.data)
+            }
+        }
+    ],
+})
+
+const requestUpdateSettingHour = createRequestSaga({
+    request: api.setting.updateSettingHour,
+    key: 'app/updateSettingHour',
+})
+
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -97,7 +117,9 @@ export default [
             takeLatest('app/getBanks', requestGetBanks),
             takeLatest('app/cashout', requestCashout),
             takeLatest('app/addBank', requestAddBank),
-            takeLatest('app/getListBank', requestGetListBank)
+            takeLatest('app/getListBank', requestGetListBank),
+            takeLatest('app/getSettingHour', requestGetSettingHour),
+            takeLatest('app/updateSettingHour', requestUpdateSettingHour)
         ]
     },
 ]
