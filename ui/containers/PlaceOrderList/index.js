@@ -48,8 +48,9 @@ export default class PlaceOrderList extends Component {
         this.state = {
             modalOpen: false,
             phoneNumber: '',
-            counting: true
+            // counting: true
         }
+        this.counting = true
         this.isLoadingPlace = false
         this.selectTab = BOOKING_WAITING_CONFIRM
         this.currentPlace = -1
@@ -139,7 +140,7 @@ export default class PlaceOrderList extends Component {
                                 <View style={styles.rowCenter}>
                                     <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                     {item.status == 'WAIT_CONFIRMED' && <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
-                                        counting={this.state.counting}
+                                        counting={this.counting}
                                         countTo={bookTime}
                                     />}
                                 </View>
@@ -298,8 +299,9 @@ export default class PlaceOrderList extends Component {
     }
     componentWillFocus() {
         const { app, news, clearMarkLoad, meta } = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-        this.setState({ counting: true })
+        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        // this.setState({ counting: true })
+        this.counting = true
         if (news && news.bookingNews) {
             this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, news.bookingNews)
         }
@@ -317,9 +319,12 @@ export default class PlaceOrderList extends Component {
         }else if(selectedPlace && Object.keys(selectedPlace).length > 0 && this.currentPlace != selectedPlace.id){
             this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to, this.refs.tabs.getActiveTab())
         }
+
+        this.listview && this.listview.scrollToTop()
+
     }
     componentWillBlur() {
-        this.listview && this.listview.scrollToTop()
+        this.counting = false
         // InteractionManager.runAfterInteractions(() => {
             // this.setState({ counting: false })
         // })

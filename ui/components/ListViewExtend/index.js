@@ -17,6 +17,7 @@ export default class ListViewExtend extends Component {
     }
 
     this.state.refreshing = false
+    this.scrollTop = 0
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -38,7 +39,10 @@ export default class ListViewExtend extends Component {
   }
 
   scrollToTop(){
-    this.listview.scrollTo({x:0,y:0,animated:false})
+    // hack with enough amount
+    this.scrollTop = this.scrollTop === 0 ? 1 : 0
+    // console.log(scrollTop)
+    this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})    
   }
 
   componentDidMount(){
