@@ -30,7 +30,8 @@ import WithDraw from './containers/WithDraw'
 import BankAccount from './containers/BankAccount'
 import ComingSoon from './containers/ComingSoon'
 import Setting from './containers/Setting'
-
+import CashoutAccount from './containers/CashoutAccount'
+import CashoutHistory from './containers/CashoutHistory'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -208,5 +209,18 @@ export default {
         Page: NotFound,
         headerType: 'none',
         footerType: 'none',
-    }, 
+    },
+    cashoutAccount: {
+        title: I18n.t('page_cashout_account'),
+        Page: CashoutAccount,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    cashoutHistory: {
+        title: I18n.t('cashout_history'),
+        Page: CashoutHistory,
+        headerType: 'back',
+        footerType: 'none',
+    }
+
 }
