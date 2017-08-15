@@ -215,6 +215,7 @@ export default {
     'year': 'năm',
     'week': 'tuần',
     'to': 'đến',
+    'hour': 'giờ',
     'info': 'Thông báo',
     'custom': 'Tuỳ chỉnh',
     'choose_start_date': 'Chọn ngày bắt đầu',
@@ -267,4 +268,7 @@ export default {
     // Cashout
     'cashout_account': 'Tài khoản cashout',
     'all_places': 'Tất cả địa điểm',
+
+    // Transaction History
+    'transaction_history': 'Lịch sử giao dịch'
 }
