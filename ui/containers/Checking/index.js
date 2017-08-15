@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Container, Text, List, ListItem, Spinner, View} from 'native-base'
+import {TouchableHighlight} from 'react-native'
 import I18n from '~/ui/I18n'
 import styles from './styles'
 import options from './options'
@@ -46,6 +47,10 @@ export default class extends Component {
 
     }
 
+    _handlePressSumRevenue() {
+        // alert('click');
+    }
+
     _renderMoneyBand(money) {
         var moneyNumber;
         return (
@@ -87,7 +92,7 @@ export default class extends Component {
                             <Text medium grayDark>+</Text>
                         </View>
                         <View row style={{justifyContent: 'space-between'}}>
-                            <Text medium grayDark>Tổng tiền Cligme đã thu:</Text>
+                            <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
                             <Text medium bold grayDark>5.272.000</Text>
                         </View>
                         <View row style={{justifyContent: 'flex-end'}}>
@@ -95,8 +100,8 @@ export default class extends Component {
                         </View>
                     </View>
                     <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
-                        <Text strong bold grayDark orange>21.592.000</Text>
-                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}}/>
+                            <Text strong bold grayDark orange onPress={()=>this._handlePressSumRevenue()}>21.592.000</Text>
+                            <Icon name='foward' style={{fontSize: 20, color: material.orange500}} onPress={()=>this._handlePressSumRevenue()}/>
                     </View>
 
                     <Text strong bold grayDark style={{borderBottomWidth: 1}}>
@@ -118,7 +123,7 @@ export default class extends Component {
                             <Text medium grayDark>-</Text>
                         </View>
                         <View row style={{justifyContent: 'space-between'}}>
-                            <Text medium grayDark>Phí Cligme đã thu:</Text>
+                            <Text medium grayDark>Phí Clingme đã thu:</Text>
                             <Text medium bold grayDark>4.265.000</Text>
                         </View>
                         <View row style={{justifyContent: 'flex-end'}}>
