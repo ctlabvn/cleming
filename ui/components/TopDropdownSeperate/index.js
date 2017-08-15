@@ -136,12 +136,8 @@ export default class TopDropdown extends Component {
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         
-        // is shown?
-        // containerStyleTopDown.top = show ? material.toolbarHeight : -material.deviceHeight
-
-        containerStyleTopDown.transform = [
-                  {translateX: show ? 0 : material.deviceWidth},
-                ], 
+        // is shown?        
+        containerStyleTopDown.transform = [{translateX: show ? 0 : material.deviceWidth}]
        
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
