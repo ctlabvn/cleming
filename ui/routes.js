@@ -30,6 +30,7 @@ import WithDraw from './containers/WithDraw'
 import BankAccount from './containers/BankAccount'
 import ComingSoon from './containers/ComingSoon'
 import Setting from './containers/Setting'
+import Checking from './containers/Checking'
 
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -208,5 +209,11 @@ export default {
         Page: NotFound,
         headerType: 'none',
         footerType: 'none',
-    }, 
+    },
+    checking: {
+        title: I18n.t('checking'),
+        Page: Checking,
+        headerType: 'back',
+        footerType: 'none',
+    },
 }

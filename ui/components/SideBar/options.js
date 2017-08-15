@@ -21,10 +21,16 @@ export default {
         },
 
         {
-            name: I18n.t('revenue'),
-            route: 'revenueManagementList',
+            name: I18n.t('checking'),
+            route: 'checking',
             icon: 'term',
         },
+
+        // {
+        //     name: I18n.t('revenue'),
+        //     route: 'revenueManagementList',
+        //     icon: 'term',
+        // },
 
         {
             name: 'Thanh toán với Clingme',
