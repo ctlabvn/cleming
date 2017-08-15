@@ -22,7 +22,7 @@ export default class TopDropdown extends Component {
         this.state = {
             openningDropdown: false,
             selectedOption: selectedOption,
-            show: !!props.show,
+            // show: !!props.show,
             isMultiple: true,
             searchString: '',
             placeholderText: I18n.t('search'),
@@ -46,8 +46,8 @@ export default class TopDropdown extends Component {
 
     show(showState){
         // for sure should set top to negative of deviceHeight
-        this.setState({show: showState})
-        // this.translate(showState ? 0 : material.deviceWidth)
+        // this.setState({show: showState})
+        this.translate(showState ? 0 : material.deviceWidth)
     }
     setIsMultiple(isMultiple){
         this.setState({isMultiple: isMultiple})
@@ -128,8 +128,8 @@ export default class TopDropdown extends Component {
 
     render() {
         console.log('Render TopDropdownSeperate')
-        const { notifications, getNotificationRequest, getNotification } = this.props
-        let { openningDropdown, selectedOption, show, isMultiple } = this.state
+        const { notifications, getNotificationRequest, getNotification, show } = this.props
+        let { openningDropdown, selectedOption, isMultiple } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
@@ -137,7 +137,11 @@ export default class TopDropdown extends Component {
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
         
         // is shown?
-        containerStyleTopDown.top = show ? material.toolbarHeight : -material.deviceHeight
+        // containerStyleTopDown.top = show ? material.toolbarHeight : -material.deviceHeight
+
+        containerStyleTopDown.transform = [
+                  {translateX: show ? 0 : material.deviceWidth},
+                ], 
        
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
