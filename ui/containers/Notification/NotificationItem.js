@@ -14,7 +14,12 @@ const border = <Border style={styles.border} color='rgba(0,0,0,0.5)' size={1} />
 
 export default class extends PureComponent {
     
-
+    shouldComponentUpdate(nextProps, nextState) {
+      
+      return  (this.props.item  &&  nextProps.item && 
+        ((this.props.item.notifyId != nextProps.item.notifyId) || nextProps.item.isRead)
+      )
+    }
     renderNotificationIcon({ notifyType }) {
         switch (notifyType) {
           case NOTIFY_TYPE.NEW_BOOKING:

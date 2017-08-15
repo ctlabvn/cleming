@@ -19,17 +19,21 @@ export default {
             route: 'comingSoon',
             icon: 'post',
         },
-
         {
-            name: I18n.t('revenue'),
-            route: 'revenueManagementList',
+            name: I18n.t('checking'),
+            route: 'checking',
             icon: 'term',
         },
 
+        // {
+        //     name: I18n.t('revenue'),
+        //     route: 'revenueManagementList',
+        //     icon: 'term',
+        // },
         {
-            name: 'Thanh toán với Clingme',
-            route: 'wallet',
-            icon: 'clingme-wallet',
+            name: I18n.t('page_cashout_account'),
+            route: 'cashoutAccount',
+            icon: 'cash_out',
         },
 
         {
@@ -60,13 +64,5 @@ export default {
             route: 'about',
             icon: 'info'
         },
-        // {
-        //   name: 'Quét QR Code',
-        //   route: 'qrScanner',
-        // }
-        // {
-        //   name: 'Map Cluster',
-        //   route: 'mapCluster',
-        // }
     ]
 }

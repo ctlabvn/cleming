@@ -70,6 +70,7 @@ export default {
     'page_wallet_detail': 'Chi tiết các thanh toán',
     'page_bank_account': 'Tài khoản ngân hàng',
     'page_setting': 'Cài đặt',
+    'page_cashout_account': 'Tài khoản Cashout',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -239,6 +240,13 @@ export default {
     'area': 'Khu vực',
     'branch': 'Chi nhánh',
     'add_bank_success': 'Chúng tôi đã nhận được yêu cầu tạo tài khoản của bạn và sẽ xử lí trong thời gian sớm nhất.',
+
+    // Cashout Account
+    'balance_available': 'Số dư khả dụng',
+    'cashout_history': 'Lịch sử Cashout',
+    'checking_history': 'Lịch sử đối soát',
+    'money_waiting_process': 'Số tiền chờ xử lý',
+    'money_received': 'Số tiền đã nhận',
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
@@ -252,4 +260,10 @@ export default {
 
     // topDropDown
     'search': 'Tìm kiếm',
+
+    // Checking
+    'checking': 'Đối soát',
+
+    // Cashout
+    'cashout_account': 'Tài khoản cashout',
 }

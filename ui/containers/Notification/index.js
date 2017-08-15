@@ -146,6 +146,7 @@ export default class extends Component {
           onRefresh={this._onRefresh}
           onEndReached={this._loadMore}  
           renderRow={(item) => <NotificationItem item={item} onNotiClick={this._handleNotiClick} />}
+          rowHasChanged={true}
         />
 
         : <View style={styles.emptyBlock}>
