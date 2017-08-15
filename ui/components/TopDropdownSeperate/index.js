@@ -22,7 +22,8 @@ export default class TopDropdown extends Component {
         this.state = {
             openningDropdown: false,
             selectedOption: selectedOption,
-            // show: !!props.show,
+            show: !!props.show,
+            isMultiple: true,
             searchString: '',
             placeholderText: I18n.t('search'),
         }
@@ -45,7 +46,11 @@ export default class TopDropdown extends Component {
 
     show(showState){
         // for sure should set top to negative of deviceHeight
-        this.translate(showState ? 0 : material.deviceWidth)
+        this.setState({show: showState})
+        // this.translate(showState ? 0 : material.deviceWidth)
+    }
+    setIsMultiple(isMultiple){
+        this.setState({isMultiple: isMultiple})
     }
 
     translate(translateX){        
@@ -72,6 +77,7 @@ export default class TopDropdown extends Component {
     }
 
     _handlePressIcon() {
+        if (!this.state.isMultiple) return
         // Need before toggle
         this.props.onPressIcon && this.props.onPressIcon(this.state.openningDropdown)
         this.toggle()
@@ -122,8 +128,8 @@ export default class TopDropdown extends Component {
 
     render() {
         console.log('Render TopDropdownSeperate')
-        const { notifications, getNotificationRequest, getNotification, show } = this.props
-        let { openningDropdown, selectedOption } = this.state
+        const { notifications, getNotificationRequest, getNotification } = this.props
+        let { openningDropdown, selectedOption, show, isMultiple } = this.state
         let maxHeight = openningDropdown ? 150 : 0
         let fakeZIndex = (maxHeight == 150) ? { zIndex: 1000 } : { zIndex: null }
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
@@ -146,16 +152,18 @@ export default class TopDropdown extends Component {
                     <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
                         <View>
                             <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{selectedOption.name}</Text>
-                                <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
-                                    color: material.white500,
-                                    position: 'absolute',
-                                    marginTop: -5,
-                                    right: 10,
-                                }} />
+                                {isMultiple &&
+                                    <Icon name={openningDropdown ? "clear" : "keyboard-arrow-down"} style={{
+                                        color: material.white500,
+                                        position: 'absolute',
+                                        marginTop: -5,
+                                        right: 10,
+                                    }} />
+                                }
 
                         </View>
                     </TouchableOpacity>
-                    {openningDropdown && <Item style={styles.searchContainer}>
+                    {openningDropdown && isMultiple && <Item style={styles.searchContainer}>
                         <Input autoCapitalize="none" defaultValue={this.state.searchString}
                                autoCorrect={false}
                                onChangeText={text => this.search(text)}
