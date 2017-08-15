@@ -133,6 +133,7 @@ export default class App extends Component {
     } else {
       // make sure it can show/hide   
       thisNavigator.transitionBetween(prevIndex, index, 0)
+      this.topDropdown.show(route.showTopDropdown)
       thisNavigator.enable(index)           
     }
     
@@ -151,7 +152,7 @@ export default class App extends Component {
         this.footer.show(route.footerType, route.routeName)
 
         // we will animate this for better transition
-        this.topDropdown.show(route.showTopDropdown)        
+        // this.topDropdown.show(route.showTopDropdown)        
       } else {
         // no need to push to route
         this.props.setToast('Scene not found: ' + router.current.routeName, 'danger')

@@ -59,11 +59,11 @@ export default class extends Component {
         this.state = {
             selectedPlace: selectedPlace,
             modalOpen: false,
-            counting: true,
+            // counting: true,
             phoneNumber: '',
             processing: false
         }
-        // this.counting = true
+        this.counting = true
         this.selectedStatus = 0
         this.interval = 0
         this.isLoadingPlace = false
@@ -98,7 +98,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
         this.clickCount = 0
         const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
         //
         let placeDropdownValue = app.topDropdown.getValue()
@@ -133,8 +133,10 @@ export default class extends Component {
                 number: news.orderWaitDelivery
             }
         ])
-        this.setState({ counting: true })
+        // this.setState({ counting: true })
         })
+
+        this.listview && this.listview.scrollToTop()
     }
 
     componentDidMount() {
@@ -156,9 +158,8 @@ export default class extends Component {
 
     }
 
-    componentWillBlur() {
-        this.listview && this.listview.scrollToTop()
-        // this.counting = false
+    componentWillBlur() {        
+        this.counting = false
         // InteractionManager.runAfterInteractions(() => {
         // this.setState({ counting: false })
         // })
@@ -322,7 +323,7 @@ export default class extends Component {
                             onPressPhoneNumber = {this.onModalOpen}
                             onShowReasonPopup = {this.showReasonPopup}
                             onConfirmOrder = {this._handleConfirmOrder}
-                            counting={this.state.counting}
+                            counting={this.counting}
                         />
                     )}
                 />

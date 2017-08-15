@@ -140,7 +140,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { app, meta, clearMarkLoad } = this.props
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             let currentPlace = app.topDropdown.getValue()
             let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
@@ -155,11 +155,13 @@ export default class extends Component {
                 this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             }
         })
-    }
 
-    componentWillBlur(){
         this.listview && this.listview.scrollToTop()
     }
+
+    // componentWillBlur(){
+    //     this.listview && this.listview.scrollToTop()
+    // }
 
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         this.currentPlace = placeId
