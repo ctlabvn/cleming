@@ -14,6 +14,15 @@ export default {
 		alignItems: 'center',
 		padding: 10
 	},
+	rowPaddingLarge: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		paddingTop: 20,
+		paddingBottom: 20,
+		paddingLeft: 10,
+		paddingRight: 10
+	},
 	listItem: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',

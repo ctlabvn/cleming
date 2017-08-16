@@ -39,7 +39,7 @@ export default class extends Component {
                 <View style={styles.content}>
                     <View style={styles.moneyBlock}>
                         <View style={{...styles.row, ...styles.mt20}}>
-                            <Text medium>Castout History</Text>
+                            <Text medium>{I18n.t('balance_available')}</Text>
                             <Text bold style={styles.moneyNumber}>{formatNumber(1900000)}đ</Text>
                         </View>
                         <View style={{...styles.rowRight, ...styles.mt20}}>
