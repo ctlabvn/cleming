@@ -98,7 +98,7 @@ export default class extends Component {
         InteractionManager.runAfterInteractions(() => {
         this.clickCount = 0
         const { app, news, order, markWillReload, meta, clearMarkLoad } = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         let now = new Date().getTime()
         //
         let placeDropdownValue = app.topDropdown.getValue()
