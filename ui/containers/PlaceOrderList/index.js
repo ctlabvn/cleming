@@ -34,6 +34,7 @@ import {
 } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
 import ListViewExtend from '~/ui/components/ListViewExtend'
+
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
@@ -133,7 +134,7 @@ export default class PlaceOrderList extends Component {
 
             <ListItem style={listItemStyle} onPress={() => this.props.forwardTo('placeOrderDetail', {id: item.clingmeId})}>
                 
-                    <View style={{ flex: 7 }}>
+                    <View style={{ width: '100%' }}>
                                                                                 
                             <View style={styles.rowPadding}>
                                 {orderCodeBlock}
@@ -145,29 +146,30 @@ export default class PlaceOrderList extends Component {
                                     />}
                                 </View>
                             </View>
-                            <Border color='rgba(0,0,0,0.5)' size={1} />
+                            
+                            <Border/>
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon} />
                                     <Text medium grayDark style={{ ...styles.labelUnderImage }}>{moment(item.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
+                                <Border horizontal={false} />
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon} />
                                     <Text medium grayDark style={{ ...styles.labelUnderImage }}>{hourMinute}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
+                                <Border horizontal={false} />
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon} />
                                     <Text medium grayDark style={{ ...styles.labelUnderImage }}>{item.numberOfPeople}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12} />
+                                <Border horizontal={false} />
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon} />
                                     <Text medium grayDark style={{ ...styles.labelUnderImage }}>{totalQuantity}</Text>
                                 </View>
                             </View>
-                            <Border color='rgba(0,0,0,0.5)' size={1} />
+                            <Border/>
                         
                     </View>
                     

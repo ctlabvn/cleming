@@ -10,7 +10,6 @@ import { formatNumber } from "~/ui/shared/utils";
 import moment from "moment";
 import styles from "./styles";
 
-const border = <Border style={styles.border} color='rgba(0,0,0,0.5)' size={1} />
 
 export default class extends PureComponent {
     
@@ -62,7 +61,7 @@ export default class extends PureComponent {
                 </View>
               </View>
             </View>
-            {border}
+            <Border style={styles.border}/>
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
@@ -86,7 +85,7 @@ export default class extends PureComponent {
 
               </View>
             </View>
-            {border}
+            <Border style={styles.border}/>
 
             </Body>
       )
@@ -104,7 +103,7 @@ export default class extends PureComponent {
               </View>
 
             </View>
-            {border}
+            <Border style={styles.border}/>
 
           </Body>)
       case NOTIFY_TYPE.TRANSACTION_DIRECT_WAITING:
@@ -119,7 +118,7 @@ export default class extends PureComponent {
                 </Text>
               </View>
             </View>
-            {border}
+            <Border style={styles.border}/>
             </Body>
         )
       case NOTIFY_TYPE.TRANSACTION_DIRECT_SUCCESS:
@@ -135,7 +134,7 @@ export default class extends PureComponent {
                   </Text>
                 </View>
               </View>
-              {border}
+              <Border style={styles.border}/>
               </Body>
           )
       case NOTIFY_TYPE.TRANSACTION_CLINGME:
@@ -151,7 +150,7 @@ export default class extends PureComponent {
                 </Text>
               </View>
             </View>
-            {border}
+            <Border style={styles.border}/>
           </Body>
         )
       case NOTIFY_TYPE.ORDER_FEEDBACK:
@@ -171,7 +170,7 @@ export default class extends PureComponent {
               </View>
 
             </View>
-            {border}
+            <Border style={styles.border}/>
           </Body>
         )
       default:
@@ -179,6 +178,24 @@ export default class extends PureComponent {
           this._defaultContent(item)
         )
     }
+  }
+
+  _defaultContent(item) {
+      return (
+          <Body>
+          <View style={styles.listItemRow}>
+            <Text note style={styles.textGray}>{item.title}</Text>
+            <View style={styles.subRow}>
+              <Text bold style={styles.textGray}>{item.content}</Text>
+              <Text note style={styles.textGray}>
+                <Text strong style={styles.textGray} bold>{formatNumber(item.paramDouble1)}</Text>đ
+              </Text>
+            </View>
+          </View>
+
+          <Border/>
+          </Body>
+      )
   }
 
     render(){

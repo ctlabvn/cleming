@@ -376,7 +376,7 @@ export default class CreateUserContainer extends Component {
             onSelect={this.handleChangePlace.bind(this)}
             selectedOption={this.state.currentJob || { id: 1, name: I18n.t('employee') }} />
         </View>
-        <Border color='rgba(0,0,0,0.5)' size={2} />
+        <Border/>
         <View style={{ marginLeft: 30, marginTop: 10 }}>
           <Text style={styles.leftAddressTitleText}>{I18n.t('work_time')}</Text>
         </View>
@@ -408,7 +408,7 @@ export default class CreateUserContainer extends Component {
             </Col>
           </Grid>
         </View>
-        <Border color='rgba(0,0,0,0.5)' size={2} />
+        <Border/>
         <RenderGroup
           onStartCapture={listView=>{                            
               if (listView.scrollProperties.offset === 0 && this.state.enableScrollViewScroll === false) {
@@ -421,7 +421,7 @@ export default class CreateUserContainer extends Component {
           selectedPlaceId={this.state.selectedPlaceId}
         />
         <View style={styles.createPassBlock}>
-          <Border color='rgba(0,0,0,0.5)' size={2} />
+          <Border/>
           <Grid>
             <Row style={{ justifyContent: 'center', height: 40, paddingBottom: 15, marginTop: 25 }}>
               <Button

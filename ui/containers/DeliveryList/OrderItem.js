@@ -35,6 +35,7 @@ import {
     SCREEN
 } from "~/store/constants/app";
 import {_isDiff} from '~/ui/shared/utils'
+
 @connect(null, commonActions)
 
 // @reduxForm({ form: 'TestForm' })
@@ -93,7 +94,7 @@ export default class extends Component {
                 )
                 buttonActionBlock = (
                     <View style={styles.block}>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                        <Border/>
                         <View style={styles.row}>
                             <Button transparent onPress={() => this.props.onShowReasonPopup(orderInfo.clingmeId)}>
                                 <Text medium bold gray>{I18n.t('cancel_delivery')}</Text></Button>
@@ -157,7 +158,7 @@ export default class extends Component {
                         </View>
                     </View>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border/>
                 <View style={styles.block}>
                     <View style={{ width: '100%' }}>
                         <View style={styles.row}>
@@ -166,7 +167,7 @@ export default class extends Component {
                         </View>
                     </View>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border/>
                 {(typeof orderInfo.note != 'undefined' && orderInfo.note != '') &&
                     <View style={styles.block}>
                         <View>
@@ -175,7 +176,7 @@ export default class extends Component {
                                 <Text medium grayDark style={styles.textLeft}>{orderInfo.note}</Text>
                             </View>
                         </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                        <Border/>
                     </View>
                 }
                 <View style={styles.block}>

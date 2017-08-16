@@ -162,27 +162,27 @@ export default class extends Component {
                     <Text medium style={styles.gray}>Clingme Pay</Text>
                     <Text bold large style={styles.gray}>#{revenueItem.tranCode}</Text>
                 </ListItem>
-                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <Border/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Doanh Thu</Text>
                     <Text bold large style={styles.orange}>{formatNumber(revenueItem.revenueMoney)} đ</Text>
                 </ListItem>
-                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <Border/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Tổng tiền giao dịch</Text>
                     <Text bold large style={styles.gray}>{formatNumber(revenueItem.tranMoney)} đ</Text>
                 </ListItem>
-                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <Border/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Tiền vận chuyển</Text>
                     <Text bold large style={styles.gray}>{formatNumber(revenueItem.shipMoney)} đ</Text>
                 </ListItem>
-                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <Border/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Tiền đã thu</Text>
                     <Text bold large style={styles.gray}>{formatNumber(revenueItem.paidMoney)} đ</Text>
                 </ListItem>
-                <Border color='rgba(0,0,0,0.5)' size={1}/>
+                <Border/>
                 <ListItem style={styles.row}>
                     <Text medium style={styles.gray}>Phí Clingme</Text>
                     <Text bold large style={styles.gray}>{formatNumber(revenueItem.chargeMoney)} đ</Text>

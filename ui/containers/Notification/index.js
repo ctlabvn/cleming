@@ -7,7 +7,7 @@ import {
 import moment from 'moment'
 
 import Content from '~/ui/components/Content'
-import Border from '~/ui/elements/Border'
+// import Border from '~/ui/elements/Border'
 import { connect } from 'react-redux'
 import * as commonActions from '~/store/actions/common'
 import * as notificationActions from '~/store/actions/notification'
@@ -76,24 +76,6 @@ export default class extends Component {
         () => this.spinner.show(false)
       )
     }
-  }
-
-  _defaultContent(item) {
-      return (
-          <Body>
-          <View style={styles.listItemRow}>
-            <Text note style={styles.textGray}>{item.title}</Text>
-            <View style={styles.subRow}>
-              <Text bold style={styles.textGray}>{item.content}</Text>
-              <Text note style={styles.textGray}>
-                <Text strong style={styles.textGray} bold>{formatNumber(item.paramDouble1)}</Text>đ
-              </Text>
-            </View>
-          </View>
-
-          {border}
-          </Body>
-      )
   }
 
   _handleNotiClick=(notification) =>{

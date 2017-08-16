@@ -62,7 +62,7 @@ export default class extends Component {
                                 </Button>
                             </View>
                         </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                        <Border/>
                     </ListItem>
                 )
             case 2:
@@ -85,7 +85,7 @@ export default class extends Component {
                                 <Text grayDark><Text strong bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                         </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1} />
+                        <Border/>
                     </ListItem>
                 )
         }
@@ -157,9 +157,7 @@ export default class extends Component {
                         </View>
                     </View>
                 </View>
-                {
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                }
+                <Border/>                
             </ListItem>
         )
     }

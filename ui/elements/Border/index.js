@@ -1,35 +1,36 @@
 import React, { PureComponent } from 'react'
-import material from '~/theme/variables/material'
 import { View } from 'react-native'
 
+export default class Border extends PureComponent {
 
-export default class extends PureComponent {
+  static defaultProps = {
+    color: 'rgba(0,0,0,0.5)',
+    horizontal: true,
+    size: 1,
+  }
 
   render() {
-    const { color = 'red', size = 2, padding = 2, orientation = 'horizontal', style} = this.props
-    const num = orientation == 'horizontal' ? material.deviceWidth / (size + padding * 2) : this.props.num 
-    const borders = []
-        
-    for (let i = 0; i < num; i++) {
-      borders.push(<View key={i} style={{
-        backgroundColor: color,
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        margin: padding
-      }} />
-      )
+    const { color, size, horizontal, style} = this.props
+    let prop1 = 'height', prop2 = 'width'
+    if(!horizontal){
+     prop1 = 'width'
+     prop2 = 'height'
     }
-
+    console.log(prop1,prop2)
     return (
       <View style={{
         ...style,
         overflow: 'hidden',
-        flexDirection: orientation == 'horizontal' ? 'row' : 'column',
-        justifyContent: 'space-around',
-      }}
-      >
-        {borders}
+        [prop1]: size,
+        [prop2]: '100%',
+      }}>
+        <View style={{
+          borderStyle:'dotted',
+          borderWidth: size,        
+          borderColor: color, 
+          [prop1]: 0,          
+          flex: 1,
+        }}/>
       </View>
     )
 

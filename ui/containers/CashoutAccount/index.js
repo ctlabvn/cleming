@@ -49,7 +49,7 @@ export default class extends Component {
                             </Button>
                         </View>
                     </View>
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
+                    <Border/>
                     <TouchableOpacity onPress={()=>forwardTo('cashoutHistory')}> 
                         <View>
                             <View style={{...styles.row, ...styles.pd10}}>

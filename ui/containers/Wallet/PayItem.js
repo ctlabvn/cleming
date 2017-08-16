@@ -148,9 +148,7 @@ export default class extends Component {
                         </View>
                     </View>
                 </View>
-                {
-                    <Border color='rgba(0,0,0,0.5)' size={1} />
-                }
+                <Border/>                
             </ListItem>
         )
     }

@@ -38,7 +38,7 @@ export default class extends Component {
                 <View style={{...styles.row, ...styles.pd10, ...styles.borderTop}}>
                     <Text>{I18n.t('info_detail')}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border/>
                 <View style={{...styles.rowPadding, ...styles.ml20, ...styles.borderBottom}}>
                     <View style={{...styles.row}}>
                         <Image source={{ uri: "http://www.underconsideration.com/brandnew/archives/vietcombank_big.jpg" }} style={styles.bankLogo} />

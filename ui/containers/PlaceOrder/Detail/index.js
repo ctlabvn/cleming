@@ -160,31 +160,31 @@ export default class PlaceOrderDetail extends Component {
                             </View>}
                         </View>
                         <View>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
+                            <Border/>
                             <View style={styles.row}>
                                 <View style={styles.column}>
                                     <Icon name='calendar' style={styles.icon}/>
                                     <Text medium grayDark
                                           style={styles.labelUnderImage}>{moment(this.state.bookingDetail.bookDate * 1000).format(DAY_WITHOUT_YEAR)}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                                <Border horizontal={false}/>
                                 <View style={styles.column}>
                                     <Icon name='history' style={styles.icon}/>
                                     <Text medium grayDark style={styles.labelUnderImage}>{hourMinute}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                                <Border horizontal={false}/>
                                 <View style={styles.column}>
                                     <Icon name='friend' style={styles.icon}/>
                                     <Text medium grayDark
                                           style={styles.labelUnderImage}>{this.state.bookingDetail.numberOfPeople}</Text>
                                 </View>
-                                <Border color='rgba(0,0,0,0.5)' orientation='vertical' size={1} padding={1} num={12}/>
+                                <Border horizontal={false}/>
                                 <View style={styles.column}>
                                     <Icon name='want-feed' style={styles.icon}/>
                                     <Text medium grayDark style={styles.labelUnderImage}>{totalQuantity}</Text>
                                 </View>
                             </View>
-                            <Border color='rgba(0,0,0,0.5)' size={1}/>
+                            <Border/>
                         </View>
                         <View style={styles.rowPaddingTB}>
                             <Text medium style={{...styles.normalText, ...styles.leftText}}>{I18n.t('booking_user')}:</Text>
@@ -204,7 +204,7 @@ export default class PlaceOrderDetail extends Component {
                                 </Text>
                             </Content>
                         </View>
-                        <Border color='rgba(0,0,0,0.5)' size={1}/>
+                        <Border/>
                         <View style={styles.rowPaddingTB}>
                             <Text medium style={{...styles.normalText, ...styles.leftText, ...styles.boldText}}>{I18n.t('pre_order')}:</Text>
                             <View style={styles.row}>

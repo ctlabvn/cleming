@@ -91,7 +91,7 @@ export default class CashoutHistory extends Component {
                 <View style={styles.rowLeft}>
                     <Text medium bold warning>{I18n.t('money_waiting_process')}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border/>
                 <ListViewExtend
                     dataArray={this.data1}
                     renderRow={(item) => this._renderRow(item)}
@@ -99,7 +99,7 @@ export default class CashoutHistory extends Component {
                 <View style={{...styles.rowLeft, ...styles.borderTop}}>
                     <Text medium bold success>{I18n.t('money_received')}</Text>
                 </View>
-                <Border color='rgba(0,0,0,0.5)' size={1} />
+                <Border/>
                 <ListViewExtend
                     dataArray={this.data}
                     renderRow={(item) => this._renderRow(item)}

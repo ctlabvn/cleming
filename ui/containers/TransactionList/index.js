@@ -13,7 +13,7 @@ import TransactionFilter from "~/ui/components/TransactionFilter";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Spinner from '~/ui/components/Spinner'
 import Icon from "~/ui/elements/Icon";
-import Border from "~/ui/elements/Border";
+// import Border from "~/ui/elements/Border";
 import moment from "moment";
 import { formatNumber } from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
