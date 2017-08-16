@@ -299,7 +299,7 @@ export default class PlaceOrderList extends Component {
     }
     componentWillFocus() {
         const { app, news, clearMarkLoad, meta } = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+        app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
         // this.setState({ counting: true })
         this.counting = true
         if (news && news.bookingNews) {

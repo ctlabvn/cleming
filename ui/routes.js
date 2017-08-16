@@ -34,6 +34,8 @@ import CashoutAccount from './containers/CashoutAccount'
 import CashoutHistory from './containers/CashoutHistory'
 import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
+import WithdrawDetail from './containers/WithdrawDetail'
+import CheckingHistory from './containers/CheckingHistory'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -223,6 +225,7 @@ export default {
         Page: CashoutHistory,
         headerType: 'back',
         footerType: 'none',
+        cache: true
     },
     checking: {
         title: I18n.t('checking'),
@@ -236,4 +239,17 @@ export default {
         headerType: 'back',
         footerType: 'none',
     },
+    withdrawDetail: {
+        title: I18n.t('withdraw_detail'),
+        Page: WithdrawDetail,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    checkingHistory: {
+        title: I18n.t('checking_history'),
+        Page: CheckingHistory,
+        headerType: 'back',
+        footerType: 'none',
+        cache: true
+    }
 }

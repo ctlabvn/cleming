@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, List, ListItem, Spinner, Text } from "native-base";
-import { InteractionManager, View, TouchableOpacity } from "react-native";
+import { InteractionManager, View, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -54,6 +54,7 @@ export default class CashoutHistory extends Component {
 
     }
     _renderRow = (item) => {
+        const {forwardTo} = this.props
         switch(item.status){
             case 'waiting':
                 return (
@@ -67,13 +68,15 @@ export default class CashoutHistory extends Component {
                 )
             case 'received': 
                 return (
-                    <View style={styles.listItem}>
-                        <Text medium gray>{item.time}</Text>
-                        <View style={styles.row}>
-                            <Text success>{formatNumber(item.money)}đ</Text>
-                            <Icon name='foward' style={styles.forwardIconSuccess}/>
+                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail')}>
+                        <View style={styles.listItem}>
+                            <Text medium gray>{item.time}</Text>
+                            <View style={styles.row}>
+                                <Text success>{formatNumber(item.money)}đ</Text>
+                                <Icon name='foward' style={styles.forwardIconSuccess}/>
+                            </View>
                         </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                 )
         }
     }
