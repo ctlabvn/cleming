@@ -119,8 +119,7 @@ export default class extends Component {
     return (
 
       <Container>
-          {
-            notifications.hasMore ?
+        {notifications.hasMore ?  null : <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
         <ListViewExtend     
           onItemRef={ref=>this.listview=ref}
           keyExtractor={item=>item.notifyId}
@@ -130,11 +129,6 @@ export default class extends Component {
           renderRow={(item) => <NotificationItem item={item} onNotiClick={this._handleNotiClick} />}
           rowHasChanged={true}
         />
-
-        : <View style={styles.emptyBlock}>
-              <Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text>
-            </View>
-          }
 
          <Spinner onItemRef={ref=>this.spinner=ref} />
       </Container>
