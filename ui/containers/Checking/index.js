@@ -110,6 +110,7 @@ export default class extends Component {
                     </Text>
                     <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
                         <Text strong bold grayDark orange>4.265.000</Text>
+                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}} onPress={()=>this._handlePressSumRevenue()}/>
                     </View>
 
                     <Text strong bold grayDark style={{borderBottomWidth: 1}}>
