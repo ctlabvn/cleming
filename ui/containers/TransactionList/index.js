@@ -173,8 +173,11 @@ export default class extends Component {
         }
         getListAllTransaction(xsession, placeId, fromTime, toTime, filter, page,
             (err, data) => {
-                this.listview.showRefresh(false)
-                this.spinner.show(false)
+                if (isLoadMore) {
+                    this.spinner.show(false)
+                } else {
+                    this.listview.showRefresh(false)
+                }
                 if (data && data.data) {
                     transactionFilterComponent.updateIndicatorNumber(data.data.totalRecord)
                 }
@@ -199,7 +202,7 @@ export default class extends Component {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         let currentPlace = app.topDropdown.getValue()
         let transactionFilter = this.refs.transactionFilter.getCurrentValue()
-        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1)
+        this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value, pageNumber + 1, true)
     }
 
     _onRefresh = () => {
@@ -246,7 +249,7 @@ export default class extends Component {
                         listValue={options.transactionFilter} ref='transactionFilter'
                     />
                         {this._renderList()}
-                        <Spinner ref={ref=>this.spinner=ref} color={material.red500}/>
+                        <Spinner onItemRef={ref=>this.spinner=ref} color={material.red500}/>
                         {/*{noData}
                         {moreData}*/}
                     
