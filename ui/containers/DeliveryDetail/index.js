@@ -270,7 +270,7 @@ export default class extends Component {
                     }
                     {(rejectReason) &&
                         <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
-                            <Text medium grayDark>{I18n.t('reject_order_reason')}</Text>
+                            <Text medium grayDark>{I18n.t('failed_order_reason')}</Text>
                             <Text medium bold grayDark>{rejectReason}</Text>
                         </View>
                     }
@@ -349,10 +349,10 @@ export default class extends Component {
                     <View style={styles.fixButtonBlock}>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundLightGray }}
                             onPress={() => this.showReasonPopup(orderDetail.orderInfo.clingmeId)}
-                        ><Text gray>{I18n.t('cancel_delivery')}</Text></Button>
+                        ><Text gray>{I18n.t('delivery_success')}</Text></Button>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundPrimary }}
                             onPress={() => this._handleConfirmOrder(orderDetail.orderInfo.clingmeId)}
-                        ><Text white>{I18n.t('delivered')}</Text></Button>
+                        ><Text white>{I18n.t('delivered_failed')}</Text></Button>
                     </View>
                 )}
 
