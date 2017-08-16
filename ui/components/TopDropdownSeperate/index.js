@@ -167,6 +167,7 @@ export default class TopDropdown extends Component {
                         <Input autoCapitalize="none" defaultValue={this.state.searchString}
                                autoCorrect={false}
                                onChangeText={text => this.search(text)}
+                               selectionColor={styles.searchInput.color}
                                placeholderTextColor={material.gray300} style={styles.searchInput}
                                placeholder={this.state.placeholderText}/></Item>}
 
