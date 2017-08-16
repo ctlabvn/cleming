@@ -238,10 +238,27 @@ export default class MerchantOverview extends Component {
             // </Content>
         )
     }
-
+    _renderImage(){
+        const {user} = this.props
+        if (user.chainAvatar){
+            return (
+                <View style={{...styles.contentContainer}}>
+                    <Image source={{uri: user.chainAvatar}} style={{resizeMode: 'cover', width: material.deviceWidth, height: 200}}/>
+                </View>
+            )
+                
+        }else{
+            return (
+                <View style={styles.contentContainer}>
+                    <GradientBackground colors={[material.blue400, material.blue600]}/>
+                    <Image source={storeTransparent} style={{resizeMode: 'contain', height: 120}}/>
+                </View>
+            )
+        }
+    }
     render() {
         console.log('Rendering MerchantOverview')
-        const {handleSubmit, submitting, place, selectedPlace} = this.props
+        const {handleSubmit, submitting, place, selectedPlace, user} = this.props
 
         let mainContainer = null
         if (place && place.listPlace) {
@@ -251,10 +268,7 @@ export default class MerchantOverview extends Component {
         }
         return (
             <Container style={styles.container}>
-                 <View style={styles.contentContainer}>
-                        <GradientBackground colors={[material.blue400, material.blue600]}/>
-                        <Image source={storeTransparent} style={{resizeMode: 'contain', height: 120}}/>
-                    </View>
+                {this._renderImage()}
                 <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>                   
                     {mainContainer}                    
                 </Content>

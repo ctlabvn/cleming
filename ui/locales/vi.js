@@ -45,6 +45,8 @@ export default {
     'help': 'Trợ giúp',
     'confirm_success':'Xác nhận thành công.',
     'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.',
+    'delivery_success': 'Giao thành công',
+    'delivery_failed': 'Giao thất bại',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',
@@ -104,9 +106,11 @@ export default {
     'note': 'Ghi chú',
     'cancel_delivery': 'Hủy giao hàng',
     'delivered': 'Đã giao hàng',
+    'delivered_failed': 'Giao thất bại',
     'order_number_2': 'Đặt hàng số',
     'customer_feedback': 'Phản hồi của khách hàng',
     'reject_order_reason': 'Lí do hủy đơn hàng',
+    'failed_order_reason': 'Lí do giao hàng thất bại',
     'deliver_address': 'Địa chỉ giao hàng',
     'receive_user': 'Người nhận',
     'receive_within': 'Yêu cầu nhận hàng trong',
@@ -254,6 +258,8 @@ export default {
     'transaction_code': 'Mã giao dịch',
     'request_time': 'Thời gian yêu cầu',
     'receive_time': 'Thời gian nhận tiền',
+    'not_checking_yet': 'Chưa đối soát',
+    'checked': 'Đã đối soát',
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',

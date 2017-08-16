@@ -23,6 +23,7 @@ import {formatNumber} from "~/ui/shared/utils";
 
 import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
 import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
+import { MERCHANT_COLLECTED, CLINGME_COLLECTED } from '~/store/constants/app'
 
 import I18n from '~/ui/I18n'
 
@@ -36,14 +37,61 @@ export default class extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            currenTab: MERCHANT_COLLECTED,
+            money: 21592000,
+            loading: false,
+        }
     }
 
-    render() {
-        return(
-            <Text>
-                lịch sử giao dịch
-            </Text>
+    _handlePressFilter(data) {
+        alert(JSON.stringify(data));
+    }
+
+    _handlePressTab(data) {
+        alert(JSON.stringify(data));
+    }
+
+    _loadMore() {
+
+    }
+
+    _onRefresh() {
+
+    }
+
+    _handlePressSumRevenue() {
+        const { forwardTo } = this.props
+        forwardTo('transactionHistory');
+    }
+
+    _renderMoneyBand(money) {
+        var moneyNumber;
+        return (
+            <View style={styles.moneyBand}>
+                <View>
+                    <Text largeLight bold grayDark>Doanh thu</Text>
+                    <Text green>(Chưa đối soát)</Text>
+                </View>
+                <Text large green>
+                    <Text large superBold orange>{formatNumber(money)}</Text> đ
+                </Text>
+            </View>
         )
     }
 
+    render() {
+        return (
+            <Container style={styles.container}>
+                <Text style={{backgroundColor: material.primaryColor, color: 'white'}}> Tất cả địa điểm </Text>
+                <TabsWithNoti tabData={options.tabData} activeTab={MERCHANT_COLLECTED}
+                              onPressTab={data => this._handlePressTab}
+                              ref='tabs'/>
+                <DateFilter onPressFilter={data => this._handlePressFilter} ref='dateFilter'/>
+                {this._renderMoneyBand(this.state.money)}
+                <Content>
+                </Content>
+            </Container>
+        )
+    }
 }

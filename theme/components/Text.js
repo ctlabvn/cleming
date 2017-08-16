@@ -103,6 +103,9 @@ export default (variables = variable) => {
       '.underline': {
           borderBottomColor: material.blue500,
           borderBottomWidth: 1,
+      },
+      '.italic': {
+        fontStyle: 'italic'
       }
   };
 

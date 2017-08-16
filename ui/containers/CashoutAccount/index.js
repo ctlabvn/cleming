@@ -65,7 +65,7 @@ export default class extends Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Button style={styles.bottomButton}>
+                <Button style={styles.bottomButton} onPress={()=>forwardTo('checkingHistory')}>
                     <View>
                         <Text medium bold gray>{I18n.t('checking_history')}</Text>
                     </View>
