@@ -254,6 +254,8 @@ export default {
     'transaction_code': 'Mã giao dịch',
     'request_time': 'Thời gian yêu cầu',
     'receive_time': 'Thời gian nhận tiền',
+    'not_checking_yet': 'Chưa đối soát',
+    'checked': 'Đã đối soát',
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
