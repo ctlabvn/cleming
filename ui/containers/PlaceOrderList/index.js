@@ -259,9 +259,13 @@ export default class PlaceOrderList extends Component {
         this.props.getBookingList(this.props.xsession, placeId,
             fromTime, toTime, status, page,
             (err, data) => {
-                console.log('Load Order', data)
-                this.spinner.show(false)
-                this.listview.showRefresh(false)
+                // console.log('Load Order', data)
+                if (isLoadMore) {
+                    this.spinner.show(false)
+                } else {
+                    // clearBookingList()
+                    this.listview.showRefresh(false)
+                }
             }
         )
         getMerchantNews(xsession, placeId,
@@ -374,7 +378,9 @@ export default class PlaceOrderList extends Component {
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
                     
-                    <Spinner color={material.red500} onItemRef={ref=>this.spinner=ref}/>
+                    <Spinner 
+                    // color={material.red500} 
+                    onItemRef={ref=>this.spinner=ref}/>
 
 
                 </View>

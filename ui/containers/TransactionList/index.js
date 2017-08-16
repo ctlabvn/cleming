@@ -249,7 +249,9 @@ export default class extends Component {
                         listValue={options.transactionFilter} ref='transactionFilter'
                     />
                         {this._renderList()}
-                        <Spinner onItemRef={ref=>this.spinner=ref} color={material.red500}/>
+                        <Spinner onItemRef={ref=>this.spinner=ref} 
+                        // color={material.red500}
+                        />
                         {/*{noData}
                         {moreData}*/}
                     

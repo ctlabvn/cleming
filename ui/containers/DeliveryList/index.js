@@ -180,8 +180,12 @@ export default class extends Component {
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
             (err, data) => {                
-                this.listview.showRefresh(false)
-                this.spinner.show(false)
+                if (isLoadMore) {
+                    this.spinner.show(false)
+                } else {
+                    // clearOrderList()
+                    this.listview.showRefresh(false)
+                }
                 this.clickCount = 0
             })
         //update noti Number
