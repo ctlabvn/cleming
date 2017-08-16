@@ -16,16 +16,18 @@ export default class Border extends PureComponent {
      prop1 = 'width'
      prop2 = 'height'
     }
-    console.log(prop1,prop2)
+    // console.log(size)
     return (
-      <View style={{
+      <View style={{        
         ...style,
+        zIndex:1,
         overflow: 'hidden',
         [prop1]: size,
         [prop2]: '100%',
       }}>
         <View style={{
           borderStyle:'dotted',
+          borderRadius: size,
           borderWidth: size,        
           borderColor: color, 
           [prop1]: 0,          
