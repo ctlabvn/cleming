@@ -446,9 +446,10 @@ export default class TransactionDetail extends Component {
     }
 
     _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack, markAsReadOffline } = this.props
         let transactionType = route.params.type
         // this.setState({ loading: true })
+        markAsReadOffline(transactionId)
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {

@@ -37,7 +37,7 @@ export default class extends Component {
     //     )
     // }
     _handlePressItem = (item) => {
-        this.props.markAsReadOffline(item.tranId)
+        // this.props.markAsReadOffline(item.tranId)
         this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
     }
 
