@@ -245,26 +245,43 @@ export default class TransactionDetail extends Component {
 
     renderClingme(transactionInfo){
         let payStatus, helpBtn = null
+
+        payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
+        helpBtn =
+            <View style={styles.rowPaddingFull}>
+                <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                    <View style={styles.round20}>
+                        <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                    </View>
+                    <Text medium primary>{I18n.t('help')}</Text>
+                </Button>
+                <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+                >
+                    <Text medium white>{I18n.t('close')}</Text>
+                </Button>
+            </View>
+
+
         // "transactionStatus": int,    // 1 là đã thanh toán, 2 là đã xác nhận
-        if (transactionInfo.transactionStatus == 1) {
-            payStatus = <Text strong primary bold>{I18n.t('not_confirm_yet')}</Text>
-            helpBtn =
-                <View style={styles.rowPaddingFull}>
-                    <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                        <View style={styles.round20}>
-                            <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                        </View>
-                        <Text medium primary>{I18n.t('help')}</Text>
-                    </Button>
-                    <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
-                        onPress={()=>this._confirmTransaction()}
-                    >
-                        <Text medium white>{I18n.t('confirm')}</Text>
-                    </Button>
-                </View>
-        } else if (transactionInfo.transactionStatus == 2) {
-            payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
-        }
+        // if (transactionInfo.transactionStatus == 1) {
+        //     payStatus = <Text strong primary bold>{I18n.t('not_confirm_yet')}</Text>
+        //     helpBtn =
+        //         <View style={styles.rowPaddingFull}>
+        //             <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+        //                 <View style={styles.round20}>
+        //                     <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+        //                 </View>
+        //                 <Text medium primary>{I18n.t('help')}</Text>
+        //             </Button>
+        //             <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+        //                 onPress={()=>this._confirmTransaction()}
+        //             >
+        //                 <Text medium white>{I18n.t('confirm')}</Text>
+        //             </Button>
+        //         </View>
+        // } else if (transactionInfo.transactionStatus == 2) {
+        //     payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
+        // }
 
         return (
             <Content>
@@ -272,7 +289,7 @@ export default class TransactionDetail extends Component {
                     <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.props.denyReasonClm}
                         transactionCode={transactionInfo.transactionIdDisplay}
                         onClickYes={this._handleFeedbackClingme}
-                        dealTransactionId={transactionInfo.clingmeId}
+                        dealTransactionId={transactionInfo.transactionId}
                     />
                     <View style={{ ...styles.block, alignSelf: 'flex-start' }}>
                         <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
@@ -535,14 +552,18 @@ export default class TransactionDetail extends Component {
 
     _handleFeedbackClingme = (dealID, selectedValue, note) => {
         const { forwardTo, sendDenyReasonClm, xsession, setToast } = this.props
-        sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
-            (err, data) => {
-                console.log('Deny Reason CLM', data)
-                if (chainParse(data, ['updated', 'data', 'success'])) {
-                    setToast(getToastMessage(I18n.t('feedback_message')), 'info', null, null, 3000, 'top')
+        if (selectedValue==FEEDBACK_CLM_TRANSACTION.MISS || selectedValue==FEEDBACK_CLM_TRANSACTION.REDUNDANT){
+            forwardTo('transactionInputFeedback', {dealID: dealID, reasonID: selectedValue})
+        }else{
+            sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
+                (err, data) => {
+                    console.log('Deny Reason CLM', data)
+                    if (chainParse(data, ['updated', 'data', 'success'])) {
+                        setToast(getToastMessage(I18n.t('feedback_message')), 'info', null, null, 3000, 'top')
+                    }
                 }
-            }
-        )
+            )
+        }  
     }
 
     _goToMiddlePage = () => {

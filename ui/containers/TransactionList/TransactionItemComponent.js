@@ -35,6 +35,34 @@ export default class extends Component {
     // }
     _renderTransactionPayWithClingmeItem(item) {
         //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
+        return (
+                    <ListItem style={styles.listItem}
+                        key={item.tranId}
+                        onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
+                    >
+                        <View style={styles.block}>
+                            <View style={styles.rowPadding}>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                <Text medium bold grayDark>{item.userName}</Text>
+                            </View>
+                            <View style={styles.rowCenter}>
+                                <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.tranCode}</Text>
+                            </View>
+                            <View style={styles.rowCenter}>
+                                <Text strong grayDark><Text big bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+                            </View>
+                            <View style={styles.row}>
+                                <Text medium primary>{I18n.t('paid')}</Text>
+                                <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})} >
+                                    <Text medium bold primary>{I18n.t('detail')}</Text>
+                                    <Icon name='foward' style={styles.primary} />
+                                </Button>
+                            </View>
+                        </View>
+                        <Border/>
+                    </ListItem>
+                )
+                
         switch (item.tranStatus) {
             case 1:
             default:
