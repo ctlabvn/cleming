@@ -81,67 +81,68 @@ export default class extends Component {
                     onEndReached={() => this._loadMore()}
                     onRefresh={() => this._onRefresh()}
                     refreshing={this.state.loading}>
-                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
-                        Doanh thu
-                    </Text>
+                    <View row style={styles.moneyTitle}>
+                        <Text strong bold grayDark>
+                            Doanh thu
+                        </Text>
+                        <View row>
+                            <Text strong bold grayDark orange
+                                  onPress={() => this._handlePressSumRevenue()}>21.592.000</Text>
+                            <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
+                                  onPress={() => this._handlePressSumRevenue()}/>
+                        </View>
+                    </View>
+
                     <View style={{marginRight: 20}}>
-                        <View row style={{justifyContent: 'space-between'}}>
+                        <View row style={styles.moneyContent}>
                             <Text medium grayDark>Tổng tiền Merchant đã thu:</Text>
                             <Text medium bold grayDark>16.320.000</Text>
                         </View>
-                        <View row style={{justifyContent: 'flex-end'}}>
-                            <Text medium grayDark>+</Text>
-                        </View>
-                        <View row style={{justifyContent: 'space-between'}}>
+                        <View row style={styles.moneyContent}>
                             <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
                             <Text medium bold grayDark>5.272.000</Text>
                         </View>
-                        <View row style={{justifyContent: 'flex-end'}}>
-                            <Text medium grayDark>=</Text>
-                        </View>
-                    </View>
-                    <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
-                        <Text strong bold grayDark orange
-                              onPress={() => this._handlePressSumRevenue()}>21.592.000</Text>
-                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
-                              onPress={() => this._handlePressSumRevenue()}/>
                     </View>
 
-                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
-                        Phí Clingme
-                    </Text>
-                    <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
-                        <Text strong bold grayDark orange>4.265.000</Text>
-                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
-                              onPress={() => this._handlePressSumRevenue()}/>
+                    <View row style={styles.moneyTitle}>
+                        <Text strong bold grayDark>
+                            Phí Clingme
+                        </Text>
+                        <View row style={styles.moneyNoIcon}>
+                            <Text strong bold grayDark orange>4.265.000</Text>
+                        </View>
                     </View>
 
-                    <Text strong bold grayDark style={{borderBottomWidth: 1}}>
-                        Đối soát
-                    </Text>
-                    <View>
-                        <View row style={{justifyContent: 'space-between'}}>
-                            <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
-                            <Text medium bold grayDark>5.272.000</Text>
-                        </View>
-                        <View row style={{justifyContent: 'flex-end'}}>
-                            <Text medium grayDark>-</Text>
-                        </View>
-                        <View row style={{justifyContent: 'space-between'}}>
-                            <Text medium grayDark>Phí Clingme đã thu:</Text>
-                            <Text medium bold grayDark>4.265.000</Text>
-                        </View>
-                        <View row style={{justifyContent: 'flex-end'}}>
-                            <Text medium grayDark>=</Text>
-                        </View>
 
-                        <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
+                    <View row style={styles.moneyTitle}>
+                        <Text strong bold grayDark>
+                            Merchant nhận lại từ Clingme
+                        </Text>
+                        <View row style={styles.moneyNoIcon}>
                             <Text strong bold grayDark orange>1.007.000</Text>
                         </View>
                     </View>
+                    {/*<View style={{marginLeft: 20}}>*/}
+                        {/*<Text medium>Merchant nhận lại từ Clingme</Text>*/}
+                    {/*</View>*/}
+                    <View row style={{justifyContent: 'center'}}>
+                        <Text medium bold grayDark
+                              style={{marginHorizontal: 10, alignSelf: 'flex-start'}}>=</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text medium grayDark>Tổng tiền Clingme đã thu</Text>
+                            <Text medium bold grayDark>(5.272.000)</Text>
+                        </View>
+                        <Text medium bold grayDark
+                              style={{marginHorizontal: 10, alignSelf: 'flex-start'}}>-</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text medium grayDark>Phí Clingme đã thu</Text>
+                            <Text medium bold grayDark>(4.265.000)</Text>
+                        </View>
+
+                    </View>
 
                 </Content>
-                <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}} />
+                <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}}/>
                 <View style={styles.fixButtonBlock}>
                     <Text medium onPress={() => alert('thanh toán Clingme')} gray>Thanh toán Clingme</Text>
                     <Text medium onPress={() => alert('tài khoản Cashout')} primary>Tài khoản Cashout</Text>
