@@ -104,8 +104,7 @@ export default class extends Component {
         switch (item.type) {
             case TYPE_PLACE:
                 return (
-                    <View>
-                        <Border/>
+                    <View style={{borderTopWidth: 1}}>
                         <Text medium bold grayDark style={{paddingHorizontal: 20, paddingVertical: 5}}>
                             Tại 94, Hoàng Quốc Việt, Cầu giấy: 8.050.000 đ
                         </Text>
@@ -114,7 +113,6 @@ export default class extends Component {
             case TYPE_ITEM:
                 return (
                     <View>
-                        <Border/>
                         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
                             <Icon name='coin_mark' style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
                             <View style={{paddingVertical: 5, flex: 1}}>
@@ -207,7 +205,25 @@ export default class extends Component {
             {'type': TYPE_SEE_MORE, 'item': 8},
             {'type': TYPE_PLACE, 'item': 9},
             {'type': TYPE_ITEM, 'item': 10},
-
+            {'type': TYPE_PLACE, 'item': 11},
+            {'type': TYPE_ITEM, 'item': 12},
+            {'type': TYPE_ITEM, 'item': 13},
+            {'type': TYPE_PLACE, 'item': 14},
+            {'type': TYPE_ITEM, 'item': 15},
+            {'type': TYPE_ITEM, 'item': 16},
+            {'type': TYPE_SEE_MORE, 'item': 17},
+            {'type': TYPE_PLACE, 'item': 18},
+            {'type': TYPE_ITEM, 'item': 19},
+            {'type': TYPE_ITEM, 'item': 20},
+            {'type': TYPE_SEE_MORE, 'item': 21},
+            {'type': TYPE_PLACE, 'item': 22},
+            {'type': TYPE_ITEM, 'item': 23},
+            {'type': TYPE_ITEM, 'item': 24},
+            {'type': TYPE_SEE_MORE, 'item': 25},
+            {'type': TYPE_PLACE, 'item': 26},
+            {'type': TYPE_ITEM, 'item': 27},
+            {'type': TYPE_ITEM, 'item': 28},
+            {'type': TYPE_SEE_MORE, 'item': 29},
         ]);
     }
 
