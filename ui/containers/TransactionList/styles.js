@@ -42,7 +42,7 @@ export default {
     },
     block: {
         flexDirection: 'column',
-        backgroundColor: material.white500,
+        // backgroundColor: material.white500,
         width: '100%',
         // borderRadius: 3,
         paddingLeft: 10,
@@ -52,7 +52,7 @@ export default {
     },
     blockConfirmed: {
         flexDirection: 'column',
-        backgroundColor: material.backgroundColor1,
+        // backgroundColor: material.backgroundColor1,
         width: '100%',
         // borderRadius: 3,
         paddingLeft: 10,
@@ -121,6 +121,16 @@ export default {
       marginRight: 0,
       borderBottomWidth: 0,
       paddingTop: 0
+    },
+    listItemRead: {
+      flexDirection: 'column',
+      paddingRight: 0,
+      paddingBottom: 0,
+      marginLeft: 0,
+      marginRight: 0,
+      borderBottomWidth: 0,
+      paddingTop: 0,
+      backgroundColor: material.gray300
     },
     iconBlock: {
         width: 40,

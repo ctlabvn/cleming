@@ -78,3 +78,8 @@ export const updateDateFilter = (payload) => ({
   type: 'transaction/updateDateFilter',
   payload,
 }) 
+
+export const markAsReadOffline = (payload) => ({
+  type: 'transaction/markAsReadOffline',
+  payload,
+})
