@@ -10,6 +10,7 @@ export default {
         backgroundColor: material.white500,
         marginLeft: 15,
         marginRight: 15,
+        // flex: 1,
     },
 
     moneyBand: {
@@ -61,5 +62,25 @@ export default {
 
     revenueDone: {
         color: material.green500,
+    },
+
+    fixButtonBlock: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        position: 'absolute',
+        width: '100%',
+        // borderTopWidth: 1,
+        bottom: 0
+    },
+    buttonFeedback: {
+        width: '50%',
+        borderRadius: 0,
+        justifyContent: 'center',
+        height: 50
+    },
+    backgroundLightGray: {
+        backgroundColor: material.gray300
     },
 }
