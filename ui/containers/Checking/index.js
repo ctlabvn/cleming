@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Text, List, ListItem, Spinner, View} from 'native-base'
+import {Container, Text, List, ListItem, Spinner, View, Button} from 'native-base'
 import {TouchableHighlight} from 'react-native'
 import I18n from '~/ui/I18n'
 import styles from './styles'
@@ -48,7 +48,7 @@ export default class extends Component {
     }
 
     _handlePressSumRevenue() {
-        const { forwardTo } = this.props
+        const {forwardTo} = this.props
         forwardTo('transactionHistory');
     }
 
@@ -101,8 +101,10 @@ export default class extends Component {
                         </View>
                     </View>
                     <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
-                            <Text strong bold grayDark orange onPress={()=>this._handlePressSumRevenue()}>21.592.000</Text>
-                            <Icon name='foward' style={{fontSize: 20, color: material.orange500}} onPress={()=>this._handlePressSumRevenue()}/>
+                        <Text strong bold grayDark orange
+                              onPress={() => this._handlePressSumRevenue()}>21.592.000</Text>
+                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
+                              onPress={() => this._handlePressSumRevenue()}/>
                     </View>
 
                     <Text strong bold grayDark style={{borderBottomWidth: 1}}>
@@ -110,7 +112,8 @@ export default class extends Component {
                     </Text>
                     <View row style={{justifyContent: 'flex-end', marginBottom: 20}}>
                         <Text strong bold grayDark orange>4.265.000</Text>
-                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}} onPress={()=>this._handlePressSumRevenue()}/>
+                        <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
+                              onPress={() => this._handlePressSumRevenue()}/>
                     </View>
 
                     <Text strong bold grayDark style={{borderBottomWidth: 1}}>
@@ -138,6 +141,11 @@ export default class extends Component {
                     </View>
 
                 </Content>
+                <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}} />
+                <View style={styles.fixButtonBlock}>
+                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>Thanh toán Clingme</Text>
+                    <Text medium onPress={() => alert('tài khoản Cashout')} primary>Tài khoản Cashout</Text>
+                </View>
             </Container>
         )
     }
