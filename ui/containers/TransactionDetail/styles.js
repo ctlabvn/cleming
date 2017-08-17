@@ -337,7 +337,7 @@ export default {
     feedbackButton: {
         backgroundColor: material.warningColor,
         justifyContent: 'center',
-        width: '100%'
+        width: '45%'
     },
     feedbackButtonDisable: {
         justifyContent: 'center',

@@ -29,6 +29,7 @@ import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
 import I18n from '~/ui/I18n'
 import * as metaAction from "~/store/actions/meta"
+import LoadingModal from "~/ui/components/LoadingModal"
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
@@ -66,7 +67,16 @@ export default class TransactionDetail extends Component {
     _renderBottomAction(transactionInfo) {
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (<Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}><Text medium white>{I18n.t('transaction_complain')}</Text></Button>)
+                return (
+                    <View style={styles.row}>
+                        <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
+                            <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
+                        </Button>
+                        <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
+                            <View><Text medium white>{I18n.t('transaction_complain')}</Text></View>
+                        </Button>
+                    </View>
+                )
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -123,6 +133,22 @@ export default class TransactionDetail extends Component {
                     setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 3000, 'top')
                     markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
                     this._load(this.state.transactionInfo.transactionId)
+                }
+            }
+        )
+    }
+
+    _handleConfirmDirectTransaction = () => {
+        const {sendDenyReason, xsession, markWillLoad, setToast} = this.props
+        this.loadingModal.show()
+        sendDenyReason(xsession, this.state.transactionInfo.dealTransactionId, 0, '', 1,
+            (err, data) => {
+                this.loadingModal.hide()
+                if (data && data.updated && data.updated.data && data.updated.data.success){
+                    markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
+                    let updatedTrans = {...this.state.transactionInfo, transactionStatus: TRANSACTION_DIRECT_STATUS.SUCCESS}
+                    setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 2000, 'top')
+                    this.setState({transactionInfo: updatedTrans})
                 }
             }
         )
@@ -611,7 +637,7 @@ export default class TransactionDetail extends Component {
         return (
             <Container style={{backgroundColor: material.white500}}>
                 <PopupInfo ref='popupInfo' />
-                {/*<LoadingModal loading={this.state.loading} />*/}
+                <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref}/>
                 <ViewPager style={{ flex: 1, height: '100%' }}
                     keyboardShouldPersistTaps='always'
                     onPageSelected={(event) => this.onSwipeViewPager(event)}

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import { View, Modal, TouchableOpacity, Platform } from 'react-native'
+import { View, Modal, TouchableOpacity, Platform, TouchableWithoutFeedback } from 'react-native'
 import { Text, Button } from 'native-base'
 import { connect } from 'react-redux'
 // for convenient, we can just import one
@@ -61,34 +61,38 @@ export default class extends Component {
           animationType={(position=='bottom') ? "slide" : "fade"}
           transparent={true}        
           onRequestClose={() => this._closeToast(100)}>
-          <View style={{            
-              flex: 1,
-              justifyContent: (position==='top') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start'
-            }} >
-              {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
-          </View>
+          <TouchableWithoutFeedback onPress={()=>this._closeToast(100)}>
+            <View style={{            
+                flex: 1,
+                justifyContent: (position==='top') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start'
+              }} >
+                {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
 
       )
     }
     return (
-      <View
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'absolute',      
-          backgroundColor: 'transparent',    
-        }}
-        >
-        <View style={{            
-            flex: 1,
-            justifyContent: (position==='top'||position==='topCenter') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start',
-            // top: position==='topCenter' ? 0 : 30
-            // top: 30,
-          }} >
-            {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
+      <TouchableWithoutFeedback onPress={()=>this._closeToast(100)}>
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',      
+            backgroundColor: 'transparent',    
+          }}
+          >
+          <View style={{            
+              flex: 1,
+              justifyContent: (position==='top'||position==='topCenter') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start',
+              // top: position==='topCenter' ? 0 : 30
+              // top: 30,
+            }} >
+              {typeof message === 'string' ? this.renderToastMessage(message, levelProps) : this.renderToastView(message)}      
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

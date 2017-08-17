@@ -2,19 +2,31 @@ import React, { Component } from 'react'
 import { Text, Button, Spinner} from 'native-base'
 import { View, Modal} from 'react-native'
 import styles from './styles'
-import PopupPhotoView from '~/ui/components/PopupPhotoView'
-export default class FeedbackDialogClingme extends Component {
+import material from '~/theme/variables/material.js'
+export default class LoadingModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalVisible: props.loading,
+            modalVisible: props.loading || false,
         }
     }
     setModalVisible(visible){
         this.setState({modalVisible: visible})
     }
+
+    show = () => {
+        this.setState({modalVisible: true})
+    }
+
+    hide = () => {
+        this.setState({modalVisible: false})
+    }
     componentWillReceiveProps(props){
-        this.setModalVisible(props.loading)
+        if (!props.loading){
+            this.setModalVisible(false)
+        }else{
+            this.setModalVisible(true)
+        }
     }
 
     render() {
@@ -24,12 +36,12 @@ export default class FeedbackDialogClingme extends Component {
                 transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={() => {
-                    this.setModalVisible(!this.state.modalVisible)
+                    this.setModalVisible(false)
                 }}
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
-                        <Spinner color='#00a9d4' style={styles.spinner}/>
+                        <Spinner color={material.primaryColor} style={styles.spinner}/>
                         <Text primary>{this.props.text}</Text>
                     </View>
                 </View>
