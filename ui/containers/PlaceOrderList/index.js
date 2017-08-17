@@ -371,9 +371,9 @@ export default class PlaceOrderList extends Component {
 
                     <ListViewExtend
                         onItemRef={ref=>this.listview=ref}
-                        onEndReached={this._loadMore} 
+                        onEndReached={()=> this._loadMore}
                         keyExtractor={item=>item.clingmeId}
-                        onRefresh={this._onRefresh}                        
+                        onRefresh={()=> this._onRefresh}
                         dataArray={booking.bookingList}
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
