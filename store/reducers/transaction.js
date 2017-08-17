@@ -8,7 +8,7 @@ export const initialState = {
 export const transaction = (state = initialState, { type, payload }) => {
   switch (type) {
 
-    case 'transa,ction/updateDateFilter':
+    case 'transaction/updateDateFilter':
       return {...state, currentDateFilter: payload}    
 
     case 'app/setListTransaction':

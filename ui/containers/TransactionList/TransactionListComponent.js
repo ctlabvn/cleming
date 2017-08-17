@@ -6,7 +6,7 @@ import ItemComponent from './TransactionItemComponent'
 import {_isArrDiff, _isArrDiffPartial} from '~/ui/shared/utils'
 // import EnhancedListView from '~/ui/components/EnhancedListView'
 import ListViewExtend from '~/ui/components/ListViewExtend'
-const checkProperties = ['dealTransactionId', 'transactionId', 'transactionStatus']
+const checkProperties = ['tranId', 'tranStatus']
 export default class extends Component {
     // constructor(props) {
     //     super(props)
@@ -19,6 +19,7 @@ export default class extends Component {
     //         ]
     //     )
     // }
+    //keyExtractor={(item)=>item[itemKey]}
 
     render() {
         console.log('Render List Component')
@@ -27,8 +28,7 @@ export default class extends Component {
         return (
                 <ListViewExtend dataArray={this.props.data}
                     renderRow={(item) => (<ItemComponent data={item} />)}
-                    keyExtractor={(item)=>item[itemKey]}
-                    // keyExtractorArr={checkProperties}
+                    keyExtractorArr={checkProperties}
                     {...props}
                 />
             

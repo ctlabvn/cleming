@@ -48,6 +48,7 @@ export default {
     'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.',
     'delivery_success': 'Giao thành công',
     'delivery_failed': 'Giao thất bại',
+    'received_feedback': 'Đã ghi nhận phản hồi.',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',

@@ -30,12 +30,12 @@ export default class ListViewExtend extends Component {
     if (keyExtractor){
       return (keyExtractor(r1) !== keyExtractor(r2))
     }
-    // if (!keyExtractorArr || keyExtractorArr.length == 0) return false
-    // for (let i=0; i < keyExtractorArr.length; i++){
-    //   if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
-    //     return true 
-    //   }
-    // }
+    if (!keyExtractorArr || keyExtractorArr.length == 0) return false
+    for (let i=0; i < keyExtractorArr.length; i++){
+      if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
+        return true 
+      }
+    }
     return false
   }
 
