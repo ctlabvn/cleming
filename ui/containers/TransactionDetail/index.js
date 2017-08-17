@@ -517,17 +517,17 @@ export default class TransactionDetail extends Component {
     }
 
     _handleFeedback = (dealTransactionId, reasonId, note) => {
-        const { xsession, sendDenyReason, setToast } = this.props
-        console.log('Feedback Handle', dealTransactionId + '---' + reasonId + '----' + note)
+        const { xsession, sendDenyReason, setToast, markWillLoad } = this.props
+        this.loadingModal.show()
         sendDenyReason(xsession, dealTransactionId, reasonId, note,
             (err, data) => {
-                console.log('Send Deny Reason: ', data)
+                this.loadingModal.hide()
                 if (data && data.updated && data.updated.data && data.updated.data.success) {
                     let updateTrans = Object.assign({}, this.state.transactionInfo)
                     updateTrans.transactionStatus = 5
                     this.setState({ transactionInfo: updateTrans })
-                    let message = <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 5, marginBottom: 50 }}><Text white>Đã ghi nhận phản hồi.</Text></View>
-                    setToast(message, 'info', null, null, 3000, 'bottom')
+                    setToast(getToastMessage(I18n.t('received_feedback')), 'info', null, null, 3000, 'top')
+                    markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
                 }
             }
         )
