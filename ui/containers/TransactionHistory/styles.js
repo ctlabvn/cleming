@@ -13,14 +13,7 @@ export default {
     },
 
     moneyBand: {
-        width: '100%',
-        flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 20,
-        paddingRight: 15,
-        backgroundColor: material.white500,
-        paddingVertical: 10,
-        alignItems: 'flex-end',
     },
 
     listItem: {
@@ -32,9 +25,7 @@ export default {
         paddingTop: 0,
     },
 
-    row: {
-        flexDirection: 'row'
-    },
+    subRow: {paddingVertical: 5, justifyContent: 'space-between'},
 
     itemContent: {
         flex: 1,
@@ -55,11 +46,13 @@ export default {
         padding: 25
     },
 
-    revenueProcessing: {
-        color: material.orange500,
-    },
-
-    revenueDone: {
-        color: material.green500,
+    button: {
+        flex: 1,
+        alignSelf:'center',
+        marginBottom: 20,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: material.blue400,
+        paddingHorizontal: 10
     },
 }

@@ -238,6 +238,7 @@ export default {
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
+        showTopDropdown: true,
     },
     withdrawDetail: {
         title: I18n.t('withdraw_detail'),
