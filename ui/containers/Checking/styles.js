@@ -33,21 +33,11 @@ export default {
         paddingTop: 0,
     },
 
-    row: {
-        flexDirection: 'row'
-    },
-
     itemContent: {
         flex: 1,
         paddingTop: 10,
         paddingBottom: 7,
         paddingRight: 20,
-    },
-
-    subRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 3,
     },
 
     icon: {
@@ -56,13 +46,19 @@ export default {
         padding: 25
     },
 
-    revenueProcessing: {
-        color: material.orange500,
+    moneyTitle: {
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        marginTop: 25,
+        marginBottom: 5,
+        width: '100%'
     },
 
-    revenueDone: {
-        color: material.green500,
+    moneyContent: {
+        justifyContent: 'space-between'
     },
+
+    moneyNoIcon: {marginRight: 20},
 
     fixButtonBlock: {
         height: 50,
