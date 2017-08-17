@@ -8,6 +8,9 @@ import * as commonActions from "~/store/actions/common";
 import * as transactionActions from "~/store/actions/transaction";
 import Icon from "~/ui/elements/Icon";
 import {getSession} from "~/store/selectors/auth";
+import I18n from '~/ui/I18n'
+import { formatNumber, getToastMessage, chainParse } from "~/ui/shared/utils"
+import LoadingModal from "~/ui/components/LoadingModal"
 @connect(state => ({ xsession: getSession(state) }), { ...commonActions, ...transactionActions })
 export default class FeedbackDialogClingme extends Component {
     constructor(props) {
@@ -19,20 +22,21 @@ export default class FeedbackDialogClingme extends Component {
     _handlePressOk = () => {
         const { goBack, setToast, route, xsession, sendDenyReasonClm } = this.props
         if (!this.state.value) {
-            setToast('Bạn phải nhập số tiền', 'danger')
+            setToast(getToastMessage('Bạn phải nhập số tiền'), 'info', null, null, 2000, 'top')
             return
         } else if (isNaN(this.state.value)) {
-            setToast('Số tiền phải ở dạng số', 'danger')
+            setToast(getToastMessage('Số tiền phải ở dạng số'), 'info', null, null, 2000, 'top')
             return
         }
-        console.log('Route', route.params)
         const clingmeId = route.params.dealID
         const reasonID = route.params.reasonID
         Keyboard.dismiss()
+        this.loadingModal.show()
         sendDenyReasonClm(xsession, clingmeId, reasonID, '', this.state.value,
             (err, data) => {
-                console.log('Deny Reason CLM', data)
-                if (data && data.updated && data.updated.data) {
+                this.loadingModal.hide()
+                if (chainParse(data, ['updated', 'data', 'success'])){
+                    setToast(getToastMessage(I18n.t('received_feedback')), 'info', null, null, 2000, 'top')
                     goBack()
                 }
             }
@@ -71,6 +75,7 @@ export default class FeedbackDialogClingme extends Component {
 
         return (
             <Container style={styles.container}>
+                <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref}/>
                 <Text>{text}</Text>
                 <Item style={styles.item}>
                     <Input

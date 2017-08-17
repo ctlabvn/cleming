@@ -1,6 +1,7 @@
 export const initialState = {
   totalPage: 1,
   pageNumber: 1,
+  readItems: [],
   listTransaction: [],
   totalRecord: 0,
   currentDateFilter: 'day',
@@ -43,6 +44,13 @@ export const transaction = (state = initialState, { type, payload }) => {
       return { ...state, denyReason: payload }
     case 'transaction/setDenyReasonClm':
       return {...state, denyReasonClm: payload}
+    case 'transaction/markAsReadOffline':
+      if (state.readItems.indexOf(payload) == -1){
+        let readItems = state.readItems.slice()
+        readItems.push(payload)
+        return {...state, readItems: readItems}
+      }
+      return state
     case 'app/logout':
       return {...state, ...initialState}
     default:

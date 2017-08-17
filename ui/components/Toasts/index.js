@@ -19,13 +19,14 @@ export default class extends Component {
     clearTimeout(this.timer) 
     if (duration>0) {
       this.timer = setTimeout(()=> this.props.clearToast(), duration)
+    }else{
+      this.props.clearToast()
     }
   }
   _onPress=(duration)=>{
     const {toast} = this.props
-    console.log('On Press Toast')
     toast.callback && toast.callback(toast.data)
-    this._closeToast(100)
+    this._closeToast(0)
   }
   renderToastMessage(message, levelProps){
     return (
@@ -61,7 +62,9 @@ export default class extends Component {
           animationType={(position=='bottom') ? "slide" : "fade"}
           transparent={true}        
           onRequestClose={() => this._closeToast(100)}>
-          <TouchableWithoutFeedback onPress={()=>this._closeToast(100)}>
+          <TouchableWithoutFeedback onPress={()=>{
+              this._closeToast(0)
+            }}>
             <View style={{            
                 flex: 1,
                 justifyContent: (position==='top') ? 'flex-start' : (position==='bottom') ? 'flex-end' : (position==='center') ? 'center' : 'flex-start'
@@ -74,7 +77,7 @@ export default class extends Component {
       )
     }
     return (
-      <TouchableWithoutFeedback onPress={()=>this._closeToast(100)}>
+      <TouchableWithoutFeedback onPress={()=>this._closeToast(0)}>
         <View
           style={{
             width: '100%',

@@ -4,6 +4,7 @@ import { Button, List, ListItem, Text } from "native-base";
 import { View } from "react-native";
 import styles from "./styles";
 import  {forwardTo} from "~/store/actions/common";
+import {markAsReadOffline} from '~/store/actions/transaction'
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
@@ -19,7 +20,9 @@ import {
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import {_isDiff} from '~/ui/shared/utils'
-@connect(null, {forwardTo})
+@connect(state=>({
+    readItems: state.transaction.readItems
+}), {forwardTo, markAsReadOffline})
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -33,15 +36,18 @@ export default class extends Component {
     //         ]
     //     )
     // }
+    _handlePressItem = (item) => {
+        // this.props.markAsReadOffline(item.tranId)
+        this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+    }
+
     _renderTransactionPayWithClingmeItem(item) {
         //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
-        switch (item.tranStatus) {
-            case 1:
-            default:
-                return (
-                    <ListItem style={styles.listItem}
+        let isRead = this.props.readItems.indexOf(item.tranId) > -1 ? true: false
+        return (
+                    <ListItem style={isRead ? styles.listItemRead : styles.listItem}
                         key={item.tranId}
-                        onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
+                        onPress={() => this._handlePressItem(item)}
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
@@ -55,40 +61,71 @@ export default class extends Component {
                                 <Text strong grayDark><Text big bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
                             </View>
                             <View style={styles.row}>
-                                <Text medium primary>{I18n.t('not_confirm_yet')}</Text>
-                                <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})} >
+                                <Text medium primary>{I18n.t('paid')}</Text>
+                                <View style={styles.row}>
                                     <Text medium bold primary>{I18n.t('detail')}</Text>
                                     <Icon name='foward' style={styles.primary} />
-                                </Button>
+                                </View>
                             </View>
                         </View>
                         <Border/>
                     </ListItem>
                 )
-            case 2:
-                return (
-                    <ListItem style={styles.listItem}
-                        key={item.tranId}
-                        onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
-                    >
-                        <View style={styles.block}>
-                            <View style={styles.rowPadding}>
-                                <Text medium style={styles.timestamp} grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                                <Text medium bold grayDark style={styles.transactionCodeClingme}>{item.tranCode}</Text>
+                
+        // switch (item.tranStatus) {
+        //     case 1:
+        //     default:
+        //         return (
+        //             <ListItem style={styles.listItem}
+        //                 key={item.tranId}
+        //                 onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
+        //             >
+        //                 <View style={styles.block}>
+        //                     <View style={styles.rowPadding}>
+        //                         <Text style={styles.timestamp} small grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+        //                         <Text medium bold grayDark>{item.userName}</Text>
+        //                     </View>
+        //                     <View style={styles.rowCenter}>
+        //                         <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.tranCode}</Text>
+        //                     </View>
+        //                     <View style={styles.rowCenter}>
+        //                         <Text strong grayDark><Text big bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+        //                     </View>
+        //                     <View style={styles.row}>
+        //                         <Text medium primary>{I18n.t('not_confirm_yet')}</Text>
+        //                         <Button transparent style={styles.button} onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})} >
+        //                             <Text medium bold primary>{I18n.t('detail')}</Text>
+        //                             <Icon name='foward' style={styles.primary} />
+        //                         </Button>
+        //                     </View>
+        //                 </View>
+        //                 <Border/>
+        //             </ListItem>
+        //         )
+        //     case 2:
+        //         return (
+        //             <ListItem style={styles.listItem}
+        //                 key={item.tranId}
+        //                 onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
+        //             >
+        //                 <View style={styles.block}>
+        //                     <View style={styles.rowPadding}>
+        //                         <Text medium style={styles.timestamp} grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+        //                         <Text medium bold grayDark style={styles.transactionCodeClingme}>{item.tranCode}</Text>
 
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Text medium grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
-                            </View>
-                            <View style={styles.rowPadding}>
-                                <Text medium success>{I18n.t('confirmed')}</Text>
-                                <Text grayDark><Text strong bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
-                            </View>
-                        </View>
-                        <Border/>
-                    </ListItem>
-                )
-        }
+        //                     </View>
+        //                     <View style={styles.rowPadding}>
+        //                         <Text medium grayDark>{I18n.t('customer')}: <Text small bold grayDark>{item.userName}</Text></Text>
+        //                     </View>
+        //                     <View style={styles.rowPadding}>
+        //                         <Text medium success>{I18n.t('confirmed')}</Text>
+        //                         <Text grayDark><Text strong bold grayDark style={styles.moneyNumberClingme}>{formatNumber(item.moneyAmount)}</Text>đ</Text>
+        //                     </View>
+        //                 </View>
+        //                 <Border/>
+        //             </ListItem>
+        //         )
+        // }
     }
 
     _renderTransactionItem(item) {
@@ -133,11 +170,12 @@ export default class extends Component {
                 statusText = <Text medium warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold>{item.tranCode}</Text>
         }
+        let isRead = this.props.readItems.indexOf(item.tranId) > -1 ? true: false
         return (
             <ListItem
                 key={item.tranId}
-                onPress={() => this.props.forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})}
-                style={styles.listItem}
+                onPress={()=>this._handlePressItem(item)}
+                style={isRead ? styles.listItemRead : styles.listItem}
             >
                 <View style={styles.block}>
                     <View style={{ ...styles.row, alignItems: 'flex-start' }}>
