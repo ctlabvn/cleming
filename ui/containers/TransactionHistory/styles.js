@@ -50,9 +50,6 @@ export default {
         flex: 1,
         alignSelf:'center',
         marginBottom: 20,
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: material.blue400,
         paddingHorizontal: 10
     },
 }
