@@ -8,8 +8,8 @@ export default {
 
     content: {
         backgroundColor: material.white500,
-        marginLeft: 15,
-        marginRight: 15,
+        marginLeft: 5,
+        marginRight: 5,
         // flex: 1,
     },
 
@@ -17,7 +17,7 @@ export default {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingLeft: 20,
+        paddingLeft: 10,
         paddingRight: 15,
         backgroundColor: 'white',
         paddingVertical: 10,
