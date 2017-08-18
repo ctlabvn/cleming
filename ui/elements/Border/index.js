@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react'
 import { View } from 'react-native'
+import material from '~/theme/variables/material'
+
+const zIndex = material.platform === 'ios' ? 'zIndex' : 'elevation'
 
 export default class Border extends PureComponent {
 
@@ -20,7 +23,7 @@ export default class Border extends PureComponent {
     return (
       <View style={{        
         ...style,
-        zIndex:1,
+        [zIndex]: 1,
         overflow: 'hidden',
         [prop1]: size,
         [prop2]: '100%',

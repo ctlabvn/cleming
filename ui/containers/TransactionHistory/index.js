@@ -48,6 +48,38 @@ export default class extends Component {
             money: 21592000,
             loading: false,
         }
+
+        this.data = [
+            {'type': TYPE_PLACE, 'item': 1},
+            {'type': TYPE_ITEM, 'item': 2},
+            {'type': TYPE_ITEM, 'item': 3},
+            {'type': TYPE_SEE_MORE, 'item': 4},
+            {'type': TYPE_PLACE, 'item': 5},
+            {'type': TYPE_ITEM, 'item': 6},
+            {'type': TYPE_ITEM, 'item': 7},
+            {'type': TYPE_SEE_MORE, 'item': 8},
+            {'type': TYPE_PLACE, 'item': 9},
+            {'type': TYPE_ITEM, 'item': 10},
+            {'type': TYPE_PLACE, 'item': 11},
+            {'type': TYPE_ITEM, 'item': 12},
+            {'type': TYPE_ITEM, 'item': 13},
+            {'type': TYPE_PLACE, 'item': 14},
+            {'type': TYPE_ITEM, 'item': 15},
+            {'type': TYPE_ITEM, 'item': 16},
+            {'type': TYPE_SEE_MORE, 'item': 17},
+            {'type': TYPE_PLACE, 'item': 18},
+            {'type': TYPE_ITEM, 'item': 19},
+            {'type': TYPE_ITEM, 'item': 20},
+            {'type': TYPE_SEE_MORE, 'item': 21},
+            {'type': TYPE_PLACE, 'item': 22},
+            {'type': TYPE_ITEM, 'item': 23},
+            {'type': TYPE_ITEM, 'item': 24},
+            {'type': TYPE_SEE_MORE, 'item': 25},
+            {'type': TYPE_PLACE, 'item': 26},
+            {'type': TYPE_ITEM, 'item': 27},
+            {'type': TYPE_ITEM, 'item': 28},
+            {'type': TYPE_SEE_MORE, 'item': 29},
+        ]
     }
 
     _handlePressFilter(data) {
@@ -68,7 +100,7 @@ export default class extends Component {
 
     _handlePressSumRevenue() {
         const {forwardTo} = this.props
-        forwardTo('transactionHistory');
+        // forwardTo('transactionHistory');
     }
 
     _renderMoneyBand(money) {
@@ -105,16 +137,15 @@ export default class extends Component {
             case TYPE_PLACE:
                 return (
                     <View>
-                        <Border/>
+                        <Border/>                        
                         <Text medium bold grayDark style={{paddingHorizontal: 20, paddingVertical: 5}}>
                             Tại 94, Hoàng Quốc Việt, Cầu giấy: 8.050.000 đ
-                        </Text>
+                        </Text>                        
                     </View>
                 )
             case TYPE_ITEM:
                 return (
                     <View>
-                        <Border/>
                         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
                             <Icon name='coin_mark' style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
                             <View style={{paddingVertical: 5, flex: 1}}>
@@ -138,11 +169,15 @@ export default class extends Component {
                 )
             case TYPE_SEE_MORE:
                 return (
+                    <View>
                   <Text small blue style={styles.button} onPress={()=>this._handleSeeMore()}> xem thêm </Text>
+                  </View>
                 )
             default:
                 return (
+                    <View>
                     <Text>...</Text>
+                    </View>
                 )
         }
         // if (item.type == TYPE_PLACE) {
@@ -194,22 +229,6 @@ export default class extends Component {
         // return (<Text medium primary bold> item {item.item} </Text>);
     }
 
-    _getArrayList() {
-        // return ([{'item':1},{'item':2},{'item':3},])
-        return ([
-            {'type': TYPE_PLACE, 'item': 1},
-            {'type': TYPE_ITEM, 'item': 2},
-            {'type': TYPE_ITEM, 'item': 3},
-            {'type': TYPE_SEE_MORE, 'item': 4},
-            {'type': TYPE_PLACE, 'item': 5},
-            {'type': TYPE_ITEM, 'item': 6},
-            {'type': TYPE_ITEM, 'item': 7},
-            {'type': TYPE_SEE_MORE, 'item': 8},
-            {'type': TYPE_PLACE, 'item': 9},
-            {'type': TYPE_ITEM, 'item': 10},
-
-        ]);
-    }
 
     render() {
         return (
@@ -225,7 +244,7 @@ export default class extends Component {
                     onEndReached={() => this._loadMore()}
                     keyExtractor={item => item.item}
                     onRefresh={() => this._onRefresh()}
-                    dataArray={this._getArrayList()}
+                    dataArray={this.data}
                     renderRow={(item) => this._renderBookingItem(item)}
                 />
 
