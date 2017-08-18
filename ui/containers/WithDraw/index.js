@@ -91,13 +91,15 @@ export default class extends Component {
                 </View>
                 <View style={styles.pd10}>
                     <ScrollView>
-                        <BankSelection listAccounts={bank} ref={bankSelection=>this.bankSelection=bankSelection} />
-                    </ScrollView>
-                    <TouchableOpacity onPress={()=>forwardTo('bankAccount')}>
-                        <View style={{ ...styles.bankLogoContainer, justifyContent: 'center', height: 50 }}>
-                            <Text primary>+  {I18n.t('add_account')}</Text>
+                        <View style={{paddingBottom: 150}}>
+                            <BankSelection listAccounts={bank} ref={bankSelection=>this.bankSelection=bankSelection} />
+                            <TouchableOpacity onPress={()=>forwardTo('bankAccount')}>
+                                <View style={{ ...styles.bankLogoContainer, justifyContent: 'center', height: 50 }}>
+                                    <Text primary>+  {I18n.t('add_account')}</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                    </ScrollView>
                 </View>
                 <Button style={styles.okBtn} onPress={() => this._handlePressOk()}>
                     <Text white>OK</Text>
