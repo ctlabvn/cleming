@@ -107,11 +107,6 @@ export default class extends Component {
 
     }
 
-    _handlePressSumRevenue() {
-        const {forwardTo} = this.props
-        // forwardTo('transactionHistory');
-    }
-
     _renderMoneyBand(money) {
         let moneyTitle;
         let totalMoney;
