@@ -111,15 +111,15 @@ export default class extends Component {
         let moneyTitle;
         let totalMoney;
         let clingmeFee;
-         if (this.state.currentTab == MERCHANT_COLLECTED) {
-             moneyTitle = 'Tổng tiền Merchant đã thu'
-             totalMoney = '16.320.000'
-             clingmeFee = '3.320.000'
-         } else {
-             moneyTitle = 'Tổng tiền Clingme đã thu'
-             totalMoney = '5.272.000'
-             clingmeFee = '945.000'
-         }
+        if (this.state.currentTab == MERCHANT_COLLECTED) {
+            moneyTitle = 'Tổng tiền Merchant đã thu'
+            totalMoney = '16.320.000'
+            clingmeFee = '3.320.000'
+        } else {
+            moneyTitle = 'Tổng tiền Clingme đã thu'
+            totalMoney = '5.272.000'
+            clingmeFee = '945.000'
+        }
 
         return (
             <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
@@ -162,7 +162,9 @@ export default class extends Component {
             case TYPE_ITEM:
                 return (
                     <View>
-                        <Border/>
+                        <View style={{marginHorizontal: 0}}>
+                            <Border/>
+                        </View>
                         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
                             <Icon name='coin_mark'
                                   style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
