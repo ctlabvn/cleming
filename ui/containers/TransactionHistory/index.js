@@ -23,8 +23,6 @@ import Content from "~/ui/components/Content";
 import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
-import {REVENUE_PROCESSING, REVENUE_DONE} from '~/store/constants/app'
-import {REVENUE_DELIVERY, REVENUE_CLINGME_PAY} from '~/store/constants/app'
 import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
 
 import I18n from '~/ui/I18n'
@@ -44,7 +42,7 @@ export default class extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currenTab: MERCHANT_COLLECTED,
+            currentTab: MERCHANT_COLLECTED,
             money: 21592000,
             loading: false,
         }
@@ -83,11 +81,22 @@ export default class extends Component {
     }
 
     _handlePressFilter(data) {
-        alert(JSON.stringify(data));
+
     }
 
     _handlePressTab(data) {
-        alert(JSON.stringify(data));
+        switch (data.tabID) {
+            case MERCHANT_COLLECTED:
+                this.setState({
+                    currentTab: MERCHANT_COLLECTED,
+                });
+                break;
+            case CLINGME_COLLECTED:
+                this.setState({
+                    currentTab: CLINGME_COLLECTED,
+                });
+                break;
+        }
     }
 
     _loadMore() {
@@ -98,22 +107,29 @@ export default class extends Component {
 
     }
 
-    _handlePressSumRevenue() {
-        const {forwardTo} = this.props
-        // forwardTo('transactionHistory');
-    }
-
     _renderMoneyBand(money) {
-        var moneyNumber;
+        let moneyTitle;
+        let totalMoney;
+        let clingmeFee;
+        if (this.state.currentTab == MERCHANT_COLLECTED) {
+            moneyTitle = 'Tổng tiền Merchant đã thu'
+            totalMoney = '16.320.000'
+            clingmeFee = '3.320.000'
+        } else {
+            moneyTitle = 'Tổng tiền Clingme đã thu'
+            totalMoney = '5.272.000'
+            clingmeFee = '945.000'
+        }
+
         return (
             <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
                 <View row style={styles.moneyBand}>
-                    <Text medium grayDark>Tổng tiền Merchant đã thu</Text>
-                    <Text largeLight green bold>16.320.000 đ</Text>
+                    <Text medium grayDark>{moneyTitle}</Text>
+                    <Text largeLight green bold>{totalMoney} đ</Text>
                 </View>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>Phí Clingme</Text>
-                    <Text largeLight bold grayDark>3.320.000 đ</Text>
+                    <Text largeLight bold grayDark>{clingmeFee} đ</Text>
                 </View>
             </View>
         )
@@ -137,17 +153,21 @@ export default class extends Component {
             case TYPE_PLACE:
                 return (
                     <View>
-                        <Border/>                        
+                        <Border/>
                         <Text medium bold grayDark style={{paddingHorizontal: 20, paddingVertical: 5}}>
                             Tại 94, Hoàng Quốc Việt, Cầu giấy: 8.050.000 đ
-                        </Text>                        
+                        </Text>
                     </View>
                 )
             case TYPE_ITEM:
                 return (
                     <View>
+                        <View style={{marginHorizontal: 0}}>
+                            <Border/>
+                        </View>
                         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
-                            <Icon name='coin_mark' style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
+                            <Icon name='coin_mark'
+                                  style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
                             <View style={{paddingVertical: 5, flex: 1}}>
                                 <View row style={styles.subRow}>
                                     <Text medium bold grayDark>#DTL12345</Text>
@@ -170,73 +190,30 @@ export default class extends Component {
             case TYPE_SEE_MORE:
                 return (
                     <View>
-                  <Text small blue style={styles.button} onPress={()=>this._handleSeeMore()}> xem thêm </Text>
-                  </View>
+                        <Button transparent gray bordered small rounded style={styles.button}
+                                onPress={() => this._handleSeeMore()}>
+                            <Text small>
+                                xem thêm
+                            </Text>
+                        </Button>
+                    </View>
                 )
             default:
                 return (
                     <View>
-                    <Text>...</Text>
+                        <Text>...</Text>
                     </View>
                 )
         }
-        // if (item.type == TYPE_PLACE) {
-        //     return (
-        //         <View>
-        //             <Border/>
-        //             <Text medium bold grayDark style={{paddingHorizontal: 20, paddingVertical: 5}}>
-        //                 Tại 94, Hoàng Quốc Việt, Cầu giấy: 8.050.000 đ
-        //             </Text>
-        //         </View>
-        //     )
-        // } else if (item.type == TYPE_ITEM) return (
-        //     <View>
-        //         <Border/>
-        //         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
-        //             <Icon name='coin_mark' style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
-        //             <View style={{paddingVertical: 5, flex: 1}}>
-        //                 <View row style={styles.subRow}>
-        //                     <Text medium bold grayDark>
-        //                         #DTL12345
-        //                     </Text>
-        //                     <Text medium grayDark>
-        //                         17:30 17/08/2017
-        //                     </Text>
-        //                 </View>
-        //
-        //                 <View row style={styles.subRow}>
-        //                     <Text medium orange>
-        //                         Cashback Thành công
-        //                     </Text>
-        //                     <Text medium bold grayDark>
-        //                         3.246.000 đ
-        //                     </Text>
-        //                 </View>
-        //
-        //                 <View row style={styles.subRow}>
-        //                     <Text medium grayDark>
-        //                         Phí Clingme
-        //                     </Text>
-        //                     <Text medium bold grayDark>
-        //                         846.000 đ
-        //                     </Text>
-        //                 </View>
-        //             </View>
-        //         </View>
-        //     </View>
-        // )
-        //
-        // return (<Text medium primary bold> item {item.item} </Text>);
     }
-
 
     render() {
         return (
             <Container style={styles.container}>
-                <TabsWithNoti tabData={options.tabData} activeTab={MERCHANT_COLLECTED}
-                              onPressTab={data => this._handlePressTab}
+                <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
+                              onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter} ref='dateFilter'/>
+                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
                 {this._renderMoneyBand(this.state.money)}
                 <ListViewExtend
                     style={{flex: 1}}

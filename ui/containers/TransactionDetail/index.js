@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, Spinner, Text, Thumbnail } from "native-base";
+import { Button, Container, Spinner, Text, Thumbnail, List, ListItem } from "native-base";
 import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react-native";
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import { formatNumber, getToastMessage, chainParse } from "~/ui/shared/utils";
+import { formatNumber, getToastMessage, chainParse, formatPhoneNumber } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
+import * as orderActions from "~/store/actions/order";
 import { getSession } from "~/store/selectors/auth";
 import { storeFilled, storeTransparent } from "~/assets";
 import PopupPhotoView from "~/ui/components/PopupPhotoView";
@@ -16,14 +17,17 @@ import FeedbackDialog from "./FeedbackDialog";
 import FeedbackDialogClingme from "./FeedbackDialogClingme";
 import PopupInfo from "~/ui/components/PopupInfo";
 import Content from "~/ui/components/Content";
+import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants"
 import {
     DEFAULT_TIME_FORMAT,
+    TIME_FORMAT_WITHOUT_SECOND,
     FEEDBACK_CLM_TRANSACTION,
     GENERAL_ERROR_MESSAGE,
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT,
-    SCREEN
+    TRANSACTION_TYPE_ORDER_SUCCESS,
+    SCREEN, FAST_DELIVERY
 } from "~/store/constants/app";
 import { ViewPager } from "rn-viewpager";
 import material from "~/theme/variables/material";
@@ -35,7 +39,7 @@ import LoadingModal from "~/ui/components/LoadingModal"
     transaction: state.transaction,
     denyReason: state.transaction.denyReason,
     denyReasonClm: state.transaction.denyReasonClm
-}), { ...transactionActions, ...commonActions, ...notificationActions, ...metaAction })
+}), { ...transactionActions, ...commonActions, ...notificationActions, ...metaAction, ...orderActions })
 export default class TransactionDetail extends Component {
     constructor(props) {
         super(props)
@@ -90,16 +94,13 @@ export default class TransactionDetail extends Component {
     }
 
     _renderInvoiceBlock(transactionInfo) {
-        console.log('Go to function')
         if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
-            console.log('Case 1 show', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
                     <Text medium style={styles.invoiceLabel}>{I18n.t('bill_number')}: </Text>
                     <Text medium style={styles.invoice}>{transactionInfo.invoiceNumber}</Text>
                 </View>)
         } else {
-            console.log('Case 2 hide', transactionInfo)
             return (
                 <View style={styles.invoiceBlock}>
                     <Text medium transparent style={{ ...styles.invoiceLabel, ...styles.backgroundTransparent, color: 'transparent' }}>{I18n.t('bill_number')}: </Text>
@@ -127,8 +128,6 @@ export default class TransactionDetail extends Component {
         confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
             (err, data) => {
                 this.confirmCounter = 0
-                console.log('Confirm Err', err)
-                console.log('Confirm Data', data)
                 if (chainParse(data, ['updated', 'data', 'success'])) {
                     setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 3000, 'top')
                     markWillLoad(SCREEN.TRANSACTION_LIST_CLINGME)
@@ -159,18 +158,23 @@ export default class TransactionDetail extends Component {
         let index = 0, transactionId
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.transactionId
-            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-            if (index <= 0) return
-            index--
-            let preTrans = transaction.listTransaction[index]
-            this._load(preTrans.tranId)
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-            if (index <= 0) return
-            index--
-            let preTrans = transaction.listTransaction[index]
-            this._load(preTrans.tranId)
+        }else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS){
+            transactionId = this.state.transactionInfo.orderInfo.clingmeId
+        }
+        index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
+        if (index == -1){
+            index = transaction.listTransaction.findIndex(item => item.posOrderId == transactionId)
+        }
+        if (index <= 0) return
+        index--
+        let preTrans = transaction.listTransaction[index]
+        this.setState({ type: preTrans.tranType })
+        if (preTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+            this._load(preTrans.posOrderId, preTrans.tranType)
+        }else{
+            this._load(preTrans.tranId, preTrans.tranType)
         }
     }
 
@@ -179,19 +183,22 @@ export default class TransactionDetail extends Component {
         let transactionId, index = 0
         if (this.state.type == TRANSACTION_TYPE_CLINGME) {
             transactionId = this.state.transactionInfo.transactionId
-            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-            if (index >= transaction.listTransaction.length - 1) return
-            index++
-            let nextTrans = transaction.listTransaction[index]
-            this._load(nextTrans.tranId)
-
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-            index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-            if (index >= transaction.listTransaction.length - 1) return
-            index++
-            let nextTrans = transaction.listTransaction[index]
-            this._load(nextTrans.tranId)
+        } else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS){
+            transactionId = this.state.transactionInfo.orderInfo.clingmeId
+        }
+        index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
+        if (index == -1){
+            index = transaction.listTransaction.findIndex(item => item.posOrderId == transactionId)
+        }
+        if (index >= transaction.listTransaction.length - 1) return
+        index++
+        let nextTrans = transaction.listTransaction[index]
+        if (nextTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+            this._load(nextTrans.posOrderId, nextTrans.tranType)
+        }else{
+            this._load(nextTrans.tranId, nextTrans.tranType)
         }
     }
 
@@ -216,32 +223,6 @@ export default class TransactionDetail extends Component {
         // })
 
     }
-
-    // Go to Page 
-    // componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
-        // const { app, denyReason, denyReasonClm, getListDenyReason, getDenyReasonClm, xsession, listTransaction, getTransactionDetail, route } = this.props
-        // this.confirmCounter = 0
-        // this._goToMiddlePage()
-        // let transactionId = route.params.id
-        // let transactionType = +route.params.type
-        // this.setState({ type: transactionType })
-        // this._load(transactionId)
-        // if (!denyReason || denyReason.length == 0) {
-        //     getListDenyReason(xsession)
-        // }
-        // if (!denyReasonClm || denyReasonClm.length == 0) {
-        //     getDenyReasonClm(xsession)
-        // }
-        // })
-
-    // }
-
-    // componentWillBlur(){
-    //     // just to clear the view
-    //     // console.log('render')
-    //     this.setState({ transactionInfo: {} })
-    // }
 
     renderClingme(transactionInfo){
         let payStatus, helpBtn = null
@@ -292,7 +273,7 @@ export default class TransactionDetail extends Component {
                         dealTransactionId={transactionInfo.transactionId}
                     />
                     <View style={{ ...styles.block, alignSelf: 'flex-start' }}>
-                        <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
                         <Text medium gray>{I18n.t('transaction_number')}</Text>
@@ -434,6 +415,123 @@ export default class TransactionDetail extends Component {
             </Content>
         )
     }
+    renderOrder = (transactionInfo) => {
+        let rejectReason = null
+        let otherRequire = chainParse(transactionInfo, ['orderInfo', 'note']);
+        let otherRequireBlock = (
+            <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
+                <Text medium grayDark>{I18n.t('other_require')}</Text>
+                <Text strong bold grayDark>{chainParse(transactionInfo, ['orderInfo', 'note'])}</Text>
+            </View>
+        )
+        let totalItem = 0
+        if (transactionInfo.orderRowList) {
+            totalItem = transactionInfo.orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
+        }
+        if (transactionInfo && transactionInfo.orderInfo && transactionInfo.orderInfo.orderRejectReason
+            && (transactionInfo.orderInfo.orderRejectReason.note || transactionInfo.orderInfo.orderRejectReason.reason)) {
+            rejectReason = (transactionInfo.orderInfo.orderRejectReason.note || transactionInfo.orderInfo.orderRejectReason.reason)
+        }
+        return (
+            <Content>
+                <View style={styles.rowPadding}>
+                        <Text success largeLight bold>{I18n.t('order_completed')}</Text>
+                        <Text medium grayDark style={{ marginRight: 5, marginTop: 3 }}>
+                            {moment(chainParse(transactionInfo, ['orderInfo', 'clingmeCreatedTime']) * 1000).format(DEFAULT_TIME_FORMAT)}
+                        </Text>   
+                </View>
+                <View style={styles.rowPadding}>
+                    <Text medium grayDark>{I18n.t('order_number_2')}</Text>
+                    <Text medium primary bold>{chainParse(transactionInfo, ['orderInfo', 'tranId'])}</Text>
+                </View>
+                {(chainParse(transactionInfo, ['orderInfo', 'feedback']) != null) &&
+                    <View style={{ ...styles.block, ...styles.paddingTopMedium, ...styles.pd10 }}>
+                        <Text medium grayDark>{I18n.t('customer_feedback')}</Text>
+                        <Text medium bold grayDark>{transactionInfo.orderInfo.feedback}</Text>
+                    </View>
+                }
+                {(rejectReason) &&
+                    <View style={{ ...styles.block, ...styles.paddingTopMedium }}>
+                        <Text medium grayDark>{I18n.t('failed_order_reason')}</Text>
+                        <Text medium bold grayDark>{rejectReason}</Text>
+                    </View>
+                }
+                <View style={styles.line} />
+                <View style={{ ...styles.block, ...styles.pd10 }}>
+                    <Text medium  grayDark>{I18n.t('deliver_address')}</Text>
+                    <Text medium bold grayDark>{chainParse(transactionInfo, ['orderInfo', 'fullAddress'])}
+                        {(parseFloat(chainParse(transactionInfo, ['orderInfo', 'deliveryDistance'])) > 0) &&
+                            <Text medium bold grayDark> - {parseFloat(chainParse(transactionInfo, ['orderInfo', 'deliveryDistance'])).toFixed(2)} km</Text>
+                        }
+                    </Text>
+                </View>
+
+
+                <View style={styles.rowPaddingTopLarge}>
+                    <Text medium grayDark>{I18n.t('receive_user')}</Text>
+                    <Text strong bold grayDark>{chainParse(transactionInfo, ['orderInfo', 'userInfo', 'memberName'])}</Text>
+                </View>
+                <View style={styles.rowPaddingTopMedium}>
+                    <Text medium grayDark>{I18n.t('phone_number')}</Text>
+
+                    <TouchableWithoutFeedback>
+                        <View style={styles.row}>
+                            <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
+                            <Text strong bold
+                                primary>{formatPhoneNumber(chainParse(transactionInfo, ['orderInfo', 'userInfo', 'phoneNumber']))}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                    {
+                        (chainParse(transactionInfo, ['orderInfo', 'enableFastDelivery']) == FAST_DELIVERY.YES) &&
+                        <View style={styles.rowPaddingTopMedium}>
+                            <Text medium grayDark>{I18n.t('receive_within')}</Text>
+                            <Text medium bold grayDark>{BASE_COUNTDOWN_ORDER_MINUTE}'</Text>
+                        </View>
+                    }
+
+                    {otherRequire != null ? otherRequireBlock : null}
+
+                    <View style={{...styles.line, marginTop: 5}} />
+                    <View style={styles.rowPadding}>
+                        <Text medium bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
+                    </View>
+                    <List
+                        style={{marginBottom: 20}}
+                        dataArray={transactionInfo.orderRowList}
+                        renderRow={(item) => (
+                            <ListItem style={styles.orderItem}>
+                                <View style={styles.cartLeft}>
+                                    <Image style={{ width: 60, height: 60 }} source={{ uri: item.itemImage }} />
+                                    <View style={styles.cartContent}>
+                                        <Text medium grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
+                                        <Text medium grayDark style={styles.textLeft}>{I18n.t('number_full')}: {item.quantity}</Text>
+                                    </View>
+                                </View>
+                                <Text strong bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
+                            </ListItem>
+                        )
+                        }>
+                    </List>
+                    <View style={{paddingBottom: 50}}>
+                        <View style={styles.rowPadding}>
+                            <Text medium bold grayDark>{I18n.t('money')}:</Text>
+                            <Text medium bold grayDark>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'price']))}đ</Text>
+                        </View>
+                        <View style={styles.rowPadding}>
+                            <Text medium grayDark>{I18n.t('ship_fee')}:</Text>
+                            <Text medium
+                                grayDark>{(transactionInfo && transactionInfo.orderInfo && transactionInfo.orderInfo.shipPriceReal > 0) ? formatNumber(transactionInfo.orderInfo.shipPriceReal) : 0}đ</Text>
+                        </View>
+                        <View style={styles.line} />
+                        <View style={styles.rowPadding}>
+                            <Text strong bold grayDark>{I18n.t('total_pay')}: </Text>
+                            <Text strong bold error>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'moneyAmount']))}đ</Text>
+                        </View>
+                    </View>
+            </Content>
+        )
+    }
 
     _renderContent() {
         let transactionInfo = this.state.transactionInfo
@@ -441,15 +539,18 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_TYPE_CLINGME:
                 return this.renderClingme(transactionInfo)
             case TRANSACTION_TYPE_DIRECT:
-                return this.renderDirect(transactionInfo)            
+                return this.renderDirect(transactionInfo)
+            case TRANSACTION_TYPE_ORDER_SUCCESS:
+                return this.renderOrder(transactionInfo)            
         }
     }
 
-    _load = (transactionId) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, setToast, forwardTo, updateRead, goBack, markAsReadOffline } = this.props
-        let transactionType = route.params.type
+    _load = (transactionId, transType) => {
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, 
+            setToast, forwardTo, updateRead, goBack, getOrderDetail } = this.props
+        let transactionType = transType || route.params.type
         // this.setState({ loading: true })
-        markAsReadOffline(transactionId)
+        // markAsReadOffline(transactionId)
         if (transactionType == TRANSACTION_TYPE_CLINGME) {
             getTransactionDetailPayWithClingme(xsession, transactionId,
                 (err, data) => {
@@ -473,7 +574,7 @@ export default class TransactionDetail extends Component {
                             }
                         }
                         // console.log('Start Set State/')
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type: transactionType },
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -518,7 +619,7 @@ export default class TransactionDetail extends Component {
                             updateRead(xsession, transInfo.notifyIdCorrespond)
                         }
 
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext },
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type : transactionType},
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -528,6 +629,39 @@ export default class TransactionDetail extends Component {
                         setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
                         goBack()
                         return
+                    }
+                }
+            )
+        }else if (transactionType == TRANSACTION_TYPE_ORDER_SUCCESS){
+            getOrderDetail(xsession, transactionId,
+                (err, data) => {
+                    if (err) {
+                        if (err.code == 1522) {
+                            setToast(getToastMessage(I18n.t('err_order_not_exists')), 'info', null, null, 3000, 'top')
+                            goBack()
+                            return
+                        }
+                        setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+                        goBack()
+                        return
+                    }
+                    if (data && data.updated) {
+                        let transInfo = data.updated
+                        let hasNext = false, hasPrevious = false
+                        if (transaction) {
+                            let index = transaction.listTransaction.findIndex(item => item.posOrderId == transactionId)
+                            // console.log('Index DIRECT', index)
+                            if (index != -1) {
+                                hasPrevious = (index == 0) ? false : true
+                                hasNext = (index == transaction.listTransaction.length - 1) ? false : true
+                            }
+                        }
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type : transactionType },
+                            () => {
+                                this.swiping = true
+                                this.refs.viewPager.setPageWithoutAnimation(this.state.page)
+                            }
+                        )
                     }
                 }
             )
@@ -610,18 +744,9 @@ export default class TransactionDetail extends Component {
         console.log('Render TransactionDetail')
         const { route } = this.props
         if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
-            // return (
-            //     // <LoadingModal loading={true} />
-            //     <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-            //         <Spinner />
-            //         {/*<Text>Loading...</Text>*/}
-            //     </View>
-            // )
             return null
         }
         let transactionInfo = this.state.transactionInfo
-        console.log('Trans Info', transactionInfo)
-
         let btnPrev, btnNext
         if (this.state.hasPrevious) {
             btnPrev = (

@@ -68,6 +68,8 @@ export default class TopDropdown extends Component {
     }
     toggle() {
         // LayoutAnimation.easeInEaseOut()
+        this.needSearch = this.props.app.topDropdownListValue.needSearch();
+
         this.setState({
             openningDropdown: !this.state.openningDropdown,
         })
@@ -122,10 +124,6 @@ export default class TopDropdown extends Component {
         this.setState({placeholderText: text});
     }
 
-    renderContent(){
-
-    }
-
     render() {
         console.log('Render TopDropdownSeperate')
         const { notifications, getNotificationRequest, getNotification, show } = this.props
@@ -138,7 +136,7 @@ export default class TopDropdown extends Component {
         
         // is shown?        
         containerStyleTopDown.transform = [{translateX: show ? 0 : material.deviceWidth}]
-       
+       // console.warn(JSON.stringify(this.numberItem))
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
 
@@ -147,7 +145,7 @@ export default class TopDropdown extends Component {
                         <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{I18n.t('loading_place')}</Text>
                     </View>
 
-                : <View style={openningDropdown ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
+                : <View style={openningDropdown && this.needSearch ? styles.dropdownHeaderPlus : styles.dropdownHeader}>
 
                     <TouchableOpacity style={styles.dropdownIcon} onPress={() => this._handlePressIcon()}>
                         <View>
@@ -163,7 +161,7 @@ export default class TopDropdown extends Component {
 
                         </View>
                     </TouchableOpacity>
-                    {openningDropdown && isMultiple && <Item style={styles.searchContainer}>
+                    {openningDropdown && isMultiple && this.needSearch && <Item style={styles.searchContainer}>
                         <Input autoCapitalize="none" defaultValue={this.state.searchString}
                                autoCorrect={false}
                                onChangeText={text => this.search(text)}

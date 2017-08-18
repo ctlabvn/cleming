@@ -433,4 +433,43 @@ export default {
         fontSize: 15,
         color: material.gray500,
     },
+    rowPaddingTopMedium: {
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    pd10: {
+        padding: 10
+    },
+    rowPaddingTopLarge: {
+        justifyContent: 'space-between',
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    orderItem: {
+        justifyContent: 'space-between',
+        borderBottomColor: 'transparent',
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: 10,
+        marginLeft: 0,
+        marginRight: 0,
+        marginBottom: 10,
+    },
+    cartLeft: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    cartContent: {
+        marginLeft: 10,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
 }

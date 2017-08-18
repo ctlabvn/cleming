@@ -83,7 +83,7 @@ export default class SearchableDropdown extends Component {
                                             ref='searchInput'
                                     />
                                 </View>
-                                <ScrollView style={{ maxHeight: 300 }}
+                                <ScrollView style={{ maxHeight: 300, width: '100%' }}
                                     keyboardShouldPersistTaps='always'>
                                     <List
                                         dataArray={this.state.dropdownValues}

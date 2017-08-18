@@ -138,6 +138,10 @@ export default class TopDropdownListValue extends Component {
     //     return searchedData.sort((a,b)=>b.point-a.point).map(c=>c.item)
     // }
 
+    needSearch() {
+        return this.state.defaultDropdownValues.length > 15;
+    }
+
     render() {
 
         const { notifications, getNotificationRequest, getNotification } = this.props
@@ -152,8 +156,8 @@ export default class TopDropdownListValue extends Component {
         }
 
         // console.log('similarity', this.searchByWord('lang ha ha noi', dropdownValues))
-
-        let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen:styles.ovarlayContainerClose
+        let overlayStyle = openningDropdown ? (this.needSearch() ? styles.ovarlayContainerOpenPlus : styles.ovarlayContainerOpen) :styles.ovarlayContainerClose
+        // let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen :styles.ovarlayContainerClose
         return (
             <View style={overlayStyle}>                               
                 <List

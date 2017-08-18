@@ -127,13 +127,13 @@ export default class extends Component {
                     {/*</View>*/}
                     <View row style={{justifyContent: 'center'}}>
                         <Text medium bold grayDark
-                              style={{marginHorizontal: 10, alignSelf: 'flex-start'}}>=</Text>
+                              style={{marginHorizontal: 5, alignSelf: 'flex-start'}}>=</Text>
                         <View style={{alignItems: 'center'}}>
                             <Text medium grayDark>Tổng tiền Clingme đã thu</Text>
                             <Text medium bold grayDark>(5.272.000)</Text>
                         </View>
                         <Text medium bold grayDark
-                              style={{marginHorizontal: 10, alignSelf: 'flex-start'}}>-</Text>
+                              style={{marginHorizontal: 2, alignSelf: 'flex-start'}}>-</Text>
                         <View style={{alignItems: 'center'}}>
                             <Text medium grayDark>Phí Clingme đã thu</Text>
                             <Text medium bold grayDark>(4.265.000)</Text>
