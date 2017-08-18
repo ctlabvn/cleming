@@ -354,9 +354,8 @@ export default class CreateUserContainer extends Component {
       passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
     }
 
-    return (
-      <View style={{ paddingLeft: 15, paddingRight: 15 }}>
-
+    const firstItem = (
+      <View>      
         <RenderTextField label={I18n.t('full_name')} name="name" errorStyle={errorNameStyle} />
         {nameTouched && nameError}
 
@@ -368,7 +367,7 @@ export default class CreateUserContainer extends Component {
 
         <View style={{ ...styles.inputContainer, zIndex: 100, marginBottom: 10, overflow: null }}>
           <TopDropdown
-            ref='placeDropdown'
+            // ref='placeDropdown'
             dropdownValues={[
               { id: 1, name: I18n.t('employee') },
               //{id: 2, name: "Admin"}
@@ -377,9 +376,8 @@ export default class CreateUserContainer extends Component {
             selectedOption={this.state.currentJob || { id: 1, name: I18n.t('employee') }} />
         </View>
         <Border/>
-        <View style={{ marginLeft: 30, marginTop: 10 }}>
-          <Text style={styles.leftAddressTitleText}>{I18n.t('work_time')}</Text>
-        </View>
+        
+        <Text style={styles.leftAddressTitleText}>{I18n.t('work_time')}</Text>        
         <View style={{ marginBottom: 10 }}>
           <Grid>
             <Col style={{ alignItems: 'center' }}>
@@ -407,20 +405,15 @@ export default class CreateUserContainer extends Component {
               </View>
             </Col>
           </Grid>
-        </View>
+        </View>        
         <Border/>
-        <RenderGroup
-          onStartCapture={listView=>{                            
-              if (listView.scrollProperties.offset === 0 && this.state.enableScrollViewScroll === false) {
-                this.setState({ enableScrollViewScroll: true });
-              } else {
-                this.setState({ enableScrollViewScroll: false });
-              }
-          }}
-          onReady={ref => this.placeDropdown = ref}
-          selectedPlaceId={this.state.selectedPlaceId}
-        />
-        <View style={styles.createPassBlock}>
+
+        <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
+      </View>
+    )
+
+    const lastItem = (
+      <View style={styles.createPassBlock}>
           <Border/>
           <Grid>
             <Row style={{ justifyContent: 'center', height: 40, paddingBottom: 15, marginTop: 25 }}>
@@ -449,17 +442,25 @@ export default class CreateUserContainer extends Component {
               </Col>
             </Row>
           </Grid>
-        </View>
       </View>
+    )
+
+    return (            
+        <RenderGroup
+          firstItem={firstItem}
+          onReady={ref => this.placeDropdown = ref}
+          selectedPlaceId={this.state.selectedPlaceId}
+          lastItem={lastItem}
+        />              
     )
   }
 
   _scrollPageUp() {
-    this.refs.myContent.scrollTo({ x: 0, y: 0, animated: true });
+    this.placeDropdown.scrollToTop()
   }
 
   _scrollPageDown() {
-    this.refs.myContent.scrollToEnd();
+    this.placeDropdown.scrollToEnd()
   }
 
   render() {
@@ -470,18 +471,10 @@ export default class CreateUserContainer extends Component {
 
 
     return (
-      <Container style={styles.container}>
-        <View 
-          onStartShouldSetResponderCapture={() => {
-            // this.setState({ enableScrollViewScroll: true });
-          }}
-        >
-          <ScrollView style={{ backgroundColor: material.white500 }}
-            scrollEnabled={this.state.enableScrollViewScroll}
-            keyboardShouldPersistTaps="always" ref="myContent">
-            {this.renderMainContainer()}
-          </ScrollView>
-        </View>
+      <Container style={styles.container}>              
+        
+        {this.renderMainContainer()}        
+        
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
           style={{ ...styles.submitButton }}>

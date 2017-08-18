@@ -17,6 +17,8 @@ import {
     // DateField,
 } from '~/ui/elements/Form'
 
+import ListViewExtend from '~/ui/components/ListViewExtend'
+
 import styles from './styles'
 import material from '~/theme/variables/material'
 import { convertVn } from '~/ui/shared/utils'
@@ -129,6 +131,14 @@ export class RenderGroup extends Component {
   }
 
   
+  scrollToTop(){
+    this.listView && this.listView.scrollTo({ x: 0, y: 0, animated: true });
+  }  
+
+   scrollToEnd(){
+    this.listView && this.listView.scrollToEnd()
+  } 
+  
   handleCheck(address){
 
     // console.log(this.children)
@@ -141,39 +151,56 @@ export class RenderGroup extends Component {
       prevChild && prevChild.setState({checked: true})
     }    
   }
+
+  renderRow(address, rowID){      
+    // console.log('render item', rowID)   
+    const renderedRow = (
+      <ListItem
+          onPress={()=>this.handleCheck(address)}
+          style={styles.listItem}>          
+          <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
+          <View style={styles.right}>
+              <CheckBox
+                  onReady={ref=>this.children[address.placeId]=ref}
+                  type="radio"
+                  parent={this}
+                  checked={address.placeId === this.selectedPlaceId}                          
+              />
+          </View>
+      </ListItem>
+    )
+
+    if(rowID == 0){      
+      return (
+        <View>
+          {this.props.firstItem}
+          {renderedRow}
+        </View>
+      )
+    } else if(rowID == this.props.place.listPlace.length - 1) {
+      return (
+        <View>
+          {renderedRow}
+          {this.props.lastItem}          
+        </View>
+      )
+    } else {
+      return renderedRow
+    }
+
+  }
   
   
   render() {
-
-    const {place, onStartCapture} = this.props
-      
-    return (
-      <View style={{marginTop: 10}}>
-        
-        <Text style={styles.leftAddressTitleText}>{I18n.t('list_place')}</Text>
-            
-        <List 
+    return (                            
+        <ListViewExtend 
+            style={styles.list}
             ref={ref=>this.listView = ref}
-              enableEmptySections={true}
-              removeClippedSubviews={false}     
-              dataArray={place.listPlace}
-              renderRow={address=>      
-              <ListItem
-                  onPress={()=>this.handleCheck(address)}
-                  style={styles.listItem}>
-                  <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
-                  <View style={styles.right}>
-                      <CheckBox
-                          onReady={ref=>this.children[address.placeId]=ref}
-                          type="radio"
-                          parent={this}
-                          checked={address.placeId === this.selectedPlaceId}                          
-                      />
-                  </View>
-              </ListItem>
-          }/>
-        
-      </View>
+              keyExtractor={item=>item.placeId}               
+              dataArray={this.props.place.listPlace}    
+              renderRow={(address, sectionID, rowID)=> this.renderRow(address, rowID)}
+          />        
+      
     )
   }
 }

@@ -269,7 +269,7 @@ class UserManagement extends Component {
                     <UserCard data={this.employeeData}/>
                 </ListItem>
                 <ListItem noBorder onPress={this.onUpdateInfoPress.bind(this)}
-                          style={{justifyContent: 'space-between',zIndex:99}}>
+                          style={styles.listItemPopup}>
 
                     <Text medium style={styles.rowText}>{I18n.t('page_change_info')}</Text>
                     <CheckBox
@@ -279,7 +279,7 @@ class UserManagement extends Component {
                     />
                 </ListItem>
                 <ListItem noBorder onPress={this.onDeleteAccountPress.bind(this)}
-                          style={{justifyContent: 'space-between'}}>
+                          style={styles.listItemPopup}>
                     <Text medium style={styles.rowText}>{I18n.t('remove_account_from_list')}</Text>
                     <CheckBox
                         checked={this.state.deleteAccountChecked}

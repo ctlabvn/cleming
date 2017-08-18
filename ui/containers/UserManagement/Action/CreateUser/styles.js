@@ -27,6 +27,9 @@ export default {
       color: material.gray500,
       top: 0
     },
+    list:{
+      paddingHorizontal: 10,
+    },
     listItem:{
         marginLeft:10,
         marginRight:-5,
@@ -35,7 +38,7 @@ export default {
         height:40,
         borderBottomWidth: 0,
         paddingBottom: 10,
-        height: 50,
+        height: null,        
     },
     right: {
         flexDirection:'row',
@@ -53,6 +56,7 @@ export default {
         fontSize: 15,
         color: material.gray500,
         fontWeight: 'bold',
+        marginTop: 10,
     },
     rightAddressTitleText: {
         fontSize: 15,
@@ -114,7 +118,7 @@ export default {
       backgroundColor: material.white500
     },
     createPassBlock: {
-        marginTop: 10
+        marginTop: 10,        
     },
     subText: {
       color: material.gray500,

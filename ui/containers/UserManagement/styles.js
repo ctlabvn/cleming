@@ -15,6 +15,10 @@ export default {
         alignItems: 'flex-start',
         marginRight: 0
     },
+    listItemPopup:{
+        justifyContent: 'space-between',
+        width: '100%',
+    },
     listEmployeeItem: {
         marginLeft: 0,
         paddingRight: 0,
@@ -97,7 +101,8 @@ export default {
     },
     modalContainer: {
         // height: 200,
-        width: '90%',
+        // width: '90%',
+        maxWidth: 300,
         backgroundColor: material.white500,
         borderRadius: 10,
         overflow: 'hidden'
