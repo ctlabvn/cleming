@@ -22,6 +22,7 @@ import {
     DEFAULT_DATE_FORMAT,
     DEFAULT_HOUR_FORMAT,
     DEFAULT_TIME_FORMAT,
+    TIME_FORMAT_WITHOUT_SECOND,
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
 import {formatPhoneNumber, chainParse, getToastMessage} from "~/ui/shared/utils";
@@ -123,7 +124,7 @@ export default class PlaceOrderDetail extends Component {
         }
         let minute = bookingDetail.deliveryMinute < 10 ? '0'.concat(bookingDetail.deliveryMinute) : bookingDetail.deliveryMinute
         let hourMinute = bookingDetail.deliveryHour + ':' + minute
-        let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_DATE_FORMAT)
+        let bookTimeStr = hourMinute + ':00' + ' ' + moment(bookingDetail.bookDate * 1000).format(DEFAULT_TIME_FORMAT)
         let bookTime = moment(bookTimeStr, DEFAULT_TIME_FORMAT).unix()
 
         phoneNumberBlock = (<View style={styles.row}>
@@ -150,7 +151,7 @@ export default class PlaceOrderDetail extends Component {
                         <View style={{...styles.rowPaddingTB, ...styles.center}}>
                             <Text
                                 medium
-                                grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                                grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             
                             {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
