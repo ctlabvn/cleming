@@ -139,7 +139,7 @@ export default class TopDropdownListValue extends Component {
     // }
 
     needSearch() {
-        return this.state.defaultDropdownValues.length > 20;
+        return this.state.defaultDropdownValues.length > 15;
     }
 
     render() {
