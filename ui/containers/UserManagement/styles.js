@@ -30,7 +30,7 @@ export default {
         marginRight: 0,
         height: 60
     },
-    content:{
+    container:{
         backgroundColor: material.white500,
         paddingTop:20,
         paddingBottom:50

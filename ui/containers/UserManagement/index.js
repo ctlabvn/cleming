@@ -287,8 +287,8 @@ class UserManagement extends Component {
         }
         
         return (
-            <Container>       
-                <Content style={styles.content}>
+            <Container style={styles.container}>       
+                <Content>
                     <Button onPress={this.onUpdateUserPress.bind(this)}
                         style={styles.ownerButton}>
                         <OwnerCard data={user}/>
