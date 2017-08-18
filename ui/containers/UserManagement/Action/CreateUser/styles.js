@@ -27,18 +27,15 @@ export default {
       color: material.gray500,
       top: 0
     },
-    list:{
+    listContent:{
       paddingHorizontal: 10,
     },
-    listItem:{
-        marginLeft:10,
-        marginRight:-5,
-        paddingLeft:0,
-        paddingRight:0,
-        height:40,
-        borderBottomWidth: 0,
+    listItem:{                          
+        flexDirection: 'row',
+        justifyContent: 'space-between',        
+        alignItems: 'center',
         paddingBottom: 10,
-        height: null,        
+        minHeight: 40,        
     },
     right: {
         flexDirection:'row',
@@ -48,7 +45,8 @@ export default {
         flex: 1,
     },
     left: {        
-        // color: '#a2a2a2',
+        color: '#a2a2a2',
+        paddingRight: 10,
         flex: 3,
         color: material.gray400
     },

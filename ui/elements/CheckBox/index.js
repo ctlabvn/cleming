@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import Icon from '~/ui/elements/Icon'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import { mapPropsToStyleNames, connectStyle } from 'native-base'
 import material from '~/theme/variables/material'
 
@@ -26,8 +26,9 @@ export default class CheckBox extends PureComponent {
 
   render() {    
     const {type='checkbox', checked, ...props} = this.props    
+    const Component = props.onPress ? TouchableOpacity : View
     return (
-      <TouchableOpacity checked={this.state.checked} {...props}>
+      <Component checked={this.state.checked} {...props}>
         <Icon          
           name={
             this.state.checked 
@@ -38,7 +39,7 @@ export default class CheckBox extends PureComponent {
             color:this.state.checked ? material.blue400 : material.gray400
           }}
         />
-      </TouchableOpacity>
+      </Component>
     )
   }
 }

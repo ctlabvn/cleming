@@ -2,6 +2,7 @@
  * Created by vjtc0n on 5/5/17.
  */
 import React, {Component} from 'react'
+import {TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import {
     ListItem, Text, View, Grid, Col, List
@@ -155,19 +156,20 @@ export class RenderGroup extends Component {
   renderRow(address, rowID){      
     // console.log('render item', rowID)   
     const renderedRow = (
-      <ListItem
+      <TouchableOpacity
           onPress={()=>this.handleCheck(address)}
-          style={styles.listItem}>          
-          <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
-          <View style={styles.right}>
-              <CheckBox
-                  onReady={ref=>this.children[address.placeId]=ref}
-                  type="radio"
-                  parent={this}
-                  checked={address.placeId === this.selectedPlaceId}                          
-              />
-          </View>
-      </ListItem>
+          style={styles.listItem}>   
+          
+          <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>          
+          
+          <CheckBox
+              onReady={ref=>this.children[address.placeId]=ref}
+              type="radio"
+              parent={this}
+              checked={address.placeId === this.selectedPlaceId}                          
+          />
+          
+      </TouchableOpacity>
     )
 
     if(rowID == 0){      
@@ -194,7 +196,7 @@ export class RenderGroup extends Component {
   render() {
     return (                            
         <ListViewExtend 
-            style={styles.list}
+            contentContainerStyle={styles.listContent}
             ref={ref=>this.listView = ref}
               keyExtractor={item=>item.placeId}               
               dataArray={this.props.place.listPlace}    
