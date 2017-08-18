@@ -332,6 +332,8 @@ export default class App extends Component {
   }
 
   _handleBack = () => {
+     if (this.topDropdownListValue) this.topDropdownListValue.close();
+     if (this.topDropdown) this.topDropdown.close();
     const { router, goBack, drawerState, closeDrawer } = this.props
       if (drawerState == 'opened'){
         closeDrawer()
