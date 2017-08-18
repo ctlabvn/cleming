@@ -34,7 +34,7 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',        
         alignItems: 'center',
-        paddingBottom: 10,
+        paddingVertical: 5,        
         minHeight: 40,        
     },
     right: {

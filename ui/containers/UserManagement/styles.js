@@ -30,6 +30,11 @@ export default {
         marginRight: 0,
         height: 60
     },
+    content:{
+        backgroundColor: material.white500,
+        paddingTop:20,
+        paddingBottom:50
+    },
     avatar: {
         width: 40,
         height: 40,

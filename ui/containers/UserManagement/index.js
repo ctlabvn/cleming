@@ -39,16 +39,14 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
 class UserManagement extends Component {
     constructor(props) {
         super(props)
-
-        this.data = []
+        
         this.rowIDOfEmployee = 0
-        this.employeeData = []
+        this.employeeData = {}
 
         this.state = {
             modalOpen: false,
             updateInfoChecked: false,
             deleteAccountChecked: false,
-            isFetchingData: false,
             // data: [],
             // rowIDOfEmployee: 0
         }
@@ -56,26 +54,7 @@ class UserManagement extends Component {
 
     _loadListEmployee(placeId) {
         const {getListEmployee, session, user} = this.props
-        getListEmployee(session, placeId, () => {
-            let data = []
-            for (let i = 0; i < 1; i++) {
-                data.push({
-                    owner: user,
-                    employeeList: this.props.listEmployee
-                })
-            }
-            this.data = data
-            this.setState({
-                isFetchingData: false
-            })
-            // this.setState({
-            //     data: data
-            // }, () => {
-            //     this.setState({
-            //         isFetchingData: false
-            //     })
-            // })
-        })
+        getListEmployee(session, placeId)
     }
 
     componentDidMount() {
@@ -86,18 +65,9 @@ class UserManagement extends Component {
         //     this._loadListEmployee(currentPlace.id)
         // }
     }
+    
 
     componentWillMount() {
-        this.componentWillFocus();
-    }
-
-    componentWillBlur() {
-        this.setState({
-            isFetchingData: true
-        })
-    }
-
-    componentWillFocus() {
         const {app} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         // InteractionManager.runAfterInteractions(()=> {
@@ -126,7 +96,8 @@ class UserManagement extends Component {
         })
     }
 
-    renderEmployeeRow(data, sectionID, rowID, highlightRow) {
+    renderEmployeeRow(data, rowID) {
+        // console.log(data)
         let lastLeftVerticalBlueLineLength = null
         let lastRightVerticalBlueLineLength = null
         if (rowID == (this.props.listEmployee.length - 1)) {
@@ -137,7 +108,7 @@ class UserManagement extends Component {
             lastRightVerticalBlueLineLength = '100%'
         }
         return (
-            <ListItem style={styles.listEmployeeItem}>
+            <View key={data.bizAccountId} style={styles.listEmployeeItem}>
                 <Grid>
                     <Col style={{width: '20%', flexDirection: 'row'}}>
                         <Col>
@@ -161,7 +132,7 @@ class UserManagement extends Component {
                         </Button>
                     </Col>
                 </Grid>
-            </ListItem>
+            </View>
         )
     }
 
@@ -189,32 +160,6 @@ class UserManagement extends Component {
         const {forwardTo} = this.props
         // this.props.setEmployee(null)
         forwardTo('userManagement/action/updateUser')
-    }
-
-    renderRow(data) {
-        blueLineBelowOwner = null
-        console.log()
-        if (this.props.listEmployee.length != 0) {
-            blueLineBelowOwner = this.renderBlueLineBelowOwner()
-        }
-        return (
-            <ListItem style={styles.listItem}>
-                <Grid>
-                    <Col>
-                        <Button
-                            onPress={this.onUpdateUserPress.bind(this)}
-                            style={styles.ownerButton}>
-                            <OwnerCard data={data.owner}/>
-                        </Button>
-                        {blueLineBelowOwner}
-                        <List
-                            removeClippedSubviews={false}
-                            dataArray={data.employeeList}
-                            renderRow={this.renderEmployeeRow.bind(this)}/>
-                    </Col>
-                </Grid>
-            </ListItem>
-        )
     }
 
     onUpdateInfoPress() {
@@ -256,7 +201,6 @@ class UserManagement extends Component {
             })
             this.setState({
                 modalOpen: false,
-                isFetchingData: true,
                 deleteAccountChecked: !this.state.deleteAccountChecked
             })
         }
@@ -309,14 +253,15 @@ class UserManagement extends Component {
     }
 
     renderAddEmployeeButton() {
-        if (typeof  this.data != 'undefined') {
-            let data0 = this.data[0];
+        const {user} = this.props
+        // if (typeof  this.data != 'undefined') {
+        //     let data0 = this.data[0];
             // console.warn('data[0] ' + JSON.stringify(data0, null, 2));
-            if (typeof data0 != 'undefined') {
-                owner = data0.owner;
-                if (typeof owner != 'undefined') {
+            // if (typeof data0 != 'undefined') {
+            //     owner = data0.owner;
+            //     if (typeof owner != 'undefined') {
                     // console.warn('owner ' + JSON.stringify(owner, null, 2));
-                    if (owner.accTitle == 1) {
+                    if (user && user.accTitle == 1) {
                         return (
                             <Button
                                 onPress={this.onCreateUserPress.bind(this)}
@@ -324,10 +269,10 @@ class UserManagement extends Component {
                                 <Text medium style={styles.addUserText}>{I18n.t('add_account')}</Text>
                             </Button>)
                     }
-                }
+                // }
                 // console.warn('owner undefined');
-            }
-        }
+            // }
+        // }
     }
 
     _handleChangePlace = (item) => {
@@ -335,21 +280,21 @@ class UserManagement extends Component {
     }
 
     render() {
-        const {selectedPlace} = this.props
+        const {selectedPlace, user, listEmployee} = this.props
 
-        if (this.state.isFetchingData) {
-            return <Preload/>
+        if (!listEmployee) {
+            return null
         }
         
         return (
-            <Container>
-                <Content style={{backgroundColor: material.white500}}>
-                    <List
-                        enableEmptySections={true}
-                        removeClippedSubviews={false}
-                        style={{marginBottom: 50, marginTop: 20}}
-                        dataArray={this.data}
-                        renderRow={this.renderRow.bind(this)}/>
+            <Container>       
+                <Content style={styles.content}>
+                    <Button onPress={this.onUpdateUserPress.bind(this)}
+                        style={styles.ownerButton}>
+                        <OwnerCard data={user}/>
+                    </Button>
+                    {this.renderBlueLineBelowOwner()}         
+                    {listEmployee.map((item, index)=>this.renderEmployeeRow(item, index))}
                 </Content>
                 <Modal onCloseClick={e => this.setState({modalOpen: false})} open={this.state.modalOpen}>
                     {this.renderModal()}

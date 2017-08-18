@@ -196,8 +196,8 @@ export class RenderGroup extends Component {
   render() {
     return (                            
         <ListViewExtend 
-            contentContainerStyle={styles.listContent}
-            ref={ref=>this.listView = ref}
+              contentContainerStyle={styles.listContent}
+              ref={ref=>this.listView = ref}
               keyExtractor={item=>item.placeId}               
               dataArray={this.props.place.listPlace}    
               renderRow={(address, sectionID, rowID)=> this.renderRow(address, rowID)}
