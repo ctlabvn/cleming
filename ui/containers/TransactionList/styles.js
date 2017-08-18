@@ -165,6 +165,16 @@ export default {
         paddingRight: 0,
         paddingTop: 0,
         paddingBottom: 0
-    }
+    },
+    iconSuccess: {
+        fontSize: 25,
+        color: material.successColor,
+        marginRight: 3
+    },
+    iconGray: {
+        fontSize: 25,
+        color: material.gray600,
+        marginRight: 3
+    },
 
 }

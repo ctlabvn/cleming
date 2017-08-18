@@ -15,14 +15,13 @@ import {
     TRANSACTION_DIRECT_STATUS,
     TRANSACTION_TYPE_CLINGME,
     TRANSACTION_TYPE_DIRECT,
+    TRANSACTION_TYPE_ORDER_SUCCESS,
     TRANSACTION_DISPLAY,
-    SCREEN
+    SCREEN, DEFAULT_TIME_FORMAT
 } from "~/store/constants/app";
 import I18n from '~/ui/I18n'
 import {_isDiff} from '~/ui/shared/utils'
-@connect(state=>({
-    readItems: state.transaction.readItems
-}), {forwardTo, markAsReadOffline})
+@connect(null, {forwardTo, markAsReadOffline})
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -43,9 +42,9 @@ export default class extends Component {
 
     _renderTransactionPayWithClingmeItem(item) {
         //  "transactionStatus": int,		// trạng thái transaction 1 là đã thanh toán, 2 là đã xác nhận
-        let isRead = this.props.readItems.indexOf(item.tranId) > -1 ? true: false
+        // let isRead = this.props.readItems[item.tranId] == 1 ? true: false
         return (
-                    <ListItem style={isRead ? styles.listItemRead : styles.listItem}
+                    <ListItem style={styles.listItem}
                         key={item.tranId}
                         onPress={() => this._handlePressItem(item)}
                     >
@@ -170,12 +169,12 @@ export default class extends Component {
                 statusText = <Text medium warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold>{item.tranCode}</Text>
         }
-        let isRead = this.props.readItems.indexOf(item.tranId) > -1 ? true: false
+        // let isRead = this.props.readItems[item.tranId] == 1 ? true: false
         return (
             <ListItem
                 key={item.tranId}
                 onPress={()=>this._handlePressItem(item)}
-                style={isRead ? styles.listItemRead : styles.listItem}
+                style={styles.listItem}
             >
                 <View style={styles.block}>
                     <View style={{ ...styles.row, alignItems: 'flex-start' }}>
@@ -200,11 +199,68 @@ export default class extends Component {
         )
     }
 
+    _renderOrderSuccess = (item) => {
+        // let isRead = this.props.readItems[item.tranId] == 1 ? true: false
+        const { forwardTo } = this.props
+        return (
+            <ListItem noBorder key={item.tranId}
+                style={styles.listItem}
+                onPress={() => forwardTo('transactionDetail', {id: item.posOrderId, type: item.tranType})}>
+                <View style={styles.block}>
+                    <View style={{ ...styles.row, width: '100%', paddingLeft: 5, paddingRight: 5 }}>
+                        <View style={{...styles.row}}>
+                            <Icon name='shiping-bike2' style={{ ...styles.iconSuccess }} />
+                            <Text medium success>{item.tranCode}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <Text medium style={styles.time}
+                                grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.block}>
+                    <View style={{ width: '100%' }}>
+                        <View style={styles.row}>
+                            <Text medium bold grayDark>{I18n.t('number_order_item')}</Text>
+                            <Text medium grayDark>SL: <Text mediumbold grayDark>{item.numberDishes}</Text></Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.block}>
+                    <View style={{ ...styles.row, marginBottom: 10, marginTop: 5 }}>
+                        <View style={styles.row}>
+                            <Icon name='account' style={styles.iconGray} />
+                            <Text medium grayDark>{item.userName}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <Icon name='phone' style={{ ...styles.iconGray, ...styles.primary }} />
+                            <Text medium primary>{item.phoneNumber}</Text>
+                        </View>
+                    </View>
+                    <View style={{ ...styles.row, marginBottom: 5 }}>
+                        <Text medium grayDark>{I18n.t('address')}: {item.placeAddress} 
+                            {(parseFloat(item.deliveryDistance) > 0) &&
+                                <Text> - <Text bold>{parseFloat(item.deliveryDistance).toFixed(2)} km</Text></Text>
+                            }
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text medium success>{I18n.t('paid')}</Text>
+                        <Text medium bold grayDark>{formatNumber(Math.round(item.moneyAmount))}đ</Text>
+                    </View>
+                </View>
+                <Border/>
+            </ListItem>
+        )
+    }
+
     _renderRow = (item) => {
         if (item.tranType == TRANSACTION_TYPE_CLINGME) { // Over clingme
             return this._renderTransactionPayWithClingmeItem(item)
-        } else { // Direct
+        } else if (item.tranType == TRANSACTION_TYPE_DIRECT){ // Direct
             return this._renderTransactionItem(item)
+        } else if (item.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+            return this._renderOrderSuccess(item)
         }
     }
     render() {
