@@ -449,7 +449,7 @@ export default class App extends Component {
             dropdownValues={this.listPlace}
           />
           <Toasts />
-          <NotificationHandler />
+          <NotificationHandler app={this}/>
           <ConnectionInfo />
           {
           // <Popover ref={ref => this.popover = ref} />
