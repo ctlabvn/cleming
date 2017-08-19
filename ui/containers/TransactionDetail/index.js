@@ -741,9 +741,7 @@ export default class TransactionDetail extends Component {
     // 1 là thành công, 2 là bị từ chối
 
     render() {
-        console.log('Render TransactionDetail')
-        const { route } = this.props
-        if (!this.state || !this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
+        if (!this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
             return null
         }
         let transactionInfo = this.state.transactionInfo
