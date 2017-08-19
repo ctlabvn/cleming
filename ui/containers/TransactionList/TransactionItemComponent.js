@@ -50,8 +50,8 @@ export default class extends Component {
                     >
                         <View style={styles.block}>
                             <View style={styles.rowPadding}>
-                                <Text style={styles.timestamp} small grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                                 <Text medium bold grayDark>{item.userName}</Text>
+                                <Text style={styles.timestamp} small grayDark>{moment(item.tranTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             </View>
                             <View style={styles.rowCenter}>
                                 <Text largeLight bold secondary style={styles.transactionCodeClingme}>{item.tranCode}</Text>
