@@ -187,7 +187,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _onRefresh = () => {
-        this.listview.showRefresh(true)
+        // this.listview.showRefresh(true)
         let { app } = this.props
         let selectedPlace = app.topDropdown.getValue()
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -254,7 +254,10 @@ export default class PlaceOrderList extends Component {
             this.spinner.show(true)
         } else {
             // clearBookingList()
-            this.listview.showRefresh(true)
+            // this.listview.showRefresh(true)
+            // refresh control can show/hide without set state
+            this.listview.scrollTop = 0
+            this.listview.swing()
         }
         this.props.getBookingList(this.props.xsession, placeId,
             fromTime, toTime, status, page,
@@ -264,7 +267,7 @@ export default class PlaceOrderList extends Component {
                     this.spinner.show(false)
                 } else {
                     // clearBookingList()
-                    this.listview.showRefresh(false)
+                    // this.listview.showRefresh(false)
                 }
             }
         )
