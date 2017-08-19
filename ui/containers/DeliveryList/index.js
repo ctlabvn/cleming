@@ -174,8 +174,10 @@ export default class extends Component {
         if (isLoadMore) {
             this.spinner.show(true)
         } else {
-            // clearOrderList()
-            this.listview.showRefresh(true)
+            // clearOrderList()            
+            this.listview.scrollTop = 0
+            this.listview.swing()            
+            // this.listview.showRefresh(true)
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
@@ -184,7 +186,7 @@ export default class extends Component {
                     this.spinner.show(false)
                 } else {
                     // clearOrderList()
-                    this.listview.showRefresh(false)
+                    // this.listview.showRefresh(false)
                 }
                 this.clickCount = 0
             })
