@@ -13,6 +13,14 @@ export default class extends Component {
     keyboardShouldPersistTaps: 'always',
   }
 
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      refreshing: false,
+    };
+  }
+
   scrollToTop=()=>{
     this.content.scrollTo({x:0,y:0})
     // console.log('content' ,this.content._root, this.content.wrappedInstance._root)
@@ -20,11 +28,19 @@ export default class extends Component {
       // this.content && this.content.wrappedInstance && this.content.wrappedInstance._root && this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
   }
 
+  showRefresh(refreshing){
+    this.setState({refreshing})
+  }
+
+  componentDidMount(){
+    this.props.onItemRef && this.props.onItemRef(this)
+  }
+
   render() {
-    const {children, refreshing, onRefresh, onScroll, padder, onEndReached, onEndReachedThreshold, ...props} = this.props    
+    const {children, onRefresh, onScroll, padder, onEndReached, onEndReachedThreshold, ...props} = this.props    
     // show refresh control
     if(onRefresh){
-      props.refreshControl = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} title="Loading..." />
+      props.refreshControl = <RefreshControl refreshing={this.state.refreshing} onRefresh={onRefresh} />
     }
     
     return (                             

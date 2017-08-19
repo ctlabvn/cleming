@@ -31,7 +31,6 @@ export default class extends Component {
         this.state = {
             orderDetail: null,
             // counting: false,
-            // loading: false,
             modalOpen: false,
             phoneNumber: ''
         }
@@ -40,8 +39,8 @@ export default class extends Component {
 
     _load() {
         const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead, order, getOrderDenyReason } = this.props
-        let deliveryId = route.params.id
-        // this.setState({ loading: true })
+        let deliveryId = route.params.id        
+        this.content && this.content.showRefresh(true)
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
                 this.clickCount = 0
@@ -58,7 +57,7 @@ export default class extends Component {
                     return
                 }
                 if (data && data.updated) {
-                    // this.setState({ orderDetail: data.updated, loading: false })
+                    this.content && this.content.showRefresh(false)
                     this.setState({ orderDetail: data.updated })
                     if (data.updated.orderInfo && !data.updated.orderInfo.isReadCorrespond
                         && data.updated.orderInfo.notifyIdCorrespond) {
@@ -240,8 +239,8 @@ export default class extends Component {
                     <Text white center bold>{chainParse(orderDetail, ['orderInfo', 'placeInfo', 'address'])}</Text>
                 </View>
 
-                <Content padder refreshing={this.state.loading} onRefresh={this._onRefresh}
-                    ref={(c) => { this.content = c }}
+                <Content padder onRefresh={this._onRefresh}
+                    onItemRef={ref=> this.content = ref}
                 >
                     <View style={styles.rowPadding}>
                         {this._renderStatusText(orderDetail.orderInfo.status)}
