@@ -4,18 +4,18 @@ import PushNotification from 'react-native-push-notification'
 import { connect } from 'react-redux'
 
 import { SENDER_ID } from '~/store/constants/api'
-import * as commonActions from '~/store/actions/common'
-import * as notificationActions from '~/store/actions/notification'
-import * as authActions from '~/store/actions/auth'
-import * as metaActions from "~/store/actions/meta"
-import * as placeActions from '~/store/actions/place'
+import {forwardTo, setToast} from '~/store/actions/common'
+import {getNotification, updateRead} from '~/store/actions/notification'
+import {setPushToken} from '~/store/actions/auth'
+import {markWillLoad} from "~/store/actions/meta"
+import {getMerchantNews} from '~/store/actions/place'
 import { getSession } from '~/store/selectors/auth'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import { getSelectedPlace } from '~/store/selectors/place'
 @connect(state => ({
   xsession: getSession(state),
   selectedPlace: getSelectedPlace(state),
-}), { ...commonActions, ...notificationActions, ...metaActions, ...authActions, ...placeActions })
+}), { forwardTo, getNotification, markWillLoad, setPushToken, getMerchantNews, setToast })
 export default class NotificationHandler extends Component {
 
   initPushNotification(options) {
@@ -70,7 +70,11 @@ export default class NotificationHandler extends Component {
               this.props.getMerchantNews(this.props.xsession, currentPlace.id)
             }
             const title = notification.title ? notification.title + " " + notification.message : notification.alert
-            this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
+            this.props.app.topDropdown.close()
+            this.props.app.topDropdownListValue.close()
+            setTimeout(()=>{
+              this.props.setToast(title, 'warning', this._handleNoti, notification, 5000)
+            }, 100)
             this._markWillLoad(notification)
             this.props.getNotification(this.props.xsession, 1,
               () => this.props.getNotification(this.props.xsession, 2)
