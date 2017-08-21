@@ -14,6 +14,7 @@ export default {
     'paid': 'Đã thanh toán',
     'all_transaction': 'Tất cả giao dịch',
     'wait_confirm': 'Chờ phê duyệt',
+    'received_feedback_2': 'Đã phản hồi',
     'cashback_success': 'Cashback thành công',
     'reject': 'Bị từ chối',
     'pay_complete': 'Hoàn tất thanh toán',

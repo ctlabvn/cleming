@@ -141,6 +141,15 @@ export default class extends Component {
                 statusText = <Text medium warning>{I18n.t('wait_confirm')}</Text>
                 transactionCode = <Text bold grayDark>{item.tranCode}</Text>   
                 break
+            case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED: //chờ duyệt
+                iconBlock = (
+                    <View style={styles.iconBlock}>
+                        <Icon name='order-history' style={{ ...styles.icon, ...styles.warning }} />
+                    </View>
+                )
+                statusText = <Text medium warning>{I18n.t('received_feedback_2')}</Text>
+                transactionCode = <Text bold grayDark>{item.tranCode}</Text>   
+                break
             case TRANSACTION_DIRECT_STATUS.SUCCESS: // thành công
                 iconBlock = (
                     <View style={styles.iconBlock}>
