@@ -1,0 +1,1 @@
+export const getCheckingData = state => state.checking.data || {error: 'checking is null'}

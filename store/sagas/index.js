@@ -9,6 +9,7 @@ import order from './order'
 import report from './report'
 import wallet from './wallet'
 import revenue from './revenue'
+import checking from './checking'
 // saga must be a function like generator of other functions
 export default function* () {
   yield [       
@@ -21,6 +22,7 @@ export default function* () {
     ...order.map(watcher => fork(watcher)),
     ...report.map(watcher => fork(watcher)),
     ...wallet.map(watcher => fork(watcher)),
-    ...revenue.map(watcher => fork(watcher))
+    ...revenue.map(watcher => fork(watcher)),
+    ...checking.map(watcher => fork(watcher)),
   ]
 }
