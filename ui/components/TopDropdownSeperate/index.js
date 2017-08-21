@@ -105,7 +105,10 @@ export default class TopDropdown extends Component {
         if(!data) return
         const searchWord = convertVn(searchString.trim().toLowerCase())
         if(searchWord) {
-            const searchedData = data.map(item=>{
+            let searchedData = data.filter(item=>item.name.indexOf(searchWord) > -1)
+            let listPlace = searchedData.slice()
+            if (searchedData.length == 0){
+                const searchedData = data.map(item=>{
                 const compareWord = convertVn(item.name.trim().toLowerCase())
                 const longest = Math.max(searchWord.length, compareWord.length)
                 const distance = leven(searchWord, compareWord)
@@ -115,10 +118,10 @@ export default class TopDropdown extends Component {
                     item,
                     point,
                 }
-            })
-            const listPlace = searchedData.sort((a,b)=>b.point-a.point)
-                .slice(0, 5).map(c=>c.item)   
-
+                })
+                listPlace = searchedData.sort((a,b)=>b.point-a.point)
+                    .slice(0, 5).map(c=>c.item)   
+            }
             this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
         } else {
             this.props.app.topDropdownListValue.updateDropdownValues(data)
