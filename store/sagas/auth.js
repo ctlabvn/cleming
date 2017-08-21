@@ -39,7 +39,7 @@ const requestLogin = createRequestSaga({
     key: 'login',
     cancel: 'app/logout',
     success: [
-        (data) => setUserData(data),
+        (data,{args:[username]}) => setUserData({...data,username}),
         (data) => setAuthState(true),
         (data) => {
             if (data.firstLogin == 0) {

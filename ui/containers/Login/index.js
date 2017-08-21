@@ -28,7 +28,7 @@ const formSelector = formValueSelector('LoginForm')
 
 @connect(state => ({
   initialValues: {
-    email: '',
+    email: state.auth.user ? state.auth.user.username : '',
     password: '',
   },
 
@@ -78,7 +78,7 @@ export default class extends Component {
     Keyboard.dismiss()
     this.setState({ loading: true })
     this.props.login(email, password, xDevice, xUniqueDevice,
-      (err, data) => {        
+      (err, data) => {
         if (!err) {
           this.props.change('password', '')
         } else {
@@ -144,7 +144,7 @@ export default class extends Component {
     const { setToast } = this.props
     const { toastModal } = this.props.app
 
-    
+
     if (!oldPassword) {
       setToast(getToastMessage(I18n.t('err_need_current_password')), 'info', null, null, 3000, 'top')
       return false
@@ -264,7 +264,7 @@ export default class extends Component {
           </Col>
           <Col style={{ width: '2%' }} />
           <Col style={{ width: '64%' }}>
-            <Button 
+            <Button
               disabled={(this._isDisableSend())}
               onPress={handleSubmit(this._handleForgot)}
               style={styles.button}>

@@ -32,18 +32,16 @@ const checkProperties=['notifyId', 'isRead']
 @connect(state => ({
   session: authSelectors.getSession(state),
   notifications: notificationSelectors.getNotification(state),
-  // notificationRequest: commonSelectors.getRequest(state, 'getNotification'),
 }), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 
 export default class extends Component {
   
   componentWillFocus() {
-    // this.content.scrollToTop()
     // make it like before    
-    // const { session, notifications, getNotification, app } = this.props
-    // if (notifications.hasMore && !notifications.data.length) {
-    //   getNotification(session, 1, () => getNotification(session, 2))      
-    // } 
+    const { session, notifications, getNotification, app } = this.props
+    if (notifications.hasMore && !notifications.data.length) {
+      getNotification(session, 1, () => getNotification(session, 2))      
+    } 
     this.listview && this.listview.swing()
   }
 

@@ -24,7 +24,7 @@ export const auth = (state = initialState, {type, payload}) => {
     case 'app/saveLoggedUser':
       return {...state, ...payload}   // {user,token}
     case 'app/removeLoggedUser':
-      return {...state, user: null, token: null}
+      return {...state, token: null}
     case 'app/saveRefreshToken':
       // payload is access token
       return {...state, token: {...state.token, ...payload} }
