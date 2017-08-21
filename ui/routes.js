@@ -39,7 +39,7 @@ import CheckingHistory from './containers/CheckingHistory'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
-        title: 'In the future',
+        title: 'Tính năng đang phát triển',
         Page: ComingSoon,
         headerType: 'back',
     },

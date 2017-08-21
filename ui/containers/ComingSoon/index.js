@@ -10,7 +10,7 @@ export default class extends Component {
         return (
             <Container style={{backgroundColor: 'white', flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <Text largeLight gray>
-                    coming soon...
+                    Coming soon...
                 </Text>
             </Container>
         )
