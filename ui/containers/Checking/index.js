@@ -6,6 +6,9 @@ import styles from './styles'
 import options from './options'
 import {connect} from 'react-redux'
 import * as commonActions from '~/store/actions/common'
+import * as checkingActions from '~/store/actions/checking'
+import {getSession} from '~/store/selectors/auth'
+import {getCheckingData} from '~/store/selectors/checking'
 import {ALL_PLACES_CHECKING} from '~/store/constants/app'
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -18,7 +21,10 @@ import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
 
-@connect(null, commonActions)
+@connect(state => ({
+    xsession: getSession(state),
+    data: getCheckingData(state),
+}), {...commonActions, ...checkingActions})
 
 export default class extends Component {
 
@@ -26,25 +32,27 @@ export default class extends Component {
         super(props);
         this.state = {
             currenTab: ALL_PLACES_CHECKING,
-            money: 21592000,
-            loading: false,
         }
     }
 
+    componentDidMount() {
+        this._load();
+    }
+
     _handlePressFilter(data) {
-        alert(JSON.stringify(data));
+        // console.warn(JSON.stringify(data));
+        const dateFilterData = data.currentSelectValue.value;
+        const fromTime = dateFilterData.from;
+        const toTime = dateFilterData.to;
+        this._load(fromTime, toTime);
     }
 
     _handlePressTab(data) {
-        alert(JSON.stringify(data));
-    }
-
-    _loadMore() {
 
     }
 
     _onRefresh() {
-
+        this._load()
     }
 
     _handlePressSumRevenue() {
@@ -67,27 +75,40 @@ export default class extends Component {
         )
     }
 
+    _load(fromTime, toTime) {
+        const {xsession, getCheckingDetail} = this.props;
+        if (!fromTime && !toTime) {
+            const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+            fromTime = dateFilterData.from;
+            toTime = dateFilterData.to;
+        }
+
+        getCheckingDetail(xsession, fromTime, toTime, (err, data) => {
+        });
+    }
+
     render() {
+        const {data} = this.props;
+        // console.warn(JSON.stringify(data));
+        const detail = data;
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
-                              onPressTab={data => this._handlePressTab}
+                              onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter} ref='dateFilter'/>
-                {this._renderMoneyBand(this.state.money)}
+                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
+                {this._renderMoneyBand(detail.revenue)}
                 <Content
                     padder
                     style={styles.content}
-                    onEndReached={() => this._loadMore()}
-                    onRefresh={() => this._onRefresh()}
-                    refreshing={this.state.loading}>
+                    onRefresh={() => this._onRefresh()}>
                     <View row style={styles.moneyTitle}>
                         <Text strong bold grayDark>
                             Doanh thu
                         </Text>
                         <View row>
                             <Text strong bold grayDark orange
-                                  onPress={() => this._handlePressSumRevenue()}>21.592.000</Text>
+                                  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
                             <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
                                   onPress={() => this._handlePressSumRevenue()}/>
                         </View>
@@ -96,11 +117,11 @@ export default class extends Component {
                     <View style={{marginRight: 20}}>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>Tổng tiền Merchant đã thu:</Text>
-                            <Text medium bold grayDark>16.320.000</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.mcTotalMoney)}</Text>
                         </View>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
-                            <Text medium bold grayDark>5.272.000</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.clmTotalMoney)}</Text>
                         </View>
                     </View>
 
@@ -109,34 +130,34 @@ export default class extends Component {
                             Phí Clingme
                         </Text>
                         <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark orange>4.265.000</Text>
+                            <Text strong bold grayDark orange>{formatNumber(detail.charge)}</Text>
                         </View>
                     </View>
 
 
                     <View row style={styles.moneyTitle}>
                         <Text strong bold grayDark>
-                            Merchant nhận lại từ Clingme
+                            Đối soát
                         </Text>
                         <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark orange>1.007.000</Text>
+                            <Text strong bold grayDark
+                                  orange>{formatNumber(parseInt(detail.clmTotalMoney) - parseInt(detail.charge))}</Text>
                         </View>
                     </View>
-                    {/*<View style={{marginLeft: 20}}>*/}
-                        {/*<Text medium>Merchant nhận lại từ Clingme</Text>*/}
-                    {/*</View>*/}
+
+                    <Text medium bold grayDark> Merchant nhận lại từ Clingme </Text>
                     <View row style={{justifyContent: 'center'}}>
                         <Text medium bold grayDark
                               style={{marginHorizontal: 5, alignSelf: 'flex-start'}}>=</Text>
                         <View style={{alignItems: 'center'}}>
                             <Text medium grayDark>Tổng tiền Clingme đã thu</Text>
-                            <Text medium bold grayDark>(5.272.000)</Text>
+                            <Text medium bold grayDark>({formatNumber(detail.clmTotalMoney)})</Text>
                         </View>
                         <Text medium bold grayDark
                               style={{marginHorizontal: 2, alignSelf: 'flex-start'}}>-</Text>
                         <View style={{alignItems: 'center'}}>
                             <Text medium grayDark>Phí Clingme đã thu</Text>
-                            <Text medium bold grayDark>(4.265.000)</Text>
+                            <Text medium bold grayDark>({formatNumber(detail.charge)})</Text>
                         </View>
 
                     </View>
