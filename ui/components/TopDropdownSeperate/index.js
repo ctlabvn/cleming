@@ -66,6 +66,11 @@ export default class TopDropdown extends Component {
     getValue() {
         return this.state.selectedOption;
     }
+
+    isOpenning(){
+        return this.state.openningDropdown
+    }
+    
     toggle() {
         // LayoutAnimation.easeInEaseOut()
         this.needSearch = this.props.app.topDropdownListValue.needSearch();
