@@ -27,10 +27,11 @@ const requestListAllTransaction = createRequestSaga({
     cancel: 'app/logout',
     success: [
         (data) => {
-            if (data.code) {
-                return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
+            console.log('Data List All: ', data)
+            if (data && data.data){
+                return setListAllTransaction(data.data)
             }
-            return setListAllTransaction(data.data)
+            return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
         }
     ],
 })

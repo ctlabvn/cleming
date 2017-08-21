@@ -332,20 +332,23 @@ export default class App extends Component {
   }
 
   _handleBack = () => {
-     if (this.topDropdownListValue) this.topDropdownListValue.close();
-     if (this.topDropdown) this.topDropdown.close();
     const { router, goBack, drawerState, closeDrawer } = this.props
-      if (drawerState == 'opened'){
-        closeDrawer()
-        return true
-      }
-      if (router.current.routeName === initialRouteName || router.current.routeName === initialAuthRouteName) {
-        this.popupConfirm.show(I18n.t('confirm_exit'))
-        return true
-      }
-      // go back
-      goBack()
+    if (drawerState == 'opened'){
+      closeDrawer()
       return true
+    }
+    if (this.topDropdown && this.topDropdown.isOpenning()){
+      this.topDropdownListValue.close()
+      this.topDropdown.close()
+      return true
+    }
+    if (router.current.routeName === initialRouteName || router.current.routeName === initialAuthRouteName) {
+      this.popupConfirm.show(I18n.t('confirm_exit'))
+      return true
+    }
+    // go back
+    goBack()
+    return true
   }
 
   componentWillUnmount() {

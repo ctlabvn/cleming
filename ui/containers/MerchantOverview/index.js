@@ -183,7 +183,9 @@ export default class MerchantOverview extends Component {
     }
 
     navigate(route){
-        this.props.replaceFooterRoute(1, route)
+        if (route == 'transactionList'){
+            this.props.replaceFooterRoute(1, route)
+        }
         this.props.forwardTo(route)
     }
 
