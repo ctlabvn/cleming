@@ -6,7 +6,7 @@ export const getListAllTransaction= (...args) => ({
 
 export const setListAllTransaction = (listTransaction) => ({
   type: 'app/setListAllTransaction',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const getListTransaction= (...args) => ({
@@ -16,12 +16,12 @@ export const getListTransaction= (...args) => ({
 
 export const setListTransaction = (listTransaction) => ({
   type: 'app/setListTransaction',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const setListTransactionPayWithClingme = (listTransaction) => ({
   type: 'app/setListTransactionPayWithClingme',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const getListTransactionPayWithClingme= (...args) => ({
@@ -77,9 +77,14 @@ export const setDenyReasonClm = (reason) => ({
 export const updateDateFilter = (payload) => ({
   type: 'transaction/updateDateFilter',
   payload,
-}) 
+})
 
 export const markAsReadOffline = (payload) => ({
   type: 'transaction/markAsReadOffline',
   payload,
+})
+
+export const updateViewStatusPayCLM = (...args) => ({
+  type: 'transaction/updateViewStatusPayCLM',
+  args
 })

@@ -205,7 +205,8 @@ export default class TransactionDetail extends Component {
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
 
-        const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason, getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
+        const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason,
+                getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
         // this._goToMiddlePage()
         let transactionId = route.params.id
         let transactionType = +route.params.type
@@ -226,21 +227,35 @@ export default class TransactionDetail extends Component {
 
     renderClingme(transactionInfo){
         let payStatus, helpBtn = null
-
+        const {goBack} = this.props
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
-        helpBtn =
-            <View style={styles.rowPaddingFull}>
-                <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                    <View style={styles.round20}>
-                        <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                    </View>
-                    <Text medium primary>{I18n.t('help')}</Text>
-                </Button>
-                <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
-                >
-                    <Text medium white>{I18n.t('close')}</Text>
-                </Button>
-            </View>
+        if (transactionInfo.viewNumber == 0){
+          helpBtn =
+              <View style={styles.rowPaddingFull}>
+                  <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                      <View style={styles.round20}>
+                          <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                      </View>
+                      <Text medium primary>{I18n.t('help')}</Text>
+                  </Button>
+                  <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+                    onPress={()=>goBack()}
+                  >
+                      <Text medium white>{I18n.t('close')}</Text>
+                  </Button>
+              </View>
+        }else{
+          helpBtn =
+              <View style={styles.rowCenter}>
+                  <Button transparent style={styles.feedbackClmTransactionBorder} onPress={() => this._showReasonPopupClingme()}>
+                      <View style={styles.round20}>
+                          <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                      </View>
+                      <Text medium primary>{I18n.t('help')}</Text>
+                  </Button>
+              </View>
+        }
+
 
 
         // "transactionStatus": int,    // 1 là đã thanh toán, 2 là đã xác nhận
@@ -438,7 +453,7 @@ export default class TransactionDetail extends Component {
                         <Text success largeLight bold>{I18n.t('order_completed')}</Text>
                         <Text medium grayDark style={{ marginRight: 5, marginTop: 3 }}>
                             {moment(chainParse(transactionInfo, ['orderInfo', 'clingmeCreatedTime']) * 1000).format(DEFAULT_TIME_FORMAT)}
-                        </Text>   
+                        </Text>
                 </View>
                 <View style={styles.rowPadding}>
                     <Text medium grayDark>{I18n.t('order_number_2')}</Text>
@@ -541,13 +556,13 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_TYPE_DIRECT:
                 return this.renderDirect(transactionInfo)
             case TRANSACTION_TYPE_ORDER_SUCCESS:
-                return this.renderOrder(transactionInfo)            
+                return this.renderOrder(transactionInfo)
         }
     }
 
     _load = (transactionId, transType) => {
-        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route, 
-            setToast, forwardTo, updateRead, goBack, getOrderDetail } = this.props
+        const { xsession, transaction, getTransactionDetail, getTransactionDetailPayWithClingme, type, route,
+            setToast, forwardTo, updateRead, goBack, getOrderDetail, updateViewStatusPayCLM } = this.props
         let transactionType = transType || route.params.type
         // this.setState({ loading: true })
         // markAsReadOffline(transactionId)
@@ -565,6 +580,9 @@ export default class TransactionDetail extends Component {
 
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
+                        if (transInfo.viewNumber == 0){
+                          updateViewStatusPayCLM(xsession, transInfo.transactionId)
+                        }
                         let hasNext = false, hasPrevious = false
                         if (transaction) {
                             let index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
@@ -698,7 +716,7 @@ export default class TransactionDetail extends Component {
                     }
                 }
             )
-        }  
+        }
     }
 
     _goToMiddlePage = () => {
@@ -742,7 +760,17 @@ export default class TransactionDetail extends Component {
 
     render() {
         if (!this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
-            return null
+          return (
+              <View style={{
+                  backgroundColor: material.white500,
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%'
+              }}>
+                  <Spinner color={material.tabBarActiveTextColor} />
+              </View>
+          )
         }
         let transactionInfo = this.state.transactionInfo
         let btnPrev, btnNext
@@ -778,7 +806,7 @@ export default class TransactionDetail extends Component {
                 </Button>
             )
         }
-        
+
         return (
             <Container style={{backgroundColor: material.white500}}>
                 <PopupInfo ref='popupInfo' />

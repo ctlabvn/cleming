@@ -398,11 +398,11 @@ export default {
         backgroundColor: material.white500,
         paddingBottom: 50
     },
-    loadingContainer: { 
+    loadingContainer: {
         backgroundColor: material.white500,
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         flex: 1
     },
     feedbackClmTransaction: {
@@ -410,6 +410,13 @@ export default {
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    feedbackClmTransactionBorder: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: material.primaryColor
     },
     confirmButton: {
         backgroundColor: material.primaryColor,

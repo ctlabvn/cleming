@@ -39,6 +39,9 @@ export default {
     listAll(xsession, placeId, fromTime, toTime, tranType=0, pageNumber=0){
         console.log('List All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+tranType+'---'+pageNumber)
         return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
+    },
+    updateViewStatusPayCLM(xsession, tranId){
+        console.log('Update View CLM API: ', xsession+'---'+tranId)
+        return apiPost('/merchantapp/view-tran', {tranId}, xsession)
     }
-
 }

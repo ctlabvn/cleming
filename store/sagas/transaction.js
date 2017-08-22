@@ -100,6 +100,12 @@ requestDenyReasonClm = createRequestSaga({
         }
     ],
 })
+requestUpdateViewNumberCLM = createRequestSaga({
+    request: api.transaction.updateViewStatusPayCLM,
+    key: 'transaction/updateViewStatusPayCLM',
+    cancel: 'app/logout',
+})
+
 export default [
     function* fetchWatcher() {
         yield [
@@ -112,9 +118,8 @@ export default [
             takeLatest('transaction/detailPayWithClingme', requestTransactionDetailPayWithClingme),
             takeLatest('transaction/confirm', requestTransactionConfirm),
             takeLatest('transaction/denyReasonClm', requestDenyReasonClm),
-            takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm)
+            takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm),
+            takeLatest('transaction/updateViewStatusPayCLM', requestUpdateViewNumberCLM)
         ]
     },
 ]
-
-

@@ -39,7 +39,7 @@ export default class extends Component {
 
     _load() {
         const { route, getOrderDetail, xsession, setToast, forwardTo, updateRead, order, getOrderDenyReason } = this.props
-        let deliveryId = route.params.id        
+        let deliveryId = route.params.id
         this.content && this.content.showRefresh(true)
         getOrderDetail(xsession, deliveryId,
             (err, data) => {
@@ -75,9 +75,9 @@ export default class extends Component {
     componentDidMount() {
         // InteractionManager.runAfterInteractions(() => {
         const { app } = this.props
-        this._load()        
+        this._load()
         // })
-        
+
     }
 
     // componentWillFocus() {
@@ -156,7 +156,7 @@ export default class extends Component {
             phoneNumber: phoneNumber
         })
     }
-    
+
     onModalClose = () => {
         this.setState({
             modalOpen: false
@@ -167,18 +167,17 @@ export default class extends Component {
         console.log('Render DeliveryDetail')
         const { route, order } = this.props
         if (!this.state.orderDetail) {
-            return null
-            // return (
-            //     <View style={{
-            //         backgroundColor: material.white500,
-            //         flexDirection: 'column',
-            //         alignItems: 'center',
-            //         justifyContent: 'center',
-            //         height: '100%'
-            //     }}>
-            //         <Spinner />
-            //     </View>
-            // )
+            return (
+                <View style={{
+                    backgroundColor: material.white500,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%'
+                }}>
+                    <Spinner color={material.tabBarActiveTextColor} />
+                </View>
+            )
         }
         const orderDetail = this.state.orderDetail
         let totalItem = 0
