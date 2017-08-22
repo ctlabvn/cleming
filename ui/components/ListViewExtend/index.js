@@ -33,7 +33,7 @@ export default class ListViewExtend extends Component {
     if (!keyExtractorArr || keyExtractorArr.length == 0) return false
     for (let i=0; i < keyExtractorArr.length; i++){
       if (r1[keyExtractorArr[i]] != r2[keyExtractorArr[i]]) {
-        return true 
+        return true
       }
     }
     return false
@@ -44,7 +44,7 @@ export default class ListViewExtend extends Component {
     this.scrollTop += this.up ? 1 : -1
     this.up = !this.up
     // console.log(scrollTop)
-    this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})    
+    this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})
   }
 
   componentDidMount(){
@@ -64,16 +64,17 @@ export default class ListViewExtend extends Component {
   }
 
   render() {
-    const {onRefresh, ...props} = this.props    
+    const {onRefresh, removeClippedSubviews, ...props} = this.props
     // always override for performance
+    let removeSubview = removeClippedSubviews===false ? false:true
     return (
-      <ListView        
+      <ListView
         {...props}
         onScroll={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
-        removeClippedSubviews={true}
+        removeClippedSubviews={removeSubview}
         dataSource={this.state.dataSource}
         onEndReachedThreshold={10}
       />
