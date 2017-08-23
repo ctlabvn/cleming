@@ -27,7 +27,7 @@ export default class extends PureComponent {
       clearTimeout(this.timer)
       this.interactionHandle = null
       if(Platform.OS === 'android' && !this.props.firstTime)
-        setTimeout(()=> this.setState({interactionsComplete: true}), 300)
+        this.setState({interactionsComplete: true})
       else
         this.setState({interactionsComplete: true})
     })
@@ -51,6 +51,6 @@ export default class extends PureComponent {
       return placeholder || (renderPlaceholder && renderPlaceholder())
     }
 
-    return children    
+    return children
   }
 }
