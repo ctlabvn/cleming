@@ -20,13 +20,21 @@ export default {
     cashout(xsession, bankId, accountNumber, moneyAmount){
         console.log('Cashout API', bankId+'---'+ accountNumber+'---'+ moneyAmount)
         return apiPost('/merchantapp/cashout', {bankId, accountNumber, moneyAmount}, xsession)
-    }, 
-    
+    },
+
     addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
         console.log('Add Bank API: ', xsession+'---'+accountName+'---'+idNumber+'---'+accountNumber+'---'+bankId+'---'+area+'---'+branchName)
         return apiPost('/merchantapp/add-bank', {accountName, idNumber, accountNumber, bankId, area, branchName}, xsession)
     },
     listBank(xsession){
         return apiGet('/merchantapp/list-bank', {}, xsession)
+    },
+    getCashoutHistory(xsession, option=0, pageNumber=1){
+        console.log('API Get cashoutHistory: ', xsession+'---'+option+'---'+pageNumber)
+        return apiGet('/merchantapp/list-cashout', {option, pageNumber}, xsession)
+    },
+    getCashoutDetail(xsession, cashoutId){
+      console.log('API Cashout Detail: ', xsession+'---'+cashoutId)
+      return apiGet('/merchantapp/cashout-detail', {cashoutId}, xsession)
     }
 }

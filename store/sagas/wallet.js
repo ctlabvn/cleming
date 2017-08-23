@@ -104,6 +104,15 @@ const requestUpdateSettingHour = createRequestSaga({
     key: 'app/updateSettingHour',
 })
 
+const requestCashoutHistory = createRequestSaga({
+  request: api.wallet.getCashoutHistory,
+  key: 'app/getCashoutHistory'
+})
+
+const requestCashoutDetail = createRequestSaga({
+  request: api.wallet.getCashoutDetail,
+  key: 'app/getCashoutDetail'
+})
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -119,9 +128,9 @@ export default [
             takeLatest('app/addBank', requestAddBank),
             takeLatest('app/getListBank', requestGetListBank),
             takeLatest('app/getSettingHour', requestGetSettingHour),
-            takeLatest('app/updateSettingHour', requestUpdateSettingHour)
+            takeLatest('app/updateSettingHour', requestUpdateSettingHour),
+            takeLatest('app/getCashoutHistory', requestCashoutHistory),
+            takeLatest('app/getCashoutDetail', requestCashoutDetail)
         ]
     },
 ]
-
-

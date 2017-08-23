@@ -19,7 +19,7 @@ import I18n from '~/ui/I18n'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     xsession: getSession(state),
-}), { ...commonAction })
+}), { ...commonAction, ...walletAction })
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
@@ -39,9 +39,69 @@ export default class CashoutHistory extends Component {
                 money: 2770000,
                 status: 'received'
             },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1950000,
+                status: 'received'
+            },
+            {
+                time: '08/07/2017',
+                money: 2770000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1950000,
+                status: 'received'
+            },
+            {
+                time: '08/07/2017',
+                money: 2770000,
+                status: 'received'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'received'
+            },
         ]
 
         this.data1=[
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'waiting'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'waiting'
+            },
+            {
+                time: '06/07/2017',
+                money: 1900000,
+                status: 'waiting'
+            },
             {
                 time: '06/07/2017',
                 money: 1900000,
@@ -51,7 +111,13 @@ export default class CashoutHistory extends Component {
     }
 
     componentDidMount = () => {
-
+        const {xsession, getCashoutHistory, getCashoutDetail} = this.props
+        getCashoutHistory(xsession,
+          (err, data)=>{
+            console.log('Err CashoutHistory: ', err)
+            console.log('Data CashoutHistory', data)
+          }
+        )
     }
     _renderRow = (item) => {
         const {forwardTo} = this.props
@@ -66,9 +132,9 @@ export default class CashoutHistory extends Component {
                         </View>
                     </View>
                 )
-            case 'received': 
+            case 'received':
                 return (
-                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail')}>
+                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: 1})}>
                         <View style={styles.listItem}>
                             <Text medium gray>{item.time}</Text>
                             <View style={styles.row}>
@@ -95,6 +161,7 @@ export default class CashoutHistory extends Component {
                 <ListViewExtend
                     dataArray={this.data1}
                     renderRow={(item) => this._renderRow(item)}
+                    onEndReached={()=>console.log('On End Reach List1')}
                 />
                 <View style={{...styles.rowLeft, ...styles.borderTop}}>
                     <Text medium bold success>{I18n.t('money_received')}</Text>
@@ -103,6 +170,7 @@ export default class CashoutHistory extends Component {
                 <ListViewExtend
                     dataArray={this.data}
                     renderRow={(item) => this._renderRow(item)}
+                    onEndReached={()=>console.log('On End Reach List2')}
                 />
 
 

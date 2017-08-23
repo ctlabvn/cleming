@@ -12,20 +12,20 @@ import { report } from './report'
 import { location } from './location'
 import { revenue } from './revenue'
 import { meta } from './meta'
-import {banks, wallet, wallet_detail} from './wallet'
+import {banks, wallet, wallet_detail, cashoutHistory} from './wallet'
 import {setting} from './setting'
 import { checking } from './checking'
 // a rootReducer is like a single state, key is function return a sub state value
-const rootReducer = combineReducers({    
+const rootReducer = combineReducers({
   form,
   ui: combineReducers({
-    // ui reducer should be placed here    
+    // ui reducer should be placed here
     toast,
-    drawer,    
+    drawer,
     // search,
-  }),  
+  }),
   footerRoutes,
-  requests, 
+  requests,
   router,
   auth,
   account,
@@ -45,7 +45,7 @@ const rootReducer = combineReducers({
   banks,
   setting,
   checking,
+  cashoutHistory
 })
 
 export default rootReducer
-
