@@ -18,14 +18,14 @@ export default {
         alignItems: 'center'
     },
     topDropdownPlaceHolder: {
-        height: 50, 
+        height: 50,
         width: '100%',
         backgroundColor: material.primaryColor,
-        zIndex: 1000, 
-        top: 0, 
+        zIndex: 1000,
+        top: 0,
         position: 'absolute',
         flexDirection: 'row',
-        justifyContent: 'center' 
+        justifyContent: 'center'
     },
     timeInteval: {
         color: 'rgba(0,0,0,0.5)',
@@ -77,7 +77,18 @@ export default {
         borderRadius: 2,
         padding: 10,
         marginBottom: 10,
-        height: 60,         
+        height: 60,
+        width: '100%'
+    },
+    menuItemGray: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: material.gray300,
+        borderRadius: 2,
+        padding: 10,
+        marginBottom: 10,
+        height: 60,
         width: '100%'
     },
     leftBlock: {
@@ -132,11 +143,11 @@ export default {
       height: height - 120 - 76 - 50 - 50 - 50
     },
     menuContainer: {
-        alignItems: 'center', 
-        flex: 1, 
-        flexDirection: 'column', 
+        alignItems: 'center',
+        flex: 1,
+        flexDirection: 'column',
         justifyContent: 'flex-start',
-        padding: 5,        
+        padding: 5,
     }
 
 }
