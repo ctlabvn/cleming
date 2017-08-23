@@ -36,5 +36,12 @@ export default {
     getCashoutDetail(xsession, cashoutId){
       console.log('API Cashout Detail: ', xsession+'---'+cashoutId)
       return apiGet('/merchantapp/cashout-detail', {cashoutId}, xsession)
+    },
+    getCashoutOverview(xsession){
+      console.log('Call Cashout Overview', xsession);
+      return apiGet('/merchantapp/balance-cashout', {}, xsession)
     }
+
+
+
 }

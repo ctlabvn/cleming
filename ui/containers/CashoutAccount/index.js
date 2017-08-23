@@ -5,7 +5,7 @@ import { InteractionManager, View, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
-import * as walletAction from "~/store/actions/wallet";
+import {getCashoutOverview} from "~/store/actions/wallet";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
@@ -19,7 +19,8 @@ import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
-}), { ...commonAction })
+    cashoutOverview: state.cashoutOverview
+}), { ...commonAction, getCashoutOverview })
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -29,28 +30,29 @@ export default class extends Component {
     }
 
     componentDidMount = () => {
-
+      const {getCashoutOverview, xsession} = this.props
+      getCashoutOverview(xsession)
     }
 
     render() {
-        const { forwardTo } = this.props
+        const { forwardTo, cashoutOverview } = this.props
         return (
             <Container style={styles.container}>
                 <View style={styles.content}>
                     <View style={styles.moneyBlock}>
                         <View style={{...styles.row, ...styles.mt20}}>
                             <Text medium>{I18n.t('balance_available')}</Text>
-                            <Text bold style={styles.moneyNumber}>{formatNumber(1900000)}đ</Text>
+                            <Text bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)}đ</Text>
                         </View>
                         <View style={{...styles.rowRight, ...styles.mt20}}>
                             <Button style={styles.cashoutBtn} onPress={()=>forwardTo('withDraw')}>
                                 <Icon name='cash_out' style={styles.cashoutIcon} />
-                                <Text white medium>Cashout</Text>
+                                <View><Text white medium>Cashout</Text></View>
                             </Button>
                         </View>
                     </View>
                     <Border/>
-                    <TouchableOpacity onPress={()=>forwardTo('cashoutHistory')}> 
+                    <TouchableOpacity onPress={()=>forwardTo('cashoutHistory')}>
                         <View>
                             <View style={{...styles.row, ...styles.pd10}}>
                                 <Text gray>(14/08/2017)</Text>
@@ -58,7 +60,7 @@ export default class extends Component {
                             <View style={{...styles.row, ...styles.pd10}}>
                                 <Text gray bold medium>{I18n.t('cashout_history')}</Text>
                                 <View style={styles.row}>
-                                    <Text medium bold success>{formatNumber(26034000)}đ</Text>
+                                    <Text medium bold success>{formatNumber(cashoutOverview.cashoutMoney)}đ</Text>
                                     <Icon name='foward' style={styles.forwardIcon}/>
                                 </View>
                             </View>

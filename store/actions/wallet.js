@@ -62,3 +62,13 @@ export const getCashoutDetail = (...args) => ({
   type: 'app/getCashoutDetail',
   args
 })
+
+export const getCashoutOverview = (...args) => ({
+  type: 'app/getCashoutOverview',
+  args
+})
+
+export const setCashoutOverview = (data) => ({
+  type: 'app/setCashoutOverview',
+  payload: data
+})

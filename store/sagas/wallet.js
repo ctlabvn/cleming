@@ -5,7 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance, setBanks, setBalanceDetail, setListBank, setCashoutHistory
+    setBalance, setBanks, setBalanceDetail, setListBank, setCashoutHistory, setCashoutOverview
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -120,6 +120,21 @@ const requestCashoutDetail = createRequestSaga({
   request: api.wallet.getCashoutDetail,
   key: 'app/getCashoutDetail'
 })
+
+const requestCashoutOverview = createRequestSaga({
+  request: api.wallet.getCashoutOverview,
+  key: 'app/getCashoutOverview',
+  success: [
+    (data) => {
+      if (data && data.data){
+        return setCashoutOverview(data.data)
+      }
+      return noop('')
+    }
+
+  ]
+})
+
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -137,7 +152,8 @@ export default [
             takeLatest('app/getSettingHour', requestGetSettingHour),
             takeLatest('app/updateSettingHour', requestUpdateSettingHour),
             takeLatest('app/getCashoutHistory', requestCashoutHistory),
-            takeLatest('app/getCashoutDetail', requestCashoutDetail)
+            takeLatest('app/getCashoutDetail', requestCashoutDetail),
+            takeLatest('app/getCashoutOverview', requestCashoutOverview)
         ]
     },
 ]

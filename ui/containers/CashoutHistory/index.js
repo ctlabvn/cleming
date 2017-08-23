@@ -87,9 +87,6 @@ export default class CashoutHistory extends Component {
                     renderRow={(item) => this._renderRow(item)}
                     onEndReached={()=>console.log('On End Reach List2')}
                 />
-
-
-
             </Container>
         )
     }

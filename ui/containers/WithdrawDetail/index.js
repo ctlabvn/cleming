@@ -74,7 +74,7 @@ export default class extends Component {
                 </View>
                 <View style={{...styles.rowPadding, ...styles.ml20, ...styles.borderBottom}}>
                     <Text bold gray>{I18n.t('transaction_code')}</Text>
-                    <Text gray>7237488556</Text>
+                    <Text gray>{this.state.cashoutDetail.tranCode}</Text>
                 </View>
                 <View style={{...styles.rowPadding, ...styles.ml20, ...styles.borderBottom}}>
                     <Text bold gray>{I18n.t('request_time')}</Text>
