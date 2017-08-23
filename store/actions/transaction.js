@@ -83,3 +83,13 @@ export const markAsReadOffline = (payload) => ({
   type: 'transaction/markAsReadOffline',
   payload,
 })
+
+
+export const getTransactionHistoryList  = (...args) => ({
+    type: 'transaction/historyList',
+    args
+})
+export const setTransactionHistoryList = (payload) => ({
+    type: 'app/setTransactionHistoryList',
+    payload,
+})

@@ -4,13 +4,15 @@ export const initialState = {
   readItems: {},
   listTransaction: [],
   totalRecord: 0,
+    historyList: {},
   currentDateFilter: 'day',
+
 }
 export const transaction = (state = initialState, { type, payload }) => {
   switch (type) {
 
     case 'transaction/updateDateFilter':
-      return {...state, currentDateFilter: payload}    
+      return {...state, currentDateFilter: payload}
 
     case 'app/setListTransaction':
       return {
@@ -40,6 +42,11 @@ export const transaction = (state = initialState, { type, payload }) => {
           listTransaction: payload.pageNumber > 1 ? [...state.payWithClingme.listTransaction, ...payload.listPayThroughClm] : payload.listPayThroughClm
         }
       }
+    case 'app/setTransactionHistoryList':
+        return {
+            ...state,
+           historyList: payload.data
+        }
     case 'transaction/setDenyReason':
       return { ...state, denyReason: payload }
     case 'transaction/setDenyReasonClm':

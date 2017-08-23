@@ -6,6 +6,8 @@ import { setToast, noop, forwardTo } from '~/store/actions/common'
 import { setCheckingData } from '~/store/actions/checking'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
+
 
 const requestCheckingDetail = createRequestSaga({
     request: api.checking.detail,

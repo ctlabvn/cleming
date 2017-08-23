@@ -40,7 +40,6 @@ export default class extends Component {
     }
 
     _handlePressFilter(data) {
-        // console.warn(JSON.stringify(data));
         const dateFilterData = data.currentSelectValue.value;
         const fromTime = dateFilterData.from;
         const toTime = dateFilterData.to;
@@ -89,7 +88,6 @@ export default class extends Component {
 
     render() {
         const {data} = this.props;
-        // console.warn(JSON.stringify(data));
         const detail = data;
         return (
             <Container style={styles.container}>

@@ -39,6 +39,10 @@ export default {
     listAll(xsession, placeId, fromTime, toTime, tranType=0, pageNumber=0){
         console.log('List All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+tranType+'---'+pageNumber)
         return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
+    },
+    historyList(xsession, placeId=479789, fromTime=1497838300, toTime=1502956420, option=1, pageNumber=0){
+        console.log('history list All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+        if (placeId) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
+        else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
     }
-
 }

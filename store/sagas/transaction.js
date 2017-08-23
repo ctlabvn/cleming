@@ -3,7 +3,7 @@ import { takeLatest, takeEvery } from 'redux-saga/effects'
 import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo } from '~/store/actions/common'
-import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm, setListAllTransaction } from '~/store/actions/transaction'
+import { setListTransaction, setDenyReason, setListTransactionPayWithClingme, setDenyReasonClm, setListAllTransaction, setTransactionHistoryList } from '~/store/actions/transaction'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 import { getToastMessage } from '~/ui/shared/utils'
 const requestListTransaction = createRequestSaga({
@@ -100,6 +100,19 @@ requestDenyReasonClm = createRequestSaga({
         }
     ],
 })
+
+const requestHistoryListTransaction = createRequestSaga({
+    request: api.transaction.historyList,
+    key: 'transaction/historyList',
+    cancel: 'app/logout',
+    success: [
+        (data) => setTransactionHistoryList(data),
+    ],
+    failure: [
+        (data) => setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top'),
+    ],
+})
+
 export default [
     function* fetchWatcher() {
         yield [
@@ -112,9 +125,8 @@ export default [
             takeLatest('transaction/detailPayWithClingme', requestTransactionDetailPayWithClingme),
             takeLatest('transaction/confirm', requestTransactionConfirm),
             takeLatest('transaction/denyReasonClm', requestDenyReasonClm),
-            takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm)
+            takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm),
+            takeLatest('transaction/historyList', requestHistoryListTransaction)
         ]
     },
 ]
-
-

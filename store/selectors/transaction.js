@@ -8,3 +8,4 @@ export const getListTransactionCLM = state =>
 
 export const getListTransaction = state => state.transaction.listTransaction
 
+export const getHistoryListTransaction = state => state.transaction.historyList
