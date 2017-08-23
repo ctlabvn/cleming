@@ -9,7 +9,6 @@ export default {
 	content: {
 		backgroundColor: 'white'
 	},
-
 	mt20: {
 		marginBottom: 20
 	},
@@ -42,6 +41,9 @@ export default {
 		fontSize: 24,
 		color: material.red500
 	},
+	moneyNumber2: {
+		fontSize: 20
+	},
 	forwardIcon: {
 		fontSize: 20,
 		color: material.successColor
@@ -49,9 +51,12 @@ export default {
 	bottomButton: {
 		width: '100%',
 		borderRadius: 0,
-		height: 40,
+		height: 45,
 		position: 'absolute',
 		bottom: 0,
 		backgroundColor: 'white'
+	},
+	textClear: {
+		fontSize: 18
 	}
 }

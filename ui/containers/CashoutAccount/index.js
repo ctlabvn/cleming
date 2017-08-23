@@ -41,7 +41,7 @@ export default class extends Component {
                 <View style={styles.content}>
                     <View style={styles.moneyBlock}>
                         <View style={{...styles.row, ...styles.mt20}}>
-                            <Text medium>{I18n.t('balance_available')}</Text>
+                            <Text medium style={styles.textClear}>{I18n.t('balance_available')}</Text>
                             <Text bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)}đ</Text>
                         </View>
                         <View style={{...styles.rowRight, ...styles.mt20}}>
@@ -57,10 +57,10 @@ export default class extends Component {
                             <View style={{...styles.row, ...styles.pd10}}>
                                 <Text gray>(14/08/2017)</Text>
                             </View>
-                            <View style={{...styles.row, ...styles.pd10}}>
+                            <View style={{...styles.row, ...styles.pd10, paddingBottom: 30}}>
                                 <Text gray bold medium>{I18n.t('cashout_history')}</Text>
                                 <View style={styles.row}>
-                                    <Text medium bold success>{formatNumber(cashoutOverview.cashoutMoney)}đ</Text>
+                                    <Text medium bold success style={styles.moneyNumber2}>{formatNumber(cashoutOverview.cashoutMoney)}đ</Text>
                                     <Icon name='foward' style={styles.forwardIcon}/>
                                 </View>
                             </View>
