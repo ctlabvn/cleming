@@ -65,7 +65,9 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
   export const cashoutHistory = (state=initialWalletDetail, {type, payload}) => {
     switch (type) {
       case 'app/setCashoutHistory':
-        return state
+        return {
+          ...state, ...payload
+        }
         break;
       default:
         return state

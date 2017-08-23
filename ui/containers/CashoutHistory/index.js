@@ -13,132 +13,47 @@ import moment from "moment";
 import { formatNumber } from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
 import { getSession } from "~/store/selectors/auth";
-
 import material from "~/theme/variables/material.js";
 import I18n from '~/ui/I18n'
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import {
+    TIME_FORMAT_WITHOUT_SECOND
+} from "~/store/constants/app"
 @connect(state => ({
     xsession: getSession(state),
+    cashoutHistory: state.cashoutHistory
 }), { ...commonAction, ...walletAction })
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
-        this.data=[
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1950000,
-                status: 'received'
-            },
-            {
-                time: '08/07/2017',
-                money: 2770000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1950000,
-                status: 'received'
-            },
-            {
-                time: '08/07/2017',
-                money: 2770000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1950000,
-                status: 'received'
-            },
-            {
-                time: '08/07/2017',
-                money: 2770000,
-                status: 'received'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'received'
-            },
-        ]
-
-        this.data1=[
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'waiting'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'waiting'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'waiting'
-            },
-            {
-                time: '06/07/2017',
-                money: 1900000,
-                status: 'waiting'
-            },
-        ]
     }
 
     componentDidMount = () => {
         const {xsession, getCashoutHistory, getCashoutDetail} = this.props
-        getCashoutHistory(xsession,
-          (err, data)=>{
-            console.log('Err CashoutHistory: ', err)
-            console.log('Data CashoutHistory', data)
-          }
-        )
+        getCashoutHistory(xsession)
     }
     _renderRow = (item) => {
         const {forwardTo} = this.props
-        switch(item.status){
-            case 'waiting':
+        switch(item.cashoutStatus){
+            case 0:
                 return (
+                  <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: item.casoutId})}>
                     <View style={styles.listItem}>
-                        <Text medium gray>{item.time}</Text>
+                        <Text medium gray>{moment(item.cashoutTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                         <View style={styles.row}>
-                            <Text warning>{formatNumber(item.money)}đ</Text>
+                            <Text warning>{formatNumber(item.cashoutMoney)}đ</Text>
                             <Icon name='foward' style={styles.forwardIconWarning}/>
                         </View>
                     </View>
+                  </TouchableWithoutFeedback>
                 )
-            case 'received':
+            case 1:
                 return (
-                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: 1})}>
+                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: item.casoutId})}>
                         <View style={styles.listItem}>
-                            <Text medium gray>{item.time}</Text>
+                            <Text medium gray>{moment(item.cashoutTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                             <View style={styles.row}>
-                                <Text success>{formatNumber(item.money)}đ</Text>
+                                <Text success>{formatNumber(item.cashoutMoney)}đ</Text>
                                 <Icon name='foward' style={styles.forwardIconSuccess}/>
                             </View>
                         </View>
@@ -148,18 +63,18 @@ export default class CashoutHistory extends Component {
     }
 
     render() {
-        const { forwardTo } = this.props
+        const { forwardTo, cashoutHistory } = this.props
         return (
             <Container style={styles.container}>
                 <View style={{...styles.rowCenter, ...styles.borderBottom}}>
-                    <Text large bold success>{formatNumber(26034000)}đ</Text>
+                    <Text large bold success>{formatNumber(cashoutHistory.moneyAmount)}đ</Text>
                 </View>
                 <View style={styles.rowLeft}>
                     <Text medium bold warning>{I18n.t('money_waiting_process')}</Text>
                 </View>
                 <Border/>
                 <ListViewExtend
-                    dataArray={this.data1}
+                    dataArray={cashoutHistory.cashoutWaiting.listCashout}
                     renderRow={(item) => this._renderRow(item)}
                     onEndReached={()=>console.log('On End Reach List1')}
                 />
@@ -168,7 +83,7 @@ export default class CashoutHistory extends Component {
                 </View>
                 <Border/>
                 <ListViewExtend
-                    dataArray={this.data}
+                    dataArray={cashoutHistory.cashoutConfirm.listCashout}
                     renderRow={(item) => this._renderRow(item)}
                     onEndReached={()=>console.log('On End Reach List2')}
                 />

@@ -5,7 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance, setBanks, setBalanceDetail, setListBank
+    setBalance, setBanks, setBalanceDetail, setListBank, setCashoutHistory
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -51,7 +51,6 @@ const requestGetBanks = createRequestSaga({
     request: api.wallet.banks,
     key: 'app/getBanks',
     success: [
-
         (data) => {
             console.log('Data: ', data)
             if (data && data.data){
@@ -106,7 +105,15 @@ const requestUpdateSettingHour = createRequestSaga({
 
 const requestCashoutHistory = createRequestSaga({
   request: api.wallet.getCashoutHistory,
-  key: 'app/getCashoutHistory'
+  key: 'app/getCashoutHistory',
+  success: [
+    (data) => {
+        if (data && data.data){
+          return setCashoutHistory(data.data)
+        }
+        return noop('')
+    }
+  ]
 })
 
 const requestCashoutDetail = createRequestSaga({
