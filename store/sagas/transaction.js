@@ -100,6 +100,7 @@ requestDenyReasonClm = createRequestSaga({
         }
     ],
 })
+<<<<<<< HEAD
 
 const requestHistoryListTransaction = createRequestSaga({
     request: api.transaction.historyList,
@@ -111,6 +112,12 @@ const requestHistoryListTransaction = createRequestSaga({
     failure: [
         (data) => setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top'),
     ],
+=======
+requestUpdateViewNumberCLM = createRequestSaga({
+    request: api.transaction.updateViewStatusPayCLM,
+    key: 'transaction/updateViewStatusPayCLM',
+    cancel: 'app/logout',
+>>>>>>> 6094dccd876f21df054deb4466318a05a52b2450
 })
 
 export default [
@@ -126,7 +133,14 @@ export default [
             takeLatest('transaction/confirm', requestTransactionConfirm),
             takeLatest('transaction/denyReasonClm', requestDenyReasonClm),
             takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm),
+<<<<<<< HEAD
             takeLatest('transaction/historyList', requestHistoryListTransaction)
         ]
     },
 ]
+=======
+            takeLatest('transaction/updateViewStatusPayCLM', requestUpdateViewNumberCLM)
+        ]
+    },
+]
+>>>>>>> 6094dccd876f21df054deb4466318a05a52b2450

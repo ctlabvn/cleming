@@ -87,13 +87,13 @@ export const chainParse = (obj, attrArr) => {
   let cloneObj = Object.assign({}, obj)
   for (let i=0; i<attrArr.length; i++){
     cloneObj = cloneObj[attrArr[i]]
-    if (!cloneObj) return null 
+    if (!cloneObj) return null
   }
   return cloneObj
 }
 
 export const getToastMessage = (message) => {
-  return <View style={{ backgroundColor: 'rgba(0,0,0,0.7)', padding: 10, borderRadius: 5, marginTop: 50 }}>
+  return <View style={{ backgroundColor: '#666', padding: 10, borderRadius: 5, marginTop: 50 }}>
     <Text white>{message}</Text>
   </View>
 }
@@ -103,9 +103,9 @@ export const getServerMode = (versionName) => {
   if (Platform.OS == 'android'){
     return (splitArr.length == 3) ? 'PROD':'DEV'
   }else{
-    return (splitArr[splitArr.length-1] % 2 == 0) ? 'PROD':'DEV' 
+    return (splitArr[splitArr.length-1] % 2 == 0) ? 'PROD':'DEV'
   }
-  
+
 }
 
 export const _isArrDiff = (arr1, arr2, checkProperties) => {
@@ -118,10 +118,10 @@ export const _isArrDiff = (arr1, arr2, checkProperties) => {
 
 export const _isArrDiffPartial = (arr1, arr2, checkProperties) => {
   let length1 = arr1.length
-  let length2 = arr2.length  
+  let length2 = arr2.length
   if (length1 != length2) return true
   return (
-      _isDiff(arr1[0], arr2[0], checkProperties) 
+      _isDiff(arr1[0], arr2[0], checkProperties)
       || _isDiff(arr1[length1], arr2[length1], checkProperties)
   )
 }

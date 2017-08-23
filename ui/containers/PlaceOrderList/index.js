@@ -133,9 +133,9 @@ export default class PlaceOrderList extends Component {
         return (
 
             <ListItem style={listItemStyle} onPress={() => this.props.forwardTo('placeOrderDetail', {id: item.clingmeId})}>
-                
+
                     <View style={{ width: '100%' }}>
-                                                                                
+
                             <View style={styles.rowPadding}>
                                 {orderCodeBlock}
                                 <View style={styles.rowCenter}>
@@ -146,7 +146,7 @@ export default class PlaceOrderList extends Component {
                                     />}
                                 </View>
                             </View>
-                            
+
                             <Border/>
                             <View style={styles.row}>
                                 <View style={styles.column}>
@@ -170,9 +170,9 @@ export default class PlaceOrderList extends Component {
                                 </View>
                             </View>
                             <Border/>
-                        
+
                     </View>
-                    
+
                     <View style={{ ...styles.rowPadding, width: '100%' }}>
                         <View style={styles.row}>
                             <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
@@ -180,8 +180,8 @@ export default class PlaceOrderList extends Component {
                         </View>
                         {phoneNumberBlock}
                     </View>
-                    
-                
+
+
             </ListItem>
         )
     }
@@ -254,7 +254,7 @@ export default class PlaceOrderList extends Component {
             this.spinner.show(true)
         } else {
             // clearBookingList()
-            // this.listview.showRefresh(true)
+            this.listview.showRefresh(true)
             // refresh control can show/hide without set state
             this.listview.scrollTop = 0
             this.listview.swing()
@@ -267,7 +267,7 @@ export default class PlaceOrderList extends Component {
                     this.spinner.show(false)
                 } else {
                     // clearBookingList()
-                    // this.listview.showRefresh(false)
+                    this.listview.showRefresh(false)
                 }
             }
         )
@@ -316,7 +316,7 @@ export default class PlaceOrderList extends Component {
         }
         let selectedPlace = app.topDropdown.getValue()
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-        
+
         if (meta && meta[SCREEN.BOOKING_LIST]){
             console.log('Markload booking')
             let selectedPlace = app.topDropdown.getValue()
@@ -338,7 +338,7 @@ export default class PlaceOrderList extends Component {
             // this.setState({ counting: false })
         // })
     }
-    
+
     // componentWillReceiveProps(nextProps) {
     //     if (this.isLoadingPlace && nextProps.place && nextProps.place.listPlace) {
     //         this.isLoadingPlace = false
@@ -380,9 +380,9 @@ export default class PlaceOrderList extends Component {
                         dataArray={booking.bookingList}
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
-                    
-                    <Spinner 
-                    // color={material.red500} 
+
+                    <Spinner
+                    // color={material.red500}
                     onItemRef={ref=>this.spinner=ref}/>
 
 

@@ -60,7 +60,7 @@ export const RenderTextField = ({errorStyle, ...props}) => (
       inputStyle={styles.inputText}
       style={styles.inputField}
       component={InputField}
-      placeholderTextColor={material.gray500} 
+      placeholderTextColor={material.gray500}
       {...props}
     />
   </View>
@@ -70,7 +70,7 @@ export const RenderTextField = ({errorStyle, ...props}) => (
 export const validateField = (values) => {
   const errors = {}
   if(!values) return errors
-  
+
   if (values.name.trim() == '') {
     errors.name = I18n.t('err_name_empty')
       return errors;
@@ -83,7 +83,7 @@ export const validateField = (values) => {
         return errors;
     }
   }
-  
+
   if (values.phone.trim() == '') {
     errors.phone = I18n.t('err_phone_empty')
       return errors;
@@ -93,18 +93,18 @@ export const validateField = (values) => {
         return errors;
     }
   }
-  
+
   if (values.email.trim() != '') {
     if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
       errors.email = I18n.t('err_email_invalid_format')
         return errors;
     }
   }
-  
+
   return errors
 }
 
-@connect(state => ({  
+@connect(state => ({
   place: state.place,
 }))
 export class RenderGroup extends Component {
@@ -114,15 +114,15 @@ export class RenderGroup extends Component {
     this.children = {}
     this.selectedPlaceId = props.selectedPlaceId
   }
-  
+
   componentWillMount() {
-    
+
   }
-  
+
   componentWillReceiveProps(nextProps) {
 
   }
-  
+
   componentDidMount() {
 
     this.props.onReady && this.props.onReady(this)
@@ -131,15 +131,15 @@ export class RenderGroup extends Component {
       // this.setDefaultChecked();
   }
 
-  
+
   scrollToTop(){
     this.listView && this.listView.scrollTo({ x: 0, y: 0, animated: true });
-  }  
+  }
 
    scrollToEnd(){
     this.listView && this.listView.scrollToEnd()
-  } 
-  
+  }
+
   handleCheck(address){
 
     // console.log(this.children)
@@ -150,29 +150,29 @@ export class RenderGroup extends Component {
       this.selectedPlaceId = address.placeId
       prevChild = this.children[this.selectedPlaceId]
       prevChild && prevChild.setState({checked: true})
-    }    
+    }
   }
 
-  renderRow(address, rowID){      
-    // console.log('render item', rowID)   
+  renderRow(address, rowID){
+    // console.log('render item', rowID)
     const renderedRow = (
       <TouchableOpacity
           onPress={()=>this.handleCheck(address)}
-          style={styles.listItem}>   
-          
-          <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>          
-          
+          style={styles.listItem}>
+
+          <Text small numberOfLines={2} style={styles.left}>{address.address}</Text>
+
           <CheckBox
               onReady={ref=>this.children[address.placeId]=ref}
               type="radio"
               parent={this}
-              checked={address.placeId === this.selectedPlaceId}                          
+              checked={address.placeId === this.selectedPlaceId}
           />
-          
+
       </TouchableOpacity>
     )
 
-    if(rowID == 0){      
+    if(rowID == 0){
       return (
         <View>
           {this.props.firstItem}
@@ -183,7 +183,7 @@ export class RenderGroup extends Component {
       return (
         <View>
           {renderedRow}
-          {this.props.lastItem}          
+          {this.props.lastItem}
         </View>
       )
     } else {
@@ -191,18 +191,20 @@ export class RenderGroup extends Component {
     }
 
   }
-  
-  
+
+
   render() {
-    return (                            
-        <ListViewExtend 
+    // removeClippedSubviews={false} to prevent CRASH, as recommend from github this is bug of ListView, should use FlatList instead
+    return (
+        <ListViewExtend
               contentContainerStyle={styles.listContent}
+              removeClippedSubviews={false}
               ref={ref=>this.listView = ref}
-              keyExtractor={item=>item.placeId}               
-              dataArray={this.props.place.listPlace}    
+              keyExtractor={item=>item.placeId}
+              dataArray={this.props.place.listPlace}
               renderRow={(address, sectionID, rowID)=> this.renderRow(address, rowID)}
-          />        
-      
+          />
+
     )
   }
 }

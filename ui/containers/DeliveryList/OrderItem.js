@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, ListItem, Spinner, Text } from "native-base";
-import { InteractionManager, View } from "react-native";
+import { InteractionManager, View, TouchableWithoutFeedback } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as orderActions from "~/store/actions/order";
@@ -48,7 +48,7 @@ export default class extends Component {
         if (this.props.counting != nextProps.counting) return true
         if (!this.props.data.orderInfo && !nextProps.data.orderInfo) return false
         if (!this.props.data.orderInfo || !nextProps.data.orderInfo) return true
-        return _isDiff(this.props.data.orderInfo, nextProps.data.orderInfo, 
+        return _isDiff(this.props.data.orderInfo, nextProps.data.orderInfo,
             [
                 'tranId', 'status', 'moneyAmount', 'fullAddress'
             ]
@@ -66,13 +66,13 @@ export default class extends Component {
             totalItem = orderRowList.map(x => x.quantity).reduce((a, b) => (a + b), 0)
         }
         let phoneNumberBlock = (
+          <TouchableWithoutFeedback onPress={()=>this.props.onPressPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}>
             <View style={styles.row}>
                 <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
-                <Text
-                    medium
-                    onPress={()=>this.props.onPressPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
+                <Text medium
                     style={styles.phoneNumber}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
             </View>
+          </TouchableWithoutFeedback>
         )
 
         switch (orderInfo.status) {
@@ -123,12 +123,13 @@ export default class extends Component {
                     </View>
                 )
                 phoneNumberBlock = (
+                  <TouchableWithoutFeedback onPress={()=>this.props.onPressPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}>
                     <View style={styles.row}>
                         <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon, ...styles.grey }} />
                         <Text medium
-                            onPress={()=>this.props.onPressPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}
                             style={{ ...styles.phoneNumber, ...styles.grey }}>{formatPhoneNumber(chainParse(orderInfo, ['userInfo', 'phoneNumber']))}</Text>
                     </View>
+                  </TouchableWithoutFeedback>
                 )
                 break
         }
@@ -149,7 +150,7 @@ export default class extends Component {
                             {(orderInfo.status == 'CANCELLED') && (
                                 <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
                             )}
-                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES) 
+                            {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES)
                                 && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
                                 && <CircleCountdown baseMinute={parseInt(orderInfo.fastDeliveryTime/60)}
                                     counting={this.props.counting}
@@ -189,7 +190,7 @@ export default class extends Component {
                     </View>
 
                     <View style={{ ...styles.row, marginBottom: 5 }}>
-                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress} 
+                        <Text medium grayDark>{I18n.t('address')}: {orderInfo.fullAddress}
                             {(parseFloat(orderInfo.deliveryDistance) > 0) &&
                                 <Text> - <Text bold>{parseFloat(orderInfo.deliveryDistance).toFixed(2)} km</Text></Text>
                             }

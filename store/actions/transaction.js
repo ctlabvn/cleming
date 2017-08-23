@@ -6,7 +6,7 @@ export const getListAllTransaction= (...args) => ({
 
 export const setListAllTransaction = (listTransaction) => ({
   type: 'app/setListAllTransaction',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const getListTransaction= (...args) => ({
@@ -16,12 +16,12 @@ export const getListTransaction= (...args) => ({
 
 export const setListTransaction = (listTransaction) => ({
   type: 'app/setListTransaction',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const setListTransactionPayWithClingme = (listTransaction) => ({
   type: 'app/setListTransactionPayWithClingme',
-  payload: listTransaction, 
+  payload: listTransaction,
 })
 
 export const getListTransactionPayWithClingme= (...args) => ({
@@ -77,13 +77,14 @@ export const setDenyReasonClm = (reason) => ({
 export const updateDateFilter = (payload) => ({
   type: 'transaction/updateDateFilter',
   payload,
-}) 
+})
 
 export const markAsReadOffline = (payload) => ({
   type: 'transaction/markAsReadOffline',
   payload,
 })
 
+<<<<<<< HEAD
 
 export const getTransactionHistoryList  = (...args) => ({
     type: 'transaction/historyList',
@@ -93,3 +94,9 @@ export const setTransactionHistoryList = (payload) => ({
     type: 'app/setTransactionHistoryList',
     payload,
 })
+=======
+export const updateViewStatusPayCLM = (...args) => ({
+  type: 'transaction/updateViewStatusPayCLM',
+  args
+})
+>>>>>>> 6094dccd876f21df054deb4466318a05a52b2450

@@ -40,9 +40,17 @@ export default {
         console.log('List All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+tranType+'---'+pageNumber)
         return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
     },
+<<<<<<< HEAD
     historyList(xsession, placeId=479789, fromTime=1497838300, toTime=1502956420, option=1, pageNumber=0){
         console.log('history list All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
         if (placeId) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
         else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
     }
 }
+=======
+    updateViewStatusPayCLM(xsession, tranId){
+        console.log('Update View CLM API: ', xsession+'---'+tranId)
+        return apiPost('/merchantapp/view-tran', {tranId}, xsession)
+    }
+}
+>>>>>>> 6094dccd876f21df054deb4466318a05a52b2450

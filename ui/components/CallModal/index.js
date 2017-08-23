@@ -19,30 +19,30 @@ import {formatPhoneNumber} from '~/ui/shared/utils'
 import material from '~/theme/variables/material'
 
 @connect(state=>({
-  
+
 }), {...commonActions })
 
 export default class extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      
+
     }
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.open == true) {
       this.props.openModal()
     }
   }
-  
+
   onCallAccepted() {
     const {onCloseClick, phoneNumber} = this.props
     Communications.phonecall('+' + phoneNumber, true)
     this.props.closeModal()
     onCloseClick()
   }
-  
+
   render() {
     const {open, title, onCloseClick, closeModal, phoneNumber} = this.props
     return(
@@ -69,14 +69,14 @@ export default class extends Component {
                     onCloseClick()
                   }}
                   style={{...styles.button, ...styles.leftButton}}>
-                  <Text>Huỷ</Text>
+                  <View><Text white>Huỷ</Text></View>
                 </Button>
               </Col>
               <Col style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Button
                   onPress={this.onCallAccepted.bind(this)}
                   style={{...styles.button, ...styles.rightButton}}>
-                  <Text>Call</Text>
+                  <View><Text white>Gọi</Text></View>
                 </Button>
               </Col>
             </Row>

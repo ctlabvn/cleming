@@ -43,7 +43,7 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     session: authSelectors.getSession(state),
     news: getNews(state),
     meta: state.meta,
-    // router: getRouter(state), // can get direct from app, state, but should not connect    
+    // router: getRouter(state), // can get direct from app, state, but should not connect
 }), { ...orderActions, ...commonActions, ...placeActions, ...metaActions })
 // @reduxForm({ form: 'TestForm' })
 export default class extends Component {
@@ -110,7 +110,7 @@ export default class extends Component {
                 )
             }
         }
-        
+
         //Effect within 1 munites from markTime
         if (order.willReload && order.markReloadTime && (now - order.markReloadTime < 60000)) {
             markWillReload(false)
@@ -158,7 +158,7 @@ export default class extends Component {
 
     }
 
-    componentWillBlur() {        
+    componentWillBlur() {
         this.counting = false
         // InteractionManager.runAfterInteractions(() => {
         // this.setState({ counting: false })
@@ -174,19 +174,19 @@ export default class extends Component {
         if (isLoadMore) {
             this.spinner.show(true)
         } else {
-            // clearOrderList()            
+            // clearOrderList()
             this.listview.scrollTop = 0
-            this.listview.swing()            
-            // this.listview.showRefresh(true)
+            this.listview.swing()
+            this.listview.showRefresh(true)
         }
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
-            (err, data) => {                
+            (err, data) => {
                 if (isLoadMore) {
                     this.spinner.show(false)
                 } else {
                     // clearOrderList()
-                    // this.listview.showRefresh(false)
+                    this.listview.showRefresh(false)
                 }
                 this.clickCount = 0
             })
@@ -222,7 +222,7 @@ export default class extends Component {
     _handleChangePlace = (item) => {
         const { setSelectedOption, session } = this.props
         // setSelectedOption(item)
-        let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue      
+        let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue
         this.setState({
             selectedPlace: item.id,
         }, () => this.loadPage(1, dateFilter.from, dateFilter.to))
@@ -319,12 +319,12 @@ export default class extends Component {
                 />
                 <ListViewExtend
                     onItemRef={ref=>this.listview=ref}
-                    onEndReached={this._loadMore} 
+                    onEndReached={this._loadMore}
                     onRefresh={this._onRefresh}
                     dataArray={orderList}
                     keyExtractor={item=>item.orderInfo.clingmeId}
                     renderRow={(item) => (
-                        <OrderItem data={item} 
+                        <OrderItem data={item}
                             key={chainParse(item, ['orderInfo', 'tranId'])}
                             onPressPhoneNumber = {this.onModalOpen}
                             onShowReasonPopup = {this.showReasonPopup}
