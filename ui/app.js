@@ -415,6 +415,8 @@ export default class App extends Component {
             },
           })}
           openDrawerOffset={0.27}
+          tweenDuration={100}
+          useInteractionManager={true}
           tweenEasing="easeOutCubic"
           content={<SideBar />}
           onClose={closeDrawer}
