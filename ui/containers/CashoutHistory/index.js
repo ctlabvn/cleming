@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Container, List, ListItem, Spinner, Text } from "native-base";
-import { InteractionManager, View, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { Button, Container, Text } from "native-base";
+import { InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -64,30 +64,37 @@ export default class CashoutHistory extends Component {
 
     render() {
         const { forwardTo, cashoutHistory } = this.props
-        return (
-            <Container style={styles.container}>
-                <View style={{...styles.rowCenter, ...styles.borderBottom}}>
-                    <Text large bold success>{formatNumber(cashoutHistory.moneyAmount)}đ</Text>
-                </View>
-                <View style={styles.rowLeft}>
-                    <Text medium bold warning>{I18n.t('money_waiting_process')}</Text>
-                </View>
-                <Border/>
-                <ListViewExtend
-                    dataArray={cashoutHistory.cashoutWaiting.listCashout}
-                    renderRow={(item) => this._renderRow(item)}
-                    onEndReached={()=>console.log('On End Reach List1')}
-                />
-                <View style={{...styles.rowLeft, ...styles.borderTop}}>
-                    <Text medium bold success>{I18n.t('money_received')}</Text>
-                </View>
-                <Border/>
-                <ListViewExtend
-                    dataArray={cashoutHistory.cashoutConfirm.listCashout}
-                    renderRow={(item) => this._renderRow(item)}
-                    onEndReached={()=>console.log('On End Reach List2')}
-                />
-            </Container>
-        )
+        if (cashoutHistory && cashoutHistory.cashoutWaiting && cashoutHistory.cashoutConfirm){
+          return (
+              <Container style={styles.container}>
+                  <View style={{...styles.rowCenter, ...styles.borderBottom}}>
+                      <Text large bold success>{formatNumber(cashoutHistory.moneyAmount)}đ</Text>
+                  </View>
+                  <View style={styles.rowLeft}>
+                      <Text medium bold warning>{I18n.t('money_waiting_process')}</Text>
+                  </View>
+                  <Border/>
+                  <ListViewExtend
+                      dataArray={cashoutHistory.cashoutWaiting.listCashout}
+                      renderRow={(item) => this._renderRow(item)}
+                      onEndReached={()=>console.log('On End Reach List1')}
+                  />
+                  <View style={{...styles.rowLeft, ...styles.borderTop}}>
+                      <Text medium bold success>{I18n.t('money_received')}</Text>
+                  </View>
+                  <Border/>
+                  <ListViewExtend
+                      dataArray={cashoutHistory.cashoutConfirm.listCashout}
+                      renderRow={(item) => this._renderRow(item)}
+                      onEndReached={()=>console.log('On End Reach List2')}
+                  />
+              </Container>
+            )
+        }else{
+          return (
+            <ActivityIndicator color={material.primaryColor} />
+          )
+        }
+
     }
 }
