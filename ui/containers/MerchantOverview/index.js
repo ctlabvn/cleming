@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Container, Text} from "native-base";
-import {ActivityIndicator, Image, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Image, TouchableOpacity, View, TouchableWithoutFeedback} from "react-native";
 import styles from "./styles";
 import * as commonActions from "~/store/actions/common";
 import * as placeAction from "~/store/actions/place";
@@ -195,10 +195,11 @@ export default class MerchantOverview extends Component {
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
                 <Text strong style={styles.funnyToday}>{moment().format('DD/MM/YYYY')}</Text>
-                
+
                     {(place && place.news && place.news.transactionNews > -1) &&
-                    <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('transactionList')}>
-                        
+                    <TouchableOpacity style={styles.menuItem}
+                            onPress={() => this.navigate('transactionList')}>
+
                             <View style={styles.leftBlock}>
                                 <Icon name='transaction' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
@@ -208,8 +209,18 @@ export default class MerchantOverview extends Component {
                                     <Text small style={styles.numberRight}>{this.renderTextCount(place.news.transactionNews)}</Text></View>
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
-                        
                     </TouchableOpacity>}
+
+                    {(place && place.news && place.news.transactionNews == -1) &&
+                    <TouchableWithoutFeedback>
+                        <View style={styles.menuItemGray}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='transaction' style={styles.icon}/>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('transaction')}</Text>
+                            </View>
+                          </View>
+                    </TouchableWithoutFeedback>}
+
                     {(place && place.news && place.news.bookingNews > -1) &&
                     <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('placeOrderList')}>
                             <View style={styles.leftBlock}>
@@ -223,6 +234,16 @@ export default class MerchantOverview extends Component {
                             </View>
                     </TouchableOpacity>}
 
+                    {(place && place.news && place.news.bookingNews == -1) &&
+                    <TouchableWithoutFeedback>
+                          <View style={styles.menuItemGray}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='calendar-checked' style={styles.icon}/>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('booking')}</Text>
+                            </View>
+                          </View>
+                    </TouchableWithoutFeedback>}
+
                     {(place && place.news && place.news.orderNews > -1) &&
                     <TouchableOpacity style={styles.menuItem} onPress={() => this.navigate('deliveryList')}>
                             <View style={styles.leftBlock}>
@@ -235,7 +256,17 @@ export default class MerchantOverview extends Component {
                                 <Icon name='chevron-right' style={styles.rightIcon}/>
                             </View>
                     </TouchableOpacity>}
-                
+
+                    {(place && place.news && place.news.orderNews == -1) &&
+                    <TouchableWithoutFeedback>
+                        <View style={styles.menuItemGray}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='shiping-bike2' style={styles.icon}/>
+                                <Text strong style={{...styles.textLabelRightImage}}>{I18n.t('order')}</Text>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>}
+
             </View>
             // </Content>
         )
@@ -248,7 +279,7 @@ export default class MerchantOverview extends Component {
                     <Image source={{uri: user.chainAvatar}} style={{resizeMode: 'cover', width: material.deviceWidth, height: 200}}/>
                 </View>
             )
-                
+
         }else{
             return (
                 <View style={styles.contentContainer}>
@@ -271,8 +302,8 @@ export default class MerchantOverview extends Component {
         return (
             <Container style={styles.container}>
                 {this._renderImage()}
-                <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>                   
-                    {mainContainer}                    
+                <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
+                    {mainContainer}
                 </Content>
             </Container>
         )

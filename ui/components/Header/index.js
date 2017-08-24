@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {         
-    Header, Left, Right, Body,           
+import {
+    Header, Left, Right, Body,
     Text, Title, Button, Item, Input,
     Thumbnail, View
 } from 'native-base'
@@ -24,7 +24,7 @@ export default class extends Component {
 
   constructor(props) {
     super(props)
-  
+
     this.state = {
       type: props.type,
       title: props.title,
@@ -39,7 +39,7 @@ export default class extends Component {
 
   show(type, title, icon){
     this.setState({type, title: title || this.state.title, icon})
-  } 
+  }
   showOverlay(showStatus){
     this.setState({showOverlay: showStatus})
   }
@@ -52,15 +52,15 @@ export default class extends Component {
   // _search = (value, force=false)=>{
   //   if((this.props.searchString !== value) || force) {
   //     this.props.search(value)
-  //   } 
+  //   }
   // }
-  
+
   _rightClick = (e)=>{
     const {onRightClick} = this.props
     onRightClick && onRightClick(this.state.type)
   }
 
-  renderHeaderBack(title){    
+  renderHeaderBack(title){
     const left = (
       <Button transparent onPress={this._leftClick}>
         <Icon name="keyboard-arrow-left"/>
@@ -69,21 +69,21 @@ export default class extends Component {
     const center = (
       <Title bold full>{title}</Title>
     )
-    return this.renderHeader(left, center)    
+    return this.renderHeader(left, center)
   }
 
   // public data not event
-  // renderHeaderSearch(iconName="menu"){    
+  // renderHeaderSearch(iconName="menu"){
   //   const center = (
   //     <Item style={styles.searchContainer}>
   //         <Icon name="search" style={styles.searchIcon} />
-  //         <Input value={this.props.searchString} 
-  //           autoCorrect={false} onChangeText={this._search} 
-  //           placeholderTextColor="#a7e7ff" style={styles.searchInput} 
-  //           placeholder="Regit Search" />                        
+  //         <Input value={this.props.searchString}
+  //           autoCorrect={false} onChangeText={this._search}
+  //           placeholderTextColor="#a7e7ff" style={styles.searchInput}
+  //           placeholder="Regit Search" />
   //     </Item>
   //   )
-  //   return this.renderHeaderTitle(center, "cloud-upload")    
+  //   return this.renderHeaderTitle(center, "cloud-upload")
   // }
 
   renderHeaderHome(title, leftIcon){
@@ -92,18 +92,21 @@ export default class extends Component {
         <Icon style={styles.circleIcon} name={leftIcon}/>
       </Button>
     )*/
+      const {forwardTo} = this.props
       let iconSource = leftIcon ? {uri: leftIcon} : this.props.user.avatar ? {uri: this.props.user.avatar} : storeFilled;
-      const left = <Thumbnail source={iconSource} style={styles.thumbnail}/>;
-
-    return this.renderHeaderTitle(title, left)
+      const left =
+        <TouchableWithoutFeedback onPress={()=>forwardTo('userManagement/action/updateUser')}>
+          <Thumbnail source={iconSource} style={styles.thumbnail}/>
+        </TouchableWithoutFeedback>
+      return this.renderHeaderTitle(title, left)
   }
 
   renderHeaderTitle(title, leftIcon="back", rightIcon="menu"){
-    const left = (typeof leftIcon === "string" 
+    const left = (typeof leftIcon === "string"
       ? <Button transparent onPress={this._leftClick}>
           <Icon style={styles.leftIcon} name={leftIcon}/>
-        </Button>    
-      : leftIcon  
+        </Button>
+      : leftIcon
     )
     const center = (
       typeof title ==="string" ? <Title bold full>{title}</Title> : title
@@ -113,44 +116,43 @@ export default class extends Component {
         <Icon style={styles.menuIcon} name={rightIcon}/>
       </Button>
     )
-    return this.renderHeader(left, center, right) 
+    return this.renderHeader(left, center, right)
   }
   _handlePressOverlay = ()=>{
     this.props.onPressOverlay && this.props.onPressOverlay()
   }
-  renderHeader(left, center, right, props) {      
-    return (                             
-      <Header noShadow {...props} style={styles.container}>          
+  renderHeader(left, center, right, props) {
+    return (
+      <Header noShadow {...props} style={styles.container}>
         <Left>{left}</Left>
         <Body>{center}</Body>
         <Right>{right}</Right>
-        {this.state.showOverlay && 
+        {this.state.showOverlay &&
           <TouchableWithoutFeedback onPress={()=>this._handlePressOverlay()}>
             <View style={styles.overlay}/>
           </TouchableWithoutFeedback>
         }
-      </Header>     
+      </Header>
     )
   }
 
   render(){
-    // events will be 
-    const {type, title, icon} = this.state    
+    // events will be
+    const {type, title, icon} = this.state
     // event will be invoke via pageInstance
     switch(type){
-      case 'none':      
+      case 'none':
         return false
       case 'back':
         return this.renderHeaderBack(title)
       case 'searchBack':
         return this.renderHeaderSearch('keyboard-arrow-left')
       case 'home':
-        return this.renderHeaderHome(title, icon)  
+        return this.renderHeaderHome(title, icon)
       case 'noBack':
-        this.renderHeaderTitle(title, null)    
+        this.renderHeaderTitle(title, null)
       default:
         return this.renderHeaderTitle(title)
-    } 
+    }
   }
 }
-

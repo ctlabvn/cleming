@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated, Easing } from 'react-native'
+import { BackHandler, NativeModules, Animated, Easing, StatusBar } from 'react-native'
 import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 // import URL from 'url-parse'
@@ -42,7 +42,7 @@ import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import { 
+import {
   NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN,
   initialAuthRouteName, initialRouteName,
 } from '~/store/constants/app'
@@ -60,7 +60,7 @@ const animatedOption = {
   toValue: 0,
   duration: 200,
   easing: Easing.bezier(0.075, 0.82, 0.165, 1),
-  useNativeDriver: true, 
+  useNativeDriver: true,
 }
 
 const UIManager = NativeModules.UIManager
@@ -81,41 +81,41 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
-    this.listPlace = []    
+    this.listPlace = []
   }
 
-  _transitionScene = (prevIndex, index, thisNavigator) => {   
-    // animate for tab, other just show hide    
+  _transitionScene = (prevIndex, index, thisNavigator) => {
+    // animate for tab, other just show hide
     const prevRoute = thisNavigator.routeStack[prevIndex]
     const route = thisNavigator.routeStack[index]
     // show current scene then wait for transition
-    // disable prevScene, means that we can do any action on this view    
+    // disable prevScene, means that we can do any action on this view
     thisNavigator.enable(prevIndex, false)
     // check animation type
     if(prevRoute && prevRoute.tabIndex !== undefined && route.tabIndex !== undefined){
-      // animate like tab, 
+      // animate like tab,
       // show index first then prepare for animate
       // when complete animation, let pointerEvents = 'auto' other 'none'
       // if tabIndex > preTabIndex from right to left, else from left to right
       const prefix = route.tabIndex > prevRoute.tabIndex ? 1 : - 1
-      let enter = new Animated.Value(40 * prefix)    
+      let enter = new Animated.Value(40 * prefix)
       const shouldAnamiteTopDropdown = route.showTopDropdown !== prevRoute.showTopDropdown
       // start freeze
       thisNavigator.freeze(prevIndex)
-      thisNavigator.freeze(index)      
+      thisNavigator.freeze(index)
 
-      const animatedListenerId = enter.addListener(({value})=>{     
-        let translateX = Math.round(value)  
-        // too small to animate         
-        if(Math.abs(translateX) < 2) 
-          translateX = 0 
-        
-        thisNavigator.transitionBetween(prevIndex, index, translateX, prefix)     
+      const animatedListenerId = enter.addListener(({value})=>{
+        let translateX = Math.round(value)
+        // too small to animate
+        if(Math.abs(translateX) < 2)
+          translateX = 0
+
+        thisNavigator.transitionBetween(prevIndex, index, translateX, prefix)
         // update top dropdown translateX, it is small and no need to freeze
         if(shouldAnamiteTopDropdown)
-          this.topDropdown.translate(route.showTopDropdown ? translateX : translateX - prefix * material.deviceWidth)                  
-        
-        if(translateX === 0) {                    
+          this.topDropdown.translate(route.showTopDropdown ? translateX : translateX - prefix * material.deviceWidth)
+
+        if(translateX === 0) {
           // now ready
           // stop freeze
           thisNavigator.freeze(prevIndex, false)
@@ -131,12 +131,12 @@ export default class App extends Component {
       Animated.timing(enter, animatedOption).start()
 
     } else {
-      // make sure it can show/hide   
+      // make sure it can show/hide
       thisNavigator.transitionBetween(prevIndex, index, 0)
       this.topDropdown.show(route.showTopDropdown)
-      thisNavigator.enable(index)           
+      thisNavigator.enable(index)
     }
-    
+
   }
 
   // replace view from stack, hard code but have high performance
@@ -146,18 +146,18 @@ export default class App extends Component {
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
       if (route) {
-        // show header and footer, and clear search string          
+        // show header and footer, and clear search string
         this.navigator.navigate(route)
-        this.header.show(route.headerType, route.title)        
+        this.header.show(route.headerType, route.title)
         this.footer.show(route.footerType, route.routeName)
 
         // we will animate this for better transition
-        // this.topDropdown.show(route.showTopDropdown)        
+        // this.topDropdown.show(route.showTopDropdown)
       } else {
         // no need to push to route
         this.props.setToast('Scene not found: ' + router.current.routeName, 'danger')
-      }      
-    }    
+      }
+    }
 
     // check drawer
     if (drawerState !== this.props.drawerState) {
@@ -174,13 +174,13 @@ export default class App extends Component {
   handleFocusableComponent(ref, focus = true){
     // do not loop forever
     const method = focus ? 'componentWillFocus' : 'componentWillBlur'
-    let whatdog = 10        
+    let whatdog = 10
     while (ref && whatdog > 0) {
       if (ref[method]) {
-        ref[method]()        
+        ref[method]()
         // console.log(method, ref)
         // clearTimeout(this.timer)
-        // this.timer = 
+        // this.timer =
         // setTimeout(()=>ref[method](), 1000)
         break
       }
@@ -189,33 +189,33 @@ export default class App extends Component {
     }
   }
 
-  
-  _handlePageWillBlur = ({routeName, cache}) => {    
+
+  _handlePageWillBlur = ({routeName, cache}) => {
     if(cache)
-      this.handleFocusableComponent(this.pageInstances.get(routeName), false)      
+      this.handleFocusableComponent(this.pageInstances.get(routeName), false)
     else
       this.pageInstances.delete(routeName)
   }
 
 
-  _handlePageWillFocus = (route) => {   
+  _handlePageWillFocus = (route) => {
     // should not re-render via params, let it - re-mount
     // let component = this.pageInstances.get(route.routeName)
-    // if(component){       
+    // if(component){
     //   const propsChanged = !shallowEqual(route.params, component.props.route.params)
     //     || !shallowEqual(route.query, component.props.route.query)
     //   if (propsChanged) {
     //     // this page will re-render if route change
-    //     Object.assign(component.props.route, route)        
+    //     Object.assign(component.props.route, route)
     //     component.forceUpdate()
-    //   }           
+    //   }
     // }
-    
+
     this.handleFocusableComponent(this.pageInstances.get(route.routeName), true)
   }
 
   // we can use events to pass between header and footer and page via App container or store
-  _renderPage = (route) => {    
+  _renderPage = (route) => {
     const component = (
       <AfterInteractions firstTime={this.firstTime} placeholder={route.Preload || <Preload />}>
         <View style={{ paddingTop: route.showTopDropdown ? 50 : 0, flex: 1 }}>
@@ -225,7 +225,7 @@ export default class App extends Component {
     )
 
     this.firstTime = false
-    return component    
+    return component
   }
 
   _onLeftClick = (type) => {
@@ -286,7 +286,7 @@ export default class App extends Component {
         id: item.placeId,
         name: item.address
       }))
-      // this.topDropdown.updateDropdownValues(listPlace)      
+      // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
       if (this.listPlace.length > 1){
         this.topDropdown.setIsMultiple(true)
@@ -357,10 +357,10 @@ export default class App extends Component {
       closeDrawer()
     }
     // navigator.geolocation.clearWatch(this.watchID)
-    BackHandler.removeEventListener('hardwareBackPress', this._handleBack)    
+    BackHandler.removeEventListener('hardwareBackPress', this._handleBack)
   }
 
-  
+
 
   _handleChangePlace = (item) => {
     const { setSelectedOption } = this.props
@@ -401,7 +401,6 @@ export default class App extends Component {
           type="overlay"
           side="right"
           negotiatePan={true}
-          useInteractionManager={true}
           tweenHandler={ratio => ({
             drawer: {
               top: 20,
@@ -416,13 +415,17 @@ export default class App extends Component {
             },
           })}
           openDrawerOffset={0.27}
-          tweenDuration={300}
+          tweenDuration={100}
+          useInteractionManager={true}
           tweenEasing="easeOutCubic"
           content={<SideBar />}
           onClose={closeDrawer}
         >
-        
-          <Header type={route.headerType} title={route.title} onLeftClick={this._onLeftClick} 
+          <StatusBar
+           backgroundColor={material.primaryColor}
+           barStyle="light-content"
+         />
+          <Header type={route.headerType} title={route.title} onLeftClick={this._onLeftClick}
             onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
             app={this} onPressOverlay={this._handlePressHeaderOverlay}
           />
@@ -435,8 +438,8 @@ export default class App extends Component {
             onBlur={this._handlePageWillBlur}
             transition={this._transitionScene}
           />
-          <Footer type={route.footerType} route={route.routeName} onTabClick={this._onTabClick} 
-            onItemRef={ref => this.footer = ref} />          
+          <Footer type={route.footerType} route={route.routeName} onTabClick={this._onTabClick}
+            onItemRef={ref => this.footer = ref} />
           <TopDropdown
             app={this}
             ref={ref => this.topDropdown = ref}
@@ -446,7 +449,7 @@ export default class App extends Component {
             show={route.showTopDropdown}
           />
           <TopDropdownListValue
-            onSelect={this._handleChangePlace}            
+            onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
             dropdownValues={this.listPlace}
@@ -464,4 +467,3 @@ export default class App extends Component {
     )
   }
 }
-

@@ -61,3 +61,28 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
       return state
   }
 }
+
+  export const cashoutHistory = (state=initialWalletDetail, {type, payload}) => {
+    switch (type) {
+      case 'app/setCashoutHistory':
+        return {
+          ...state, ...payload
+        }
+        break;
+      default:
+        return state
+    }
+  }
+
+  export const cashoutOverview = (state=initialWalletDetail, {type, payload}) => {
+    switch (type) {
+      case 'app/setCashoutOverview':
+        return {
+          ...state, ...payload
+        }
+        break;
+      default:
+        return state
+
+    }
+  }

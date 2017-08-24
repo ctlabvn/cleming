@@ -39,7 +39,7 @@ const img = 'https://facebook.github.io/react/img/logo_og.png'
 class UserManagement extends Component {
     constructor(props) {
         super(props)
-        
+
         this.rowIDOfEmployee = 0
         this.employeeData = {}
 
@@ -58,25 +58,27 @@ class UserManagement extends Component {
     }
 
     componentDidMount() {
-        // const {app} = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // let currentPlace = app.topDropdown.getValue()
-        // if (currentPlace && Object.keys(currentPlace).length>0){
-        //     this._loadListEmployee(currentPlace.id)
-        // }
-    }
-    
-
-    componentWillMount() {
         const {app} = this.props
-        app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // InteractionManager.runAfterInteractions(()=> {
-        let currentPlace = app.topDropdown.getValue()
-        if (currentPlace && Object.keys(currentPlace).length > 0) {
-            this._loadListEmployee(currentPlace.id)
-        }
-        // })
+        InteractionManager.runAfterInteractions(()=> {
+          app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+          let currentPlace = app.topDropdown.getValue()
+          if (currentPlace && Object.keys(currentPlace).length>0){
+              this._loadListEmployee(currentPlace.id)
+          }
+        })
     }
+
+
+    // componentWillMount() {
+    //     const {app} = this.props
+    //     app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+    //     // InteractionManager.runAfterInteractions(()=> {
+    //     let currentPlace = app.topDropdown.getValue()
+    //     if (currentPlace && Object.keys(currentPlace).length > 0) {
+    //         this._loadListEmployee(currentPlace.id)
+    //     }
+    //     // })
+    // }
 
     onAccountPress(data, rowID) {
         // this.setState({
@@ -285,15 +287,15 @@ class UserManagement extends Component {
         if (!listEmployee) {
             return null
         }
-        
+
         return (
-            <Container style={styles.container}>       
+            <Container style={styles.container}>
                 <Content>
                     <Button onPress={this.onUpdateUserPress.bind(this)}
                         style={styles.ownerButton}>
                         <OwnerCard data={user}/>
                     </Button>
-                    {this.renderBlueLineBelowOwner()}         
+                    {this.renderBlueLineBelowOwner()}
                     {listEmployee.map((item, index)=>this.renderEmployeeRow(item, index))}
                 </Content>
                 <Modal onCloseClick={e => this.setState({modalOpen: false})} open={this.state.modalOpen}>

@@ -5,7 +5,7 @@ import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 
 import {
-    setBalance, setBanks, setBalanceDetail, setListBank
+    setBalance, setBanks, setBalanceDetail, setListBank, setCashoutHistory, setCashoutOverview
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -51,7 +51,6 @@ const requestGetBanks = createRequestSaga({
     request: api.wallet.banks,
     key: 'app/getBanks',
     success: [
-
         (data) => {
             console.log('Data: ', data)
             if (data && data.data){
@@ -104,6 +103,38 @@ const requestUpdateSettingHour = createRequestSaga({
     key: 'app/updateSettingHour',
 })
 
+const requestCashoutHistory = createRequestSaga({
+  request: api.wallet.getCashoutHistory,
+  key: 'app/getCashoutHistory',
+  success: [
+    (data) => {
+        if (data && data.data){
+          return setCashoutHistory(data.data)
+        }
+        return noop('')
+    }
+  ]
+})
+
+const requestCashoutDetail = createRequestSaga({
+  request: api.wallet.getCashoutDetail,
+  key: 'app/getCashoutDetail'
+})
+
+const requestCashoutOverview = createRequestSaga({
+  request: api.wallet.getCashoutOverview,
+  key: 'app/getCashoutOverview',
+  success: [
+    (data) => {
+      if (data && data.data){
+        return setCashoutOverview(data.data)
+      }
+      return noop('')
+    }
+
+  ]
+})
+
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -119,9 +150,10 @@ export default [
             takeLatest('app/addBank', requestAddBank),
             takeLatest('app/getListBank', requestGetListBank),
             takeLatest('app/getSettingHour', requestGetSettingHour),
-            takeLatest('app/updateSettingHour', requestUpdateSettingHour)
+            takeLatest('app/updateSettingHour', requestUpdateSettingHour),
+            takeLatest('app/getCashoutHistory', requestCashoutHistory),
+            takeLatest('app/getCashoutDetail', requestCashoutDetail),
+            takeLatest('app/getCashoutOverview', requestCashoutOverview)
         ]
     },
 ]
-
-
