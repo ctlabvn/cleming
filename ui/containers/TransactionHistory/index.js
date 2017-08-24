@@ -38,6 +38,9 @@ const TYPE_PLACE = 1
 const TYPE_ITEM = 2
 const TYPE_SEE_MORE = 3
 
+const FIRST_LEVEL_SHOW = 2
+const SECOND_LEVEL_SHOW = 10
+
 @connect(state => ({
     xsession: getSession(state),
     data: getHistoryListTransaction(state),
@@ -61,7 +64,6 @@ export default class extends Component {
             toTime: null,
             loading: false,
             historyList: historyList,
-            click: 0,
         }
 
     }
@@ -171,28 +173,31 @@ export default class extends Component {
     _handleSeeMore(item) {
         if (item.flagList) item.flagList.levelList = item.flagList.levelList + 1;
         item.numberItemHidding = 0;
-        item.keyExtractor = 's' + item.keyExtractor;
-        alert('xem thêm ' + JSON.stringify(item))
-        // item.flagList.levelList = item.flagList.levelList + 1;
-        // this.listview.showRefresh(true);
-        let cacheHistoryList = this.state.historyList;
 
         this.setState({
-            click: this.state.click+1,
+            historyList: this.state.historyList,
         })
     }
 
     _renderTransactionItem(item) {
         console.log('render Row Item');
         if (item.seeMore) {
-            const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
-            if (item.flagList.levelList >= 2) return null;
+            // const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
+            if (item.flagList.levelList > 1) return null;
+
+            let numberItemHidding = 0;
+            if (item.flagList.levelList == 0 && item.totalItem > FIRST_LEVEL_SHOW) numberItemHidding = item.totalItem - FIRST_LEVEL_SHOW;
+            if (item.flagList.levelList == 1 && item.totalItem > SECOND_LEVEL_SHOW) numberItemHidding = item.totalItem - SECOND_LEVEL_SHOW;
+
+            if (numberItemHidding <= 0) return null;
+
+            let buttonContent = 'xem thêm (' + numberItemHidding + ')';
             return (
                 <View>
                     <Button transparent gray bordered small rounded style={styles.button}
                             onPress={() => this._handleSeeMore(item)}>
                         <Text small blue>
-                            {numberItemHidding}
+                            {buttonContent}
                         </Text>
                     </Button>
                 </View>
@@ -257,7 +262,6 @@ export default class extends Component {
                 </View>
             )
         }
-
     }
 
     _parseListPlaceTran(listPlaceTran) {
@@ -277,19 +281,22 @@ export default class extends Component {
 
                 // result = result.concat(item.listTransactionDto.slice(0,2));
                 item.listTransactionDto.map((value, index) => {
-                    if (index < 2) result.push({...value, level: 0, flagList: flagList, keyExtractor: result.length,})
-                    else if (index < 10) result.push({...value, level: 1, flagList: flagList, keyExtractor: result.length,})
+                    if (index < FIRST_LEVEL_SHOW) {
+                        result.push({...value, level: 0, flagList: flagList, keyExtractor: result.length,})
+
+                    }
+                    else if (index < SECOND_LEVEL_SHOW) result.push({...value, level: 1, flagList: flagList, keyExtractor: result.length,})
                     else result.push({...value, level: 2, flagList: flagList, keyExtractor: result.length,})
                 })
 
-                if (item.listTransactionDto.length - 2 > 0) {
+                if (item.listTransactionDto.length - FIRST_LEVEL_SHOW > 0) {
                     result.push({
                         placeId: item.placeId,
                         placeAddress: item.placeAddress,
                         seeMore: true,
                         placeIndex: index,
                         flagList: flagList,
-                        numberItemHidding: item.listTransactionDto.length - 2,
+                        totalItem: item.listTransactionDto.length,
                         keyExtractor: result.length,
                     })
                 }
@@ -309,15 +316,6 @@ export default class extends Component {
     }
 
     render() {
-        console.log('render screen')
-        const { data } = this.props;
-
-        // if (!this.historyList || this.state.updateHistoryList) {
-        //     this.historyList = this._parseListPlaceTran(data.listPlaceTran);
-        //     this.state.updateHistoryList = false;
-        // }
-
-        // if (data && data.listPlaceTran) console.warn(data);
 
         return (
             <Container style={styles.container}>
@@ -326,16 +324,16 @@ export default class extends Component {
                               ref='tabs'/>
                 <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
                 {this._renderMoneyBand()}
-                {/*{this.state.loading && <Spinner color={material.primaryColor} style={{width:40, height:40, alignSelf: 'center'}}/>}*/}
-                {!this.state.loading && data && <ListViewExtend
+                <ListViewExtend
                     style={{flex: 1}}
                     onItemRef={ref => this.listview = ref}
                     onEndReached={() => this._loadMore()}
-                    keyExtractor={item=>item.keyExtractor}
+                    keyExtractor={item=> item.keyExtractor}
                     onRefresh={() => this._onRefresh()}
                     dataArray={this.state.historyList}
                     renderRow={(item) => this._renderTransactionItem(item)}
-                />}
+                    rowHasChanged={true}
+                />
 
             </Container>
         )
