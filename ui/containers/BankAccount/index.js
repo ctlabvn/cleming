@@ -20,6 +20,7 @@ import { GENERAL_ERROR_MESSAGE } from "~/store/constants/app"
 import I18n from '~/ui/I18n'
 import {validate} from './validate'
 import LoadingModal from "~/ui/components/LoadingModal"
+import PreviewPopup from './PreviewPopup'
 @connect(state => ({
     xsession: getSession(state),
     banks: state.banks,
@@ -35,6 +36,7 @@ export default class extends Component {
         }
     }
     _handlePressOk = (input) => {
+        console.log('Input: ', input)
         const {account_number, account_owner, area, branch, identity_card} = input
         const {addBank, xsession, setToast} = this.props
         if (!this.bankDropdown || !this.bankDropdown.getValue() || !this.bankDropdown.getValue().id) return
@@ -55,9 +57,15 @@ export default class extends Component {
             }
         )
     }
+    _onPressOk = (input) => {
+      let data = Object.assign({}, input)
+      data['bank']=this.bankDropdown.getValue().name
+      console.log('Data: ', data)
+      this.preview.show(data)
+    }
     componentDidMount(){
         const {xsession, getListBank} = this.props
-        getListBank(xsession, 
+        getListBank(xsession,
             (err, data) => {
                 console.log('List Bank Err: ', err)
                 console.log('List Bank Data: ', data)
@@ -73,9 +81,11 @@ export default class extends Component {
             }))
             console.log('List Bank', this.listBank)
         }
+        // {handleSubmit(this._handlePressOk)}
         return (
             <Container style={styles.container}>
                 <LoadingModal loading = {this.state.loading} />
+                <PreviewPopup ref={ref=>this.preview=ref} onOk={handleSubmit(this._handlePressOk)}/>
                 <Content style={styles.content}>
                     <Form style={styles.form}>
                         <Text gray>{I18n.t('account_owner')}</Text>
@@ -104,20 +114,11 @@ export default class extends Component {
                             onIconPress={input => input.onChange('')}
                             component={InputFieldWithErr}
                             style={styles.inputItem}
-                            keyboardType="numeric" 
+                            keyboardType="numeric"
                         />
 
                         <Text gray>{I18n.t('bank_name')}</Text>
                         <SearchableDropdown dropdownValues={this.listBank} ref={ref => this.bankDropdown = ref}/>
-
-                        <Text gray>{I18n.t('area')}</Text>
-                        <Field name="area"
-                            icon={(input, active) => input.value && active ? 'close' : false}
-                            iconStyle={{ color: material.black500 }}
-                            onIconPress={input => input.onChange('')}
-                            component={InputFieldWithErr}
-                            style={styles.inputItem}
-                        />
 
                         <Text gray>{I18n.t('branch')}</Text>
                         <Field name="branch"
@@ -129,7 +130,7 @@ export default class extends Component {
                         />
                     </Form>
                 </Content>
-                <Button style={styles.okBtn} onPress={handleSubmit(this._handlePressOk)}>
+                <Button style={styles.okBtn} onPress={handleSubmit(this._onPressOk)}>
                     <Text white>OK</Text>
                 </Button>
             </Container>
