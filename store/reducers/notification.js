@@ -1,26 +1,27 @@
+import { cloneObjArray } from '~/ui/shared/utils'
 const initialState = {
-  hasMore:true, 
-  page:1, 
+  hasMore:true,
+  page:1,
   data:[],
 }
 
-export const notification = (state=initialState, {type, payload}) => {  
-  switch (type) {   
-    // we can store current page? for paging...    
-    case 'app/replaceNotification':            
-      const list = payload.data.updated.notifyResponse.lstNotification 
+export const notification = (state=initialState, {type, payload}) => {
+  switch (type) {
+    // we can store current page? for paging...
+    case 'app/replaceNotification':
+      const list = payload.data.updated.notifyResponse.lstNotification
       // console.log(list)
       return {
-        page: payload.page || 1,         
-        data: payload.page > 1 ? [...state.data, ...list] : list, 
-        hasMore: list.length >0 
-      }  
-    case 'app/logout':      
+        page: payload.page || 1,
+        data: payload.page > 1 ? [...state.data, ...list] : list,
+        hasMore: list.length >0
+      }
+    case 'app/logout':
     case 'app/clearData':
       return initialState
     case 'notification/updateReadOffline':
       console.log('Go to update read ofline', payload)
-      let data = state.data.slice()
+      let data = cloneObjArray(state.data)
       let index = data.findIndex(item=>item.notifyId == payload)
       if (index != -1){
         console.log('Noti block', data[index])
@@ -32,4 +33,3 @@ export const notification = (state=initialState, {type, payload}) => {
       return state
   }
 }
-
