@@ -1,4 +1,11 @@
 import { apiGet, apiPost } from '~/store/api/common'
+
+import moment from "moment";
+import {
+    TIME_FORMAT_WITHOUT_SECOND,
+    DEFAULT_TIME_FORMAT
+} from "~/store/constants/app";
+
 export default {
     // transaction/merchantapp/list-direct
     // ?placeId=3108&fromTime=1494257316&toTime=1494257316&option=1&pageNumber=1
@@ -41,8 +48,8 @@ export default {
         return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
     },
 
-    historyList(xsession, placeId=479789, fromTime=1497838300, toTime=1502956420, option=1, pageNumber=0){
-        console.log('history list All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+    historyList(xsession, placeId, fromTime, toTime, option=1, pageNumber=0){
+        console.log('history list API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
         if (placeId) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
         else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
     },

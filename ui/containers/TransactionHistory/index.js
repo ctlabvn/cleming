@@ -20,10 +20,11 @@ import Icon from '~/ui/elements/Icon'
 import Border from "~/ui/elements/Border";
 import Content from "~/ui/components/Content";
 
-import moment from "moment";
-import {formatNumber} from "~/ui/shared/utils";
 
+import {formatNumber} from "~/ui/shared/utils";
 import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
+
+import moment from "moment";
 import {
     TIME_FORMAT_WITHOUT_SECOND,
     DEFAULT_TIME_FORMAT
@@ -50,19 +51,36 @@ export default class extends Component {
 
         let selectedPlace = app.topDropdown ? props.app.topDropdown.getValue() : null;
 
+        const { data } = props;
+        historyList = this._parseListPlaceTran(data.listPlaceTran);
+
         this.state = {
             currentTab: MERCHANT_COLLECTED,
             placeId: selectedPlace? selectedPlace.placeId : null,
             fromTime: null,
             toTime: null,
             loading: false,
+            historyList: historyList,
+            click: 0,
         }
 
     }
 
     _load(placeId=this.state.placeId, fromTime=this.state.fromTime, toTime=this.state.toTime, option=this.state.currentTab, pageNumber = 0) {
         const {getTransactionHistoryList, xsession} = this.props;
-        getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
+        // get All place when placeId == null
+        this.setState({
+            loading: true,
+        })
+        this.listview.showRefresh(true)
+        getTransactionHistoryList(xsession, null, fromTime, toTime, option, (err, data) => {
+            this.setState({
+                loading: false,
+                updateHistoryList: true,
+            })
+            this.listview.showRefresh(false)
+        })
+        // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
     componentDidMount() {
@@ -87,12 +105,13 @@ export default class extends Component {
     }
 
     _handlePressFilter(data) {
+        // console.warn('handlePressfilter data' + JSON.stringify(data))
         fromTime = data.currentSelectValue.value.from;
         toTime = data.currentSelectValue.value.to;
 
         this.setState({
             fromTime: fromTime,
-            toTiem: toTime,
+            toTime: toTime,
         }, ()=> this._load())
     }
 
@@ -146,37 +165,57 @@ export default class extends Component {
     }
 
     _onRefresh() {
-
+        this._load();
     }
 
     _handleSeeMore(item) {
+        if (item.flagList) item.flagList.levelList = item.flagList.levelList + 1;
+        item.numberItemHidding = 0;
+        item.keyExtractor = 's' + item.keyExtractor;
         alert('xem thêm ' + JSON.stringify(item))
+        // item.flagList.levelList = item.flagList.levelList + 1;
+        // this.listview.showRefresh(true);
+        let cacheHistoryList = this.state.historyList;
+
+        this.setState({
+            click: this.state.click+1,
+        })
     }
 
-    _renderBookingItem(item) {
-        if (item.seeMore)
+    _renderTransactionItem(item) {
+        console.log('render Row Item');
+        if (item.seeMore) {
+            const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
+            if (item.flagList.levelList >= 2) return null;
             return (
                 <View>
                     <Button transparent gray bordered small rounded style={styles.button}
                             onPress={() => this._handleSeeMore(item)}>
-                        <Text small>
-                            xem thêm
+                        <Text small blue>
+                            {numberItemHidding}
                         </Text>
                     </Button>
                 </View>
             )
+        }
 
-        if (item.placeId)
+        if (item.placeId) {
+            // console.log(JSON.stringify(item));
             return (
                 <View>
                     <Border/>
-                    <Text medium bold grayDark style={{paddingHorizontal: 20, paddingVertical: 5}}>
-                        {item.placeAddress}: 9.999.999 đ
+                    <Text medium bold grayDark style={{marginTop: 20, marginBottom: 5, alignSelf: 'center'}}>
+                        {item.placeAddress}
+                    </Text>
+                    <Text medium strong bold grayDark style={{marginBottom: 5, alignSelf: 'center'}}>
+                        {formatNumber(item.totalMoney)} đ
                     </Text>
                 </View>
             )
+        }
 
         if (item.tranId) {
+            if (item.level > item.flagList.levelList) return null;
             let status;
             switch (item.tranType) {
                 case 0:
@@ -200,7 +239,7 @@ export default class extends Component {
                               style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
                         <View style={{paddingVertical: 5, flex: 1}}>
                             <View row style={styles.subRow}>
-                                <Text medium bold grayDark>#{item.tranCode}</Text>
+                                <Text medium bold grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
                                 <Text medium grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                             </View>
 
@@ -225,13 +264,35 @@ export default class extends Component {
         var result = [];
         if (listPlaceTran) listPlaceTran.map((item, index) => {
             if (item.listTransactionDto.length != 0) {
-                result.push({placeId: item.placeId, placeAddress: item.placeAddress})
-                result = result.concat(item.listTransactionDto);
-                result.push({placeId: item.placeId,
+                // console.warn('will show place ' + JSON.stringify(item));
+                let flagList = {placeId: item.placeId, levelList: 0}
+                result.push({
+                    keyExtractor: result.length,
+                    placeId: item.placeId,
                     placeAddress: item.placeAddress,
-                    seeMore: true,
-                    placeIndex: index,
-                    flag: result[result.length-1]})
+                    totalMoney:
+                    item.totalMoney,
+                    flagList: flagList
+                })
+
+                // result = result.concat(item.listTransactionDto.slice(0,2));
+                item.listTransactionDto.map((value, index) => {
+                    if (index < 2) result.push({...value, level: 0, flagList: flagList, keyExtractor: result.length,})
+                    else if (index < 10) result.push({...value, level: 1, flagList: flagList, keyExtractor: result.length,})
+                    else result.push({...value, level: 2, flagList: flagList, keyExtractor: result.length,})
+                })
+
+                if (item.listTransactionDto.length - 2 > 0) {
+                    result.push({
+                        placeId: item.placeId,
+                        placeAddress: item.placeAddress,
+                        seeMore: true,
+                        placeIndex: index,
+                        flagList: flagList,
+                        numberItemHidding: item.listTransactionDto.length - 2,
+                        keyExtractor: result.length,
+                    })
+                }
             }
         })
 
@@ -239,9 +300,24 @@ export default class extends Component {
         return result;
     }
 
-    render() {
+    componentWillReceiveProps(nextProps) {
+        const { data } = nextProps;
+        newHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+        this.setState({
+            historyList: newHistoryList
+        })
+    }
 
+    render() {
+        console.log('render screen')
         const { data } = this.props;
+
+        // if (!this.historyList || this.state.updateHistoryList) {
+        //     this.historyList = this._parseListPlaceTran(data.listPlaceTran);
+        //     this.state.updateHistoryList = false;
+        // }
+
+        // if (data && data.listPlaceTran) console.warn(data);
 
         return (
             <Container style={styles.container}>
@@ -250,18 +326,22 @@ export default class extends Component {
                               ref='tabs'/>
                 <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
                 {this._renderMoneyBand()}
-                {data && <ListViewExtend
+                {/*{this.state.loading && <Spinner color={material.primaryColor} style={{width:40, height:40, alignSelf: 'center'}}/>}*/}
+                {!this.state.loading && data && <ListViewExtend
                     style={{flex: 1}}
                     onItemRef={ref => this.listview = ref}
                     onEndReached={() => this._loadMore()}
-                    keyExtractor={item => item.item}
+                    keyExtractor={item=>item.keyExtractor}
                     onRefresh={() => this._onRefresh()}
-                    dataArray={this._parseListPlaceTran(data.listPlaceTran)}
-                    renderRow={(item) => this._renderBookingItem(item)}
+                    dataArray={this.state.historyList}
+                    renderRow={(item) => this._renderTransactionItem(item)}
                 />}
-
 
             </Container>
         )
+    }
+
+    componentDidUpdate(prevProps,prevState) {
+        this.listview.showRefresh(false);
     }
 }
