@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import shallowEqual from 'fbjs/lib/shallowEqual'
-import { BackHandler, NativeModules, InteractionManager, NetInfo, Animated, Easing } from 'react-native'
+import { BackHandler, NativeModules, Animated, Easing, StatusBar } from 'react-native'
 import { Drawer, StyleProvider, View, Text } from 'native-base'
 
 // import URL from 'url-parse'
@@ -421,7 +421,10 @@ export default class App extends Component {
           content={<SideBar />}
           onClose={closeDrawer}
         >
-
+          <StatusBar
+           backgroundColor={material.primaryColor}
+           barStyle="light-content"
+         />
           <Header type={route.headerType} title={route.title} onLeftClick={this._onLeftClick}
             onRightClick={this._onRightClick} onItemRef={ref => this.header = ref}
             app={this} onPressOverlay={this._handlePressHeaderOverlay}
