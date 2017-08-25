@@ -137,3 +137,11 @@ export const _isDiff = (item1, item2, checkProperties) => {
     }
     return false
 }
+
+export const cloneObjArray = (arr) => {
+  let cloneArr=[]
+  for (let i=0; i<arr.length; i++){
+    cloneArr.push(Object.assign({}, arr[i]))
+  }
+  return cloneArr
+}

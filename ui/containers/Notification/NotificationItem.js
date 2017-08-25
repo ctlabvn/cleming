@@ -12,13 +12,7 @@ import styles from "./styles";
 
 
 export default class extends PureComponent {
-    
-    shouldComponentUpdate(nextProps, nextState) {
-      
-      return  (this.props.item  &&  nextProps.item && 
-        ((this.props.item.notifyId != nextProps.item.notifyId) || nextProps.item.isRead)
-      )
-    }
+
     renderNotificationIcon({ notifyType }) {
         switch (notifyType) {
           case NOTIFY_TYPE.NEW_BOOKING:
@@ -41,14 +35,14 @@ export default class extends PureComponent {
         }
       }
 
-  renderNotificationContent(item) {    
+  renderNotificationContent(item) {
     switch (item.notifyType) {
 
       case NOTIFY_TYPE.NEW_BOOKING:
         const minutesRemain = Math.round((item.paramLong2 - Date.now() / 1000) / 60)
         return (
           <Body>
-            <View style={styles.listItemRow}> 
+            <View style={styles.listItemRow}>
               <View style={styles.subRow}>
                   <Text note style={styles.textGray}>{item.title} </Text>
                   <Text small>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
@@ -199,8 +193,8 @@ export default class extends PureComponent {
   }
 
     render(){
-
         const {item, onNotiClick} = this.props
+        
         return (
             <ListItem noBorder
               style={styles[item.isRead ? 'listItemContainerRead' : 'listItemContainer']}

@@ -35,13 +35,13 @@ const checkProperties=['notifyId', 'isRead']
 }), { ...commonActions, ...notificationActions, ...transactionAction, ...metaAction })
 
 export default class extends Component {
-  
+
   componentWillFocus() {
-    // make it like before    
+    // make it like before
     const { session, notifications, getNotification, app } = this.props
     if (notifications.hasMore && !notifications.data.length) {
-      getNotification(session, 1, () => getNotification(session, 2))      
-    } 
+      getNotification(session, 1, () => getNotification(session, 2))
+    }
     this.listview && this.listview.swing()
   }
 
@@ -51,14 +51,14 @@ export default class extends Component {
     const { session, getNotification, notifications } = this.props
 
     if (notifications.hasMore && !notifications.data.length) {
-      getNotification(session, 1, () => getNotification(session, 2))      
-    }    
+      getNotification(session, 1, () => getNotification(session, 2))
+    }
   }
 
   _onRefresh = () => {
     const { session, getNotification } = this.props
     this.listview.showRefresh(true)
-    getNotification(session, 1, () => getNotification(session, 2, 
+    getNotification(session, 1, () => getNotification(session, 2,
       () => this.listview.showRefresh(false)
     ))
   }
@@ -70,7 +70,7 @@ export default class extends Component {
     const { session, notifications, getNotification } = this.props
     if (notifications.hasMore) {
       this.spinner.show(true)
-      getNotification(session, notifications.page + 1, 
+      getNotification(session, notifications.page + 1,
         () => this.spinner.show(false)
       )
     }
@@ -113,19 +113,18 @@ export default class extends Component {
   }
 
   render() {
-    const { notifications } = this.props        
+    const { notifications } = this.props
     return (
 
       <Container>
         {notifications.hasMore ?  null : <View style={styles.emptyBlock}><Text strong bold style={styles.underBack}>{I18n.t('no_notification')}</Text></View>}
-        <ListViewExtend     
+        <ListViewExtend
           onItemRef={ref=>this.listview=ref}
-          keyExtractor={item=>item.notifyId}
+          keyExtractor={item=>(item.notifyId+'_'+item.isRead)}
           dataArray={notifications.data}
           onRefresh={this._onRefresh}
-          onEndReached={this._loadMore}  
+          onEndReached={this._loadMore}
           renderRow={(item) => <NotificationItem item={item} onNotiClick={this._handleNotiClick} />}
-          rowHasChanged={true}
         />
 
          <Spinner onItemRef={ref=>this.spinner=ref} />
