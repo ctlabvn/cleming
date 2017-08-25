@@ -54,21 +54,23 @@ export default class extends Component {
 
         let selectedPlace = app.topDropdown ? props.app.topDropdown.getValue() : null;
 
-        const { data } = props;
-        historyList = this._parseListPlaceTran(data.listPlaceTran);
+        const {data} = props;
+        const totalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+        const historyList = this._getArray(totalHistoryList)
 
         this.state = {
             currentTab: MERCHANT_COLLECTED,
-            placeId: selectedPlace? selectedPlace.placeId : null,
+            placeId: selectedPlace ? selectedPlace.placeId : null,
             fromTime: null,
             toTime: null,
             loading: false,
+            totalHistoryList: totalHistoryList,
             historyList: historyList,
         }
 
     }
 
-    _load(placeId=this.state.placeId, fromTime=this.state.fromTime, toTime=this.state.toTime, option=this.state.currentTab, pageNumber = 0) {
+    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
         this.setState({
@@ -96,13 +98,13 @@ export default class extends Component {
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
-        }, ()=> this._load())
+        }, () => this._load())
     }
 
     _handleTopDrowpdown(data) {
         if (data && data.id) this.setState({
             placeId: data.id
-        },()=>this._load());
+        }, () => this._load());
         else (this._load());
     }
 
@@ -114,7 +116,7 @@ export default class extends Component {
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
-        }, ()=> this._load())
+        }, () => this._load())
     }
 
     _handlePressTab(data) {
@@ -172,10 +174,10 @@ export default class extends Component {
 
     _handleSeeMore(item) {
         if (item.flagList) item.flagList.levelList = item.flagList.levelList + 1;
-        item.numberItemHidding = 0;
-
+        // item.numberItemHidding = 0;
+        const newHistoryList = this._getArray(this.state.totalHistoryList)
         this.setState({
-            historyList: this.state.historyList,
+            historyList: newHistoryList,
         })
     }
 
@@ -262,6 +264,10 @@ export default class extends Component {
                 </View>
             )
         }
+
+        if (item.notification) return (
+            <Text meium bold>{item.notification}</Text>
+        )
     }
 
     _parseListPlaceTran(listPlaceTran) {
@@ -274,19 +280,34 @@ export default class extends Component {
                     keyExtractor: result.length,
                     placeId: item.placeId,
                     placeAddress: item.placeAddress,
-                    totalMoney:
-                    item.totalMoney,
+                    totalMoney: item.totalMoney,
                     flagList: flagList
                 })
 
                 // result = result.concat(item.listTransactionDto.slice(0,2));
                 item.listTransactionDto.map((value, index) => {
                     if (index < FIRST_LEVEL_SHOW) {
-                        result.push({...value, level: 0, flagList: flagList, keyExtractor: result.length,})
+                        // console.warn(JSON.stringify(value));
+                        result.push({
+                            ...value,
+                            level: 0,
+                            flagList: flagList,
+                            keyExtractor: result.length,
+                        })
 
                     }
-                    else if (index < SECOND_LEVEL_SHOW) result.push({...value, level: 1, flagList: flagList, keyExtractor: result.length,})
-                    else result.push({...value, level: 2, flagList: flagList, keyExtractor: result.length,})
+                    else if (index < SECOND_LEVEL_SHOW) result.push({
+                        ...value,
+                        level: 1,
+                        flagList: flagList,
+                        keyExtractor: result.length,
+                    })
+                    else result.push({
+                            ...value,
+                            level: 2,
+                            flagList: flagList,
+                            keyExtractor: result.length,
+                        })
                 })
 
                 if (item.listTransactionDto.length - FIRST_LEVEL_SHOW > 0) {
@@ -307,16 +328,39 @@ export default class extends Component {
         return result;
     }
 
+    _getArray(totalHistoryList) {
+        // let listPlaceTranParsed = totalHistoryList;
+        if (totalHistoryList.length == 0) return [{notification: 'Danh sách rỗng.'}]
+        // return listPlaceTranParsed;
+        let result = [];
+        totalHistoryList.map((item, index) => {
+            if (item.seeMore && item.flagList.levelList <= 1) {
+
+                let numberItemHidding = 0;
+                if (item.flagList.levelList == 0 && item.totalItem > FIRST_LEVEL_SHOW) numberItemHidding = item.totalItem - FIRST_LEVEL_SHOW;
+                if (item.flagList.levelList == 1 && item.totalItem > SECOND_LEVEL_SHOW) numberItemHidding = item.totalItem - SECOND_LEVEL_SHOW;
+
+                if (numberItemHidding > 0) result.push({...item});
+            } else if (item.placeId || (item.level <= item.flagList.levelList)) {
+                result.push({...item})
+            }
+        })
+
+        return result;
+    }
+
     componentWillReceiveProps(nextProps) {
-        const { data } = nextProps;
-        newHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+        const {data} = nextProps;
+        const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+        const newHistoryList = this._getArray(newTotalHistoryList)
         this.setState({
+            totalHistoryList: newTotalHistoryList,
             historyList: newHistoryList
         })
     }
 
     render() {
-
+        const {data} = this.props;
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
@@ -324,22 +368,22 @@ export default class extends Component {
                               ref='tabs'/>
                 <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
                 {this._renderMoneyBand()}
-                <ListViewExtend
+                {data && <ListViewExtend
                     style={{flex: 1}}
                     onItemRef={ref => this.listview = ref}
                     onEndReached={() => this._loadMore()}
-                    keyExtractor={item=> item.keyExtractor}
+                    keyExtractor={item => item.keyExtractor}
                     onRefresh={() => this._onRefresh()}
                     dataArray={this.state.historyList}
                     renderRow={(item) => this._renderTransactionItem(item)}
                     rowHasChanged={true}
-                />
+                />}
 
             </Container>
         )
     }
 
-    componentDidUpdate(prevProps,prevState) {
+    componentDidUpdate(prevProps, prevState) {
         this.listview.showRefresh(false);
     }
 }
