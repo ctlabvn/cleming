@@ -27,7 +27,7 @@ import I18n from '~/ui/I18n'
 
 @connect(state=>({
   session: authSelectors.getSession(state),
-  // user: authSelectors.getUser(state),
+  user: authSelectors.getUser(state),
   pushToken: authSelectors.gePushToken(state),
 }), {...authActions, ...commonActions})
 export default class extends Component {  
@@ -60,7 +60,7 @@ export default class extends Component {
   }
 
   render() {
-    
+    const {user} = this.props
     return (      
 
       <View style={styles.container}>    
@@ -71,14 +71,16 @@ export default class extends Component {
             </Button>
           </View>
         <Content bounces={false}>                  
-          {options.listItems.map((item, index) =>
-          <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
-            <Left>
-              <Icon name={item.icon} style={styles.iconStyle} />
-              <Text style={styles.iconText}>{item.name}</Text>
-            </Left>                
-          </ListItem>
-          )}
+          {options.listItems.map((item, index) => {
+            if (!item.masterOnly || (item.masterOnly && user && user.accTitle == 1 )){
+              return <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
+                <Left>
+                  <Icon name={item.icon} style={styles.iconStyle} />
+                  <Text style={styles.iconText}>{item.name}</Text>
+                </Left>                
+              </ListItem>
+            }
+          })}
           <ListItem noBorder style={styles.listItemContainer} button onPress={this._handleLogout} >
             <Left>
               <Icon name='sign_out' style={styles.iconStyle} />

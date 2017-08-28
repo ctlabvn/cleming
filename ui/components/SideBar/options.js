@@ -23,6 +23,7 @@ export default {
             name: I18n.t('checking'),
             route: 'checking',
             icon: 'term',
+            masterOnly: true
         },
 
         // {
@@ -34,6 +35,7 @@ export default {
             name: I18n.t('page_cashout_account'),
             route: 'cashoutAccount',
             icon: 'cash_out',
+            masterOnly: true
         },
 
         {
