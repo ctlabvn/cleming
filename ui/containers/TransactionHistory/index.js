@@ -20,6 +20,8 @@ import Icon from '~/ui/elements/Icon'
 import Border from "~/ui/elements/Border";
 import Content from "~/ui/components/Content";
 
+import TopDropdownAllPlace from '~/ui/components/TopDropdownAllPlace'
+import { getListPlace } from'~/store/selectors/place'
 
 import {formatNumber} from "~/ui/shared/utils";
 import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
@@ -44,6 +46,7 @@ const SECOND_LEVEL_SHOW = 10
 @connect(state => ({
     xsession: getSession(state),
     data: getHistoryListTransaction(state),
+    listPlace: getListPlace(state),
 }), {...transactionAction, ...commonAction})
 
 export default class extends Component {
@@ -359,10 +362,23 @@ export default class extends Component {
         })
     }
 
+    _getListPlace() {
+        const {listPlace} = this.props
+        // console.warn('test '+JSON.stringify(listPlace))
+        newListPlace = Array.from(listPlace);
+        const itemAll = {placeId: '000000', name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
+        newListPlace.splice(0, 0, itemAll);
+        return newListPlace;
+    }
+
     render() {
         const {data} = this.props;
+
+        const listPlace = this._getListPlace();
+
         return (
             <Container style={styles.container}>
+                <View style={{height: 50}}/>
                 <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
@@ -378,7 +394,9 @@ export default class extends Component {
                     renderRow={(item) => this._renderTransactionItem(item)}
                     rowHasChanged={true}
                 />}
-
+                <TopDropdownAllPlace
+                    dropdownValues={listPlace}
+                />
             </Container>
         )
     }
