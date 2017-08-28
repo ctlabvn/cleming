@@ -11,6 +11,7 @@ import CheckBox from '~/ui/elements/CheckBox'
 // import Content from '~/ui/components/Content'
 
 import ModalOverlay from '~/ui/components/ModalOverlay'
+import I18n from '~/ui/I18n'
 
 export default class DeliveryFeedbackDialog extends Component {
     constructor(props) {
@@ -183,10 +184,10 @@ export default class DeliveryFeedbackDialog extends Component {
                             <Button transparent onPress={() => {
                                 this.setModalVisible(false)
                                 this._resetDialog()
-                            }}><Text style={styles.gray}>Cancel</Text></Button>
+                            }}><View><Text style={styles.gray}>{I18n.t('close')}</Text></View></Button>
                             <Button transparent
                                 onPress={this._handlePressOK}
-                            ><Text primary>Ok</Text></Button>
+                            ><View><Text primary>{I18n.t('ok')}</Text></View></Button>
                         </View>
 
                     </View>

@@ -108,7 +108,7 @@ export default {
     'address': 'Địa chỉ',
     'number_order_item': 'Số món đặt giao hàng',
     'note': 'Ghi chú',
-    'cancel_delivery': 'Hủy giao hàng',
+    'cancel_delivery': 'Giao thất bại',
     'delivered': 'Đã giao hàng',
     'delivered_failed': 'Giao thất bại',
     'order_number_2': 'Đặt hàng số',
