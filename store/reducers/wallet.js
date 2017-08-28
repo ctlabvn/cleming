@@ -65,8 +65,19 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
   export const cashoutHistory = (state=initialWalletDetail, {type, payload}) => {
     switch (type) {
       case 'app/setCashoutHistory':
-        return {
-          ...state, ...payload
+        if (!payload.cashoutConfirm) return state
+        if (payload.cashoutConfirm.pageNumber == 1){
+          return {
+            ...state, ...payload
+          }
+        }else{
+          return {
+            ...state,
+            cashoutConfirm: {
+              ...payload.cashoutConfirm,
+              listCashout: [...state.cashoutConfirm.listCashout, ...payload.cashoutConfirm.listCashout]
+            }
+          }
         }
         break;
       default:
