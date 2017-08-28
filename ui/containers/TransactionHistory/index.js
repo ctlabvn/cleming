@@ -76,16 +76,17 @@ export default class extends Component {
     _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
-        this.setState({
-            loading: true,
-        })
-        this.listview.showRefresh(true)
-        getTransactionHistoryList(xsession, null, fromTime, toTime, option, (err, data) => {
-            this.setState({
-                loading: false,
-                updateHistoryList: true,
-            })
-            this.listview.showRefresh(false)
+
+        // this.setState({
+        //     loading: true,
+        // })
+        // this.listview.showRefresh(true)
+        getTransactionHistoryList(xsession, placeId == '000000' ? null : placeId, fromTime, toTime, option, (err, data) => {
+            // this.setState({
+            //     loading: false,
+            //     updateHistoryList: true,
+            // })
+            // this.listview.showRefresh(false)
         })
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
@@ -269,7 +270,7 @@ export default class extends Component {
         }
 
         if (item.notification) return (
-            <Text meium bold>{item.notification}</Text>
+            <Text meium bold style={{alignSelf: 'center'}}>{item.notification}</Text>
         )
     }
 
@@ -371,6 +372,13 @@ export default class extends Component {
         return newListPlace;
     }
 
+    _handleSelectPlace(item) {
+        // console.warn(JSON.stringify(item))
+        this.setState({
+            placeId: item.placeId,
+        }, ()=>this._load());
+    }
+
     render() {
         const {data} = this.props;
 
@@ -396,6 +404,7 @@ export default class extends Component {
                 />}
                 <TopDropdownAllPlace
                     dropdownValues={listPlace}
+                    onSelect={item => this._handleSelectPlace(item)}
                 />
             </Container>
         )
