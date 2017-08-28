@@ -65,7 +65,7 @@ export default class extends Component {
             <View style={styles.moneyBand}>
                 <View>
                     <Text largeLight bold grayDark>Doanh thu</Text>
-                    <Text green>(Chưa đối soát)</Text>
+                    <Text green>(Đã đối soát)</Text>
                 </View>
                 <Text large green>
                     <Text large superBold orange>{formatNumber(money)}</Text> đ
@@ -84,6 +84,11 @@ export default class extends Component {
 
         getCheckingDetail(xsession, fromTime, toTime, (err, data) => {
         });
+    }
+
+    _gotoCashoutAccount() {
+        const {forwardTo} = this.props
+        forwardTo('cashoutAccount');
     }
 
     render() {
@@ -164,7 +169,7 @@ export default class extends Component {
                 <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}}/>
                 <View style={styles.fixButtonBlock}>
                     <Text medium onPress={() => alert('thanh toán Clingme')} gray>Thanh toán Clingme</Text>
-                    <Text medium onPress={() => alert('tài khoản Cashout')} primary>Tài khoản Cashout</Text>
+                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>Tài khoản Cashout</Text>
                 </View>
             </Container>
         )
