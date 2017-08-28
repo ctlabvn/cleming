@@ -10,12 +10,13 @@ import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
-import { formatNumber } from "~/ui/shared/utils";
+import { formatNumber, chainParse } from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
 import { getSession } from "~/store/selectors/auth";
 import material from "~/theme/variables/material.js";
 import I18n from '~/ui/I18n'
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import Spinner from '~/ui/components/Spinner'
 import {
     TIME_FORMAT_WITHOUT_SECOND
 } from "~/store/constants/app"
@@ -29,9 +30,30 @@ export default class CashoutHistory extends Component {
     }
 
     componentDidMount = () => {
-        const {xsession, getCashoutHistory, getCashoutDetail} = this.props
+        const {xsession, getCashoutHistory} = this.props
+        this.listview && this.listview.showRefresh(true)
+        getCashoutHistory(xsession,
+          (err, data) => this.listview && this.listview.showRefresh(false)
+        )
+    }
+    _onRefresh = () => {
+        const {getCashoutHistory, xsession} = this.props
         getCashoutHistory(xsession)
     }
+
+    _onEndReached = () => {
+        const {xsession, getCashoutHistory} = this.props
+        const {cashoutConfirm} = this.props.cashoutHistory
+        if (!cashoutConfirm) return
+        if (cashoutConfirm.pageNumber >= cashoutConfirm.totalPage) return
+        this.spinner.show(true)
+        getCashoutHistory(xsession, 2, cashoutConfirm.pageNumber+1,
+          (err, data) => {
+            this.spinner.show(false)
+          }
+        )
+    }
+
     _renderRow = (item) => {
         const {forwardTo} = this.props
         switch(item.cashoutStatus){
@@ -77,7 +99,9 @@ export default class CashoutHistory extends Component {
                   <ListViewExtend
                       dataArray={cashoutHistory.cashoutWaiting.listCashout}
                       renderRow={(item) => this._renderRow(item)}
-                      onEndReached={()=>console.log('On End Reach List1')}
+                      onItemRef={ref=>this.listview=ref} 
+                      onRefresh={this._onRefresh}
+                      style={{minHeight: 150}}
                   />
                   <View style={{...styles.rowLeft, ...styles.borderTop}}>
                       <Text medium bold success>{I18n.t('money_received')}</Text>
@@ -86,8 +110,10 @@ export default class CashoutHistory extends Component {
                   <ListViewExtend
                       dataArray={cashoutHistory.cashoutConfirm.listCashout}
                       renderRow={(item) => this._renderRow(item)}
-                      onEndReached={()=>console.log('On End Reach List2')}
+                      onEndReached={()=>this._onEndReached()}
+                      onRefresh={this._onRefresh}
                   />
+                  <Spinner onItemRef={ref=>this.spinner=ref} />
               </Container>
             )
         }else{

@@ -72,3 +72,13 @@ export const setCashoutOverview = (data) => ({
   type: 'app/setCashoutOverview',
   payload: data
 })
+
+export const getCheckingHistory = (...args) => ({
+  type: 'app/getCheckingHistory',
+  args
+})
+
+export const setCheckingHistory = (data) => ({
+  type: 'app/setCheckingHistory',
+  payload: data
+})

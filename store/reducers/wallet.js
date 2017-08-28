@@ -65,8 +65,19 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
   export const cashoutHistory = (state=initialWalletDetail, {type, payload}) => {
     switch (type) {
       case 'app/setCashoutHistory':
-        return {
-          ...state, ...payload
+        if (!payload || !payload.cashoutConfirm) return state
+        if (payload.cashoutConfirm.pageNumber == 1){
+          return {
+            ...state, ...payload
+          }
+        }else{
+          return {
+            ...state,
+            cashoutConfirm: {
+              ...payload.cashoutConfirm,
+              listCashout: [...state.cashoutConfirm.listCashout, ...payload.cashoutConfirm.listCashout]
+            }
+          }
         }
         break;
       default:
@@ -84,5 +95,26 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
       default:
         return state
 
+    }
+  }
+
+  export const checkingHistory = (state=initialWalletDetail, {type, payload}) => {
+    switch (type) {
+      case 'app/setCheckingHistory':
+        console.log('Payload Checking History: ', payload)
+        if (!payload || !payload.compareCheckComfirm) return state
+        if (payload.compareCheckComfirm.pageNumber == 1){
+          return {...state, ...payload}
+        }else{
+          return {
+            ...state,
+            compareCheckComfirm: {
+              ...payload.compareCheckComfirm,
+              listCompareCheckItem: [...state.compareCheckComfirm.listCompareCheckItem, ...payload.compareCheckComfirm.listCompareCheckItem]
+            }
+          }
+        }
+      default: 
+        return state
     }
   }

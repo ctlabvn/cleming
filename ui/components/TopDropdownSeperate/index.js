@@ -105,7 +105,7 @@ export default class TopDropdown extends Component {
         if(!data) return
         const searchWord = convertVn(searchString.trim().toLowerCase())
         if(searchWord) {
-            let searchedData = data.filter(item=>item.name.indexOf(searchWord) > -1)
+            let searchedData = data.filter(item=>convertVn(item.name.trim().toLowerCase()).indexOf(searchWord) > -1)
             let listPlace = searchedData.slice()
             if (searchedData.length == 0){
                 const searchedData = data.map(item=>{

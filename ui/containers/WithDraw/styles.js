@@ -80,7 +80,7 @@ export default {
         backgroundColor: material.primaryColor
     },
     moneyNumber: {
-        fontSize: 20
+        fontSize: 24
     },
     transactionCode: {
         fontSize: 20

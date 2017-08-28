@@ -347,10 +347,10 @@ export default class extends Component {
                     <View style={styles.fixButtonBlock}>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundLightGray }}
                             onPress={() => this.showReasonPopup(orderDetail.orderInfo.clingmeId)}
-                        ><Text gray>{I18n.t('delivery_success')}</Text></Button>
+                        ><Text gray>{I18n.t('delivered_failed')}</Text></Button>
                         <Button style={{ ...styles.buttonFeedback, ...styles.backgroundPrimary }}
                             onPress={() => this._handleConfirmOrder(orderDetail.orderInfo.clingmeId)}
-                        ><Text white>{I18n.t('delivered_failed')}</Text></Button>
+                        ><Text white>{I18n.t('delivery_success')}</Text></Button>
                     </View>
                 )}
 

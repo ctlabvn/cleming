@@ -40,6 +40,10 @@ export default {
     getCashoutOverview(xsession){
       console.log('Call Cashout Overview', xsession);
       return apiGet('/merchantapp/balance-cashout', {}, xsession)
+    },
+    getCheckingHistory(xsession, option=0, pageNumber=1){
+        console.log('Call API Get List Check', xsession+'---'+option+'---'+pageNumber)
+        return apiGet('/merchantapp/list-check', {option, pageNumber}, xsession)
     }
 
 

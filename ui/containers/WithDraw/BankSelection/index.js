@@ -29,7 +29,7 @@ export default class extends Component {
                 {listAccounts
                     && Object.keys(listAccounts).length > 0
                     && listAccounts.map((item, index) => (
-                    <TouchableOpacity key={(item.bankId+item.accountNumber)} onPress={()=>this._handlePress(item)}>
+                    <TouchableOpacity key={item.bizBankId} onPress={()=>this._handlePress(item)}>
                         <View style={styles.bankLogoContainer}>
                             <Image source={{ uri: item.bankIcon }} style={styles.bankLogo} />
                             <Text style={{ textAlign: 'center' }}>{item.accountNumber}</Text>

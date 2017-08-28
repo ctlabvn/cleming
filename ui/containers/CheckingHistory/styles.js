@@ -56,8 +56,7 @@ export default {
 		color: 'white'
 	},
 	moneyNumber: {
-		fontSize: 24,
-		color: material.red500
+		fontSize: 22,
 	},
 	forwardIcon: {
 		fontSize: 20,
