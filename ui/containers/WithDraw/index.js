@@ -21,7 +21,7 @@ import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     bank: state.wallet.bank,
-    wallet: state.wallet
+    cashoutOverview: state.cashoutOverview
 }), { ...commonAction, ...walletActions })
 export default class extends Component {
     constructor(props) {
@@ -64,13 +64,13 @@ export default class extends Component {
     }
     
     render() {
-        const {forwardTo, bank, wallet} = this.props
+        const {forwardTo, bank, cashoutOverview} = this.props
         return (
             <Container style={styles.container}>
                 <View style={{ ...styles.rowPadding, ...styles.backgroundPrimary }}>
-                    <Text white>{I18n.t('balance')}</Text>
+                    <Text white bold>{I18n.t('balance')}</Text>
                     <Text white>
-                        <Text white bold style={styles.banmoneyNumber}>{formatNumber(wallet.moneyAmount)}</Text>đ
+                        <Text white bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)} đ</Text>
                     </Text>
                 </View>
                 <View style={styles.rowPadding}>

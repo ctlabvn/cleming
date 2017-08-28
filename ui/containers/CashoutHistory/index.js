@@ -31,11 +31,9 @@ export default class CashoutHistory extends Component {
 
     componentDidMount = () => {
         const {xsession, getCashoutHistory} = this.props
-        this.listview.showRefresh(true)
+        this.listview && this.listview.showRefresh(true)
         getCashoutHistory(xsession,
-          (err, data) => {
-            this.listview.showRefresh(false)
-          }
+          (err, data) => this.listview && this.listview.showRefresh(false)
         )
     }
     _onRefresh = () => {
@@ -114,7 +112,6 @@ export default class CashoutHistory extends Component {
                       renderRow={(item) => this._renderRow(item)}
                       onEndReached={()=>this._onEndReached()}
                       onRefresh={this._onRefresh}
-                      onScroll={()=>console.log('Scrolling')}
                   />
                   <Spinner onItemRef={ref=>this.spinner=ref} />
               </Container>
