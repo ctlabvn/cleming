@@ -43,12 +43,12 @@ export default class extends Component {
 
     _onEndReached = () => {
         console.log('On End Reach')
-        const {xsession, getCashoutHistory} = this.props
+        const {xsession, getCheckingHistory} = this.props
         const {compareCheckComfirm} = this.props.checkingHistory
         if (!compareCheckComfirm) return
         if (compareCheckComfirm.pageNumber >= compareCheckComfirm.totalPage) return
         this.spinner.show(true)
-        getCashoutHistory(xsession, 2, compareCheckComfirm.pageNumber+1,
+        getCheckingHistory(xsession, 2, compareCheckComfirm.pageNumber+1,
           (err, data) => {
             this.spinner.show(false)
           }
