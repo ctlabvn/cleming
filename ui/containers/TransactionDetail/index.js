@@ -34,6 +34,7 @@ import material from "~/theme/variables/material";
 import I18n from '~/ui/I18n'
 import * as metaAction from "~/store/actions/meta"
 import LoadingModal from "~/ui/components/LoadingModal"
+import CallModal from "~/ui/components/CallModal"
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
@@ -49,7 +50,9 @@ export default class TransactionDetail extends Component {
             hasNext: false,
             hasPrevious: false,
             // loading: false,
-            page: 1 // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading
+            page: 1, // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading,
+            callModalOpen: false,
+            phoneNumber: ''
         }
         this.swiping = false
         this.confirmCounter = 0
@@ -489,7 +492,7 @@ export default class TransactionDetail extends Component {
                 <View style={styles.rowPaddingTopMedium}>
                     <Text medium grayDark>{I18n.t('phone_number')}</Text>
 
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>this._onPressPhoneNumber(chainParse(transactionInfo, ['orderInfo', 'userInfo', 'phoneNumber']))}>
                         <View style={styles.row}>
                             <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
                             <Text strong bold
@@ -758,6 +761,17 @@ export default class TransactionDetail extends Component {
     // Trạng thái của hoá đơn, 0 và 3 là đang chờ xử lý,
     // 1 là thành công, 2 là bị từ chối
 
+    _onPressPhoneNumber = (phoneNumber) => {
+        this.setState({
+            callModalOpen: true,
+            phoneNumber: phoneNumber
+        })
+    }
+    _onPhoneModalClose = () => {
+        this.setState({
+            callModalOpen: false
+        })
+    }
     render() {
         if (!this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
           return (
@@ -811,6 +825,10 @@ export default class TransactionDetail extends Component {
             <Container style={{backgroundColor: material.white500}}>
                 <PopupInfo ref='popupInfo' />
                 <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref}/>
+                <CallModal
+                    phoneNumber={this.state.phoneNumber}
+                    onCloseClick={()=>this._onPhoneModalClose()}
+                    open={this.state.callModalOpen} />
                 <ViewPager style={{ flex: 1, height: '100%' }}
                     keyboardShouldPersistTaps='always'
                     onPageSelected={(event) => this.onSwipeViewPager(event)}

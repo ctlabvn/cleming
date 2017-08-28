@@ -479,4 +479,7 @@ export default {
         flexDirection: 'column',
         alignItems: 'flex-start',
     },
+    phoneIcon: {
+        color: material.primaryColor
+    }
 }

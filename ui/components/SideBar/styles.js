@@ -79,7 +79,7 @@ export default {
     fontSize: 20,
     width: 25,
     color: 'white',
-    marginLeft: 20,
-    marginRight: 3
+    marginRight: 3,
+    paddingLeft: 5
   }
 };
