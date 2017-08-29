@@ -17,47 +17,8 @@ export default class DateFilter extends Component {
         super(props)
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         let defaultFilter = props.defaultFilter || 'day'
-        this.state = {
-            currentDateFilter: defaultFilter,
-            currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter),
-            isShowingStartDate: false,
-            isShowingEndDate: false,
-        };
-        this.dateFilterListValue = [
-            {
-                value: 'day',
-                display: `1 ${I18n.t('day')}`
-            },
-            {
-                value: 'week',
-                display: `7 ${I18n.t('day')}`
-            },
-            {
-                value: '2weeks',
-                display: `2 ${I18n.t('week')}`
-            },
-            {
-                value: 'month',
-                display: `1 ${I18n.t('month')}`
-            },
-            {
-                value: 'quarter',
-                display: `3 ${I18n.t('month')}`
-            },
-            {
-                value: 'half-year',
-                display: `6 ${I18n.t('month')}`
-            },
-            // {
-            //     value: 'year',
-            //     display: `1 ${I18n.t('year')}`
-            // },
-            {
-                value: 'custom',
-                display: `${I18n.t('custom')}`
-            }
-        ]
         if (props.type == 'lite') {
+            defaultFilter = 'week'
             this.dateFilterListValue = [
                 {
                     value: 'week',
@@ -72,7 +33,60 @@ export default class DateFilter extends Component {
                     display: `3 ${I18n.t('month')}`
                 }
             ]
+        }else if (props.type == 'lite-round'){
+            defaultFilter = 'week'
+            this.dateFilterListValue = [
+                {
+                    value: 'week',
+                    display: `7 ${I18n.t('day')}`
+                },
+                {
+                    value: '2weeks',
+                    display: `2 ${I18n.t('week')}`
+                },
+                {
+                    value: 'month',
+                    display: `1 ${I18n.t('month')}`
+                },
+            ]
+        }else{
+            this.dateFilterListValue = [
+                {
+                    value: 'day',
+                    display: `1 ${I18n.t('day')}`
+                },
+                {
+                    value: 'week',
+                    display: `7 ${I18n.t('day')}`
+                },
+                {
+                    value: '2weeks',
+                    display: `2 ${I18n.t('week')}`
+                },
+                {
+                    value: 'month',
+                    display: `1 ${I18n.t('month')}`
+                },
+                {
+                    value: 'quarter',
+                    display: `3 ${I18n.t('month')}`
+                },
+                {
+                    value: 'half-year',
+                    display: `6 ${I18n.t('month')}`
+                },
+                {
+                    value: 'custom',
+                    display: `${I18n.t('custom')}`
+                }
+            ]
         }
+        this.state = {
+            currentDateFilter: defaultFilter,
+            currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter),
+            isShowingStartDate: false,
+            isShowingEndDate: false,
+        };
         this.dateFilterHeight = 0
         this.contentWidth = 0
         this.scrollFisrtLoad = true
@@ -102,8 +116,95 @@ export default class DateFilter extends Component {
                 this.props.onPressFilter(this.state)
             }, 0)
         }
-
     }
+
+    _generateItemsForWeekPeriod = () => {
+        const current = moment()
+        const startPrevMonth = current.clone().subtract(1, 'months').startOf('month')
+        let prevLoop = startPrevMonth
+        let result = []
+        for (let i=0; i<8; i++){
+            let temp = {}
+            if (i%4 == 3){
+                temp['start'] = prevLoop.clone()
+                let end = prevLoop.clone().endOf('month')
+                temp['end'] = end
+                if (end.isAfter(current)){
+                    temp['end'] = current.clone().endOf('day')
+                    result.push(temp)
+                    break
+                }
+                prevLoop = end.clone().add(1, 'days').startOf('day')
+                
+            }else{
+                temp['start'] = prevLoop.clone()
+                let end = prevLoop.clone().add(6, 'days').endOf('day')
+                temp['end'] = end
+                if (end.isAfter(current)){
+                    temp['end'] = current.clone().endOf('day')
+                    result.push(temp)
+                    break
+                }
+                prevLoop = end.clone().add(1, 'days').startOf('day')
+                
+            }
+            result.push(temp)
+        }
+        return result
+    }
+
+    _generateItemsForTwoWeeksPeriod = () => {
+        const current = moment()
+        const startPrevTwoMonth = current.clone().subtract(2, 'months').startOf('month')
+        let prevLoop = startPrevTwoMonth
+        let result = []
+        for (let i=0; i<6; i++){
+            let temp = {}
+            if (i%2 == 1){
+                temp['start'] = prevLoop.clone()
+                let end = prevLoop.clone().endOf('month')
+                temp['end'] = end
+                if (end.isAfter(current)){
+                    temp['end'] = current.clone().endOf('day')
+                    result.push(temp)
+                    break
+                }
+                prevLoop = end.clone().add(1, 'days').startOf('day')
+                
+            }else{
+                temp['start'] = prevLoop.clone()
+                let end = prevLoop.clone().add(13, 'days').endOf('day')
+                temp['end'] = end
+                if (end.isAfter(current)){
+                    temp['end'] = current.clone().endOf('day')
+                    result.push(temp)
+                    break
+                }
+                prevLoop = end.clone().add(1, 'days').startOf('day')
+                
+            }
+            result.push(temp)
+        }
+        return result
+    }
+
+    _generateItemsForMonthPeriod = () => {
+        const current = moment()
+        let result = []
+        for (let i=3; i>=0; i--){
+            if (i !=0){
+                let start = current.clone().subtract(i, 'months').startOf('month')
+                let end = current.clone().subtract(i, 'months').endOf('month')
+                result.push({start, end})
+            }else{
+                let start = current.clone().startOf('month')
+                let end = current.clone().endOf('day')
+                result.push({start, end})
+            }
+        } 
+        return result
+    }
+
     componentDidMount() {
         // setTimeout(() => {
         //     this.refs.dateFilterList && this.refs.dateFilterList.scrollToEnd({ animated: false })
@@ -119,6 +220,7 @@ export default class DateFilter extends Component {
     // }
 
     _getDataForFilter(filterType) {
+        const {type} = this.props
         // cache current moment
         const current = moment()
         switch(filterType) {
@@ -135,6 +237,17 @@ export default class DateFilter extends Component {
                     }
                 })
             case 'week':
+                if (type == 'lite-round'){
+                    let weekPeriod = this._generateItemsForWeekPeriod().slice(-4)
+                    return weekPeriod.map(item =>({
+                        value: {
+                            from: item['start'].unix(),
+                            to: item['end'].unix()
+                        },
+                        display: item['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + item['end'].format(DEFAULT_DATE_FORMAT)
+                    }))
+                }
+
                 return [4, 3, 2, 1].map((item) => {
                     const substractWeek = current.clone().subtract(item, 'weeks')
                     let startWeek = substractWeek.clone().add(1, 'days').startOf('day')
@@ -148,6 +261,17 @@ export default class DateFilter extends Component {
                     }
                 })
             case '2weeks':
+                if (type == 'lite-round'){
+                    let twoWeeksPeriod = this._generateItemsForTwoWeeksPeriod().slice(-4)
+                    return twoWeeksPeriod.map(item =>({
+                        value: {
+                            from: item.start.unix(),
+                            to: item.end.unix()
+                        },
+                        display: item['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + item['end'].format(DEFAULT_DATE_FORMAT)
+                    }))
+                }
+
                 return [4, 3, 2, 1].map((item) => {
                     const substractWeek = current.clone().subtract(item*2, 'weeks')
                     let startWeek = substractWeek.clone().add(1, 'days').startOf('day')
@@ -162,6 +286,16 @@ export default class DateFilter extends Component {
                 })
 
             case 'month':
+                if (type == 'lite-round'){
+                    let monthsPeriod = this._generateItemsForMonthPeriod()
+                    return monthsPeriod.map(item =>({
+                        value: {
+                            from: item.start.unix(),
+                            to: item.end.unix()
+                        },
+                        display: item['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + item['end'].format(DEFAULT_DATE_FORMAT)
+                    }))
+                }
                 return [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((item) => {
                     let currentMonth = current.clone().subtract(item, 'months')
                     let startMonth = currentMonth.clone().startOf('month')
@@ -229,6 +363,7 @@ export default class DateFilter extends Component {
     }
 
     _getDefaultCurrnetSelectValue(filterType) {
+        const {type} = this.props
         const current = moment()
         switch(filterType) {
             case 'day':
@@ -243,6 +378,16 @@ export default class DateFilter extends Component {
                 }
 
             case 'week':
+                if (type == 'lite-round'){
+                    let currentWeekPeriod = this._generateItemsForWeekPeriod().slice(-1)[0]
+                    return {
+                        value: {
+                            from: currentWeekPeriod['start'].unix(),
+                            to: currentWeekPeriod['end'].unix()
+                        },
+                        display: currentWeekPeriod['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + currentWeekPeriod['end'].format(DEFAULT_DATE_FORMAT) 
+                    }
+                }
                 let startWeek = current.clone().subtract(6, 'days').startOf('day')
                 let endWeek = current.endOf('day')
                 return {
@@ -254,6 +399,17 @@ export default class DateFilter extends Component {
                 }
 
             case '2weeks':
+                if (type == 'lite-round'){
+                    let current2WeekPeriod = this._generateItemsForTwoWeeksPeriod().slice(-1)[0]
+                    return {
+                        value: {
+                            from: current2WeekPeriod['start'].unix(),
+                            to: current2WeekPeriod['end'].unix()
+                        },
+                        display: current2WeekPeriod['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current2WeekPeriod['end'].format(DEFAULT_DATE_FORMAT) 
+                    }
+                }
+
                 let star2tWeek = current.clone().subtract(13, 'days').startOf('day')
                 let end2Week = current.endOf('day')
                 return {
@@ -264,7 +420,17 @@ export default class DateFilter extends Component {
                     display: star2tWeek.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + end2Week.format(DEFAULT_DATE_FORMAT)
                 }
 
-            case 'month':                
+            case 'month':
+                if (type == 'lite-round'){
+                    let currentMonthPeriod = this._generateItemsForMonthPeriod().slice(-1)[0]
+                    return {
+                        value: {
+                            from: currentMonthPeriod['start'].unix(),
+                            to: currentMonthPeriod['end'].unix()
+                        },
+                        display: currentMonthPeriod['start'].format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + currentMonthPeriod['end'].format(DEFAULT_DATE_FORMAT) 
+                    }
+                }
                 let startMonth = current.clone().startOf('month')
                 return {
                     value: {
