@@ -13,6 +13,7 @@ import Content from "~/ui/components/Content";
 import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
 import moment from "moment";
 import CircleCountdown from "~/ui/components/CircleCountdown";
+import CircleCountUp from "~/ui/components/CircleCountUp";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { DEFAULT_TIME_FORMAT, DELIVERY_FEEDBACK, FAST_DELIVERY, GENERAL_ERROR_MESSAGE } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
@@ -249,10 +250,10 @@ export default class extends Component {
                             {(orderDetail.orderInfo.enableFastDelivery == FAST_DELIVERY.YES) &&
                                 (orderDetail.orderInfo.status == 'WAIT_CONFIRM' || orderDetail.orderInfo.status == 'CONFIRMED')
                                 &&
-                                <CircleCountdown
-                                    baseMinute={BASE_COUNTDOWN_ORDER_MINUTE}
+                                <CircleCountUp
+                                    baseMinute={parseInt(orderDetail.orderInfo.fastDeliveryTime/60)}
                                     counting={true}
-                                    countTo={countTo}
+                                    countFrom={orderDetail.orderInfo.clingmeCreatedTime}
                                 />}
                         </View>
                     </View>

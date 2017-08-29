@@ -18,6 +18,7 @@ import Icon from "~/ui/elements/Icon";
 import { formatNumber, formatPhoneNumber, chainParse, getToastMessage } from "~/ui/shared/utils";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import CircleCountdown from "~/ui/components/CircleCountdown";
+import CircleCountUp from "~/ui/components/CircleCountUp";
 import CallModal from "~/ui/components/CallModal";
 import moment from "moment";
 import { getNews } from "~/store/selectors/place";
@@ -152,9 +153,9 @@ export default class extends Component {
                             )}
                             {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES)
                                 && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
-                                && <CircleCountdown baseMinute={parseInt(orderInfo.fastDeliveryTime/60)}
-                                    counting={this.props.counting}
-                                    countTo={countTo}
+                                && <CircleCountUp
+                                    baseMinute={parseInt(orderInfo.fastDeliveryTime/60)}
+                                    countFrom={orderInfo.clingmeCreatedTime}
                                 />}
                         </View>
                     </View>
