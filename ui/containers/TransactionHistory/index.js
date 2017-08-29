@@ -228,15 +228,19 @@ export default class extends Component {
         if (item.tranId) {
             if (item.level > item.flagList.levelList) return null;
             let status;
+            let iconName = 'coin_mark';
             switch (item.tranType) {
                 case 0:
                     status = 'Cashback thành công'
+                    iconName = 'coin_mark';
                     break;
                 case 1:
                     status = 'Giao thành công'
+                    iconName = 'shiping-bike2';
                     break;
                 case 2:
                     status = 'Đã xác nhận'
+                    iconName = 'clingme-wallet';
                     break;
             }
 
@@ -246,7 +250,7 @@ export default class extends Component {
                         <Border/>
                     </View>
                     <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
-                        <Icon name='coin_mark'
+                        <Icon name={iconName}
                               style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
                         <View style={{paddingVertical: 5, flex: 1}}>
                             <View row style={styles.subRow}>
@@ -255,7 +259,7 @@ export default class extends Component {
                             </View>
 
                             <View row style={styles.subRow}>
-                                <Text medium orange>{status} {item.tranType}</Text>
+                                <Text medium orange>{status}</Text>
                                 <Text medium bold grayDark>{item.moneyAmount} đ</Text>
                             </View>
 
