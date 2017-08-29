@@ -219,14 +219,12 @@ export default {
         Page: CashoutAccount,
         headerType: 'back',
         footerType: 'none',
-        cache: true
     },
     cashoutHistory: {
         title: I18n.t('cashout_history'),
         Page: CashoutHistory,
         headerType: 'back',
         footerType: 'none',
-        cache: true
     },
     checking: {
         title: I18n.t('checking'),
@@ -252,6 +250,5 @@ export default {
         Page: CheckingHistory,
         headerType: 'back',
         footerType: 'none',
-        cache: true
     }
 }

@@ -54,9 +54,6 @@ export default class extends Component {
                     <Border/>
                     <TouchableOpacity onPress={()=>forwardTo('cashoutHistory')}>
                         <View>
-                            <View style={{...styles.row, ...styles.pd10}}>
-                                <Text gray>(14/08/2017)</Text>
-                            </View>
                             <View style={{...styles.row, ...styles.pd10, paddingBottom: 30}}>
                                 <Text gray bold medium>{I18n.t('cashout_history')}</Text>
                                 <View style={styles.row}>
