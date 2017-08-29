@@ -481,5 +481,10 @@ export default {
     },
     phoneIcon: {
         color: material.primaryColor
-    }
+    },
+    line: {
+        height: 1,
+        borderBottomColor: 'rgba(0,0,0,0.3)',
+        borderBottomWidth: 0.5
+    },
 }

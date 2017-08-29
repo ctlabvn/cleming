@@ -513,6 +513,7 @@ export default class TransactionDetail extends Component {
                         )
                         }>
                     </List>
+                    <View style={styles.line} />
                     <View style={{paddingBottom: 50}}>
                         <View style={styles.rowPadding}>
                             <Text medium bold grayDark>{I18n.t('money')}:</Text>

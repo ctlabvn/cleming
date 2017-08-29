@@ -40,11 +40,11 @@ export default {
       },
       {
           value: 1,
-          display: 'Trả qua Clingme'
+          display: I18n.t('transaction_type_clingme')
       },
       {
           value: 2,
-          display: 'Trả trực tiếp'
+          display: I18n.t('transaction_type_direct')
       }
   ],
 
