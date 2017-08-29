@@ -121,7 +121,7 @@ export default {
         backgroundColor: material.white500,
         borderRadius: 3,
         marginBottom: 10,
-        height: 190
+        height: 160
     },
     listItemGray: {
         backgroundColor: material.gray400 

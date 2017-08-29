@@ -100,7 +100,7 @@ export default class extends Component {
                             <Button transparent onPress={() => this.props.onShowReasonPopup(orderInfo.clingmeId)}>
                                 <Text medium bold gray>{I18n.t('cancel_delivery')}</Text></Button>
                             <Button transparent onPress={() => this.props.onConfirmOrder(orderInfo.clingmeId)}>
-                                <Text medium bold primary>{I18n.t('delivered')}</Text></Button>
+                                <Text medium bold primary>{I18n.t('delivery_success')}</Text></Button>
                         </View>
                     </View>
                 )
@@ -148,9 +148,9 @@ export default class extends Component {
                         <View style={styles.row}>
                             <Text medium style={styles.time}
                                 grayDark>{moment(orderInfo.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            {(orderInfo.status == 'CANCELLED') && (
-                                <Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />
-                            )}
+                            {/*{(orderInfo.status == 'CANCELLED') && (*/}
+                                {/*<Icon name='done' style={{ ...styles.deliveryCodeSuccess, ...styles.icon }} />*/}
+                            {/*)}*/}
                             {(orderInfo.enableFastDelivery == FAST_DELIVERY.YES)
                                 && (orderInfo.status == 'WAIT_CONFIRM' || orderInfo.status == 'CONFIRMED')
                                 && <CircleCountUp
