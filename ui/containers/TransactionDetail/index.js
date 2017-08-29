@@ -20,7 +20,7 @@ import Content from "~/ui/components/Content";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants"
 import {
     DEFAULT_TIME_FORMAT,
-    TIME_FORMAT_WITHOUT_SECOND,
+    TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR,
     FEEDBACK_CLM_TRANSACTION,
     GENERAL_ERROR_MESSAGE,
     TRANSACTION_DIRECT_STATUS,
@@ -291,7 +291,7 @@ export default class TransactionDetail extends Component {
                         dealTransactionId={transactionInfo.transactionId}
                     />
                     <View style={{ ...styles.block, alignSelf: 'flex-start' }}>
-                        <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                        <Text medium style={{ alignSelf: 'flex-start' }}>{moment(transactionInfo.invoiceTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR)}</Text>
                     </View>
                     <View style={styles.blockCenter}>
                         <Text medium gray>{I18n.t('transaction_number')}</Text>

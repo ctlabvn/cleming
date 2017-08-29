@@ -37,6 +37,7 @@ export const DEFAULT_YEAR_FORMAT = 'YYYY'
 export const DEFAULT_HOUR_FORMAT = 'HH:mm'
 export const DEFAULT_TIME_FORMAT = 'HH:mm:ss  DD/MM/YY'
 export const TIME_FORMAT_WITHOUT_SECOND = 'HH:mm  DD/MM/YY'
+export const TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR = 'HH:mm  DD/MM/YYYY'
 export const NOTIFY_TYPE={
     COMMENT: 1,
     PAY: 2,
