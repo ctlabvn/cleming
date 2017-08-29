@@ -230,6 +230,7 @@ export default class TransactionDetail extends Component {
     }
 
     renderClingme(transactionInfo){
+        const {user} = this.props
         let payStatus, helpBtn = null
         const {goBack} = this.props
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
@@ -287,10 +288,10 @@ export default class TransactionDetail extends Component {
                         <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
                         {payStatus}
                     </View>
-                    <View style={styles.blockCenter}>
+                    {(user.accTitle == 1) && <View style={styles.blockCenter}>
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
-                    </View>
+                    </View>}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
