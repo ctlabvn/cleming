@@ -22,7 +22,7 @@ import {
     DEFAULT_DATE_FORMAT,
     DEFAULT_HOUR_FORMAT,
     DEFAULT_TIME_FORMAT,
-    TIME_FORMAT_WITHOUT_SECOND,
+    TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR,
     GENERAL_ERROR_MESSAGE
 } from "~/store/constants/app";
 import {formatPhoneNumber, chainParse, getToastMessage} from "~/ui/shared/utils";
@@ -151,7 +151,7 @@ export default class PlaceOrderDetail extends Component {
                         <View style={{...styles.rowPaddingTB, ...styles.center}}>
                             <Text
                                 medium
-                                grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                                grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR)}</Text>
                             
                             {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}

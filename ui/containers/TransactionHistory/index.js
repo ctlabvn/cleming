@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {View, Container, Text, List, ListItem, Spinner, Button} from 'native-base'
+import { TouchableHighlight } from 'react-native'
 
 import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
@@ -21,7 +22,7 @@ import Border from "~/ui/elements/Border";
 import Content from "~/ui/components/Content";
 
 import TopDropdownAllPlace from '~/ui/components/TopDropdownAllPlace'
-import { getListPlace } from'~/store/selectors/place'
+import {getListPlace} from'~/store/selectors/place'
 
 import {formatNumber} from "~/ui/shared/utils";
 import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
@@ -185,6 +186,11 @@ export default class extends Component {
         })
     }
 
+    _handlePressItem(item) {
+        const { forwardTo } = this.props;
+        forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+    }
+
     _renderTransactionItem(item) {
         console.log('render Row Item');
         if (item.seeMore) {
@@ -249,26 +255,32 @@ export default class extends Component {
                     <View style={{marginHorizontal: 0}}>
                         <Border/>
                     </View>
-                    <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
-                        <Icon name={iconName}
-                              style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
-                        <View style={{paddingVertical: 5, flex: 1}}>
-                            <View row style={styles.subRow}>
-                                <Text medium bold grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
-                                <Text medium grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                            </View>
+                    <TouchableHighlight
+                        underlayColor={material.gray200}
+                        onPress={()=> this._handlePressItem(item)}>
+                        <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
+                            <Icon name={iconName}
+                                  style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
+                            <View style={{paddingVertical: 5, flex: 1}}>
+                                <View row style={styles.subRow}>
+                                    <Text medium bold
+                                          grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
+                                    <Text medium
+                                          grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                                </View>
 
-                            <View row style={styles.subRow}>
-                                <Text medium orange>{status}</Text>
-                                <Text medium bold grayDark>{item.moneyAmount} đ</Text>
-                            </View>
+                                <View row style={styles.subRow}>
+                                    <Text medium orange>{status}</Text>
+                                    <Text medium bold grayDark>{item.moneyAmount} đ</Text>
+                                </View>
 
-                            <View row style={styles.subRow}>
-                                <Text medium grayDark>Phí Clingme</Text>
-                                <Text medium bold grayDark>{item.charge} đ</Text>
+                                <View row style={styles.subRow}>
+                                    <Text medium grayDark>Phí Clingme</Text>
+                                    <Text medium bold grayDark>{item.charge} đ</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
+                    </TouchableHighlight>
                 </View>
             )
         }
@@ -380,7 +392,7 @@ export default class extends Component {
         // console.warn(JSON.stringify(item))
         this.setState({
             placeId: item.placeId,
-        }, ()=>this._load());
+        }, () => this._load());
     }
 
     render() {
