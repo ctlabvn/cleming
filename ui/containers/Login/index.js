@@ -64,6 +64,10 @@ export default class extends Component {
 
   }
 
+  componentDidMount = () => {
+    this.props.app && this.props.app.navigator && this.props.app.navigator.resetTo('login')
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.user.firstLogin == 1) {
       this._handleShowFirstTimeLogin()
