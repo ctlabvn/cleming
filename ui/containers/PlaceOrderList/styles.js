@@ -23,7 +23,7 @@ export default {
         alignItems: 'center'
     },
     row: {
-        flexDirection: 'row',        
+        flexDirection: 'row',
         justifyContent: 'space-between',
     },
     rowCenter: {
@@ -124,7 +124,7 @@ export default {
         height: 160
     },
     listItemGray: {
-        backgroundColor: material.gray400 
+        backgroundColor: material.gray300
     },
     listButton: {
       backgroundColor: material.white500,
@@ -141,5 +141,5 @@ export default {
       paddingBottom: 0,
       shadowOpacity: 0
     },
-  
+
 }
