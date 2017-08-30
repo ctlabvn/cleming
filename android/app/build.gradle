@@ -103,7 +103,7 @@ android {
         targetSdkVersion 22
         multiDexEnabled true
         versionCode 3
-        versionName "1.0.1.6" 
+        versionName "1.0.1.6"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -122,7 +122,7 @@ android {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
+            universalApk true  // If true, also generate a universal APK
             include "armeabi-v7a", "x86"
         }
     }
