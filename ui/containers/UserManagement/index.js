@@ -249,9 +249,9 @@ class UserManagement extends Component {
     }
 
     onCreateUserPress() {
-        const {forwardTo} = this.props
+        const {forwardTo, user} = this.props
         this.props.setEmployee(null)
-        forwardTo('userManagement/action/createUser')
+        forwardTo('userManagement/action/createUser', {id: user.bizAccountId})
     }
 
     renderAddEmployeeButton() {
@@ -283,7 +283,6 @@ class UserManagement extends Component {
 
     render() {
         const {selectedPlace, user, listEmployee} = this.props
-
         if (!listEmployee) {
             return null
         }
