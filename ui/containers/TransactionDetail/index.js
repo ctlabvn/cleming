@@ -237,7 +237,7 @@ export default class TransactionDetail extends Component {
         if (transactionInfo.viewNumber == 0){
           helpBtn =
               <View style={styles.rowCenter}>
-                  <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+                  <Button primary style={{...styles.backgroundPrimary}}
                     onPress={()=>goBack()}
                   >
                       <Text medium white>{I18n.t('close')}</Text>
