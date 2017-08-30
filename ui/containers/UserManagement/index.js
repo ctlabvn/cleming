@@ -294,7 +294,7 @@ class UserManagement extends Component {
                         style={styles.ownerButton}>
                         <OwnerCard data={user}/>
                     </Button>
-                    {this.renderBlueLineBelowOwner()}
+                    {listEmployee.length > 0 && this.renderBlueLineBelowOwner()}
                     {listEmployee.map((item, index)=>this.renderEmployeeRow(item, index))}
                 </Content>
                 <Modal onCloseClick={e => this.setState({modalOpen: false})} open={this.state.modalOpen}>
