@@ -99,7 +99,11 @@ export default class extends Component {
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
+                <DateFilter
+                    defaultFilter='month'
+                    type='lite-round'
+                    onPressFilter={data => this._handlePressFilter(data)}
+                    ref='dateFilter'/>
                 {this._renderMoneyBand(detail.revenue)}
                 <Content
                     padder
