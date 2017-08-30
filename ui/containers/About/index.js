@@ -100,7 +100,7 @@ export default class extends Component {
 
                     <View style={styles.row}>
                         <View style={styles.iconContainer}>
-                            <Icon name="friend_search" style={{...styles.indicatorIcon, color: material.blue500}}/>
+                            <Icon name="nearby" style={{...styles.indicatorIcon, color: material.blue500}}/>
                         </View>
                         <Text medium style={styles.textSubContent}>
                             Xem thông tin khách hàng tiềm năng Clingme xung quanh cửa hàng của mình để có
