@@ -248,7 +248,7 @@ export default class CreateUserContainer extends Component {
       // return;
     } else if (!this.state.selectedPlaceId) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_address')), 'info', null, null, 3000, 'top')
-    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
+    } else if (this.props.generatedPassword.trim() == '' && this.props.route.params && this.props.route.params.id) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
       this._scrollPageDown();
     } else {
@@ -267,7 +267,10 @@ export default class CreateUserContainer extends Component {
         isLoading: true,
       })
 
-      if (typeof this.props.route.params.id == 'undefined') {
+        //panda
+        const {employeeDetail} = this.props;
+      // if ((this.props.route.params && this.props.route.params.id)) {
+          if (!employeeDetail) {
         userInfo.password = this.props.generatedPassword
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
           this.getListEmployeeAfterSuccess(error)
@@ -342,18 +345,30 @@ export default class CreateUserContainer extends Component {
     }
 
     let passwordText = null
-    if (typeof this.props.route.params.id == 'undefined') {
-      if (this.props.generatedPassword == '') {
-        passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
-      } else {
-        passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
-      }
-    } else if (this.state.firstTimeResetPassword) {
-      passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
-    } else {
-      passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
-    }
 
+      const { employeeDetail } = this.props;
+
+      if (this.state.firstTimeResetPassword) {
+          passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+      } else if (employeeDetail) {
+          passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
+      } else {
+          passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
+      }
+
+    // if (this.props.route.params && this.props.route.params.id) {
+    //   if (this.props.generatedPassword == '') {
+    //     passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
+    //   } else {
+    //     passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+    //   }
+    // } else if (this.state.firstTimeResetPassword) {
+    //   passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+    // } else {
+    //   passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
+    // }
+
+    this.passwordText = passwordText;
     const firstItem = (
       <View>      
         <RenderTextField label={I18n.t('full_name')} name="name" errorStyle={errorNameStyle} />
@@ -445,13 +460,13 @@ export default class CreateUserContainer extends Component {
       </View>
     )
 
-    return (            
+    return (
         <RenderGroup
           firstItem={firstItem}
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId={this.state.selectedPlaceId}
           lastItem={lastItem}
-        />              
+        />
     )
   }
 
@@ -469,12 +484,9 @@ export default class CreateUserContainer extends Component {
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
-
     return (
       <Container style={styles.container}>              
-        
-        {this.renderMainContainer()}        
-        
+        {this.renderMainContainer()}
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
           style={{ ...styles.submitButton }}>
@@ -505,7 +517,7 @@ export default class CreateUserContainer extends Component {
           onCloseClick={() => { }}
           open={this.state.isLoading}>
           <View style={styles.preload}>
-            <Text>Please waiting...</Text>
+            <Text>Đang xử lý...</Text>
           </View>
         </Modal>
 

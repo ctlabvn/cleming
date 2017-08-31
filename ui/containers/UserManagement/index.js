@@ -251,7 +251,7 @@ class UserManagement extends Component {
     onCreateUserPress() {
         const {forwardTo, user} = this.props
         this.props.setEmployee(null)
-        forwardTo('userManagement/action/createUser', {id: user.bizAccountId})
+        forwardTo('userManagement/action/createUser')
     }
 
     renderAddEmployeeButton() {
