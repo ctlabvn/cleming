@@ -123,6 +123,20 @@ export default {
         marginBottom: 10,
         height: 160
     },
+    listItemPlus: {
+        flexDirection: 'column',
+        width: '100%',
+        paddingRight: 0,
+        paddingBottom: 0,
+        marginLeft: 0,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        paddingTop: 0,
+        backgroundColor: material.white500,
+        borderRadius: 3,
+        marginBottom: 10,
+        height: 180
+    },
     listItemGray: {
         backgroundColor: material.gray300
     },

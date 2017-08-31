@@ -83,7 +83,7 @@ export default class PlaceOrderList extends Component {
 
     _renderBookingItem(item) {
         let totalQuantity = item.orderRowList ? item.orderRowList.map(x => x.quantity).reduce((a, b) => a + b, 0) : 0
-        let orderCodeBlock, phoneNumberBlock, listItemStyle = styles.listItem, listButtonStyle = styles.listButton
+        let orderCodeBlock, phoneNumberBlock, listItemStyle = item.status == 'WAIT_CONFIRMED' ? styles.listItemPlus : styles.listItem, listButtonStyle = styles.listButton
 
         let minute = item.deliveryMinute < 10 ? '0'.concat(item.deliveryMinute) : item.deliveryMinute
         let hourMinute = item.deliveryHour + ':' + minute
@@ -173,7 +173,7 @@ export default class PlaceOrderList extends Component {
 
                     </View>
 
-                    <View style={{ ...styles.rowPadding, width: '100%' }}>
+                    <View style={{ ...styles.rowPadding, width: '100%', flex: 1}}>
                         <View style={styles.row}>
                             <Icon name='account' style={{ ...styles.icon, ...styles.iconLeft }} />
                             <Text grayDark medium>{chainParse(item, ['userInfo', 'memberName'])}</Text>
