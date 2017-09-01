@@ -2,23 +2,23 @@ import I18n from '~/ui/I18n'
 export default {
     listItems: [
 
-        {
-            name: 'Quản lý khuyến mãi',
-            route: 'comingSoon',
-            icon: 'deals',
-        },
-
-        {
-            name: 'Quản lý cửa hàng',
-            route: 'comingSoon',
-            icon: 'place-f',
-        },
-
-        {
-            name: 'Phản hồi khách hàng',
-            route: 'comingSoon',
-            icon: 'post',
-        },
+        // {
+        //     name: 'Quản lý khuyến mãi',
+        //     route: 'comingSoon',
+        //     icon: 'deals',
+        // },
+        //
+        // {
+        //     name: 'Quản lý cửa hàng',
+        //     route: 'comingSoon',
+        //     icon: 'place-f',
+        // },
+        //
+        // {
+        //     name: 'Phản hồi khách hàng',
+        //     route: 'comingSoon',
+        //     icon: 'post',
+        // },
         // {
         //     name: I18n.t('checking'),
         //     route: 'checking',
@@ -49,11 +49,11 @@ export default {
         //     icon: 'setting',
         // },
 
-        {
-            name: 'Inbox',
-            route: 'comingSoon',
-            icon: 'email-symbol',
-        },
+        // {
+        //     name: 'Inbox',
+        //     route: 'comingSoon',
+        //     icon: 'email-symbol',
+        // },
 
         {
             name: 'Trợ giúp',

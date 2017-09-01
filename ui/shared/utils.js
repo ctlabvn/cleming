@@ -93,7 +93,7 @@ export const chainParse = (obj, attrArr) => {
 }
 
 export const getToastMessage = (message) => {
-  return <View style={{ backgroundColor: '#666', padding: 10, borderRadius: 5, marginTop: 50 }}>
+  return <View style={{ backgroundColor: 'rgba(102, 102, 102, 0.85)', padding: 10, borderRadius: 5, marginTop: 50 }}>
     <Text white>{message}</Text>
   </View>
 }
