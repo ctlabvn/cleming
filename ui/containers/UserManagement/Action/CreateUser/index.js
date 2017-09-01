@@ -229,6 +229,7 @@ export default class CreateUserContainer extends Component {
 
   onSubmitUser = (data) => {
     // console.log(data)
+    const { employeeDetail } = this.props;
     const errRet = validateField(data)
     this.setState({
       errorForm: errRet,
@@ -248,7 +249,7 @@ export default class CreateUserContainer extends Component {
       // return;
     } else if (!this.state.selectedPlaceId) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_address')), 'info', null, null, 3000, 'top')
-    } else if (this.props.generatedPassword.trim() == '' && this.props.route.params && this.props.route.params.id) {
+    } else if (this.props.generatedPassword.trim() == '' && !employeeDetail) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
       this._scrollPageDown();
     } else {
