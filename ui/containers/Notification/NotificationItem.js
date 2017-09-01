@@ -59,9 +59,7 @@ export default class extends PureComponent {
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
-        let fastDeliveryText = item.paramId3 ? <Text small style={{
-          color: material.red500,
-        }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
+        let fastDeliveryText = <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
         return (
             <Body>
             <View style={styles.listItemRow}>
@@ -87,7 +85,10 @@ export default class extends PureComponent {
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <Text note error>{item.title} </Text>
+              <View style={styles.subRow}>
+                <Text note error>{item.title}</Text>
+                <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+              </View>
               <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
                 <View style={styles.rowEnd}>
@@ -194,7 +195,7 @@ export default class extends PureComponent {
 
     render(){
         const {item, onNotiClick} = this.props
-        
+
         return (
             <ListItem noBorder
               style={styles[item.isRead ? 'listItemContainerRead' : 'listItemContainer']}

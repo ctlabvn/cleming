@@ -65,13 +65,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   React:
-    :path: "../node_modules/react-native"
+    :path: ../node_modules/react-native
   react-native-google-maps:
-    :path: "../node_modules/react-native-maps/"
+    :path: ../node_modules/react-native-maps/
   react-native-maps:
-    :path: "../node_modules/react-native-maps/"
+    :path: ../node_modules/react-native-maps/
   Yoga:
-    :path: "../node_modules/react-native/ReactCommon/yoga"
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
