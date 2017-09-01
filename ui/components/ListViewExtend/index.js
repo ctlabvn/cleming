@@ -51,7 +51,7 @@ export default class ListViewExtend extends Component {
     this.listview && this.listview.scrollTo(args);
   }
 
-  scrollEnd(args) {
+  scrollToEnd(args) {
     this.listview && this.listview.scrollToEnd(args);
   }
 
