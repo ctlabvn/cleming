@@ -292,6 +292,7 @@ export default class TransactionDetail extends Component {
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                     </View>}
+                    {(user.accTitle != 1) && <View style={{width: '100%', height: 100}} />}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
