@@ -63,6 +63,9 @@ export default class CreateUserContainer extends Component {
 
     const { employeeDetail } = props;
 
+    let fromTime = props.employeeDetail ? props.employeeDetail.fromTimeWork : '07:00';
+    let toTime = props.employeeDetail ? props.employeeDetail.toTimeWork : '20:00';
+
     let currentJob = {
       id: 1,
       name: I18n.t('employee')
@@ -73,8 +76,8 @@ export default class CreateUserContainer extends Component {
       permissionModalOpen: false,
       fromTimeVisible: false,
       toTimeVisible: false,
-      fromTime: props.employeeDetail.fromTimeWork || '07:00',
-      toTime: props.employeeDetail.toTimeWork || '20:00',
+      fromTime: fromTime,
+      toTime: toTime,
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
