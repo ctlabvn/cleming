@@ -32,6 +32,7 @@ import Content from '~/ui/components/Content'
 import Preload from '~/ui/containers/Preload'
 import { InputField } from '~/ui/elements/Form'
 import { logoSource, storeTransparent } from '~/assets'
+import { getToastMessage } from '~/ui/shared/utils'
 import md5 from 'md5'
 // import DeviceInfo from 'react-native-device-info'
 
@@ -46,7 +47,7 @@ import I18n from '~/ui/I18n'
   },
   onSubmitFail: (errors, dispatch)=>{
     for(let k in errors){
-      return dispatch(commonActions.setToast(errors[k], 'warning'))
+      return dispatch(commonActions.setToast(getToastMessage(errors[k]), 'info', null, null, 3000, 'top'))
     }
   },
   // loginRequest: commonSelectors.getRequest(state, 'login'),
@@ -54,10 +55,10 @@ import I18n from '~/ui/I18n'
 }), {...commonActions, ...authActions, ...accountActions, resetForm:reset})
 @reduxForm({ form: 'ModifyPasswordForm', validate})
 export default class extends Component {
-  
+
   constructor(props) {
     super(props)
-    
+
     this.state = {
       showForgot: false,
       showPassword: true,
@@ -67,9 +68,9 @@ export default class extends Component {
   componentWillBlur(){
     this.props.resetForm('ModifyPasswordForm')
   }
-  
+
   _handleChangePassword = ({oldPassword, newPassword}) => {
-    
+
     const data = {
       oldPassword: md5(oldPassword),
       password: md5(newPassword)
@@ -79,9 +80,9 @@ export default class extends Component {
         this.props.goBack()
       }
     })
-    
+
   }
-  
+
   renderPasswordForm(){
     const {handleSubmit} = this.props
     return (
@@ -96,41 +97,41 @@ export default class extends Component {
                 style={styles.button}>
           <Text>{I18n.t('update')}</Text>
         </Button>
-      
+
       </Form>
     )
   }
-  
+
   renderForgotForm(){
-    
+
   }
-  
+
   renderLoginForm(){
-    
+
   }
-  
+
   render() {
     const {forwardTo, pushToken} = this.props
     return (
       <Container style={styles.container}>
-        
-        <GradientBackground colors={['#14b3dd', '#019ecb', '#007dad']} />                    
+
+        <GradientBackground colors={['#14b3dd', '#019ecb', '#007dad']} />
           <Content>
-            
+
             {!this.state.showPassword &&
             <Icon onPress={e=>this.setState({showPassword:true})} name="logo" style={styles.logoIcon} />
             }
-            
+
             { this.state.showPassword
               ? this.renderPasswordForm ()
               : (this.state.showForgot ? this.renderForgotForm() : this.renderLoginForm())
             }
-            
+
             <Thumbnail square style={styles.logo} source={storeTransparent} />
             <Text style={styles.logoText}>FOR BUSINESS</Text>
-          
+
           </Content>
-        
+
       </Container>
     )
   }
