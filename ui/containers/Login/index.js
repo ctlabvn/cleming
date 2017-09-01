@@ -85,10 +85,8 @@ export default class extends Component {
       (err, data) => {
         if (!err) {
           this.props.change('password', '')
-        } else {
-          this.setState({ loading: false })
         }
-
+        this.setState({ loading: false })
       }
     )
   }
