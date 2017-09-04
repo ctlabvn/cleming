@@ -174,7 +174,7 @@ export default class TransactionDetail extends Component {
         if (index <= 0) return
         index--
         let preTrans = transaction.listTransaction[index]
-        this.setState({ type: preTrans.tranType })
+        // this.setState({ type: preTrans.tranType })
         if (preTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
             this._load(preTrans.posOrderId, preTrans.tranType)
         }else{
