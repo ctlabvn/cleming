@@ -6,26 +6,26 @@ const deviceWidth = Dimensions.get('window').width
 
 export default class Navigator extends Component {
 
-  static propTypes = {       
+  static propTypes = {
     renderScene: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    initialRoute: PropTypes.object.isRequired,    
+    initialRoute: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
     // use scenes array because we will not cache too many
-    this.scenes = [this._renderScene(props.initialRoute)];    
-    this.routeStack = [props.initialRoute]    
+    this.scenes = [this._renderScene(props.initialRoute)];
+    this.routeStack = [props.initialRoute]
     this.presentedIndex = 0
-    this.blurIndex = -1    
+    this.blurIndex = -1
     // should be private, reference use map, stack use array
     this._sceneRefs = new Map()
-  }  
+  }
 
-  componentDidUpdate(){    
-    // must provide this one, after update we will move it smoothly    
+  componentDidUpdate(){
+    // must provide this one, after update we will move it smoothly
     this.props.transition(this.blurIndex, this.presentedIndex, this)
   }
 
@@ -39,64 +39,64 @@ export default class Navigator extends Component {
   }
 
   enable(index, enabled = true){
-    let scene = this.getScene(index)      
+    let scene = this.getScene(index)
     scene && scene.setNativeProps({pointerEvents: enabled ? 'auto' : 'none'})
   }
 
   freeze(index, freezed = true){
-    let scene = this.getScene(index)      
+    let scene = this.getScene(index)
     scene && scene.setNativeProps({
-      [Platform.OS === 'android' 
-        ? 'renderToHardwareTextureAndroid' 
+      [Platform.OS === 'android'
+        ? 'renderToHardwareTextureAndroid'
         : 'shouldRasterizeIOS'
       ]: freezed
     })
   }
 
   translate(index, translateX){
-    let scene = this.getScene(index)      
+    let scene = this.getScene(index)
     scene && scene.setNativeProps({
       style: {
         transform: [
           {translateX},
-        ],     
+        ],
       }
     })
   }
 
   transitionBetween(prevIndex, index, translateX, prefix = 1){
     this.translate(index, translateX)
-    this.translate(prevIndex, translateX - prefix * deviceWidth)    
+    this.translate(prevIndex, translateX - prefix * deviceWidth)
   }
 
-  navigate(route) {        
+  navigate(route) {
     let destIndex = this.routeStack.findIndex(item => item.routeName === route.routeName)
-    const oldRoute = this.routeStack[this.presentedIndex]    
+    const oldRoute = this.routeStack[this.presentedIndex]
     if(destIndex !== this.presentedIndex){
       this.blurIndex = this.presentedIndex
       let updated = 0
       if (destIndex === -1) {
-        destIndex = this.routeStack.length          
+        destIndex = this.routeStack.length
         this.routeStack.push(route)
         this.scenes.push(this._renderScene(route));
         updated = 1
-      }              
+      }
 
       if(oldRoute.cache){
-        this.presentedIndex = destIndex    
-        // blur as soon as possible    
+        this.presentedIndex = destIndex
+        // blur as soon as possible
         this.props.onBlur(oldRoute)
-      } else {                  
-        // remove route then re-get index        
-        this.routeStack.splice(this.blurIndex, 1)    
-        this._sceneRefs.delete(oldRoute.routeName) 
-        this.scenes.splice(this.blurIndex, 1)       
+      } else {
+        // remove route then re-get index
+        this.routeStack.splice(this.blurIndex, 1)
+        this._sceneRefs.delete(oldRoute.routeName)
+        this.scenes.splice(this.blurIndex, 1)
         // delete so we can re-render it later
-        // this._renderedSceneMap.delete(oldRoute.routeName)       
+        // this._renderedSceneMap.delete(oldRoute.routeName)
         this.blurIndex = -1
-        this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex                    
+        this.presentedIndex = destIndex > this.presentedIndex ? destIndex - 1 : destIndex
         // remove then update, so no blur needed
-        updated = 2 
+        updated = 2
       }
 
       if(updated > 0){
@@ -114,6 +114,18 @@ export default class Navigator extends Component {
     }
   }
 
+  resetTo = (routeName) => {
+    this.presentedIndex = 0
+    this.blurIndex = -1
+    let newRouteStack = this.routeStack.filter(item=>item.routeName==routeName)
+    this.routeStack = newRouteStack
+    let newScenes = this.scenes.filter(item=>item.key==routeName)
+    this.scenes = newScenes
+    let currentSceneRef = this._sceneRefs.get(routeName)
+    this._sceneRefs = new Map()
+    this._sceneRefs.set(routeName, currentSceneRef)
+  }
+
   _renderScene(route) {
     return (
       <View
@@ -121,7 +133,7 @@ export default class Navigator extends Component {
         key={route.routeName}
         ref={scene => this._sceneRefs.set(route.routeName, scene)}
         style={styles.scene}>
-        {this.props.renderScene(route)}  
+        {this.props.renderScene(route)}
       </View>
     );
   }
@@ -131,8 +143,7 @@ export default class Navigator extends Component {
       <View
         style={styles.container}>
         {this.scenes}
-      </View>        
+      </View>
     );
   }
 }
-

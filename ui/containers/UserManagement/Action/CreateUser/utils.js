@@ -203,6 +203,7 @@ export class RenderGroup extends Component {
               keyExtractor={item=>item.placeId}
               dataArray={this.props.place.listPlace}
               renderRow={(address, sectionID, rowID)=> this.renderRow(address, rowID)}
+              rowHasChanged={true}
           />
 
     )

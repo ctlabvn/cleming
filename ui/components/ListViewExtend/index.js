@@ -44,7 +44,15 @@ export default class ListViewExtend extends Component {
     this.scrollTop += this.up ? 1 : -1
     this.up = !this.up
     // console.log(scrollTop)
-    this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})
+    this.listview && this.listview.scrollTo({x:0, y:this.scrollTop, animated:true})
+  }
+
+  scrollTo(args) {
+    this.listview && this.listview.scrollTo(args);
+  }
+
+  scrollToEnd(args) {
+    this.listview && this.listview.scrollToEnd(args);
   }
 
   componentDidMount(){

@@ -9,7 +9,9 @@ import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants";
 import { formatNumber } from "~/ui/shared/utils";
 import moment from "moment";
 import styles from "./styles";
-
+import {
+    TIME_FORMAT_WITHOUT_SECOND
+} from "~/store/constants/app"
 
 export default class extends PureComponent {
 
@@ -45,7 +47,7 @@ export default class extends PureComponent {
             <View style={styles.listItemRow}>
               <View style={styles.subRow}>
                   <Text note style={styles.textGray}>{item.title} </Text>
-                  <Text small>{moment(item.paramLong2 * 1000).format('HH:mm   DD/M/YY')}</Text>
+                  <Text small>{moment(item.paramLong2 * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
                 </View>
               <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
@@ -59,9 +61,7 @@ export default class extends PureComponent {
           </Body>
         )
       case NOTIFY_TYPE.NEW_ORDER:
-        let fastDeliveryText = item.paramId3 ? <Text small style={{
-          color: material.red500,
-        }}>Giao nhanh {BASE_COUNTDOWN_ORDER_MINUTE}'</Text> : null
+        let fastDeliveryText = <Text small>{moment(item.paramLong2 * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
         return (
             <Body>
             <View style={styles.listItemRow}>
@@ -87,7 +87,10 @@ export default class extends PureComponent {
         return (
           <Body>
             <View style={styles.listItemRow}>
-              <Text note error>{item.title} </Text>
+              <View style={styles.subRow}>
+                <Text note error>{item.title}</Text>
+                <Text small>{moment(item.paramLong2 * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+              </View>
               <View style={styles.subRow}>
                 <Text bold style={styles.textGray}>{item.content}</Text>
                 <View style={styles.rowEnd}>
@@ -153,7 +156,7 @@ export default class extends PureComponent {
             <View style={styles.listItemRow}>
               <View style={styles.subRow}>
                 <Text note style={styles.textGray}>{item.title}</Text>
-                <Text small>{moment(item.paramLong2 * 1000).format('hh:mm   DD/M/YY')}</Text>
+                <Text small>{moment(item.paramLong2 * 1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
               </View>
 
               <View style={styles.subRow}>
@@ -194,7 +197,7 @@ export default class extends PureComponent {
 
     render(){
         const {item, onNotiClick} = this.props
-        
+
         return (
             <ListItem noBorder
               style={styles[item.isRead ? 'listItemContainerRead' : 'listItemContainer']}

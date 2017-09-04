@@ -4,9 +4,9 @@
 import React, { Component } from 'react'
 import {
   Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
-  Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
+  Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row, Text
 } from 'native-base'
-import { Text, Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
+import { Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -57,10 +57,15 @@ const formSelector = formValueSelector('CreateUserForm')
 })
 export default class CreateUserContainer extends Component {
   constructor(props) {
-
     console.log('step', 'constructor');
     // let selectedPlaceId = props.selectedPlace.id
     super(props)
+
+    const { employeeDetail } = props;
+
+    let fromTime = props.employeeDetail ? props.employeeDetail.fromTimeWork : '07:00';
+    let toTime = props.employeeDetail ? props.employeeDetail.toTimeWork : '20:00';
+
     let currentJob = {
       id: 1,
       name: I18n.t('employee')
@@ -71,8 +76,8 @@ export default class CreateUserContainer extends Component {
       permissionModalOpen: false,
       fromTimeVisible: false,
       toTimeVisible: false,
-      fromTime: props.initialValues.fromTimeWork || '07:00',
-      toTime: props.initialValues.toTimeWork || '20:00',
+      fromTime: fromTime,
+      toTime: toTime,
       checkAll: false,
       employeeDetail: {},
       rowIDOfEmployee: 0,
@@ -189,9 +194,7 @@ export default class CreateUserContainer extends Component {
   }
 
   onGeneratedPasswordPress() {
-
     this.props.actions.setToast(getToastMessage(I18n.t('is_processing')), 'info', null, null, 3000, 'top')
-
     this.props.actions.getGeneratedPassword(this.props.session, () => {
       this.setState({
         firstTimeResetPassword: true,
@@ -229,6 +232,7 @@ export default class CreateUserContainer extends Component {
 
   onSubmitUser = (data) => {
     // console.log(data)
+    const { employeeDetail } = this.props;
     const errRet = validateField(data)
     this.setState({
       errorForm: errRet,
@@ -243,13 +247,13 @@ export default class CreateUserContainer extends Component {
 
 
     if (errRet.name || errRet.phone || errRet.email) {
-      this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
+      // this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
       this._scrollPageUp()
       // return;
     } else if (!this.state.selectedPlaceId) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_address')), 'info', null, null, 3000, 'top')
-    } else if (this.props.generatedPassword.trim() == '' && typeof this.props.route.params.id == 'undefined') {
-      this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
+    } else if (this.props.generatedPassword.trim() == '' && !employeeDetail) {
+      // this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
       this._scrollPageDown();
     } else {
 
@@ -267,10 +271,14 @@ export default class CreateUserContainer extends Component {
         isLoading: true,
       })
 
-      if (typeof this.props.route.params.id == 'undefined') {
+        //panda
+        const {employeeDetail} = this.props;
+      // if ((this.props.route.params && this.props.route.params.id)) {
+          if (!employeeDetail) {
         userInfo.password = this.props.generatedPassword
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
-          this.getListEmployeeAfterSuccess(error)
+            this.getListEmployeeAfterSuccess(error)
+            this.setState({isLoading: false})
         })
       } else {
         if (this.props.generatedPassword) {
@@ -278,7 +286,8 @@ export default class CreateUserContainer extends Component {
         }
         userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
-          this.getListEmployeeAfterSuccess(error)
+            this.getListEmployeeAfterSuccess(error)
+            this.setState({isLoading: false})
         })
       }
     }
@@ -342,18 +351,30 @@ export default class CreateUserContainer extends Component {
     }
 
     let passwordText = null
-    if (typeof this.props.route.params.id == 'undefined') {
-      if (this.props.generatedPassword == '') {
-        passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
-      } else {
-        passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
-      }
-    } else if (this.state.firstTimeResetPassword) {
-      passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
-    } else {
-      passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
-    }
 
+      const { employeeDetail } = this.props;
+
+      if (this.state.firstTimeResetPassword) {
+          passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+      } else if (employeeDetail) {
+          passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
+      } else {
+          passwordText = <Text medium warning>{I18n.t('need_create_password')}</Text>
+      }
+
+    // if (this.props.route.params && this.props.route.params.id) {
+    //   if (this.props.generatedPassword == '') {
+    //     passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
+    //   } else {
+    //     passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+    //   }
+    // } else if (this.state.firstTimeResetPassword) {
+    //   passwordText = <Text style={styles.passwordText}>{this.props.generatedPassword}</Text>
+    // } else {
+    //   passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
+    // }
+
+    this.passwordText = passwordText;
     const firstItem = (
       <View>      
         <RenderTextField label={I18n.t('full_name')} name="name" errorStyle={errorNameStyle} />
@@ -445,13 +466,13 @@ export default class CreateUserContainer extends Component {
       </View>
     )
 
-    return (            
+    return (
         <RenderGroup
           firstItem={firstItem}
           onReady={ref => this.placeDropdown = ref}
           selectedPlaceId={this.state.selectedPlaceId}
           lastItem={lastItem}
-        />              
+        />
     )
   }
 
@@ -469,12 +490,9 @@ export default class CreateUserContainer extends Component {
     const [hour, minute] = this.state.fromTime.split(":")
     const [hour1, minute1] = this.state.toTime.split(":")
 
-
     return (
       <Container style={styles.container}>              
-        
-        {this.renderMainContainer()}        
-        
+        {this.renderMainContainer()}
         <Button
           onPress={handleSubmit(this.onSubmitUser)}
           style={{ ...styles.submitButton }}>
@@ -504,9 +522,10 @@ export default class CreateUserContainer extends Component {
         <Modal
           onCloseClick={() => { }}
           open={this.state.isLoading}>
-          <View style={styles.preload}>
-            <Text>Please waiting...</Text>
-          </View>
+          <Spinner/>
+          {/*<View style={styles.preload}>*/}
+            {/*<Text>Đang xử lý...</Text>*/}
+          {/*</View>*/}
         </Modal>
 
       </Container>

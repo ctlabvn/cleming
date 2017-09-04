@@ -249,7 +249,7 @@ class UserManagement extends Component {
     }
 
     onCreateUserPress() {
-        const {forwardTo} = this.props
+        const {forwardTo, user} = this.props
         this.props.setEmployee(null)
         forwardTo('userManagement/action/createUser')
     }
@@ -283,7 +283,6 @@ class UserManagement extends Component {
 
     render() {
         const {selectedPlace, user, listEmployee} = this.props
-
         if (!listEmployee) {
             return null
         }
@@ -295,7 +294,7 @@ class UserManagement extends Component {
                         style={styles.ownerButton}>
                         <OwnerCard data={user}/>
                     </Button>
-                    {this.renderBlueLineBelowOwner()}
+                    {listEmployee.length > 0 && this.renderBlueLineBelowOwner()}
                     {listEmployee.map((item, index)=>this.renderEmployeeRow(item, index))}
                 </Content>
                 <Modal onCloseClick={e => this.setState({modalOpen: false})} open={this.state.modalOpen}>

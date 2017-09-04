@@ -40,8 +40,8 @@ export default {
     'transaction_complain': 'Khiếu nại',
     'confirm_2': 'Duyệt',
     'method_pay_direct': 'Thanh toán trực tiếp',
-    'transaction_type_clingme': 'Trả qua Clingme',
-    'transaction_type_direct': 'Trả trực tiếp',
+    'transaction_type_clingme': 'Clingme đã thu',
+    'transaction_type_direct': 'Đối tác đã thu',
     'total_pay': 'Tổng tiền thanh toán',
     'order_number': 'Số đơn hàng',
     'help': 'Trợ giúp',
@@ -143,6 +143,7 @@ export default {
     'ok': 'Đồng ý',
     'cancel': 'Bỏ qua',
     'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
+    'create_account_successed': 'Tạo tài khoản thành công!',
 
     // Change Password In App
     'password_modifier_hint': 'Đây là mục đổi mật khẩu cá nhân\nBạn có thể thay đổi mật khẩu riêng để bảo mật.',

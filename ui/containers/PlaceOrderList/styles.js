@@ -23,7 +23,7 @@ export default {
         alignItems: 'center'
     },
     row: {
-        flexDirection: 'row',        
+        flexDirection: 'row',
         justifyContent: 'space-between',
     },
     rowCenter: {
@@ -121,10 +121,24 @@ export default {
         backgroundColor: material.white500,
         borderRadius: 3,
         marginBottom: 10,
-        height: 190
+        height: 160
+    },
+    listItemPlus: {
+        flexDirection: 'column',
+        width: '100%',
+        paddingRight: 0,
+        paddingBottom: 0,
+        marginLeft: 0,
+        marginRight: 0,
+        borderBottomWidth: 0,
+        paddingTop: 0,
+        backgroundColor: material.white500,
+        borderRadius: 3,
+        marginBottom: 10,
+        height: 180
     },
     listItemGray: {
-        backgroundColor: material.gray400 
+        backgroundColor: material.gray300
     },
     listButton: {
       backgroundColor: material.white500,
@@ -141,5 +155,5 @@ export default {
       paddingBottom: 0,
       shadowOpacity: 0
     },
-  
+
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Platform } from 'react-native'
 import { connect } from 'react-redux'
-import { Content,Text, List, ListItem, 
+import { Content,Text, List, ListItem,
   Container, Left, Right, Badge, Button, View, StyleProvider, getTheme, variables,
   Spinner, Thumbnail,
 } from 'native-base'
@@ -20,7 +20,7 @@ import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
-import {  
+import {
   API_BASE
 } from '~/store/constants/api'
 import I18n from '~/ui/I18n'
@@ -30,19 +30,20 @@ import I18n from '~/ui/I18n'
   user: authSelectors.getUser(state),
   pushToken: authSelectors.gePushToken(state),
 }), {...authActions, ...commonActions})
-export default class extends Component {  
+export default class extends Component {
 
-  _handleLogout = (e) => {    
-    const { closeDrawer, setAuthState, forwardTo, removeLoggedUser, session, logout } = this.props
+  _handleLogout = (e) => {
+    const { closeDrawer, setAuthState, forwardTo, resetTo, removeLoggedUser, session, logout } = this.props
     closeDrawer()
     removeLoggedUser()
-    setAuthState(false)        
-    forwardTo('login', true)
-     const { pushToken } = this.props
+    setAuthState(false)
+    // forwardTo('login', true)
+    resetTo('login')
+    const { pushToken } = this.props
     let xDevice = Platform.OS.toUpperCase() + '_' + pushToken
     let xUniqueDevice = md5(Platform.OS + '_' + DeviceInfo.getUniqueID())
     console.log('Logout', xDevice+'---'+xUniqueDevice)
-    logout(session, xDevice, xUniqueDevice)       
+    logout(session, xDevice, xUniqueDevice)
   }
 
   navigateTo(route) {
@@ -61,23 +62,23 @@ export default class extends Component {
 
   render() {
     const {user} = this.props
-    return (      
+    return (
 
-      <View style={styles.container}>    
-          <View row style={styles.drawerCover}> 
+      <View style={styles.container}>
+          <View row style={styles.drawerCover}>
             <Text bold style={styles.text}>Menu</Text>
              <Button onPress={this.props.closeDrawer} transparent style={styles.buttonClose}>
               <Icon name="close" style={styles.buttonIconClose} />
             </Button>
           </View>
-        <Content bounces={false}>                  
+        <Content bounces={false}>
           {options.listItems.map((item, index) => {
             if (!item.masterOnly || (item.masterOnly && user && user.accTitle == 1 )){
               return <ListItem style={styles.listItemContainer} key={index} button noBorder onPress={e => this.navigateTo(item.route)} >
                 <Left>
                   <Icon name={item.icon} style={styles.iconStyle} />
                   <Text style={styles.iconText}>{item.name}</Text>
-                </Left>                
+                </Left>
               </ListItem>
             }
           })}
@@ -85,11 +86,11 @@ export default class extends Component {
             <Left>
               <Icon name='sign_out' style={styles.iconStyle} />
               <Text style={styles.iconText}>{I18n.t('logout')}</Text>
-            </Left>                
-          </ListItem>          
+            </Left>
+          </ListItem>
         </Content>
         </View>
-      
+
     );
   }
 }

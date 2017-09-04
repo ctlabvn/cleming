@@ -10,7 +10,7 @@ import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
 import * as orderActions from "~/store/actions/order";
-import { getSession } from "~/store/selectors/auth";
+import { getSession, getUser } from "~/store/selectors/auth";
 import { storeFilled, storeTransparent } from "~/assets";
 import PopupPhotoView from "~/ui/components/PopupPhotoView";
 import FeedbackDialog from "./FeedbackDialog";
@@ -38,6 +38,7 @@ import CallModal from "~/ui/components/CallModal"
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
+    user: getUser(state),
     denyReason: state.transaction.denyReason,
     denyReasonClm: state.transaction.denyReasonClm
 }), { ...transactionActions, ...commonActions, ...notificationActions, ...metaAction, ...orderActions })
@@ -173,7 +174,7 @@ export default class TransactionDetail extends Component {
         if (index <= 0) return
         index--
         let preTrans = transaction.listTransaction[index]
-        this.setState({ type: preTrans.tranType })
+        // this.setState({ type: preTrans.tranType })
         if (preTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
             this._load(preTrans.posOrderId, preTrans.tranType)
         }else{
@@ -229,32 +230,17 @@ export default class TransactionDetail extends Component {
     }
 
     renderClingme(transactionInfo){
+        const {user} = this.props
         let payStatus, helpBtn = null
         const {goBack} = this.props
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
         if (transactionInfo.viewNumber == 0){
           helpBtn =
-              <View style={styles.rowPaddingFull}>
-                  <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                      <View style={styles.round20}>
-                          <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                      </View>
-                      <Text medium primary>{I18n.t('help')}</Text>
-                  </Button>
-                  <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
+              <View style={styles.rowCenter}>
+                  <Button primary style={{...styles.backgroundPrimary}}
                     onPress={()=>goBack()}
                   >
                       <Text medium white>{I18n.t('close')}</Text>
-                  </Button>
-              </View>
-        }else{
-          helpBtn =
-              <View style={styles.rowCenter}>
-                  <Button transparent style={styles.feedbackClmTransactionBorder} onPress={() => this._showReasonPopupClingme()}>
-                      <View style={styles.round20}>
-                          <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                      </View>
-                      <Text medium primary>{I18n.t('help')}</Text>
                   </Button>
               </View>
         }
@@ -302,10 +288,11 @@ export default class TransactionDetail extends Component {
                         <Text giant bold>{formatNumber(transactionInfo.moneyAmount)}</Text>
                         {payStatus}
                     </View>
-                    <View style={styles.blockCenter}>
+                    {(user.accTitle == 1) && <View style={styles.blockCenter}>
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
-                    </View>
+                    </View>}
+                    {(user.accTitle != 1) && <View style={{width: '100%', height: 100}} />}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
@@ -325,6 +312,28 @@ export default class TransactionDetail extends Component {
     }
 
     renderDirect(transactionInfo){
+        const {user} = this.props
+        let moneyBlock
+        if (user.accTitle == 1 && transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT){
+            moneyBlock = <View style={styles.rowSpaceAround}>
+                <View style={styles.gridItem}>
+                    <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
+                    <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
+                </View>
+                <View style={styles.gridItem}>
+                    <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
+                    <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
+                </View>
+            </View>
+        }else if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT){
+            moneyBlock = <View style={styles.rowSpaceAround}>
+                <View style={styles.gridItem}>
+                    <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
+                    <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
+                </View>
+            </View>
+        }
+
         return (
             <Content ref='content' refreshing={true}>
                 <FeedbackDialog ref='feedbackDialog' listValue={this.props.denyReason}
@@ -391,32 +400,7 @@ export default class TransactionDetail extends Component {
                         </View>
                     }
                     <View style={styles.borderBlock}>
-
-                        {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                            <View style={styles.invoiceDetailBlock}>
-                                <View style={styles.rowSpaceAround}>
-                                    <View style={styles.gridItem}>
-                                        <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
-                                        <Text style={styles.labelInfo}>{I18n.t('bill_money')}</Text>
-                                    </View>
-                                    {/* <View style={styles.gridItem}>
-                                        <Text warning style={styles.textInfo}>-{transactionInfo.salePercent}%</Text>
-                                        <Text style={styles.labelInfo}>{I18n.t('discount')}</Text>
-                                    </View> */}
-                                </View>
-                                <View style={styles.rowSpaceAround}>
-                                    {/*<View style={styles.gridItem}>*/}
-
-                                        {/*<Text success style={styles.textInfo}>{formatNumber(transactionInfo.cashbackMoney)}đ</Text>*/}
-                                        {/*<Text style={styles.labelInfo}>{I18n.t('cashback_money')}</Text>*/}
-                                    {/*</View>*/}
-                                    <View style={styles.gridItem}>
-                                        <Text primary style={styles.textInfo}>{formatNumber(transactionInfo.clingmeCost)}đ</Text>
-                                        <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        }
+                        {moneyBlock}
                         <View style={{ width: '100%', backgroundColor: material.gray300, justifyContent: 'center' }}>
                             <TouchableWithoutFeedback onPress={() => {
                                 this.refs.popupPhotoView.setImage(transactionInfo.invoidImage)
@@ -531,6 +515,7 @@ export default class TransactionDetail extends Component {
                         )
                         }>
                     </List>
+                    <View style={styles.line} />
                     <View style={{paddingBottom: 50}}>
                         <View style={styles.rowPadding}>
                             <Text medium bold grayDark>{I18n.t('money')}:</Text>

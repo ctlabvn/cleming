@@ -7,8 +7,9 @@ import {
     Grid, Col, Row, Text
 } from 'native-base'
 import CacheableImage from '~/ui/components/CacheableImage'
-
+import Icon from '~/ui/elements/Icon'
 import styles from '../../styles'
+import material from '~/theme/variables/material.js'
 
 export default class OwnerCard extends Component {
     render() {
@@ -16,7 +17,9 @@ export default class OwnerCard extends Component {
         return (
             <Grid>
                 <Col style={{width: '20%', justifyContent: 'center', alignItems: 'center'}}>
-                    <Image style={styles.avatar} source={{uri: data.avatar}} />
+                    {data.avatar ? <Image style={styles.avatar} source={{uri: data.avatar}}/>
+                    : <Icon name="account" style={styles.icon} />}
+
                 </Col>
                 <Col style={{ width: '80%'}}>
                     <Row style={{ height: '50%', alignItems: 'flex-end'}}>
