@@ -55,11 +55,11 @@ export default {
         //     icon: 'email-symbol',
         // },
 
-        {
-            name: 'Trợ giúp',
-            route: 'help',
-            icon: 'help',
-        },
+        // {
+        //     name: 'Trợ giúp',
+        //     route: 'help',
+        //     icon: 'help',
+        // },
 
         {
             name: I18n.t('about'),
