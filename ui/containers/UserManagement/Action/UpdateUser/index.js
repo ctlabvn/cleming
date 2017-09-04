@@ -183,10 +183,13 @@ export default class UpdateUserContainer extends Component {
                 <Content style={{backgroundColor: material.white500}}>
                     <View style={{paddingLeft: 15, paddingRight: 15}}>
                         <View style={styles.avatarContainer}>
-                            <Image
-                              style={styles.avatar}
-                              placeholder={<Icon name="image" style={{width: 120, height: 120}} />}
-                              source={{uri: this.props.user.avatar}} />
+                            {this.props.user.avatar ?
+                                <Image
+                                    style={styles.avatar}
+                                    placeholder={<Icon name="image" style={{width: 120, height: 120}}/>}
+                                    source={{uri: this.props.user.avatar}}/>
+                                : <Icon name="account" style={styles.icon} />
+                            }
                             {
                             // <PhotoChooser style={styles.photoIcon} onSuccess={this.handleChoosePhoto}/>  
                             }

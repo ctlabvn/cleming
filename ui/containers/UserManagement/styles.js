@@ -40,6 +40,13 @@ export default {
         height: 40,
         borderRadius: 20
     },
+    icon: {
+        width: 40,
+        height: 40,
+        fontSize: 40,
+        color: material.gray300,
+        borderRadius: 20
+    },
     nameText: {
         fontWeight: '900',
         color: material.gray500
