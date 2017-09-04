@@ -60,7 +60,8 @@ export default class extends Component {
       passwordSelection: { start: 0, end: 0 },
       loading: false
     }
-
+    console.log('Login Constructor')
+    this.unmounted = false
 
   }
 
@@ -86,9 +87,13 @@ export default class extends Component {
         if (!err) {
           this.props.change('password', '')
         }
-        this.setState({ loading: false })
+        if (!this.unmounted) this.setState({ loading: false })
       }
     )
+  }
+
+  componentWillUnmount(){
+      this.unmounted = true
   }
 
   _handleForgot = ({ forgotEmail }) => {
@@ -108,11 +113,15 @@ export default class extends Component {
   }
 
   _handleShowHome = (e) => {
+    const { updateFirstTimeLogin } = this.props
     this._resetFirstTimeChangePasswordForm()
     this._handleShowLogin(e)
     this.setState({ emailFocus: false, passwordFocus: false })
     Keyboard.dismiss()
-    setTimeout(() => this.props.forwardTo('merchantOverview', true), 500)
+    setTimeout(() => {
+      updateFirstTimeLogin()
+      this.props.forwardTo('merchantOverview', true)
+    }, 500)
   }
 
   _handleShowLogin = (e) => {
@@ -186,11 +195,13 @@ export default class extends Component {
     this.props.changePassword(this.props.session, data,
       (err, dataR) => {
         if (dataR && dataR.updated && dataR.updated.isSent) {
-          updateFirstTimeLogin()
           this._handleShowLoginWithoutFocus()
           this._resetFirstTimeChangePasswordForm()
           console.log('Process Change Password')
-          setTimeout(() => forwardTo('merchantOverview', true), 500)
+          setTimeout(() => {
+            forwardTo('merchantOverview', true)
+            updateFirstTimeLogin()
+          }, 500)
         }
       }
     )
