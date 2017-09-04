@@ -44,6 +44,12 @@ export default {
       // backgroundColor: material.gray300,
       borderRadius: 60,
     },
+    icon: {
+        width: 120,
+        height: 120,
+        fontSize: 120,
+        color: material.gray300
+    },
     changePasswordText: {
       color: material.blue400,
       alignSelf: 'center'
