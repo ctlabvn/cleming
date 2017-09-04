@@ -4,9 +4,9 @@
 import React, { Component } from 'react'
 import {
   Button, List, ListItem, Switch, Spinner, CheckBox, Picker,
-  Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row
+  Container, Item, Input, Left, Body, Right, View, Content, Grid, Col, Row, Text
 } from 'native-base'
-import { Text, Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
+import { Dimensions, Clipboard, Keyboard, ScrollView } from 'react-native'
 import { Field, FieldArray, reduxForm, formValueSelector, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -194,9 +194,7 @@ export default class CreateUserContainer extends Component {
   }
 
   onGeneratedPasswordPress() {
-
     this.props.actions.setToast(getToastMessage(I18n.t('is_processing')), 'info', null, null, 3000, 'top')
-
     this.props.actions.getGeneratedPassword(this.props.session, () => {
       this.setState({
         firstTimeResetPassword: true,
@@ -249,13 +247,13 @@ export default class CreateUserContainer extends Component {
 
 
     if (errRet.name || errRet.phone || errRet.email) {
-      this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
+      // this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
       this._scrollPageUp()
       // return;
     } else if (!this.state.selectedPlaceId) {
       this.props.actions.setToast(getToastMessage(I18n.t('err_need_address')), 'info', null, null, 3000, 'top')
     } else if (this.props.generatedPassword.trim() == '' && !employeeDetail) {
-      this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
+      // this.props.actions.setToast(getToastMessage(I18n.t('err_need_create_password')), 'info', null, null, 3000, 'top')
       this._scrollPageDown();
     } else {
 
@@ -359,7 +357,7 @@ export default class CreateUserContainer extends Component {
       } else if (employeeDetail) {
           passwordText = <Text style={styles.passwordText}>{'*****'}</Text>
       } else {
-          passwordText = <Text style={styles.passwordTextWarning}>{I18n.t('need_create_password')}</Text>
+          passwordText = <Text medium warning>{I18n.t('need_create_password')}</Text>
       }
 
     // if (this.props.route.params && this.props.route.params.id) {
@@ -522,9 +520,10 @@ export default class CreateUserContainer extends Component {
         <Modal
           onCloseClick={() => { }}
           open={this.state.isLoading}>
-          <View style={styles.preload}>
-            <Text>Đang xử lý...</Text>
-          </View>
+          <Spinner/>
+          {/*<View style={styles.preload}>*/}
+            {/*<Text>Đang xử lý...</Text>*/}
+          {/*</View>*/}
         </Modal>
 
       </Container>
