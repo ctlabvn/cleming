@@ -125,7 +125,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   request: api.account.createEmployeeInfo,
   key: 'createEmployeeInfo',
   success: [
-      () => showPopupInfo('Tạo tài khoản thành công'),
+      () => setToast(getToastMessage(I18n.t('create_account_successed')), 'info', null, null, 3000, 'top'),
   ],
   failure: [
     (error) => {

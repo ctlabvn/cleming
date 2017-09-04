@@ -277,7 +277,8 @@ export default class CreateUserContainer extends Component {
           if (!employeeDetail) {
         userInfo.password = this.props.generatedPassword
         this.props.actions.createEmployeeInfo(this.props.session, userInfo, (error, data) => {
-          this.getListEmployeeAfterSuccess(error)
+            this.getListEmployeeAfterSuccess(error)
+            this.setState({isLoading: false})
         })
       } else {
         if (this.props.generatedPassword) {
@@ -285,7 +286,8 @@ export default class CreateUserContainer extends Component {
         }
         userInfo.bizAccountId = this.props.employeeDetail.bizAccountId
         this.props.actions.updateEmployeeInfo(this.props.session, userInfo, (error, data) => {
-          this.getListEmployeeAfterSuccess(error)
+            this.getListEmployeeAfterSuccess(error)
+            this.setState({isLoading: false})
         })
       }
     }

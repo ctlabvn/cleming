@@ -143,6 +143,7 @@ export default {
     'ok': 'Đồng ý',
     'cancel': 'Bỏ qua',
     'remove_account_from_list':'Xoá tài khoản khỏi danh sách',
+    'create_account_successed': 'Tạo tài khoản thành công!',
 
     // Change Password In App
     'password_modifier_hint': 'Đây là mục đổi mật khẩu cá nhân\nBạn có thể thay đổi mật khẩu riêng để bảo mật.',
