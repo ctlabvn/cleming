@@ -191,6 +191,7 @@ export default {
     'err_not_master': 'Mời bạn liên hệ chủ cửa hàng để nhận lại mật khẩu đăng nhập.',
     'err_phone_exists': 'Số điện thoại đã tồn tại.',
     'err_email_exists': 'Địa chỉ email đã tồn tại.',
+    'email_is_used': 'Địa chỉ email đã được sử dụng.',
 
     'err_field_must_not_empty': 'Trường này không được để trống.',
     'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
