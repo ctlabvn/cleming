@@ -210,6 +210,7 @@ export default {
     'create_password_failed' : 'Tạo mật khẩu không thành công.',
     'create_password_successfully' : 'Tạo mật khẩu thành công.',
     'is_processing' : 'Đang xử lý.',
+    'invalid_input_data' : 'Dữ liệu không hợp lệ.',
 
     // vault
 
