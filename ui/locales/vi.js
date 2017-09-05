@@ -196,7 +196,7 @@ export default {
     'err_field_must_not_empty': 'Trường này không được để trống.',
     'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
     'err_identity_card_must_be_number': 'Sai định dạng Số CMND/Căn cước.',
-    
+
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
@@ -289,5 +289,13 @@ export default {
     'all_places': 'Tất cả địa điểm',
 
     // Transaction History
-    'transaction_history': 'Lịch sử giao dịch'
+    'transaction_history': 'Lịch sử giao dịch',
+
+    // Deal Manager
+    'page_deal_manager': 'Chương trình khuyến mãi',
+    'approach': 'Tiếp cận',
+    'find_out': 'Tìm hiểu',
+    'buy': 'Mua',
+
+
 }

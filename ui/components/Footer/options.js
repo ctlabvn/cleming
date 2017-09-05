@@ -1,3 +1,3 @@
-export default { 
-  footerIcons: ['fbtn-01','transaction','nearby','fbtn-04']
+export default {
+  footerIcons: ['fbtn-01','deal_mark','nearby','fbtn-04']
 }

@@ -36,6 +36,7 @@ import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
 import WithdrawDetail from './containers/WithdrawDetail'
 import CheckingHistory from './containers/CheckingHistory'
+import DealManager from './containers/DealManager'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -61,7 +62,6 @@ export default {
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
-        tabIndex: 1,
         cache: true,
     },
     transactionDetail: {
@@ -81,7 +81,6 @@ export default {
         Page: DeliveryList,
         headerType: 'home',
         showTopDropdown: true,
-        tabIndex: 1,
         cache: true,
     },
     deliveryDetail: {
@@ -95,7 +94,6 @@ export default {
         Page: PlaceOrderList,
         headerType: 'home',
         showTopDropdown: true,
-        tabIndex: 1,
         cache: true,
     },
     placeOrderDetail: {
@@ -250,5 +248,12 @@ export default {
         Page: CheckingHistory,
         headerType: 'back',
         footerType: 'none',
+    },
+    dealManager: {
+      title: I18n.t('page_deal_manager'),
+      Page: DealManager,
+      showTopDropdown: true,
+      tabIndex: 1,
+      cache: true,
     }
 }
