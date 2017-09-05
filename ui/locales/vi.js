@@ -283,6 +283,12 @@ export default {
 
     // Checking
     'checking': 'Đối soát',
+    'total_revenue': 'Tổng doanh thu \n phát sinh',
+    'total_money_merchant_get': 'Tổng tiền Đối tác đã thu:',
+    'total_money_clingme_get': 'Tổng tiền Clingme đã thu:',
+    'merchant_get_money_from_clingme': 'Đối tác nhận lại \n từ Clingme',
+    'clingme_get_money_from_merchant': 'Clingme nhận lại \n từ Đối tác',
+    'clingme_pay': 'Thanh toán Clingme',
 
     // Cashout
     'cashout_account': 'Tài khoản cashout',

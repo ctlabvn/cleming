@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Text, List, ListItem, Spinner, View, Button} from 'native-base'
+import {Container, Text, List, Spinner, View, Button} from 'native-base'
 import {TouchableHighlight} from 'react-native'
 import I18n from '~/ui/I18n'
 import styles from './styles'
@@ -59,20 +59,7 @@ export default class extends Component {
         forwardTo('transactionHistory');
     }
 
-    _renderMoneyBand(money) {
-        var moneyNumber;
-        return (
-            <View style={styles.moneyBand}>
-                <View>
-                    <Text largeLight bold grayDark>Doanh thu</Text>
-                    <Text green>(Đã đối soát)</Text>
-                </View>
-                <Text large green>
-                    <Text large superBold orange>{formatNumber(money)}</Text> đ
-                </Text>
-            </View>
-        )
-    }
+
 
     _load(fromTime, toTime) {
         const {xsession, getCheckingDetail} = this.props;
@@ -94,6 +81,11 @@ export default class extends Component {
     render() {
         const {data} = this.props;
         const detail = data;
+        const clmTotalMoneySubCharge = parseInt(detail.clmTotalMoney) - parseInt(detail.charge)
+        const clmTotalMoneySubChargeTextStyle = clmTotalMoneySubCharge > 0 ? styles.textTitle : styles.textTitleBlur;
+
+        const chargeSubClmTotalMoney = (parseInt(detail.charge) - parseInt(detail.clmTotalMoney))
+        const chargeSubClmTotalMoneyTextStyle = chargeSubClmTotalMoney > 0 ? styles.textTitle : styles.textTitleBlur;
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
@@ -104,76 +96,77 @@ export default class extends Component {
                     type='lite-round'
                     onPressFilter={data => this._handlePressFilter(data)}
                     ref='dateFilter'/>
-                {this._renderMoneyBand(detail.revenue)}
+
                 <Content
                     padder
                     style={styles.content}
                     onRefresh={() => this._onRefresh()}>
-                    <View row style={styles.moneyTitle}>
-                        <Text strong bold grayDark>
-                            Doanh thu
-                        </Text>
-                        <View row>
-                            <Text strong bold grayDark orange
-                                  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
-                            <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
-                                  onPress={() => this._handlePressSumRevenue()}/>
+
+                    <View>
+                        <Text strong bold green style={styles.title}>{I18n.t('checked')}</Text>
+                        <Border/>
+                        <View row style={styles.moneyTitle}>
+                            <Text largeLight bold grayDark>{I18n.t('total_revenue')}</Text>
+                            <View row>
+                                <Text large bold grayDark orange
+                                      onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
+                                <Icon name='foward' style={styles.icon}
+                                      onPress={() => this._handlePressSumRevenue()}/>
+                            </View>
                         </View>
                     </View>
 
                     <View style={{marginRight: 20}}>
                         <View row style={styles.moneyContent}>
-                            <Text medium grayDark>Tổng tiền Đối tác đã thu:</Text>
+                            <Text medium grayDark>{I18n.t('total_money_merchant_get')}</Text>
                             <Text medium bold grayDark>{formatNumber(detail.mcTotalMoney)}</Text>
                         </View>
                         <View row style={styles.moneyContent}>
-                            <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
+                            <Text medium grayDark>{I18n.t('total_money_clingme_get')}</Text>
                             <Text medium bold grayDark>{formatNumber(detail.clmTotalMoney)}</Text>
                         </View>
                     </View>
 
-                    <View row style={styles.moneyTitle}>
-                        <Text strong bold grayDark>
-                            Phí Clingme
-                        </Text>
-                        <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark orange>{formatNumber(detail.charge)}</Text>
-                        </View>
-                    </View>
-
+                    <Border style={styles.marginTop}/>
 
                     <View row style={styles.moneyTitle}>
                         <Text strong bold grayDark>
-                            Đối soát
+                            {I18n.t('clingme_fee')}
                         </Text>
-                        <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark
-                                  orange>{formatNumber(parseInt(detail.clmTotalMoney) - parseInt(detail.charge))}</Text>
+                        <View row>
+                            <Text strong bold grayDark orange  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.charge)}</Text>
+                            <Icon name='foward' style={styles.icon}
+                                  onPress={() => this._handlePressSumRevenue()}/>
                         </View>
                     </View>
 
-                    <Text medium bold grayDark> Merchant nhận lại từ Clingme </Text>
-                    <View row style={{justifyContent: 'center'}}>
-                        <Text medium bold grayDark
-                              style={{marginHorizontal: 5, alignSelf: 'flex-start'}}>=</Text>
-                        <View style={{alignItems: 'center'}}>
-                            <Text medium grayDark>Tổng tiền Clingme đã thu</Text>
-                            <Text medium bold grayDark>({formatNumber(detail.clmTotalMoney)})</Text>
-                        </View>
-                        <Text medium bold grayDark
-                              style={{marginHorizontal: 2, alignSelf: 'flex-start'}}>-</Text>
-                        <View style={{alignItems: 'center'}}>
-                            <Text medium grayDark>Phí Clingme đã thu</Text>
-                            <Text medium bold grayDark>({formatNumber(detail.charge)})</Text>
-                        </View>
+                    <Border/>
 
+                    <View row style={styles.moneyTitle}>
+                        <Text largeLight bold grayDark style={clmTotalMoneySubChargeTextStyle}>
+                            {I18n.t('merchant_get_money_from_clingme')}
+                        </Text>
+                        <View row style={styles.moneyNoIcon}>
+                            {clmTotalMoneySubCharge > 0
+                            && <Text large bold grayDark orange>{formatNumber(clmTotalMoneySubCharge)}</Text>}
+                        </View>
+                    </View>
+
+                    <View row style={styles.moneyTitle}>
+                        <Text largeLight bold style={chargeSubClmTotalMoneyTextStyle}>
+                            {I18n.t('clingme_get_money_from_merchant')}
+                        </Text>
+                        <View row style={styles.moneyNoIcon}>
+                            {chargeSubClmTotalMoney > 0
+                            && <Text large bold grayDark orange>{formatNumber(chargeSubClmTotalMoney)}</Text>}
+                        </View>
                     </View>
 
                 </Content>
-                <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}}/>
+                <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/>
                 <View style={styles.fixButtonBlock}>
-                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>Thanh toán Clingme</Text>
-                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>Tài khoản Cashout</Text>
+                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>{I18n.t('clingme_pay')}</Text>
+                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>{I18n.t('cashout_account')}</Text>
                 </View>
             </Container>
         )
