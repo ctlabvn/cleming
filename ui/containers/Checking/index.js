@@ -123,7 +123,7 @@ export default class extends Component {
 
                     <View style={{marginRight: 20}}>
                         <View row style={styles.moneyContent}>
-                            <Text medium grayDark>Tổng tiền Merchant đã thu:</Text>
+                            <Text medium grayDark>Tổng tiền Đối tác đã thu:</Text>
                             <Text medium bold grayDark>{formatNumber(detail.mcTotalMoney)}</Text>
                         </View>
                         <View row style={styles.moneyContent}>

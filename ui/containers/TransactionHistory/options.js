@@ -6,7 +6,7 @@ export default {
     tabData: [
         {
             tabID: MERCHANT_COLLECTED,
-            text: '[Merchant] đã thu',
+            text: 'Đối tác đã thu',
         },
         {
             tabID: CLINGME_COLLECTED,

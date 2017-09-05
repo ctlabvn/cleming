@@ -149,7 +149,7 @@ export default class extends Component {
 
         let moneyTitle;
         if (this.state.currentTab == MERCHANT_COLLECTED) {
-            moneyTitle = 'Tổng tiền [Merchant] đã thu'
+            moneyTitle = 'Tổng tiền Đối tác đã thu'
         } else {
             moneyTitle = 'Tổng tiền Clingme đã thu'
         }
