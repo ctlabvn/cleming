@@ -236,12 +236,29 @@ export default class TransactionDetail extends Component {
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
         if (transactionInfo.viewNumber == 0){
           helpBtn =
-              <View style={styles.rowCenter}>
+              <View style={styles.rowPaddingFull}>
+                <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                   <View style={styles.round20}>
+                       <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                   </View>
+                   <Text medium primary>{I18n.t('help')}</Text>
+                </Button>
+
                   <Button primary style={{...styles.backgroundPrimary}}
                     onPress={()=>goBack()}
                   >
                       <Text medium white>{I18n.t('close')}</Text>
                   </Button>
+              </View>
+        }else{
+          helpBtn =
+              <View style={styles.rowCenter}>
+                <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                   <View style={styles.round20}>
+                       <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                   </View>
+                   <Text medium primary>{I18n.t('help')}</Text>
+               </Button>
               </View>
         }
 
