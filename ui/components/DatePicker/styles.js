@@ -1,3 +1,4 @@
+import material from '~/theme/variables/material.js'
 export default {
   dateTouch: {},
   dateTouchBody: {
@@ -8,6 +9,7 @@ export default {
   },
   dateIcon: {
     paddingRight:0,
+    color: material.gray400
   },
   dateInput: {},
   dateText: {

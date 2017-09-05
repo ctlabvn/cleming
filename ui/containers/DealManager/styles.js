@@ -1,10 +1,19 @@
 import material from '~/theme/variables/material.js'
+import {Platform} from 'react-native'
 export default {
   container: {
-    backgroundColor: material.backgroundColor1
+    backgroundColor: material.backgroundColor1,
+  },
+  subContainer: {
+    padding: 10
   },
   bgWhite: {
     backgroundColor: 'white'
+  },
+  cardBlock: {
+    backgroundColor: 'white',
+    margin: 5,
+    borderRadius: 3
   },
   row: {
     flexDirection: 'row',
@@ -37,6 +46,9 @@ export default {
   pd10: {
     padding: 10
   },
+  pd5: {
+    padding: 5
+  },
   icon: {
     fontSize: 18
   },
@@ -56,4 +68,60 @@ export default {
   mg5: {
     margin: 5
   },
+  mr3: {
+    marginRight: 3
+  },
+  mg10: {
+    margin: 10
+  },
+  pb10: {
+    paddingBottom: 10
+  },
+  dealImage: {
+    height: 70,
+    width: 100,
+    resizeMode: 'cover',
+    marginRight: 20
+  },
+  discountNumber: {
+    paddingLeft: 15,
+    borderLeftWidth: 1,
+    borderColor: material.gray500
+  },
+  dealRight: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  dealTransactionIcon: {
+    marginRight: 15
+  },
+  dealContainer: {
+    marginBottom: 15
+  },
+  mb10: {
+    marginBottom: 10
+  },
+  fabBtn: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: material.primaryColor,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 5,
+    paddingBottom: 5
+  },
+  fabBtnText: {
+    textAlign: 'center',
+    textAlignVertical: 'top',
+    lineHeight: 20,
+    fontSize: 20
+  }
 }

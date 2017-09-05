@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, Image} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -23,10 +23,26 @@ export default class DealManager extends Component {
 
     render() {
         const {forwardTo} = this.props
+        console.log('Props: ', this.props)
         return (
-            <View>
-              
+          <View style={styles.dealContainer}>
+            <View style={{...styles.inline, ...styles.mb10}}>
+              <Image source={{uri: this.props.image}} style={styles.dealImage}/>
+              <View style={styles.dealRight}>
+                <Text bold medium>{this.props.name}</Text>
+                <View style={styles.inline}>
+                  <View style={{...styles.inline, ...styles.dealTransactionIcon}}>
+                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                  </View>
+                  <Text bold warning large style={styles.discountNumber}>- {this.props.number} %</Text>
+                </View>
+                <Text>{this.props.address}</Text>
+              </View>
             </View>
+            <Border />
+          </View>
         )
     }
 }

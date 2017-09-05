@@ -293,9 +293,16 @@ export default {
 
     // Deal Manager
     'page_deal_manager': 'Chương trình khuyến mãi',
+    'page_create_deal': 'Tạo khuyến mãi',
     'approach': 'Tiếp cận',
     'find_out': 'Tìm hiểu',
     'buy': 'Mua',
+    'title': 'Tiêu đề',
+    'keyword': 'Từ khoá tìm kiếm',
+    'deal_description': 'Mô tả khuyến mại',
+    'from_date': 'Từ ngày',
+    'to_date': 'Đến ngày',
+    
 
 
 }
