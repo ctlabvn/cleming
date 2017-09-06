@@ -25,8 +25,6 @@ export default {
         paddingTop: 0,
     },
 
-    subRow: {paddingVertical: 5, justifyContent: 'space-between'},
-
     itemContent: {
         flex: 1,
         paddingTop: 10,
@@ -37,7 +35,7 @@ export default {
     subRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 3,
+        marginBottom: 10,
     },
 
     icon: {

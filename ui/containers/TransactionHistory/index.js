@@ -82,7 +82,7 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-        getTransactionHistoryList(xsession, placeId == '000000' ? null : placeId, fromTime, toTime, option, (err, data) => {
+        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
@@ -261,7 +261,7 @@ export default class extends Component {
                         <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
                             <Icon name={iconName}
                                   style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
-                            <View style={{paddingVertical: 5, flex: 1}}>
+                            <View style={{paddingTop: 10, flex: 1}}>
                                 <View row style={styles.subRow}>
                                     <Text medium bold
                                           grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
@@ -296,14 +296,21 @@ export default class extends Component {
             if (item.listTransactionDto.length != 0) {
                 // console.warn('will show place ' + JSON.stringify(item));
                 let flagList = {placeId: item.placeId, levelList: 0}
-                result.push({
-                    keyExtractor: result.length,
-                    placeId: item.placeId,
-                    placeAddress: item.placeAddress,
-                    totalMoney: item.totalMoney,
-                    flagList: flagList
-                })
 
+                if (this.state && this.state.placeId && this.state.placeId > 0) {
+                    alert('ding');
+                    flagList.levelList = 99;
+                }
+
+                if (this.state && (!this.state.placeId || this.state.placeId == 0)) {
+                    result.push({
+                        keyExtractor: result.length,
+                        placeId: item.placeId,
+                        placeAddress: item.placeAddress,
+                        totalMoney: item.totalMoney,
+                        flagList: flagList
+                    })
+                }
                 // result = result.concat(item.listTransactionDto.slice(0,2));
                 item.listTransactionDto.map((value, index) => {
                     if (index < FIRST_LEVEL_SHOW) {
@@ -383,7 +390,7 @@ export default class extends Component {
         const {listPlace} = this.props
         // console.warn('test '+JSON.stringify(listPlace))
         newListPlace = Array.from(listPlace);
-        const itemAll = {placeId: '000000', name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
+        const itemAll = {placeId: 0, name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
         newListPlace.splice(0, 0, itemAll);
         return newListPlace;
     }
