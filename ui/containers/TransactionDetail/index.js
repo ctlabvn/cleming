@@ -399,16 +399,19 @@ export default class TransactionDetail extends Component {
                         <Text medium grayDark>{I18n.t('mark')}:</Text>
                         <Text medium grayDark bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
+
+                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('export_bill')}:</Text>
+                        <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    }
+
                     <View style={styles.rowPadding}>
                         <Text medium grayDark>{I18n.t('shot_bill')}:</Text>
                         <Text medium grayDark bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
-                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('export_bill')}:</Text>
-                            <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                    }
+
 
                     {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                         <View style={styles.invoiceBlock}>
