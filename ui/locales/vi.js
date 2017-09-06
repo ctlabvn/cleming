@@ -304,7 +304,12 @@ export default {
     'to_date': 'Đến ngày',
     'take_picture': 'Chụp ảnh',
     'choose_from_galery': 'Chọn từ thư viện',
-    'deal_image': 'Ảnh khuyến mãi'
+    'deal_image': 'Ảnh khuyến mãi',
+    'cashback_discount': 'Khuyến mãi Cashback',
+    'normal_discount': 'Khuyến mãi thường',
+    'apply_place': 'Địa điểm áp dụng',
+    'mark_all': 'Đánh dấu tất cả',
+    'clear_all': 'Bỏ chọn tất cả'
 
 
 

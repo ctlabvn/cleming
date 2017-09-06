@@ -118,14 +118,14 @@ export default class DealImageSelector extends Component {
       if (item.path == this.state.avatar){
         setAvatar = <TouchableWithoutFeedback>
           <View style={styles.setAvatarContainerActive}>
-            <Text white>Avatar</Text>
+            <Text white>Cover</Text>
             <Icon name='done' style={styles.iconDone} />
           </View>
         </TouchableWithoutFeedback>
       }else{
         setAvatar = <TouchableWithoutFeedback onPress={()=>this._setAvatar(item)}>
           <View style={styles.setAvatarContainer}>
-            <Text white>Đặt avatar</Text>
+            <Text white>Cover</Text>
           </View>
         </TouchableWithoutFeedback>
       }
@@ -176,9 +176,11 @@ export default class DealImageSelector extends Component {
           </Modal>
           <View style={styles.imageContainer}>
             {this.state.images.map(item => this._renderImage(item))}
-            <Button transparent onPress={this._open}>
-              <Icon name="add_photo" style={styles.addImageIcon}/>
-            </Button>
+            <View style={styles.imageSizeContainer}>
+              <Button transparent onPress={this._open}>
+                <Icon name="add_photo" style={styles.addImageIcon}/>
+              </Button>
+            </View>
           </View>
 
         </View>

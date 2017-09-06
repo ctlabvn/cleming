@@ -99,6 +99,14 @@ export default {
     fontSize: 16
   },
   addImageIcon: {
-    color: material.gray500
+    color: material.gray500,
+    fontSize: 32
+  },
+  imageSizeContainer: {
+    height: 100,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '47%'
   }
 }

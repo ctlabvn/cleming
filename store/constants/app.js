@@ -99,5 +99,12 @@ export const SCREEN = {
     BOOKING_LIST: 'bookingList'
 }
 
+// exclusiveType: int, khuyến mại độc quyền hay khuyến mại thường: 0 – khuyến mại thường, 1 – khuyến mại độc quyền. (bắt buộc)
+
+export const EXCLUSIVE_TYPE = {
+  NORMAL: 0,
+  CASHBACK: 1
+}
+
 export const initialRouteName = 'login'
-export const initialAuthRouteName = 'merchantOverview' 
+export const initialAuthRouteName = 'merchantOverview'

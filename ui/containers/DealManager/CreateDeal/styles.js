@@ -1,8 +1,11 @@
 import material from '~/theme/variables/material.js'
 export default {
-  container: {
+  fixContainer: {
+    paddingBottom: 50,
     backgroundColor: 'white',
-    padding: 10
+  },
+  container: {
+    padding: 10,
   },
   inputItem: {
       marginBottom: 10,
@@ -19,5 +22,13 @@ export default {
   label: {
     color: material.gray500
   },
-
+  bottomButton: {
+    width: '100%',
+    backgroundColor: material.primaryColor,
+    position: 'absolute',
+    bottom: 0,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 }
