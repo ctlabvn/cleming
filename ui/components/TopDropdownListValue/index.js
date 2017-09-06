@@ -9,6 +9,8 @@ import material from '~/theme/variables/material'
 
 const { height, width } = Dimensions.get('window')
 
+const SEARCH_IF_MORE_THAN = 9;
+
 export default class TopDropdownListValue extends Component {
     constructor(props) {
         super(props)
@@ -139,7 +141,7 @@ export default class TopDropdownListValue extends Component {
     // }
 
     needSearch() {
-        return this.state.defaultDropdownValues.length > 15;
+        return this.state.defaultDropdownValues.length > SEARCH_IF_MORE_THAN;
     }
 
     render() {
