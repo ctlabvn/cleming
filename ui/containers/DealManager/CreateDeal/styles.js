@@ -7,7 +7,7 @@ export default {
   inputItem: {
       marginBottom: 10,
       backgroundColor: 'white',
-      borderColor: material.gray300,
+      borderColor: material.gray500,
       borderWidth: 1,
       borderRadius: 3
   },
@@ -15,6 +15,9 @@ export default {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  }
+  },
+  label: {
+    color: material.gray500
+  },
 
 }

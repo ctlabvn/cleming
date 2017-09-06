@@ -29,6 +29,7 @@ export default class CreateDeal extends Component {
         return (
 
           <Container style={styles.container}>
+            <Text style={styles.label}>{I18n.t('deal_image')}</Text>
             <DealImageSelector />
             <Field autoCapitalize="none" name="title"
                 icon={(input, active) => input.value && active ? 'close' : false}

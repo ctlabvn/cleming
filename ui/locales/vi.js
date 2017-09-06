@@ -302,7 +302,10 @@ export default {
     'deal_description': 'Mô tả khuyến mại',
     'from_date': 'Từ ngày',
     'to_date': 'Đến ngày',
-    
+    'take_picture': 'Chụp ảnh',
+    'choose_from_galery': 'Chọn từ thư viện',
+    'deal_image': 'Ảnh khuyến mãi'
+
 
 
 }
