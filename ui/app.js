@@ -274,7 +274,7 @@ export default class App extends Component {
         if (data && data.updated && data.updated.data) {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
-          selectedOption.name = data.updated.data[0].address
+          selectedOption.name = data.updated.data[0].name+' - '+data.updated.data[0].address
           setSelectedOption(selectedOption)
         }
       })
@@ -284,7 +284,7 @@ export default class App extends Component {
     // if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
       this.listPlace = place.listPlace.map(item => ({
         id: item.placeId,
-        name: item.address
+        name: item.name+' - '+item.address
       }))
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
@@ -391,7 +391,7 @@ export default class App extends Component {
     const route = getPage(router.current) || routes.notFound
     this.listPlace = place.listPlace.map(item => ({
       id: item.placeId,
-      name: item.address
+      name: item.name+' - '+item.address
     }))
     return (
       <StyleProvider style={getTheme(material)}>
