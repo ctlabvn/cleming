@@ -62,6 +62,10 @@ export default {
         alignItems: 'flex-start'
     },
 
+    center: {
+        alignItems: 'center'
+    },
+
     textPlaceTitle: {
         marginTop: 20,
         marginBottom: 5,

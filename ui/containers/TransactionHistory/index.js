@@ -219,9 +219,9 @@ export default class extends Component {
         if (item.placeId) {
             // console.log(JSON.stringify(item));
             return (
-                <View>
+                <View style={styles.center}>
                     <Border/>
-                    <Text medium bold grayDark style={styles.textPlaceTile}>
+                    <Text medium bold grayDark style={styles.textPlaceTitle}>
                         {item.placeAddress}
                     </Text>
                     <Text medium strong bold grayDark style={styles.numberPlaceTitle}>
