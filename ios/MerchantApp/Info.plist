@@ -51,7 +51,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Let merchantapp access your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Let merchantapp access your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>

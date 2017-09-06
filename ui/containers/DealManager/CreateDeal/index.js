@@ -11,7 +11,7 @@ import { formatNumber } from "~/ui/shared/utils"
 import Border from "~/ui/elements/Border"
 import { Field, formValueSelector, reduxForm, reset } from "redux-form"
 import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr } from "~/ui/elements/Form"
-
+import DealImageSelector from './DealImageSelector'
 @connect(null, {forwardTo})
 @reduxForm({ form: 'CreateDeal'})
 export default class CreateDeal extends Component {
@@ -29,6 +29,7 @@ export default class CreateDeal extends Component {
         return (
 
           <Container style={styles.container}>
+            <DealImageSelector />
             <Field autoCapitalize="none" name="title"
                 icon={(input, active) => input.value && active ? 'close' : false}
                 iconStyle={{ color: material.gray500 }}

@@ -33,6 +33,7 @@
     "react-native-fabric": "0.4.1",
     "react-native-fs": "2.3.2",
     "react-native-i18n": "^2.0.2",
+    "react-native-image-crop-picker": "^0.16.0",
     "react-native-image-picker": "0.26.2",
     "react-native-maps": "0.15.3",
     "react-native-modal-datetime-picker": "4.4.0",
