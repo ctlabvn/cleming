@@ -12,6 +12,11 @@ export default {
         marginRight: 15,
     },
 
+    moneyBandContainer: {
+        paddingVertical: 10,
+        paddingHorizontal: 20
+    },
+
     moneyBand: {
         justifyContent: 'space-between',
     },
@@ -44,10 +49,47 @@ export default {
         padding: 25
     },
 
+    itemIcon: {
+        color: material.orange500,
+        fontSize: 20,
+        paddingRight: 10,
+        paddingTop: 12
+    },
+
+    item: {
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        alignItems: 'flex-start'
+    },
+
+    textPlaceTitle: {
+        marginTop: 20,
+        marginBottom: 5,
+        alignSelf: 'center'
+    },
+
+    numberPlaceTitle: {
+        marginBottom: 7,
+        alignSelf: 'center'
+    },
+
     button: {
         flex: 1,
         alignSelf:'center',
         marginBottom: 20,
         paddingHorizontal: 10
+    },
+
+    spaceView: {
+        height: 50
+    },
+
+    listViewExtend: {
+        flex: 1
+    },
+
+    groupRow: {
+        paddingTop: 10,
+        flex: 1
     },
 }

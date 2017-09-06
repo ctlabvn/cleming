@@ -5,11 +5,14 @@ import styles from './styles'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import I18n from '~/ui/I18n'
 import { connect } from 'react-redux'
+import Icon from '~/ui/elements/Icon'
+import material from '~/theme/variables/material'
 export default class PopupInfo extends Component {
     constructor(props) {
         super(props)
         this.state = {
             modalVisible: false,
+            icon: props.icon,
             text: props.text || ''
         }
     }
@@ -33,7 +36,8 @@ export default class PopupInfo extends Component {
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
-
+                        {this.state.icon && <Icon name={this.state.icon}
+                              style={{color: material.red500, fontSize: 30}}/>}
                         <View style={styles.textContanter}>
                             <Text medium bold grayDark>{text}</Text>
                         </View>

@@ -103,7 +103,7 @@ export default class extends Component {
                     onRefresh={() => this._onRefresh()}>
 
                     <View>
-                        <Text strong bold green style={styles.title}>{I18n.t('checked')}</Text>
+                        <Text strong bold green style={styles.title}>{'\x3C'}{I18n.t('checked')}{'\x3E'}</Text>
                         <Border/>
                         <View row style={styles.moneyTitle}>
                             <Text largeLight bold grayDark>{I18n.t('total_revenue')}</Text>

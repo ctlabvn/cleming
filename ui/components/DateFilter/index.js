@@ -576,7 +576,7 @@ export default class DateFilter extends Component {
                         cancelTextIOS={I18n.t('cancel')}
                     />
                 <RadioPopup ref='dateFilterTypePopup' listValue={this.dateFilterListValue} selectedValue={this.state.currentDateFilter} onClickYes={this._handleYesDateFilter.bind(this)} />
-                <PopupAlert ref={ref=>this.popupAlert = ref} onOk={()=>{}}/>
+                <PopupAlert ref={ref=>this.popupAlert = ref} icon='logo' onOk={()=>{}}/>
                 <View style={styles.row}>
                 <TouchableOpacity onPress={() => this._handlePressTriggerDateFilterPopup()}>
                     <View style={styles.stickPart}>

@@ -149,13 +149,13 @@ export default class extends Component {
 
         let moneyTitle;
         if (this.state.currentTab == MERCHANT_COLLECTED) {
-            moneyTitle = 'Tổng tiền Đối tác đã thu'
+            moneyTitle = I18n.t('total_money_merchant_get')
         } else {
-            moneyTitle = 'Tổng tiền Clingme đã thu'
+            moneyTitle = I18n.t('total_money_clingme_get')
         }
 
         return (
-            <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
+            <View style={styles.moneyBandContainer}>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>{moneyTitle}</Text>
                     <Text largeLight green bold>{formatNumber(data.totalMoney)} đ</Text>
@@ -221,10 +221,10 @@ export default class extends Component {
             return (
                 <View>
                     <Border/>
-                    <Text medium bold grayDark style={{marginTop: 20, marginBottom: 5, alignSelf: 'center'}}>
+                    <Text medium bold grayDark style={styles.textPlaceTile}>
                         {item.placeAddress}
                     </Text>
-                    <Text medium strong bold grayDark style={{marginBottom: 5, alignSelf: 'center'}}>
+                    <Text medium strong bold grayDark style={styles.numberPlaceTitle}>
                         {formatNumber(item.totalMoney)} đ
                     </Text>
                 </View>
@@ -237,31 +237,31 @@ export default class extends Component {
             let iconName = 'coin_mark';
             switch (item.tranType) {
                 case 0:
-                    status = 'Cashback thành công'
+                    status = I18n.t('cashback_success')
                     iconName = 'coin_mark';
                     break;
                 case 1:
-                    status = 'Giao thành công'
+                    status = I18n.t('delivery_success')
                     iconName = 'shiping-bike2';
                     break;
                 case 2:
-                    status = 'Đã xác nhận'
+                    status = I18n.t('confirmed')
                     iconName = 'clingme-wallet';
                     break;
             }
 
             return (
                 <View>
-                    <View style={{marginHorizontal: 0}}>
+
                         <Border/>
-                    </View>
+
                     <TouchableHighlight
                         underlayColor={material.gray200}
                         onPress={()=> this._handlePressItem(item)}>
-                        <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
+                        <View row style={styles.item}>
                             <Icon name={iconName}
-                                  style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
-                            <View style={{paddingTop: 10, flex: 1}}>
+                                  style={styles.itemIcon}/>
+                            <View style={styles.groupRow}>
                                 <View row style={styles.subRow}>
                                     <Text medium bold
                                           grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
@@ -275,7 +275,7 @@ export default class extends Component {
                                 </View>
 
                                 <View row style={styles.subRow}>
-                                    <Text medium grayDark>Phí Clingme</Text>
+                                    <Text medium grayDark>{I18n.t('clingme_fee')}</Text>
                                     <Text medium bold grayDark>{item.charge} đ</Text>
                                 </View>
                             </View>
@@ -298,7 +298,6 @@ export default class extends Component {
                 let flagList = {placeId: item.placeId, levelList: 0}
 
                 if (this.state && this.state.placeId && this.state.placeId > 0) {
-                    alert('ding');
                     flagList.levelList = 99;
                 }
 
@@ -390,7 +389,7 @@ export default class extends Component {
         const {listPlace} = this.props
         // console.warn('test '+JSON.stringify(listPlace))
         newListPlace = Array.from(listPlace);
-        const itemAll = {placeId: 0, name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
+        const itemAll = {placeId: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
         newListPlace.splice(0, 0, itemAll);
         return newListPlace;
     }
@@ -409,14 +408,18 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <View style={{height: 50}}/>
+                <View style={styles.spaceView}/>
                 <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
+                <DateFilter
+                    defaultFilter='month'
+                    type='lite-round'
+                    onPressFilter={data => this._handlePressFilter(data)}
+                    ref='dateFilter'/>
                 {this._renderMoneyBand()}
                 {data && <ListViewExtend
-                    style={{flex: 1}}
+                    style={styles.listViewExtend}
                     onItemRef={ref => this.listview = ref}
                     onEndReached={() => this._loadMore()}
                     keyExtractor={item => item.keyExtractor}
