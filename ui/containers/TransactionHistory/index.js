@@ -6,6 +6,7 @@ import { TouchableHighlight } from 'react-native'
 import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
 import {getSession} from "~/store/selectors/auth";
+import { setCheckingDateFilterCurrentSelectValue } from "~/store/actions/checking";
 import * as transactionAction from "~/store/actions/transaction";
 import {getHistoryListTransaction} from "~/store/selectors/transaction";
 import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
@@ -50,7 +51,7 @@ const SECOND_LEVEL_SHOW = 10
     data: getHistoryListTransaction(state),
     listPlace: getListPlace(state),
     checkingDateFilterCurrentSelectValue: getCheckingDateFilterCurrentSelectValue(state),
-}), {...transactionAction, ...commonAction})
+}), {...transactionAction, ...commonAction, setCheckingDateFilterCurrentSelectValue})
 
 export default class extends Component {
 
@@ -150,6 +151,11 @@ export default class extends Component {
             fromTime: fromTime,
             toTime: toTime,
         }, () => this._load())
+
+        const item = data.currentSelectValue;
+
+        const { setCheckingDateFilterCurrentSelectValue } = this.props;
+        setCheckingDateFilterCurrentSelectValue(item);
     }
 
     _handlePressTab(data) {
