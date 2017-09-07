@@ -231,6 +231,7 @@ export default {
         Page: Checking,
         headerType: 'back',
         footerType: 'none',
+        cache: true,
     },
     transactionHistory: {
         title: I18n.t('transaction_history'),
@@ -238,6 +239,7 @@ export default {
         headerType: 'back',
         footerType: 'none',
         showTopDropdown: false,
+        cache: true,
     },
     withdrawDetail: {
         title: I18n.t('withdraw_detail'),

@@ -14,6 +14,11 @@ export const checking = (state = initialState, {type, payload}) => {
                 ...state,
                 data: payload.data,
             }
+        case  'app/setCheckingDateFilterCurrentSelectValue':
+            return {
+                ...state,
+                dateFilterCurrentSelectValue: payload
+            }
         default:
             return state;
     }

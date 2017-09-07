@@ -7,3 +7,8 @@ export const getCheckingDetail= (...args) => ({
     type: 'checking/detail',
     args
 })
+
+export const setCheckingDateFilterCurrentSelectValue = (item) => ({
+    type: 'app/setCheckingDateFilterCurrentSelectValue',
+    payload: item,
+})

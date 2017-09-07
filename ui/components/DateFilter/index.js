@@ -110,6 +110,17 @@ export default class DateFilter extends Component {
             currentSelectValue: item
         })
     }
+
+    getCurrentSelectValue() {
+        return this.state.currentSelectValue;
+    }
+
+    setCurrentSelectValue(item) {
+        // this.setState({ currentSelectValue: item })
+        // console.warn('date filter ' + JSON.stringify(item))
+        this._handlePressDateFilter(item);
+    }
+
     _handleYesDateFilter(item) {
         this.setState({ 
             currentDateFilter: item,

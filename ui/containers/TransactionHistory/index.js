@@ -8,6 +8,7 @@ import * as authActions from "~/store/actions/auth";
 import {getSession} from "~/store/selectors/auth";
 import * as transactionAction from "~/store/actions/transaction";
 import {getHistoryListTransaction} from "~/store/selectors/transaction";
+import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -48,6 +49,7 @@ const SECOND_LEVEL_SHOW = 10
     xsession: getSession(state),
     data: getHistoryListTransaction(state),
     listPlace: getListPlace(state),
+    checkingDateFilterCurrentSelectValue: getCheckingDateFilterCurrentSelectValue(state),
 }), {...transactionAction, ...commonAction})
 
 export default class extends Component {
@@ -92,18 +94,44 @@ export default class extends Component {
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
-    componentDidMount() {
-        const {app} = this.props;
-        app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
+    _setDateFilterCurrentSelectValue(){
+        const {checkingDateFilterCurrentSelectValue} = this.props;
 
-        const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-        fromTime = dateFilterData.from;
-        toTime = dateFilterData.to;
+        this.refs.dateFilter.setCurrentSelectValue(checkingDateFilterCurrentSelectValue);
+
+        // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+        // console.warn('3.1.1. dateFilterData' + JSON.stringify(dateFilterData));
+
+        fromTime = checkingDateFilterCurrentSelectValue.value.from;
+        toTime = checkingDateFilterCurrentSelectValue.value.to;
+
+        // fromTime = dateFilterData.from;
+        // toTime = dateFilterData.to;
 
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
         }, () => this._load())
+    }
+
+    componentWillFocus() {
+        this._setDateFilterCurrentSelectValue();
+    }
+
+    componentDidMount() {
+        const {app} = this.props;
+        app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
+
+        this._setDateFilterCurrentSelectValue();
+
+        // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+        // fromTime = dateFilterData.from;
+        // toTime = dateFilterData.to;
+        //
+        // this.setState({
+        //     fromTime: fromTime,
+        //     toTime: toTime,
+        // }, () => this._load())
     }
 
     _handleTopDrowpdown(data) {

@@ -20,10 +20,12 @@ import Content from "~/ui/components/Content";
 import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
+import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
 
 @connect(state => ({
     xsession: getSession(state),
     data: getCheckingData(state),
+    datefiltercurrentvalue: getCheckingDateFilterCurrentSelectValue(state),
 }), {...commonActions, ...checkingActions})
 
 export default class extends Component {
@@ -44,6 +46,11 @@ export default class extends Component {
         const fromTime = dateFilterData.from;
         const toTime = dateFilterData.to;
         this._load(fromTime, toTime);
+
+        const item = data.currentSelectValue;
+
+        const { setCheckingDateFilterCurrentSelectValue } = this.props;
+        setCheckingDateFilterCurrentSelectValue(item);
     }
 
     _handlePressTab(data) {
@@ -55,6 +62,13 @@ export default class extends Component {
     }
 
     _handlePressSumRevenue() {
+        const item = this.refs.dateFilter.getCurrentSelectValue()
+
+        const { setCheckingDateFilterCurrentSelectValue } = this.props;
+        setCheckingDateFilterCurrentSelectValue(item);
+
+        const { datefiltercurrentvalue } =this.props;
+
         const {forwardTo} = this.props
         forwardTo('transactionHistory');
     }
