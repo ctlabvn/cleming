@@ -21,19 +21,24 @@ const options = {
     skipBackup: true
   }
 }
-
+const initState = {
+  modalVisible: false,
+  images: [],
+  avatar: ''
+}
 export default class DealImageSelector extends Component {
     constructor(props) {
       super(props)
-      this.state = {
-        modalVisible: false,
-        images: [],
-        avatar: ''
-      }
+
+      this.state = initState
     }
 
     getCover = () => {
       return this.state.avatar
+    }
+
+    reset = () => {
+        this.setState(initState)
     }
 
     getImageList = () => {

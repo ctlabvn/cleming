@@ -16,6 +16,7 @@ export const validate = (values) => {
 	}
 
   if (!values.fromDate){
+		console.log('Case From Date')
 		errors.fromDate = I18n.t('err_field_must_not_empty')
 		return errors
 	}

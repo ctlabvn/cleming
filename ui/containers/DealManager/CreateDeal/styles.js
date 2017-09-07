@@ -1,4 +1,6 @@
 import material from '~/theme/variables/material.js'
+const half = 47
+const mb = 20
 export default {
   fixContainer: {
     paddingBottom: 50,
@@ -8,11 +10,27 @@ export default {
     padding: 10,
   },
   inputItem: {
-      marginBottom: 20,
+      marginBottom: mb,
       backgroundColor: 'white',
   },
+  dateInputHalf: {
+    backgroundColor: 'white',
+    borderColor: material.gray500,
+    borderWidth: 1,
+    borderRadius: 3,
+    width: '100%',
+    paddingLeft: 2,
+    paddingRight: 2,
+  },
+  dateInputHalfOuter: {
+    width: half+'%',
+    marginBottom: mb,
+  },
+  halfRow: {
+    width: half+'%'
+  },
   mb20: {
-    marginBottom: 20
+    marginBottom: mb
   },
   row: {
     flexDirection: 'row',
@@ -23,8 +41,7 @@ export default {
   rowFull: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    width: '100%'
+    alignItems: 'flex-start'
   },
   label: {
     color: material.gray500

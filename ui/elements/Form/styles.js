@@ -1,7 +1,21 @@
 import material from '~/theme/variables/material'
 
 export default {
+
   item: {
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    marginLeft: 0,
+    marginTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: '100%',
+    height: 40,
+    borderBottomWidth: 0,
+  },
+
+
+  item2: {
     // borderRadius: 5,
     // marginLeft: 0,
     // marginTop: 10,
@@ -19,6 +33,8 @@ export default {
     fontWeight: '300',
     height:'100%',
     fontSize: material.btnTextSize,
+    borderBottomWidth: 0,
+    borderBottomColor: 'transparent'
   },
   textInput: {
     fontFamily: 'Roboto',

@@ -45,16 +45,17 @@ export default class CreateDeal extends Component {
         // Giảm giá theo %
         case 1:
         default:
+          this.props.change('leftPromo', '')
           this.props.change('promoTitle', '%')
           break
         // Quà tặng kèm
         case 2:
+        case 3:
+          this.props.change('leftPromo', '')
           this.props.change('promoTitle', '')
           break
         // Gỉam giá theo số tiền
         case 3:
-          this.props.change('promoTitle', '')
-          break
       }
     }
     componentDidMount(){
@@ -146,7 +147,7 @@ export default class CreateDeal extends Component {
               iconStyle={{ color: material.gray500 }}
               onIconPress={input => input.onChange('')}
               component={InputFieldWithErr}
-              style={{...styles.inputItem, width: 150}}
+              style={{...styles.inputItem, ...styles.halfRow}}
               placeholder={leftPlaceholder}
               keyboardType={leftKeyboardType}
           />
@@ -156,7 +157,7 @@ export default class CreateDeal extends Component {
               iconStyle={{ color: material.gray500 }}
               onIconPress={input => input.onChange('')}
               component={InputFieldWithErr}
-              style={{...styles.inputItem, width: 150}}
+              style={{...styles.inputItem, ...styles.halfRow}}
               placeholder={rightPlaceholder}
               disabled={rightDisabled}
               keyboardType={rightKeyboardType}
@@ -198,7 +199,9 @@ export default class CreateDeal extends Component {
                   <Field autoCapitalize="none" name="fromDate"
                       onIconPress={input => input.onChange('')}
                       component={DateField}
-                      style={{...styles.inputItem, width: '45%'}}
+                      style={{...styles.dateInputHalf}}
+                      inputStyle={{width: 100}}
+                      outerStyle={{...styles.dateInputHalfOuter}}
                       placeholder={I18n.t('from_date')}
                       icon='calendar'
                       mode='date'
@@ -207,7 +210,9 @@ export default class CreateDeal extends Component {
                   <Field autoCapitalize="none" name="toDate"
                       onIconPress={input => input.onChange('')}
                       component={DateField}
-                      style={{...styles.inputItem, width: '45%'}}
+                      style={{...styles.dateInputHalf}}
+                      inputStyle={{width: 100}}
+                      outerStyle={{...styles.dateInputHalfOuter}}
                       placeholder={I18n.t('to_date')}
                       icon='calendar'
                       mode='date'

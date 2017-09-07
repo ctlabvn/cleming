@@ -40,7 +40,7 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   return (
     <View style={{...style}}>
-      <Item style={{...styles.item}} error={touched && !!error} onPress={onPress} >
+      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
         {addon}
         <Input
           placeholder={label}
@@ -112,20 +112,27 @@ export const SwitchField = ({ input, meta: { touched, error, warning }, ...custo
   />
 )
 
-export const DateField = ({ input, label, meta: { touched, error, warning }, style, inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
-  <DatePicker
-    date={input.value}
-    mode="date"
-    placeholder={label}
-    onDateChange={(date) => input.onChange(date)}
-    customStyles={{
-      dateTouch: {...styles.item, ...style},
-      dateInput: {...styles.input, ...inputStyle},
-      dateIcon: iconStyle,
-    }}
-    format={format}
-    {...custom}
-  />
+export const DateField = ({ input, label, meta: { active, touched, error, warning }, outerStyle, style,inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
+<View style={{...outerStyle}}>
+  <View style={{...style}}>
+    <DatePicker
+      date={input.value}
+      mode="date"
+      placeholder={label}
+      onDateChange={(date) => input.onChange(date)}
+      customStyles={{
+        dateTouch: {borderBottomWidth: 0, borderBottomColor: 'transparent'},
+        dateInput: {...styles.input, ...inputStyle},
+        dateIcon: iconStyle,
+      }}
+      format={format}
+      {...custom}
+    />
+  </View>
+    <View>
+      {touched && error && <Text small error>{error}</Text>}
+    </View>
+  </View>
 )
 
 export const LockField = ({ input, label, meta: { touched, error, warning }, ...custom }) => (
@@ -137,18 +144,23 @@ export const LockField = ({ input, label, meta: { touched, error, warning }, ...
   />
 )
 
-export const DropdownField = ({ input, label, meta: { touched, error, warning }, onSelected, style, ...custom }) => {
-  console.log('Error DropdownField', error)
-  return <Dropdown error={touched && !!error}
-    selected={input.value}
-    header={label}
-    onChange={(value) => {
-      onSelected && onSelected(value)
-      input.onChange(value)
-    }}
-    style={{...styles.item, ...style}}
-    inputStyle={styles.input}
-    inputIconStyle={styles.inputIcon}
-    {...custom}
-  />
+export const DropdownField = ({ input, label, meta: { active, touched, error, warning }, onSelected, style, ...custom }) => {
+  return (
+    <View>
+      <Dropdown error={touched && !!error}
+      selected={input.value}
+      header={label}
+      onChange={(value) => {
+        onSelected && onSelected(value)
+        input.onChange(value)
+      }}
+      style={{...styles.item2, ...style}}
+      inputStyle={styles.input}
+      inputIconStyle={styles.inputIcon}
+      {...custom}
+    />
+    <View>
+      {touched && error && <Text small error>{error}</Text>}
+    </View>
+  </View>)
 }
