@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { 
-  Icon, 
+import {
+  Icon,
   Item,
-  Input, 
+  Input,
   Picker,
 } from 'native-base'
 
@@ -13,27 +13,33 @@ export default class extends Component {
   state = {
 
   }
-  
-  _handleValueChange = value => {    
-    const {onChange} = this.props    
-    this.setState({selected: value})        
+
+  _handleValueChange = value => {
+    const {onChange} = this.props
+    this.setState({selected: value})
     onChange && onChange(value)
+  }
+
+  componentDidMount = () => {
+    const {onChange, selected} = this.props
+    onChange && selected && onChange(selected)
   }
 
   render() {
 
     // by default index should be a key
     const {items, style, inputStyle, inputIconStyle, error, header} = this.props
+    console.log('Error: ', error)
     const { selected=this.props.selected } = this.state
     return (
       <Item style={style} error={error}>
-        <Input disabled value={items[selected] || header} />            
+        <Input disabled value={selected ? selected.label: '' || header}/>
         <Icon name="keyboard-arrow-down" style={inputIconStyle} />
-        <Picker style={{position: 'absolute', top: 0, left:0, width:1000, height:1000}}              
-            mode="dropdown"           
+        <Picker style={{position: 'absolute', top: 0, left:0, width:1000, height:1000}}
+            mode="dropdown"
             selectedValue={selected}
             onValueChange={this._handleValueChange}
-        >          
+        >
           {renderItems(items)}
         </Picker>
       </Item>

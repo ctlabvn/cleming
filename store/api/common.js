@@ -37,7 +37,7 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
     ...options,
     headers: {
       ...options.headers,
-      // 'Content-Type':'application/x-www-form-urlencoded',   
+      // 'Content-Type':'application/x-www-form-urlencoded',
       // Origin: API_BASE,
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -55,6 +55,43 @@ export const fetchJson = (url, options = {}, base = API_BASE) => {
     })
 }
 
+export const postFormData = (url, data, session) => {
+  let xVersion = 1
+  let xDataVersion = 1
+  let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
+  let formData = new FormData()
+  formData.append('Content-Type', 'image/jpg')
+  for (let key in data){
+    if (data[key] && data[key].type && data[key].type=='multi'){
+        for (let item of data[key].data){
+          formData.append(key, item)
+        }
+    }else{
+        formData.append(key, data[key])
+    }
+
+  }
+  console.log('Form Data append', formData)
+  return fetch(API_BASE + url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+      'X-VERSION': xVersion,
+      'X-TIMESTAMP': xTimeStamp,
+      'X-DATA-VERSION': xDataVersion,
+      'X-AUTH': '',
+      'X-SESSION': session,
+    },
+    body: formData,
+    onProgress: e => {
+      console.log('Progress: ', e)
+    }
+  }).then((responseData) => {
+       return responseData.json()
+   })
+}
+
 export const fetchJsonWithToken = (token, url, options = {}, ...args) => {
   return fetchJson(url, {
     ...options,
@@ -69,7 +106,7 @@ export const fetchJsonWithToken = (token, url, options = {}, ...args) => {
 export const apiCall = (url, options, token = null) =>{
   return token ? fetchJsonWithToken(token, url, options) : fetchJson(url, options)
 }
-  
+
 
 // must have data to post, put should not return data
 export const apiPost = (url, data, token, method = 'POST') => {
@@ -81,5 +118,4 @@ export const apiGet = (url, data, token, headers, method = 'GET') =>
 
 
 // if we want to fetch blob data with progress support, we should use fetchBlob, such as download from uri to local, then cache it
-// https://github.com/wkh237/react-native-fetch-blob  
-
+// https://github.com/wkh237/react-native-fetch-blob

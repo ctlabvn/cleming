@@ -48,6 +48,11 @@ export default class PlaceSelector extends Component {
       return this.state.selected
     }
 
+    getConcatPlace = () => {
+      if (this.state.selected.length == 0) return ''
+      return this.state.selected.join(';')
+    }
+
     _onPressItem = (item) => {
       // if (this.state.selected.indexOf(item.placeId) == -1){
       //   let clone = [...this.state.selected]

@@ -8,16 +8,23 @@ export default {
     padding: 10,
   },
   inputItem: {
-      marginBottom: 10,
+      marginBottom: 20,
       backgroundColor: 'white',
-      borderColor: material.gray500,
-      borderWidth: 1,
-      borderRadius: 3
+  },
+  mb20: {
+    marginBottom: 20
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%'
+  },
+  rowFull: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    width: '100%'
   },
   label: {
     color: material.gray500

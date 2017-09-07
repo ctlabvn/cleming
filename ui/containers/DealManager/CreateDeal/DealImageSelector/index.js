@@ -21,8 +21,7 @@ const options = {
     skipBackup: true
   }
 }
-@connect(null, {forwardTo})
-@reduxForm({ form: 'CreateDeal'})
+
 export default class DealImageSelector extends Component {
     constructor(props) {
       super(props)
@@ -31,6 +30,18 @@ export default class DealImageSelector extends Component {
         images: [],
         avatar: ''
       }
+    }
+
+    getCover = () => {
+      return this.state.avatar
+    }
+
+    getImageList = () => {
+      if (this.state.images.length == 0) return []
+      let cloneImages = [...this.state.images]
+      let index = cloneImages.findIndex(image=>image.path==this.state.avatar)
+      if (index >-1) cloneImages.splice(index, 1)
+      return cloneImages
     }
 
     _handleMultiplePicker = () => {

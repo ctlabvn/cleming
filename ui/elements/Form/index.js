@@ -39,8 +39,8 @@ export const InputField = ({ input, label, meta: { active, touched, error, warni
 export const InputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   return (
-    <View>
-      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
+    <View style={{...style}}>
+      <Item style={{...styles.item}} error={touched && !!error} onPress={onPress} >
         {addon}
         <Input
           placeholder={label}
@@ -137,17 +137,18 @@ export const LockField = ({ input, label, meta: { touched, error, warning }, ...
   />
 )
 
-export const DropdownField = ({ input, label, meta: { touched, error, warning }, onSelected, ...custom }) => (
-  <Dropdown error={touched && !!error}
+export const DropdownField = ({ input, label, meta: { touched, error, warning }, onSelected, style, ...custom }) => {
+  console.log('Error DropdownField', error)
+  return <Dropdown error={touched && !!error}
     selected={input.value}
     header={label}
     onChange={(value) => {
       onSelected && onSelected(value)
       input.onChange(value)
     }}
-    style={styles.item}
+    style={{...styles.item, ...style}}
     inputStyle={styles.input}
     inputIconStyle={styles.inputIcon}
     {...custom}
   />
-)
+}
