@@ -282,10 +282,13 @@ export default class App extends Component {
   componentDidMount() {
     const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast } = this.props
     // if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
-      this.listPlace = place.listPlace.map(item => ({
-        id: item.placeId,
-        name: item.name+' - '+item.address
-      }))
+
+      this.setListPlace();
+    //   this.listPlace = place.listPlace.map(item => ({
+    //     id: item.placeId,
+    //     name: item.name+' - '+item.address
+    //   }))
+
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
       if (this.listPlace.length > 1){
@@ -386,13 +389,30 @@ export default class App extends Component {
     this.topDropdownListValue.close()
     this.header.showOverlay(false)
   }
+
+  setListPlace() {
+
+      const { place } = this.props
+
+      this.listPlace = place.listPlace.map(item => ({
+          id: item.placeId,
+          name: item.name+' - '+item.address
+      }))
+
+      // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+      // this.listPlace.splice(0, 0, itemAll)
+  }
+
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
     const route = getPage(router.current) || routes.notFound
-    this.listPlace = place.listPlace.map(item => ({
-      id: item.placeId,
-      name: item.name+' - '+item.address
-    }))
+
+      this.setListPlace();
+    // this.listPlace = place.listPlace.map(item => ({
+    //   id: item.placeId,
+    //   name: item.name+' - '+item.address
+    // }))
+
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer

@@ -8,7 +8,7 @@ import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
 
 const {height, width} = Dimensions.get('window')
-const itemAll = {placeId: '000000', name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
+// const itemAll = {placeId: '000000', name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
 
 export default class TopDropdown extends Component {
     constructor(props) {
