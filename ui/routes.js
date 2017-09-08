@@ -38,6 +38,7 @@ import WithdrawDetail from './containers/WithdrawDetail'
 import CheckingHistory from './containers/CheckingHistory'
 import DealManager from './containers/DealManager'
 import CreateDeal from './containers/DealManager/CreateDeal'
+import DealInfo from './containers/DealInfo'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -260,6 +261,12 @@ export default {
     createDeal: {
       title: I18n.t('page_create_deal'),
       Page: CreateDeal,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    dealInfo: {
+      title: I18n.t('page_deal_info'),
+      Page: DealInfo,
       headerType: 'back',
       footerType: 'none',
     }

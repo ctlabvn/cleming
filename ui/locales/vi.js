@@ -320,5 +320,6 @@ export default {
     'err_need_at_least_one_place': 'Phải chọn tối thiểu 1 địa điểm',
     'err_new_price_must_smaller_than_old_price': 'Gía mới phải nhỏ hơn giá cũ',
     'err_percent_must_number': 'Phần trăm phải ở dạng số',
-    'err_invalid_percent_number': 'Số phần trăm không hợp lệ'
+    'err_invalid_percent_number': 'Số phần trăm không hợp lệ',
+    'page_deal_info': 'Tổng quan khuyến mãi',
 }

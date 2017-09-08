@@ -75,6 +75,8 @@ export default class BarChart extends Component {
   }
 
   color(i) {
+    let colors = this.props.options.colors
+    if (colors) return colors[i]
     let color = this.props.options.color
     if (!_.isString(this.props.options.color)) color = color.color
     const pallete = this.props.pallete || Colors.mix(color || '#9ac7f7')

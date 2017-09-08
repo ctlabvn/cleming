@@ -23,26 +23,27 @@ export default class DealManager extends Component {
 
     render() {
         const {forwardTo} = this.props
-        console.log('Props: ', this.props)
         return (
-          <View style={styles.dealContainer}>
-            <View style={{...styles.inline, ...styles.mb10}}>
-              <Image source={{uri: this.props.image}} style={styles.dealImage}/>
-              <View style={styles.dealRight}>
-                <Text bold medium>{this.props.name}</Text>
-                <View style={styles.inline}>
-                  <View style={{...styles.inline, ...styles.dealTransactionIcon}}>
-                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
-                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
-                    <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+          <TouchableWithoutFeedback onPress={()=>forwardTo('dealInfo')}>
+            <View style={styles.dealContainer}>
+              <View style={{...styles.inline, ...styles.mb10}}>
+                <Image source={{uri: this.props.image}} style={styles.dealImage}/>
+                <View style={styles.dealRight}>
+                  <Text bold medium>{this.props.name}</Text>
+                  <View style={styles.inline}>
+                    <View style={{...styles.inline, ...styles.dealTransactionIcon}}>
+                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                    </View>
+                    <Text bold warning large style={styles.discountNumber}>- {this.props.number} %</Text>
                   </View>
-                  <Text bold warning large style={styles.discountNumber}>- {this.props.number} %</Text>
+                  <Text>{this.props.address}</Text>
                 </View>
-                <Text>{this.props.address}</Text>
               </View>
+              <Border />
             </View>
-            <Border />
-          </View>
+          </TouchableWithoutFeedback>
         )
     }
 }
