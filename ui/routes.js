@@ -61,6 +61,7 @@ export default {
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         tabIndex: 1,
         cache: true,
     },

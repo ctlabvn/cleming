@@ -151,6 +151,12 @@ export default class App extends Component {
         this.header.show(route.headerType, route.title)
         this.footer.show(route.footerType, route.routeName)
 
+          //panda
+        if (route.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+        else this.listPlaceRender = this.listPlace;
+        this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+        this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
       } else {
@@ -399,8 +405,14 @@ export default class App extends Component {
           name: item.name+' - '+item.address
       }))
 
-      // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+      // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}\
       // this.listPlace.splice(0, 0, itemAll)
+
+
+      this.listPlaceItemAllPlace = Array.from(this.listPlace);
+      const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+      this.listPlaceItemAllPlace.splice(0, 0, itemAll)
+
   }
 
   render() {
@@ -412,6 +424,9 @@ export default class App extends Component {
     //   id: item.placeId,
     //   name: item.name+' - '+item.address
     // }))
+
+      if (route.showItemAllPlaceOnTopDropdown) this.listPlaceRender = this.listPlaceItemAllPlace;
+      else this.listPlaceRender = this.listPlace;
 
     return (
       <StyleProvider style={getTheme(material)}>
@@ -465,14 +480,14 @@ export default class App extends Component {
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
             selectedOption={selectedPlace}
-            dropdownValues={this.listPlace}
+            dropdownValues={this.listPlaceRender}
             show={route.showTopDropdown}
           />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
-            dropdownValues={this.listPlace}
+            dropdownValues={this.listPlaceRender}
           />
           <Toasts />
           <NotificationHandler app={this}/>
