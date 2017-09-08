@@ -151,7 +151,7 @@ export default class App extends Component {
         this.header.show(route.headerType, route.title)
         this.footer.show(route.footerType, route.routeName)
 
-          //panda
+
         if (route.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
         else this.listPlaceRender = this.listPlace;
         this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
@@ -280,7 +280,7 @@ export default class App extends Component {
         if (data && data.updated && data.updated.data) {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
-          selectedOption.name = data.updated.data[0].name+' - '+data.updated.data[0].address
+          selectedOption.name = data.updated.data[0].name
           setSelectedOption(selectedOption)
         }
       })
@@ -297,13 +297,13 @@ export default class App extends Component {
 
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
-      if (this.listPlace.length > 1){
+      if (this.listPlaceRender.length > 1){
         this.topDropdown.setIsMultiple(true)
       }else{
         this.topDropdown.setIsMultiple(false)
       }
-      this.topDropdownListValue.updateDropdownValues(this.listPlace)
-      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
+      this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     // }
 
