@@ -29,11 +29,23 @@ const requestCreateDeal = createRequestSaga({
     key: 'deal/createDeal',
 })
 
+const requestDealStatistic = createRequestSaga({
+    request: api.deal.getDealStatistic,
+    key: 'deal/getDealStatistic'
+})
+
+const requestListDeal = createRequestSaga({
+  request: api.deal.getListDeal,
+  key: 'deal/getListDeal'
+})
+
 export default [
     function* fetchWatcher() {
         yield [
             takeLatest('deal/getDealCategory', requestDealCategory),
-            takeLatest('deal/createDeal', requestCreateDeal)
+            takeLatest('deal/createDeal', requestCreateDeal),
+            takeLatest('deal/getDealStatistic', requestDealStatistic),
+            takeLatest('deal/getListDeal', requestListDeal)
         ]
     },
 ]

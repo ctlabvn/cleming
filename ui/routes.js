@@ -38,7 +38,7 @@ import WithdrawDetail from './containers/WithdrawDetail'
 import CheckingHistory from './containers/CheckingHistory'
 import DealManager from './containers/DealManager'
 import CreateDeal from './containers/DealManager/CreateDeal'
-import DealInfo from './containers/DealInfo'
+import DealInfo from './containers/DealManager/DealInfo'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {

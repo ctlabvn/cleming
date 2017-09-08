@@ -5,13 +5,18 @@ import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
+import {getListDeal} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
 import { formatNumber } from "~/ui/shared/utils"
 import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
-@connect(null, {forwardTo})
+import moment from 'moment'
+import { getSession } from "~/store/selectors/auth"
+@connect(state => ({
+    xsession: getSession(state),
+}), {forwardTo, getListDeal})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -20,7 +25,20 @@ export default class DealManager extends Component {
     }
 
     componentDidMount(){
-
+      const {xsession, getListDeal} = this.props
+      let fromTime = moment().subtract(6, 'month').unix()
+      let toTime = moment().unix()
+      getListDeal(xsession, 479789, fromTime, toTime,
+        (err, data) => {
+          if (data && data.updated && data.updated.listDeal){
+            let map = data.updated.listDeal.map(item => item.dealId)
+            console.log('Map: ', map)
+            console.log(map.join(';'))
+          }
+          console.log('List Deal', err)
+          console.log('List Deal', data)
+        }
+      )
     }
 
     _handlePressFilter = (item) => {

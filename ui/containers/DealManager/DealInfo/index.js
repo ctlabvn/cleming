@@ -8,8 +8,9 @@ import {forwardTo} from '~/store/actions/common'
 import {formatPhoneNumber} from '~/ui/shared/utils'
 import material from '~/theme/variables/material'
 import {Bar, Pie, StockLine} from '~/ui/components/Chart'
+import {getDealStatistic} from '~/store/actions/deal'
 import moment from 'moment'
-
+import { getSession } from "~/store/selectors/auth"
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -19,7 +20,9 @@ const styles = StyleSheet.create({
   },
 });
 import {barChartConfig, pieChartConfig, lineChartConfig} from './options'
-@connect(null, {forwardTo})
+@connect(state => ({
+    xsession: getSession(state),
+}), {forwardTo, getDealStatistic})
 
 export default class DealInfo extends Component {
     constructor(props) {
@@ -92,7 +95,17 @@ export default class DealInfo extends Component {
       return <StockLine data={lineData} options={lineChartConfig} xKey='x' yKey='y' />
     }
 
-
+    componentDidMount(){
+      const {getDealStatistic, xsession} = this.props
+      let fromTime = moment().subtract(6, 'month').unix()
+      let toTime = moment().unix()
+      getDealStatistic(xsession, '137615;137607;137100;134867;132751;131541;129798;128267;126685;124826;122755;121570;119881;118837;117517;116014;114896;113599', fromTime, toTime,
+        (err, data) => {
+          console.log('Deal Statistic', err)
+          console.log('Deal Statistic', data)
+        }
+      )
+    }
 
 
     render() {
