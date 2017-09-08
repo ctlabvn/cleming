@@ -309,8 +309,16 @@ export default {
     'normal_discount': 'Khuyến mãi thường',
     'apply_place': 'Địa điểm áp dụng',
     'mark_all': 'Đánh dấu tất cả',
-    'clear_all': 'Bỏ chọn tất cả'
-
-
-
+    'clear_all': 'Bỏ chọn tất cả',
+    'err_to_date_must_later_than_from_date': 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
+    'create_deal_successful': 'Tạo Khuyến mãi thành công',
+    'spending_level': 'Spending Level (1-5)',
+    'discount_period': 'Thời gian khuyến mãi',
+    'discount_type': 'Loại hình giảm giá',
+    'business_type': 'Loại hình dịch vụ kinh doanh',
+    'err_need_at_least_one_image': 'Phải chọn tối thiểu 1 ảnh khuyến mãi',
+    'err_need_at_least_one_place': 'Phải chọn tối thiểu 1 địa điểm',
+    'err_new_price_must_smaller_than_old_price': 'Gía mới phải nhỏ hơn giá cũ',
+    'err_percent_must_number': 'Phần trăm phải ở dạng số',
+    'err_invalid_percent_number': 'Số phần trăm không hợp lệ'
 }

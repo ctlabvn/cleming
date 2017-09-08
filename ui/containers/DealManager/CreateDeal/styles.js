@@ -22,6 +22,15 @@ export default {
     paddingLeft: 2,
     paddingRight: 2,
   },
+  fakeInput: {
+    backgroundColor: 'white',
+    borderColor: material.gray500,
+    borderWidth: 1,
+    borderRadius: 3,
+    width: '100%',
+    paddingLeft: 2,
+    paddingRight: 2,
+  },
   dateInputHalfOuter: {
     width: half+'%',
     marginBottom: mb,

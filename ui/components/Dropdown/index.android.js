@@ -29,7 +29,6 @@ export default class extends Component {
 
     // by default index should be a key
     const {items, style, inputStyle, inputIconStyle, error, header} = this.props
-    console.log('Error: ', error)
     const { selected=this.props.selected } = this.state
     return (
       <Item style={style} error={error}>

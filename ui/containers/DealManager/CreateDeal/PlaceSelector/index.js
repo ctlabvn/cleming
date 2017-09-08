@@ -23,6 +23,11 @@ export default class PlaceSelector extends Component {
       this.selectedMap = {}
     }
 
+    reset = ()=>{
+      this.setState({selected: []})
+      this.selectedMap = {}
+    }
+
     _markAll = () => {
       const {listPlace} = this.props
       if (this.state.selected.length != listPlace.length){
@@ -38,8 +43,7 @@ export default class PlaceSelector extends Component {
         }
         if (flag >0) this.setState({selected: clone})
       }else{
-        this.setState({selected: []})
-        this.selectedMap = {}
+        this.reset()
       }
 
     }

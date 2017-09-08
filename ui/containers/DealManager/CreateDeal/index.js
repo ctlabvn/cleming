@@ -4,11 +4,13 @@ import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput} from 're
 import {Text, Button, Container, Content, Form} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
-import {forwardTo, showPopupInfo} from '~/store/actions/common'
+import {forwardTo, showPopupInfo, setToast} from '~/store/actions/common'
 import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
-import { formatNumber } from "~/ui/shared/utils"
+import { formatNumber, getToastMessage } from "~/ui/shared/utils"
 import Border from "~/ui/elements/Border"
+import RatingBar from '~/ui/components/RatingBar'
+import Picker from '~/ui/components/Picker'
 import { Field, formValueSelector, reduxForm, reset } from "redux-form"
 import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField } from "~/ui/elements/Form"
 import DealImageSelector from './DealImageSelector'
@@ -20,78 +22,101 @@ import { getSession, getUser } from "~/store/selectors/auth"
 import {dealCategorySelector} from '~/store/selectors/deal'
 import LoadingModal from "~/ui/components/LoadingModal"
 import {validate} from './validate'
-const promoOptions = [{key: 1, label: 'Giảm giá theo %'}, {key: 3, label: 'Giảm giá theo số tiền'}, {key: 2, label: 'Quà tặng theo điều kiện'}]
+import { PROMO_TYPE } from "~/store/constants/app";
+
+// export const PROMO_TYPE = {
+//   PERCENT: 1,
+//   GIFT: 2,
+//   MONEY: 3
+// }
+
+const promoOptions = [{value: 1, label: 'Giảm giá theo %'}, {value: 3, label: 'Giảm giá theo số tiền'}, {value: 2, label: 'Quà tặng theo điều kiện'}]
 const formSelector = formValueSelector('CreateDeal')
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    formValues: formSelector(state, 'left_value', 'right_value'),
+    formValues: formSelector(state, 'leftPromo', 'promoTitle'),
     category: dealCategorySelector(state)
-}), {forwardTo, getDealCategory, createDeal, showPopupInfo, resetForm: reset})
+}), {forwardTo, getDealCategory, createDeal, showPopupInfo, setToast, resetForm: reset})
 
-@reduxForm({ form: 'CreateDeal', validate})
+@reduxForm({ form: 'CreateDeal', validate, touchOnBlur: false, touchOnChange: false, enableReinitialize: true})
 export default class CreateDeal extends Component {
     constructor(props) {
         super(props)
         this.state = {
           promoType: 1,
-          loading: false
+          loading: false,
         }
+        this.changedPromoType = false
         this.category = []
     }
 
     _fillRightPromo = () => {
+      this.props.change('promoType', this.state.promoType)
       switch (this.state.promoType) {
         // Giảm giá theo %
-        case 1:
+        case PROMO_TYPE.PERCENT:
         default:
           this.props.change('leftPromo', '')
           this.props.change('promoTitle', '%')
           break
         // Quà tặng kèm
-        case 2:
-        case 3:
+        case PROMO_TYPE.MONEY:
+        case PROMO_TYPE.GIFT:
           this.props.change('leftPromo', '')
           this.props.change('promoTitle', '')
           break
-        // Gỉam giá theo số tiền
-        case 3:
       }
     }
     componentDidMount(){
       // Move to Prevent warning
       this._fillRightPromo()
       const {xsession, getDealCategory} = this.props
-      console.log('Props: ', this.props.category)
       getDealCategory(xsession)
     }
 
     componentDidUpdate(){
-      this._fillRightPromo()
+      if (this.changedPromoType){
+        this.changedPromoType = false
+        this._fillRightPromo()
+      }
     }
 
     _onOk = (item) => {
-      this.setState({loading: true})
-      const {createDeal, xsession, showPopupInfo, resetForm} = this.props
-      let {fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag, promoType, dealCategoryId} = item
+      const {createDeal, xsession, showPopupInfo, resetForm, setToast} = this.props
+      let {fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag} = item
       let placeIdList = this.placeSelector.getConcatPlace()
       let exclusiveType = this.exclusiveTypeSelector.getSelected()
-      let spendingLevel = 1
+      let dealCategoryId = this.dealCategoryPicker.getValue()
+      let promoType = this.state.promoType
+      console.log('Deal Category Id', dealCategoryId)
+      let spendingLevel = this.spendingLevelBar.getValue()
+      console.log('spendingLevel: ', spendingLevel)
       let from = moment(fromDate, "MM/DD/YYYY").startOf('day').unix()
       let to = moment(toDate, "MM/DD/YYYY").endOf('day').unix()
       let coverPicture = this.dealImageSelector.getCover()
+
+      if (!coverPicture || coverPicture == ''){
+        setToast(getToastMessage(I18n.t('err_need_at_least_one_image')), 'info', null, null, 3000, 'top')
+        return
+      }
+
+      if (!placeIdList || placeIdList==''){
+        setToast(getToastMessage(I18n.t('err_need_at_least_one_place')), 'info', null, null, 3000, 'top')
+        return
+      }
+
       let imageList = this.dealImageSelector.getImageList()
       imageList = imageList.map(item=>({uri: item.path, name: 'detail_files[]', filename: item.path, type: 'image/jpg'}))
       let data = {
-        leftPromo, promoTitle, dealTitle, description,
-        searchTag, spendingLevel, placeIdList, exclusiveType,
+        leftPromo, promoTitle, dealTitle, description, dealCategoryId,
+        searchTag, spendingLevel, placeIdList, exclusiveType, promoType,
         coverPicture: {uri: coverPicture, name: coverPicture, type: 'image/jpg'},
         'detail_files[]': {type: 'multi', data: imageList},
-        dealCategoryId: dealCategoryId.key,
-        promoType: promoType.key,
         fromDate: from,
         toDate: to,
       }
+      this.setState({loading: true})
       createDeal(xsession, data,
         (err, data) => {
           console.log('createDeal Err', err)
@@ -100,23 +125,26 @@ export default class CreateDeal extends Component {
           this.setState({loading: false})
           if (data && data.updated && data.updated.isSaved){
             resetForm('CreateDeal')
-            showPopupInfo('Tạo Khuyến mãi thành công')
+            this.dealImageSelector.reset()
+            this.placeSelector.reset()
+            showPopupInfo(I18n.t('create_deal_successful'))
           }
         }
       )
     }
 
     _onPromoTypeChange = (value) => {
-      this.setState({promoType: value.key})
+      console.log('Promo Change', value)
+      this.changedPromoType = true
+      this.setState({promoType: value})
     }
 
     _renderPromoteBlock = () => {
-      console.log('Current Promo Type', this.state.promoType)
       let leftPlaceholder='', rightPlaceholder='', rightDisabled = false,
         leftKeyboardType = 'default', rightKeyboardType = 'default'
       switch (this.state.promoType) {
         // Giảm giá theo %
-        case 1:
+        case PROMO_TYPE.PERCENT:
         default:
           leftPlaceholder = 'Giảm / Tặng'
           rightPlaceholder = '%'
@@ -125,14 +153,14 @@ export default class CreateDeal extends Component {
           rightKeyboardType = 'default'
           break
         // Quà tặng kèm
-        case 2:
+        case PROMO_TYPE.GIFT:
           leftPlaceholder = 'Tặng'
           rightPlaceholder = 'Quà tặng kèm'
           rightDisabled = false,
           leftKeyboardType='default'
           break
         // Gỉam giá theo số tiền
-        case 3:
+        case PROMO_TYPE.MONEY:
           leftPlaceholder = 'Giá cũ'
           rightPlaceholder = 'Giá mới'
           rightDisabled= false
@@ -168,7 +196,7 @@ export default class CreateDeal extends Component {
     render() {
         const {forwardTo, place, handleSubmit, category} = this.props
         if (this.category.length == 0){
-          this.category = category.map(item => ({key: item.dealCategoryId, label: item.name}))
+          this.category = category.map(item => ({value: item.dealCategoryId, label: item.name}))
         }
         return (
           <Container style={styles.fixContainer}>
@@ -185,16 +213,20 @@ export default class CreateDeal extends Component {
                     placeholder={I18n.t('title')}
                 />
 
-                <Field autoCapitalize="none" name="dealCategoryId"
-                    component={DropdownField}
-                    style={styles.inputItem}
-                    placeholder='category'
-                    items={this.category}
-                    selected={this.category[0]}
-                    header='Loại hình dịch vụ kinh doanh'
-                    style={{...styles.mb20}}
-                />
+                <View style={{...styles.mb20}}>
+                  <Text style={styles.label}>{I18n.t('business_type')}</Text>
+                  <View style={styles.fakeInput}>
+                    <Picker options={this.category} ref={ref=>this.dealCategoryPicker=ref}/>
+                  </View>
+                </View>
 
+
+                <View style={{...styles.mb20}}>
+                  <Text style={styles.label}>{I18n.t('spending_level')}</Text>
+                  <RatingBar ref={ref=>this.spendingLevelBar=ref}/>
+                </View>
+
+                <Text style={styles.label}>{I18n.t('discount_period')}</Text>
                 <View style={styles.rowFull}>
                   <Field autoCapitalize="none" name="fromDate"
                       onIconPress={input => input.onChange('')}
@@ -220,16 +252,15 @@ export default class CreateDeal extends Component {
                   />
                 </View>
 
-                <Field autoCapitalize="none" name="promoType"
-                    component={DropdownField}
-                    style={styles.inputItem}
-                    placeholder='category'
-                    items={promoOptions}
-                    header='Chọn loại giảm giá'
-                    onSelected={(value)=>this._onPromoTypeChange(value)}
-                    selected={promoOptions[0]}
-                    style={{...styles.mb20}}
-                />
+                <View style={{...styles.mb20}}>
+                  <Text style={styles.label}>{I18n.t('discount_type')}</Text>
+                  <View style={styles.fakeInput}>
+                    <Picker options={promoOptions} ref={ref=>this.promoPicker=ref}
+                      onChange={(value)=>this._onPromoTypeChange(value)}
+                    />
+                  </View>
+                </View>
+
                 {this._renderPromoteBlock()}
 
                 <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}/>

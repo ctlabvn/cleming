@@ -106,5 +106,11 @@ export const EXCLUSIVE_TYPE = {
   CASHBACK: 1
 }
 
+export const PROMO_TYPE = {
+  PERCENT: 1,
+  GIFT: 2,
+  MONEY: 3
+}
+
 export const initialRouteName = 'login'
 export const initialAuthRouteName = 'merchantOverview'

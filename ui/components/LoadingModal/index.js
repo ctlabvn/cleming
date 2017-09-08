@@ -31,7 +31,7 @@ export default class LoadingModal extends Component {
 
     render() {
         return (
-            <Modal 
+            <Modal
                 animationType={"none"}
                 transparent={true}
                 visible={this.state.modalVisible}
