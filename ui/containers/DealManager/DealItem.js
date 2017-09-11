@@ -24,7 +24,7 @@ export default class DealManager extends Component {
     render() {
         const {forwardTo} = this.props
         return (
-          <TouchableWithoutFeedback onPress={()=>forwardTo('dealInfo')}>
+          <TouchableWithoutFeedback onPress={this.props.onPress}>
             <View style={styles.dealContainer}>
               <View style={{...styles.inline, ...styles.mb10}}>
                 <Image source={{uri: this.props.image}} style={styles.dealImage}/>
@@ -41,7 +41,7 @@ export default class DealManager extends Component {
                   <Text>{this.props.address}</Text>
                 </View>
               </View>
-              <Border />
+              {!this.props.withoutLine && <Border />}
             </View>
           </TouchableWithoutFeedback>
         )

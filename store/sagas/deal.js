@@ -29,6 +29,11 @@ const requestCreateDeal = createRequestSaga({
     key: 'deal/createDeal',
 })
 
+const requestDealUserStatistic = createRequestSaga({
+    request: api.deal.getDealUserStatistic,
+    key: 'deal/getDealUserStatistic'
+})
+
 const requestDealStatistic = createRequestSaga({
     request: api.deal.getDealStatistic,
     key: 'deal/getDealStatistic'
@@ -52,8 +57,9 @@ export default [
         yield [
             takeLatest('deal/getDealCategory', requestDealCategory),
             takeLatest('deal/createDeal', requestCreateDeal),
-            takeLatest('deal/getDealStatistic', requestDealStatistic),
-            takeLatest('deal/getListDeal', requestListDeal)
+            takeLatest('deal/getDealUserStatistic', requestDealUserStatistic),
+            takeLatest('deal/getListDeal', requestListDeal),
+            takeLatest('deal/getDealStatistic', requestDealStatistic)
         ]
     },
 ]

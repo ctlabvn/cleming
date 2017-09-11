@@ -24,6 +24,11 @@ export default {
     flexDirection: 'row',
     alignItems: 'center'
   },
+  inlineRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
   moneyItem: {
     width: '40%',
     flexDirection: 'column',
@@ -97,7 +102,7 @@ export default {
     marginRight: 15
   },
   dealContainer: {
-    marginBottom: 15
+    width: material.deviceWidth
   },
   mb10: {
     marginBottom: 10
@@ -122,5 +127,37 @@ export default {
     textAlign: 'center',
     lineHeight: 15,
     fontSize: 20
-  }
+  },
+  bottomBtnLeft: {
+    width: '50%',
+    backgroundColor: material.primaryColor,
+    borderRadius: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomBtnRight: {
+    width: '50%',
+    backgroundColor: material.warningColor,
+    borderRadius: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomBlock: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    height: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 0
+  },
+  halfRowItem: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%'
+  },
 }

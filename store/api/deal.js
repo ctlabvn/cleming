@@ -28,9 +28,14 @@ export default {
     return postFormData('/deal/create', data, session)
   },
 
+  getDealUserStatistic(session, dealIds, fromTime, toTime){
+    console.log('Deal User Statistic API', session+'---'+dealIds+'---'+fromTime+'---'+toTime)
+    return apiGet('/deal/statisticUser', {dealIds, fromTime, toTime}, session)
+  },
+
   getDealStatistic(session, dealIds, fromTime, toTime){
     console.log('Deal Statistic API', session+'---'+dealIds+'---'+fromTime+'---'+toTime)
-    return apiGet('/deal/statisticUser', {dealIds, fromTime, toTime}, session)
+    return apiGet('/deal/statistic', {dealIds, fromTime, toTime}, session)
   },
 
   getListDeal(session, lstPlaceId, fromDate, toDate, modeGet=3){

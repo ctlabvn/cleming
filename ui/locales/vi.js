@@ -322,4 +322,8 @@ export default {
     'err_percent_must_number': 'Phần trăm phải ở dạng số',
     'err_invalid_percent_number': 'Số phần trăm không hợp lệ',
     'page_deal_info': 'Tổng quan khuyến mãi',
+    'page_deal_detail': 'Chi tiết khuyến mãi',
+    'clone_deal': 'Tạo KM tương tự',
+    'create_new_deal': 'Tạo KM mới',
+    'out_dated': 'Đã hết hạn',
 }

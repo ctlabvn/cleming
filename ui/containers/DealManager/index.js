@@ -5,7 +5,7 @@ import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
-import {getListDeal} from '~/store/actions/deal'
+import {getListDeal, getDealStatistic} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
@@ -21,7 +21,7 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     xsession: getSession(state),
     listDeal: listDealSelector(state),
     listPlace: getListPlace(state)
-}), {forwardTo, getListDeal})
+}), {forwardTo, getListDeal, getDealStatistic})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -37,6 +37,7 @@ export default class DealManager extends Component {
       if (selectedPlace && Object.keys(selectedPlace).length > 0) {
         this._load(selectedPlace.id, dateValue.from, dateValue.to)
       }
+
     }
 
     componentWillFocus(){
@@ -59,11 +60,18 @@ export default class DealManager extends Component {
     }
 
     _load = (placeId, from, to)=>{
-      const {xsession, getListDeal} = this.props
+      const {xsession, getListDeal, getDealStatistic} = this.props
+      console.log('Get List Deal Statistic', getDealStatistic);
       this.listview.showRefresh(true)
       getListDeal(xsession, placeId, from, to,
         (err, data) => {
           this.listview.showRefresh(false)
+        }
+      )
+      getDealStatistic(xsession, 116014, from, to,
+        (err, data) => {
+          console.log('Deal Statistic Err', err)
+          console.log('Deal Statistic Data', data)
         }
       )
     }
@@ -73,6 +81,7 @@ export default class DealManager extends Component {
     }
 
     _renderItem = (item) => {
+      const {forwardTo} = this.props
       let address = ''
       if (this.placeMap[item.placeId]){
         address = this.placeMap[item.placeId].address
@@ -81,19 +90,23 @@ export default class DealManager extends Component {
         address = foundItem['address']
         this.placeMap[item.placeId] = foundItem
       }
+      let cloneItem = Object.assign({}, item)
+      cloneItem.address = address
       return <DealItem
         image={item.detailPicture}
         name={item.dealName}
         number={item.promoBriefTitle}
         address={address}
         key={item.dealId}
+        textLeft={item.promoBriefSmallLeft}
+        onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
       />
     }
 
     render() {
         const {forwardTo} = this.props
         return (
-          <Container>
+          <Container style={styles.bgWhite}>
             <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
             <ScrollView style={styles.container}>
               <View style={{...styles.cardBlock, ...styles.pb10}}>
@@ -155,7 +168,6 @@ export default class DealManager extends Component {
                     dataArray={this.props.listDeal}
                     renderRow={(item) => this._renderItem(item)}
                     keyExtractor={item=>item.dealId}
-                    onEndReached={this._loadMore}
                     onRefresh={this._onRefresh}
                     onItemRef={ref=>this.listview=ref}
                 />

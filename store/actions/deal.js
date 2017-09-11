@@ -13,6 +13,11 @@ export const createDeal = (...args) => ({
   args
 })
 
+export const getDealUserStatistic = (...args) => ({
+  type: 'deal/getDealUserStatistic',
+  args
+})
+
 export const getDealStatistic = (...args) => ({
   type: 'deal/getDealStatistic',
   args
