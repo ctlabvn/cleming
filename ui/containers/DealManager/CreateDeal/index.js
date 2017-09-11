@@ -68,11 +68,30 @@ export default class CreateDeal extends Component {
           break
       }
     }
+
+    _fillForm = (dealInfo) => {
+      console.log('Deal Info _fillForm', dealInfo)
+      this.props.change('dealTitle', dealInfo.dealName)
+      this.props.change('description', dealInfo.description)
+      this.props.change('searchTag', dealInfo.searchTag)
+      let images = dealInfo.lstPicture.map(item=>({...item, path: item.fullPath}))
+      this.dealImageSelector.setImages(images)
+      this.dealImageSelector._setAvatar(dealInfo.detailPicture)
+      this.placeSelector.setSelectedPlace(dealInfo.placeId)
+      this.spendingLevelBar.setValue(dealInfo.spendingLevel)
+      this.exclusiveTypeSelector.setSelected(dealInfo.exclusive)
+    }
+
     componentDidMount(){
       // Move to Prevent warning
       this._fillRightPromo()
-      const {xsession, getDealCategory} = this.props
+      const {xsession, getDealCategory, route} = this.props
       getDealCategory(xsession)
+      console.log('Params', this.props.params)
+      if (route && route.params && route.params.deal){
+        console.log('Fit Param')
+        this._fillForm(route.params.deal)
+      }
     }
 
     componentDidUpdate(){
@@ -194,7 +213,7 @@ export default class CreateDeal extends Component {
     )
     }
     render() {
-        const {forwardTo, place, handleSubmit, category} = this.props
+        const {forwardTo, place, handleSubmit, category, route} = this.props
         if (this.category.length == 0){
           this.category = category.map(item => ({value: item.dealCategoryId, label: item.name}))
         }
@@ -203,7 +222,9 @@ export default class CreateDeal extends Component {
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>
             <Content style={styles.container}>
                 <Text style={styles.label}>{I18n.t('deal_image')}</Text>
-                <DealImageSelector ref={ref=>this.dealImageSelector=ref}/>
+                <DealImageSelector ref={ref=>this.dealImageSelector=ref}
+                  mode='prefill'
+                />
                 <Field autoCapitalize="none" name="dealTitle"
                     icon={(input, active) => input.value && active ? 'close' : false}
                     iconStyle={{ color: material.gray500 }}

@@ -25,6 +25,10 @@ export default class DealImageSelector extends Component {
       return this.state.selected
     }
 
+    setSelected = (value) => {
+      this.setState({selected: value})
+    }
+
     render() {
       const {forwardTo} = this.props
       return (

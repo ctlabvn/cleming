@@ -17,6 +17,10 @@ export default class RatingBar extends Component {
       return this.state.value
     }
 
+    setValue = (value) => {
+        this.setState({value: value})
+    }
+
     _handlePresIcon = (index) => {
       this.setState({value: index+1})
     }

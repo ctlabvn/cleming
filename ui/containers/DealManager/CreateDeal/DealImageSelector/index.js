@@ -126,9 +126,16 @@ export default class DealImageSelector extends Component {
     }
 
     _setAvatar = (item) => {
+      if (item.path){
         this.setState({avatar: item.path})
+      }else{
+        this.setState({avatar: item})
+      }
     }
 
+    setImages = (images) => {
+      this.setState({images: images})
+    }
     _renderImage = (item) => {
       let setAvatar
       if (item.path == this.state.avatar){

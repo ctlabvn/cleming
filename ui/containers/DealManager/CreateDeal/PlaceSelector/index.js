@@ -23,9 +23,14 @@ export default class PlaceSelector extends Component {
       this.selectedMap = {}
     }
 
-    reset = ()=>{
+    reset = () => {
       this.setState({selected: []})
       this.selectedMap = {}
+    }
+
+    setSelectedPlace = (placeId) => {
+      this.selectedMap[placeId] = 1
+      this.setState({selected: [...this.state.selected, placeId]})
     }
 
     _markAll = () => {
