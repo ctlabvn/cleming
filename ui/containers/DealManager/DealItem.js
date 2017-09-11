@@ -36,7 +36,7 @@ export default class DealManager extends Component {
                       <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
                       <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
                     </View>
-                    <Text bold warning large style={styles.discountNumber}>- {this.props.number} %</Text>
+                    <Text bold warning large style={styles.discountNumber}>- {this.props.number}</Text>
                   </View>
                   <Text>{this.props.address}</Text>
                 </View>

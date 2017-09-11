@@ -120,8 +120,7 @@ export default {
   },
   fabBtnText: {
     textAlign: 'center',
-    textAlignVertical: 'top',
-    lineHeight: 20,
+    lineHeight: 15,
     fontSize: 20
   }
 }

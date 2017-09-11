@@ -34,10 +34,11 @@ export default {
   },
 
   getListDeal(session, lstPlaceId, fromDate, toDate, modeGet=3){
+    console.log('Get List Deal API', session+'---'+lstPlaceId+'---'+fromDate+'---'+toDate+'---'+modeGet);
     return apiGet('/deal/list', {lstPlaceId, fromDate, toDate, modeGet}, session)
   },
 
-  
+
 
 
 }

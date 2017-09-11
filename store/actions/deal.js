@@ -22,3 +22,8 @@ export const getListDeal = (...args) => ({
   type: 'deal/getListDeal',
   args
 })
+
+export const setListDeal = (data) => ({
+  type: 'deal/setListDeal',
+  payload: data
+})

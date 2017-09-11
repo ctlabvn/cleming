@@ -14,43 +14,87 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
+import {listDealSelector} from '~/store/selectors/deal'
+import {getListPlace} from '~/store/selectors/place'
+import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     xsession: getSession(state),
+    listDeal: listDealSelector(state),
+    listPlace: getListPlace(state)
 }), {forwardTo, getListDeal})
 
 export default class DealManager extends Component {
     constructor(props) {
         super(props)
-
+        this.placeMap = {}
     }
 
     componentDidMount(){
+      const {xsession, getListDeal, app} = this.props
+      app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+      const dateValue = this.dateFilter.getData().currentSelectValue.value
+      let selectedPlace = app.topDropdown.getValue()
+      if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+        this._load(selectedPlace.id, dateValue.from, dateValue.to)
+      }
+    }
+
+    componentWillFocus(){
+      const {app} = this.props
+      app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+    }
+
+    _handleTopDrowpdown = (item) => {
+      const dateValue = this.dateFilter.getData().currentSelectValue.value
+      this._load(item.id, dateValue.from, dateValue.to)
+    }
+
+    _handlePressFilter = (item) => {
+        const {app} = this.props
+        let dateValue  = item.currentSelectValue.value
+        let selectedPlace = app.topDropdown.getValue()
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+          this._load(selectedPlace.id, dateValue.from, dateValue.to)
+        }
+    }
+
+    _load = (placeId, from, to)=>{
       const {xsession, getListDeal} = this.props
-      let fromTime = moment().subtract(6, 'month').unix()
-      let toTime = moment().unix()
-      getListDeal(xsession, 479789, fromTime, toTime,
+      this.listview.showRefresh(true)
+      getListDeal(xsession, placeId, from, to,
         (err, data) => {
-          if (data && data.updated && data.updated.listDeal){
-            let map = data.updated.listDeal.map(item => item.dealId)
-            console.log('Map: ', map)
-            console.log(map.join(';'))
-          }
-          console.log('List Deal', err)
-          console.log('List Deal', data)
+          this.listview.showRefresh(false)
         }
       )
     }
 
-    _handlePressFilter = (item) => {
-        console.log('DealManager DateFilter', item);
+    _loadMore = () => {
+      console.log('On Load More DealManager');
+    }
+
+    _renderItem = (item) => {
+      let address = ''
+      if (this.placeMap[item.placeId]){
+        address = this.placeMap[item.placeId].address
+      }else{
+        let foundItem = this.props.listPlace.filter(loopItem => loopItem.placeId == item.placeId)[0]
+        address = foundItem['address']
+        this.placeMap[item.placeId] = foundItem
+      }
+      return <DealItem
+        image={item.detailPicture}
+        name={item.dealName}
+        number={item.promoBriefTitle}
+        address={address}
+        key={item.dealId}
+      />
     }
 
     render() {
         const {forwardTo} = this.props
         return (
-
           <Container>
-            <DateFilter onPressFilter={this._handlePressFilter} ref='dateFilter' />
+            <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
             <ScrollView style={styles.container}>
               <View style={{...styles.cardBlock, ...styles.pb10}}>
                 <View style={{...styles.row, ...styles.pd15 }}>
@@ -107,17 +151,13 @@ export default class DealManager extends Component {
               </TouchableWithoutFeedback>
               <View style={{...styles.cardBlock, ...styles.pd10,}}>
                 <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
-                <DealItem
-                  image="https://image.foodbook.vn/images/fb/items/396/2016-04-15-03_09_22_sup-bi-do.jpg"
-                  name='Tặng 25% Lẩu Loxoho'
-                  number='25'
-                  address='94 Hoàng Quốc Việt, Cầu Giấy, Hà Nội'
-                />
-                <DealItem
-                  image="https://image.foodbook.vn/images/fb/items/396/2016-04-15-03_09_22_sup-bi-do.jpg"
-                  name='Tặng 25% Lẩu Loxoho'
-                  number='25'
-                  address='94 Hoàng Quốc Việt, Cầu Giấy, Hà Nội'
+                <ListViewExtend
+                    dataArray={this.props.listDeal}
+                    renderRow={(item) => this._renderItem(item)}
+                    keyExtractor={item=>item.dealId}
+                    onEndReached={this._loadMore}
+                    onRefresh={this._onRefresh}
+                    onItemRef={ref=>this.listview=ref}
                 />
               </View>
             </ScrollView>
