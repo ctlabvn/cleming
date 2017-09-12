@@ -54,7 +54,7 @@ export default class MerchantOverview extends Component {
                 if (data && data.updated && data.updated.data) {
                     let listPlace = data.updated.data.map(item => ({
                         id: item.placeId,
-                        name: item.name+' - '+item.address
+                        name: item.address
                     }))
 
                     // app.topDropdown.updateDropdownValues(listPlace)
@@ -64,7 +64,7 @@ export default class MerchantOverview extends Component {
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
                         selectedOption.id = data.updated.data[0].placeId
-                        selectedOption.name = data.updated.data[0].name
+                        selectedOption.name = data.updated.data[0].address
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
                         app.topDropdownListValue.updateSelectedOption(selectedOption)
@@ -72,7 +72,7 @@ export default class MerchantOverview extends Component {
                     } else if ((lat != 0 || long != 0) && !location.alreadyGotLocation) {
                         let selectedOption = {}
                         selectedOption.id = data.updated.data[0].placeId
-                        selectedOption.name = data.updated.data[0].name
+                        selectedOption.name = data.updated.data[0].address
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
                         app.topDropdownListValue.updateSelectedOption(selectedOption)

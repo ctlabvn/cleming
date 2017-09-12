@@ -82,6 +82,7 @@ export default class App extends Component {
     this.firstTime = true
     this.timer = null
     this.listPlace = []
+    this.listPlaceRender = []
   }
 
   _transitionScene = (prevIndex, index, thisNavigator) => {
@@ -143,6 +144,16 @@ export default class App extends Component {
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
 
+    if (!this.listPlace || this.listPlace.length ==0){
+      this.setListPlace()
+      const routeCheck = getPage(router.current)
+      if (routeCheck.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+      else this.listPlaceRender = this.listPlace;
+      this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+    }
+
+
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
       if (route) {
@@ -151,12 +162,10 @@ export default class App extends Component {
         this.header.show(route.headerType, route.title)
         this.footer.show(route.footerType, route.routeName)
 
-
         if (route.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
         else this.listPlaceRender = this.listPlace;
         this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
         this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
-
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
       } else {
@@ -280,7 +289,7 @@ export default class App extends Component {
         if (data && data.updated && data.updated.data) {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
-          selectedOption.name = data.updated.data[0].name
+          selectedOption.name = data.updated.data[0].address
           setSelectedOption(selectedOption)
         }
       })
@@ -402,7 +411,7 @@ export default class App extends Component {
 
       this.listPlace = place.listPlace.map(item => ({
           id: item.placeId,
-          name: item.name+' - '+item.address
+          name: item.address
       }))
 
       // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}\
