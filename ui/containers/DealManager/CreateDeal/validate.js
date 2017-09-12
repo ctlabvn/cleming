@@ -14,7 +14,6 @@ const isDigitOnly = (str) => {
 
 }
 export const validate = (values) => {
-	console.log('Validate Values', values)
 	let errors = {}
 	if (!values.dealTitle){
 		errors.dealTitle = I18n.t('err_field_must_not_empty')

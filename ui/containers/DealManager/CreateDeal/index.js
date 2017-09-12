@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput, PickerIOS} from 'react-native'
 import {Text, Button, Container, Content, Form} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -80,16 +80,19 @@ export default class CreateDeal extends Component {
       this.placeSelector.setSelectedPlace(dealInfo.placeId)
       this.spendingLevelBar.setValue(dealInfo.spendingLevel)
       this.exclusiveTypeSelector.setSelected(dealInfo.exclusive)
+      this.promoPicker.setValue(dealInfo.dealType)
+      // promoBriefSmallLeft:"TẶNG"
+      // promoBriefSmallRight:""
+      // promoBriefTitle:"10%"
     }
 
     componentDidMount(){
       // Move to Prevent warning
+
       this._fillRightPromo()
       const {xsession, getDealCategory, route} = this.props
       getDealCategory(xsession)
-      console.log('Params', this.props.params)
       if (route && route.params && route.params.deal){
-        console.log('Fit Param')
         this._fillForm(route.params.deal)
       }
     }
@@ -217,6 +220,7 @@ export default class CreateDeal extends Component {
         if (this.category.length == 0){
           this.category = category.map(item => ({value: item.dealCategoryId, label: item.name}))
         }
+
         return (
           <Container style={styles.fixContainer}>
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>

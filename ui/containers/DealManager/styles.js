@@ -125,7 +125,7 @@ export default {
   },
   fabBtnText: {
     textAlign: 'center',
-    lineHeight: 15,
+    lineHeight: (Platform.OS === 'ios' ? 0:15),
     fontSize: 20
   },
   bottomBtnLeft: {

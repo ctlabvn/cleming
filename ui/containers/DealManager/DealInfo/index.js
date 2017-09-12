@@ -150,10 +150,10 @@ export default class DealInfo extends Component {
           </ScrollView> */}
           <View style={styles.bottomBlock}>
             <Button style={styles.bottomBtnLeft}
-                onPress={()=>forwardTo('createDeal',  {deal:this.state.dealItem})}
+                onPress={()=>forwardTo('createDeal',  {mode: 'clone', deal:this.state.dealItem})}
               ><Text white>{I18n.t('clone_deal')}</Text></Button>
             <Button style={styles.bottomBtnRight}
-                onPress={()=>forwardTo('createDeal')}
+                onPress={()=>forwardTo('createDeal', {mode: 'new'})}
               >
               <Text white>{I18n.t('create_new_deal')}</Text>
             </Button>

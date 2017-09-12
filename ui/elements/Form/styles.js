@@ -1,5 +1,5 @@
 import material from '~/theme/variables/material'
-
+import {Platform} from 'react-native'
 export default {
 
   item: {
@@ -22,19 +22,24 @@ export default {
     // paddingLeft: 10,
     // paddingRight: 10,
     // width: '100%',
-    // borderBottomWidth: 0,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    height: 40,
     backgroundColor: 'white',
     borderColor: material.gray500,
-    borderWidth: 1,
     borderRadius: 3,
+    borderWidth: 1,
+    // padding: 10
   },
   input: {
     fontFamily: 'Roboto',
     fontWeight: '300',
     height:'100%',
     fontSize: material.btnTextSize,
-    borderBottomWidth: 0,
-    borderBottomColor: 'transparent'
+    borderWidth: 0,
+    borderColor: 'transparent'
   },
   textInput: {
     fontFamily: 'Roboto',
@@ -44,6 +49,8 @@ export default {
     backgroundColor: 'white',
     borderColor: material.gray500,
     borderWidth: 1,
+    height: (Platform.OS === 'ios' ? 150 : 'auto'),
+    padding: 5
   },
   inputIcon: {
     paddingRight:0,
