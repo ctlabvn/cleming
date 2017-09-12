@@ -82,6 +82,8 @@ export default class CreateDeal extends Component {
       this.spendingLevelBar.setValue(dealInfo.spendingLevel)
       this.exclusiveTypeSelector.setSelected(dealInfo.exclusive)
       this.promoPicker.setValue(dealInfo.dealType)
+      this.props.change('fromDate', new Date(dealInfo.fromDate*1000))
+      this.props.change('toDate', new Date(dealInfo.toDate*1000))
       // promoBriefSmallLeft:"TẶNG"
       // promoBriefSmallRight:""
       // promoBriefTitle:"10%"
