@@ -100,6 +100,7 @@ export default class DealManager extends Component {
         key={item.dealId}
         textLeft={item.promoBriefSmallLeft}
         onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
+        style={{marginBottom: 15}}
       />
     }
 
@@ -174,7 +175,7 @@ export default class DealManager extends Component {
               </View>
             </ScrollView>
             <Button style={styles.fabBtn}
-              onPress={()=>forwardTo('createDeal')}
+              onPress={()=>forwardTo('createDeal', {mode: 'new'})}
               >
                 <Text white style={styles.fabBtnText}>+</Text>
             </Button>

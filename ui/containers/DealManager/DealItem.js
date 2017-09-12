@@ -25,7 +25,7 @@ export default class DealManager extends Component {
         const {forwardTo} = this.props
         return (
           <TouchableWithoutFeedback onPress={this.props.onPress}>
-            <View style={styles.dealContainer}>
+            <View style={{...styles.dealContainer, ...this.props.style}}>
               <View style={{...styles.inline, ...styles.mb10}}>
                 <Image source={{uri: this.props.image}} style={styles.dealImage}/>
                 <View style={styles.dealRight}>

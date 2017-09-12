@@ -43,12 +43,12 @@ export default {
   },
 
   image: {
-    width: '100%',
+    width: 180,
     height: 100,
     resizeMode: 'cover',
   },
   imageItem: {
-    width: '47%',
+    width: 190,
     marginTop: 5,
     marginRight: 5,
     marginLeft: 0,
@@ -107,6 +107,6 @@ export default {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '47%'
+    width: 100
   }
 }

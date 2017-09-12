@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, TouchableWithoutFeedback, Modal, Image} from 'react-native'
+import {View, TouchableWithoutFeedback, Modal, Image, ScrollView} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -71,8 +71,16 @@ export default class DealImageSelector extends Component {
         if (flag >0) {
           if (!this.state.avatar || this.state.avatar == ''){
             this.setState({images: cloneImages, avatar: images[0].path})
+            setTimeout(()=>{
+              console.log('scrollToEnd');
+              this.scrollView.scrollToEnd()
+            }, 100)
           }else{
             this.setState({images: cloneImages})
+            setTimeout(()=>{
+              console.log('scrollToEnd');
+              this.scrollView.scrollToEnd()
+            }, 100)
           }
         }
 
@@ -198,12 +206,14 @@ export default class DealImageSelector extends Component {
             </View>
           </Modal>
           <View style={styles.imageContainer}>
-            {this.state.images.map(item => this._renderImage(item))}
-            <View style={styles.imageSizeContainer}>
-              <Button transparent onPress={this._open}>
-                <Icon name="add_photo" style={styles.addImageIcon}/>
-              </Button>
-            </View>
+            <ScrollView horizontal={true} ref={ref=>this.scrollView=ref}>
+              {this.state.images.map(item => this._renderImage(item))}
+              <View style={styles.imageSizeContainer}>
+                <Button transparent onPress={this._open}>
+                  <Icon name="add_photo" style={styles.addImageIcon}/>
+                </Button>
+              </View>
+            </ScrollView>
           </View>
 
         </View>
