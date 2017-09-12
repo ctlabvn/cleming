@@ -1,6 +1,8 @@
 import material from '~/theme/variables/material.js'
 export default {
-  dateTouch: {},
+  dateTouch: {
+    height: 40
+  },
   dateTouchBody: {
     flexDirection: 'row',
     height: 40,

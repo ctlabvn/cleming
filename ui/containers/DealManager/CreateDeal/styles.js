@@ -34,6 +34,7 @@ export default {
   dateInputHalfOuter: {
     width: half+'%',
     marginBottom: mb,
+    height: 40
   },
   halfRow: {
     width: half+'%'

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import styles from './styles'
 import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput, PickerIOS} from 'react-native'
-import {Text, Button, Container, Content, Form} from 'native-base'
+import {Text, Button, Container, Form} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo, showPopupInfo, setToast} from '~/store/actions/common'
@@ -15,13 +15,14 @@ import { Field, formValueSelector, reduxForm, reset } from "redux-form"
 import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField } from "~/ui/elements/Form"
 import DealImageSelector from './DealImageSelector'
 import ExclusiveTypeSelector from './ExclusiveTypeSelector'
-import PlaceSelector from './PlaceSelector'
+import PlaceSelector from './Plac eSelector'
 import moment from 'moment'
 import {getDealCategory, createDeal} from "~/store/actions/deal"
 import { getSession, getUser } from "~/store/selectors/auth"
 import {dealCategorySelector} from '~/store/selectors/deal'
 import LoadingModal from "~/ui/components/LoadingModal"
 import {validate} from './validate'
+import Content from '~/ui/components/Content'
 import { PROMO_TYPE } from "~/store/constants/app";
 
 // export const PROMO_TYPE = {
@@ -225,17 +226,19 @@ export default class CreateDeal extends Component {
           <Container style={styles.fixContainer}>
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>
             <Content style={styles.container}>
+              <Form>
                 <Text style={styles.label}>{I18n.t('deal_image')}</Text>
                 <DealImageSelector ref={ref=>this.dealImageSelector=ref}
                   mode='prefill'
                 />
+                <Text style={styles.label}>{I18n.t('title')}</Text>
                 <Field autoCapitalize="none" name="dealTitle"
                     icon={(input, active) => input.value && active ? 'close' : false}
                     iconStyle={{ color: material.gray500 }}
+                    icon={(input, active) => input.value && active ? 'close' : false}
                     onIconPress={input => input.onChange('')}
                     component={InputFieldWithErr}
                     style={styles.inputItem}
-                    placeholder={I18n.t('title')}
                 />
 
                 <View style={{...styles.mb20}}>
@@ -289,23 +292,24 @@ export default class CreateDeal extends Component {
                 {this._renderPromoteBlock()}
 
                 <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}/>
+                <Text style={styles.label}>{I18n.t('deal_description')}</Text>
                 <Field autoCapitalize="none" name="description"
                     component={MultiLineInputFieldWithErr}
                     style={styles.inputItem}
-                    placeholder={I18n.t('deal_description')}
                 />
+                <Text style={styles.label}>{I18n.t('keyword')}</Text>
                 <Field autoCapitalize="none" name="searchTag"
                     icon={(input, active) => input.value && active ? 'close' : false}
                     iconStyle={{ color: material.gray500 }}
                     onIconPress={input => input.onChange('')}
                     component={InputFieldWithErr}
                     style={styles.inputItem}
-                    placeholder={I18n.t('keyword')}
                 />
                 <Border />
                 {(place && place.listPlace) &&
                   <PlaceSelector ref={ref=>this.placeSelector=ref} listPlace={place.listPlace}/>
                 }
+              </Form>
             </Content>
             <Button style={styles.bottomButton} onPress={handleSubmit(this._onOk)}>
               <Text white>OK</Text>
