@@ -32,3 +32,8 @@ export const setListDeal = (data) => ({
   type: 'deal/setListDeal',
   payload: data
 })
+
+export const updateDateFilter = (payload) => ({
+  type: 'deal/updateDateFilter',
+  payload,
+})

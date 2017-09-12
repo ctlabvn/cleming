@@ -8,3 +8,8 @@ export const listDealSelector = (state) => {
   if (!state || !state.deal || !state.deal.listDeal) return emptyArr
   return state.deal.listDeal
 }
+
+export const dateFilterSelector = (state) => {
+  if (!state || !state.deal || !state.deal.currentDateFilter) return 'day'
+  return state.deal.currentDateFilter
+}

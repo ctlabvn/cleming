@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
-import {getListDeal, getDealStatistic} from '~/store/actions/deal'
+import {getListDeal, getDealStatistic, updateDateFilter} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
@@ -14,14 +14,15 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {listDealSelector} from '~/store/selectors/deal'
+import {listDealSelector, dateFilterSelector} from '~/store/selectors/deal'
 import {getListPlace} from '~/store/selectors/place'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     xsession: getSession(state),
     listDeal: listDealSelector(state),
+    currentDateFilter: dateFilterSelector(state),
     listPlace: getListPlace(state)
-}), {forwardTo, getListDeal, getDealStatistic})
+}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -51,7 +52,8 @@ export default class DealManager extends Component {
     }
 
     _handlePressFilter = (item) => {
-        const {app} = this.props
+        const {app, updateDateFilter} = this.props
+        updateDateFilter(item.currentDateFilter)
         let dateValue  = item.currentSelectValue.value
         let selectedPlace = app.topDropdown.getValue()
         if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -61,11 +63,10 @@ export default class DealManager extends Component {
 
     _load = (placeId, from, to)=>{
       const {xsession, getListDeal, getDealStatistic} = this.props
-      console.log('Get List Deal Statistic', getDealStatistic);
-      this.listview.showRefresh(true)
+      // this.listview.showRefresh(true)
       getListDeal(xsession, placeId, from, to,
         (err, data) => {
-          this.listview.showRefresh(false)
+          // this.listview.showRefresh(false)
         }
       )
       getDealStatistic(xsession, 116014, from, to,
@@ -74,6 +75,10 @@ export default class DealManager extends Component {
           console.log('Deal Statistic Data', data)
         }
       )
+    }
+
+    _onRefresh = () => {
+      console.log('On refreshing');
     }
 
     _loadMore = () => {
@@ -105,11 +110,12 @@ export default class DealManager extends Component {
     }
 
     render() {
-        const {forwardTo} = this.props
+        const {forwardTo, currentDateFilter} = this.props
         return (
           <Container style={styles.bgWhite}>
-            <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
+            <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
             <ScrollView style={styles.container}>
+              {/* <ActivityIndicator animating={true} size='large' color={material.primaryColor} /> */}
               <View style={{...styles.cardBlock, ...styles.pb10}}>
                 <View style={{...styles.row, ...styles.pd15 }}>
                     <View style={styles.moneyItem}>
@@ -165,13 +171,16 @@ export default class DealManager extends Component {
               </TouchableWithoutFeedback>
               <View style={{...styles.cardBlock, ...styles.pd10,}}>
                 <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
-                <ListViewExtend
+                {/* <ListViewExtend
                     dataArray={this.props.listDeal}
                     renderRow={(item) => this._renderItem(item)}
                     keyExtractor={item=>item.dealId}
                     onRefresh={this._onRefresh}
                     onItemRef={ref=>this.listview=ref}
-                />
+                    onEndReached={this._loadMore}
+                    style={{height: 200}}
+                /> */}
+                {this.props.listDeal.map(item=>this._renderItem(item))}
               </View>
             </ScrollView>
             <Button style={styles.fabBtn}
