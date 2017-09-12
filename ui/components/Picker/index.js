@@ -39,7 +39,7 @@ export default class Dropdown extends Component {
 
     _closeModal = () => {
       this.setState({value: this.cacheValue, modalVisible: false})
-      this.props.onChange && this.props.onChange(itemValue)
+      this.props.onChange && this.props.onChange(this.cacheValue)
     }
 
     _onOk = () => {
@@ -75,11 +75,11 @@ export default class Dropdown extends Component {
           >
             <TouchableWithoutFeedback onPress={()=>this._closeModal()}>
               <View style={styles.modalContainer}>
-                <View style={{...styles.row, ...styles.buttonBlock}}>
+                <View style={{...styles.row, ...styles.buttonBlock, ...styles.pd10}}>
                   <Button transparent onPress={()=>this._closeModal()}>
                     <Text light medium>Cancel</Text>
                   </Button>
-                  <Button transparent onPress={()=>this._onOk()}>
+                  <Button  transparent onPress={()=>this._onOk()}>
                     <Text primary medium bold>Ok</Text>
                   </Button>
                 </View>

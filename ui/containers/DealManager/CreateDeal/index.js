@@ -15,7 +15,7 @@ import { Field, formValueSelector, reduxForm, reset } from "redux-form"
 import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField } from "~/ui/elements/Form"
 import DealImageSelector from './DealImageSelector'
 import ExclusiveTypeSelector from './ExclusiveTypeSelector'
-import PlaceSelector from './Plac eSelector'
+import PlaceSelector from './PlaceSelector'
 import moment from 'moment'
 import {getDealCategory, createDeal} from "~/store/actions/deal"
 import { getSession, getUser } from "~/store/selectors/auth"

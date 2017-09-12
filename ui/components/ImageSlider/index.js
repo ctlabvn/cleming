@@ -38,7 +38,8 @@ export default class ImageSlider extends Component {
   onScrollEnd = (e) => {
     let contentOffset = e.nativeEvent.contentOffset;
     let viewSize = e.nativeEvent.layoutMeasurement;
-    this.page = Math.floor(contentOffset.x / viewSize.width)
+    let page = Math.floor(contentOffset.x / viewSize.width)
+    this.setState({page: page})
   }
 
   render() {

@@ -45,30 +45,35 @@ export default class DealDetail extends Component {
       return (
         <Container style={{...styles.bgWhite, paddingBottom: 50}}>
           <ImageSlider data={deal.lstPicture}/>
-          <ScrollView style={{...styles.pd10}}>
-            <Text bold medium>{deal.dealName}</Text>
-            <Text medium>{this._capitalize(I18n.t('from_date'))}
-              <Text medium bold> {moment(deal.fromDate*1000).format(DEFAULT_DATE_FORMAT)} </Text>
-              {I18n.t('to_date').toLowerCase()}
-              <Text medium bold> {moment(deal.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
-              <Text warning>{this._renderToDateStatus(deal.toDate)}</Text>
-            </Text>
-            <View style={{...styles.row, ...styles.pd15}}>
-              <View style={{...styles.halfRowItem}}>
-                <Text large gray>{this._capitalize(deal.promoBriefSmallLeft)}</Text>
+          <ScrollView>
+            <View style={{...styles.pd10}}>
+              <Text bold medium>{deal.dealName}</Text>
+              <Text medium>{this._capitalize(I18n.t('from_date'))}
+                <Text medium bold> {moment(deal.fromDate*1000).format(DEFAULT_DATE_FORMAT)} </Text>
+                {I18n.t('to_date').toLowerCase()}
+                <Text medium bold> {moment(deal.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
+                <Text warning>{this._renderToDateStatus(deal.toDate)}</Text>
+              </Text>
+              <View style={{...styles.row, ...styles.pd15}}>
+                <View style={{...styles.halfRowItem}}>
+                  <Text large gray>{this._capitalize(deal.promoBriefSmallLeft)}</Text>
+                </View>
+                <View style={{...styles.halfRowItem}}>
+                  <Text large warning bold>{deal.promoBriefTitle}</Text>
+                </View>
               </View>
-              <View style={{...styles.halfRowItem}}>
-                <Text large warning bold>{deal.promoBriefTitle}</Text>
-              </View>
+              <Text gray>{deal.description}</Text>
             </View>
-            <Text gray>{deal.description}</Text>
-
           </ScrollView>
 
           <View style={styles.bottomBlock}>
-            <Button style={styles.bottomBtnLeft}><Text white>{I18n.t('clone_deal')}</Text></Button>
+            <Button style={styles.bottomBtnLeft}
+              onPress={()=>forwardTo('createDeal', {mode: 'clone', deal: deal})}
+              >
+                <Text white>{I18n.t('clone_deal')}</Text>
+            </Button>
             <Button style={styles.bottomBtnRight}
-                onPress={()=>forwardTo('createDeal')}
+                onPress={()=>forwardTo('createDeal', {mode: 'new'})}
               >
               <Text white>{I18n.t('create_new_deal')}</Text>
             </Button>
