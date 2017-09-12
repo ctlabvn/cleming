@@ -298,7 +298,7 @@ export default class extends Component {
                             <View style={styles.groupRow}>
                                 <View row style={styles.subRow}>
                                     <Text medium bold
-                                          grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
+                                          grayDark>{item.tranCode && (item.tranCode.indexOf('#') ? '#' : '')}{item.tranCode}</Text>
                                     <Text medium
                                           grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                 </View>
