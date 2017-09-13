@@ -141,58 +141,67 @@ export default class App extends Component {
   }
 
   // list place item all place
-    switchListPlaceRender(showItemAllPlaceOnTopDropdown) {
+    switchListPlaceRender(showItemAllPlaceOnTopDropdown, cachePlace) {
 
-        this.listPlaceRender = this.listPlace;
-        return;
-/*
+        // this.listPlaceRender = this.listPlace;
+        // return;
+
         if (showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
         else this.listPlaceRender = this.listPlace;
+
         if (!this.listPlaceRender || this.listPlaceRender.length <= 0) return;
 
         // switch selectedOption
         const {setSelectedOption} = this.props;
-
         // console.warn(JSON.stringify(this.listPlaceRender))
         let selectedOption = {}
-        selectedOption.id = this.listPlaceRender[0].id
-        selectedOption.name = this.listPlaceRender[0].name
+
+        if (cachePlace && cachePlace.selectedPlace
+            && typeof cachePlace.selectedPlace.id != 'undefined'
+            && cachePlace.selectedPlace.name) {
+            selectedOption.id = cachePlace.selectedPlace.id
+            selectedOption.name = cachePlace.selectedPlace.name
+        } else {
+            selectedOption.id = this.listPlaceRender[0].id
+            selectedOption.name = this.listPlaceRender[0].name
+        }
 
         setSelectedOption(selectedOption)
+
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
-*/
     }
 
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
 
-    if (!this.listPlace || this.listPlace.length ==0){
-      this.setListPlace()
-      const routeCheck = getPage(router.current)
-      if (routeCheck.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
-      else this.listPlaceRender = this.listPlace;
-      this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
-      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
-    }
+    // if (!this.listPlace || this.listPlace.length ==0){
+    //   this.setListPlace()
+    //   const routeCheck = getPage(router.current)
+    //   if (routeCheck.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+    //   else this.listPlaceRender = this.listPlace;
+    //   this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+    //   this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+    // }
 
 
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
       if (route) {
-        // show header and footer, and clear search string
-        this.navigator.navigate(route)
-        this.header.show(route.headerType, route.title)
-        this.footer.show(route.footerType, route.routeName)
+          // show header and footer, and clear search string
+          this.navigator.navigate(route)
+          this.header.show(route.headerType, route.title)
+          this.footer.show(route.footerType, route.routeName)
 
-        // this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown)
+          this.currentRoute = route;
 
-        // console.warn('app updateDropdownValues ' + JSON.stringify(this.listPlaceRender));
-        // hide code 13/09/2017 to build
-        // this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
-        // this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+          this.setListPlace()
+          this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
+          this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+          this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
 
+          this.topDropdown.show(route.showTopDropdown)
 
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
@@ -422,6 +431,8 @@ export default class App extends Component {
     this.topDropdown.updateSelectedOption(item)
     this.header.showOverlay(false)
     setSelectedOption(item)
+
+    if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = item;
   }
   _handlePressIcon = (openning) => {
     // panda test

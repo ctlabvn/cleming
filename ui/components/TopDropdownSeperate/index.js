@@ -32,6 +32,7 @@ export default class TopDropdown extends Component {
     }
 
     updateSelectedOption(selectedOption) {
+
         this._handlePress(selectedOption)
         // this.setState({
         //     selectedOption: selectedOption,
@@ -135,7 +136,6 @@ export default class TopDropdown extends Component {
     }
 
     render() {
-        console.log('Render TopDropdownSeperate')
         const { notifications, getNotificationRequest, getNotification, show } = this.props
         let { openningDropdown, selectedOption, isMultiple } = this.state
         let maxHeight = openningDropdown ? 150 : 0

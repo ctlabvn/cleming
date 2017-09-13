@@ -53,6 +53,9 @@ export default {
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 0,
         cache: true,
     },
@@ -62,6 +65,9 @@ export default {
         headerType: 'home',
         showTopDropdown: true,
         showItemAllPlaceOnTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+            },
         tabIndex: 1,
         cache: true,
     },
@@ -82,6 +88,9 @@ export default {
         Page: DeliveryList,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -96,6 +105,9 @@ export default {
         Page: PlaceOrderList,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -109,6 +121,9 @@ export default {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 2,
         cache: true,
     },
