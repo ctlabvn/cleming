@@ -168,6 +168,16 @@ export default class App extends Component {
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
 
+    if (!this.listPlace || this.listPlace.length ==0){
+      this.setListPlace()
+      const routeCheck = getPage(router.current)
+      if (routeCheck.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+      else this.listPlaceRender = this.listPlace;
+      this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+    }
+
+
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
       if (route) {
@@ -182,6 +192,7 @@ export default class App extends Component {
         // hide code 13/09/2017 to build
         // this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
         // this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+
 
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
@@ -306,7 +317,8 @@ export default class App extends Component {
         if (data && data.updated && data.updated.data) {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
-          selectedOption.name = data.updated.data[0].name + ' - ' + data.updated.data[0].address
+          selectedOption.name = data.updated.data[0].address
+
           setSelectedOption(selectedOption)
 
           let listPlace = data.updated.data.map(item => ({
@@ -439,7 +451,7 @@ export default class App extends Component {
 
       this.listPlace = place.listPlace.map(item => ({
           id: item.placeId,
-          name: item.name + ' - ' + item.address
+          name: item.address
       }))
 
       // addition ITEM_ALL_PLACE into list place
