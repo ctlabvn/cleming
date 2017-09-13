@@ -43,7 +43,7 @@ import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import {
-  NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN,
+  NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN, ITEM_ALL_PLACE,
   initialAuthRouteName, initialRouteName,
 } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
@@ -82,6 +82,7 @@ export default class App extends Component {
     this.firstTime = true
     this.timer = null
     this.listPlace = []
+    this.listPlaceRender = []
   }
 
   _transitionScene = (prevIndex, index, thisNavigator) => {
@@ -139,6 +140,30 @@ export default class App extends Component {
 
   }
 
+  // list place item all place
+    switchListPlaceRender(showItemAllPlaceOnTopDropdown) {
+
+        this.listPlaceRender = this.listPlace;
+        return;
+/*
+        if (showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+        else this.listPlaceRender = this.listPlace;
+        if (!this.listPlaceRender || this.listPlaceRender.length <= 0) return;
+
+        // switch selectedOption
+        const {setSelectedOption} = this.props;
+
+        // console.warn(JSON.stringify(this.listPlaceRender))
+        let selectedOption = {}
+        selectedOption.id = this.listPlaceRender[0].id
+        selectedOption.name = this.listPlaceRender[0].name
+
+        setSelectedOption(selectedOption)
+        if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
+*/
+    }
+
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
@@ -151,11 +176,12 @@ export default class App extends Component {
         this.header.show(route.headerType, route.title)
         this.footer.show(route.footerType, route.routeName)
 
+        // this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown)
 
-        if (route.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
-        else this.listPlaceRender = this.listPlace;
-        this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
-        this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+        // console.warn('app updateDropdownValues ' + JSON.stringify(this.listPlaceRender));
+        // hide code 13/09/2017 to build
+        // this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+        // this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
 
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
@@ -280,8 +306,16 @@ export default class App extends Component {
         if (data && data.updated && data.updated.data) {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
-          selectedOption.name = data.updated.data[0].name
+          selectedOption.name = data.updated.data[0].name + ' - ' + data.updated.data[0].address
           setSelectedOption(selectedOption)
+
+          let listPlace = data.updated.data.map(item => ({
+              id: item.placeId,
+              name: item.name+' - '+item.address
+          }))
+
+          this.listPlace = listPlace;
+          this.setListPlace();
         }
       })
   }
@@ -378,6 +412,9 @@ export default class App extends Component {
     setSelectedOption(item)
   }
   _handlePressIcon = (openning) => {
+    // panda test
+      const { selectedPlace } = this.props;
+
     if (openning) {
       this.topDropdownListValue.close()
       this.header.showOverlay(false)
@@ -402,32 +439,32 @@ export default class App extends Component {
 
       this.listPlace = place.listPlace.map(item => ({
           id: item.placeId,
-          name: item.name+' - '+item.address
+          name: item.name + ' - ' + item.address
       }))
 
-      // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}\
-      // this.listPlace.splice(0, 0, itemAll)
-
-
+      // addition ITEM_ALL_PLACE into list place
       this.listPlaceItemAllPlace = Array.from(this.listPlace);
       // panda edit
       // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
-      // this.listPlaceItemAllPlace.splice(0, 0, itemAll)
+      this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
 
   }
 
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
     const route = getPage(router.current) || routes.notFound
+      console.log('panda test router ', router);
+      // console.log('panda test route ', route);
 
-      this.setListPlace();
+      // this.setListPlace();
     // this.listPlace = place.listPlace.map(item => ({
     //   id: item.placeId,
     //   name: item.name+' - '+item.address
     // }))
 
-      if (route.showItemAllPlaceOnTopDropdown) this.listPlaceRender = this.listPlaceItemAllPlace;
-      else this.listPlaceRender = this.listPlace;
+        // this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown)
+      // if (route.showItemAllPlaceOnTopDropdown) this.listPlaceRender = this.listPlaceItemAllPlace;
+      // else this.listPlaceRender = this.listPlace;
 
     return (
       <StyleProvider style={getTheme(material)}>

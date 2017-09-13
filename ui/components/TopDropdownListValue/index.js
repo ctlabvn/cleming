@@ -22,6 +22,7 @@ export default class TopDropdownListValue extends Component {
                 selectedOption = props.dropdownValues[0]
             }
         }
+
         this.state = {
             openningDropdown: false,
             zIndex: 0,
@@ -60,7 +61,8 @@ export default class TopDropdownListValue extends Component {
     }
 
     updateSelectedOption(selectedOption) {
-        this.setState({ selectedOption: selectedOption })
+        // this.setState({ selectedOption: selectedOption })
+        this._handlePress(selectedOption);
     }
     getValue() {
         return this.state.selectedOption;
@@ -83,9 +85,15 @@ export default class TopDropdownListValue extends Component {
 
     }
     _handlePress(item) {
-        this.state.selectedOption = item
+        // this.state.selectedOption = item
         this.props.onSelect && this.props.onSelect(item)
-        this.state.dropdownValues = this.props.dropdownValues
+        // this.state.dropdownValues = this.props.dropdownValues
+
+        this.setState({
+            selectedOption: item,
+            dropdownValues: this.props.dropdownValues
+        })
+
         // this.toggle()
 
         this.close();
@@ -153,6 +161,7 @@ export default class TopDropdownListValue extends Component {
         if (!dropdownValues || dropdownValues.length == 0){
             return <View />
         }
+
         if (selectedOption && Object.keys(selectedOption).length > 0){
             dropdownValues = dropdownValues.filter(item => item.id != this.state.selectedOption.id)
         }
@@ -160,6 +169,7 @@ export default class TopDropdownListValue extends Component {
         // console.log('similarity', this.searchByWord('lang ha ha noi', dropdownValues))
         let overlayStyle = openningDropdown ? (this.needSearch() ? styles.ovarlayContainerOpenPlus : styles.ovarlayContainerOpen) :styles.ovarlayContainerClose
         // let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen :styles.ovarlayContainerClose
+        // console.warn('topdropdownlistvalue render dropdownValues ' + JSON.stringify(dropdownValues));
         return (
             <View style={overlayStyle}>                               
                 <List

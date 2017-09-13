@@ -100,4 +100,6 @@ export const SCREEN = {
 }
 
 export const initialRouteName = 'login'
-export const initialAuthRouteName = 'merchantOverview' 
+export const initialAuthRouteName = 'merchantOverview'
+
+export const ITEM_ALL_PLACE = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}

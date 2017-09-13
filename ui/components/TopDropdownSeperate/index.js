@@ -32,11 +32,12 @@ export default class TopDropdown extends Component {
     }
 
     updateSelectedOption(selectedOption) {
-        this.setState({ 
-            selectedOption: selectedOption, 
-            openningDropdown: false,
-            searchString: '', 
-        })
+        this._handlePress(selectedOption)
+        // this.setState({
+        //     selectedOption: selectedOption,
+        //     openningDropdown: false,
+        //     searchString: '',
+        // })
         this.callback && this.callback(selectedOption)
     }
 
@@ -53,7 +54,8 @@ export default class TopDropdown extends Component {
         this.setState({isMultiple: isMultiple})
     }
 
-    translate(translateX){        
+    translate(translateX){
+        if (!this.container || !this.container.setNativeProps) return;
         this.container.setNativeProps({
             style: {
                 transform: [
@@ -91,7 +93,7 @@ export default class TopDropdown extends Component {
     }
 
     _handlePress(item) {
-        this.setState({ selectedOption: item, openningDropdown: false })
+        this.setState({ selectedOption: item, openningDropdown: false, searchString: '', })
         this.props.onSelect && this.props.onSelect(item)
     }
     _handlePressOverlay = () => {
