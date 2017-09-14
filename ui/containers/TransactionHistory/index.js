@@ -213,7 +213,7 @@ export default class extends Component {
                 moneyTitle = I18n.t('total_money_clingme_get')
                 break;
             case CLINGME_MERCHANT_COLLECTED:
-                moneyTitle = 'tất cả đã thu'
+                moneyTitle = 'Tổng đã thu'
                 break;
         }
 
