@@ -110,27 +110,18 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
-        // InteractionManager.runAfterInteractions(() => {
-        // const { app } = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // this._load()
-        // })
-        this.componentWillFocus()
+      const {app} = this.props
+      app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+      this._load()
     }
 
     componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
         const {app, place, user} = this.props
-        // if (user) {
-        //     this.props.app.header.show('home', user.chainName, user.avatar)
-        // }
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         if (!place.listPlace || place.listPlace.length == 0) {
             console.log('Place List will focus', place.listPlace)
             this._load()
         }
-        // })
-
     }
 
     // shouldComponentUpdate(nextProps, nextState) {

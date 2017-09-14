@@ -195,7 +195,7 @@ export default class App extends Component {
           this.footer.show(route.footerType, route.routeName)
 
           this.currentRoute = route;
-
+          console.log('Before set, switch list Place');
           this.setListPlace()
           this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
           this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
@@ -476,18 +476,9 @@ export default class App extends Component {
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
     const route = getPage(router.current) || routes.notFound
-      console.log('panda test router ', router);
-      // console.log('panda test route ', route);
 
-      // this.setListPlace();
-    // this.listPlace = place.listPlace.map(item => ({
-    //   id: item.placeId,
-    //   name: item.name+' - '+item.address
-    // }))
-
-        // this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown)
-      // if (route.showItemAllPlaceOnTopDropdown) this.listPlaceRender = this.listPlaceItemAllPlace;
-      // else this.listPlaceRender = this.listPlace;
+    this.setListPlace()
+    this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
 
     return (
       <StyleProvider style={getTheme(material)}>
