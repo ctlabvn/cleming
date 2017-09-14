@@ -27,7 +27,7 @@ import TopDropdownAllPlace from '~/ui/components/TopDropdownAllPlace'
 import {getListPlace} from'~/store/selectors/place'
 
 import {formatNumber} from "~/ui/shared/utils";
-import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
+import {MERCHANT_COLLECTED, CLINGME_COLLECTED, CLINGME_MERCHANT_COLLECTED} from '~/store/constants/app'
 
 import moment from "moment";
 import {
@@ -66,7 +66,7 @@ export default class extends Component {
         const historyList = this._getArray(totalHistoryList)
 
         this.state = {
-            currentTab: MERCHANT_COLLECTED,
+            currentTab: CLINGME_MERCHANT_COLLECTED,
             placeId: selectedPlace ? selectedPlace.placeId : null,
             fromTime: null,
             toTime: null,
@@ -182,6 +182,11 @@ export default class extends Component {
                     currentTab: CLINGME_COLLECTED,
                 }, () => this._load());
                 break;
+            case CLINGME_MERCHANT_COLLECTED:
+                this.setState({
+                    currentTab: CLINGME_MERCHANT_COLLECTED,
+                }, () => this._load());
+                break;
         }
     }
 
@@ -198,6 +203,18 @@ export default class extends Component {
             moneyTitle = I18n.t('total_money_merchant_get')
         } else {
             moneyTitle = I18n.t('total_money_clingme_get')
+        }
+
+        switch (this.state.currentTab) {
+            case MERCHANT_COLLECTED:
+                moneyTitle = I18n.t('total_money_merchant_get')
+                break;
+            case CLINGME_COLLECTED:
+                moneyTitle = I18n.t('total_money_clingme_get')
+                break;
+            case CLINGME_MERCHANT_COLLECTED:
+                moneyTitle = 'tất cả đã thu'
+                break;
         }
 
         return (
@@ -467,9 +484,9 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
-                              onPressTab={data => this._handlePressTab(data)}
-                              ref='tabs'/>
+                {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
+                              {/*onPressTab={data => this._handlePressTab(data)}*/}
+                              {/*ref='tabs'/>*/}
                 <DateFilter
                     defaultFilter='month'
                     type='lite-round'
