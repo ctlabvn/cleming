@@ -136,11 +136,23 @@ export default class extends Component {
     }
 
     _handleTopDrowpdown(data) {
-        if (data && data.id) this.setState({
-            placeId: data.id
-        }, () => this._load());
-        else (this._load());
+        if (data && typeof data.id != 'undefined') {
+            this.setState({
+                placeId: data.id
+            }, () => this._load());
+        }
+        else {
+            this._load()
+
+        };
     }
+
+    // _handleSelectPlace(item) {
+    //     // console.warn(JSON.stringify(item))
+    //     this.setState({
+    //         placeId: item.placeId,
+    //     }, () => this._load());
+    // }
 
     _handlePressFilter(data) {
         // console.warn('handlePressfilter data' + JSON.stringify(data))
@@ -229,17 +241,18 @@ export default class extends Component {
         "tranType": int  // 0 là giao dịch trực tiếp, 1 là order, 2 là trả qua clingme
         **/
         const { forwardTo } = this.props;
-        switch (item.tranType) {
-            case 0:
-                forwardTo('transactionDetail', {id: item.tranId, type: 2})
-                break;
-            case 1:
-                forwardTo('transactionDetail', {id: item.tranId, type: 3})
-                break;
-            case 2:
-                forwardTo('transactionDetail', {id: item.tranId, type: 1})
-                break;
-        }
+        forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        // switch (item.tranType) {
+        //     case 0:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 2})
+        //         break;
+        //     case 1:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 3})
+        //         break;
+        //     case 2:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 1})
+        //         break;
+        // }
 
     }
 
@@ -446,21 +459,14 @@ export default class extends Component {
         return newListPlace;
     }
 
-    _handleSelectPlace(item) {
-        // console.warn(JSON.stringify(item))
-        this.setState({
-            placeId: item.placeId,
-        }, () => this._load());
-    }
 
     render() {
         const {data} = this.props;
 
-        const listPlace = this._getListPlace();
+        // const listPlace = this._getListPlace();
 
         return (
             <Container style={styles.container}>
-                <View style={styles.spaceView}/>
                 <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
@@ -480,10 +486,6 @@ export default class extends Component {
                     renderRow={(item) => this._renderTransactionItem(item)}
                     rowHasChanged={true}
                 />}
-                <TopDropdownAllPlace
-                    dropdownValues={listPlace}
-                    onSelect={item => this._handleSelectPlace(item)}
-                />
             </Container>
         )
     }

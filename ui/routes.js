@@ -254,7 +254,11 @@ export default {
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
-        showTopDropdown: false,
+        showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         cache: true,
     },
     withdrawDetail: {
