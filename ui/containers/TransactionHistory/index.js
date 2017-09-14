@@ -66,7 +66,7 @@ export default class extends Component {
         const historyList = this._getArray(totalHistoryList)
 
         this.state = {
-            currentTab: MERCHANT_COLLECTED,
+            currentTab: CLINGME_MERCHANT_COLLECTED,
             placeId: selectedPlace ? selectedPlace.placeId : null,
             fromTime: null,
             toTime: null,
@@ -484,9 +484,9 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
-                              onPressTab={data => this._handlePressTab(data)}
-                              ref='tabs'/>
+                {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
+                              {/*onPressTab={data => this._handlePressTab(data)}*/}
+                              {/*ref='tabs'/>*/}
                 <DateFilter
                     defaultFilter='month'
                     type='lite-round'
