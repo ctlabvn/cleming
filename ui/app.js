@@ -81,8 +81,8 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
-    this.listPlace = []
-    this.listPlaceRender = []
+    this.listPlace = props.listPlace
+    this.listPlaceRender = props.listPlace
   }
 
   _transitionScene = (prevIndex, index, thisNavigator) => {
