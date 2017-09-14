@@ -152,7 +152,7 @@ export default class App extends Component {
         if (!this.listPlaceRender || this.listPlaceRender.length <= 0) return;
 
         // switch selectedOption
-        const {setSelectedOption} = this.props;
+        const {setSelectedOption, selectedPlace } = this.props;
         // console.warn(JSON.stringify(this.listPlaceRender))
         let selectedOption = {}
 
@@ -162,8 +162,11 @@ export default class App extends Component {
             selectedOption.id = cachePlace.selectedPlace.id
             selectedOption.name = cachePlace.selectedPlace.name
         } else {
-            selectedOption.id = this.listPlaceRender[0].id
-            selectedOption.name = this.listPlaceRender[0].name
+            if (selectedPlace && !showItemAllPlaceOnTopDropdown) selectedOption = selectedPlace;
+            else {
+                selectedOption.id = this.listPlaceRender[0].id
+                selectedOption.name = this.listPlaceRender[0].name
+            }
         }
         setSelectedOption(selectedOption)
 
