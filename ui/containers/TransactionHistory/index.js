@@ -221,8 +221,26 @@ export default class extends Component {
     }
 
     _handlePressItem(item) {
+        /*
+        below is API "tran-list"
+        "tranType": int, // 1 là trả qua Clm, 2 là trả trực tiếp, 3 là order
+
+        below is API "transaction-history"
+        "tranType": int  // 0 là giao dịch trực tiếp, 1 là order, 2 là trả qua clingme
+        **/
         const { forwardTo } = this.props;
-        forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        switch (item.tranType) {
+            case 0:
+                forwardTo('transactionDetail', {id: item.tranId, type: 2})
+                break;
+            case 1:
+                forwardTo('transactionDetail', {id: item.tranId, type: 3})
+                break;
+            case 2:
+                forwardTo('transactionDetail', {id: item.tranId, type: 1})
+                break;
+        }
+
     }
 
     _renderTransactionItem(item) {
