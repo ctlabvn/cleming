@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput, PickerIOS} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, TextInput, PickerIOS, Platform} from 'react-native'
 import {Text, Button, Container, Form} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -24,6 +24,9 @@ import LoadingModal from "~/ui/components/LoadingModal"
 import {validate} from './validate'
 import Content from '~/ui/components/Content'
 import { PROMO_TYPE } from "~/store/constants/app";
+import {API_BASE} from '~/store/constants/api'
+import RNFetchBlob from 'react-native-fetch-blob'
+import UploadingProgress from '~/ui/components/UploadingProgress'
 
 // export const PROMO_TYPE = {
 //   PERCENT: 1,
@@ -107,6 +110,67 @@ export default class CreateDeal extends Component {
       }
     }
 
+    _convertURI = (uri) => (Platform.OS === 'android') ? uri.replace('file:///', '') : uri
+
+    // _convertURI  = uri => uri
+
+    _fetch = (data) => {
+
+      console.log('Data', data);
+      const {resetForm, showPopupInfo} = this.props
+
+      let formData = []
+      for (let key in data){
+        if (data[key] && data[key].type && data[key].type=='multi'){
+            for (let item of data[key].data){
+              // case multiple file with sample key
+              formData.push({...item, data: RNFetchBlob.wrap(this._convertURI(item.uri))})
+            }
+        }else{
+          if (data[key] && data[key].type && data[key].type.indexOf('image') > -1){
+            // case single file
+            formData.push({...data[key], name: key})
+          }else{
+            // case text data
+            formData.push({name: key, data: String(data[key])})
+          }
+        }
+      }
+
+      const {xsession} = this.props
+      let xVersion = 1
+      let xDataVersion = 1
+      let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
+      this.uploadingProgress.open()
+      RNFetchBlob.fetch('POST', API_BASE+'/deal/create', {
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        'X-VERSION': String(xVersion),
+        'X-TIMESTAMP': String(xTimeStamp),
+        'X-DATA-VERSION': String(xDataVersion),
+        'X-AUTH': '',
+        'X-SESSION': xsession[0],
+      }, formData)
+      .uploadProgress({ interval : 250 },(written, total) => {
+          this.uploadingProgress.updateProgress(Math.floor(written / total*100))
+      })
+      .then((res) => {
+        let dataRes = res.json()
+        if (dataRes && dataRes.updated && dataRes.updated.isSaved){
+              resetForm('CreateDeal')
+              this.dealImageSelector.reset()
+              this.placeSelector.reset()
+              this.uploadingProgress.close()
+              showPopupInfo(I18n.t('create_deal_successful'))
+            }
+        ;
+      })
+      .catch((err) => {
+        this.uploadingProgress.close()
+        console.log('catch', err);
+      })
+    }
+
     _onOk = (item) => {
       const {createDeal, xsession, showPopupInfo, resetForm, setToast} = this.props
       let {fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag} = item
@@ -136,26 +200,27 @@ export default class CreateDeal extends Component {
       let data = {
         leftPromo, promoTitle, dealTitle, description, dealCategoryId,
         searchTag, spendingLevel, placeIdList, exclusiveType, promoType,
-        coverPicture: {uri: coverPicture, name: coverPicture, type: 'image/jpg'},
+        coverPicture: {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))},
         'detail_files[]': {type: 'multi', data: imageList},
         fromDate: from,
         toDate: to,
       }
-      this.setState({loading: true})
-      createDeal(xsession, data,
-        (err, data) => {
-          console.log('createDeal Err', err)
-          console.log('createDeal data', data)
-          // this.loadingModal.hide()
-          this.setState({loading: false})
-          if (data && data.updated && data.updated.isSaved){
-            resetForm('CreateDeal')
-            this.dealImageSelector.reset()
-            this.placeSelector.reset()
-            showPopupInfo(I18n.t('create_deal_successful'))
-          }
-        }
-      )
+      this._fetch(data)
+      // this.setState({loading: true})
+      // createDeal(xsession, data,
+      //   (err, data) => {
+      //     console.log('createDeal Err', err)
+      //     console.log('createDeal data', data)
+      //     // this.loadingModal.hide()
+      //     this.setState({loading: false})
+      //     if (data && data.updated && data.updated.isSaved){
+      //       resetForm('CreateDeal')
+      //       this.dealImageSelector.reset()
+      //       this.placeSelector.reset()
+      //       showPopupInfo(I18n.t('create_deal_successful'))
+      //     }
+      //   }
+      // )
     }
 
     _onPromoTypeChange = (value) => {
@@ -227,6 +292,7 @@ export default class CreateDeal extends Component {
         return (
           <Container style={styles.fixContainer}>
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>
+            <UploadingProgress text= 'Đang tạo khuyến mãi...' ref={ref=>this.uploadingProgress=ref}/>
             <Content style={styles.container}>
               <Form>
                 <Text style={styles.label}>{I18n.t('deal_image')}</Text>
