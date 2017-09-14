@@ -14,6 +14,7 @@ export const ALL_PLACES_CHECKING = 1;
 
 export const MERCHANT_COLLECTED = 1;
 export const CLINGME_COLLECTED = 2;
+export const CLINGME_MERCHANT_COLLECTED = 3;
 
 //  "transactionStatus": int,	// Trạng thái của hoá đơn, 0 và 3 là đang chờ Clingme xử lý, 1 là thành công, 2 là bị từ chối, 4 là chờ merchant phê duyệt, 5 là merchant đã xem và khiếu nại
 export const TRANSACTION_DIRECT_STATUS = {

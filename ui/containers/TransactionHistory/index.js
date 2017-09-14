@@ -27,7 +27,7 @@ import TopDropdownAllPlace from '~/ui/components/TopDropdownAllPlace'
 import {getListPlace} from'~/store/selectors/place'
 
 import {formatNumber} from "~/ui/shared/utils";
-import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
+import {MERCHANT_COLLECTED, CLINGME_COLLECTED, CLINGME_MERCHANT_COLLECTED} from '~/store/constants/app'
 
 import moment from "moment";
 import {
@@ -182,6 +182,11 @@ export default class extends Component {
                     currentTab: CLINGME_COLLECTED,
                 }, () => this._load());
                 break;
+            case CLINGME_MERCHANT_COLLECTED:
+                this.setState({
+                    currentTab: CLINGME_MERCHANT_COLLECTED,
+                }, () => this._load());
+                break;
         }
     }
 
@@ -198,6 +203,18 @@ export default class extends Component {
             moneyTitle = I18n.t('total_money_merchant_get')
         } else {
             moneyTitle = I18n.t('total_money_clingme_get')
+        }
+
+        switch (this.state.currentTab) {
+            case MERCHANT_COLLECTED:
+                moneyTitle = I18n.t('total_money_merchant_get')
+                break;
+            case CLINGME_COLLECTED:
+                moneyTitle = I18n.t('total_money_clingme_get')
+                break;
+            case CLINGME_MERCHANT_COLLECTED:
+                moneyTitle = 'tất cả đã thu'
+                break;
         }
 
         return (
