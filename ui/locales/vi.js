@@ -196,7 +196,7 @@ export default {
     'err_field_must_not_empty': 'Trường này không được để trống.',
     'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
     'err_identity_card_must_be_number': 'Sai định dạng Số CMND/Căn cước.',
-    
+
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
@@ -286,8 +286,8 @@ export default {
     'total_revenue': 'Tổng doanh thu \n phát sinh',
     'total_money_merchant_get': 'Tổng tiền Đối tác đã thu:',
     'total_money_clingme_get': 'Tổng tiền Clingme đã thu:',
-    'merchant_get_money_from_clingme': 'Đối tác nhận lại \n từ Clingme',
-    'clingme_get_money_from_merchant': 'Clingme nhận lại \n từ Đối tác',
+    'merchant_get_money_from_clingme': 'Clingme thanh toán \n cho đối tác',
+    'clingme_get_money_from_merchant': 'Đối tác thanh toán \n cho Clingme',
     'clingme_pay': 'Thanh toán Clingme',
 
     // Cashout

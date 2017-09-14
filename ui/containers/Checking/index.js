@@ -120,9 +120,9 @@ export default class extends Component {
                         <Text strong bold green style={styles.title}>{'\x3C'}{I18n.t('checked')}{'\x3E'}</Text>
                         <Border/>
                         <View row style={styles.moneyTitle}>
-                            <Text largeLight bold grayDark>{I18n.t('total_revenue')}</Text>
+                            <Text strong bold grayDark>{I18n.t('total_revenue')}</Text>
                             <View row>
-                                <Text large bold grayDark orange
+                                <Text strong bold grayDark orange
                                       onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
                                 <Icon name='foward' style={styles.icon}
                                       onPress={() => this._handlePressSumRevenue()}/>
@@ -157,31 +157,31 @@ export default class extends Component {
                     <Border/>
 
                     <View row style={styles.moneyTitle}>
-                        <Text largeLight bold grayDark style={clmTotalMoneySubChargeTextStyle}>
+                        <Text strong bold grayDark style={clmTotalMoneySubChargeTextStyle}>
                             {I18n.t('merchant_get_money_from_clingme')}
                         </Text>
                         <View row style={styles.moneyNoIcon}>
                             {clmTotalMoneySubCharge > 0
-                            && <Text large bold grayDark orange>{formatNumber(clmTotalMoneySubCharge)}</Text>}
+                            && <Text strong bold grayDark orange>{formatNumber(clmTotalMoneySubCharge)}</Text>}
                         </View>
                     </View>
 
                     <View row style={styles.moneyTitle}>
-                        <Text largeLight bold style={chargeSubClmTotalMoneyTextStyle}>
+                        <Text strong bold style={chargeSubClmTotalMoneyTextStyle}>
                             {I18n.t('clingme_get_money_from_merchant')}
                         </Text>
                         <View row style={styles.moneyNoIcon}>
                             {chargeSubClmTotalMoney > 0
-                            && <Text large bold grayDark orange>{formatNumber(chargeSubClmTotalMoney)}</Text>}
+                            && <Text strong bold grayDark orange>{formatNumber(chargeSubClmTotalMoney)}</Text>}
                         </View>
                     </View>
 
                 </Content>
-                <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/>
-                <View style={styles.fixButtonBlock}>
+                {/* <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/> */}
+                {/* <View style={styles.fixButtonBlock}>
                     <Text medium onPress={() => alert('thanh toán Clingme')} gray>{I18n.t('clingme_pay')}</Text>
                     <Text medium onPress={() => this._gotoCashoutAccount()} primary>{I18n.t('cashout_account')}</Text>
-                </View>
+                </View> */}
             </Container>
         )
     }
