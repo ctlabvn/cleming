@@ -61,8 +61,8 @@ export default class TopDropdownListValue extends Component {
     }
 
     updateSelectedOption(selectedOption) {
-        // this.setState({ selectedOption: selectedOption })
-        this._handlePress(selectedOption);
+        this.setState({ selectedOption: selectedOption })
+        // this._handlePress(selectedOption);
     }
     getValue() {
         return this.state.selectedOption;
@@ -133,7 +133,7 @@ export default class TopDropdownListValue extends Component {
     }
 
     // searchByWord(word, data){
-    //     // calculate the sum of similarity by compare word by word        
+    //     // calculate the sum of similarity by compare word by word
     //     const searchWord = convertVn(word.trim().toLowerCase())
     //     const searchedData = data.map(item=>{
     //         const compareWords = convertVn(item.name.trim().toLowerCase())
@@ -171,7 +171,7 @@ export default class TopDropdownListValue extends Component {
         // let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen :styles.ovarlayContainerClose
         // console.warn('topdropdownlistvalue render dropdownValues ' + JSON.stringify(dropdownValues));
         return (
-            <View style={overlayStyle}>                               
+            <View style={overlayStyle}>
                 <List
                     keyboardShouldPersistTaps="always"
                     contentContainerStyle={{ backgroundColor: material.primaryColor }}
@@ -182,7 +182,7 @@ export default class TopDropdownListValue extends Component {
                     }}
                     renderRow={(item) => {
                         return (
-                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>                                
+                            <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
                                 <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>
                             </ListItem>
                         )

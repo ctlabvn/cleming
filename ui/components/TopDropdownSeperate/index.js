@@ -18,7 +18,7 @@ export default class TopDropdown extends Component {
         let selectedOption
         if (props.selectedOption && Object.keys(props.selectedOption).length > 0) {
             selectedOption = props.selectedOption
-        } 
+        }
         this.state = {
             openningDropdown: false,
             selectedOption: selectedOption,
@@ -31,7 +31,7 @@ export default class TopDropdown extends Component {
 
     }
 
-    updateSelectedOption(selectedOption) {
+    updateSelectedOption(selectedOption, runCallback = true) {
 
         this._handlePress(selectedOption)
         // this.setState({
@@ -39,7 +39,7 @@ export default class TopDropdown extends Component {
         //     openningDropdown: false,
         //     searchString: '',
         // })
-        this.callback && this.callback(selectedOption)
+        runCallback && this.callback && this.callback(selectedOption)
     }
 
     setCallbackPlaceChange(callback){
@@ -61,7 +61,7 @@ export default class TopDropdown extends Component {
             style: {
                 transform: [
                   {translateX},
-                ],     
+                ],
             }
         })
     }
@@ -73,7 +73,7 @@ export default class TopDropdown extends Component {
     isOpenning(){
         return this.state.openningDropdown
     }
-    
+
     toggle() {
         // LayoutAnimation.easeInEaseOut()
         this.needSearch = this.props.app.topDropdownListValue.needSearch();
@@ -103,7 +103,7 @@ export default class TopDropdown extends Component {
 
 
 
-    search(searchString){            
+    search(searchString){
         const  data = this.props.app.topDropdownListValue.getValues()
         if(!data) return
         const searchWord = convertVn(searchString.trim().toLowerCase())
@@ -116,19 +116,19 @@ export default class TopDropdown extends Component {
                 const longest = Math.max(searchWord.length, compareWord.length)
                 const distance = leven(searchWord, compareWord)
                 const point = (longest-distance)/longest
-                // console.log(distance + ':'+ longest, searchWord, compareWord)     
+                // console.log(distance + ':'+ longest, searchWord, compareWord)
                 return {
                     item,
                     point,
                 }
                 })
                 listPlace = searchedData.sort((a,b)=>b.point-a.point)
-                    .slice(0, 5).map(c=>c.item)   
+                    .slice(0, 5).map(c=>c.item)
             }
             this.props.app.topDropdownListValue.updateDropdownValues(listPlace)
         } else {
             this.props.app.topDropdownListValue.updateDropdownValues(data)
-        }                
+        }
     }
 
     _setPlaceholderText(text = ''){
@@ -143,14 +143,14 @@ export default class TopDropdown extends Component {
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
         let containerStyleTopDown = (maxHeight == 150) ? { ...containerStyleFull, ...fakeZIndex } : { ...containerStyle, ...fakeZIndex }
-        
-        // is shown?        
+
+        // is shown?
         containerStyleTopDown.transform = [{translateX: show ? 0 : material.deviceWidth}]
        // console.warn(JSON.stringify(this.numberItem))
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
 
-            {(!selectedOption || !selectedOption.name) 
+            {(!selectedOption || !selectedOption.name)
                 ? <View style={styles.dropdownHeader}>
                         <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{I18n.t('loading_place')}</Text>
                     </View>

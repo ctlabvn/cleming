@@ -165,10 +165,9 @@ export default class App extends Component {
             selectedOption.id = this.listPlaceRender[0].id
             selectedOption.name = this.listPlaceRender[0].name
         }
-
         setSelectedOption(selectedOption)
 
-        if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption)
+        if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
     }
 
@@ -195,7 +194,6 @@ export default class App extends Component {
           this.footer.show(route.footerType, route.routeName)
 
           this.currentRoute = route;
-          console.log('Before set, switch list Place');
           this.setListPlace()
           this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
           this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
@@ -327,7 +325,6 @@ export default class App extends Component {
           let selectedOption = {}
           selectedOption.id = data.updated.data[0].placeId
           selectedOption.name = data.updated.data[0].address
-
           setSelectedOption(selectedOption)
 
           let listPlace = data.updated.data.map(item => ({
