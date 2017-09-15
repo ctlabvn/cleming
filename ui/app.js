@@ -37,7 +37,7 @@ import * as placeActions from '~/store/actions/place'
 import * as locationActions from '~/store/actions/location'
 import * as notificationActions from '~/store/actions/notification'
 import * as metaActions from "~/store/actions/meta"
-import { getSession } from '~/store/selectors/auth'
+import { getSession, isLogged } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
@@ -71,7 +71,8 @@ const UIManager = NativeModules.UIManager
   place: state.place,
   location: state.location,
   selectedPlace: getSelectedPlace(state),
-  xsession: getSession(state)
+  xsession: getSession(state),
+  islogged: isLogged(state),
 }), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions, ...metaActions })
 export default class App extends Component {
 
@@ -142,7 +143,6 @@ export default class App extends Component {
 
   // list place item all place
     switchListPlaceRender(showItemAllPlaceOnTopDropdown, cachePlace) {
-
         // this.listPlaceRender = this.listPlace;
         // return;
 
@@ -153,25 +153,31 @@ export default class App extends Component {
 
         // switch selectedOption
         const {setSelectedOption, selectedPlace } = this.props;
-        // console.warn(JSON.stringify(this.listPlaceRender))
+        // console.warn(JSON.stringify(selectedPlace))
+
         let selectedOption = {}
 
-        if (cachePlace && cachePlace.selectedPlace
-            && typeof cachePlace.selectedPlace.id != 'undefined'
-            && cachePlace.selectedPlace.name) {
-            selectedOption.id = cachePlace.selectedPlace.id
-            selectedOption.name = cachePlace.selectedPlace.name
-        } else {
-            if (selectedPlace && !showItemAllPlaceOnTopDropdown) selectedOption = selectedPlace;
-            else {
-                selectedOption.id = this.listPlaceRender[0].id
-                selectedOption.name = this.listPlaceRender[0].name
-            }
+            if (cachePlace && cachePlace.selectedPlace
+                && typeof cachePlace.selectedPlace.id != 'undefined'
+                && cachePlace.selectedPlace.name) {
+                selectedOption.id = cachePlace.selectedPlace.id
+                selectedOption.name = cachePlace.selectedPlace.name
+            } else {
+                if (selectedPlace && !showItemAllPlaceOnTopDropdown) selectedOption = selectedPlace;
+                else {
+                    selectedOption.id = this.listPlaceRender[0].id
+                    selectedOption.name = this.listPlaceRender[0].name
+                }
         }
         setSelectedOption(selectedOption)
 
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
+    }
+
+    setCachePlaceCurrentPage(place) {
+        this.currentRoute.cachePlace.selectedPlace = place
+        
     }
 
   // replace view from stack, hard code but have high performance
@@ -187,6 +193,7 @@ export default class App extends Component {
     //   this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
     // }
 
+    this._resetRoute()
 
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
@@ -217,6 +224,21 @@ export default class App extends Component {
       this.drawer._root[drawerState === 'opened' ? 'open' : 'close']()
     }
   }
+
+  _resetRoute() {
+       const {islogged} = this.props;
+       if (!islogged) {
+            // routes = JSON.parse(JSON.stringify(this.backupRoute));
+            // console.warn('show key of routes ' + JSON.stringify(Object.keys(routes)));
+            values = Object.values(routes);
+            Object.keys(routes).map((value, index)=> {
+                // if (values[index].cachePlace) console.warn(index + '. ' + value + ' = ' + JSON.stringify(values[index]))
+
+                /* reset cachePlace */
+                if (values[index].cachePlace) values[index].cachePlace.selectedPlace = {}
+            })
+       }
+    }
 
   // we handle manually to gain performance
   shouldComponentUpdate(nextProps) {

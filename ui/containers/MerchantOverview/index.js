@@ -57,9 +57,12 @@ export default class MerchantOverview extends Component {
                         name: item.address
                     }))
 
+                    console.warn('merchant overview load place ' + JSON.stringify(listPlace));
                     // app.topDropdown.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDefaultDropdownValues(listPlace)
+
+                    app.setCachePlaceCurrentPage(listPlace[0]);
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
