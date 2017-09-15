@@ -176,7 +176,7 @@ export default class App extends Component {
     }
 
     setCachePlaceCurrentPage(place) {
-        if (this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
+        if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
         if (this.topDropdown) this.topDropdown.updateSelectedOption(place, true)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place)
         this._handleChangePlace(place);
