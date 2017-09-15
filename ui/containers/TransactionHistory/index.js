@@ -152,12 +152,12 @@ export default class extends Component {
         };
     }
 
-    // _handleSelectPlace(item) {
-    //     // console.warn(JSON.stringify(item))
-    //     this.setState({
-    //         placeId: item.placeId,
-    //     }, () => this._load());
-    // }
+    _handleSelectPlace(item) {
+        // console.warn(JSON.stringify(item))
+        this.setState({
+            placeId: item.placeId,
+        }, () => this._load());
+    }
 
     _handlePressFilter(data, needSet=true) {
         console.log('Change Period', data);
@@ -505,10 +505,11 @@ export default class extends Component {
     render() {
         const {data} = this.props;
 
-        // const listPlace = this._getListPlace();
+        const listPlace = this._getListPlace();
 
         return (
             <Container style={styles.container}>
+                <View style={styles.spaceView}/>
                 {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
                               {/*onPressTab={data => this._handlePressTab(data)}*/}
                               {/*ref='tabs'/>*/}
@@ -531,6 +532,10 @@ export default class extends Component {
                     renderRow={(item) => this._renderTransactionItem(item)}
                     rowHasChanged={true}
                 />}
+                <TopDropdownAllPlace
+                    dropdownValues={listPlace}
+                    onSelect={item => this._handleSelectPlace(item)}
+                />
             </Container>
         )
     }

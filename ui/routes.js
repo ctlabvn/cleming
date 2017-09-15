@@ -254,7 +254,7 @@ export default {
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
-        showTopDropdown: true,
+        // showTopDropdown: true,
         // showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
