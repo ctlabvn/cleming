@@ -115,7 +115,7 @@ export default class extends Component {
     }
 
     render() {
-        const {data} = this.props;
+        const {data, checking} = this.props;
         const {detail} = this.state
         const clmTotalMoneySubCharge = parseInt(detail.clmMoneyCollected) - parseInt(detail.clmCharge)
         const clmTotalMoneySubChargeTextStyle = clmTotalMoneySubCharge > 0 ? styles.textTitle : styles.textTitleBlur;
@@ -124,6 +124,9 @@ export default class extends Component {
         //"status": int,			// 2 là đang đối soát, 3 là đã đối soát
         let colorStyle = (detail.status == 2) ? styles.warning : styles.success
         let checkText = (detail.status == 2) ? I18n.t('not_checking_yet') : I18n.t('checked')
+        if (!checking || !checking.listCompareCheckDt || checking.listCompareCheckDt.length == 0){
+          return <View style={styles.emptyPage}><Text style={styles.emptyText}>Chưa có đối soát nào</Text></View>
+        }
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
