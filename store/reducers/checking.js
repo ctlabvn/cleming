@@ -23,8 +23,12 @@ export const checking = (state = initialState, {type, payload}) => {
         case 'app/setCheckingPeriod':
             return {
               ...state,
-              checkingPeriod: payload 
+              checkingPeriod: payload
             }
+        case 'app/clearData':
+          return {...state, ...initialState}
+        case 'app/logout':
+          return {...state, ...initialState}
         default:
             return state;
     }

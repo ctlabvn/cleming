@@ -33,7 +33,7 @@ export default class DateFilterPeriod extends Component {
         let currentValue = this._getDataForFilter(this.props.data)[page]
 
         if (page != this.state.page){
-          this.dateFilterPeriod.scrollToIndex({index: page})
+          this.dateFilterPeriod && this.dateFilterPeriod.scrollToIndex({index: page})
           this.setState({page: page})
           this.props.onChangeDate && this.props.onChangeDate(currentValue, false)
         }
@@ -45,17 +45,22 @@ export default class DateFilterPeriod extends Component {
         if (this.props.select){
           let page = this._getDataForFilter(this.props.data).findIndex(item => item.id == this.props.select)
           if (page >-1){
-            this.dateFilterPeriod.scrollToIndex({index: page})
-            this.setState({page: page})
-            let currentValue = this._getDataForFilter(this.props.data)[page]
-            this.props.onChangeDate && this.props.onChangeDate(currentValue)
+            if (this.dateFilterPeriod){
+              this.dateFilterPeriod.scrollToIndex({index: page})
+              this.setState({page: page})
+              let currentValue = this._getDataForFilter(this.props.data)[page]
+              this.props.onChangeDate && this.props.onChangeDate(currentValue)
+            }
+
           }
         }else{
-          this.dateFilterPeriod.scrollToEnd({animated: false})
-          let length = this._getDataForFilter(this.props.data).length
-          this.setState({page: length-1})
-          let currentValue = this._getDataForFilter(this.props.data)[length-1]
-          this.props.onChangeDate && this.props.onChangeDate(currentValue)
+          if (this.dateFilterPeriod){
+            this.dateFilterPeriod.scrollToEnd({animated: false})
+            let length = this._getDataForFilter(this.props.data).length
+            this.setState({page: length-1})
+            let currentValue = this._getDataForFilter(this.props.data)[length-1]
+            this.props.onChangeDate && this.props.onChangeDate(currentValue)
+          }
         }
       }, 100)
     }
@@ -117,7 +122,7 @@ export default class DateFilterPeriod extends Component {
       page ++
       this.setState({page: page},
         ()=>{
-          this.dateFilterPeriod.scrollToIndex({index: page})
+          this.dateFilterPeriod && this.dateFilterPeriod.scrollToIndex({index: page})
           let currentValue = this._getDataForFilter(this.props.data)[page]
           this.props.onChangeDate && this.props.onChangeDate(currentValue)
         }
@@ -132,7 +137,7 @@ export default class DateFilterPeriod extends Component {
       if (page <=0){
         this.props.loadMore && this.props.loadMore()
       }
-      this.dateFilterPeriod.scrollToIndex({index: page})
+      this.dateFilterPeriod && this.dateFilterPeriod.scrollToIndex({index: page})
       this.setState({page: page}, ()=> {
         let currentValue = this._getDataForFilter(this.props.data)[page]
         this.props.onChangeDate && this.props.onChangeDate(currentValue)
