@@ -78,5 +78,16 @@ export default {
     },
     warning: {
       color: material.warningColor
+    },
+    emptyPage: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: material.gray200
+    },
+    emptyText: {
+      color: material.gray500,
+      fontSize: 22,
+      fontWeight: 'bold'
     }
 }
