@@ -176,8 +176,10 @@ export default class App extends Component {
     }
 
     setCachePlaceCurrentPage(place) {
-        this.currentRoute.cachePlace.selectedPlace = place
-
+        if (this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
+        if (this.topDropdown) this.topDropdown.updateSelectedOption(place, true)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place)
+        this._handleChangePlace(place);
     }
 
   // replace view from stack, hard code but have high performance

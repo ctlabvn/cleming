@@ -62,6 +62,7 @@ export default class MerchantOverview extends Component {
                     app.topDropdownListValue.updateDefaultDropdownValues(listPlace)
 
                     app.setCachePlaceCurrentPage(listPlace[0]);
+                    const hotSelectedPlace = listPlace[0];
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
@@ -94,9 +95,15 @@ export default class MerchantOverview extends Component {
                             this.setState({loading: false})
                         )
                     } else {
-                        getMerchantNews(xsession, selectedPlace.id,
+
+                        getMerchantNews(xsession, hotSelectedPlace.id,
                             this.setState({loading: false})
                         )
+
+                        // hide code time: 15/09/2017: for cachePlace
+                        // getMerchantNews(xsession, selectedPlace.id,
+                        //     this.setState({loading: false})
+                        // )
                     }
                 }else{
                     this.setState({ loading: false })
@@ -185,7 +192,9 @@ export default class MerchantOverview extends Component {
     }
 
     renderMainContainer() {
+
         const {handleSubmit, submitting, place} = this.props
+
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>
