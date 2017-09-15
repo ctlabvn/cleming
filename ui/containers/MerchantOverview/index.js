@@ -64,6 +64,7 @@ export default class MerchantOverview extends Component {
                     app.setCachePlaceCurrentPage(listPlace[0]);
                     const hotSelectedPlace = listPlace[0];
 
+
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
 

@@ -64,7 +64,7 @@ export default {
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
-        showItemAllPlaceOnTopDropdown: true,
+        // showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
             },
@@ -255,7 +255,7 @@ export default {
         headerType: 'back',
         footerType: 'none',
         showTopDropdown: true,
-        showItemAllPlaceOnTopDropdown: true,
+        // showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },

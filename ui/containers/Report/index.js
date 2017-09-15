@@ -87,17 +87,19 @@ export default class Report extends Component {
         if (place && place.listPlace && place.listPlace.length > 0) {
             let focusMerchant = place.listPlace.filter(item => item.placeId == placeId)[0]
             console.log('Focus Merchant', focusMerchant)
-            this.region = {
-                latitude: focusMerchant.latitude,
-                longitude: focusMerchant.longitude,
-                latitudeDelta: DEFAULT_MAP_DELTA.LAT,
-                longitudeDelta: DEFAULT_MAP_DELTA.LONG,
-            }
-            this.setState({                
-                focusMerchant: focusMerchant
-            }, ()=>{
-                this.mapview && this.mapview.animateToRegion(this.region)
-            })            
+            if (focusMerchant){
+              this.region = {
+                  latitude: focusMerchant.latitude,
+                  longitude: focusMerchant.longitude,
+                  latitudeDelta: DEFAULT_MAP_DELTA.LAT,
+                  longitudeDelta: DEFAULT_MAP_DELTA.LONG,
+              }
+              this.setState({
+                  focusMerchant: focusMerchant
+              }, ()=>{
+                  this.mapview && this.mapview.animateToRegion(this.region)
+              })
+            }        
         }
 
         this._requestMapData(placeId, fromTime, toTime)
@@ -130,7 +132,7 @@ export default class Report extends Component {
             const { app } = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDropdown)
             // let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            let selectedPlace = app.topDropdown.getValue()  
+            let selectedPlace = app.topDropdown.getValue()
             this.setState({
                 hideMap: false,
             })
@@ -155,13 +157,13 @@ export default class Report extends Component {
 
     _regionChange = (region) => {
         this.region = region
-            
+
         const { app } = this.props
         let placeData = app.topDropdown.getValue()
         if (placeData && placeData.id){
             this._requestMapData(placeData.id, this.fromTime, this.toTime)
         }
-        
+
     }
 
     onRegionChangeComplete = (region) => {
