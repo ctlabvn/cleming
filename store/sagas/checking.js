@@ -14,7 +14,14 @@ const requestCheckingDetail = createRequestSaga({
     key: 'checking/detail',
     cancel: 'app/logout',
     success: [
-        (data) => setCheckingData(data)
+        (data) => {
+          console.log('Data Checking', data);
+          if (data && data.data){
+            return setCheckingData(data.data)
+          }
+          return noop('')
+
+        }
     ],
     failure: [
         (data) => setToast(getToastMessage(I18n.t('err_general')), 'info', null, null, 3000, 'top'),
@@ -28,5 +35,3 @@ export default [
         ]
     },
 ]
-
-

@@ -73,4 +73,10 @@ export default {
         // borderTopWidth: 1,
         bottom: 0
     },
+    success: {
+      color: material.successColor
+    },
+    warning: {
+      color: material.warningColor
+    }
 }

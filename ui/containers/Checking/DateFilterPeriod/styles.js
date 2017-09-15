@@ -1,7 +1,8 @@
 import material from '~/theme/variables/material'
 export default {
   itemContainer: {
-    width: Math.floor(material.deviceWidth-100),
+    // 80 for stickPart, 20 for padding, 60 for two navigateIcon
+    width: Math.floor(material.deviceWidth-160),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -43,4 +44,19 @@ export default {
       fontWeight: 'bold',
       padding: 5
   },
+  navigateIcon: {
+    fontSize: 22,
+    color: material.primaryColor
+  },
+  iconContainer: {
+    width: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fakeIcon: {
+    width: 30,
+    height: 30,
+    // backgroundColor: 'yellow'
+  }
 }
