@@ -177,7 +177,7 @@ export default class App extends Component {
 
     setCachePlaceCurrentPage(place) {
         this.currentRoute.cachePlace.selectedPlace = place
-        
+
     }
 
   // replace view from stack, hard code but have high performance
