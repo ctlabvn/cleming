@@ -12,12 +12,18 @@ export const checking = (state = initialState, {type, payload}) => {
         case 'app/setCheckingData':
             return {
                 ...state,
-                data: payload.data,
+                ...payload,
+                listCompareCheckDt: (payload.pageNumber == 1) ? payload.listCompareCheckDt : [...state.listCompareCheckDt, ...payload.listCompareCheckDt],
             }
         case  'app/setCheckingDateFilterCurrentSelectValue':
             return {
                 ...state,
                 dateFilterCurrentSelectValue: payload
+            }
+        case 'app/setCheckingPeriod':
+            return {
+              ...state,
+              checkingPeriod: payload 
             }
         default:
             return state;

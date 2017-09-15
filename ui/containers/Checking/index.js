@@ -21,10 +21,12 @@ import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
 import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
+import DateFilterPeriod from './DateFilterPeriod'
 
 @connect(state => ({
     xsession: getSession(state),
     data: getCheckingData(state),
+    checking: state.checking,
     datefiltercurrentvalue: getCheckingDateFilterCurrentSelectValue(state),
 }), {...commonActions, ...checkingActions})
 
@@ -34,6 +36,7 @@ export default class extends Component {
         super(props);
         this.state = {
             currenTab: ALL_PLACES_CHECKING,
+            detail: {}
         }
     }
 
@@ -41,16 +44,13 @@ export default class extends Component {
         this._load();
     }
 
-    _handlePressFilter(data) {
-        const dateFilterData = data.currentSelectValue.value;
-        const fromTime = dateFilterData.from;
-        const toTime = dateFilterData.to;
-        this._load(fromTime, toTime);
-
-        const item = data.currentSelectValue;
-
-        const { setCheckingDateFilterCurrentSelectValue } = this.props;
-        setCheckingDateFilterCurrentSelectValue(item);
+    _handlePressFilter(data, needSet=true) {
+        console.log('Change Period', data);
+        const {setCheckingPeriod} = this.props
+        let index = this.props.checking.listCompareCheckDt.findIndex (item=>item.compareId==data.id)
+        let detail = Object.assign({}, this.props.checking.listCompareCheckDt[index])
+        this.setState({detail: detail})
+        needSet && setCheckingPeriod(data.id)
     }
 
     _handlePressTab(data) {
@@ -60,14 +60,20 @@ export default class extends Component {
     _onRefresh() {
         this._load()
     }
+    _loadMore = () => {
+      const {checking} = this.props
+      console.log('Trigger Load More', checking);
+      if (checking.pageNumber >= checking.totalPage) return
+      this._load(checking.pageNumber+1)
 
+    }
     _handlePressSumRevenue() {
-        const item = this.refs.dateFilter.getCurrentSelectValue()
+        // const item = this.refs.dateFilter.getCurrentSelectValue()
 
-        const { setCheckingDateFilterCurrentSelectValue } = this.props;
-        setCheckingDateFilterCurrentSelectValue(item);
-
-        const { datefiltercurrentvalue } =this.props;
+        // const { setCheckingDateFilterCurrentSelectValue } = this.props;
+        // setCheckingDateFilterCurrentSelectValue(item);
+        //
+        // const { datefiltercurrentvalue } =this.props;
 
         const {forwardTo} = this.props
         forwardTo('transactionHistory');
@@ -75,15 +81,17 @@ export default class extends Component {
 
 
 
-    _load(fromTime, toTime) {
+    _load(page=1) {
         const {xsession, getCheckingDetail} = this.props;
-        if (!fromTime && !toTime) {
-            const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-            fromTime = dateFilterData.from;
-            toTime = dateFilterData.to;
-        }
+        // if (!fromTime && !toTime) {
+        //     const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+        //     fromTime = dateFilterData.from;
+        //     toTime = dateFilterData.to;
+        // }
 
-        getCheckingDetail(xsession, fromTime, toTime, (err, data) => {
+        getCheckingDetail(xsession, page, (err, data) => {
+          console.log('Err Checking', err);
+          console.log('Data Checking', data);
         });
     }
 
@@ -92,39 +100,53 @@ export default class extends Component {
         forwardTo('cashoutAccount');
     }
 
+    _generateDataForDateFilterPeriod = () => {
+      const {checking} = this.props
+      // console.log('Checking', checking);
+      if (checking && checking.listCompareCheckDt){
+        return checking.listCompareCheckDt.map(item => ({
+          id: item.compareId,
+          type: item.cycleType,
+          fromTime: item.fromTime,
+          toTime: item.toTime
+        }))
+      }
+      return []
+    }
+
     render() {
         const {data} = this.props;
-        const detail = data;
-        const clmTotalMoneySubCharge = parseInt(detail.clmTotalMoney) - parseInt(detail.charge)
+        const {detail} = this.state
+        const clmTotalMoneySubCharge = parseInt(detail.clmMoneyCollected) - parseInt(detail.clmCharge)
         const clmTotalMoneySubChargeTextStyle = clmTotalMoneySubCharge > 0 ? styles.textTitle : styles.textTitleBlur;
-
-        const chargeSubClmTotalMoney = (parseInt(detail.charge) - parseInt(detail.clmTotalMoney))
+        const chargeSubClmTotalMoney = (parseInt(detail.clmCharge) - parseInt(detail.clmMoneyCollected))
         const chargeSubClmTotalMoneyTextStyle = chargeSubClmTotalMoney > 0 ? styles.textTitle : styles.textTitleBlur;
+        //"status": int,			// 2 là đang đối soát, 3 là đã đối soát
+        let colorStyle = (detail.status == 2) ? styles.warning : styles.success
+        let checkText = (detail.status == 2) ? I18n.t('not_checking_yet') : I18n.t('checked')
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter
-                    defaultFilter='month'
-                    type='lite-round'
-                    onPressFilter={data => this._handlePressFilter(data)}
-                    ref='dateFilter'/>
 
+                <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
+                  loadMore={this._loadMore} select={this.props.checking.checkingPeriod}
+                />
                 <Content
                     padder
                     style={styles.content}
                     onRefresh={() => this._onRefresh()}>
 
                     <View>
-                        <Text strong bold green style={styles.title}>{'\x3C'}{I18n.t('checked')}{'\x3E'}</Text>
+                        <Text strong bold style={{...styles.title, ...colorStyle}}>{'\x3C'}{checkText}{'\x3E'}</Text>
                         <Border/>
                         <View row style={styles.moneyTitle}>
                             <Text strong bold grayDark>{I18n.t('total_revenue')}</Text>
                             <View row>
-                                <Text strong bold grayDark orange
-                                      onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
-                                <Icon name='foward' style={styles.icon}
+                                <Text strong bold grayDark style={{...colorStyle}}
+                                      onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.mcMoneyCollected+detail.clmMoneyCollected)}</Text>
+                                <Icon name='foward' style={{...styles.icon, ...colorStyle}}
                                       onPress={() => this._handlePressSumRevenue()}/>
                             </View>
                         </View>
@@ -133,11 +155,11 @@ export default class extends Component {
                     <View style={{marginRight: 20}}>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>{I18n.t('total_money_merchant_get')}</Text>
-                            <Text medium bold grayDark>{formatNumber(detail.mcTotalMoney)}</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.mcMoneyCollected)}</Text>
                         </View>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>{I18n.t('total_money_clingme_get')}</Text>
-                            <Text medium bold grayDark>{formatNumber(detail.clmTotalMoney)}</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.clmMoneyCollected)}</Text>
                         </View>
                     </View>
 
@@ -148,8 +170,8 @@ export default class extends Component {
                             {I18n.t('clingme_fee')}
                         </Text>
                         <View row>
-                            <Text strong bold grayDark orange  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.charge)}</Text>
-                            <Icon name='foward' style={styles.icon}
+                            <Text strong bold grayDark style={{...colorStyle}}  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.clmCharge)}</Text>
+                            <Icon name='foward' style={{...styles.icon, ...colorStyle}}
                                   onPress={() => this._handlePressSumRevenue()}/>
                         </View>
                     </View>
@@ -162,7 +184,7 @@ export default class extends Component {
                         </Text>
                         <View row style={styles.moneyNoIcon}>
                             {clmTotalMoneySubCharge > 0
-                            && <Text strong bold grayDark orange>{formatNumber(clmTotalMoneySubCharge)}</Text>}
+                            && <Text strong bold grayDark style={{...colorStyle}}>{formatNumber(clmTotalMoneySubCharge)}</Text>}
                         </View>
                     </View>
 
@@ -172,7 +194,7 @@ export default class extends Component {
                         </Text>
                         <View row style={styles.moneyNoIcon}>
                             {chargeSubClmTotalMoney > 0
-                            && <Text strong bold grayDark orange>{formatNumber(chargeSubClmTotalMoney)}</Text>}
+                            && <Text strong bold grayDark style={{...colorStyle}}>{formatNumber(chargeSubClmTotalMoney)}</Text>}
                         </View>
                     </View>
 

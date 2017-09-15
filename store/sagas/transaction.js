@@ -106,7 +106,10 @@ const requestHistoryListTransaction = createRequestSaga({
     key: 'transaction/historyList',
     cancel: 'app/logout',
     success: [
-        (data) => setTransactionHistoryList(data),
+        (data) => {
+          console.log('History List Data', data);
+          return setTransactionHistoryList(data)
+        }
     ],
     failure: [
         (data) => setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top'),

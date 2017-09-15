@@ -8,6 +8,7 @@ import * as authActions from "~/store/actions/auth";
 import {getSession} from "~/store/selectors/auth";
 import { setCheckingDateFilterCurrentSelectValue } from "~/store/actions/checking";
 import * as transactionAction from "~/store/actions/transaction";
+import {setCheckingPeriod} from '~/store/actions/checking'
 import {getHistoryListTransaction} from "~/store/selectors/transaction";
 import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
 
@@ -32,9 +33,12 @@ import {MERCHANT_COLLECTED, CLINGME_COLLECTED, CLINGME_MERCHANT_COLLECTED} from 
 import moment from "moment";
 import {
     TIME_FORMAT_WITHOUT_SECOND,
-    DEFAULT_TIME_FORMAT
+    DEFAULT_TIME_FORMAT,
+    TRANSACTION_TYPE_CLINGME,
+    TRANSACTION_TYPE_DIRECT,
+    TRANSACTION_TYPE_ORDER_SUCCESS,
 } from "~/store/constants/app";
-
+import DateFilterPeriod from '~/ui/containers/Checking/DateFilterPeriod'
 import apiChecking from '~/store/api/checking'
 
 import I18n from '~/ui/I18n'
@@ -50,8 +54,9 @@ const SECOND_LEVEL_SHOW = 10
     xsession: getSession(state),
     data: getHistoryListTransaction(state),
     listPlace: getListPlace(state),
-    checkingDateFilterCurrentSelectValue: getCheckingDateFilterCurrentSelectValue(state),
-}), {...transactionAction, ...commonAction, setCheckingDateFilterCurrentSelectValue})
+    checking: state.checking,
+    // checkingDateFilterCurrentSelectValue: getCheckingDateFilterCurrentSelectValue(state),
+}), {...transactionAction, ...commonAction, setCheckingPeriod})
 
 export default class extends Component {
 
@@ -95,35 +100,35 @@ export default class extends Component {
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
-    _setDateFilterCurrentSelectValue(){
-        const {checkingDateFilterCurrentSelectValue} = this.props;
-
-        this.refs.dateFilter.setCurrentSelectValue(checkingDateFilterCurrentSelectValue);
-
-        // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-        // console.warn('3.1.1. dateFilterData' + JSON.stringify(dateFilterData));
-
-        fromTime = checkingDateFilterCurrentSelectValue.value.from;
-        toTime = checkingDateFilterCurrentSelectValue.value.to;
-
-        // fromTime = dateFilterData.from;
-        // toTime = dateFilterData.to;
-
-        this.setState({
-            fromTime: fromTime,
-            toTime: toTime,
-        }, () => this._load())
-    }
+    // _setDateFilterCurrentSelectValue(){
+    //     const {checkingDateFilterCurrentSelectValue} = this.props;
+    //
+    //     this.refs.dateFilter.setCurrentSelectValue(checkingDateFilterCurrentSelectValue);
+    //
+    //     // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+    //     // console.warn('3.1.1. dateFilterData' + JSON.stringify(dateFilterData));
+    //
+    //     fromTime = checkingDateFilterCurrentSelectValue.value.from;
+    //     toTime = checkingDateFilterCurrentSelectValue.value.to;
+    //
+    //     // fromTime = dateFilterData.from;
+    //     // toTime = dateFilterData.to;
+    //
+    //     this.setState({
+    //         fromTime: fromTime,
+    //         toTime: toTime,
+    //     }, () => this._load())
+    // }
 
     componentWillFocus() {
-        this._setDateFilterCurrentSelectValue();
+        // this._setDateFilterCurrentSelectValue();
     }
 
     componentDidMount() {
         const {app} = this.props;
         app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
 
-        this._setDateFilterCurrentSelectValue();
+        // this._setDateFilterCurrentSelectValue();
 
         // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
         // fromTime = dateFilterData.from;
@@ -154,20 +159,16 @@ export default class extends Component {
     //     }, () => this._load());
     // }
 
-    _handlePressFilter(data) {
-        // console.warn('handlePressfilter data' + JSON.stringify(data))
-        fromTime = data.currentSelectValue.value.from;
-        toTime = data.currentSelectValue.value.to;
-
+    _handlePressFilter(data, needSet=true) {
+        console.log('Change Period', data);
+        const {setCheckingPeriod} = this.props
+        let fromTime = data.fromTime
+        let toTime = data.toTime
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
         }, () => this._load())
-
-        const item = data.currentSelectValue;
-
-        const { setCheckingDateFilterCurrentSelectValue } = this.props;
-        setCheckingDateFilterCurrentSelectValue(item);
+        needSet && setCheckingPeriod(data.id)
     }
 
     _handlePressTab(data) {
@@ -236,6 +237,10 @@ export default class extends Component {
         return 1;
     }
 
+    _loadMoreDate = () => {
+      console.log('Load More Date');
+    }
+
     _onRefresh() {
         this._load();
     }
@@ -258,7 +263,13 @@ export default class extends Component {
         "tranType": int  // 0 là giao dịch trực tiếp, 1 là order, 2 là trả qua clingme
         **/
         const { forwardTo } = this.props;
-        forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        console.log('Press Item', item);
+        if (item.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+          forwardTo('transactionDetail', {id: item.posOrderId, type: item.tranType})
+        }else{
+          forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        }
+
         // switch (item.tranType) {
         //     case 0:
         //         forwardTo('transactionDetail', {id: item.tranId, type: 2})
@@ -432,7 +443,7 @@ export default class extends Component {
             }
         })
 
-        console.log('test arr ' + JSON.stringify(result));
+        // console.log('test arr ' + JSON.stringify(result));
         return result;
     }
 
@@ -476,6 +487,20 @@ export default class extends Component {
         return newListPlace;
     }
 
+    _generateDataForDateFilterPeriod = () => {
+      const {checking} = this.props
+      // console.log('Checking', checking);
+      if (checking && checking.listCompareCheckDt){
+        return checking.listCompareCheckDt.map(item => ({
+          id: item.compareId,
+          type: item.cycleType,
+          fromTime: item.fromTime,
+          toTime: item.toTime
+        }))
+      }
+      return []
+    }
+
 
     render() {
         const {data} = this.props;
@@ -487,11 +512,14 @@ export default class extends Component {
                 {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
                               {/*onPressTab={data => this._handlePressTab(data)}*/}
                               {/*ref='tabs'/>*/}
-                <DateFilter
+                {/* <DateFilter
                     defaultFilter='month'
                     type='lite-round'
                     onPressFilter={data => this._handlePressFilter(data)}
-                    ref='dateFilter'/>
+                    ref='dateFilter'/> */}
+                <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
+                  loadMore={this._loadMoreDate} select={this.props.checking.checkingPeriod}
+                />
                 {this._renderMoneyBand()}
                 {data && <ListViewExtend
                     style={styles.listViewExtend}
