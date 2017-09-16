@@ -219,7 +219,8 @@ export default class extends Component {
         return <ListTransaction onItemRef={ref=>this.listview=ref}
                 onEndReached={this._loadMore} onRefresh={this._onRefresh}
                 itemKey='tranId' data={transaction.listTransaction}
-                onScroll = {(e)=>console.log('Scrolling', e)}
+                onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
+                onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
                />
     }
 
@@ -243,9 +244,11 @@ export default class extends Component {
         //     moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
         // }
         // <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+        // let filterStyle= this.state.showFilter ? {width: 'auto', height: 'auto', opacity: 1} : {width: 0, height: 0, opacity: 0}
         return (
             <Container style={styles.container}>
                 <View style={{ flex: 1 }}>
+                  <View ref={ref => this.filterBlock=ref}>
                     <DateFilter defaultFilter={currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilter} ref='transactionFilter'
@@ -258,6 +261,7 @@ export default class extends Component {
                       <Text grayDark>{I18n.t('confirmed_waiting_revenue')}</Text>
                       <Text medium bold warning>{formatNumber(transaction.revenueWait)} đ</Text>
                     </View>
+                  </View>
                         {this._renderList()}
                         <Spinner onItemRef={ref=>this.spinner=ref}
                         // color={material.red500}

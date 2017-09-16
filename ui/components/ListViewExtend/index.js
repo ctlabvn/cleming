@@ -19,6 +19,9 @@ export default class ListViewExtend extends Component {
     this.state.refreshing = false
     this.scrollTop = 0
     this.up = true
+    this.direction = 'up'
+    this.triggerNum = 0
+    this.lastTimeCall = 0
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -71,6 +74,15 @@ export default class ListViewExtend extends Component {
     this.setState({refreshing})
   }
 
+
+  // onScroll: function(event) {
+  // var currentOffset = event.nativeEvent.contentOffset.y;
+  //   var direction = currentOffset > this.offset ? 'down' : 'up';
+  // this.offset = currentOffset;
+  // console.log(direction);
+  // },
+
+
   render() {
     const {onRefresh, removeClippedSubviews, ...props} = this.props
     // always override for performance
@@ -78,13 +90,48 @@ export default class ListViewExtend extends Component {
     return (
       <ListView
         {...props}
-        onScroll={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
+        onScroll={e=>{
+          this.scrollTop = e.nativeEvent.contentOffset.y
+          if (this.scrollTop > 100){
+            this.props.onScrollDown && this.props.onScrollDown()
+          }else{
+            this.props.onScrollUp && this.props.onScrollUp()
+          }
+        }}
+        // onMomentumScrollEnd = {e => {
+        //   console.log('On Momentum Scroll End');
+        //   let currentOffset = e.nativeEvent.contentOffset.y
+        //   let now = new Date().getTime()
+        //   if (currentOffset > this.scrollTop && currentOffset-this.scrollTop > 35){
+        //     if (this.triggerNum == 0){
+        //       this.triggerNum ++
+        //       this.direction = 'down'
+        //       this.props.onScrollDown && this.props.onScrollDown()
+        //     }else if (this.direction == 'up'){
+        //       this.direction = 'down'
+        //       this.props.onScrollDown && this.props.onScrollDown()
+        //     }
+        //   }else {
+        //     if (this.scrollTop - currentOffset > 35){
+        //       if (this.triggerNum == 0){
+        //         this.triggerNum ++
+        //         this.direction = 'up'
+        //         this.props.onScrollUp && this.props.onScrollUp()
+        //       }else if (this.direction == 'down'){
+        //         this.direction = 'up'
+        //         this.props.onScrollUp && this.props.onScrollUp()
+        //       }
+        //     }
+        //   }
+        //   this.scrollTop = currentOffset
+        // }}
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
         removeClippedSubviews={removeSubview}
         dataSource={this.state.dataSource}
         onEndReachedThreshold={10}
+        scrollEventThrottle={200}
       />
     );
   }
