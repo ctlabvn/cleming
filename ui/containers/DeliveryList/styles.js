@@ -2,7 +2,7 @@ import material from '~/theme/variables/material.js'
 export default{
     container: {
         // paddingTop: 50,
-        backgroundColor: material.gray200 
+        backgroundColor: material.gray200
     },
     contentContainer: {
       padding: 0,
@@ -108,5 +108,19 @@ export default{
     },
     time: {
         marginRight: 5
+    },
+    revenueBlock: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 5,
+      paddingBottom: 5,
+      backgroundColor: material.white500
+    },
+    primaryBorder: {
+      borderBottomWidth: 1,
+      borderBottomColor: material.primaryColor,
     }
 }

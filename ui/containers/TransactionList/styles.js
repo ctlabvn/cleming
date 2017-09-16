@@ -176,5 +176,18 @@ export default {
         color: material.gray600,
         marginRight: 3
     },
+    revenueBlock: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 5,
+      paddingBottom: 5
+    },
+    primaryBorder: {
+      borderBottomWidth: 1,
+      borderBottomColor: material.primaryColor,
+    }
 
 }
