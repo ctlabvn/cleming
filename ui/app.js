@@ -171,6 +171,13 @@ export default class App extends Component {
         }
         setSelectedOption(selectedOption)
 
+        // addition 16/09/2017 fix bug for All Place Mode <<<
+        if (selectedOption.id != ITEM_ALL_PLACE.id) this.defaultSelectedOption = selectedOption;
+        if (!showItemAllPlaceOnTopDropdown && selectedOption.id == ITEM_ALL_PLACE.id && this.defaultSelectedOption) {
+            selectedOption = this.defaultSelectedOption;
+        }
+        // >>>
+
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
     }
