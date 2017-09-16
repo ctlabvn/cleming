@@ -59,8 +59,8 @@ export const NOTIFY_TYPE={
 }
 
 export const TRANSACTION_TYPE={
-    CLINGME: 1,
-    DIRECT: 2
+    CLINGME: 2,
+    DIRECT: 0
 }
 export const FEEDBACK_CLM_TRANSACTION = {
     MISS: 1,
