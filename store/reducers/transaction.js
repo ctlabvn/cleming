@@ -27,9 +27,7 @@ export const transaction = (state = initialState, { type, payload }) => {
     case 'app/setListAllTransaction':
       return {
         ...state,
-        pageNumber: payload.pageNumber,
-        totalPage: payload.totalPage,
-        totalRecord: payload.totalRecord,
+        ...payload,
         listTransaction: payload.pageNumber > 1 ? [...state.listTransaction, ...payload.listTransaction] : payload.listTransaction
       }
     case 'app/setListTransactionPayWithClingme':

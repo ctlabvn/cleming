@@ -295,5 +295,8 @@ export default {
     'all_places': 'Tất cả địa điểm',
 
     // Transaction History
-    'transaction_history': 'Lịch sử giao dịch'
+    'transaction_history': 'Lịch sử giao dịch',
+
+    'waiting_revenue' : 'Doanh thu chờ duyệt',
+    'confirmed_waiting_revenue': 'Doanh thu đã duyệt'
 }

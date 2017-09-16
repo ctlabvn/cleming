@@ -3,7 +3,10 @@ export default {
     dateFilter: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
         backgroundColor: material.white500
     },
     stickPart: {
@@ -63,13 +66,13 @@ export default {
         flex: 1
     },
     buttonCustomDateFilter: {
-        backgroundColor: material.primaryColor, 
+        backgroundColor: material.primaryColor,
         paddingTop: 2,
         paddingBottom: 2,
         paddingLeft: 7,
         paddingRight: 7,
         height: 30
-                        
+
     }
 
 
