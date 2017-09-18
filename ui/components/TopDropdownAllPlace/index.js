@@ -99,11 +99,12 @@ export default class TopDropdown extends Component {
         const {notifications, getNotificationRequest, getNotification} = this.props
         let {dropdownValues} = this.props
         const {openningDropdown} = this.state
-        let maxHeight = openningDropdown ? 150 : 0
-        let fakeZIndex = (maxHeight == 150) ? {zIndex: 1000} : {zIndex: null}
+        const MAX_HEIGHT = 350;
+        let maxHeight = openningDropdown ? MAX_HEIGHT : 0
+        let fakeZIndex = (maxHeight == MAX_HEIGHT) ? {zIndex: 1000} : {zIndex: null}
         const containerStyle = (Platform.OS === 'ios') ? styles.dropdownContainerIos : styles.dropdownContainerAndroid
         const containerStyleFull = (Platform.OS === 'ios') ? styles.dropdownContainerIosFull : styles.dropdownContainerAndroidFull
-        let containerStyleTopDown = (maxHeight == 150) ? {...containerStyleFull, ...fakeZIndex} : {...containerStyle, ...fakeZIndex}
+        let containerStyleTopDown = (maxHeight == MAX_HEIGHT) ? {...containerStyleFull, ...fakeZIndex} : {...containerStyle, ...fakeZIndex}
         if (!dropdownValues || dropdownValues.length == 0) {
             return (
                 <View style={containerStyleTopDown}>
