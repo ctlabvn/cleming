@@ -28,7 +28,7 @@ export default class DateFilterPeriod extends Component {
           this.setState({page: newPage})
         }
       }
-      else if (nextProps.select != this.props.select){
+      else if (nextProps.select != this.props.select && nextProps.select){
         let page = this._getDataForFilter(this.props.data).findIndex(item => item.id == nextProps.select)
         let currentValue = this._getDataForFilter(this.props.data)[page]
 
