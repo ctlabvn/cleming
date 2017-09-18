@@ -78,11 +78,12 @@ export default class extends Component {
             loading: false,
             totalHistoryList: totalHistoryList,
             historyList: historyList,
+            compareId: 0
         }
 
     }
 
-    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
+    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0, compareId = this.state.compareId) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
 
@@ -100,25 +101,6 @@ export default class extends Component {
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
-    // _setDateFilterCurrentSelectValue(){
-    //     const {checkingDateFilterCurrentSelectValue} = this.props;
-    //
-    //     this.refs.dateFilter.setCurrentSelectValue(checkingDateFilterCurrentSelectValue);
-    //
-    //     // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-    //     // console.warn('3.1.1. dateFilterData' + JSON.stringify(dateFilterData));
-    //
-    //     fromTime = checkingDateFilterCurrentSelectValue.value.from;
-    //     toTime = checkingDateFilterCurrentSelectValue.value.to;
-    //
-    //     // fromTime = dateFilterData.from;
-    //     // toTime = dateFilterData.to;
-    //
-    //     this.setState({
-    //         fromTime: fromTime,
-    //         toTime: toTime,
-    //     }, () => this._load())
-    // }
 
     componentWillFocus() {
         // this._setDateFilterCurrentSelectValue();
@@ -127,7 +109,7 @@ export default class extends Component {
     componentDidMount() {
         const {app} = this.props;
         app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
-
+        
         // this._setDateFilterCurrentSelectValue();
 
         // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
@@ -162,11 +144,11 @@ export default class extends Component {
     _handlePressFilter(data, needSet=true) {
         console.log('Change Period', data);
         const {setCheckingPeriod} = this.props
-        let fromTime = data.fromTime
-        let toTime = data.toTime
+        let {fromTime, toTime, id} = data
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
+            compareId: id
         }, () => this._load())
         needSet && setCheckingPeriod(data.id)
     }
@@ -285,7 +267,6 @@ export default class extends Component {
     }
 
     _renderTransactionItem(item) {
-        console.log('render Row Item');
         if (item.seeMore) {
             // const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
             if (item.flagList.levelList > 1) return null;
@@ -520,6 +501,7 @@ export default class extends Component {
                     ref='dateFilter'/> */}
                 <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
                   loadMore={this._loadMoreDate} select={this.props.checking.checkingPeriod}
+                  ref={ref=>this.dateFilterPeriod=ref}
                 />
                 {this._renderMoneyBand()}
                 {data && <ListViewExtend

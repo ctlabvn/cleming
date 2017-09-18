@@ -18,6 +18,12 @@ export default class DateFilterPeriod extends Component {
       this.state = {
           page: 0
       }
+      this.scrollTop = 0
+      this.up = true
+    }
+
+    getValue = () => {
+      return this._getDataForFilter(this.props.data)[this.state.page]
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -149,7 +155,7 @@ export default class DateFilterPeriod extends Component {
       let length = Math.floor(material.deviceWidth-160)
       return { length: length, offset: length * index, index }
     }
-
+    
     render() {
         let hasPrevious = true, hasNext = true
         if (this.state.page <= 0) hasPrevious = false
@@ -178,6 +184,10 @@ export default class DateFilterPeriod extends Component {
               ref={ref=>this.dateFilterPeriod=ref}
               onEndReachedThreshold={10}
               getItemLayout={this.getItemLayout}
+              removeClippedSubviews={false}
+              onScroll={e=> {
+                this.scrollTop = e.nativeEvent.contentOffset.x
+              }}
             />
             {hasNext && <TouchableWithoutFeedback onPress={this._goNext}>
               <View style={styles.iconContainer}>
