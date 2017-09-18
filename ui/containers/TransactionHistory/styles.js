@@ -67,16 +67,14 @@ export default {
     },
 
     textPlaceTitle: {
-        marginTop: 20,
-        marginBottom: 5,
-        marginLeft: 15,
         marginRight: 15,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        flex: 1,
     },
 
     numberPlaceTitle: {
-        marginBottom: 7,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        alignSelf: 'flex-start',
     },
 
     button: {
