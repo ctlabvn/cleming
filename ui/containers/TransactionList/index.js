@@ -254,13 +254,13 @@ export default class extends Component {
                         listValue={options.transactionFilter} ref='transactionFilter'
                     />
                     <View style={{...styles.revenueBlock}}>
-                      <Text grayDark>{I18n.t('waiting_revenue')}</Text>
-                      <Text medium bold primary>{formatNumber(transaction.revenueApproved)} đ</Text>
-                    </View>
-                    <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
                       <Text grayDark>{I18n.t('confirmed_waiting_revenue')}</Text>
                       <Text medium bold warning>{formatNumber(transaction.revenueWait)} đ</Text>
                     </View>
+                    <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
+                        <Text grayDark>{I18n.t('waiting_revenue')}</Text>
+                        <Text medium bold primary>{formatNumber(transaction.revenueApproved)} đ</Text>
+                     </View>
                   </View>
                         {this._renderList()}
                         <Spinner onItemRef={ref=>this.spinner=ref}

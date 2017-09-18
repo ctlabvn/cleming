@@ -69,6 +69,8 @@ export default {
     textPlaceTitle: {
         marginTop: 20,
         marginBottom: 5,
+        marginLeft: 10,
+        marginRight: 10,
         alignSelf: 'center'
     },
 
