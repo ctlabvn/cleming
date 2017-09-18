@@ -80,8 +80,6 @@ export default class extends Component {
             historyList: historyList,
         }
 
-        console.warn('constructor ' + this.state.placeId);
-
     }
 
     _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
@@ -94,7 +92,6 @@ export default class extends Component {
         // this.listview.showRefresh(true)
 
         /* change 18/09/2017 */
-        console.warn('transaction history place id ' + JSON.stringify(placeId));
         getTransactionHistoryList(xsession, placeId, fromTime, toTime, option)
 
         // getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
