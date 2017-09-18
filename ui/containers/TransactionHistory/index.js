@@ -364,12 +364,12 @@ export default class extends Component {
 
                                 <View row style={styles.subRow}>
                                     <Text medium orange>{status}</Text>
-                                    <Text medium bold grayDark>{item.moneyAmount} đ</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.moneyAmount)} đ</Text>
                                 </View>
 
                                 <View row style={styles.subRow}>
                                     <Text medium grayDark>{I18n.t('clingme_fee')}</Text>
-                                    <Text medium bold grayDark>{item.charge} đ</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.charge)} đ</Text>
                                 </View>
                             </View>
                         </View>
