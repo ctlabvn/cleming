@@ -51,8 +51,8 @@ export default {
 
     historyList(xsession, placeId, fromTime, toTime, option=1, pageNumber=0){
         console.log('history list API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
-        if (placeId) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
-        else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
+        if (!placeId || placeId <= 0) return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
+        else return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
     },
 
     updateViewStatusPayCLM(xsession, tranId){

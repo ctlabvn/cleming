@@ -72,13 +72,15 @@ export default class extends Component {
 
         this.state = {
             currentTab: CLINGME_MERCHANT_COLLECTED,
-            placeId: selectedPlace ? selectedPlace.placeId : null,
+            placeId: selectedPlace ? selectedPlace.placeId : 0,
             fromTime: null,
             toTime: null,
             loading: false,
             totalHistoryList: totalHistoryList,
             historyList: historyList,
         }
+
+        console.warn('constructor ' + this.state.placeId);
 
     }
 
@@ -90,13 +92,18 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
+
+        /* change 18/09/2017 */
+        console.warn('transaction history place id ' + JSON.stringify(placeId));
+        getTransactionHistoryList(xsession, placeId, fromTime, toTime, option)
+
+        // getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
             // })
             // this.listview.showRefresh(false)
-        })
+        // })
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
@@ -148,7 +155,6 @@ export default class extends Component {
         }
         else {
             this._load()
-
         };
     }
 
