@@ -295,12 +295,14 @@ export default class extends Component {
             return (
                 <View style={styles.center}>
                     <Border/>
+                    <View row style={{marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 10, justifyContent: 'space-between', width: '90%'}}>
                     <Text medium bold grayDark style={styles.textPlaceTitle}>
                         {item.placeAddress}
                     </Text>
-                    <Text medium strong bold grayDark style={styles.numberPlaceTitle}>
+                    <Text medium bold grayDark style={styles.numberPlaceTitle}>
                         {formatNumber(item.totalMoney)} đ
                     </Text>
+                    </View>
                 </View>
             )
         }
