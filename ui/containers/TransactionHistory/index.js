@@ -222,11 +222,11 @@ export default class extends Component {
             <View style={styles.moneyBandContainer}>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>{moneyTitle}</Text>
-                    <Text largeLight green bold>{formatNumber(data.totalMoney)} đ</Text>
+                    <Text strong green bold>{formatNumber(data.totalMoney)} đ</Text>
                 </View>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>Phí Clingme</Text>
-                    <Text largeLight bold grayDark>{formatNumber(data.charge)} đ</Text>
+                    <Text strong bold grayDark>{formatNumber(data.charge)} đ</Text>
                 </View>
             </View>
         )
