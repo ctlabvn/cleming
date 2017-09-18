@@ -13,7 +13,7 @@ export default {
     },
 
     moneyBandContainer: {
-        paddingVertical: 10,
+        paddingBottom: 10,
         paddingHorizontal: 20
     },
 
