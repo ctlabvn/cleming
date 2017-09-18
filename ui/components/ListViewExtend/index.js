@@ -18,10 +18,9 @@ export default class ListViewExtend extends Component {
 
     this.state.refreshing = false
     this.scrollTop = 0
+    this.oldScrollTop = 0
     this.up = true
-    this.direction = 'up'
-    this.triggerNum = 0
-    this.lastTimeCall = 0
+    this.scrolling = false
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -92,39 +91,16 @@ export default class ListViewExtend extends Component {
         {...props}
         onScroll={e=>{
           this.scrollTop = e.nativeEvent.contentOffset.y
-          if (this.scrollTop > 100){
-            this.props.onScrollDown && this.props.onScrollDown()
-          }else{
+          if (this.scrollTop > 120){
+              this.props.onScrollDown && this.props.onScrollDown()
+          }
+        }}
+        onMomentumScrollEnd = {e => {
+          if (this.scrollTop < 100){
             this.props.onScrollUp && this.props.onScrollUp()
           }
         }}
-        // onMomentumScrollEnd = {e => {
-        //   console.log('On Momentum Scroll End');
-        //   let currentOffset = e.nativeEvent.contentOffset.y
-        //   let now = new Date().getTime()
-        //   if (currentOffset > this.scrollTop && currentOffset-this.scrollTop > 35){
-        //     if (this.triggerNum == 0){
-        //       this.triggerNum ++
-        //       this.direction = 'down'
-        //       this.props.onScrollDown && this.props.onScrollDown()
-        //     }else if (this.direction == 'up'){
-        //       this.direction = 'down'
-        //       this.props.onScrollDown && this.props.onScrollDown()
-        //     }
-        //   }else {
-        //     if (this.scrollTop - currentOffset > 35){
-        //       if (this.triggerNum == 0){
-        //         this.triggerNum ++
-        //         this.direction = 'up'
-        //         this.props.onScrollUp && this.props.onScrollUp()
-        //       }else if (this.direction == 'down'){
-        //         this.direction = 'up'
-        //         this.props.onScrollUp && this.props.onScrollUp()
-        //       }
-        //     }
-        //   }
-        //   this.scrollTop = currentOffset
-        // }}
+
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
