@@ -216,11 +216,11 @@ export default class extends Component {
 
     _renderList() {
         const { transaction } = this.props
+        // onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
+        // onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
         return <ListTransaction onItemRef={ref=>this.listview=ref}
                 onEndReached={this._loadMore} onRefresh={this._onRefresh}
                 itemKey='tranId' data={transaction.listTransaction}
-                onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
-                onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
                />
     }
 
