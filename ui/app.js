@@ -202,6 +202,7 @@ export default class App extends Component {
     //   this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
     // }
 
+
     this._resetRoute()
 
     if (router.current.routeName !== this.props.router.current.routeName) {
@@ -246,6 +247,8 @@ export default class App extends Component {
                 /* reset cachePlace */
                 if (values[index].cachePlace) values[index].cachePlace.selectedPlace = {}
             })
+
+            this.topDropdown.clear();
        }
     }
 
