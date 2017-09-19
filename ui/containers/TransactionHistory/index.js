@@ -174,10 +174,6 @@ export default class extends Component {
         }
     }
 
-    _onRefresh() {
-
-    }
-
     _renderMoneyBand() {
         const {data} = this.props;
         if (!data) return;
