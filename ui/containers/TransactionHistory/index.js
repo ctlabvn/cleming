@@ -83,7 +83,7 @@ export default class extends Component {
 
     }
 
-    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0, compareId = this.state.compareId) {
+    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, compareId = this.state.compareId) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
 
@@ -91,7 +91,8 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
+        console.log('Compare ID', compareId)
+        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, compareId, (err, data) => {
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
@@ -453,12 +454,14 @@ export default class extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {data} = nextProps;
-        const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
-        const newHistoryList = this._getArray(newTotalHistoryList)
-        this.setState({
-            totalHistoryList: newTotalHistoryList,
-            historyList: newHistoryList
-        })
+        if (data && data.listPlaceTran != undefined){
+            const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+            const newHistoryList = this._getArray(newTotalHistoryList)
+            this.setState({
+                totalHistoryList: newTotalHistoryList,
+                historyList: newHistoryList
+            })
+        }
     }
 
     _getListPlace() {
