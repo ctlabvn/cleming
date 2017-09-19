@@ -169,8 +169,10 @@ export default class extends Component {
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
+
         const { selectedPlace } = this.state
-        if (!selectedPlace) return
+        console.warn('delivery list loadpage selectedPlace ' + JSON.stringify(selectedPlace));
+        if (selectedPlace == null) return
         if (isLoadMore) {
             this.spinner.show(true)
         } else {
@@ -179,6 +181,7 @@ export default class extends Component {
             this.listview.swing()
             this.listview.showRefresh(true)
         }
+        console.warn('delivery list loadpage now ');
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
             (err, data) => {
@@ -191,19 +194,20 @@ export default class extends Component {
                 this.clickCount = 0
             })
         //update noti Number
-        getMerchantNews(session, selectedPlace,
-            (err, data) => {
-                if (data && data.updated && data.updated.data) {
-                    let newsUpdate = data.updated.data
-                    if (newsUpdate.orderNews < 0) {
-                        forwardTo('merchantOverview', true)
-                        return
-                    }
-                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
-                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
-                }
-            }
-        )
+        /* hide for new api /merchantapp/news */
+        // getMerchantNews(session, selectedPlace,
+        //     (err, data) => {
+        //         if (data && data.updated && data.updated.data) {
+        //             let newsUpdate = data.updated.data
+        //             if (newsUpdate.orderNews < 0) {
+        //                 forwardTo('merchantOverview', true)
+        //                 return
+        //             }
+        //             newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+        //             newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
+        //         }
+        //     }
+        // )
     }
 
     onModalOpen = (phoneNumber) => {
@@ -223,6 +227,7 @@ export default class extends Component {
         const { setSelectedOption, session } = this.props
         // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue
+        console.warn('delivery handle change place item ' + JSON.stringify(item));
         this.setState({
             selectedPlace: item.id,
         }, () => this.loadPage(1, dateFilter.from, dateFilter.to))

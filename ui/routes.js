@@ -53,6 +53,7 @@ export default {
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true,
+        // showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
@@ -64,7 +65,7 @@ export default {
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
-        // showItemAllPlaceOnTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
             },
@@ -88,6 +89,7 @@ export default {
         Page: DeliveryList,
         headerType: 'home',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
@@ -105,6 +107,7 @@ export default {
         Page: PlaceOrderList,
         headerType: 'home',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
