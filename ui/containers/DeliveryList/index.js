@@ -303,6 +303,7 @@ export default class extends Component {
 
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
+
         return (
             <Container style={styles.container}>
                 <LoadingModal loading = {this.state.processing} text={I18n.t('processing')}/>
@@ -323,6 +324,9 @@ export default class extends Component {
                     <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
                   </View>
                 }
+                <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', padding: 10, ...styles.primaryBorder}}>
+                    <Text medium bold grayDark>Số lượng: {order.resultNumber}</Text>
+                </View>
                 <ListViewExtend
                     onItemRef={ref=>this.listview=ref}
                     onEndReached={this._loadMore}
