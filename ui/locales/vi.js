@@ -35,7 +35,7 @@ export default {
     'next_transaction': 'Giao dịch sau',
     'transaction_wait_confirm': 'Giao dịch chờ tra soát',
     'transaction_cashback_success': 'Giao dịch hợp lệ',
-    'transaction_reject': 'Giao dịch bị từ chối',
+    'transaction_reject': 'Giao dịch không hợp lệ',
     'transaction_not_accept': 'Không đồng ý',
     'transaction_complain': 'Khiếu nại',
     'confirm_2': 'Duyệt',
@@ -52,6 +52,7 @@ export default {
     'received_feedback': 'Đã ghi nhận phản hồi.',
     'close': 'Đóng',
     'feedback_of_merchant': 'Phản hồi',
+    'reject_reason': 'Lý do từ chối',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',

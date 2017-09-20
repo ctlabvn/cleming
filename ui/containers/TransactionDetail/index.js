@@ -90,7 +90,7 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return (<Text medium transparent>Fake success</Text>)
             case TRANSACTION_DIRECT_STATUS.REJECT:
-                return (<Text medium error>*{transactionInfo.rejectReason}</Text>)
+                return (<Text medium error>*{I18n.t('reject_reason')}: {transactionInfo.rejectReason}</Text>)
 
             default:
                 return (<View key='bottomBlock'></View>)
