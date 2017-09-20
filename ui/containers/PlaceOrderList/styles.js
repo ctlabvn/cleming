@@ -156,4 +156,8 @@ export default {
       shadowOpacity: 0
     },
 
+    primaryBorder: {
+        borderBottomWidth: 1,
+        borderBottomColor: material.primaryColor,
+    }
 }

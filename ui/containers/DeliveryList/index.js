@@ -324,8 +324,8 @@ export default class extends Component {
                     <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
                   </View>
                 }
-                <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', padding: 10, ...styles.primaryBorder}}>
-                    <Text medium bold grayDark>Số lượng: {order.resultNumber}</Text>
+                <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', paddingRight: 10, paddingBottom: 3, ...styles.primaryBorder}}>
+                    <Text small bold grayDark>{I18n.t('number_of_items')}: {order.resultNumber}</Text>
                 </View>
                 <ListViewExtend
                     onItemRef={ref=>this.listview=ref}

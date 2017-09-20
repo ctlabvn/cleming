@@ -34,6 +34,7 @@ import {
 } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -361,6 +362,9 @@ export default class PlaceOrderList extends Component {
                 </View>
             )
         }
+
+        console.log('panda booking ', booking)
+
         return (
             <View style={styles.container}>
                 <CallModal
@@ -371,7 +375,9 @@ export default class PlaceOrderList extends Component {
                     <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab} />
                     <DateFilter defaultFilter={booking.currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
-
+                    <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', paddingRight: 10, paddingBottom: 3, ...styles.primaryBorder}}>
+                        <Text small bold grayDark>{I18n.t('number_of_items')}: {booking.resultNumber}</Text>
+                    </View>
                     <ListViewExtend
                         onItemRef={ref=>this.listview=ref}
                         onEndReached={()=> this._loadMore}
