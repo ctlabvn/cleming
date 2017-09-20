@@ -86,7 +86,7 @@ export default class TransactionDetail extends Component {
                     </View>
                 )
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
-                return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
+                return (<Button style={styles.feedbackButtonDisable} light disabled><Text>{I18n.t('received_feedback')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return (<Text medium transparent>Fake success</Text>)
             case TRANSACTION_DIRECT_STATUS.REJECT:
@@ -434,6 +434,9 @@ export default class TransactionDetail extends Component {
                     <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
                         {this._renderBottomAction(transactionInfo)}
                     </View>
+                    {/*<View style={styles.complaintContainer}>*/}
+                    {/*<Text medium bold grayDark>{I18n.t('feedback_of_merchant')}</Text>*/}
+                    {/*</View>*/}
                 </View>
             </Content>
         )
@@ -565,6 +568,7 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_TYPE_DIRECT:
                 return this.renderDirect(transactionInfo)
             case TRANSACTION_TYPE_ORDER_SUCCESS:
+                return this.renderDirect(transactionInfo)
                 return this.renderOrder(transactionInfo)
         }
     }

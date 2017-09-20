@@ -487,4 +487,14 @@ export default {
         borderBottomColor: 'rgba(0,0,0,0.3)',
         borderBottomWidth: 0.5
     },
+    complaintContainer: {
+        marginBottom: 30,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 20,
+        borderWidth: 1,
+        borderColor: material.gray500,
+        width: '95%'
+    },
 }

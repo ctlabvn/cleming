@@ -51,6 +51,7 @@ export default {
     'delivery_failed': 'Giao thất bại',
     'received_feedback': 'Đã ghi nhận phản hồi.',
     'close': 'Đóng',
+    'feedback_of_merchant': 'Phản hồi',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',
