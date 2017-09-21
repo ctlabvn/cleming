@@ -500,7 +500,7 @@ export default class App extends Component {
       this.listPlaceItemAllPlace = Array.from(this.listPlace);
       // panda edit
       // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
-      this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
+      if (this.listPlace.length >= 2) this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
 
   }
 

@@ -48,10 +48,19 @@ export default class MerchantOverview extends Component {
             long = location.longitude
         }
 
+        app.topDropdown.showLoadingPlace();
         getListPlace(xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
+
+                    /* prevent null object */
+                    if (!data.updated.data || data.updated.data.length <= 0) {
+                        app.topDropdown.showNullPlace();
+                        return;
+                    }
+                    /***/
+
                     let listPlace = data.updated.data.map(item => ({
                         id: item.placeId,
                         name: item.address
