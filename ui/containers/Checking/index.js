@@ -38,6 +38,7 @@ export default class extends Component {
             currenTab: ALL_PLACES_CHECKING,
             detail: {}
         }
+        this.compareId
     }
 
     componentDidMount() {
@@ -46,11 +47,20 @@ export default class extends Component {
 
     _handlePressFilter(data, needSet=true) {
         console.log('Change Period', data);
+        this.compareId = data.id
         const {setCheckingPeriod} = this.props
         let index = this.props.checking.listCompareCheckDt.findIndex (item=>item.compareId==data.id)
         let detail = Object.assign({}, this.props.checking.listCompareCheckDt[index])
         this.setState({detail: detail})
         needSet && setCheckingPeriod(data.id)
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps && nextProps.checking && nextProps.checking.listCompareCheckDt){
+            let index = nextProps.checking.listCompareCheckDt.findIndex (item=>item.compareId==this.compareId)
+            let detail = Object.assign({}, nextProps.checking.listCompareCheckDt[index])
+            this.setState({detail: detail})
+        }   
     }
 
     _handlePressTab(data) {
