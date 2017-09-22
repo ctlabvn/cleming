@@ -172,6 +172,18 @@ export class RenderGroup extends Component {
       </TouchableOpacity>
     )
 
+    //fix bug 16/09/2017 not show create password with master account have just one place <<<
+      if (rowID == 0 && rowID == this.props.place.listPlace.length - 1) {
+          return (
+              <View>
+                  {this.props.firstItem}
+                  {renderedRow}
+                  {this.props.lastItem}
+              </View>
+          )
+      }
+    // >>>
+
     if(rowID == 0){
       return (
         <View>

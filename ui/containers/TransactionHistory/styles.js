@@ -12,6 +12,11 @@ export default {
         marginRight: 15,
     },
 
+    moneyBandContainer: {
+        paddingBottom: 10,
+        paddingHorizontal: 20
+    },
+
     moneyBand: {
         justifyContent: 'space-between',
     },
@@ -25,8 +30,6 @@ export default {
         paddingTop: 0,
     },
 
-    subRow: {paddingVertical: 5, justifyContent: 'space-between'},
-
     itemContent: {
         flex: 1,
         paddingTop: 10,
@@ -37,7 +40,7 @@ export default {
     subRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 3,
+        marginBottom: 10,
     },
 
     icon: {
@@ -46,10 +49,51 @@ export default {
         padding: 25
     },
 
+    itemIcon: {
+        color: material.orange500,
+        fontSize: 20,
+        paddingRight: 10,
+        paddingTop: 12
+    },
+
+    item: {
+        paddingHorizontal: 20,
+        paddingVertical: 5,
+        alignItems: 'flex-start'
+    },
+
+    center: {
+        alignItems: 'center'
+    },
+
+    textPlaceTitle: {
+        marginRight: 15,
+        alignSelf: 'center',
+        flex: 1,
+    },
+
+    numberPlaceTitle: {
+        alignSelf: 'center',
+        alignSelf: 'flex-start',
+    },
+
     button: {
         flex: 1,
         alignSelf:'center',
         marginBottom: 20,
         paddingHorizontal: 10
+    },
+
+    spaceView: {
+        height: 50
+    },
+
+    listViewExtend: {
+        flex: 1
+    },
+
+    groupRow: {
+        paddingTop: 10,
+        flex: 1
     },
 }

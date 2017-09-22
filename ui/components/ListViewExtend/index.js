@@ -18,7 +18,9 @@ export default class ListViewExtend extends Component {
 
     this.state.refreshing = false
     this.scrollTop = 0
+    this.oldScrollTop = 0
     this.up = true
+    this.scrolling = false
   }
 
   _rowHasChanged = (r1, r2) => {
@@ -71,6 +73,15 @@ export default class ListViewExtend extends Component {
     this.setState({refreshing})
   }
 
+
+  // onScroll: function(event) {
+  // var currentOffset = event.nativeEvent.contentOffset.y;
+  //   var direction = currentOffset > this.offset ? 'down' : 'up';
+  // this.offset = currentOffset;
+  // console.log(direction);
+  // },
+
+
   render() {
     const {onRefresh, removeClippedSubviews, ...props} = this.props
     // always override for performance
@@ -78,13 +89,31 @@ export default class ListViewExtend extends Component {
     return (
       <ListView
         {...props}
-        onScroll={e=>this.scrollTop = e.nativeEvent.contentOffset.y}
+        onScroll={e=>{
+          const {layoutMeasurement, contentOffset, contentSize} = e.nativeEvent
+          {/* console.log('Layout Measurement', layoutMeasurement)
+          console.log('Content Offset',  contentOffset)
+          console.log('Content Size', contentSize) */}
+          this.scrollTop = e.nativeEvent.contentOffset.y
+          if (contentSize.height < layoutMeasurement.height){
+            this.props.onScrollUp && this.props.onScrollUp()
+          }else if (this.scrollTop > 120){
+              this.props.onScrollDown && this.props.onScrollDown()
+          }
+        }}
+        onMomentumScrollEnd = {e => {
+          if (this.scrollTop < 100){
+            this.props.onScrollUp && this.props.onScrollUp()
+          }
+        }}
+
         refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={this.state.refreshing} />}
         ref={ref=>this.listview=ref}
         enableEmptySections={true}
         removeClippedSubviews={removeSubview}
         dataSource={this.state.dataSource}
         onEndReachedThreshold={10}
+        scrollEventThrottle={200}
       />
     );
   }

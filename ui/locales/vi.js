@@ -15,7 +15,7 @@ export default {
     'all_transaction': 'Tất cả giao dịch',
     'wait_confirm': 'Chờ phê duyệt',
     'received_feedback_2': 'Đã phản hồi',
-    'cashback_success': 'Cashback thành công',
+    'cashback_success': 'Giao dịch hợp lệ',
     'reject': 'Bị từ chối',
     'pay_complete': 'Hoàn tất thanh toán',
 
@@ -33,8 +33,8 @@ export default {
     'clingme_fee': 'Phí Clingme',
     'prev_transaction': 'Giao dịch trước',
     'next_transaction': 'Giao dịch sau',
-    'transaction_wait_confirm': 'Giao dịch chờ phê duyệt',
-    'transaction_cashback_success': 'Giao dịch thành công',
+    'transaction_wait_confirm': 'Giao dịch chờ tra soát',
+    'transaction_cashback_success': 'Giao dịch hợp lệ',
     'transaction_reject': 'Giao dịch bị từ chối',
     'transaction_not_accept': 'Không đồng ý',
     'transaction_complain': 'Khiếu nại',
@@ -191,11 +191,12 @@ export default {
     'err_not_master': 'Mời bạn liên hệ chủ cửa hàng để nhận lại mật khẩu đăng nhập.',
     'err_phone_exists': 'Số điện thoại đã tồn tại.',
     'err_email_exists': 'Địa chỉ email đã tồn tại.',
+    'email_is_used': 'Địa chỉ email đã được sử dụng.',
 
     'err_field_must_not_empty': 'Trường này không được để trống.',
     'err_account_number_must_be_number': 'Sai định dạng Số tài khoản.',
     'err_identity_card_must_be_number': 'Sai định dạng Số CMND/Căn cước.',
-    
+
     //message
     'mess_reset_password_success': 'Đặt lại mật khẩu thành công.',
     'mess_change_password_success': 'Thay đổi Mật khẩu thành công.',
@@ -209,6 +210,7 @@ export default {
     'create_password_failed' : 'Tạo mật khẩu không thành công.',
     'create_password_successfully' : 'Tạo mật khẩu thành công.',
     'is_processing' : 'Đang xử lý.',
+    'invalid_input_data' : 'Dữ liệu không hợp lệ.',
 
     // vault
 
@@ -281,11 +283,21 @@ export default {
 
     // Checking
     'checking': 'Đối soát',
+    'total_revenue': 'Tổng doanh thu \n phát sinh',
+    'total_money_merchant_get': 'Tổng tiền Đối tác đã thu:',
+    'total_money_clingme_get': 'Tổng tiền Clingme đã thu:',
+    'merchant_get_money_from_clingme': 'Clingme thanh toán \n cho đối tác',
+    'clingme_get_money_from_merchant': 'Đối tác thanh toán \n cho Clingme',
+    'clingme_pay': 'Thanh toán Clingme',
 
     // Cashout
     'cashout_account': 'Tài khoản cashout',
     'all_places': 'Tất cả địa điểm',
 
     // Transaction History
-    'transaction_history': 'Lịch sử giao dịch'
+    'transaction_history': 'Lịch sử giao dịch',
+
+    'waiting_revenue' : 'Doanh thu chờ duyệt',
+    'confirmed_revenue': 'Doanh thu đã duyệt',
+    'total_money': 'Tổng doanh thu',
 }

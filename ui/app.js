@@ -37,13 +37,13 @@ import * as placeActions from '~/store/actions/place'
 import * as locationActions from '~/store/actions/location'
 import * as notificationActions from '~/store/actions/notification'
 import * as metaActions from "~/store/actions/meta"
-import { getSession } from '~/store/selectors/auth'
+import { getSession, isLogged } from '~/store/selectors/auth'
 import { getSelectedPlace } from '~/store/selectors/place'
 import routes from './routes'
 import DeviceInfo from 'react-native-device-info'
 import md5 from 'md5'
 import {
-  NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN,
+  NOTIFY_TYPE, TRANSACTION_TYPE, DETECT_LOCATION_INTERVAL, SCREEN, ITEM_ALL_PLACE,
   initialAuthRouteName, initialRouteName,
 } from '~/store/constants/app'
 // console.log(DeviceInfo.getUniqueID(),DeviceInfo.getDeviceId()+'---'+md5('android_'+DeviceInfo.getUniqueID()))
@@ -71,7 +71,8 @@ const UIManager = NativeModules.UIManager
   place: state.place,
   location: state.location,
   selectedPlace: getSelectedPlace(state),
-  xsession: getSession(state)
+  xsession: getSession(state),
+  islogged: isLogged(state),
 }), { ...commonActions, ...authActions, ...placeActions, ...locationActions, ...notificationActions, ...metaActions })
 export default class App extends Component {
 
@@ -81,7 +82,8 @@ export default class App extends Component {
     this.watchID = 0
     this.firstTime = true
     this.timer = null
-    this.listPlace = []
+    this.listPlace = props.listPlace
+    this.listPlaceRender = props.listPlace
   }
 
   _transitionScene = (prevIndex, index, thisNavigator) => {
@@ -139,17 +141,85 @@ export default class App extends Component {
 
   }
 
+  // list place item all place
+    switchListPlaceRender(showItemAllPlaceOnTopDropdown, cachePlace) {
+        // this.listPlaceRender = this.listPlace;
+        // return;
+
+        if (showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+        else this.listPlaceRender = this.listPlace;
+
+        if (!this.listPlaceRender || this.listPlaceRender.length <= 0) return;
+
+        // switch selectedOption
+        const {setSelectedOption, selectedPlace } = this.props;
+        // console.warn(JSON.stringify(selectedPlace))
+
+        let selectedOption = {}
+
+            if (cachePlace && cachePlace.selectedPlace
+                && typeof cachePlace.selectedPlace.id != 'undefined'
+                && cachePlace.selectedPlace.name) {
+                selectedOption.id = cachePlace.selectedPlace.id
+                selectedOption.name = cachePlace.selectedPlace.name
+            } else {
+                if (selectedPlace && !showItemAllPlaceOnTopDropdown) selectedOption = selectedPlace;
+                else {
+                    selectedOption.id = this.listPlaceRender[0].id
+                    selectedOption.name = this.listPlaceRender[0].name
+                }
+        }
+        setSelectedOption(selectedOption)
+
+        // addition 16/09/2017 fix bug for All Place Mode <<<
+        if (selectedOption.id != ITEM_ALL_PLACE.id) this.defaultSelectedOption = selectedOption;
+        if (!showItemAllPlaceOnTopDropdown && selectedOption.id == ITEM_ALL_PLACE.id && this.defaultSelectedOption) {
+            selectedOption = this.defaultSelectedOption;
+        }
+        // >>>
+
+        if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
+    }
+
+    setCachePlaceCurrentPage(place) {
+        if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
+        if (this.topDropdown) this.topDropdown.updateSelectedOption(place, true)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place)
+        this._handleChangePlace(place);
+    }
+
   // replace view from stack, hard code but have high performance
   componentWillReceiveProps({ router, drawerState }) {
     // process for route change only
 
+    // if (!this.listPlace || this.listPlace.length ==0){
+    //   this.setListPlace()
+    //   const routeCheck = getPage(router.current)
+    //   if (routeCheck.showItemAllPlaceOnTopDropdown)  this.listPlaceRender = this.listPlaceItemAllPlace;
+    //   else this.listPlaceRender = this.listPlace;
+    //   this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+    //   this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+    // }
+
+
+    this._resetRoute()
+
     if (router.current.routeName !== this.props.router.current.routeName) {
       const route = getPage(router.current)
       if (route) {
-        // show header and footer, and clear search string
-        this.navigator.navigate(route)
-        this.header.show(route.headerType, route.title)
-        this.footer.show(route.footerType, route.routeName)
+          // show header and footer, and clear search string
+          this.navigator.navigate(route)
+          this.header.show(route.headerType, route.title)
+          this.footer.show(route.footerType, route.routeName)
+
+          this.currentRoute = route;
+          this.setListPlace()
+          this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
+          this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+          this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+
+          this.topDropdown.show(route.showTopDropdown)
 
         // we will animate this for better transition
         // this.topDropdown.show(route.showTopDropdown)
@@ -164,6 +234,23 @@ export default class App extends Component {
       this.drawer._root[drawerState === 'opened' ? 'open' : 'close']()
     }
   }
+
+  _resetRoute() {
+       const {islogged} = this.props;
+       if (!islogged) {
+            // routes = JSON.parse(JSON.stringify(this.backupRoute));
+            // console.warn('show key of routes ' + JSON.stringify(Object.keys(routes)));
+            values = Object.values(routes);
+            Object.keys(routes).map((value, index)=> {
+                // if (values[index].cachePlace) console.warn(index + '. ' + value + ' = ' + JSON.stringify(values[index]))
+
+                /* reset cachePlace */
+                if (values[index].cachePlace) values[index].cachePlace.selectedPlace = {}
+            })
+
+            this.topDropdown.clear();
+       }
+    }
 
   // we handle manually to gain performance
   shouldComponentUpdate(nextProps) {
@@ -276,25 +363,36 @@ export default class App extends Component {
           selectedOption.id = data.updated.data[0].placeId
           selectedOption.name = data.updated.data[0].address
           setSelectedOption(selectedOption)
+
+          let listPlace = data.updated.data.map(item => ({
+              id: item.placeId,
+              name: item.name+' - '+item.address
+          }))
+
+          this.listPlace = listPlace;
+          this.setListPlace();
         }
       })
   }
   componentDidMount() {
     const { saveCurrentLocation, place, selectedPlace, location, alreadyGotLocation, setToast } = this.props
     // if (selectedPlace && Object.keys(selectedPlace).length > 0 && this.listPlace.length != place.listPlace.length) {
-      this.listPlace = place.listPlace.map(item => ({
-        id: item.placeId,
-        name: item.address
-      }))
+
+      this.setListPlace();
+    //   this.listPlace = place.listPlace.map(item => ({
+    //     id: item.placeId,
+    //     name: item.name+' - '+item.address
+    //   }))
+
       // this.topDropdown.updateDropdownValues(listPlace)
       this.topDropdown.updateSelectedOption(selectedPlace)
-      if (this.listPlace.length > 1){
+      if (this.listPlaceRender.length > 1){
         this.topDropdown.setIsMultiple(true)
       }else{
         this.topDropdown.setIsMultiple(false)
       }
-      this.topDropdownListValue.updateDropdownValues(this.listPlace)
-      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlace)
+      this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+      this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
       this.topDropdownListValue.updateSelectedOption(selectedPlace)
     // }
 
@@ -367,8 +465,13 @@ export default class App extends Component {
     this.topDropdown.updateSelectedOption(item)
     this.header.showOverlay(false)
     setSelectedOption(item)
+
+    if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = item;
   }
   _handlePressIcon = (openning) => {
+    // panda test
+      const { selectedPlace } = this.props;
+
     if (openning) {
       this.topDropdownListValue.close()
       this.header.showOverlay(false)
@@ -386,13 +489,31 @@ export default class App extends Component {
     this.topDropdownListValue.close()
     this.header.showOverlay(false)
   }
+
+  setListPlace() {
+
+      const { place } = this.props
+
+      this.listPlace = place.listPlace.map(item => ({
+          id: item.placeId,
+          name: item.address
+      }))
+
+      // addition ITEM_ALL_PLACE into list place
+      this.listPlaceItemAllPlace = Array.from(this.listPlace);
+      // panda edit
+      // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+      this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
+
+  }
+
   render() {
     const { drawerState, closeDrawer, place, selectedPlace, router } = this.props
     const route = getPage(router.current) || routes.notFound
-    this.listPlace = place.listPlace.map(item => ({
-      id: item.placeId,
-      name: item.address
-    }))
+
+    this.setListPlace()
+    this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
+
     return (
       <StyleProvider style={getTheme(material)}>
         <Drawer
@@ -445,14 +566,14 @@ export default class App extends Component {
             ref={ref => this.topDropdown = ref}
             onPressIcon={this._handlePressIcon}
             selectedOption={selectedPlace}
-            dropdownValues={this.listPlace}
+            dropdownValues={this.listPlaceRender}
             show={route.showTopDropdown}
           />
           <TopDropdownListValue
             onSelect={this._handleChangePlace}
             onPressOverlay={this._handlePressOverlay}
             ref={ref => this.topDropdownListValue = ref}
-            dropdownValues={this.listPlace}
+            dropdownValues={this.listPlaceRender}
           />
           <Toasts />
           <NotificationHandler app={this}/>

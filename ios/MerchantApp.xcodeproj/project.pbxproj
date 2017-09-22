@@ -732,6 +732,7 @@
 				DB15A7F1854E47FE9A615591 /* Resources */,
 				24DDD9451EC99A4F00B391DF /* Frameworks */,
 				1C0E16BCAEE5878BBBBE0835 /* Pods */,
+				ECCD91581F6A338F0099919B /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -780,6 +781,21 @@
 				C6360C008DD2455A8C8A4981 /* SimpleLineIcons.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		ECCD91581F6A338F0099919B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				4A645416AE9741039CBC5B7D /* libRNSVG.a */,
+				C10D7B773452427EB159C39A /* libRNImagePicker.a */,
+				2B97CB47DD99488EB2306242 /* libRNFS.a */,
+				7DD31F952D53423BA83ABFBD /* libRNDeviceInfo.a */,
+				17530420515641438F4D3D78 /* libSGScandit.a */,
+				CF3089F9DFAE4D5BB9B1C2C6 /* libSMXCrashlytics.a */,
+				B4E7DFD04D8C40A4B331C75C /* libRNI18n.a */,
+				9746C8B8243C4845A4133936 /* libRNVersionNumber.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1599,8 +1615,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "1bb7a378-5a03-46f3-8a34-6c3215fc6705";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1654,8 +1670,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "1bb7a378-5a03-46f3-8a34-6c3215fc6705";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

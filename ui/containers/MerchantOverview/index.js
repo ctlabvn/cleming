@@ -61,10 +61,16 @@ export default class MerchantOverview extends Component {
                     app.topDropdownListValue.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDefaultDropdownValues(listPlace)
 
+                    app.setCachePlaceCurrentPage(listPlace[0]);
+                    const hotSelectedPlace = listPlace[0];
+
+
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
                         let selectedOption = {}
+
                         selectedOption.id = data.updated.data[0].placeId
                         selectedOption.name = data.updated.data[0].address
+
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
                         app.topDropdownListValue.updateSelectedOption(selectedOption)
@@ -90,9 +96,15 @@ export default class MerchantOverview extends Component {
                             this.setState({loading: false})
                         )
                     } else {
-                        getMerchantNews(xsession, selectedPlace.id,
+
+                        getMerchantNews(xsession, hotSelectedPlace.id,
                             this.setState({loading: false})
                         )
+
+                        // hide code time: 15/09/2017: for cachePlace
+                        // getMerchantNews(xsession, selectedPlace.id,
+                        //     this.setState({loading: false})
+                        // )
                     }
                 }else{
                     this.setState({ loading: false })
@@ -108,27 +120,18 @@ export default class MerchantOverview extends Component {
     }
 
     componentDidMount() {
-        // InteractionManager.runAfterInteractions(() => {
-        // const { app } = this.props
-        // app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
-        // this._load()
-        // })
-        this.componentWillFocus()
+      const {app} = this.props
+      app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+      this._load()
     }
 
     componentWillFocus() {
-        // InteractionManager.runAfterInteractions(() => {
         const {app, place, user} = this.props
-        // if (user) {
-        //     this.props.app.header.show('home', user.chainName, user.avatar)
-        // }
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         if (!place.listPlace || place.listPlace.length == 0) {
             console.log('Place List will focus', place.listPlace)
             this._load()
         }
-        // })
-
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -190,7 +193,9 @@ export default class MerchantOverview extends Component {
     }
 
     renderMainContainer() {
+
         const {handleSubmit, submitting, place} = this.props
+
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
             <View style={styles.menuContainer}>

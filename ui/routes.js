@@ -53,6 +53,9 @@ export default {
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 0,
         cache: true,
     },
@@ -61,6 +64,10 @@ export default {
         Page: TransactionList,
         headerType: 'home',
         showTopDropdown: true,
+        // showItemAllPlaceOnTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+            },
         tabIndex: 1,
         cache: true,
     },
@@ -81,6 +88,9 @@ export default {
         Page: DeliveryList,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -95,6 +105,9 @@ export default {
         Page: PlaceOrderList,
         headerType: 'home',
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -108,6 +121,9 @@ export default {
         title: I18n.t('page_customer_statistic'),
         Page: Report,
         showTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
         tabIndex: 2,
         cache: true,
     },
@@ -231,13 +247,19 @@ export default {
         Page: Checking,
         headerType: 'back',
         footerType: 'none',
+        cache: true,
     },
     transactionHistory: {
         title: I18n.t('transaction_history'),
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
-        showTopDropdown: false,
+        // showTopDropdown: true,
+        // showItemAllPlaceOnTopDropdown: true,
+        cachePlace: {
+            selectedPlace: {}
+        },
+        cache: true,
     },
     withdrawDetail: {
         title: I18n.t('withdraw_detail'),

@@ -1,7 +1,7 @@
 import I18n from '~/ui/I18n'
-export const TRANSACTION_TYPE_CLINGME = 1
-export const TRANSACTION_TYPE_DIRECT = 2
-export const TRANSACTION_TYPE_ORDER_SUCCESS = 3
+export const TRANSACTION_TYPE_CLINGME = 2
+export const TRANSACTION_TYPE_DIRECT = 0
+export const TRANSACTION_TYPE_ORDER_SUCCESS = 1
 export const ORDER_WAITING_CONFIRM = 0
 export const ORDER_WAITING_DELIVERY = 1
 export const ORDER_SUCCESS = 2
@@ -14,6 +14,7 @@ export const ALL_PLACES_CHECKING = 1;
 
 export const MERCHANT_COLLECTED = 1;
 export const CLINGME_COLLECTED = 2;
+export const CLINGME_MERCHANT_COLLECTED = 3;
 
 //  "transactionStatus": int,	// Trạng thái của hoá đơn, 0 và 3 là đang chờ Clingme xử lý, 1 là thành công, 2 là bị từ chối, 4 là chờ merchant phê duyệt, 5 là merchant đã xem và khiếu nại
 export const TRANSACTION_DIRECT_STATUS = {
@@ -58,8 +59,8 @@ export const NOTIFY_TYPE={
 }
 
 export const TRANSACTION_TYPE={
-    CLINGME: 1,
-    DIRECT: 2
+    CLINGME: 2,
+    DIRECT: 0
 }
 export const FEEDBACK_CLM_TRANSACTION = {
     MISS: 1,
@@ -100,4 +101,6 @@ export const SCREEN = {
 }
 
 export const initialRouteName = 'login'
-export const initialAuthRouteName = 'merchantOverview' 
+export const initialAuthRouteName = 'merchantOverview'
+
+export const ITEM_ALL_PLACE = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}

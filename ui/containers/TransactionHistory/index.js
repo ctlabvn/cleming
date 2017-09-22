@@ -6,8 +6,11 @@ import { TouchableHighlight } from 'react-native'
 import * as commonAction from "~/store/actions/common";
 import * as authActions from "~/store/actions/auth";
 import {getSession} from "~/store/selectors/auth";
+import { setCheckingDateFilterCurrentSelectValue } from "~/store/actions/checking";
 import * as transactionAction from "~/store/actions/transaction";
+import {setCheckingPeriod} from '~/store/actions/checking'
 import {getHistoryListTransaction} from "~/store/selectors/transaction";
+import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
 
 import TabsWithNoti from '~/ui/components/TabsWithNoti'
 import DateFilter from '~/ui/components/DateFilter'
@@ -25,14 +28,17 @@ import TopDropdownAllPlace from '~/ui/components/TopDropdownAllPlace'
 import {getListPlace} from'~/store/selectors/place'
 
 import {formatNumber} from "~/ui/shared/utils";
-import {MERCHANT_COLLECTED, CLINGME_COLLECTED} from '~/store/constants/app'
+import {MERCHANT_COLLECTED, CLINGME_COLLECTED, CLINGME_MERCHANT_COLLECTED} from '~/store/constants/app'
 
 import moment from "moment";
 import {
     TIME_FORMAT_WITHOUT_SECOND,
-    DEFAULT_TIME_FORMAT
+    DEFAULT_TIME_FORMAT,
+    TRANSACTION_TYPE_CLINGME,
+    TRANSACTION_TYPE_DIRECT,
+    TRANSACTION_TYPE_ORDER_SUCCESS,
 } from "~/store/constants/app";
-
+import DateFilterPeriod from '~/ui/containers/Checking/DateFilterPeriod'
 import apiChecking from '~/store/api/checking'
 
 import I18n from '~/ui/I18n'
@@ -48,7 +54,9 @@ const SECOND_LEVEL_SHOW = 10
     xsession: getSession(state),
     data: getHistoryListTransaction(state),
     listPlace: getListPlace(state),
-}), {...transactionAction, ...commonAction})
+    checking: state.checking,
+    // checkingDateFilterCurrentSelectValue: getCheckingDateFilterCurrentSelectValue(state),
+}), {...transactionAction, ...commonAction, setCheckingPeriod})
 
 export default class extends Component {
 
@@ -63,18 +71,19 @@ export default class extends Component {
         const historyList = this._getArray(totalHistoryList)
 
         this.state = {
-            currentTab: MERCHANT_COLLECTED,
+            currentTab: CLINGME_MERCHANT_COLLECTED,
             placeId: selectedPlace ? selectedPlace.placeId : null,
             fromTime: null,
             toTime: null,
             loading: false,
             totalHistoryList: totalHistoryList,
             historyList: historyList,
+            compareId: 0
         }
 
     }
 
-    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
+    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, compareId = this.state.compareId) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
 
@@ -82,7 +91,8 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-        getTransactionHistoryList(xsession, placeId == '000000' ? null : placeId, fromTime, toTime, option, (err, data) => {
+        console.log('Compare ID', compareId)
+        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, compareId, (err, data) => {
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
@@ -92,36 +102,56 @@ export default class extends Component {
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
+
+    componentWillFocus() {
+        // this._setDateFilterCurrentSelectValue();
+    }
+
     componentDidMount() {
         const {app} = this.props;
         app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
+        
+        // this._setDateFilterCurrentSelectValue();
 
-        const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-        fromTime = dateFilterData.from;
-        toTime = dateFilterData.to;
-
-        this.setState({
-            fromTime: fromTime,
-            toTime: toTime,
-        }, () => this._load())
+        // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+        // fromTime = dateFilterData.from;
+        // toTime = dateFilterData.to;
+        //
+        // this.setState({
+        //     fromTime: fromTime,
+        //     toTime: toTime,
+        // }, () => this._load())
     }
 
     _handleTopDrowpdown(data) {
-        if (data && data.id) this.setState({
-            placeId: data.id
-        }, () => this._load());
-        else (this._load());
+        if (data && typeof data.id != 'undefined') {
+            this.setState({
+                placeId: data.id
+            }, () => this._load());
+        }
+        else {
+            this._load()
+
+        };
     }
 
-    _handlePressFilter(data) {
-        // console.warn('handlePressfilter data' + JSON.stringify(data))
-        fromTime = data.currentSelectValue.value.from;
-        toTime = data.currentSelectValue.value.to;
+    _handleSelectPlace(item) {
+        // console.warn(JSON.stringify(item))
+        this.setState({
+            placeId: item.placeId,
+        }, () => this._load());
+    }
 
+    _handlePressFilter(data, needSet=true) {
+        console.log('Change Period', data);
+        const {setCheckingPeriod} = this.props
+        let {fromTime, toTime, id} = data
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
+            compareId: id
         }, () => this._load())
+        needSet && setCheckingPeriod(data.id)
     }
 
     _handlePressTab(data) {
@@ -136,11 +166,12 @@ export default class extends Component {
                     currentTab: CLINGME_COLLECTED,
                 }, () => this._load());
                 break;
+            case CLINGME_MERCHANT_COLLECTED:
+                this.setState({
+                    currentTab: CLINGME_MERCHANT_COLLECTED,
+                }, () => this._load());
+                break;
         }
-    }
-
-    _onRefresh() {
-
     }
 
     _renderMoneyBand() {
@@ -149,20 +180,32 @@ export default class extends Component {
 
         let moneyTitle;
         if (this.state.currentTab == MERCHANT_COLLECTED) {
-            moneyTitle = 'Tổng tiền [Merchant] đã thu'
+            moneyTitle = I18n.t('total_money_merchant_get')
         } else {
-            moneyTitle = 'Tổng tiền Clingme đã thu'
+            moneyTitle = I18n.t('total_money_clingme_get')
+        }
+
+        switch (this.state.currentTab) {
+            case MERCHANT_COLLECTED:
+                moneyTitle = I18n.t('total_money_merchant_get')
+                break;
+            case CLINGME_COLLECTED:
+                moneyTitle = I18n.t('total_money_clingme_get')
+                break;
+            case CLINGME_MERCHANT_COLLECTED:
+                moneyTitle = I18n.t('total_money')
+                break;
         }
 
         return (
-            <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
+            <View style={styles.moneyBandContainer}>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>{moneyTitle}</Text>
-                    <Text largeLight green bold>{formatNumber(data.totalMoney)} đ</Text>
+                    <Text strong green bold>{formatNumber(data.totalMoney)} đ</Text>
                 </View>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>Phí Clingme</Text>
-                    <Text largeLight bold grayDark>{formatNumber(data.charge)} đ</Text>
+                    <Text strong bold grayDark>{formatNumber(data.charge)} đ</Text>
                 </View>
             </View>
         )
@@ -171,6 +214,10 @@ export default class extends Component {
     _loadMore() {
         // alert('đang tải ...');
         return 1;
+    }
+
+    _loadMoreDate = () => {
+      console.log('Load More Date');
     }
 
     _onRefresh() {
@@ -187,12 +234,36 @@ export default class extends Component {
     }
 
     _handlePressItem(item) {
+        /*
+        below is API "tran-list"
+        "tranType": int, // 1 là trả qua Clm, 2 là trả trực tiếp, 3 là order
+
+        below is API "transaction-history"
+        "tranType": int  // 0 là giao dịch trực tiếp, 1 là order, 2 là trả qua clingme
+        **/
         const { forwardTo } = this.props;
-        forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        console.log('Press Item', item);
+        if (item.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+          forwardTo('transactionDetail', {id: item.posOrderId, type: item.tranType})
+        }else{
+          forwardTo('transactionDetail', {id: item.tranId, type: item.tranType})
+        }
+
+        // switch (item.tranType) {
+        //     case 0:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 2})
+        //         break;
+        //     case 1:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 3})
+        //         break;
+        //     case 2:
+        //         forwardTo('transactionDetail', {id: item.tranId, type: 1})
+        //         break;
+        // }
+
     }
 
     _renderTransactionItem(item) {
-        console.log('render Row Item');
         if (item.seeMore) {
             // const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
             if (item.flagList.levelList > 1) return null;
@@ -219,14 +290,16 @@ export default class extends Component {
         if (item.placeId) {
             // console.log(JSON.stringify(item));
             return (
-                <View>
+                <View style={styles.center}>
                     <Border/>
-                    <Text medium bold grayDark style={{marginTop: 20, marginBottom: 5, alignSelf: 'center'}}>
+                    <View row style={{marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 10, justifyContent: 'space-between', width: '90%'}}>
+                    <Text medium bold grayDark style={styles.textPlaceTitle}>
                         {item.placeAddress}
                     </Text>
-                    <Text medium strong bold grayDark style={{marginBottom: 5, alignSelf: 'center'}}>
+                    <Text medium bold grayDark style={styles.numberPlaceTitle}>
                         {formatNumber(item.totalMoney)} đ
                     </Text>
+                    </View>
                 </View>
             )
         }
@@ -237,46 +310,46 @@ export default class extends Component {
             let iconName = 'coin_mark';
             switch (item.tranType) {
                 case 0:
-                    status = 'Cashback thành công'
+                    status = I18n.t('cashback_success')
                     iconName = 'coin_mark';
                     break;
                 case 1:
-                    status = 'Giao thành công'
+                    status = I18n.t('delivery_success')
                     iconName = 'shiping-bike2';
                     break;
                 case 2:
-                    status = 'Đã xác nhận'
+                    status = I18n.t('confirmed')
                     iconName = 'clingme-wallet';
                     break;
             }
 
             return (
                 <View>
-                    <View style={{marginHorizontal: 0}}>
+
                         <Border/>
-                    </View>
+
                     <TouchableHighlight
                         underlayColor={material.gray200}
                         onPress={()=> this._handlePressItem(item)}>
-                        <View row style={{paddingHorizontal: 20, paddingVertical: 5, alignItems: 'flex-start'}}>
+                        <View row style={styles.item}>
                             <Icon name={iconName}
-                                  style={{color: material.orange500, fontSize: 20, paddingRight: 10, paddingTop: 12}}/>
-                            <View style={{paddingVertical: 5, flex: 1}}>
+                                  style={styles.itemIcon}/>
+                            <View style={styles.groupRow}>
                                 <View row style={styles.subRow}>
                                     <Text medium bold
-                                          grayDark>{item.tranCode.indexOf('#') ? '#' : ''}{item.tranCode}</Text>
+                                          grayDark>{item.tranCode && (item.tranCode.indexOf('#') ? '#' : '')}{item.tranCode}</Text>
                                     <Text medium
                                           grayDark>{moment(item.tranTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                                 </View>
 
                                 <View row style={styles.subRow}>
                                     <Text medium orange>{status}</Text>
-                                    <Text medium bold grayDark>{item.moneyAmount} đ</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.moneyAmount)} đ</Text>
                                 </View>
 
                                 <View row style={styles.subRow}>
-                                    <Text medium grayDark>Phí Clingme</Text>
-                                    <Text medium bold grayDark>{item.charge} đ</Text>
+                                    <Text medium grayDark>{I18n.t('clingme_fee')}</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.charge)} đ</Text>
                                 </View>
                             </View>
                         </View>
@@ -296,14 +369,20 @@ export default class extends Component {
             if (item.listTransactionDto.length != 0) {
                 // console.warn('will show place ' + JSON.stringify(item));
                 let flagList = {placeId: item.placeId, levelList: 0}
-                result.push({
-                    keyExtractor: result.length,
-                    placeId: item.placeId,
-                    placeAddress: item.placeAddress,
-                    totalMoney: item.totalMoney,
-                    flagList: flagList
-                })
 
+                if (this.state && this.state.placeId && this.state.placeId > 0) {
+                    flagList.levelList = 99;
+                }
+
+                if (this.state && (!this.state.placeId || this.state.placeId == 0)) {
+                    result.push({
+                        keyExtractor: result.length,
+                        placeId: item.placeId,
+                        placeAddress: item.placeAddress,
+                        totalMoney: item.totalMoney,
+                        flagList: flagList
+                    })
+                }
                 // result = result.concat(item.listTransactionDto.slice(0,2));
                 item.listTransactionDto.map((value, index) => {
                     if (index < FIRST_LEVEL_SHOW) {
@@ -344,7 +423,7 @@ export default class extends Component {
             }
         })
 
-        console.log('test arr ' + JSON.stringify(result));
+        // console.log('test arr ' + JSON.stringify(result));
         return result;
     }
 
@@ -371,29 +450,39 @@ export default class extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {data} = nextProps;
-        const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
-        const newHistoryList = this._getArray(newTotalHistoryList)
-        this.setState({
-            totalHistoryList: newTotalHistoryList,
-            historyList: newHistoryList
-        })
+        if (data && data.listPlaceTran != undefined){
+            const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+            const newHistoryList = this._getArray(newTotalHistoryList)
+            this.setState({
+                totalHistoryList: newTotalHistoryList,
+                historyList: newHistoryList
+            })
+        }
     }
 
     _getListPlace() {
         const {listPlace} = this.props
         // console.warn('test '+JSON.stringify(listPlace))
         newListPlace = Array.from(listPlace);
-        const itemAll = {placeId: '000000', name: 'Tất cả các địa điểm', address: 'Tất cả các địa điểm'}
+        const itemAll = {placeId: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
         newListPlace.splice(0, 0, itemAll);
         return newListPlace;
     }
 
-    _handleSelectPlace(item) {
-        // console.warn(JSON.stringify(item))
-        this.setState({
-            placeId: item.placeId,
-        }, () => this._load());
+    _generateDataForDateFilterPeriod = () => {
+      const {checking} = this.props
+      // console.log('Checking', checking);
+      if (checking && checking.listCompareCheckDt){
+        return checking.listCompareCheckDt.map(item => ({
+          id: item.compareId,
+          type: item.cycleType,
+          fromTime: item.fromTime,
+          toTime: item.toTime
+        }))
+      }
+      return []
     }
+
 
     render() {
         const {data} = this.props;
@@ -402,14 +491,22 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <View style={{height: 50}}/>
-                <TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}
-                              onPressTab={data => this._handlePressTab(data)}
-                              ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
+                <View style={styles.spaceView}/>
+                {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
+                              {/*onPressTab={data => this._handlePressTab(data)}*/}
+                              {/*ref='tabs'/>*/}
+                {/* <DateFilter
+                    defaultFilter='month'
+                    type='lite-round'
+                    onPressFilter={data => this._handlePressFilter(data)}
+                    ref='dateFilter'/> */}
+                <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
+                  loadMore={this._loadMoreDate} select={this.props.checking.checkingPeriod}
+                  ref={ref=>this.dateFilterPeriod=ref}
+                />
                 {this._renderMoneyBand()}
                 {data && <ListViewExtend
-                    style={{flex: 1}}
+                    style={styles.listViewExtend}
                     onItemRef={ref => this.listview = ref}
                     onEndReached={() => this._loadMore()}
                     keyExtractor={item => item.keyExtractor}

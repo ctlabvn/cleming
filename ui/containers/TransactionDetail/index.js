@@ -237,6 +237,13 @@ export default class TransactionDetail extends Component {
         if (transactionInfo.viewNumber == 0){
           helpBtn =
               <View style={styles.rowCenter}>
+                {/* <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+                   <View style={styles.round20}>
+                       <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+                   </View>
+                   <Text medium primary>{I18n.t('help')}</Text>
+                </Button> */}
+
                   <Button primary style={{...styles.backgroundPrimary}}
                     onPress={()=>goBack()}
                   >
@@ -244,6 +251,17 @@ export default class TransactionDetail extends Component {
                   </Button>
               </View>
         }
+        // else{
+        //   helpBtn =
+        //       <View style={styles.rowCenter}>
+        //         <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
+        //            <View style={styles.round20}>
+        //                <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
+        //            </View>
+        //            <Text medium primary>{I18n.t('help')}</Text>
+        //        </Button>
+        //       </View>
+        // }
 
 
 
@@ -382,16 +400,19 @@ export default class TransactionDetail extends Component {
                         <Text medium grayDark>{I18n.t('mark')}:</Text>
                         <Text medium grayDark bold>{moment(transactionInfo.markTimeDeal * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
+
+                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('export_bill')}:</Text>
+                        <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>
+                    }
+
                     <View style={styles.rowPadding}>
                         <Text medium grayDark>{I18n.t('shot_bill')}:</Text>
                         <Text medium grayDark bold>{moment(transactionInfo.boughtTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
-                    {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('export_bill')}:</Text>
-                            <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                        </View>
-                    }
+
 
                     {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
                         <View style={styles.invoiceBlock}>

@@ -178,6 +178,7 @@ export default class UpdateUserContainer extends Component {
     }
     
     render() {
+        const email = this.props.initialValues.email
         return(
             <Container>
                 <Content style={{backgroundColor: material.white500}}>
@@ -208,7 +209,7 @@ export default class UpdateUserContainer extends Component {
                                 iconStyle={styles.inputIcon}
                                 icon="edit_personal"
                                 style={styles.inputField}
-                                label={I18n.t('email')}
+                                label={email || I18n.t('email')}
                                 name="email"
                                 component={InputField}
                                 placeholderTextColor={material.gray500}/>

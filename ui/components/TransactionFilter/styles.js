@@ -17,10 +17,9 @@ export default {
     filterByTransactionType: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: material.primaryColor,
         justifyContent: 'space-between',
-        padding: 10,
+        paddingTop: 5,
+        paddingBottom: 5
     },
     leftContainer: {
         flexDirection: 'row',

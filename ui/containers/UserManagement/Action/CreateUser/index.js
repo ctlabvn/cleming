@@ -271,7 +271,7 @@ export default class CreateUserContainer extends Component {
         isLoading: true,
       })
 
-        //panda
+
         const {employeeDetail} = this.props;
       // if ((this.props.route.params && this.props.route.params.id)) {
           if (!employeeDetail) {

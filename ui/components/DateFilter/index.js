@@ -5,6 +5,7 @@ import { View, ScrollView, ListView, TouchableOpacity, TouchableWithoutFeedback,
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import RadioPopup from '~/ui/components/RadioPopup'
+import PopupAlert from '~/ui/components/PopupAlert'
 import moment from 'moment'
 import Icon from '~/ui/elements/Icon'
 import { DEFAULT_DATE_FORMAT, DEFAULT_MONTH_FORMAT, DEFAULT_YEAR_FORMAT }
@@ -34,7 +35,7 @@ export default class DateFilter extends Component {
                 }
             ]
         }else if (props.type == 'lite-round'){
-            defaultFilter = 'week'
+            // defaultFilter = 'week'
             this.dateFilterListValue = [
                 {
                     value: 'week',
@@ -96,7 +97,11 @@ export default class DateFilter extends Component {
         return this.state
     }
     _handlePressTriggerDateFilterPopup() {
-        this.refs.dateFilterTypePopup.setModalVisible(true)
+        const {type} = this.props
+        if (type == 'lite-round') {
+            this.popupAlert.show('Chu kỳ đối soát mặc định 1 tháng. Liên hệ với Clingme để thay đổi.');
+        }
+        else this.refs.dateFilterTypePopup.setModalVisible(true);
     }
     _handlePressDateFilter(item) {
         this.setState({ currentSelectValue: item })
@@ -105,6 +110,17 @@ export default class DateFilter extends Component {
             currentSelectValue: item
         })
     }
+
+    getCurrentSelectValue() {
+        return this.state.currentSelectValue;
+    }
+
+    setCurrentSelectValue(item) {
+        // this.setState({ currentSelectValue: item })
+        // console.warn('date filter ' + JSON.stringify(item))
+        this._handlePressDateFilter(item);
+    }
+
     _handleYesDateFilter(item) {
         this.setState({ 
             currentDateFilter: item,
@@ -571,6 +587,7 @@ export default class DateFilter extends Component {
                         cancelTextIOS={I18n.t('cancel')}
                     />
                 <RadioPopup ref='dateFilterTypePopup' listValue={this.dateFilterListValue} selectedValue={this.state.currentDateFilter} onClickYes={this._handleYesDateFilter.bind(this)} />
+                <PopupAlert ref={ref=>this.popupAlert = ref} icon='logo' onOk={()=>{}}/>
                 <View style={styles.row}>
                 <TouchableOpacity onPress={() => this._handlePressTriggerDateFilterPopup()}>
                     <View style={styles.stickPart}>

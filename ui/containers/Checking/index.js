@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Text, List, ListItem, Spinner, View, Button} from 'native-base'
+import {Container, Text, List, Spinner, View, Button} from 'native-base'
 import {TouchableHighlight} from 'react-native'
 import I18n from '~/ui/I18n'
 import styles from './styles'
@@ -20,10 +20,14 @@ import Content from "~/ui/components/Content";
 import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
 
+import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
+import DateFilterPeriod from './DateFilterPeriod'
 
 @connect(state => ({
     xsession: getSession(state),
     data: getCheckingData(state),
+    checking: state.checking,
+    datefiltercurrentvalue: getCheckingDateFilterCurrentSelectValue(state),
 }), {...commonActions, ...checkingActions})
 
 export default class extends Component {
@@ -32,18 +36,31 @@ export default class extends Component {
         super(props);
         this.state = {
             currenTab: ALL_PLACES_CHECKING,
+            detail: {}
         }
+        this.compareId
     }
 
     componentDidMount() {
         this._load();
     }
 
-    _handlePressFilter(data) {
-        const dateFilterData = data.currentSelectValue.value;
-        const fromTime = dateFilterData.from;
-        const toTime = dateFilterData.to;
-        this._load(fromTime, toTime);
+    _handlePressFilter(data, needSet=true) {
+        console.log('Change Period', data);
+        this.compareId = data.id
+        const {setCheckingPeriod} = this.props
+        let index = this.props.checking.listCompareCheckDt.findIndex (item=>item.compareId==data.id)
+        let detail = Object.assign({}, this.props.checking.listCompareCheckDt[index])
+        this.setState({detail: detail})
+        needSet && setCheckingPeriod(data.id)
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps && nextProps.checking && nextProps.checking.listCompareCheckDt){
+            let index = nextProps.checking.listCompareCheckDt.findIndex (item=>item.compareId==this.compareId)
+            let detail = Object.assign({}, nextProps.checking.listCompareCheckDt[index])
+            this.setState({detail: detail})
+        }   
     }
 
     _handlePressTab(data) {
@@ -53,36 +70,38 @@ export default class extends Component {
     _onRefresh() {
         this._load()
     }
+    _loadMore = () => {
+      const {checking} = this.props
+      console.log('Trigger Load More', checking);
+      if (checking.pageNumber >= checking.totalPage) return
+      this._load(checking.pageNumber+1)
 
+    }
     _handlePressSumRevenue() {
+        // const item = this.refs.dateFilter.getCurrentSelectValue()
+
+        // const { setCheckingDateFilterCurrentSelectValue } = this.props;
+        // setCheckingDateFilterCurrentSelectValue(item);
+        //
+        // const { datefiltercurrentvalue } =this.props;
+
         const {forwardTo} = this.props
         forwardTo('transactionHistory');
     }
 
-    _renderMoneyBand(money) {
-        var moneyNumber;
-        return (
-            <View style={styles.moneyBand}>
-                <View>
-                    <Text largeLight bold grayDark>Doanh thu</Text>
-                    <Text green>(Đã đối soát)</Text>
-                </View>
-                <Text large green>
-                    <Text large superBold orange>{formatNumber(money)}</Text> đ
-                </Text>
-            </View>
-        )
-    }
 
-    _load(fromTime, toTime) {
+
+    _load(page=1) {
         const {xsession, getCheckingDetail} = this.props;
-        if (!fromTime && !toTime) {
-            const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-            fromTime = dateFilterData.from;
-            toTime = dateFilterData.to;
-        }
+        // if (!fromTime && !toTime) {
+        //     const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
+        //     fromTime = dateFilterData.from;
+        //     toTime = dateFilterData.to;
+        // }
 
-        getCheckingDetail(xsession, fromTime, toTime, (err, data) => {
+        getCheckingDetail(xsession, page, (err, data) => {
+          console.log('Err Checking', err);
+          console.log('Data Checking', data);
         });
     }
 
@@ -91,86 +110,113 @@ export default class extends Component {
         forwardTo('cashoutAccount');
     }
 
+    _generateDataForDateFilterPeriod = () => {
+      const {checking} = this.props
+      // console.log('Checking', checking);
+      if (checking && checking.listCompareCheckDt){
+        return checking.listCompareCheckDt.map(item => ({
+          id: item.compareId,
+          type: item.cycleType,
+          fromTime: item.fromTime,
+          toTime: item.toTime
+        }))
+      }
+      return []
+    }
+
     render() {
-        const {data} = this.props;
-        const detail = data;
+        const {data, checking} = this.props;
+        const {detail} = this.state
+        const clmTotalMoneySubCharge = parseInt(detail.clmMoneyCollected) - parseInt(detail.clmCharge)
+        const clmTotalMoneySubChargeTextStyle = clmTotalMoneySubCharge > 0 ? styles.textTitle : styles.textTitleBlur;
+        const chargeSubClmTotalMoney = (parseInt(detail.clmCharge) - parseInt(detail.clmMoneyCollected))
+        const chargeSubClmTotalMoneyTextStyle = chargeSubClmTotalMoney > 0 ? styles.textTitle : styles.textTitleBlur;
+        //"status": int,			// 2 là đang đối soát, 3 là đã đối soát
+        let colorStyle = (detail.status == 2) ? styles.warning : styles.success
+        let checkText = (detail.status == 2) ? I18n.t('not_checking_yet') : I18n.t('checked')
+        if (!checking || !checking.listCompareCheckDt || checking.listCompareCheckDt.length == 0){
+          return <View style={styles.emptyPage}><Text style={styles.emptyText}>Chưa có đối soát nào</Text></View>
+        }
         return (
             <Container style={styles.container}>
                 <TabsWithNoti tabData={options.tabData} activeTab={ALL_PLACES_CHECKING}
                               onPressTab={data => this._handlePressTab(data)}
                               ref='tabs'/>
-                <DateFilter onPressFilter={data => this._handlePressFilter(data)} ref='dateFilter'/>
-                {this._renderMoneyBand(detail.revenue)}
+
+                <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
+                  loadMore={this._loadMore} select={this.props.checking.checkingPeriod}
+                />
                 <Content
                     padder
                     style={styles.content}
                     onRefresh={() => this._onRefresh()}>
-                    <View row style={styles.moneyTitle}>
-                        <Text strong bold grayDark>
-                            Doanh thu
-                        </Text>
-                        <View row>
-                            <Text strong bold grayDark orange
-                                  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.revenue)}</Text>
-                            <Icon name='foward' style={{fontSize: 20, color: material.orange500}}
-                                  onPress={() => this._handlePressSumRevenue()}/>
+
+                    <View>
+                        <Text strong bold style={{...styles.title, ...colorStyle}}>{'\x3C'}{checkText}{'\x3E'}</Text>
+                        <Border/>
+                        <View row style={styles.moneyTitle}>
+                            <Text strong bold grayDark>{I18n.t('total_revenue')}</Text>
+                            <View row>
+                                <Text strong bold grayDark style={{...colorStyle}}
+                                      onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.mcMoneyCollected+detail.clmMoneyCollected)}</Text>
+                                <Icon name='foward' style={{...styles.icon, ...colorStyle}}
+                                      onPress={() => this._handlePressSumRevenue()}/>
+                            </View>
                         </View>
                     </View>
 
                     <View style={{marginRight: 20}}>
                         <View row style={styles.moneyContent}>
-                            <Text medium grayDark>Tổng tiền Merchant đã thu:</Text>
-                            <Text medium bold grayDark>{formatNumber(detail.mcTotalMoney)}</Text>
+                            <Text medium grayDark>{I18n.t('total_money_merchant_get')}</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.mcMoneyCollected)}</Text>
                         </View>
                         <View row style={styles.moneyContent}>
-                            <Text medium grayDark>Tổng tiền Clingme đã thu:</Text>
-                            <Text medium bold grayDark>{formatNumber(detail.clmTotalMoney)}</Text>
+                            <Text medium grayDark>{I18n.t('total_money_clingme_get')}</Text>
+                            <Text medium bold grayDark>{formatNumber(detail.clmMoneyCollected)}</Text>
+                        </View>
+                    </View>
+
+                    <Border style={styles.marginTop}/>
+
+                    <View row style={styles.moneyTitle}>
+                        <Text strong bold grayDark>
+                            {I18n.t('clingme_fee')}
+                        </Text>
+                        <View row>
+                            <Text strong bold grayDark style={{...colorStyle}}  onPress={() => this._handlePressSumRevenue()}>{formatNumber(detail.clmCharge)}</Text>
+                            <Icon name='foward' style={{...styles.icon, ...colorStyle}}
+                                  onPress={() => this._handlePressSumRevenue()}/>
+                        </View>
+                    </View>
+
+                    <Border/>
+
+                    <View row style={styles.moneyTitle}>
+                        <Text strong bold grayDark style={clmTotalMoneySubChargeTextStyle}>
+                            {I18n.t('merchant_get_money_from_clingme')}
+                        </Text>
+                        <View row style={styles.moneyNoIcon}>
+                            {clmTotalMoneySubCharge > 0
+                            && <Text strong bold grayDark style={{...colorStyle}}>{formatNumber(clmTotalMoneySubCharge)}</Text>}
                         </View>
                     </View>
 
                     <View row style={styles.moneyTitle}>
-                        <Text strong bold grayDark>
-                            Phí Clingme
+                        <Text strong bold style={chargeSubClmTotalMoneyTextStyle}>
+                            {I18n.t('clingme_get_money_from_merchant')}
                         </Text>
                         <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark orange>{formatNumber(detail.charge)}</Text>
+                            {chargeSubClmTotalMoney > 0
+                            && <Text strong bold grayDark style={{...colorStyle}}>{formatNumber(chargeSubClmTotalMoney)}</Text>}
                         </View>
-                    </View>
-
-
-                    <View row style={styles.moneyTitle}>
-                        <Text strong bold grayDark>
-                            Đối soát
-                        </Text>
-                        <View row style={styles.moneyNoIcon}>
-                            <Text strong bold grayDark
-                                  orange>{formatNumber(parseInt(detail.clmTotalMoney) - parseInt(detail.charge))}</Text>
-                        </View>
-                    </View>
-
-                    <Text medium bold grayDark> Merchant nhận lại từ Clingme </Text>
-                    <View row style={{justifyContent: 'center'}}>
-                        <Text medium bold grayDark
-                              style={{marginHorizontal: 5, alignSelf: 'flex-start'}}>=</Text>
-                        <View style={{alignItems: 'center'}}>
-                            <Text medium grayDark>Tổng tiền Clingme đã thu</Text>
-                            <Text medium bold grayDark>({formatNumber(detail.clmTotalMoney)})</Text>
-                        </View>
-                        <Text medium bold grayDark
-                              style={{marginHorizontal: 2, alignSelf: 'flex-start'}}>-</Text>
-                        <View style={{alignItems: 'center'}}>
-                            <Text medium grayDark>Phí Clingme đã thu</Text>
-                            <Text medium bold grayDark>({formatNumber(detail.charge)})</Text>
-                        </View>
-
                     </View>
 
                 </Content>
-                <Border color='rgba(0,0,0,0.5)' size={1} style={{marginBottom: 50}}/>
-                <View style={styles.fixButtonBlock}>
-                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>Thanh toán Clingme</Text>
-                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>Tài khoản Cashout</Text>
-                </View>
+                {/* <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/> */}
+                {/* <View style={styles.fixButtonBlock}>
+                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>{I18n.t('clingme_pay')}</Text>
+                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>{I18n.t('cashout_account')}</Text>
+                </View> */}
             </Container>
         )
     }

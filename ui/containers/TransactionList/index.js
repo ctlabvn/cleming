@@ -39,11 +39,11 @@ import ListTransaction from './TransactionListComponent'
     currentDateFilter: state.transaction.currentDateFilter,
     transaction: state.transaction,
     meta: state.meta,
-    // router: getRouter(state),  
+    // router: getRouter(state),
 }), { ...commonAction, ...transactionAction, ...authActions, ...placeActions, ...metaActions })
 export default class extends Component {
     constructor(props) {
-        super(props)      
+        super(props)
         this.isLoadingPlace = false
         this.currentPlace = -1
         if (props.app && props.app.topDropdown){
@@ -53,7 +53,7 @@ export default class extends Component {
             }
         }
     }
-    
+
     // need filter transaction type
     _handlePressFilter(item) {
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -136,7 +136,7 @@ export default class extends Component {
     //     return true
     // }
 
-    componentWillFocus() {        
+    componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
             const { app, meta, clearMarkLoad } = this.props
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -215,15 +215,18 @@ export default class extends Component {
     }
 
     _renderList() {
-        const { transaction } = this.props   
-        return <ListTransaction onItemRef={ref=>this.listview=ref} 
-                onEndReached={this._loadMore} onRefresh={this._onRefresh} 
-                itemKey='tranId' data={transaction.listTransaction} />
+        const { transaction } = this.props
+        // onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
+        // onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
+        return <ListTransaction onItemRef={ref=>this.listview=ref}
+                onEndReached={this._loadMore} onRefresh={this._onRefresh}
+                itemKey='tranId' data={transaction.listTransaction}
+               />
     }
-    
+
     render() {
         console.log('Render TransactionList')
-        const { forwardTo,  currentDateFilter } = this.props
+        const { forwardTo,  currentDateFilter, transaction } = this.props
         // if (!payDirect && !payWithClingme) {
         //     return (
         //         <View style={{ backgroundColor: material.white500, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -241,20 +244,34 @@ export default class extends Component {
         //     moreData = <View style={{ flexDirection: 'row', justifyContent: 'center' }}><Text small>No more data</Text></View>
         // }
         // <TabsWithNoti tabData={this._getTabData()} activeTab={this._getDefaultActiveTab()} onPressTab={this._handlePressTab.bind(this)} ref='tabs' />
+        // let filterStyle= this.state.showFilter ? {width: 'auto', height: 'auto', opacity: 1} : {width: 0, height: 0, opacity: 0}
         return (
             <Container style={styles.container}>
                 <View style={{ flex: 1 }}>
+                  <View ref={ref => this.filterBlock=ref}>
                     <DateFilter defaultFilter={currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
                     <TransactionFilter onFilterChange={this._handleTransactionFilterChange.bind(this)}
                         listValue={options.transactionFilter} ref='transactionFilter'
                     />
+                    <View style={{...styles.revenueBlock}}>
+                      <Text grayDark>{I18n.t('confirmed_revenue')}</Text>
+                      <Text medium bold primary>{formatNumber(transaction.revenueApproved)} đ</Text>
+                    </View>
+                    <View>
+                        <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
+                            <Text grayDark>{I18n.t('waiting_revenue')}</Text>
+                            <Text medium bold warning>{formatNumber(transaction.revenueWait)} đ</Text>
+                        </View>
+                        <View style={styles.linePrimary} />
+                    </View>
+                  </View>
                         {this._renderList()}
-                        <Spinner onItemRef={ref=>this.spinner=ref} 
+                        <Spinner onItemRef={ref=>this.spinner=ref}
                         // color={material.red500}
                         />
                         {/*{noData}
                         {moreData}*/}
-                    
+
 
                 </View>
             </Container>

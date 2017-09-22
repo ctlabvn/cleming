@@ -19,12 +19,12 @@ export default {
         //     route: 'comingSoon',
         //     icon: 'post',
         // },
-        // {
-        //     name: I18n.t('checking'),
-        //     route: 'checking',
-        //     icon: 'term',
-        //     masterOnly: true
-        // },
+        {
+            name: I18n.t('checking'),
+            route: 'checking',
+            icon: 'term',
+            masterOnly: true
+        },
 
         // // {
         // //     name: I18n.t('revenue'),

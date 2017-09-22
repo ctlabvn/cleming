@@ -77,7 +77,7 @@ const requestUpdateProfile = createRequestSaga({
     goBack,
   ],
   failure: [
-    ( )=> setToast(getToastMessage(I18n.t('could_not_update_profile')), 'danger', null, null, 3000, 'top'),
+      (data)=> setToast(getToastMessage(I18n.t(data.msg || 'could_not_update_profile')), 'danger', null, null, 3000, 'top'),
   ],
 })
 
@@ -111,12 +111,7 @@ const requestUpdateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
-      if (error.code == 1207) {
-        return setToast(getToastMessage(I18n.t('err_phone_exists')), 'info', null, null, 3000, 'top')
-      } else if (error.code == 1206) {
-        return setToast(getToastMessage(I18n.t('err_email_exists')), 'info', null, null, 3000, 'top')
-      }
-      return setToast(getToastMessage(I18n.t('err_connection')), 'info', null, null, 3000, 'top')
+        return setToast(getToastMessage(I18n.t(error.msg || 'err_connection')), 'info', null, null, 3000, 'top')
     }
   ],
 })
@@ -129,18 +124,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
-      // console.log('Error', error)
-      //   console.warn(JSON.stringify(error))
-      switch (error.code) {
-        case 1207:
-        case 1206:
-        case 1808:
-          return setToast(getToastMessage(I18n.t(error.msg)), 'info', null, null, 3000, 'top')
-          break;
-        default:
-          return setToast(getToastMessage(I18n.t('err_connection')), 'info', null, null, 3000, 'top')
-          break;
-      }
+        return setToast(getToastMessage(I18n.t(error.msg || 'err_connection')), 'info', null, null, 3000, 'top')
     }
   ],
 })

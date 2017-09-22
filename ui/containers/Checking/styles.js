@@ -13,6 +13,11 @@ export default {
         // flex: 1,
     },
 
+    title: {
+        alignSelf: 'center',
+        marginBottom: 5
+    },
+
     moneyBand: {
         width: '100%',
         flexDirection: 'row',
@@ -24,38 +29,36 @@ export default {
         alignItems: 'flex-end',
     },
 
-    listItem: {
-        paddingRight: 0,
-        paddingBottom: 0,
-        marginLeft: 0,
-        marginRight: 0,
-        borderBottomWidth: 0,
-        paddingTop: 0,
-    },
-
-    itemContent: {
-        flex: 1,
-        paddingTop: 10,
-        paddingBottom: 7,
-        paddingRight: 20,
-    },
-
     icon: {
-        color: material.orange500,
-        fontSize: 32,
-        padding: 25
+        fontSize: 24,
+        color: material.orange500
+    },
+
+    marginTop: {
+        marginTop: 10
+    },
+
+    marginBottom: {
+        marginBottom: 50
     },
 
     moneyTitle: {
         justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        marginTop: 25,
-        marginBottom: 5,
+        marginVertical: 10,
         width: '100%'
     },
 
     moneyContent: {
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: 15,
+    },
+
+    textTitle: {
+        color: material.gray600,
+    },
+
+    textTitleBlur: {
+        color: material.gray300,
     },
 
     moneyNoIcon: {marginRight: 20},
@@ -70,13 +73,21 @@ export default {
         // borderTopWidth: 1,
         bottom: 0
     },
-    buttonFeedback: {
-        width: '50%',
-        borderRadius: 0,
-        justifyContent: 'center',
-        height: 50
+    success: {
+      color: material.successColor
     },
-    backgroundLightGray: {
-        backgroundColor: material.gray300
+    warning: {
+      color: material.warningColor
     },
+    emptyPage: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: material.gray200
+    },
+    emptyText: {
+      color: material.gray500,
+      fontSize: 22,
+      fontWeight: 'bold'
+    }
 }
