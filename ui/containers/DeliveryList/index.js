@@ -301,6 +301,13 @@ export default class extends Component {
 
         console.log('render delivery list')
 
+        // {(this.selectedStatus == ORDER_WAITING_DELIVERY) &&
+        //     <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
+        //       <Text grayDark>{I18n.t('revenue')}</Text>
+        //       <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
+        //     </View>
+        //   }
+
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
         return (
@@ -317,12 +324,6 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
-                {(this.selectedStatus == ORDER_WAITING_DELIVERY) &&
-                  <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
-                    <Text grayDark>{I18n.t('revenue')}</Text>
-                    <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
-                  </View>
-                }
                 <ListViewExtend
                     onItemRef={ref=>this.listview=ref}
                     onEndReached={this._loadMore}
