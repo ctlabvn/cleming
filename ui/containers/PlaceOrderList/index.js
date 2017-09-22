@@ -39,7 +39,7 @@ import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
-    modal: state.modal.modal,
+    // modal: state.modal.modal,
     news: getNews(state),
     meta: state.meta
 }), { ...commonActions, ...bookingActions, ...placeActions, ...metaActions }, null, { withRef: true })

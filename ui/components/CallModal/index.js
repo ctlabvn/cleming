@@ -14,13 +14,13 @@ import { connect } from 'react-redux'
 
 import Modal from '~/ui/components/Modal'
 import styles from './styles'
-import * as commonActions from '~/store/actions/common'
+// import * as commonActions from '~/store/actions/common'
 import {formatPhoneNumber} from '~/ui/shared/utils'
 import material from '~/theme/variables/material'
 
-@connect(state=>({
-
-}), {...commonActions })
+// @connect(state=>({
+//
+// }), {...commonActions })
 
 export default class extends Component {
   constructor(props) {
@@ -30,25 +30,26 @@ export default class extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open == true) {
-      this.props.openModal()
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.open == true) {
+  //     this.props.openModal()
+  //   }
+  // }
 
   onCallAccepted() {
     const {onCloseClick, phoneNumber} = this.props
     Communications.phonecall('+' + phoneNumber, true)
-    this.props.closeModal()
+    // this.props.closeModal()
     onCloseClick()
   }
 
   render() {
-    const {open, title, onCloseClick, closeModal, phoneNumber} = this.props
+    // const {open, title, onCloseClick, closeModal, phoneNumber} = this.props
+      const {open, title, onCloseClick, phoneNumber} = this.props
     return(
       <Modal
         onCloseClick={() => {
-          closeModal()
+          // closeModal()
           onCloseClick()
         }}
         title={title}
@@ -65,7 +66,7 @@ export default class extends Component {
               <Col style={{justifyContent: 'center'}}>
                 <Button
                   onPress={() => {
-                    closeModal()
+                    // closeModal()
                     onCloseClick()
                   }}
                   style={{...styles.button, ...styles.leftButton}}>
