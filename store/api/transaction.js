@@ -49,10 +49,10 @@ export default {
         else return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
     },
 
-    historyList(xsession, placeId, fromTime, toTime, option=1, pageNumber=0){
-        console.log('history list API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
-        if (!placeId || placeId <= 0) return apiGet('/merchantapp/tran-history', {fromTime, toTime, option}, xsession)
-        else return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option}, xsession)
+    historyList(xsession, placeId, fromTime, toTime, option=1, compareId){
+        console.log('history list API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+compareId)
+        if (placeId && placeId>0) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option, compareId}, xsession)
+        else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option, compareId}, xsession)
     },
 
     updateViewStatusPayCLM(xsession, tranId){

@@ -13,7 +13,7 @@ export default {
     },
 
     moneyBandContainer: {
-        paddingVertical: 10,
+        paddingBottom: 10,
         paddingHorizontal: 20
     },
 
@@ -67,14 +67,14 @@ export default {
     },
 
     textPlaceTitle: {
-        marginTop: 20,
-        marginBottom: 5,
-        alignSelf: 'center'
+        marginRight: 15,
+        alignSelf: 'center',
+        flex: 1,
     },
 
     numberPlaceTitle: {
-        marginBottom: 7,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        alignSelf: 'flex-start',
     },
 
     button: {

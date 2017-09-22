@@ -1,11 +1,4 @@
-const initialState = {
-    data: {
-        revenue: '',
-        mcTotalMoney: 0,
-        clmTotalMoney: 0,
-        charge: 0,
-    }
-}
+const initialState = {}
 
 export const checking = (state = initialState, {type, payload}) => {
     switch (type) {
@@ -26,9 +19,9 @@ export const checking = (state = initialState, {type, payload}) => {
               checkingPeriod: payload
             }
         case 'app/clearData':
-          return {...state, ...initialState}
+          return initialState
         case 'app/logout':
-          return {...state, ...initialState}
+          return initialState
         default:
             return state;
     }

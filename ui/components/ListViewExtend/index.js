@@ -90,8 +90,14 @@ export default class ListViewExtend extends Component {
       <ListView
         {...props}
         onScroll={e=>{
+          const {layoutMeasurement, contentOffset, contentSize} = e.nativeEvent
+          {/* console.log('Layout Measurement', layoutMeasurement)
+          console.log('Content Offset',  contentOffset)
+          console.log('Content Size', contentSize) */}
           this.scrollTop = e.nativeEvent.contentOffset.y
-          if (this.scrollTop > 120){
+          if (contentSize.height < layoutMeasurement.height){
+            this.props.onScrollUp && this.props.onScrollUp()
+          }else if (this.scrollTop > 120){
               this.props.onScrollDown && this.props.onScrollDown()
           }
         }}

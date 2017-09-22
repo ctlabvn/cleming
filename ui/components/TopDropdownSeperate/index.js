@@ -150,6 +150,12 @@ export default class TopDropdown extends Component {
         this.setState({placeholderText: text});
     }
 
+    clear() {
+        this.setState({
+            selectedOption: null,
+        })
+    }
+
     render() {
         const { notifications, getNotificationRequest, getNotification, show } = this.props
         let { openningDropdown, selectedOption, isMultiple } = this.state

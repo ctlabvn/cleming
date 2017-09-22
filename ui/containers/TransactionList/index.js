@@ -216,11 +216,11 @@ export default class extends Component {
 
     _renderList() {
         const { transaction } = this.props
+        // onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
+        // onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
         return <ListTransaction onItemRef={ref=>this.listview=ref}
                 onEndReached={this._loadMore} onRefresh={this._onRefresh}
                 itemKey='tranId' data={transaction.listTransaction}
-                onScrollDown = {()=>this.filterBlock.setNativeProps({style: {width: 0, height: 0, opacity: 0}})}
-                onScrollUp = {()=>this.filterBlock.setNativeProps({style: {width: 'auto', height: 'auto', opacity: 1}})}
                />
     }
 
@@ -254,12 +254,15 @@ export default class extends Component {
                         listValue={options.transactionFilter} ref='transactionFilter'
                     />
                     <View style={{...styles.revenueBlock}}>
-                      <Text grayDark>{I18n.t('waiting_revenue')}</Text>
+                      <Text grayDark>{I18n.t('confirmed_revenue')}</Text>
                       <Text medium bold primary>{formatNumber(transaction.revenueApproved)} đ</Text>
                     </View>
-                    <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
-                      <Text grayDark>{I18n.t('confirmed_waiting_revenue')}</Text>
-                      <Text medium bold warning>{formatNumber(transaction.revenueWait)} đ</Text>
+                    <View>
+                        <View style={{...styles.revenueBlock, ...styles.primaryBorder}}>
+                            <Text grayDark>{I18n.t('waiting_revenue')}</Text>
+                            <Text medium bold warning>{formatNumber(transaction.revenueWait)} đ</Text>
+                        </View>
+                        <View style={styles.linePrimary} />
                     </View>
                   </View>
                         {this._renderList()}

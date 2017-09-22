@@ -299,5 +299,6 @@ export default {
     'transaction_history': 'Lịch sử giao dịch',
 
     'waiting_revenue' : 'Doanh thu chờ duyệt',
-    'confirmed_waiting_revenue': 'Doanh thu đã duyệt'
+    'confirmed_revenue': 'Doanh thu đã duyệt',
+    'total_money': 'Tổng doanh thu',
 }

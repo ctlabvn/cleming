@@ -78,11 +78,12 @@ export default class extends Component {
             loading: false,
             totalHistoryList: totalHistoryList,
             historyList: historyList,
+            compareId: 0
         }
 
     }
 
-    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, pageNumber = 0) {
+    _load(placeId = this.state.placeId, fromTime = this.state.fromTime, toTime = this.state.toTime, option = this.state.currentTab, compareId = this.state.compareId) {
         const {getTransactionHistoryList, xsession} = this.props;
         // get All place when placeId == null
 
@@ -90,11 +91,7 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-
-        /* change 18/09/2017 */
-        getTransactionHistoryList(xsession, placeId, fromTime, toTime, option)
-
-        // getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, (err, data) => {
+        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, compareId, (err, data) => {})
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
@@ -104,25 +101,6 @@ export default class extends Component {
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
-    // _setDateFilterCurrentSelectValue(){
-    //     const {checkingDateFilterCurrentSelectValue} = this.props;
-    //
-    //     this.refs.dateFilter.setCurrentSelectValue(checkingDateFilterCurrentSelectValue);
-    //
-    //     // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-    //     // console.warn('3.1.1. dateFilterData' + JSON.stringify(dateFilterData));
-    //
-    //     fromTime = checkingDateFilterCurrentSelectValue.value.from;
-    //     toTime = checkingDateFilterCurrentSelectValue.value.to;
-    //
-    //     // fromTime = dateFilterData.from;
-    //     // toTime = dateFilterData.to;
-    //
-    //     this.setState({
-    //         fromTime: fromTime,
-    //         toTime: toTime,
-    //     }, () => this._load())
-    // }
 
     componentWillFocus() {
         // this._setDateFilterCurrentSelectValue();
@@ -131,7 +109,7 @@ export default class extends Component {
     componentDidMount() {
         const {app} = this.props;
         app.topDropdown.setCallbackPlaceChange(data => this._handleTopDrowpdown(data))
-
+        
         // this._setDateFilterCurrentSelectValue();
 
         // const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
@@ -165,11 +143,11 @@ export default class extends Component {
     _handlePressFilter(data, needSet=true) {
         console.log('Change Period', data);
         const {setCheckingPeriod} = this.props
-        let fromTime = data.fromTime
-        let toTime = data.toTime
+        let {fromTime, toTime, id} = data
         this.setState({
             fromTime: fromTime,
             toTime: toTime,
+            compareId: id
         }, () => this._load())
         needSet && setCheckingPeriod(data.id)
     }
@@ -194,10 +172,6 @@ export default class extends Component {
         }
     }
 
-    _onRefresh() {
-
-    }
-
     _renderMoneyBand() {
         const {data} = this.props;
         if (!data) return;
@@ -217,7 +191,7 @@ export default class extends Component {
                 moneyTitle = I18n.t('total_money_clingme_get')
                 break;
             case CLINGME_MERCHANT_COLLECTED:
-                moneyTitle = 'Tổng đã thu'
+                moneyTitle = I18n.t('total_money')
                 break;
         }
 
@@ -225,11 +199,11 @@ export default class extends Component {
             <View style={styles.moneyBandContainer}>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>{moneyTitle}</Text>
-                    <Text largeLight green bold>{formatNumber(data.totalMoney)} đ</Text>
+                    <Text strong green bold>{formatNumber(data.totalMoney)} đ</Text>
                 </View>
                 <View row style={styles.moneyBand}>
                     <Text medium grayDark>Phí Clingme</Text>
-                    <Text largeLight bold grayDark>{formatNumber(data.charge)} đ</Text>
+                    <Text strong bold grayDark>{formatNumber(data.charge)} đ</Text>
                 </View>
             </View>
         )
@@ -288,7 +262,6 @@ export default class extends Component {
     }
 
     _renderTransactionItem(item) {
-        console.log('render Row Item');
         if (item.seeMore) {
             // const numberItemHidding = 'xem thêm (' + item.numberItemHidding + ')';
             if (item.flagList.levelList > 1) return null;
@@ -317,12 +290,14 @@ export default class extends Component {
             return (
                 <View style={styles.center}>
                     <Border/>
+                    <View row style={{marginLeft: 15, marginRight: 15, marginTop: 10, marginBottom: 10, justifyContent: 'space-between', width: '90%'}}>
                     <Text medium bold grayDark style={styles.textPlaceTitle}>
                         {item.placeAddress}
                     </Text>
-                    <Text medium strong bold grayDark style={styles.numberPlaceTitle}>
+                    <Text medium bold grayDark style={styles.numberPlaceTitle}>
                         {formatNumber(item.totalMoney)} đ
                     </Text>
+                    </View>
                 </View>
             )
         }
@@ -367,12 +342,12 @@ export default class extends Component {
 
                                 <View row style={styles.subRow}>
                                     <Text medium orange>{status}</Text>
-                                    <Text medium bold grayDark>{item.moneyAmount} đ</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.moneyAmount)} đ</Text>
                                 </View>
 
                                 <View row style={styles.subRow}>
                                     <Text medium grayDark>{I18n.t('clingme_fee')}</Text>
-                                    <Text medium bold grayDark>{item.charge} đ</Text>
+                                    <Text medium bold grayDark>{formatNumber(item.charge)} đ</Text>
                                 </View>
                             </View>
                         </View>
@@ -473,12 +448,14 @@ export default class extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {data} = nextProps;
-        const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
-        const newHistoryList = this._getArray(newTotalHistoryList)
-        this.setState({
-            totalHistoryList: newTotalHistoryList,
-            historyList: newHistoryList
-        })
+        if (data && data.listPlaceTran != undefined){
+            const newTotalHistoryList = this._parseListPlaceTran(data.listPlaceTran)
+            const newHistoryList = this._getArray(newTotalHistoryList)
+            this.setState({
+                totalHistoryList: newTotalHistoryList,
+                historyList: newHistoryList
+            })
+        }
     }
 
     _getListPlace() {
@@ -523,6 +500,7 @@ export default class extends Component {
                     ref='dateFilter'/> */}
                 <DateFilterPeriod data={this._generateDataForDateFilterPeriod()} onChangeDate={data => this._handlePressFilter(data)}
                   loadMore={this._loadMoreDate} select={this.props.checking.checkingPeriod}
+                  ref={ref=>this.dateFilterPeriod=ref}
                 />
                 {this._renderMoneyBand()}
                 {data && <ListViewExtend
