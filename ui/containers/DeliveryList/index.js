@@ -171,7 +171,6 @@ export default class extends Component {
         const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
 
         const { selectedPlace } = this.state
-        console.warn('delivery list loadpage selectedPlace ' + JSON.stringify(selectedPlace));
         if (selectedPlace == null) return
         if (isLoadMore) {
             this.spinner.show(true)
@@ -181,7 +180,6 @@ export default class extends Component {
             this.listview.swing()
             this.listview.showRefresh(true)
         }
-        console.warn('delivery list loadpage now ');
         getOrderList(session, selectedPlace, this.selectedStatus, page,
             from_time, to_time,
             (err, data) => {
