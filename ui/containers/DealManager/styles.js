@@ -102,7 +102,7 @@ export default {
     marginRight: 15
   },
   dealContainer: {
-    width: material.deviceWidth
+    // width: material.deviceWidth
   },
   mb10: {
     marginBottom: 10

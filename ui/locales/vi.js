@@ -326,4 +326,6 @@ export default {
     'clone_deal': 'Tạo KM tương tự',
     'create_new_deal': 'Tạo KM mới',
     'out_dated': 'Đã hết hạn',
+    'deal_working': 'Đang hoạt động',
+    'deal_ended': 'Hết hạn'
 }

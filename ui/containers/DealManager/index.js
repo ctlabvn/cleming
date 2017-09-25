@@ -104,6 +104,9 @@ export default class DealManager extends Component {
         address={address}
         key={item.dealId}
         textLeft={item.promoBriefSmallLeft}
+        fromDate={item.fromDate}
+        toDate={item.toDate}
+        status={item.status}
         onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
         style={{marginBottom: 15}}
       />
@@ -159,10 +162,7 @@ export default class DealManager extends Component {
 
               <TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
                 <View style={{...styles.row, ...styles.pd10, ...styles.cardBlock}}>
-                    <View style={styles.inline}>
-                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
-                      <Text>{I18n.t('transaction')}</Text>
-                    </View>
+                    <Text>{I18n.t('transaction')}</Text>
                     <View style={styles.inline}>
                       <Text>87</Text>
                       <Icon name='foward' style={styles.icon} />

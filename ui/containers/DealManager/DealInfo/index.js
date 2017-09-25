@@ -119,15 +119,17 @@ export default class DealInfo extends Component {
       )
     }
 
+    //<View style={{...styles.row, ...styles.pd10, ...styles.bgWhite, backgroundColor: 'yellow'}}>
+      //  </View>
 
     render() {
       const {dealItem} = this.state
       const {forwardTo} = this.props
-      console.log('styles', styles)
       return (
+
         <Container>
           {dealItem &&
-            <View style={{...styles.row, ...styles.pd10, ...styles.bgWhite}}>
+            <View style={{...styles.pd10, ...styles.bgWhite}}>
               <DealItem
                 image={dealItem.detailPicture}
                 name={dealItem.dealName}
@@ -136,6 +138,9 @@ export default class DealInfo extends Component {
                 key={dealItem.dealId}
                 textLeft={dealItem.promoBriefSmallLeft}
                 withoutLine={true}
+                fromDate={dealItem.fromDate}
+                toDate={dealItem.toDate}
+                status={dealItem.status}
                 onPress={()=>forwardTo('dealDetail', {deal: this.state.dealItem})}
               />
             </View>

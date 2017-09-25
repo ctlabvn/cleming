@@ -9,6 +9,8 @@ import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
 import { formatNumber } from "~/ui/shared/utils"
 import Border from "~/ui/elements/Border"
+import moment from 'moment'
+import {DEFAULT_DATE_FORMAT} from '~/store/constants/app'
 @connect(null, {forwardTo})
 
 export default class DealManager extends Component {
@@ -23,6 +25,17 @@ export default class DealManager extends Component {
 
     render() {
         const {forwardTo} = this.props
+        // status: int, //trạng thái của deal, 
+        // 1 – deal đang hoạt động, 
+        // 2 – deal đang tạm ngừng,
+        // 4–deal đang chờ Clingme xác nhận và đưa lên hệ thống, 
+        // 5 – deal đã bị Clingme reject và không đưa lên hệ thống.
+        let statusText
+        if (this.props.status == 1){
+          statusText = <Text small success>{I18n.t('deal_working')}</Text>
+        }else{
+          statusText = <Text small error>{I18n.t('deal_ended')}</Text>
+        }
         return (
           <TouchableWithoutFeedback onPress={this.props.onPress}>
             <View style={{...styles.dealContainer, ...this.props.style}}>
@@ -30,15 +43,15 @@ export default class DealManager extends Component {
                 <Image source={{uri: this.props.image}} style={styles.dealImage}/>
                 <View style={styles.dealRight}>
                   <Text bold medium>{this.props.name}</Text>
-                  <View style={styles.inline}>
-                    <View style={{...styles.inline, ...styles.dealTransactionIcon}}>
-                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
-                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
-                      <Icon name='coin_mark' style={{...styles.icon, ...styles.success, ...styles.mr3}} />
+                  <Text small gray>{this.props.address}</Text>
+                  <View style={{...styles.row, marginTop: 5}}>
+                    <View style={{...styles.dealTransactionIcon}}>
+                      <Text small gray>({moment(this.props.fromDate*1000).format(DEFAULT_DATE_FORMAT)} - {moment(this.props.toDate*1000).format(DEFAULT_DATE_FORMAT)})</Text>
+                      {statusText}
                     </View>
                     <Text bold warning large style={styles.discountNumber}>- {this.props.number}</Text>
                   </View>
-                  <Text>{this.props.address}</Text>
+                  
                 </View>
               </View>
               {!this.props.withoutLine && <Border />}
