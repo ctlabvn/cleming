@@ -160,4 +160,12 @@ export default {
     alignItems: 'center',
     width: '50%'
   },
+  bottomBtnPreviewPopup: {
+    width: '100%',
+    backgroundColor: material.primaryColor,
+    borderRadius: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },  
 }

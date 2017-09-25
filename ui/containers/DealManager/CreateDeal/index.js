@@ -27,7 +27,7 @@ import { PROMO_TYPE } from "~/store/constants/app";
 import {API_BASE} from '~/store/constants/api'
 import RNFetchBlob from 'react-native-fetch-blob'
 import UploadingProgress from '~/ui/components/UploadingProgress'
-
+import DealPreviewPopup from './DealPreviewPopup'
 // export const PROMO_TYPE = {
 //   PERCENT: 1,
 //   GIFT: 2,
@@ -205,22 +205,8 @@ export default class CreateDeal extends Component {
         fromDate: from,
         toDate: to,
       }
-      this._fetch(data)
-      // this.setState({loading: true})
-      // createDeal(xsession, data,
-      //   (err, data) => {
-      //     console.log('createDeal Err', err)
-      //     console.log('createDeal data', data)
-      //     // this.loadingModal.hide()
-      //     this.setState({loading: false})
-      //     if (data && data.updated && data.updated.isSaved){
-      //       resetForm('CreateDeal')
-      //       this.dealImageSelector.reset()
-      //       this.placeSelector.reset()
-      //       showPopupInfo(I18n.t('create_deal_successful'))
-      //     }
-      //   }
-      // )
+      this.dealPreview.open(data)
+      // this._fetch(data)
     }
 
     _onPromoTypeChange = (value) => {
@@ -293,6 +279,7 @@ export default class CreateDeal extends Component {
           <Container style={styles.fixContainer}>
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>
             <UploadingProgress text= 'Đang tạo khuyến mãi...' ref={ref=>this.uploadingProgress=ref}/>
+            <DealPreviewPopup ref={ref=>this.dealPreview=ref} />
             <Content style={styles.container}>
               <Form>
                 <Text style={styles.label}>{I18n.t('deal_image')}</Text>

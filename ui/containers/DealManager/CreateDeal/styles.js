@@ -64,5 +64,5 @@ export default {
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center'
-  }
+  },
 }
