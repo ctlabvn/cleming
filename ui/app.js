@@ -84,6 +84,9 @@ export default class App extends Component {
     this.timer = null
     this.listPlace = props.listPlace
     this.listPlaceRender = props.listPlace
+
+    const route = getPage(props.router.current)
+    this.currentRoute = route;
   }
 
   _transitionScene = (prevIndex, index, thisNavigator) => {
@@ -150,10 +153,8 @@ export default class App extends Component {
         else this.listPlaceRender = this.listPlace;
 
         if (!this.listPlaceRender || this.listPlaceRender.length <= 0) return;
-
         // switch selectedOption
         const {setSelectedOption, selectedPlace } = this.props;
-        // console.warn(JSON.stringify(selectedPlace))
 
         let selectedOption = {}
 
@@ -163,30 +164,53 @@ export default class App extends Component {
                 selectedOption.id = cachePlace.selectedPlace.id
                 selectedOption.name = cachePlace.selectedPlace.name
             } else {
-                if (selectedPlace && !showItemAllPlaceOnTopDropdown) selectedOption = selectedPlace;
+                if (selectedPlace) selectedOption = selectedPlace;
                 else {
                     selectedOption.id = this.listPlaceRender[0].id
                     selectedOption.name = this.listPlaceRender[0].name
                 }
         }
-        setSelectedOption(selectedOption)
 
         // addition 16/09/2017 fix bug for All Place Mode <<<
+        if (!this.defaultSelectedOption) this.defaultSelectedOption = this.listPlace[0];
         if (selectedOption.id != ITEM_ALL_PLACE.id) this.defaultSelectedOption = selectedOption;
+
         if (!showItemAllPlaceOnTopDropdown && selectedOption.id == ITEM_ALL_PLACE.id && this.defaultSelectedOption) {
             selectedOption = this.defaultSelectedOption;
         }
         // >>>
 
+        setSelectedOption(selectedOption)
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
     }
 
-    setCachePlaceCurrentPage(place) {
+    setCachePlaceCurrentPage(place, allPlaceMode = this.currentRoute.showItemAllPlaceOnTopDropdown, listPlace) {
+
+        if (allPlaceMode && this.currentRoute && this.currentRoute.cachePlace) {
+            const cachePlace = this.currentRoute.cachePlace;
+
+            if (cachePlace && cachePlace.selectedPlace
+                && (typeof cachePlace.selectedPlace.id == 'undefined'
+                || cachePlace.selectedPlace.name)) {
+                place = ITEM_ALL_PLACE;
+
+                this.setListPlace(listPlace);
+                this.switchListPlaceRender(this.currentRoute.showItemAllPlaceOnTopDropdown, this.currentRoute.cachePlace)
+                this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
+                this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
+
+                // return place;
+            }
+
+        }
+
         if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
         if (this.topDropdown) this.topDropdown.updateSelectedOption(place, true)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place)
         this._handleChangePlace(place);
+
+        return place
     }
 
   // replace view from stack, hard code but have high performance
@@ -490,9 +514,9 @@ export default class App extends Component {
     this.header.showOverlay(false)
   }
 
-  setListPlace() {
+  setListPlace(place = this.props.place) {
 
-      const { place } = this.props
+      // const { place } = this.props;
 
       this.listPlace = place.listPlace.map(item => ({
           id: item.placeId,

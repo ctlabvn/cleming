@@ -53,7 +53,7 @@ export default {
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true,
-        // showItemAllPlaceOnTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },

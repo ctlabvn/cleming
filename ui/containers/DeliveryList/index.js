@@ -225,7 +225,7 @@ export default class extends Component {
         const { setSelectedOption, session } = this.props
         // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue
-        console.warn('delivery handle change place item ' + JSON.stringify(item));
+
         this.setState({
             selectedPlace: item.id,
         }, () => this.loadPage(1, dateFilter.from, dateFilter.to))
