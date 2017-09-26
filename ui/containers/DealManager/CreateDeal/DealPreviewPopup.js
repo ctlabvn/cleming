@@ -41,13 +41,27 @@ export default class DealPreviewPopup extends Component {
 
     _capitalize = (str) => (str && str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
 
+    onConfirm = () => {
+      const {allImages, ...data} = this.state.data
+      this.props.onOk && this.props.onOk(data)
+    }
+    
     _renderImages = (data) => {
       let result = []
       result.push({pictureId: data.coverPicture.uri, fullPath: data.coverPicture.uri})
-      if (data['detail_files[]'] && data['detail_files[]'].data){
-        let clone = data['detail_files[]'].data.map(item=>({pictureId: item.uri, fullPath: item.uri}))
+      // if (data['detail_files[]'] && data['detail_files[]'].data){
+      //   let clone = data['detail_files[]'].data.map(item=>({pictureId: item.uri, fullPath: item.uri}))
+      //   result = [...result, ...clone]
+      // }
+      if (data.allImages){
+        console.log('All Images', data.allImages)
+        let clone = data.allImages.map(item=>{
+         if(item.pictureId) return ({pictureId: item.pictureId, fullPath: item.fullPath})
+         else return ({pictureId: item.path, fullPath: item.path})
+        })
         result = [...result, ...clone]
       }
+      console.log('Result Images', result)
       return result
     }
 
@@ -97,7 +111,7 @@ export default class DealPreviewPopup extends Component {
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>
-            <Button style={styles.bottomBtnPreviewPopup} onPress={()=>this.props.onOk && this.props.onOk(this.state.data)}>
+            <Button style={styles.bottomBtnPreviewPopup} onPress={this.onConfirm}>
               <Text white>OK</Text>
             </Button>
           </Container>

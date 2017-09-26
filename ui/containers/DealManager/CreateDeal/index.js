@@ -61,8 +61,9 @@ export default class CreateDeal extends Component {
       this.props.change('description', dealInfo.description)
       this.props.change('searchTag', dealInfo.searchTag)
       let images = dealInfo.lstPicture.map(item=>({...item, path: item.fullPath}))
+      let avatar = dealInfo.lstPicture.filter(item=>item.thumbnail==1)[0].fullPath
       this.dealImageSelector.setImages(images)
-      this.dealImageSelector._setAvatar(dealInfo.detailPicture)
+      this.dealImageSelector._setAvatar(avatar)
       this.placeSelector.setSelectedPlace(dealInfo.placeId)
       this.spendingLevelBar.setValue(dealInfo.spendingLevel)
       this.exclusiveTypeSelector.setSelected(dealInfo.exclusive)
@@ -77,7 +78,6 @@ export default class CreateDeal extends Component {
         this.props.change('promoTitle', promoTitle)
       }
       if (dealInfo.promoBriefSmallLeft){
-        console.log('Case left Promo not null')
         this.props.change('leftPromo', dealInfo.promoBriefSmallLeft)
       }
     }
@@ -115,6 +115,7 @@ export default class CreateDeal extends Component {
           }
         }
       }
+      console.log('Form Data', formData)
 
       const {xsession} = this.props
       let xVersion = 1
@@ -176,17 +177,19 @@ export default class CreateDeal extends Component {
       }
 
       let imageList = this.dealImageSelector.getImageList()
-      imageList = imageList.map(item=>({uri: item.path, name: 'detail_files[]', filename: item.path, type: 'image/jpg'}))
+      imageFiles = imageList.filter(item=>item.path.indexOf('http')==-1)
+                              .map(item=>({uri: item.path, name: 'detail_files[]', filename: item.path, type: 'image/jpg'}))
+      imageLinks = imageList.filter(item=>item.path.indexOf('http') > -1).map(item=>item.path).join(';')
       let data = {
         leftPromo, promoTitle, dealTitle, description, dealCategoryId,
         searchTag, spendingLevel, placeIdList, exclusiveType, promoType,
         coverPicture: {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))},
-        'detail_files[]': {type: 'multi', data: imageList},
+        'detail_files[]': {type: 'multi', data: imageFiles},
+        'imageLinks': imageLinks,
         fromDate: from,
         toDate: to,
       }
-      this.dealPreview.open(data)
-      // this._fetch(data)
+      this.dealPreview.open({...data, allImages: imageList})
     }
 
     onConfirm = (data) => {

@@ -8,7 +8,7 @@ import {forwardTo} from '~/store/actions/common'
 import {formatPhoneNumber} from '~/ui/shared/utils'
 import material from '~/theme/variables/material'
 import {Bar, Pie, StockLine} from '~/ui/components/Chart'
-import {getDealStatistic} from '~/store/actions/deal'
+import {getDealUserStatistic} from '~/store/actions/deal'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
 import DealItem from '~/ui/containers/DealManager/DealItem'
@@ -19,7 +19,7 @@ import Border from "~/ui/elements/Border"
 import I18n from '~/ui/I18n'
 @connect(state => ({
     xsession: getSession(state),
-}), {forwardTo, getDealStatistic})
+}), {forwardTo, getDealUserStatistic})
 
 export default class DealInfo extends Component {
     constructor(props) {
@@ -106,15 +106,15 @@ export default class DealInfo extends Component {
     }
 
     componentDidMount(){
-      const {getDealStatistic, xsession, route} = this.props
-      console.log('Deal', route)
-      this.setState({dealItem: route.params.deal})
+      const {getDealUserStatistic, xsession, route} = this.props
+      let deal = route.params.deal
+      this.setState({dealItem: deal})
       let fromTime = moment().subtract(6, 'month').unix()
       let toTime = moment().unix()
-      getDealStatistic(xsession, '137615;137607;137100;134867;132751;131541;129798;128267;126685;124826;122755;121570;119881;118837;117517;116014;114896;113599', fromTime, toTime,
+      getDealUserStatistic(xsession, deal.dealId, fromTime, toTime,
         (err, data) => {
-          console.log('Deal Statistic', err)
-          console.log('Deal Statistic', data)
+          console.log('Deal User Statistic', err)
+          console.log('Deal User Statistic', data)
         }
       )
     }

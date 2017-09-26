@@ -67,14 +67,25 @@ export default class DealManager extends Component {
       getListDeal(xsession, placeId, from, to,
         (err, data) => {
           // this.listview.showRefresh(false)
+          // console.log('List Deal', data)
+          if (data && data.updated && data.updated.listDeal){
+            let dealIds = data.updated.listDeal.map(item=>item.dealId).join(';')
+            console.log('Deal IDS', dealIds)
+            getDealStatistic(xsession, dealIds, from, to,
+              (err1, data1) => {
+                console.log('Err Deal Statistic', err1)
+                console.log('Data Deal Statistic', data1)
+              }
+            )
+          }
         }
       )
-      getDealStatistic(xsession, 116014, from, to,
-        (err, data) => {
-          console.log('Deal Statistic Err', err)
-          console.log('Deal Statistic Data', data)
-        }
-      )
+      // getDealStatistic(xsession, 116014, from, to,
+      //   (err, data) => {
+      //     console.log('Deal Statistic Err', err)
+      //     console.log('Deal Statistic Data', data)
+      //   }
+      // )
     }
 
     _onRefresh = () => {
