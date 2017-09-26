@@ -33,15 +33,20 @@ export const validate = (values) => {
 
 	let from = moment(values.fromDate, "MM/DD/YYYY").startOf('day').unix()
 	let to = moment(values.toDate, "MM/DD/YYYY").endOf('day').unix()
+	let now = moment().unix()
 	if (from > to){
 		errors.toDate = I18n.t('err_to_date_must_later_than_from_date')
 		return errors
 	}
-
-  if (!values.leftPromo){
-		errors.leftPromo = I18n.t('err_field_must_not_empty')
+	if (to<now){
+		errors.toDate = I18n.t('err_to_date_must_later_than_now')
 		return errors
 	}
+
+//   if (!values.leftPromo){
+// 		errors.leftPromo = I18n.t('err_field_must_not_empty')
+// 		return errors
+// 	}
 
   if (!values.promoTitle){
 		errors.promoTitle = I18n.t('err_field_must_not_empty')

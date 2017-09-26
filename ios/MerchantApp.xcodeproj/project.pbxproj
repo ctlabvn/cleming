@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -764,6 +765,7 @@
 				DB15A7F1854E47FE9A615591 /* Resources */,
 				24DDD9451EC99A4F00B391DF /* Frameworks */,
 				1C0E16BCAEE5878BBBBE0835 /* Pods */,
+				ECFCAB011F79F77C005EEEE8 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -836,6 +838,23 @@
 				EC63F93A1F68F65000C4ACCE /* libRNFetchBlob.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		ECFCAB011F79F77C005EEEE8 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				4A645416AE9741039CBC5B7D /* libRNSVG.a */,
+				C10D7B773452427EB159C39A /* libRNImagePicker.a */,
+				2B97CB47DD99488EB2306242 /* libRNFS.a */,
+				7DD31F952D53423BA83ABFBD /* libRNDeviceInfo.a */,
+				17530420515641438F4D3D78 /* libSGScandit.a */,
+				CF3089F9DFAE4D5BB9B1C2C6 /* libSMXCrashlytics.a */,
+				B4E7DFD04D8C40A4B331C75C /* libRNI18n.a */,
+				9746C8B8243C4845A4133936 /* libRNVersionNumber.a */,
+				FB61356656F244F59278A0C3 /* libimageCropPicker.a */,
+				4C33B00EC9CB420682A16704 /* libRNFetchBlob.a */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

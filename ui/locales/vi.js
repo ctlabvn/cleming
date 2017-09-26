@@ -311,6 +311,7 @@ export default {
     'mark_all': 'Đánh dấu tất cả',
     'clear_all': 'Bỏ chọn tất cả',
     'err_to_date_must_later_than_from_date': 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
+    'err_to_date_must_later_than_now': 'Ngày kết thúc phải lớn hơn hiện tại',
     'create_deal_successful': 'Tạo Khuyến mãi thành công',
     'spending_level': 'Spending Level (1-5)',
     'discount_period': 'Thời gian khuyến mãi',

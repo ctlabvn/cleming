@@ -30,9 +30,16 @@ export default class DealManager extends Component {
         // 2 – deal đang tạm ngừng,
         // 4–deal đang chờ Clingme xác nhận và đưa lên hệ thống, 
         // 5 – deal đã bị Clingme reject và không đưa lên hệ thống.
+
+        // promoType=3: Giảm giá theo số tiền
+        // promoType=1: Giảm giá theo phần trăm
+        // promoType=2: Quà tặng theo điều kiện
+        
         let statusText
         if (this.props.status == 1){
           statusText = <Text small success>{I18n.t('deal_working')}</Text>
+        }else if (this.props.status == 4){
+          statusText = <Text small warning>Chờ duyệt</Text>
         }else{
           statusText = <Text small error>{I18n.t('deal_ended')}</Text>
         }

@@ -88,16 +88,16 @@ export default class DealPreviewPopup extends Component {
                 </Text>
                 <View style={{...styles.row, ...styles.pd15}}>
                   <View style={{...styles.halfRowItem}}>
-                    <Text large gray>{this._capitalize(data.promoBriefSmallLeft) || 'Tặng'}</Text>
+                    <Text large gray>{this._capitalize(data.leftPromo) || 'Tặng'}</Text>
                   </View>
                   <View style={{...styles.halfRowItem}}>
-                    <Text large warning bold>{data.leftPromo} {data.promoTitle}</Text>
+                    <Text large warning bold>{data.promoTitle}</Text>
                   </View>
                 </View>
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>
-            <Button style={styles.bottomBtnPreviewPopup} onPress={()=>this.props.onOk && this.props.onOk()}>
+            <Button style={styles.bottomBtnPreviewPopup} onPress={()=>this.props.onOk && this.props.onOk(this.state.data)}>
               <Text white>OK</Text>
             </Button>
           </Container>

@@ -107,6 +107,7 @@ export default class DealManager extends Component {
         fromDate={item.fromDate}
         toDate={item.toDate}
         status={item.status}
+        promoType={item.promoType}
         onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
         style={{marginBottom: 15}}
       />
