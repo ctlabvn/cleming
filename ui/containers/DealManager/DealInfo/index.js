@@ -20,11 +20,11 @@ import Border from "~/ui/elements/Border"
 import I18n from '~/ui/I18n'
 import { formatNumber } from "~/ui/shared/utils"
 import ChartLegend from '~/ui/components/ChartLegend'
-// const {
-//   Group,
-//   Shape,
-//   Surface,
-// } = ART;
+const {
+  Group,
+  Shape,
+  Surface,
+} = ART;
 
 @connect(state => ({
     xsession: getSession(state),
@@ -350,6 +350,16 @@ export default class DealInfo extends Component {
           <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
           
           <ScrollView>
+
+            <Surface width={500} height={200}>
+              <Group x={100} y={0}>
+                <Shape
+                  d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
+                  stroke="#000"
+                  strokeWidth={1} />
+              </Group>
+            </Surface>
+
             <View style={{...styles.cardBlock2, ...styles.pb10}}>
               <View style={{...styles.row, ...styles.pd15 }}>
                   <View style={styles.moneyItem}>

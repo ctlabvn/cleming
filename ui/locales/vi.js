@@ -347,5 +347,6 @@ export default {
     'age': 'Độ tuổi',
     'income': 'Thu nhập',
     'distance': 'Khoảng cách',
-    'noData': 'Không có dữ liệu'
+    'noData': 'Không có dữ liệu',
+    'deal_preview': 'Xem trước khuyến mãi'
 }

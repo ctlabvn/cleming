@@ -54,6 +54,7 @@
 		D3E068BC2C754E958D6585EF /* clingme_font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8DCD6D2DF7234AB88CE260DB /* clingme_font.ttf */; };
 		D52DECED0849443FB50E18D3 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C10D7B773452427EB159C39A /* libRNImagePicker.a */; };
 		EBD8E1E9A005445EA3F11D1A /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 977359933AC94848AEA81B55 /* rubicon-icon-font.ttf */; };
+		EC586F8A1F7B97520030D669 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA22CB11F7AC10E006759C0 /* libART.a */; };
 		EDB2EF1544BD4C5C864FB259 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9DA90C91CE744CDA5236495 /* Entypo.ttf */; };
 		F2E27CF025B641B1B0E563F5 /* libSMXCrashlytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3089F9DFAE4D5BB9B1C2C6 /* libSMXCrashlytics.a */; };
 /* End PBXBuildFile section */
@@ -458,6 +459,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC586F8A1F7B97520030D669 /* libART.a in Frameworks */,
 				240ED9921F2B567300C170F8 /* libReact.a in Frameworks */,
 				2473E4061F0F8D7700B47D74 /* MediaPlayer.framework in Frameworks */,
 				2473E1411F0F378700B47D74 /* libc++.tbd in Frameworks */,

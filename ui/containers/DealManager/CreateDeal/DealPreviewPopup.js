@@ -87,7 +87,7 @@ export default class DealPreviewPopup extends Component {
               </View>
             </TouchableWithoutFeedback>
             <View style={{...styles.pd10}}>
-              <Text bold medium>Xem trước khuyến mãi</Text>
+              <Text bold medium>{I18n.t('deal_preview')}</Text>
             </View>
             <ImageSlider data={this._renderImages(data)}/>
             <Text></Text>
