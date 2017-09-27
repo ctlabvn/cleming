@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, ScrollView, Linking, TouchableHighlight, StyleSheet} from 'react-native'
+import {View, ScrollView, Linking, TouchableHighlight, StyleSheet, ART} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 
@@ -11,14 +11,22 @@ import {Bar, Pie, StockLine} from '~/ui/components/Chart'
 import {getDealUserStatistic} from '~/store/actions/deal'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
+import {dealStatisticSelector} from '~/store/selectors/deal'
 import DealItem from '~/ui/containers/DealManager/DealItem'
 import {barChartConfig, pieChartConfig, lineChartConfig} from './options'
 import styles from '../styles'
 import DateFilter from "~/ui/components/DateFilter"
 import Border from "~/ui/elements/Border"
 import I18n from '~/ui/I18n'
+// const {
+//   Group,
+//   Shape,
+//   Surface,
+// } = ART;
+
 @connect(state => ({
     xsession: getSession(state),
+    statistic: dealStatisticSelector(state),
 }), {forwardTo, getDealUserStatistic})
 
 export default class DealInfo extends Component {
@@ -39,71 +47,99 @@ export default class DealInfo extends Component {
         // }
     }
 
-    _generateSampleBar = ()=>{
-      let data = [
+    _generateDistanceBar = () => {
+      const {statistic} = this.props
+      if (statistic.distanceLevel1 == undefined) return false
+      let sum = statistic.distanceLevel1+statistic.distanceLevel2+statistic.distanceLevel3+statistic.distanceLevel4
+      let distanceData = [
         [{
-          "v": 49,
-          "name": "Apple",
+          'distanceNumber': statistic.distanceLevel1,
+          'name': I18n.t('distanceLevel1')
         }],
         [{
-          "v": 69,
-          "name": "Banana"
+          'distanceNumber': statistic.distanceLevel2,
+          'name': I18n.t('distanceLevel2')
         }],
         [{
-          "v": 29,
-          "name": "Grape"
+          'distanceNumber': statistic.distanceLevel3,
+          'name': I18n.t('distanceLevel3')
         }],
         [{
-          "v": 29,
-          "name": "XXX"
-        }],
-        [{
-          "v": 29,
-          "name": "ZZZ"
+          'distanceNumber': statistic.distanceLevel4,
+          'name': I18n.t('distanceLevel4')
         }]
       ]
-      return <Bar data={data} options={barChartConfig} accessorKey='v'/>
-    }
-
-    _generateSamplePie = ()=>{
-        let dataPie = [{
-          "name": "Washington",
-          "population": 7694980
-        }, {
-          "name": "Oregon",
-          "population": 2584160
-        }, {
-          "name": "Minnesota",
-          "population": 6590667,
-          "color": {'r':200,'g':200,'b':200}
-        }, {
-          "name": "Alaska",
-          "population": 7284698
-        }]
-
-        console.log('PieChartConfig', pieChartConfig)
-        return <Pie data={dataPie} options={pieChartConfig} accessorKey="population"/>
-
-    }
-
-    _generateSampleLine = () => {
-      let lineData = [
-        [{
-          "x": 0,
-          "y": 47782
-        }, {
-          "x": 1,
-          "y": 48497
-        }, {
-          "x": 2,
-          "y": 77128
-        }, {
-          "x": 3,
-          "y": 73413
-        }]
+      let percent = [
+        Math.floor(statistic.distanceLevel1/sum*100)+'%',
+        Math.floor(statistic.distanceLevel2/sum*100)+'%',
+        Math.floor(statistic.distanceLevel3/sum*100)+'%',
+        (100-Math.floor(statistic.distanceLevel1/sum*100)-Math.floor(statistic.distanceLevel2/sum*100)-Math.floor(statistic.distanceLevel3/sum*100))+'%'
       ]
-      return <StockLine data={lineData} options={lineChartConfig} xKey='x' yKey='y' />
+      return <Bar 
+        colors={['#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac']}
+        data={distanceData} 
+        options={barChartConfig} 
+        accessorKey='distanceNumber'
+        percent={percent}
+        />
     }
+
+    _generateGenderPie = () => {
+      const {statistic} = this.props
+      if (statistic.maleNumber == undefined) return false
+      let malePercent = Math.floor((statistic.maleNumber)/(statistic.maleNumber+statistic.femaleNumber)*100)
+      let femalePercent = 100-malePercent
+      let genderData = [
+        {
+          "name": I18n.t('male')+"("+malePercent+"%)",
+          "genderNumber": statistic.maleNumber
+        },
+        {
+          "name": I18n.t('female')+"("+femalePercent+"%)",
+          "genderNumber": statistic.femaleNumber
+        }
+      ]
+      return <Pie data={genderData} 
+              pallete = {[
+                {'r':42,'g':131,'b':172},
+                {'r':147,'g':229,'b':225},
+              ]}
+              options={pieChartConfig} 
+              accessorKey="genderNumber"/>
+    }
+
+    _generateIncomeLevelPie = () => {
+      const {statistic} = this.props
+      if (statistic.incomeLevel1 == undefined) return false
+      let sum = statistic.incomeLevel1+statistic.incomeLevel2+statistic.incomeLevel3
+      let incomeLevel1Percent = Math.floor(statistic.incomeLevel1/sum*100)
+      let incomeLevel2Percent = Math.floor(statistic.incomeLevel2/sum*100)
+      let incomeLevel3Percent = 100-incomeLevel1Percent-incomeLevel2Percent
+      let incomeData = [
+        {
+          "name": I18n.t('incomeLevel1')+"("+incomeLevel1Percent+"%)",
+          "incomeNumber": statistic.incomeLevel1
+        },
+        {
+          "name": I18n.t('incomeLevel2')+"("+incomeLevel2Percent+"%)",
+          "incomeNumber": statistic.incomeLevel2
+        },
+        {
+          "name": I18n.t('incomeLevel3')+"("+incomeLevel3Percent+"%)",
+          "incomeNumber": statistic.incomeLevel3
+        },
+        
+      ]
+      return <Pie data={incomeData} 
+              pallete = {[
+                {'r':42,'g':131,'b':172},
+                {'r':147,'g':229,'b':225},
+                {'r':111,'g':111,'b':111},
+              ]}
+              options={pieChartConfig} 
+              accessorKey="incomeNumber"/>
+    }
+
 
     componentDidMount(){
       const {getDealUserStatistic, xsession, route} = this.props
@@ -111,12 +147,8 @@ export default class DealInfo extends Component {
       this.setState({dealItem: deal})
       let fromTime = moment().subtract(6, 'month').unix()
       let toTime = moment().unix()
-      getDealUserStatistic(xsession, deal.dealId, fromTime, toTime,
-        (err, data) => {
-          console.log('Deal User Statistic', err)
-          console.log('Deal User Statistic', data)
-        }
-      )
+      getDealUserStatistic(xsession, '', fromTime, toTime)
+      console.log('Statistic', this.props.statistic)
     }
 
     //<View style={{...styles.row, ...styles.pd10, ...styles.bgWhite, backgroundColor: 'yellow'}}>
@@ -148,11 +180,40 @@ export default class DealInfo extends Component {
           <Border />
           <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
           <Border />
-          {/* <ScrollView>
-            {this._generateSampleBar()}
-            {this._generateSamplePie()}
-            {this._generateSampleLine()}
-          </ScrollView> */}
+          <ScrollView>
+            
+            <View style={styles.chartContainer}>
+              <Text medium bold>Giới tính</Text>
+              {this._generateGenderPie()}
+            </View>
+
+            <View style={styles.chartContainer}>
+              <Text medium bold>Thu nhập</Text>
+              {this._generateIncomeLevelPie()}
+            </View>
+
+            <View style={styles.chartContainer}>
+              <Text medium bold>Khoảng cách</Text>
+              {this._generateDistanceBar()}
+            </View>
+
+            {/* <View style={styles.chartContainer}>
+              <Surface width={200} height={100}>
+                <Group x={0} y={0}>
+                  <Shape
+                    d={this.props.linePath}
+                    stroke="#000"
+                    strokeWidth={1}
+                  />
+                </Group>
+              </Surface>
+            </View> */}
+
+            <View style={{width: '100%', height: 50}}>
+            </View>
+
+
+          </ScrollView>
           <View style={styles.bottomBlock}>
             <Button style={styles.bottomBtnLeft}
                 onPress={()=>forwardTo('createDeal',  {mode: 'clone', deal:this.state.dealItem})}

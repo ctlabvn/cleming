@@ -1,49 +1,45 @@
 import moment from 'moment'
 export const barChartConfig =  {
-    width: 300,
-    height: 300,
+    width: 250,
+    height: 250,
     margin: {
       top: 20,
       left: 20,
-      bottom: 50,
+      bottom: 20,
       right: 20
     },
-    color: {'r':223,'g':154,'b':20},
-    colors: ['#005cc5', '#d73a49', '#6f42c1', '#28a745', '#586069'],
-    pallete:[
-      {'r':25,'g':99,'b':201},
-      {'r':24,'g':175,'b':35},
-      {'r':190,'g':31,'b':69},
-      {'r':100,'g':36,'b':199},
-      {'r':214,'g':207,'b':32},
-      {'r':198,'g':84,'b':45}
-    ],
     gutter: 20,
     animate: {
       type: 'oneByOne',
       duration: 200,
-      fillTransition: 3
+      fillTransition: 3,
+      fontWeight: true
+    },
+    percent: {
+      fontFamily: 'Arial',
+      fontSize: 13,
+      fill: '#34495E',
     },
     axisX: {
-      showAxis: true,
-      showLines: true,
+      showAxis: false,
+      showLines: false,
       showLabels: true,
-      showTicks: true,
+      showTicks: false,
       zeroAxis: false,
       orient: 'bottom',
       label: {
         fontFamily: 'Arial',
-        fontSize: 8,
+        fontSize: 10,
         fontWeight: true,
         fill: '#34495E',
         rotate: 0
       }
     },
     axisY: {
-      showAxis: true,
-      showLines: true,
-      showLabels: true,
-      showTicks: true,
+      showAxis: false,
+      showLines: false,
+      showLabels: false,
+      showTicks: false,
       zeroAxis: false,
       orient: 'left',
       label: {
@@ -57,17 +53,16 @@ export const barChartConfig =  {
 
 export const pieChartConfig = {
     margin: {
-      top: 20,
-      left: 20,
-      right: 20,
-      bottom: 20
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0
     },
-    width: 350,
-    height: 350,
-    // color: '#2980B9',
+    width: 300,
+    height: 210,
     r: 0,
-    R: 150,
-    legendPosition: 'topRight',
+    R: 100,
+    legendPosition: 'topLeft',
     animate: {
       type: 'oneByOne',
       duration: 200,
@@ -79,16 +74,6 @@ export const pieChartConfig = {
       fontWeight: true,
       color: '#ECF0F1'
     },
-    pallete:[
-      {'r':25,'g':99,'b':201},
-      {'r':24,'g':175,'b':35},
-      {'r':190,'g':31,'b':69},
-      {'r':100,'g':36,'b':199},
-      {'r':214,'g':207,'b':32},
-      {'r':198,'g':84,'b':45}
-    ],
-    accessorKey: "population",
-    color: "#2980B9"
 
 }
 

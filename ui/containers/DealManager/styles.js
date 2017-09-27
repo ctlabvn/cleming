@@ -168,4 +168,13 @@ export default {
     alignItems: 'center',
     justifyContent: 'center',
   },  
+  chartContainer: {
+    marginTop: 5,
+    marginBottom: 5,
+    backgroundColor: 'white',
+    padding: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 }

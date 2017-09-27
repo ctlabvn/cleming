@@ -33,6 +33,11 @@ export const setListDeal = (data) => ({
   payload: data
 })
 
+export const setDealStatistic = (data) => ({
+  type: 'deal/setStatistic',
+  payload: data
+})
+
 export const updateDateFilter = (payload) => ({
   type: 'deal/updateDateFilter',
   payload,

@@ -71,7 +71,7 @@ export default class DealManager extends Component {
           if (data && data.updated && data.updated.listDeal){
             let dealIds = data.updated.listDeal.map(item=>item.dealId).join(';')
             console.log('Deal IDS', dealIds)
-            getDealStatistic(xsession, dealIds, from, to,
+            getDealStatistic(xsession, '', placeId, from, to,
               (err1, data1) => {
                 console.log('Err Deal Statistic', err1)
                 console.log('Data Deal Statistic', data1)
@@ -99,10 +99,13 @@ export default class DealManager extends Component {
     _renderItem = (item) => {
       const {forwardTo} = this.props
       let address = ''
+      console.log('Item', item)
+      console.log('List pLace', this.props.listPlace)
       if (this.placeMap[item.placeId]){
         address = this.placeMap[item.placeId].address
       }else{
         let foundItem = this.props.listPlace.filter(loopItem => loopItem.placeId == item.placeId)[0]
+        console.log('Found Item', foundItem)
         address = foundItem['address']
         this.placeMap[item.placeId] = foundItem
       }

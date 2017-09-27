@@ -328,5 +328,15 @@ export default {
     'create_new_deal': 'Tạo KM mới',
     'out_dated': 'Đã hết hạn',
     'deal_working': 'Đang hoạt động',
-    'deal_ended': 'Hết hạn'
+    'deal_ended': 'Hết hạn',
+    'male': 'Nam',
+    'female': 'Nữ',
+    'incomeLevel1': '<2 triệu',
+    'incomeLevel2': '2-5 triệu',
+    'incomeLevel3': '>5 triệu',
+    'distanceLevel1': '<1 km',
+    'distanceLevel2': '1-3 km',
+    'distanceLevel3' : '3-5 km',
+    'distanceLevel4': '>5 km'
+
 }

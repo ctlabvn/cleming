@@ -353,6 +353,13 @@
 			remoteGlobalIDString = A15C300E1CD25C330074CB35;
 			remoteInfo = RNFetchBlob;
 		};
+		ECA22CB01F7AC10E006759C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECA22CAC1F7AC10D006759C0 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -430,6 +437,8 @@
 		CF3089F9DFAE4D5BB9B1C2C6 /* libSMXCrashlytics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSMXCrashlytics.a; sourceTree = "<group>"; };
 		D9DA90C91CE744CDA5236495 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E51D8B9E474E4884BAFF7E6F /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
+		ECA22CAA1F7AC0DC006759C0 /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node_modules; path = ../node_modules; sourceTree = "<group>"; };
+		ECA22CAC1F7AC10D006759C0 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		ECAF2EB31F5D5F1800CEEA29 /* Đối Tác.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Đối Tác.entitlements"; path = "MerchantApp/Đối Tác.entitlements"; sourceTree = "<group>"; };
 		ECAF2EB41F5D5F1800CEEA29 /* Đối Tác.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "Đối Tác.entitlements"; path = "MerchantApp/Đối Tác.entitlements"; sourceTree = "<group>"; };
 		F32476BA77CB4914933C9E90 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
@@ -667,6 +676,8 @@
 		24DDD9451EC99A4F00B391DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ECA22CAC1F7AC10D006759C0 /* ART.xcodeproj */,
+				ECA22CAA1F7AC0DC006759C0 /* node_modules */,
 				2473E4051F0F8D7700B47D74 /* MediaPlayer.framework */,
 				2473E1401F0F378700B47D74 /* libc++.tbd */,
 				240B56E11F0F2FB1002AA476 /* libz.tbd */,
@@ -840,6 +851,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		ECA22CAD1F7AC10D006759C0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ECA22CB11F7AC10E006759C0 /* libART.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ECFCAB011F79F77C005EEEE8 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -973,6 +992,10 @@
 				{
 					ProductGroup = EC34B02E1F6774BD0069B3E3 /* Products */;
 					ProjectRef = 8F4CAA317BC74255A587B6D7 /* AirMaps.xcodeproj */;
+				},
+				{
+					ProductGroup = ECA22CAD1F7AC10D006759C0 /* Products */;
+					ProjectRef = ECA22CAC1F7AC10D006759C0 /* ART.xcodeproj */;
 				},
 				{
 					ProductGroup = EC34B0061F6774BD0069B3E3 /* Products */;
@@ -1344,6 +1367,13 @@
 			fileType = archive.ar;
 			path = libRNFetchBlob.a;
 			remoteRef = EC63F9391F68F65000C4ACCE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ECA22CB11F7AC10E006759C0 /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = ECA22CB01F7AC10E006759C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1722,8 +1752,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "1bb7a378-5a03-46f3-8a34-6c3215fc6705";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1780,8 +1810,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gigatum.clingmemerchant;
 				PRODUCT_NAME = "Đối Tác";
-				PROVISIONING_PROFILE = "cf93e535-efe1-4418-9103-afb1f0705a58";
-				PROVISIONING_PROFILE_SPECIFIER = "Clingme Merchant dev";
+				PROVISIONING_PROFILE = "1bb7a378-5a03-46f3-8a34-6c3215fc6705";
+				PROVISIONING_PROFILE_SPECIFIER = clingme_merchant_dev;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

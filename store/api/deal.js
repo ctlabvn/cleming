@@ -33,9 +33,9 @@ export default {
     return apiGet('/deal/statisticUser', {dealIds, fromTime, toTime}, session)
   },
 
-  getDealStatistic(session, dealIds, fromTime, toTime){
-    console.log('Deal Statistic API', session+'---'+dealIds+'---'+fromTime+'---'+toTime)
-    return apiGet('/deal/statistic', {dealIds, fromTime, toTime}, session)
+  getDealStatistic(session, dealIds, lstPlaceId, fromTime, toTime){
+    console.log('Deal Statistic API', session+'---'+dealIds+'---'+lstPlaceId+'---'+fromTime+'---'+toTime)
+    return apiGet('/deal/statistic', {dealIds, lstPlaceId, fromTime, toTime}, session)
   },
 
   getListDeal(session, lstPlaceId, fromDate, toDate, modeGet=3){

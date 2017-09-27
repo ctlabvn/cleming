@@ -10,6 +10,8 @@ export const deal = (state = initialState, {type, payload}) => {
       return {...state, category: payload}
     case 'deal/setListDeal':
       return {...state, listDeal: payload}
+    case 'deal/setStatistic':
+      return {...state, statistic: payload}
     default:
       return state
   }
