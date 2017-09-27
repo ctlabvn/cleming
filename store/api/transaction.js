@@ -45,13 +45,13 @@ export default {
     },
     listAll(xsession, placeId, fromTime, toTime, tranType=0, pageNumber=0){
         console.log('List All API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+tranType+'---'+pageNumber)
-        if (placeId <= 0) return apiGet('/merchantapp/tran-list', {fromTime, toTime, tranType, pageNumber}, xsession)
+        if (!placeId || placeId <= 0) return apiGet('/merchantapp/tran-list', {fromTime, toTime, tranType, pageNumber}, xsession)
         else return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime, tranType, pageNumber}, xsession)
     },
 
     historyList(xsession, placeId, fromTime, toTime, option=1, compareId){
         console.log('history list API: ', xsession+'---'+placeId+'---'+fromTime+'---'+toTime+'---'+option+'---'+compareId)
-        if (placeId) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option, compareId}, xsession)
+        if (placeId && placeId>0) return apiGet('/merchantapp/tran-history', {placeId, fromTime, toTime, option, compareId}, xsession)
         else return apiGet('/merchantapp/tran-history', {fromTime, toTime, option, compareId}, xsession)
     },
 

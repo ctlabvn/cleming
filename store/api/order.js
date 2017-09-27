@@ -13,6 +13,7 @@ export default {
   getOrderList (session, place_list,status=0,page=1, from_time=1304848140,to_time=1494236940) {
     // return fetchJsonWithToken(token, `/logout`)
     console.log('Order API', session+'---'+place_list+'---'+status+'---'+page+'---'+from_time+'---'+to_time)
+      if (!place_list || place_list.length <= 0) return apiGet('/order/list', {from_time, to_time, status, page}, session)
     return apiGet('/order/list', {from_time, to_time, place_list, status, page}, session)
   },  
   

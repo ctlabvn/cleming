@@ -282,6 +282,7 @@ export default {
 
     // topDropDown
     'search': 'Tìm kiếm',
+    'place_is_null': 'Không có địa điểm',
 
     // Checking
     'checking': 'Đối soát',
@@ -304,4 +305,5 @@ export default {
 
     // general
     'number_of_items': 'Số lượng',
+    'total_money': 'Tổng doanh thu',
 }

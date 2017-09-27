@@ -48,10 +48,19 @@ export default class MerchantOverview extends Component {
             long = location.longitude
         }
 
+        app.topDropdown.showLoadingPlace();
         getListPlace(xsession, lat, long,
             (err, data) => {
                 let toTime = moment(new Date())
                 if (data && data.updated && data.updated.data) {
+
+                    /* prevent null object */
+                    if (!data.updated.data || data.updated.data.length <= 0) {
+                        app.topDropdown.showNullPlace();
+                        return;
+                    }
+                    /***/
+
                     let listPlace = data.updated.data.map(item => ({
                         id: item.placeId,
                         name: item.address
@@ -61,15 +70,18 @@ export default class MerchantOverview extends Component {
                     app.topDropdownListValue.updateDropdownValues(listPlace)
                     app.topDropdownListValue.updateDefaultDropdownValues(listPlace)
 
-                    app.setCachePlaceCurrentPage(listPlace[0]);
-                    const hotSelectedPlace = listPlace[0];
+                    // app.setCachePlaceCurrentPage(listPlace[0]);
+                    // const hotSelectedPlace = listPlace[0];
 
+                    const hotSelectedPlace = app.setCachePlaceCurrentPage(listPlace[0], data.updated.data);
 
                     if (!selectedPlace || Object.keys(selectedPlace).length == 0) {
-                        let selectedOption = {}
+                        // let selectedOption = {}
+                        //
+                        // selectedOption.id = data.updated.data[0].placeId
+                        // selectedOption.name = data.updated.data[0].address
 
-                        selectedOption.id = data.updated.data[0].placeId
-                        selectedOption.name = data.updated.data[0].address
+                        const selectedOption = hotSelectedPlace;
 
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)

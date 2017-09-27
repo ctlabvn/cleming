@@ -8,6 +8,7 @@ export default {
         // console.log('page', page)
         // console.log('status', status)
         console.log('Booking API', xsession+'---'+place_list+'----'+from_time+'----'+to_time+'---'+status+'---'+page)
+        if (!place_list || place_list.length <= 0) return apiGet('/booking/list', {from_time, to_time, status, page}, xsession)
         return apiGet('/booking/list', {place_list, from_time, to_time, status, page}, xsession)
     },
 

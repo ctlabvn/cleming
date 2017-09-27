@@ -26,9 +26,24 @@ export default class TopDropdown extends Component {
             isMultiple: true,
             searchString: '',
             placeholderText: I18n.t('search'),
+            waitingPlaceText: I18n.t('loading_place'),
         }
 
+    }
 
+    showNullPlace() {
+        this.setState({
+            waitingPlaceText: I18n.t('place_is_null'),
+            selectedOption: null,
+        })
+    }
+
+    showLoadingPlace() {
+        // this.waitingPlaceText = I18n.t('loading_place')
+        this.setState({
+            waitingPlaceText: I18n.t('loading_place'),
+            selectedOption: null,
+        })
     }
 
     updateSelectedOption(selectedOption, runCallback = true) {
@@ -152,13 +167,12 @@ export default class TopDropdown extends Component {
 
         // is shown?
         containerStyleTopDown.transform = [{translateX: show ? 0 : material.deviceWidth}]
-       // console.warn(JSON.stringify(this.numberItem))
         return (
             <View ref={ref=>this.container = ref} style={containerStyleTopDown}>
 
             {(!selectedOption || !selectedOption.name)
                 ? <View style={styles.dropdownHeader}>
-                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{I18n.t('loading_place')}</Text>
+                        <Text numberOfLines={1} style={styles.dropdownSelectedValue}>{this.state.waitingPlaceText}</Text>
                     </View>
 
                 : <View style={openningDropdown && this.needSearch ? styles.dropdownHeaderPlus : styles.dropdownHeader}>

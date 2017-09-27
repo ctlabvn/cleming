@@ -188,6 +188,12 @@ export default {
     primaryBorder: {
       borderBottomWidth: 1,
       borderBottomColor: material.primaryColor,
+    },
+    linePrimary: {
+        height: 1,
+        width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: material.primaryColor
     }
 
 }

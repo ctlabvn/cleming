@@ -72,7 +72,7 @@ export default class extends Component {
 
         this.state = {
             currentTab: CLINGME_MERCHANT_COLLECTED,
-            placeId: selectedPlace ? selectedPlace.placeId : null,
+            placeId: selectedPlace ? selectedPlace.placeId : 0,
             fromTime: null,
             toTime: null,
             loading: false,
@@ -91,14 +91,13 @@ export default class extends Component {
         //     loading: true,
         // })
         // this.listview.showRefresh(true)
-        console.log('Compare ID', compareId)
-        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, compareId, (err, data) => {
+        getTransactionHistoryList(xsession, placeId == 0 ? null : placeId, fromTime, toTime, option, compareId, (err, data) => {})
             // this.setState({
             //     loading: false,
             //     updateHistoryList: true,
             // })
             // this.listview.showRefresh(false)
-        })
+        // })
         // getTransactionHistoryList(xsession, placeId, fromTime, toTime, option, (err, data) => {})
     }
 
@@ -131,7 +130,6 @@ export default class extends Component {
         }
         else {
             this._load()
-
         };
     }
 
@@ -193,7 +191,7 @@ export default class extends Component {
                 moneyTitle = I18n.t('total_money_clingme_get')
                 break;
             case CLINGME_MERCHANT_COLLECTED:
-                moneyTitle = 'Tổng đã thu'
+                moneyTitle = I18n.t('total_money')
                 break;
         }
 
