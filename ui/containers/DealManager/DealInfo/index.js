@@ -13,11 +13,13 @@ import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
 import {dealStatisticSelector} from '~/store/selectors/deal'
 import DealItem from '~/ui/containers/DealManager/DealItem'
-import {barChartConfig, pieChartConfig, lineChartConfig} from './options'
+import {singleChartConfig, doubleChartConfig, pieChartConfig} from './options'
 import styles from '../styles'
 import DateFilter from "~/ui/components/DateFilter"
 import Border from "~/ui/elements/Border"
 import I18n from '~/ui/I18n'
+import { formatNumber } from "~/ui/shared/utils"
+import ChartLegend from '~/ui/components/ChartLegend'
 // const {
 //   Group,
 //   Shape,
@@ -78,10 +80,111 @@ export default class DealInfo extends Component {
       return <Bar 
         colors={['#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac']}
         data={distanceData} 
-        options={barChartConfig} 
+        options={singleChartConfig} 
         accessorKey='distanceNumber'
         percent={percent}
         />
+    }
+
+    // ageFemaleLevel1:0
+      // ageFemaleLevel2:41
+      // ageFemaleLevel3:3
+      // ageFemaleLevel4:0
+      // ageMaleLevel1:0
+      // ageMaleLevel2:26
+      // ageMaleLevel3:5
+      // ageMaleLevel4:0
+    _generateAgeBar = () => {
+      const {statistic} = this.props
+      if (statistic.ageFemaleLevel1 == undefined) return false
+
+      let sumMale = statistic.ageMaleLevel1 + statistic.ageMaleLevel2 + statistic.ageMaleLevel3 + statistic.ageMaleLevel4
+      let sumFemale = statistic.ageFemaleLevel1 + statistic.ageFemaleLevel2 + statistic.ageFemaleLevel3 + statistic.ageFemaleLevel4
+      let distanceData = [
+        [
+          {
+          'ageNumber': statistic.ageMaleLevel1,
+          'name': I18n.t('ageLevel1')
+          },
+          {
+            'ageNumber': statistic.ageFemaleLevel1,
+            'name': I18n.t('ageLevel1')
+            },
+        ],
+
+        [
+          {
+          'ageNumber': statistic.ageMaleLevel2,
+          'name': I18n.t('ageLevel2')
+          },
+          {
+            'ageNumber': statistic.ageFemaleLevel2,
+            'name': I18n.t('ageLevel2')
+            },
+        ],
+
+        [
+          {
+          'ageNumber': statistic.ageMaleLevel3,
+          'name': I18n.t('ageLevel3')
+          },
+          {
+            'ageNumber': statistic.ageFemaleLevel3,
+            'name': I18n.t('ageLevel3')
+          },
+        ],
+
+        [
+          {
+          'ageNumber': statistic.ageMaleLevel4,
+          'name': I18n.t('ageLevel4')
+          },
+          {
+            'ageNumber': statistic.ageFemaleLevel4,
+            'name': I18n.t('ageLevel4')
+          },
+        ],    
+      ]
+
+      let male1Percent = Math.floor(statistic.ageMaleLevel1/sumMale*100)
+      let male2Percent = Math.floor(statistic.ageMaleLevel2/sumMale*100)
+      let male3Percent = Math.floor(statistic.ageMaleLevel3/sumMale*100)
+      let male4Percent = (100-male1Percent-male2Percent-male3Percent)
+      let female1Percent = Math.floor(statistic.ageFemaleLevel1/sumFemale*100)
+      let female2Percent = Math.floor(statistic.ageFemaleLevel2/sumFemale*100)
+      let female3Percent = Math.floor(statistic.ageFemaleLevel3/sumFemale*100)
+      let female4Percent = (100-female1Percent-female2Percent-female3Percent)
+
+      let percent = [
+        male1Percent+'%', male2Percent+'%', male3Percent+'%', male4Percent+'%',
+        female1Percent+'%', female2Percent+'%', female3Percent+'%', female4Percent+'%'
+      ]
+      let legendData = [
+        {
+          name: I18n.t('male'),
+          color: '#2a83ac'
+        },
+        {
+          name: I18n.t('female'),
+          color: '#93e5e1'
+        }
+      ]
+      
+      return (
+        <View style={styles.chartContainer}>
+          <Text medium bold>{I18n.t('age')}</Text>
+          <Bar 
+            colors={['#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac',
+                    '#93e5e1', '#93e5e1', '#93e5e1', '#93e5e1'
+            ]}
+            data={distanceData} 
+            options={doubleChartConfig}
+            percent={percent}
+            accessorKey='ageNumber' 
+          />
+          <ChartLegend data={legendData} />
+      </View>
+      )
     }
 
     _generateGenderPie = () => {
@@ -99,13 +202,29 @@ export default class DealInfo extends Component {
           "genderNumber": statistic.femaleNumber
         }
       ]
-      return <Pie data={genderData} 
-              pallete = {[
-                {'r':42,'g':131,'b':172},
-                {'r':147,'g':229,'b':225},
-              ]}
-              options={pieChartConfig} 
-              accessorKey="genderNumber"/>
+      let legendData = [
+        {
+          name: I18n.t('male'),
+          color: '#2a83ac'
+        },
+        {
+          name: I18n.t('female'),
+          color: '#93e5e1'
+        }
+      ]
+      return (
+        <View style={styles.chartContainer}>
+          <Text medium bold>{I18n.t('gender')}</Text>
+          <Pie data={genderData} 
+                pallete = {[
+                  {'r':42,'g':131,'b':172},
+                  {'r':147,'g':229,'b':225},
+                ]}
+                options={pieChartConfig} 
+                accessorKey="genderNumber"/>
+          <ChartLegend data={legendData} />
+        </View>
+      )
     }
 
     _generateIncomeLevelPie = () => {
@@ -145,20 +264,22 @@ export default class DealInfo extends Component {
       const {getDealUserStatistic, xsession, route} = this.props
       let deal = route.params.deal
       this.setState({dealItem: deal})
-      let fromTime = moment().subtract(6, 'month').unix()
+      let fromTime = moment().subtract(3, 'month').unix()
       let toTime = moment().unix()
       getDealUserStatistic(xsession, '', fromTime, toTime)
-      console.log('Statistic', this.props.statistic)
     }
 
-    //<View style={{...styles.row, ...styles.pd10, ...styles.bgWhite, backgroundColor: 'yellow'}}>
-      //  </View>
+    _formatIncreaseDecrease = (number) => {
+      if (number == undefined) return false
+      if (number >=0) return  <Text small success>&#8593; {number.toFixed(2)}%</Text>
+      else return <Text small warning>&#8595; {number.toFixed(2)}%</Text>
+    }
 
     render() {
       const {dealItem} = this.state
       const {forwardTo} = this.props
-      return (
 
+      return (
         <Container>
           {dealItem &&
             <View style={{...styles.pd10, ...styles.bgWhite}}>
@@ -177,43 +298,73 @@ export default class DealInfo extends Component {
               />
             </View>
           }
-          <Border />
           <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
-          <Border />
+          
           <ScrollView>
-            
-            <View style={styles.chartContainer}>
-              <Text medium bold>Giới tính</Text>
-              {this._generateGenderPie()}
+            <View style={{...styles.cardBlock2, ...styles.pb10}}>
+              <View style={{...styles.row, ...styles.pd15 }}>
+                  <View style={styles.moneyItem}>
+                    <Text>{I18n.t('revenue')}</Text>
+                    <Text medium bold primary>{formatNumber(9500353)} đ</Text>
+                  </View>
+                  <View style={styles.moneyItem}>
+                    <Text medium>{I18n.t('clingme_fee')}</Text>
+                    <Text medium bold  primary>{formatNumber(1200000)} đ</Text>
+                  </View>
+              </View>
+              <Border />
+              <View style={{...styles.row}}>
+                  <View style={styles.infoItem2}>
+                    <Text>{I18n.t('approach')}</Text>
+                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
+                    {this._formatIncreaseDecrease(-1.23)}
+                  </View>
+                  <Border horizontal={false} />
+                  <View style={styles.infoItem2}>
+                    <Text>{I18n.t('view')}</Text>
+                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
+                    {this._formatIncreaseDecrease(10)}
+                  </View>
+                  <Border horizontal={false} />
+                  <View style={styles.infoItem2}>
+                    <Text>{I18n.t('mark')}</Text>
+                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
+                    {this._formatIncreaseDecrease(10)}
+                  </View>
+                  <Border horizontal={false} />
+                  <View style={styles.infoItem2}>
+                    <Text>{I18n.t('share')}</Text>
+                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
+                    {this._formatIncreaseDecrease(-5)}
+                  </View>
+                  <Border horizontal={false} />
+                  <View style={styles.infoItem2}>
+                    <Text>{I18n.t('buy')}</Text>
+                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
+                    {this._formatIncreaseDecrease(3)}
+                  </View>
+              </View>
+              <Border />
             </View>
 
+            {this._generateGenderPie()}
+            {this._generateAgeBar()}
+            
             <View style={styles.chartContainer}>
-              <Text medium bold>Thu nhập</Text>
+              <Text medium bold>{I18n.t('income')}</Text>
               {this._generateIncomeLevelPie()}
             </View>
 
             <View style={styles.chartContainer}>
-              <Text medium bold>Khoảng cách</Text>
+              <Text medium bold>{I18n.t('distance')}</Text>
               {this._generateDistanceBar()}
             </View>
-
-            {/* <View style={styles.chartContainer}>
-              <Surface width={200} height={100}>
-                <Group x={0} y={0}>
-                  <Shape
-                    d={this.props.linePath}
-                    stroke="#000"
-                    strokeWidth={1}
-                  />
-                </Group>
-              </Surface>
-            </View> */}
 
             <View style={{width: '100%', height: 50}}>
             </View>
 
-
           </ScrollView>
+
           <View style={styles.bottomBlock}>
             <Button style={styles.bottomBtnLeft}
                 onPress={()=>forwardTo('createDeal',  {mode: 'clone', deal:this.state.dealItem})}

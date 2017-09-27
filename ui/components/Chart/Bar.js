@@ -127,10 +127,9 @@ export default class BarChart extends Component {
     let percentConfig = this.props.options.percent
 
     let lines = chart.curves.map(function (c, i) {
-      console.log('line path', c.line.path.print())
       let numDataGroups = this.props.data.length || 0
       let colorVariationVal = numDataGroups > 1 ? numDataGroups : 3
-      let color = this.color(i % colorVariationVal)
+      let color = this.props.colors ? this.props.colors[i] : this.color(i % colorVariationVal)
       let stroke = Colors.darkenColor(color)
       return (
                 <G key={'lines' + i}>

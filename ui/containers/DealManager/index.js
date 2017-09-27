@@ -14,12 +14,13 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {listDealSelector, dateFilterSelector} from '~/store/selectors/deal'
+import {listDealSelector, dateFilterSelector, viewOverviewSelector} from '~/store/selectors/deal'
 import {getListPlace} from '~/store/selectors/place'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
     xsession: getSession(state),
     listDeal: listDealSelector(state),
+    viewOverview: viewOverviewSelector(state),
     currentDateFilter: dateFilterSelector(state),
     listPlace: getListPlace(state)
 }), {forwardTo, getListDeal, getDealStatistic, updateDateFilter})
@@ -38,7 +39,6 @@ export default class DealManager extends Component {
       if (selectedPlace && Object.keys(selectedPlace).length > 0) {
         this._load(selectedPlace.id, dateValue.from, dateValue.to)
       }
-
     }
 
     componentWillFocus(){
@@ -63,29 +63,8 @@ export default class DealManager extends Component {
 
     _load = (placeId, from, to)=>{
       const {xsession, getListDeal, getDealStatistic} = this.props
-      // this.listview.showRefresh(true)
-      getListDeal(xsession, placeId, from, to,
-        (err, data) => {
-          // this.listview.showRefresh(false)
-          // console.log('List Deal', data)
-          if (data && data.updated && data.updated.listDeal){
-            let dealIds = data.updated.listDeal.map(item=>item.dealId).join(';')
-            console.log('Deal IDS', dealIds)
-            getDealStatistic(xsession, '', placeId, from, to,
-              (err1, data1) => {
-                console.log('Err Deal Statistic', err1)
-                console.log('Data Deal Statistic', data1)
-              }
-            )
-          }
-        }
-      )
-      // getDealStatistic(xsession, 116014, from, to,
-      //   (err, data) => {
-      //     console.log('Deal Statistic Err', err)
-      //     console.log('Deal Statistic Data', data)
-      //   }
-      // )
+      getListDeal(xsession, placeId, from, to)
+      getDealStatistic(xsession, '', placeId, from, to)
     }
 
     _onRefresh = () => {
@@ -99,13 +78,10 @@ export default class DealManager extends Component {
     _renderItem = (item) => {
       const {forwardTo} = this.props
       let address = ''
-      console.log('Item', item)
-      console.log('List pLace', this.props.listPlace)
       if (this.placeMap[item.placeId]){
         address = this.placeMap[item.placeId].address
       }else{
         let foundItem = this.props.listPlace.filter(loopItem => loopItem.placeId == item.placeId)[0]
-        console.log('Found Item', foundItem)
         address = foundItem['address']
         this.placeMap[item.placeId] = foundItem
       }
@@ -127,8 +103,22 @@ export default class DealManager extends Component {
       />
     }
 
+    _formatIncreaseDecrease = (number) => {
+      if (number == undefined) return false
+      if (number >=0) return  <Text success>&#8593; {number.toFixed(2)}%</Text>
+      else return <Text warning>&#8595; {number.toFixed(2)}%</Text>
+    }
+    // growthBought: 1.8666667
+    // growthInteract: 2.2969697
+    // growthReach: 0
+    // growthView: 0.97630924
+    // totalBought: 129
+    // totalInteract: 544
+    // totalReach: 0
+    // totalView: 1585
+
     render() {
-        const {forwardTo, currentDateFilter} = this.props
+        const {forwardTo, currentDateFilter, viewOverview} = this.props
         return (
           <Container style={styles.bgWhite}>
             <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
@@ -150,26 +140,26 @@ export default class DealManager extends Component {
                 <View style={{...styles.row}}>
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('approach')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(5700)}</Text>
-                      <Text success>&#8593; 42.5%</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalInteract)}</Text>
+                      <Text success>{this._formatIncreaseDecrease(viewOverview.growthInteract)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('view')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(5700)}</Text>
-                      <Text warning>&#8595; 32.5%</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalView)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthView)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('find_out')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(179)}</Text>
-                      <Text warning>&#8593; 8.25%</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalReach)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthReach)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('buy')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(57)}</Text>
-                      <Text warning>&#8595; 3.25%</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalBought)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthBought)}</Text>
                     </View>
                 </View>
                 <Border/>

@@ -337,6 +337,14 @@ export default {
     'distanceLevel1': '<1 km',
     'distanceLevel2': '1-3 km',
     'distanceLevel3' : '3-5 km',
-    'distanceLevel4': '>5 km'
-
+    'distanceLevel4': '>5 km',
+    'share': 'Chia sẻ',
+    'ageLevel1': '< 17',
+    'ageLevel2': '18-34',
+    'ageLevel3': '35-54',
+    'ageLevel4': '55+',
+    'gender': 'Giới tính',
+    'age': 'Độ tuổi',
+    'income': 'Thu nhập',
+    'distance': 'Khoảng cách'
 }

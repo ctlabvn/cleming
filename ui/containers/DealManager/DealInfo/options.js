@@ -1,11 +1,11 @@
 import moment from 'moment'
-export const barChartConfig =  {
+export const singleChartConfig =  {
     width: 250,
-    height: 250,
+    height: 200,
     margin: {
       top: 20,
       left: 20,
-      bottom: 20,
+      bottom: 50,
       right: 20
     },
     gutter: 20,
@@ -21,10 +21,10 @@ export const barChartConfig =  {
       fill: '#34495E',
     },
     axisX: {
-      showAxis: false,
-      showLines: false,
+      showAxis: true,
+      showLines: true,
       showLabels: true,
-      showTicks: false,
+      showTicks: true,
       zeroAxis: false,
       orient: 'bottom',
       label: {
@@ -49,6 +49,58 @@ export const barChartConfig =  {
         fill: '#34495E'
       }
     }
+}
+
+export const doubleChartConfig =  {
+  width: 250,
+  height: 200,
+  margin: {
+    top: 20,
+    left: 20,
+    bottom: 50,
+    right: 20
+  },
+  gutter: 20,
+  animate: {
+    type: 'oneByOne',
+    duration: 200,
+    fillTransition: 3,
+    fontWeight: true
+  },
+  percent: {
+    fontFamily: 'Arial',
+    fontSize: 13,
+    fill: '#34495E',
+  },
+  axisX: {
+    showAxis: true,
+    showLines: true,
+    showLabels: true,
+    showTicks: true,
+    zeroAxis: false,
+    orient: 'bottom',
+    label: {
+      fontFamily: 'Arial',
+      fontSize: 10,
+      fontWeight: true,
+      fill: '#34495E',
+      rotate: 45
+    }
+  },
+  axisY: {
+    showAxis: false,
+    showLines: false,
+    showLabels: false,
+    showTicks: false,
+    zeroAxis: false,
+    orient: 'left',
+    label: {
+      fontFamily: 'Arial',
+      fontSize: 8,
+      fontWeight: true,
+      fill: '#34495E'
+    }
+  }
 }
 
 export const pieChartConfig = {

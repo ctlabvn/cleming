@@ -19,3 +19,8 @@ export const dealStatisticSelector = (state) => {
   if (!state || !state.deal || !state.deal.statistic) return emptyObj
   return state.deal.statistic
 }
+
+export const viewOverviewSelector = (state) => {
+  if (!state || !state.deal || !state.deal.viewOverview) return emptyObj
+  return state.deal.viewOverview
+}

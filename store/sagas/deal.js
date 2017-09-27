@@ -4,7 +4,7 @@ import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 import { getToastMessage } from '~/ui/shared/utils'
-import { setDealCategory, setListDeal, setDealStatistic } from '~/store/actions/deal'
+import { setDealCategory, setListDeal, setDealUserStatistic, setDealViewOverview } from '~/store/actions/deal'
 import I18n from '~/ui/I18n'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 
@@ -35,7 +35,7 @@ const requestDealUserStatistic = createRequestSaga({
     success: [
       (data) => {
         if (data && data.updated && data.updated.data){
-          return setDealStatistic(data.updated.data)
+          return setDealUserStatistic(data.updated.data)
         }
         return noop('')
       }
@@ -44,7 +44,15 @@ const requestDealUserStatistic = createRequestSaga({
 
 const requestDealStatistic = createRequestSaga({
     request: api.deal.getDealStatistic,
-    key: 'deal/getDealStatistic'
+    key: 'deal/getDealStatistic',
+    success: [
+      (data) => {
+        if (data && data.updated && data.updated.data){
+          return setDealViewOverview(data.updated.data)
+        }
+        return noop('')
+      }
+    ]
 })
 
 const requestListDeal = createRequestSaga({

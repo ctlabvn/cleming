@@ -3,7 +3,7 @@ export default {
     dateFilter: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        padding: 5,
         backgroundColor: material.white500
     },
     stickPart: {

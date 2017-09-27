@@ -15,6 +15,12 @@ export default {
     margin: 5,
     borderRadius: 3
   },
+  cardBlock2: {
+    backgroundColor: 'white',
+    marginTop: 5,
+    marginBottom: 5,
+    borderRadius: 3
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -45,6 +51,17 @@ export default {
   infoNumber: {
     fontSize: 20
   },
+  infoItem2: {
+    width: '20%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5
+  },
+  infoNumber2: {
+    fontSize: 16
+  },
+
   pd15: {
     padding: 15
   },

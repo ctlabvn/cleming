@@ -50,7 +50,7 @@ export default class DealManager extends Component {
                 <Image source={{uri: this.props.image}} style={styles.dealImage}/>
                 <View style={styles.dealRight}>
                   <Text bold medium>{this.props.name}</Text>
-                  <Text small gray>{this.props.address}</Text>
+                  <Text small gray numberOfLines={1} ellipsizeMode='tail'>{this.props.address}</Text>
                   <View style={{...styles.row, marginTop: 5}}>
                     <View style={{...styles.dealTransactionIcon}}>
                       <Text small gray>({moment(this.props.fromDate*1000).format(DEFAULT_DATE_FORMAT)} - {moment(this.props.toDate*1000).format(DEFAULT_DATE_FORMAT)})</Text>
