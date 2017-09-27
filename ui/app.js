@@ -156,18 +156,16 @@ export default class App extends Component {
         // switch selectedOption
         const {setSelectedOption, selectedPlace } = this.props;
 
-        let selectedOption = {}
+        let selectedOption = this.listPlaceRender[0]
 
             if (cachePlace && cachePlace.selectedPlace
                 && typeof cachePlace.selectedPlace.id != 'undefined'
                 && cachePlace.selectedPlace.name) {
-                selectedOption.id = cachePlace.selectedPlace.id
-                selectedOption.name = cachePlace.selectedPlace.name
+                selectedOption = cachePlace.selectedPlace
             } else {
-                if (selectedPlace) selectedOption = selectedPlace;
+                if (selectedPlace && selectedPlace.id && selectedPlace.name) selectedOption = selectedPlace;
                 else {
-                    selectedOption.id = this.listPlaceRender[0].id
-                    selectedOption.name = this.listPlaceRender[0].name
+                    selectedOption = this.listPlaceRender[0]
                 }
         }
 
@@ -527,8 +525,10 @@ export default class App extends Component {
       this.listPlaceItemAllPlace = Array.from(this.listPlace);
       // panda edit
       // const itemAll = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
-      if (this.listPlace.length >= 2) this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
+      // if (this.listPlace.length >= 2) this.listPlaceItemAllPlace.splice(0, 0, ITEM_ALL_PLACE)
 
+      let itemAllPlace = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+      if (this.listPlace.length >= 2) this.listPlaceItemAllPlace.splice(0, 0, itemAllPlace)
   }
 
   render() {
