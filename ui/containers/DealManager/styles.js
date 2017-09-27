@@ -193,5 +193,9 @@ export default {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  noDataStr: {
+    color: material.gray500,
+    margin: 20
   }
 }

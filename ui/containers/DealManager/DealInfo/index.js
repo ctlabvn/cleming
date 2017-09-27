@@ -39,20 +39,34 @@ export default class DealInfo extends Component {
         }
     }
 
+
+    _load = (from, to) => {
+      const {getDealUserStatistic, xsession, route} = this.props
+      let deal = route.params.deal
+      this.setState({dealItem: deal})
+      getDealUserStatistic(xsession, '', from, to)
+    }
+
     _handlePressFilter = (item) => {
         const {app} = this.props
         let dateValue  = item.currentSelectValue.value
-        console.log('Date value', item);
-        // let selectedPlace = app.topDropdown.getValue()
-        // if (selectedPlace && Object.keys(selectedPlace).length > 0) {
-        //   this._load(selectedPlace.id, dateValue.from, dateValue.to)
-        // }
+        this._load(dateValue.from, dateValue.to)
     }
 
     _generateDistanceBar = () => {
       const {statistic} = this.props
       if (statistic.distanceLevel1 == undefined) return false
       let sum = statistic.distanceLevel1+statistic.distanceLevel2+statistic.distanceLevel3+statistic.distanceLevel4
+      
+      if (sum == 0){
+        return (
+          <View style={styles.chartContainer}>
+            <Text medium bold>{I18n.t('distance')}</Text>
+            <Text style={styles.noDataStr}>{I18n.t('noData')}</Text>
+          </View>
+        )
+      }
+
       let distanceData = [
         [{
           'distanceNumber': statistic.distanceLevel1,
@@ -77,13 +91,18 @@ export default class DealInfo extends Component {
         Math.floor(statistic.distanceLevel3/sum*100)+'%',
         (100-Math.floor(statistic.distanceLevel1/sum*100)-Math.floor(statistic.distanceLevel2/sum*100)-Math.floor(statistic.distanceLevel3/sum*100))+'%'
       ]
-      return <Bar 
-        colors={['#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac']}
-        data={distanceData} 
-        options={singleChartConfig} 
-        accessorKey='distanceNumber'
-        percent={percent}
-        />
+      return (
+        <View style={styles.chartContainer}>
+          <Text medium bold>{I18n.t('distance')}</Text>
+          <Bar 
+            colors={['#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac', '#2a83ac']}
+            data={distanceData} 
+            options={singleChartConfig} 
+            accessorKey='distanceNumber'
+            percent={percent}
+            />
+        </View>
+      )          
     }
 
     // ageFemaleLevel1:0
@@ -100,6 +119,15 @@ export default class DealInfo extends Component {
 
       let sumMale = statistic.ageMaleLevel1 + statistic.ageMaleLevel2 + statistic.ageMaleLevel3 + statistic.ageMaleLevel4
       let sumFemale = statistic.ageFemaleLevel1 + statistic.ageFemaleLevel2 + statistic.ageFemaleLevel3 + statistic.ageFemaleLevel4
+      if (sumMale == 0 || sumFemale == 0){
+        return (
+          <View style={styles.chartContainer}>
+            <Text medium bold>{I18n.t('age')}</Text>
+            <Text style={styles.noDataStr}>{I18n.t('noData')}</Text>
+          </View>
+        )
+      }
+
       let distanceData = [
         [
           {
@@ -190,7 +218,16 @@ export default class DealInfo extends Component {
     _generateGenderPie = () => {
       const {statistic} = this.props
       if (statistic.maleNumber == undefined) return false
-      let malePercent = Math.floor((statistic.maleNumber)/(statistic.maleNumber+statistic.femaleNumber)*100)
+      let sum = statistic.maleNumber+statistic.femaleNumber
+      if (sum == 0){
+        return (
+          <View style={styles.chartContainer}>
+            <Text medium bold>{I18n.t('gender')}</Text>
+            <Text style={styles.noDataStr}>{I18n.t('noData')}</Text>
+          </View>
+        )
+      }
+      let malePercent = Math.floor((statistic.maleNumber)/sum*100)
       let femalePercent = 100-malePercent
       let genderData = [
         {
@@ -214,7 +251,7 @@ export default class DealInfo extends Component {
       ]
       return (
         <View style={styles.chartContainer}>
-          <Text medium bold>{I18n.t('gender')}</Text>
+          <Text medium bold>{I18n.t('income')}</Text>
           <Pie data={genderData} 
                 pallete = {[
                   {'r':42,'g':131,'b':172},
@@ -231,6 +268,14 @@ export default class DealInfo extends Component {
       const {statistic} = this.props
       if (statistic.incomeLevel1 == undefined) return false
       let sum = statistic.incomeLevel1+statistic.incomeLevel2+statistic.incomeLevel3
+      if (sum == 0){
+        return (
+          <View style={styles.chartContainer}>
+            <Text medium bold>{I18n.t('gender')}</Text>
+            <Text style={styles.noDataStr}>{I18n.t('noData')}</Text>
+          </View>
+        )
+      }
       let incomeLevel1Percent = Math.floor(statistic.incomeLevel1/sum*100)
       let incomeLevel2Percent = Math.floor(statistic.incomeLevel2/sum*100)
       let incomeLevel3Percent = 100-incomeLevel1Percent-incomeLevel2Percent
@@ -249,14 +294,19 @@ export default class DealInfo extends Component {
         },
         
       ]
-      return <Pie data={incomeData} 
+      return (
+        <View style={styles.chartContainer}>
+          <Text medium bold>{I18n.t('income')}</Text>
+          <Pie data={incomeData} 
               pallete = {[
                 {'r':42,'g':131,'b':172},
                 {'r':147,'g':229,'b':225},
                 {'r':111,'g':111,'b':111},
               ]}
               options={pieChartConfig} 
-              accessorKey="incomeNumber"/>
+              accessorKey="incomeNumber"/>    
+        </View>
+      )
     }
 
 
@@ -264,9 +314,8 @@ export default class DealInfo extends Component {
       const {getDealUserStatistic, xsession, route} = this.props
       let deal = route.params.deal
       this.setState({dealItem: deal})
-      let fromTime = moment().subtract(3, 'month').unix()
-      let toTime = moment().unix()
-      getDealUserStatistic(xsession, '', fromTime, toTime)
+      const dateValue = this.dateFilter.getData().currentSelectValue.value
+      this._load(dateValue.from, dateValue.to)
     }
 
     _formatIncreaseDecrease = (number) => {
@@ -349,17 +398,9 @@ export default class DealInfo extends Component {
 
             {this._generateGenderPie()}
             {this._generateAgeBar()}
-            
-            <View style={styles.chartContainer}>
-              <Text medium bold>{I18n.t('income')}</Text>
-              {this._generateIncomeLevelPie()}
-            </View>
-
-            <View style={styles.chartContainer}>
-              <Text medium bold>{I18n.t('distance')}</Text>
-              {this._generateDistanceBar()}
-            </View>
-
+            {this._generateIncomeLevelPie()}
+            {this._generateDistanceBar()}
+  
             <View style={{width: '100%', height: 50}}>
             </View>
 

@@ -346,5 +346,6 @@ export default {
     'gender': 'Giới tính',
     'age': 'Độ tuổi',
     'income': 'Thu nhập',
-    'distance': 'Khoảng cách'
+    'distance': 'Khoảng cách',
+    'noData': 'Không có dữ liệu'
 }

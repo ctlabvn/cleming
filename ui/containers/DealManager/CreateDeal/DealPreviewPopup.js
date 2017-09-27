@@ -71,7 +71,7 @@ export default class DealPreviewPopup extends Component {
       if (!data) return false
       return (
         <Modal 
-            animationType={"slide"}
+            animationType={"none"}
             transparent={true}
             visible={this.state.visible}
             onRequestClose={() => this.close()}
@@ -81,8 +81,8 @@ export default class DealPreviewPopup extends Component {
               <View style={{position: 'absolute', top: 5, right: 5, width: 30, height: 30, 
                   borderColor: material.gray500, borderWidth: 1, 
                   borderRadius: 15, flexDirection: 'row', justifyContent: 'center', 
-                  alignItems: 'center', backgroundColor: 'white', zIndex: 10 }}>
-                <Icon name='close_bt' style={{fontSize: 22, color: material.gray500}}
+                  alignItems: 'center', backgroundColor: 'black', zIndex: 10 }}>
+                <Icon name='close_bt' style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}
                   />
               </View>
             </TouchableWithoutFeedback>
