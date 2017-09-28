@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator, RefreshControl} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -29,10 +29,13 @@ export default class DealManager extends Component {
     constructor(props) {
         super(props)
         this.placeMap = {}
+        this.state = {
+          refreshing: false
+        }
     }
 
     componentDidMount(){
-      const {xsession, getListDeal, app} = this.props
+      const {xsession, app} = this.props
       app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
       const dateValue = this.dateFilter.getData().currentSelectValue.value
       let selectedPlace = app.topDropdown.getValue()
@@ -61,14 +64,25 @@ export default class DealManager extends Component {
         }
     }
 
-    _load = (placeId, from, to)=>{
+    _load = (placeId, from, to, refreshing=false)=>{
       const {xsession, getListDeal, getDealStatistic} = this.props
+      refreshing && this.setState({refreshing: true})
       getListDeal(xsession, placeId, from, to)
-      getDealStatistic(xsession, '', placeId, from, to)
+      getDealStatistic(xsession, '', placeId, from, to,
+        (err, data) => {
+          refreshing && this.setState({refreshing: false})
+        }
+      )
     }
 
     _onRefresh = () => {
       console.log('On refreshing');
+      const {xsession, app} = this.props
+      const dateValue = this.dateFilter.getData().currentSelectValue.value
+      let selectedPlace = app.topDropdown.getValue()
+      if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+        this._load(selectedPlace.id, dateValue.from, dateValue.to, true)
+      }
     }
 
     _loadMore = () => {
@@ -114,7 +128,9 @@ export default class DealManager extends Component {
         return (
           <Container style={styles.bgWhite}>
             <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container}
+              refreshControl = {<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />}
+              >
               {/* <ActivityIndicator animating={true} size='large' color={material.primaryColor} /> */}
               <View style={{...styles.cardBlock, ...styles.pb10}}>
                 <View style={{...styles.row, ...styles.pd15 }}>
