@@ -79,6 +79,7 @@ export default {
     'page_bank_account': 'Tài khoản ngân hàng',
     'page_setting': 'Cài đặt',
     'page_cashout_account': 'Tài khoản Cashout',
+    'cashout': 'Rút tiền',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -291,7 +292,7 @@ export default {
     'total_money_clingme_get': 'Tổng tiền Clingme đã thu:',
     'merchant_get_money_from_clingme': 'Clingme thanh toán \n cho đối tác',
     'clingme_get_money_from_merchant': 'Đối tác thanh toán \n cho Clingme',
-    'clingme_pay': 'Thanh toán Clingme',
+    'clingme_pay': 'Thanh toán cho Clingme',
 
     // Cashout
     'cashout_account': 'Tài khoản cashout',
