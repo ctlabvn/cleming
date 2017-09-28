@@ -79,6 +79,7 @@ export default {
     'page_bank_account': 'Tài khoản ngân hàng',
     'page_setting': 'Cài đặt',
     'page_cashout_account': 'Tài khoản Đối tác',
+    'page_cashout_detail' : 'Chi tiết rút tiền',
     'page_cashout_and_pay_history': 'Lịch sử giao dịch',
     'cashout': 'Rút tiền',
 
