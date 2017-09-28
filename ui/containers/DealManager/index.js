@@ -108,14 +108,6 @@ export default class DealManager extends Component {
       if (number >=0) return  <Text success>&#8593; {number.toFixed(2)}%</Text>
       else return <Text warning>&#8595; {number.toFixed(2)}%</Text>
     }
-    // growthBought: 1.8666667
-    // growthInteract: 2.2969697
-    // growthReach: 0
-    // growthView: 0.97630924
-    // totalBought: 129
-    // totalInteract: 544
-    // totalReach: 0
-    // totalView: 1585
 
     render() {
         const {forwardTo, currentDateFilter, viewOverview} = this.props
@@ -128,11 +120,11 @@ export default class DealManager extends Component {
                 <View style={{...styles.row, ...styles.pd15 }}>
                     <View style={styles.moneyItem}>
                       <Text>{I18n.t('revenue')}</Text>
-                      <Text medium bold primary>{formatNumber(9500353)} đ</Text>
+                      <Text medium bold primary>{formatNumber(viewOverview.totalMoney)} đ</Text>
                     </View>
                     <View style={styles.moneyItem}>
                       <Text medium>{I18n.t('clingme_fee')}</Text>
-                      <Text medium bold  primary>{formatNumber(1200000)} đ</Text>
+                      <Text medium bold  primary>{formatNumber(viewOverview.charge)} đ</Text>
                     </View>
                 </View>
 
