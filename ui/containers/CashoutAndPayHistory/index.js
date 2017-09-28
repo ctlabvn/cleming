@@ -93,7 +93,7 @@ export default class CashoutHistory extends Component {
                       <Text large bold success>{formatNumber(cashoutHistory.moneyAmount)}đ</Text>
                   </View>
                   <View style={styles.rowLeft}>
-                      <Text medium bold warning>{I18n.t('money_waiting_process')}</Text>
+                      <Text medium bold grayDark>Chờ xử lý</Text>
                   </View>
                   <Border/>
                   <ListViewExtend
@@ -101,10 +101,10 @@ export default class CashoutHistory extends Component {
                       renderRow={(item) => this._renderRow(item)}
                       onItemRef={ref=>this.listview=ref} 
                       onRefresh={this._onRefresh}
-                      style={{minHeight: 150}}
+                      style={{backgroundColor: 'pink'}}
                   />
                   <View style={{...styles.rowLeft, ...styles.borderTop}}>
-                      <Text medium bold success>{I18n.t('money_received')}</Text>
+                      <Text medium bold grayDark>Đã xử lý</Text>
                   </View>
                   <Border/>
                   <ListViewExtend
