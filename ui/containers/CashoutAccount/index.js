@@ -68,7 +68,7 @@ export default class extends Component {
                 </View>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity
-                    onPress={() => forwardTo('cashoutHistory')}
+                    onPress={() => forwardTo('cashoutAndPayHistory')}
                     style={{...styles.row, backgroundColor: material.gray200, padding: 13, margin: 7, marginBottom: 50, borderRadius: 5}}>
                     <Text medium grayDark bold italic>
                         Lịch sử giao dịch

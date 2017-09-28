@@ -32,6 +32,7 @@ import ComingSoon from './containers/ComingSoon'
 import Setting from './containers/Setting'
 import CashoutAccount from './containers/CashoutAccount'
 import CashoutHistory from './containers/CashoutHistory'
+import CashoutAndPayHistory from './containers/CashoutAndPayHistory'
 import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
 import WithdrawDetail from './containers/WithdrawDetail'
@@ -242,6 +243,12 @@ export default {
     cashoutHistory: {
         title: I18n.t('cashout_history'),
         Page: CashoutHistory,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    cashoutAndPayHistory: {
+        title: I18n.t('page_cashout_and_pay_history'),
+        Page: CashoutAndPayHistory,
         headerType: 'back',
         footerType: 'none',
     },
