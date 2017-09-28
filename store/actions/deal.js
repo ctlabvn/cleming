@@ -57,3 +57,8 @@ export const setSingleDealStatistic = (payload) => ({
   type: 'deal/setSingleDealStatistic',
   payload
 })
+
+export const markReloadDealManager = (payload) => ({
+  type: 'deal/markReloadDealManager',
+  payload
+})

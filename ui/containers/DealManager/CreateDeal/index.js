@@ -17,7 +17,7 @@ import DealImageSelector from './DealImageSelector'
 import ExclusiveTypeSelector from './ExclusiveTypeSelector'
 import PlaceSelector from './PlaceSelector'
 import moment from 'moment'
-import {getDealCategory, createDeal} from "~/store/actions/deal"
+import {getDealCategory, createDeal, markReloadDealManager} from "~/store/actions/deal"
 import { getSession, getUser } from "~/store/selectors/auth"
 import {dealCategorySelector} from '~/store/selectors/deal'
 import LoadingModal from "~/ui/components/LoadingModal"
@@ -41,7 +41,7 @@ const formSelector = formValueSelector('CreateDeal')
     place: state.place,
     formValues: formSelector(state, 'leftPromo', 'promoTitle'),
     category: dealCategorySelector(state)
-}), {forwardTo, getDealCategory, createDeal, showPopupInfo, setToast, resetForm: reset})
+}), {forwardTo, getDealCategory, createDeal, showPopupInfo, setToast, markReloadDealManager, resetForm: reset})
 
 @reduxForm({ form: 'CreateDeal', validate, touchOnBlur: false, touchOnChange: false, enableReinitialize: true})
 export default class CreateDeal extends Component {
@@ -94,7 +94,7 @@ export default class CreateDeal extends Component {
     _convertURI = (uri) => (Platform.OS === 'android') ? uri.replace('file:///', '') : uri
 
     _fetch = (data) => {
-      const {resetForm, showPopupInfo, forwardTo} = this.props
+      const {resetForm, showPopupInfo, forwardTo, markReloadDealManager, xsession} = this.props
       let formData = []
       for (let key in data){
         if (data[key] && data[key].type && data[key].type=='multi'){
@@ -112,9 +112,6 @@ export default class CreateDeal extends Component {
           }
         }
       }
-      console.log('Form Data', formData)
-
-      const {xsession} = this.props
       let xVersion = 1
       let xDataVersion = 1
       let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
@@ -136,9 +133,10 @@ export default class CreateDeal extends Component {
         let dataRes = res.json()
         console.log('Res ', res)
         if (dataRes && dataRes.updated && dataRes.updated.isSaved){
-              this.uploadingProgress.close()
-              showPopupInfo(I18n.t('create_deal_successful'))
-              forwardTo('dealManager')
+          markReloadDealManager(true)
+          this.uploadingProgress.close()
+          showPopupInfo(I18n.t('create_deal_successful'))
+          forwardTo('dealManager')
         }else{
           this.uploadingProgress.close()
           showPopupInfo(I18n.t('create_deal_fail'))

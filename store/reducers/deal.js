@@ -16,6 +16,8 @@ export const deal = (state = initialState, {type, payload}) => {
       return {...state, viewOverview: payload}
     case 'deal/setSingleDealStatistic':
       return {...state, viewDetail: payload}
+    case 'deal/markReloadDealManager':
+      return {...state, reload: payload}
     case 'app/logout':
     case 'app/clearData':
       return initialState

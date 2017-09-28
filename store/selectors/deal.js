@@ -29,3 +29,8 @@ export const viewDetailSelector = (state) => {
   if (!state || !state.deal || !state.deal.viewDetail) return emptyObj
   return state.deal.viewDetail
 }
+
+export const dealReloadSelector = (state) => {
+  if (!state || !state.deal || !state.deal.reload) return false
+  return state.deal.reload
+}

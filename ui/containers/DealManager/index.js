@@ -5,7 +5,7 @@ import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
-import {getListDeal, getDealStatistic, updateDateFilter} from '~/store/actions/deal'
+import {getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
@@ -14,7 +14,7 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {listDealSelector, dateFilterSelector, viewOverviewSelector} from '~/store/selectors/deal'
+import {listDealSelector, dateFilterSelector, viewOverviewSelector, dealReloadSelector} from '~/store/selectors/deal'
 import {getListPlace} from '~/store/selectors/place'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
@@ -22,8 +22,9 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     listDeal: listDealSelector(state),
     viewOverview: viewOverviewSelector(state),
     currentDateFilter: dateFilterSelector(state),
-    listPlace: getListPlace(state)
-}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter})
+    listPlace: getListPlace(state),
+    reload: dealReloadSelector(state)
+}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -32,6 +33,18 @@ export default class DealManager extends Component {
         this.state = {
           refreshing: false
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (nextProps && nextProps.reload){
+        const {xsession, app, markReloadDealManager} = this.props
+        const dateValue = this.dateFilter.getData().currentSelectValue.value
+        let selectedPlace = app.topDropdown.getValue()
+        if (selectedPlace && Object.keys(selectedPlace).length > 0) {
+          this._load(selectedPlace.id, dateValue.from, dateValue.to)
+        }
+        markReloadDealManager(false)
+      }
     }
 
     componentDidMount(){
