@@ -1,7 +1,7 @@
 import material from '~/theme/variables/material.js'
 export default {
 	container: {
-		backgroundColor: material.gray200
+		backgroundColor: material.white500
 	},
 	moneyBlock: {
 		padding: 10,
@@ -21,17 +21,22 @@ export default {
 		alignItems: 'center',
 		backgroundColor: 'white'
 	},
+	rowNormal: {
+        flexDirection: 'row',
+	},
 	rowRight: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		alignItems: 'center'
 	},
 	cashoutBtn: {
-		backgroundColor: material.primaryColor,
-		paddingLeft: 5,
-		paddingRight: 5,
+		backgroundColor: material.orange500,
+		paddingLeft: 45,
+		paddingRight: 45,
 		paddingTop: 5,
-		paddingBottom: 5
+		paddingBottom: 5,
+		margin: 45,
+		alignSelf: 'center'
 	},
 	cashoutIcon: {
 		fontSize: 25,
