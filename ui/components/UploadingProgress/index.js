@@ -44,7 +44,7 @@ export default class PopupInfo extends Component {
                           shadowColor="#999"
                           bgColor="#fff"
                       >
-                          <Text style={{ fontSize: 21, fontWeight: 'bold', color: material.primaryColor }}>{this.state.percent}%</Text>
+                          <Text style={{ fontSize: 17, fontWeight: 'bold', color: material.primaryColor }}>{this.state.percent}%</Text>
                       </ProgressCircle>
                     </View>
                 </View>

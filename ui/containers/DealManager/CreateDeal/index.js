@@ -94,10 +94,7 @@ export default class CreateDeal extends Component {
     _convertURI = (uri) => (Platform.OS === 'android') ? uri.replace('file:///', '') : uri
 
     _fetch = (data) => {
-
-      console.log('Data', data);
-      const {resetForm, showPopupInfo} = this.props
-
+      const {resetForm, showPopupInfo, forwardTo} = this.props
       let formData = []
       for (let key in data){
         if (data[key] && data[key].type && data[key].type=='multi'){
@@ -109,7 +106,7 @@ export default class CreateDeal extends Component {
           if (data[key] && data[key].type && data[key].type.indexOf('image') > -1){
             // case single file
             formData.push({...data[key], name: key})
-          }else{
+          }else if (data[key]){
             // case text data
             formData.push({name: key, data: String(data[key])})
           }
@@ -121,6 +118,7 @@ export default class CreateDeal extends Component {
       let xVersion = 1
       let xDataVersion = 1
       let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
+      this.dealPreview.close()
       this.uploadingProgress.open()
       RNFetchBlob.fetch('POST', API_BASE+'/deal/create', {
         'Accept': 'application/json',
@@ -136,17 +134,19 @@ export default class CreateDeal extends Component {
       })
       .then((res) => {
         let dataRes = res.json()
+        console.log('Res ', res)
         if (dataRes && dataRes.updated && dataRes.updated.isSaved){
-              resetForm('CreateDeal')
-              this.dealImageSelector.reset()
-              this.placeSelector.reset()
               this.uploadingProgress.close()
               showPopupInfo(I18n.t('create_deal_successful'))
-            }
-        ;
+              forwardTo('dealManager')
+        }else{
+          this.uploadingProgress.close()
+          showPopupInfo(I18n.t('create_deal_fail'))
+        }
       })
       .catch((err) => {
         this.uploadingProgress.close()
+        showPopupInfo(I18n.t('create_deal_fail'))
         console.log('catch', err);
       })
     }
@@ -159,13 +159,13 @@ export default class CreateDeal extends Component {
       let exclusiveType = this.exclusiveTypeSelector.getSelected()
       let dealCategoryId = this.dealCategoryPicker.getValue()
       let promoType = this.state.promoType
-      console.log('Deal Category Id', dealCategoryId)
       let spendingLevel = this.spendingLevelBar.getValue()
-      console.log('spendingLevel: ', spendingLevel)
       let from = moment(fromDate, "MM/DD/YYYY").startOf('day').unix()
       let to = moment(toDate, "MM/DD/YYYY").endOf('day').unix()
       let coverPicture = this.dealImageSelector.getCover()
-
+      if (coverPicture.indexOf('http')==-1){
+        coverPicture = {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))}
+      }
       if (!coverPicture || coverPicture == ''){
         setToast(getToastMessage(I18n.t('err_need_at_least_one_image')), 'info', null, null, 3000, 'top')
         return
@@ -183,7 +183,7 @@ export default class CreateDeal extends Component {
       let data = {
         leftPromo, promoTitle, dealTitle, description, dealCategoryId,
         searchTag, spendingLevel, placeIdList, exclusiveType, promoType,
-        coverPicture: {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))},
+        coverPicture: coverPicture,
         'detail_files[]': {type: 'multi', data: imageFiles},
         'imageLinks': imageLinks,
         fromDate: from,

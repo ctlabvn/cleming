@@ -48,20 +48,22 @@ export default class DealPreviewPopup extends Component {
     
     _renderImages = (data) => {
       let result = []
-      result.push({pictureId: data.coverPicture.uri, fullPath: data.coverPicture.uri})
+      if (data.coverPicture.uri){
+        result.push({pictureId: data.coverPicture.uri, fullPath: data.coverPicture.uri})
+      }else{
+        result.push({pictureId: data.coverPicture, fullPath: data.coverPicture})
+      }
       // if (data['detail_files[]'] && data['detail_files[]'].data){
       //   let clone = data['detail_files[]'].data.map(item=>({pictureId: item.uri, fullPath: item.uri}))
       //   result = [...result, ...clone]
       // }
       if (data.allImages){
-        console.log('All Images', data.allImages)
         let clone = data.allImages.map(item=>{
          if(item.pictureId) return ({pictureId: item.pictureId, fullPath: item.fullPath})
          else return ({pictureId: item.path, fullPath: item.path})
         })
         result = [...result, ...clone]
       }
-      console.log('Result Images', result)
       return result
     }
 

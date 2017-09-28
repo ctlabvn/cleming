@@ -348,5 +348,6 @@ export default {
     'income': 'Thu nhập',
     'distance': 'Khoảng cách',
     'noData': 'Không có dữ liệu',
-    'deal_preview': 'Xem trước khuyến mãi'
+    'deal_preview': 'Xem trước khuyến mãi',
+    'create_deal_fail': 'Tạo deal thất bại'
 }
