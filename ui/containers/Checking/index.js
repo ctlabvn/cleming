@@ -210,7 +210,7 @@ export default class extends Component {
                 </Content>
 
                 {/* hiện ra khi ở trạng thái đã đối soát: detail.status == 3 */}
-                {detail.status == 2 &&
+                {detail.status == 3 &&
                 <View>
                     <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/>
                     <View style={styles.fixButtonBlock}>
