@@ -37,13 +37,15 @@ export default class extends Component {
     render() {
         const {forwardTo, cashoutOverview} = this.props
 
+        const { balanceMoney } = cashoutOverview
+
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>
                     <Icon name='account' style={{fontSize: 65, margin: 30, color: material.gray400}}/>
                     <View style={{justifyContent: 'center', flex: 1}}>
                         <Text medium grayDark bold style={{marginBottom: 10}}>Số dư hiện tại</Text>
-                        <Text largeLight orange bold>{formatNumber(cashoutOverview.balanceMoney)}đ</Text>
+                        <Text largeLight orange bold>{formatNumber(balanceMoney)}đ</Text>
                     </View>
                 </View>
                 <Border/>
@@ -58,6 +60,9 @@ export default class extends Component {
                         <Text medium grayDark bold>- 1.500.000 đ</Text>
                     </View>
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
+                        <View><Text white medium bold>Rút tiền</Text></View>
+                    </Button>
+                    <Button style={styles.payBtn} onPress={() => alert('Chi tiết thanh toán')}>
                         <View><Text white medium bold>Thanh toán</Text></View>
                     </Button>
                 </View>

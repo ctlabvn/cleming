@@ -38,6 +38,15 @@ export default {
 		margin: 45,
 		alignSelf: 'center'
 	},
+    payBtn: {
+        backgroundColor: material.blue500,
+        paddingLeft: 45,
+        paddingRight: 45,
+        paddingTop: 5,
+        paddingBottom: 5,
+        margin: 45,
+        alignSelf: 'center'
+    },
 	cashoutIcon: {
 		fontSize: 25,
 		color: 'white'
