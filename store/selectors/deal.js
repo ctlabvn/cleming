@@ -24,3 +24,8 @@ export const viewOverviewSelector = (state) => {
   if (!state || !state.deal || !state.deal.viewOverview) return emptyObj
   return state.deal.viewOverview
 }
+
+export const viewDetailSelector = (state) => {
+  if (!state || !state.deal || !state.deal.viewDetail) return emptyObj
+  return state.deal.viewDetail
+}

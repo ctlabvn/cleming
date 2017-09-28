@@ -47,3 +47,13 @@ export const setDealViewOverview = (payload) => ({
   type: 'deal/setDealViewOverview',
   payload
 })
+
+export const getSingleDealStatistic = (...args) => ({
+  type: 'deal/getSingleDealStatistic',
+  args
+})
+
+export const setSingleDealStatistic = (payload) => ({
+  type: 'deal/setSingleDealStatistic',
+  payload
+})

@@ -8,10 +8,10 @@ import {forwardTo} from '~/store/actions/common'
 import {formatPhoneNumber} from '~/ui/shared/utils'
 import material from '~/theme/variables/material'
 import {Bar, Pie, StockLine} from '~/ui/components/Chart'
-import {getDealUserStatistic} from '~/store/actions/deal'
+import {getDealUserStatistic, getSingleDealStatistic} from '~/store/actions/deal'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {dealStatisticSelector} from '~/store/selectors/deal'
+import {dealStatisticSelector, viewDetailSelector} from '~/store/selectors/deal'
 import DealItem from '~/ui/containers/DealManager/DealItem'
 import {singleChartConfig, doubleChartConfig, pieChartConfig} from './options'
 import styles from '../styles'
@@ -29,7 +29,8 @@ import ChartLegend from '~/ui/components/ChartLegend'
 @connect(state => ({
     xsession: getSession(state),
     statistic: dealStatisticSelector(state),
-}), {forwardTo, getDealUserStatistic})
+    viewDetail: viewDetailSelector(state)
+}), {forwardTo, getDealUserStatistic, getSingleDealStatistic})
 
 export default class DealInfo extends Component {
     constructor(props) {
@@ -41,10 +42,11 @@ export default class DealInfo extends Component {
 
 
     _load = (from, to) => {
-      const {getDealUserStatistic, xsession, route} = this.props
+      const {getDealUserStatistic, getSingleDealStatistic, xsession, route} = this.props
       let deal = route.params.deal
       this.setState({dealItem: deal})
       getDealUserStatistic(xsession, deal.dealId, from, to)
+      getSingleDealStatistic(xsession, deal.dealId, from, to)
     }
 
     _handlePressFilter = (item) => {
@@ -341,7 +343,7 @@ export default class DealInfo extends Component {
 
     render() {
       const {dealItem} = this.state
-      const {forwardTo} = this.props
+      const {forwardTo, viewDetail} = this.props
 
       return (
         <Container>
@@ -370,43 +372,42 @@ export default class DealInfo extends Component {
               <View style={{...styles.row, ...styles.pd15 }}>
                   <View style={styles.moneyItem}>
                     <Text>{I18n.t('revenue')}</Text>
-                    <Text medium bold primary>{formatNumber(9500353)} đ</Text>
+                    <Text medium bold primary>{formatNumber(viewDetail.totalMoney)} đ</Text>
                   </View>
                   <View style={styles.moneyItem}>
                     <Text medium>{I18n.t('clingme_fee')}</Text>
-                    <Text medium bold  primary>{formatNumber(1200000)} đ</Text>
+                    <Text medium bold  primary>{formatNumber(viewDetail.charge)} đ</Text>
                   </View>
               </View>
               <Border />
               <View style={{...styles.row}}>
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('approach')}</Text>
-                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
-                    {this._formatIncreaseDecrease(-1.23)}
+                    <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.reachNumber)}</Text>
+                    
                   </View>
                   <Border horizontal={false} />
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('view')}</Text>
-                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
-                    {this._formatIncreaseDecrease(10)}
+                    <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.viewNumber)}</Text>
+                    
                   </View>
                   <Border horizontal={false} />
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('mark')}</Text>
-                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
-                    {this._formatIncreaseDecrease(10)}
+                    <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.markNumber)}</Text>
+                    
                   </View>
                   <Border horizontal={false} />
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('share')}</Text>
-                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
-                    {this._formatIncreaseDecrease(-5)}
+                    <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.shareNumber)}</Text>
+                    
                   </View>
                   <Border horizontal={false} />
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('buy')}</Text>
-                    <Text bold style={styles.infoNumber2}>{formatNumber(100)}</Text>
-                    {this._formatIncreaseDecrease(3)}
+                    <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.boughtNumber)}</Text>
                   </View>
               </View>
               <Border />

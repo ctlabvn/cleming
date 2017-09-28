@@ -4,7 +4,8 @@ import api from '~/store/api'
 import { createRequestSaga } from '~/store/sagas/common'
 import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/actions/common'
 import { getToastMessage } from '~/ui/shared/utils'
-import { setDealCategory, setListDeal, setDealUserStatistic, setDealViewOverview } from '~/store/actions/deal'
+import { setDealCategory, setListDeal, 
+  setDealUserStatistic, setDealViewOverview, setSingleDealStatistic } from '~/store/actions/deal'
 import I18n from '~/ui/I18n'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 
@@ -34,7 +35,6 @@ const requestDealUserStatistic = createRequestSaga({
     key: 'deal/getDealUserStatistic',
     success: [
       (data) => {
-        console.log('Data User stastistic', data)
         if (data && data.updated && data.updated.data){
           return setDealUserStatistic(data.updated.data)
         }
@@ -69,6 +69,19 @@ const requestListDeal = createRequestSaga({
   ]
 })
 
+const requestSingleDealStatistic = createRequestSaga({
+  request: api.deal.getSingleDealStatistic,
+  key: 'deal/getSingleDealStatistic',
+  success: [
+    data => {
+      if (data && data.data){
+        return setSingleDealStatistic(data.data)
+      }
+      return noop('')
+    }
+  ]
+})
+
 export default [
     function* fetchWatcher() {
         yield [
@@ -76,7 +89,8 @@ export default [
             takeLatest('deal/createDeal', requestCreateDeal),
             takeLatest('deal/getDealUserStatistic', requestDealUserStatistic),
             takeLatest('deal/getListDeal', requestListDeal),
-            takeLatest('deal/getDealStatistic', requestDealStatistic)
+            takeLatest('deal/getDealStatistic', requestDealStatistic),
+            takeLatest('deal/getSingleDealStatistic', requestSingleDealStatistic)
         ]
     },
 ]

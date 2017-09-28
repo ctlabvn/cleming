@@ -43,7 +43,8 @@ export default {
     return apiGet('/deal/list', {lstPlaceId, fromDate, toDate, modeGet}, session)
   },
 
-
-
-
+  getSingleDealStatistic(session, dealId, fromTime, toTime){
+    console.log('Get Single Deal Statistic API', session+'---'+dealId+'---'+fromTime+'---'+toTime)
+    return apiGet('/merchantapp/deal-statistic', {dealId, fromTime, toTime}, session)
+  }
 }
