@@ -34,6 +34,7 @@ const requestDealUserStatistic = createRequestSaga({
     key: 'deal/getDealUserStatistic',
     success: [
       (data) => {
+        console.log('Data User stastistic', data)
         if (data && data.updated && data.updated.data){
           return setDealUserStatistic(data.updated.data)
         }

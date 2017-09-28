@@ -47,18 +47,19 @@ export default class PieChart extends Component {
   }
 
   color(i) {
-    let color = this.props.color || (this.props.options && this.props.options.color)
-    if (Array.isArray(color)) {
-      if (i >= color.length) {
-        const pallete = Colors.mix(color[i % color.length])
-        return Colors.string(cyclic(pallete, i))
-      }
-      return color[i];
-    } else {
-      if (color && !_.isString(color)) color = color.color
-      let pallete = this.props.pallete || (this.props.options && this.props.options.pallete) || Colors.mix(color || '#9ac7f7')
-      return Colors.string(cyclic(pallete, i))
-    }
+    // let color = this.props.color || (this.props.options && this.props.options.color)
+    // if (Array.isArray(color)) {
+    //   if (i >= color.length) {
+    //     const pallete = Colors.mix(color[i % color.length])
+    //     return Colors.string(cyclic(pallete, i))
+    //   }
+    //   return color[i];
+    // } else {
+    //   if (color && !_.isString(color)) color = color.color
+    //   let pallete = this.props.pallete || (this.props.options && this.props.options.pallete) || Colors.mix(color || '#9ac7f7')
+    //   return Colors.string(cyclic(pallete, i))
+    // }
+    return this.props.pallete[i]
   }
 
   get defaultRange() {
@@ -124,16 +125,18 @@ export default class PieChart extends Component {
         return (
                   <G key={ i }>
                       <Path d={c.sector.path.print() } stroke={stroke} fill={fill} fillOpacity={1}  />
-                      <G x={options.margin.left} y={options.margin.top}>
-                        <Text fontFamily={textStyle.fontFamily}
-                              fontSize={textStyle.fontSize}
-                              fontWeight={textStyle.fontWeight}
-                              fontStyle={textStyle.fontStyle}
-                              fill={textStyle.fill}
-                              textAnchor="middle"
-                              x={c.sector.centroid[0]}
-                              y={c.sector.centroid[1]}>{ c.item.name }</Text>
-                      </G>
+                      {c.item[this.props.accessorKey] > 0 && 
+                        <G x={options.margin.left} y={options.margin.top}>
+                          <Text fontFamily={textStyle.fontFamily}
+                                fontSize={textStyle.fontSize}
+                                fontWeight={textStyle.fontWeight}
+                                fontStyle={textStyle.fontStyle}
+                                fill={textStyle.fill}
+                                textAnchor="middle"
+                                x={c.sector.centroid[0]}
+                                y={c.sector.centroid[1]}>{ c.item.name }</Text>
+                        </G>
+                      }
                   </G>
               )
       })

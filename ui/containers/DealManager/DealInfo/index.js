@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, ScrollView, Linking, TouchableHighlight, StyleSheet, ART} from 'react-native'
+import {View, ScrollView, Linking, TouchableHighlight, StyleSheet} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 
@@ -20,11 +20,11 @@ import Border from "~/ui/elements/Border"
 import I18n from '~/ui/I18n'
 import { formatNumber } from "~/ui/shared/utils"
 import ChartLegend from '~/ui/components/ChartLegend'
-const {
-  Group,
-  Shape,
-  Surface,
-} = ART;
+// const {
+//   Group,
+//   Shape,
+//   Surface,
+// } = ART;
 
 @connect(state => ({
     xsession: getSession(state),
@@ -44,7 +44,7 @@ export default class DealInfo extends Component {
       const {getDealUserStatistic, xsession, route} = this.props
       let deal = route.params.deal
       this.setState({dealItem: deal})
-      getDealUserStatistic(xsession, '', from, to)
+      getDealUserStatistic(xsession, deal.dealId, from, to)
     }
 
     _handlePressFilter = (item) => {
@@ -105,14 +105,6 @@ export default class DealInfo extends Component {
       )          
     }
 
-    // ageFemaleLevel1:0
-      // ageFemaleLevel2:41
-      // ageFemaleLevel3:3
-      // ageFemaleLevel4:0
-      // ageMaleLevel1:0
-      // ageMaleLevel2:26
-      // ageMaleLevel3:5
-      // ageMaleLevel4:0
     _generateAgeBar = () => {
       const {statistic} = this.props
       if (statistic.ageFemaleLevel1 == undefined) return false
@@ -251,12 +243,9 @@ export default class DealInfo extends Component {
       ]
       return (
         <View style={styles.chartContainer}>
-          <Text medium bold>{I18n.t('income')}</Text>
+          <Text medium bold>{I18n.t('gender')}</Text>
           <Pie data={genderData} 
-                pallete = {[
-                  {'r':42,'g':131,'b':172},
-                  {'r':147,'g':229,'b':225},
-                ]}
+                pallete = {[ '#2a83ac', '#93e5e1']}
                 options={pieChartConfig} 
                 accessorKey="genderNumber"/>
           <ChartLegend data={legendData} />
@@ -279,7 +268,8 @@ export default class DealInfo extends Component {
       let incomeLevel1Percent = Math.floor(statistic.incomeLevel1/sum*100)
       let incomeLevel2Percent = Math.floor(statistic.incomeLevel2/sum*100)
       let incomeLevel3Percent = 100-incomeLevel1Percent-incomeLevel2Percent
-      let incomeData = [
+      
+      let incomeDataOrigin = [
         {
           "name": I18n.t('incomeLevel1')+"("+incomeLevel1Percent+"%)",
           "incomeNumber": statistic.incomeLevel1
@@ -291,20 +281,45 @@ export default class DealInfo extends Component {
         {
           "name": I18n.t('incomeLevel3')+"("+incomeLevel3Percent+"%)",
           "incomeNumber": statistic.incomeLevel3
-        },
-        
+        }, 
       ]
+      let palleteOrigin = ['#93e5e1', '#2a83ac', '#454545']
+      let incomeData = [], pallete = []
+      
+      /*Handle Zero Case, quite Tricky*/
+      for (let i=0; i<incomeDataOrigin.length; i++){
+        if (incomeDataOrigin[i]['incomeNumber'] > 0){
+          incomeData.push(incomeDataOrigin[i])
+          pallete.push(palleteOrigin[i])
+        }
+      }
+
+
+      let legendData = [
+        {
+          name: I18n.t('incomeLevel1'),
+          color: '#93e5e1'
+        },
+        {
+          name: I18n.t('incomeLevel2'),
+          color: '#2a83ac'
+        },
+        {
+          name: I18n.t('incomeLevel3'),
+          color: '#454545'
+        }
+      ]
+
+      
+          
       return (
         <View style={styles.chartContainer}>
           <Text medium bold>{I18n.t('income')}</Text>
           <Pie data={incomeData} 
-              pallete = {[
-                {'r':42,'g':131,'b':172},
-                {'r':147,'g':229,'b':225},
-                {'r':111,'g':111,'b':111},
-              ]}
+              pallete = {pallete}
               options={pieChartConfig} 
-              accessorKey="incomeNumber"/>    
+              accessorKey="incomeNumber"/>   
+          <ChartLegend data={legendData} /> 
         </View>
       )
     }
@@ -350,15 +365,6 @@ export default class DealInfo extends Component {
           <DateFilter onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
           
           <ScrollView>
-
-            <Surface width={500} height={200}>
-              <Group x={100} y={0}>
-                <Shape
-                  d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
-                  stroke="#000"
-                  strokeWidth={1} />
-              </Group>
-            </Surface>
 
             <View style={{...styles.cardBlock2, ...styles.pb10}}>
               <View style={{...styles.row, ...styles.pd15 }}>
