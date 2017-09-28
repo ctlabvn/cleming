@@ -223,7 +223,8 @@ export default class DealInfo extends Component {
       }
       let malePercent = Math.floor((statistic.maleNumber)/sum*100)
       let femalePercent = 100-malePercent
-      let genderData = [
+
+      let genderDataOrigin = [
         {
           "name": I18n.t('male')+"("+malePercent+"%)",
           "genderNumber": statistic.maleNumber
@@ -233,6 +234,16 @@ export default class DealInfo extends Component {
           "genderNumber": statistic.femaleNumber
         }
       ]
+      let palleteOrigin = [ '#2a83ac', '#93e5e1']
+      let genderData = [], pallete = []
+      /*Handle Zero Case, quite Tricky*/
+      for (let i=0; i<genderDataOrigin.length; i++){
+        if (genderDataOrigin[i]['genderNumber'] > 0){
+          genderData.push(genderDataOrigin[i])
+          pallete.push(palleteOrigin[i])
+        }
+      }
+
       let legendData = [
         {
           name: I18n.t('male'),
@@ -247,7 +258,7 @@ export default class DealInfo extends Component {
         <View style={styles.chartContainer}>
           <Text medium bold>{I18n.t('gender')}</Text>
           <Pie data={genderData} 
-                pallete = {[ '#2a83ac', '#93e5e1']}
+                pallete = {pallete}
                 options={pieChartConfig} 
                 accessorKey="genderNumber"/>
           <ChartLegend data={legendData} />
