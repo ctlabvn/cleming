@@ -78,7 +78,7 @@ export default {
     'page_wallet_detail': 'Chi tiết các thanh toán',
     'page_bank_account': 'Tài khoản ngân hàng',
     'page_setting': 'Cài đặt',
-    'page_cashout_account': 'Tài khoản Cashout',
+    'page_cashout_account': 'Tài khoản Đối tác',
     'cashout': 'Rút tiền',
 
     // Login Screen
@@ -295,7 +295,7 @@ export default {
     'clingme_pay': 'Thanh toán cho Clingme',
 
     // Cashout
-    'cashout_account': 'Tài khoản cashout',
+    'cashout_account': 'Tài khoản Đối tác',
     'all_places': 'Tất cả địa điểm',
 
     // Transaction History
