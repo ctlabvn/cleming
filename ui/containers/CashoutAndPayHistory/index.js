@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Button, Container, Text } from "native-base";
-import { InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Button, Container, Text, List, ListItem} from "native-base";
+import {InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -10,20 +10,25 @@ import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
-import { formatNumber, chainParse } from "~/ui/shared/utils";
+import {formatNumber, chainParse} from "~/ui/shared/utils";
 import Content from "~/ui/components/Content";
-import { getSession } from "~/store/selectors/auth";
+import {getSession} from "~/store/selectors/auth";
 import material from "~/theme/variables/material.js";
 import I18n from '~/ui/I18n'
+import options from './options'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 import Spinner from '~/ui/components/Spinner'
 import {
     TIME_FORMAT_WITHOUT_SECOND
 } from "~/store/constants/app"
+
+const TRANSACTION_PROCESSING = 1;
+const TRANSACTION_DONE = 2;
+
 @connect(state => ({
     xsession: getSession(state),
     cashoutHistory: state.cashoutHistory
-}), { ...commonAction, ...walletAction })
+}), {...commonAction, ...walletAction})
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
@@ -33,7 +38,7 @@ export default class CashoutHistory extends Component {
         const {xsession, getCashoutHistory} = this.props
         this.listview && this.listview.showRefresh(true)
         getCashoutHistory(xsession,
-          (err, data) => this.listview && this.listview.showRefresh(false)
+            (err, data) => this.listview && this.listview.showRefresh(false)
         )
     }
     _onRefresh = () => {
@@ -47,80 +52,102 @@ export default class CashoutHistory extends Component {
         if (!cashoutConfirm) return
         if (cashoutConfirm.pageNumber >= cashoutConfirm.totalPage) return
         this.spinner.show(true)
-        getCashoutHistory(xsession, 2, cashoutConfirm.pageNumber+1,
-          (err, data) => {
-            this.spinner.show(false)
-          }
+        getCashoutHistory(xsession, 2, cashoutConfirm.pageNumber + 1,
+            (err, data) => {
+                this.spinner.show(false)
+            }
         )
     }
 
-    _renderRow = (item) => {
-        const {forwardTo} = this.props
-        switch(item.cashoutStatus){
-            case 0:
-                return (
-                  <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: item.casoutId})}>
-                    <View style={styles.listItem}>
-                        <Text medium gray>{moment(item.cashoutTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                        <View style={styles.row}>
-                            <Text warning>{formatNumber(item.cashoutMoney)}đ</Text>
-                            <Icon name='foward' style={styles.forwardIconWarning}/>
-                        </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                )
-            case 1:
-                return (
-                    <TouchableWithoutFeedback onPress={()=>forwardTo('withdrawDetail', {id: item.casoutId})}>
-                        <View style={styles.listItem}>
-                            <Text medium gray>{moment(item.cashoutTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
-                            <View style={styles.row}>
-                                <Text success>{formatNumber(item.cashoutMoney)}đ</Text>
-                                <Icon name='foward' style={styles.forwardIconSuccess}/>
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                )
-        }
+    _handlePressFilter() {
+        return 0;
     }
 
-    render() {
-        const { forwardTo, cashoutHistory } = this.props
-        if (cashoutHistory && cashoutHistory.cashoutWaiting && cashoutHistory.cashoutConfirm){
-          return (
-              <Container style={styles.container}>
-                  <View style={{...styles.rowCenter, ...styles.borderBottom}}>
-                      <Text large bold success>{formatNumber(cashoutHistory.moneyAmount)}đ</Text>
-                  </View>
-                  <View style={styles.rowLeft}>
-                      <Text medium bold grayDark>Chờ xử lý</Text>
-                  </View>
-                  <Border/>
-                  <ListViewExtend
-                      dataArray={cashoutHistory.cashoutWaiting.listCashout}
-                      renderRow={(item) => this._renderRow(item)}
-                      onItemRef={ref=>this.listview=ref} 
-                      onRefresh={this._onRefresh}
-                      style={{backgroundColor: 'pink'}}
-                  />
-                  <View style={{...styles.rowLeft, ...styles.borderTop}}>
-                      <Text medium bold grayDark>Đã xử lý</Text>
-                  </View>
-                  <Border/>
-                  <ListViewExtend
-                      dataArray={cashoutHistory.cashoutConfirm.listCashout}
-                      renderRow={(item) => this._renderRow(item)}
-                      onEndReached={()=>this._onEndReached()}
-                      onRefresh={this._onRefresh}
-                  />
-                  <Spinner onItemRef={ref=>this.spinner=ref} />
-              </Container>
-            )
-        }else{
-          return (
-            <ActivityIndicator color={material.primaryColor} />
-          )
-        }
+    _handlePressTab() {
+        return 0;
+    }
 
+    _handlePressItem(item) {
+
+    }
+
+    _renderRow(...args) {
+
+        const item = args[0];
+        const index = args[2];
+        const flagProcess = args[args.length -1]
+        let renderBorder = {};
+
+        if (flagProcess == TRANSACTION_PROCESSING) renderBorder = index < this.waitToDoDataLength - 1 ? <Border/> : null;
+        else if (flagProcess == TRANSACTION_DONE) renderBorder = index < this.transactionDoneLength - 1 ? <Border/> : null;
+
+        return (
+            <ListItem
+                noBorder
+                onPress={e => this._handlePressItem(item)}
+                style={styles.listItem}>
+                <View style={{flex: 1}}>
+                    <Text medium grayDark style={{alignSelf: 'flex-start'}}>29/09/17</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7}}>
+                        <Text medium grayDark>Cashout MSB***123</Text>
+                        <View style={{flexDirection: 'row', marginTop: 5}}>
+                            <Text medium bold green>-100.000 đ</Text>
+                            <Icon
+                                name="foward"
+                                style={{fontSize: 20, color: material.green500}}/>
+                        </View>
+                    </View>
+                    {renderBorder}
+                </View>
+            </ListItem>
+        )
+
+    }
+
+
+    render() {
+        const {forwardTo, cashoutHistory} = this.props
+
+
+        // const waitToDoData = [{name: 'mot'}, {name: 'hai'}, {name: 'ba'}, {name: 'bon'}];
+        const waitToDoData = [{name: 'mot'}, {name: 'mot'}];
+        this.waitToDoDataLength = waitToDoData.length;
+        const maxHeight = 150;
+
+        const doneData = [{name: 'mot'}, {name: 'hai'}, {name: 'ba'}, {name: 'bon'}];
+        this.transactionDoneLength = doneData.length;
+
+        return (
+            <Container style={styles.container}>
+                <TabsWithNoti
+                    tabData={options.tabData}
+                    activeTab={1}
+                    onPressTab={() => this._handlePressTab()}
+                    ref='tabs'/>
+                <DateFilter
+                    defaultFilter='day'
+                    onPressFilter={() => this._handlePressFilter()}
+                    ref='dateFilter'/>
+                <View>
+                    <View style={{backgroundColor: material.gray300, padding: 15}}>
+                        <Text strong bold grayDark>Chờ xử lý</Text>
+                    </View>
+                    <List
+                        dataArray={waitToDoData}
+                        style={{maxHeight, margin: 0, padding: 0}}
+                        renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>
+                </View>
+                <View style={{backgroundColor: material.gray300, padding: 15}}>
+                    <Text strong bold grayDark>Đã xử lý</Text>
+                </View>
+                <ListViewExtend
+                    dataArray={doneData}
+                    renderRow={(...args) => this._renderRow(...args, TRANSACTION_DONE)}
+                    onEndReached={() => this._onEndReached()}
+                    onRefresh={this._onRefresh}
+                />
+                <Spinner onItemRef={ref => this.spinner = ref}/>
+            </Container>
+        )
     }
 }
