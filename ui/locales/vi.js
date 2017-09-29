@@ -81,6 +81,7 @@ export default {
     'page_cashout_account': 'Tài khoản Đối tác',
     'page_cashout_detail' : 'Chi tiết rút tiền',
     'page_cashout_and_pay_history': 'Lịch sử giao dịch',
+    'page_pay_detail': 'Chi tiết thanh toán',
     'cashout': 'Rút tiền',
 
     // Login Screen

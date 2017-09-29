@@ -68,7 +68,8 @@ export default class CashoutHistory extends Component {
     }
 
     _handlePressItem(item) {
-
+        const { forwardTo } = this.props;
+        forwardTo('cashoutDetail');
     }
 
     _renderRow(...args) {

@@ -34,6 +34,7 @@ import CashoutAccount from './containers/CashoutAccount'
 import CashoutHistory from './containers/CashoutHistory'
 import CashoutDetail from './containers/CashoutDetail'
 import CashoutAndPayHistory from './containers/CashoutAndPayHistory'
+import PayDetail from './containers/PayDetail'
 import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
 import WithdrawDetail from './containers/WithdrawDetail'
@@ -256,6 +257,12 @@ export default {
     cashoutAndPayHistory: {
         title: I18n.t('page_cashout_and_pay_history'),
         Page: CashoutAndPayHistory,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    payDetail: {
+        title: I18n.t('page_pay_detail'),
+        Page: PayDetail,
         headerType: 'back',
         footerType: 'none',
     },
