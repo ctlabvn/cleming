@@ -15,8 +15,8 @@ export default {
         // },
         //
         // {
-        //     name: 'Phản hồi khách hàng',
-        //     route: 'comingSoon',
+        //     name: 'Animated',
+        //     route: 'animated',
         //     icon: 'post',
         // },
         {

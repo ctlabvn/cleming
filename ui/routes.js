@@ -40,6 +40,7 @@ import DealManager from './containers/DealManager'
 import CreateDeal from './containers/DealManager/CreateDeal'
 import DealInfo from './containers/DealManager/DealInfo'
 import DealDetail from './containers/DealManager/DealDetail'
+import ExperimentAnimate from './containers/ExperimentAnimate'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -276,5 +277,11 @@ export default {
       Page: DealDetail,
       headerType: 'back',
       footerType: 'none',
+    },
+    animated: {
+        title: 'Animated',
+        Page: ExperimentAnimate,
+        headerType: 'back',
+        footerType: 'none',
     }
 }
