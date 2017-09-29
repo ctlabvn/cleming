@@ -12,7 +12,7 @@ export const MODE = getServerMode(VersionNumber.appVersion)
 
 export const API_BASE = (MODE == 'DEV') ? CLINGME_DEV_SERVER : CLINGME_PRODUCT_SERVER
 export const SENDER_ID = '1075989080862'
-export const API_TIMEOUT = 10000
+export const API_TIMEOUT = 30000
 
 
 export const NOTIFY_TYPE = {

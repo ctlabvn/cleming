@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-import { 
-  Item, Input, Text, Label,    
+import {
+  Item, Input, Text, Label,
   View,
 } from 'native-base'
-
+import {TextInput} from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import Switch from '~/ui/elements/Switch'
 
@@ -16,17 +16,17 @@ import CheckBox from '~/ui/elements/CheckBox'
 import styles from './styles'
 
 export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
-  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   return (
-    <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
+    <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
       {addon}
-      <Input   
-        placeholder={label}    
+      <Input
+        placeholder={label}
         {...input}
         placeholderTextColor={material.inputColorPlaceholder}
         {...custom}
-        style={{...styles.input, ...inputStyle}}     
-      />    
+        style={{...styles.input, ...inputStyle}}
+      />
       {iconName && <Icon
         onPress={e=>onIconPress && onIconPress(input, active)}
         style={{...styles.inputIcon, ...iconStyle}}
@@ -37,18 +37,18 @@ export const InputField = ({ input, label, meta: { active, touched, error, warni
 }
 
 export const InputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
-  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   return (
-    <View>
-      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
+    <View style={{...style}}>
+      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
         {addon}
-        <Input   
-          placeholder={label}    
+        <Input
+          placeholder={label}
           {...input}
           placeholderTextColor={material.inputColorPlaceholder}
           {...custom}
-          style={{...styles.input, ...inputStyle}}     
-        />    
+          style={{...styles.input, ...inputStyle}}
+        />
         {iconName && <Icon
           onPress={e=>onIconPress && onIconPress(input, active)}
           style={{...styles.inputIcon, ...iconStyle}}
@@ -56,25 +56,43 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
         />}
       </Item>
       <View>
-        {touched && <Text small error>{error}</Text>}
+        {touched && error && <Text small error>{error}</Text>}
       </View>
     </View>
   )
 }
 
+export const MultiLineInputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, style, inputStyle, placeholder}) => {
+  return (
+    <View style={style}>
+      <TextInput
+        placeholder={placeholder}
+        {...input}
+        placeholderTextColor={material.inputColorPlaceholder}
+        style={{...styles.textInput, ...inputStyle}}
+        numberOfLines={5}
+        multiline={true}
+        underlineColorAndroid={'transparent'}
+      />
+      <View>
+        {touched && error && <Text small error>{error}</Text>}
+      </View>
+    </View>
+  )
+}
 
-export const CheckBoxField = ({ input, label, meta: { touched, error, warning }, style, checkboxStyle, labelStyle, ...custom }) => (  
-  <View style={{...styles.checkboxContainer, ...style}} >      
+export const CheckBoxField = ({ input, label, meta: { touched, error, warning }, style, checkboxStyle, labelStyle, ...custom }) => (
+  <View style={{...styles.checkboxContainer, ...style}} >
     <CheckBox
       color="transparent"
       checked={!!input.value}
-      {...custom}      
-      style={{...styles.checkbox, ...checkboxStyle}}     
+      {...custom}
+      style={{...styles.checkbox, ...checkboxStyle}}
       onPress={e=>input.onChange(!input.value)}
-    />    
+    />
     {label && <Text textSmall={custom.large===undefined} style={{
-      ...styles.label, 
-      fontSize:material.fontSizeBase * (custom.large ? 0.9 : 0.7), 
+      ...styles.label,
+      fontSize:material.fontSizeBase * (custom.large ? 0.9 : 0.7),
       lineHeight: Math.round(material.lineHeight * (custom.large ? 0.7 : 0.6)),
       marginLeft: custom.large ? 20 : 15,
       ...labelStyle
@@ -83,53 +101,66 @@ export const CheckBoxField = ({ input, label, meta: { touched, error, warning },
 )
 
 export const SwitchField = ({ input, meta: { touched, error, warning }, ...custom }) => (
-  <Switch         
+  <Switch
     value={!!input.value}
     width={45}
-    circleColor={material.activeTab}    
+    circleColor={material.activeTab}
     backgroundActive={material.tabBarActiveTextColor}
     backgroundInactive="#898989"
     onSyncPress={input.onChange}
-    {...custom}    
+    {...custom}
   />
 )
 
-export const DateField = ({ input, label, meta: { touched, error, warning }, style, inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
-  <DatePicker    
-    date={input.value}
-    mode="date"
-    placeholder={label}    
-    onDateChange={(date) => input.onChange(date)}
-    customStyles={{
-      dateTouch: {...styles.item, ...style},
-      dateInput: {...styles.input, ...inputStyle},
-      dateIcon: iconStyle,
-    }}
-    format={format}
-    {...custom}    
-  />
+export const DateField = ({ input, label, meta: { active, touched, error, warning }, outerStyle, style,inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
+<View style={{...outerStyle}}>
+  <View style={{...style}}>
+    <DatePicker
+      date={input.value}
+      mode="date"
+      placeholder={label}
+      onDateChange={(date) => input.onChange(date)}
+      customStyles={{
+        dateTouch: {borderBottomWidth: 0, borderBottomColor: 'transparent'},
+        dateInput: {...styles.input, ...inputStyle},
+        dateIcon: iconStyle,
+      }}
+      format={format}
+      {...custom}
+    />
+  </View>
+    <View>
+      {touched && error && <Text small error>{error}</Text>}
+    </View>
+  </View>
 )
 
 export const LockField = ({ input, label, meta: { touched, error, warning }, ...custom }) => (
-  <Toggle    
-    checked={input.value}    
-    title={label} 
+  <Toggle
+    checked={input.value}
+    title={label}
     onToggle={(value) => input.onChange(value)}
-    {...custom}    
+    {...custom}
   />
 )
 
-export const DropdownField = ({ input, label, meta: { touched, error, warning }, onSelected, ...custom }) => (
-  <Dropdown error={touched && !!error}    
-    selected={input.value}    
-    header={label} 
-    onChange={(value) => {
-      onSelected && onSelected(value)
-      input.onChange(value)
-    }}
-    style={styles.item}
-    inputStyle={styles.input}
-    inputIconStyle={styles.inputIcon}
-    {...custom}    
-  />
-)
+export const DropdownField = ({ input, label, meta: { active, touched, error, warning }, onSelected, style, ...custom }) => {
+  return (
+    <View>
+      <Dropdown error={touched && !!error}
+      selected={input.value}
+      header={label}
+      onChange={(value) => {
+        onSelected && onSelected(value)
+        input.onChange(value)
+      }}
+      style={{...styles.item2, ...style}}
+      inputStyle={styles.input}
+      inputIconStyle={styles.inputIcon}
+      {...custom}
+    />
+    <View>
+      {touched && error && <Text small error>{error}</Text>}
+    </View>
+  </View>)
+}

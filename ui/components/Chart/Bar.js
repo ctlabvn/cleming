@@ -75,6 +75,8 @@ export default class BarChart extends Component {
   }
 
   color(i) {
+    let colors = this.props.colors || this.props.options.colors 
+    if (colors) return colors[i]
     let color = this.props.options.color
     if (!_.isString(this.props.options.color)) color = color.color
     const pallete = this.props.pallete || Colors.mix(color || '#9ac7f7')
@@ -115,7 +117,6 @@ export default class BarChart extends Component {
       min: this.props.options.axisY.min || undefined,
       max: this.props.options.axisY.max || undefined,
     })
-
     let values = chart.curves.map((curve) => accessor(curve.item))
     let chartArea = {x: {minValue: 0, maxValue: 200, min: 0, max: options.chartWidth},
                      y: this.getMaxAndMin(values, chart.scale),
@@ -123,15 +124,29 @@ export default class BarChart extends Component {
 
     let textStyle = fontAdapt(options.axisX.label)
     let labelOffset = this.props.options.axisX.label.offset || 20
+    let percentConfig = this.props.options.percent
 
     let lines = chart.curves.map(function (c, i) {
       let numDataGroups = this.props.data.length || 0
       let colorVariationVal = numDataGroups > 1 ? numDataGroups : 3
-      let color = this.color(i % colorVariationVal)
+      let color = this.props.colors ? this.props.colors[i] : this.color(i % colorVariationVal)
       let stroke = Colors.darkenColor(color)
       return (
                 <G key={'lines' + i}>
                     <Path  d={ c.line.path.print() } stroke={stroke} fill={color}/>
+                    {this.props.percent &&
+                      <Text fontFamily={percentConfig.fontFamily}
+                            fontSize={percentConfig.fontSize} 
+                            fontWeight={percentConfig.fontWeight}
+                            fill={percentConfig.fill} 
+                            x={c.line.centroid[0]} 
+                            y={chart.scale(values[i])-20}
+                            originX={c.line.centroid[0]} 
+                            originY={labelOffset + chartArea.y.min}
+                            textAnchor="middle">
+                            {this.props.percent[i]}
+                      </Text>
+                    }
                     {options.axisX.showLabels ?
                         <Text fontFamily={textStyle.fontFamily}
                           fontSize={textStyle.fontSize} fontWeight={textStyle.fontWeight} fontStyle={textStyle.fontStyle}

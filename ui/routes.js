@@ -36,6 +36,11 @@ import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
 import WithdrawDetail from './containers/WithdrawDetail'
 import CheckingHistory from './containers/CheckingHistory'
+import DealManager from './containers/DealManager'
+import CreateDeal from './containers/DealManager/CreateDeal'
+import DealInfo from './containers/DealManager/DealInfo'
+import DealDetail from './containers/DealManager/DealDetail'
+import ExperimentAnimate from './containers/ExperimentAnimate'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -273,6 +278,37 @@ export default {
     checkingHistory: {
         title: I18n.t('checking_history'),
         Page: CheckingHistory,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    dealManager: {
+      title: I18n.t('page_deal_manager'),
+      Page: DealManager,
+      showTopDropdown: true,
+      tabIndex: 1,
+      cache: true,
+    },
+    createDeal: {
+      title: I18n.t('page_create_deal'),
+      Page: CreateDeal,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    dealInfo: {
+      title: I18n.t('page_deal_info'),
+      Page: DealInfo,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    dealDetail: {
+      title: I18n.t('page_deal_detail'),
+      Page: DealDetail,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    animated: {
+        title: 'Animated',
+        Page: ExperimentAnimate,
         headerType: 'back',
         footerType: 'none',
     }
