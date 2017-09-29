@@ -111,11 +111,11 @@ export default class CashoutHistory extends Component {
 
 
         // const waitToDoData = [{name: 'mot'}, {name: 'hai'}, {name: 'ba'}, {name: 'bon'}];
-        const waitToDoData = [{name: 'mot'}, {name: 'mot'}];
+        const waitToDoData = [1,2];
         this.waitToDoDataLength = waitToDoData.length;
         const maxHeight = 150;
 
-        const doneData = [{name: 'mot'}, {name: 'hai'}, {name: 'ba'}, {name: 'bon'}];
+        const doneData = [1,2,3,4,5,6,7,8,9,10];
         this.transactionDoneLength = doneData.length;
 
         return (
