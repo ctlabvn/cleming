@@ -26,6 +26,12 @@ export default class CashoutHistory extends Component {
         super(props)
     }
 
+    _handlePressOK() {
+        const { goBack } = this.props;
+        alert('Yêu cầu đã được gửi đi');
+        goBack();
+    }
+
     render() {
         return (
             <Container style={styles.container}>
@@ -68,7 +74,7 @@ export default class CashoutHistory extends Component {
                     </View>
                 </View>
                 <View style={{flex: 1}}/>
-                <TouchableOpacity style={{margin: 10}}>
+                <TouchableOpacity onPress={()=> this._handlePressOK()} style={{margin: 10}}>
                     <View style={{backgroundColor: material.orange500}}>
                         <Text medium bold white style={{alignSelf: 'center', padding: 10}}>Đồng ý</Text>
                     </View>
