@@ -35,7 +35,7 @@ export default {
 		paddingRight: 45,
 		paddingTop: 5,
 		paddingBottom: 5,
-		margin: 45,
+		marginTop: 45,
 		alignSelf: 'center'
 	},
     payBtn: {
@@ -44,7 +44,7 @@ export default {
         paddingRight: 45,
         paddingTop: 5,
         paddingBottom: 5,
-        margin: 45,
+        marginTop: 45,
         alignSelf: 'center'
     },
 	cashoutIcon: {

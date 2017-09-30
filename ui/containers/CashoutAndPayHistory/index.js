@@ -34,19 +34,19 @@ export default class CashoutHistory extends Component {
         super(props)
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         const {xsession, getCashoutHistory} = this.props
         this.listview && this.listview.showRefresh(true)
         getCashoutHistory(xsession,
             (err, data) => this.listview && this.listview.showRefresh(false)
         )
     }
-    _onRefresh = () => {
+    _onRefresh() {
         const {getCashoutHistory, xsession} = this.props
         getCashoutHistory(xsession)
     }
 
-    _onEndReached = () => {
+    _onEndReached() {
         const {xsession, getCashoutHistory} = this.props
         const {cashoutConfirm} = this.props.cashoutHistory
         if (!cashoutConfirm) return
@@ -145,7 +145,7 @@ export default class CashoutHistory extends Component {
                     dataArray={doneData}
                     renderRow={(...args) => this._renderRow(...args, TRANSACTION_DONE)}
                     onEndReached={() => this._onEndReached()}
-                    onRefresh={this._onRefresh}
+                    onRefresh={() => this._onRefresh()}
                 />
                 <Spinner onItemRef={ref => this.spinner = ref}/>
             </Container>
