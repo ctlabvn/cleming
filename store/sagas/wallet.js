@@ -6,7 +6,7 @@ import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/action
 
 import {
     setBalance, setBanks, setBalanceDetail, setListBank, 
-    setCashoutHistory, setCashoutOverview, setCheckingHistory
+    setCashoutHistory, setCashoutOverview, setCheckingHistory, setGigatumBank
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -148,6 +148,22 @@ const requestCheckingHistory = createRequestSaga({
   ]
 })
 
+
+const requestGetGigatumBank = createRequestSaga({
+    request: api.wallet.getGigatumBank,
+    key: 'payDetail/getGigatumBank',
+    success: [
+        (data) => {
+            console.log('Data: ', data)
+            if (data && data.data){
+                return setGigatumBank(data.data)
+            }
+        }
+    ],
+    failure: [
+    ]
+})
+
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -167,7 +183,8 @@ export default [
             takeLatest('app/getCashoutHistory', requestCashoutHistory),
             takeLatest('app/getCashoutDetail', requestCashoutDetail),
             takeLatest('app/getCashoutOverview', requestCashoutOverview),
-            takeLatest('app/getCheckingHistory', requestCheckingHistory)
+            takeLatest('app/getCheckingHistory', requestCheckingHistory),
+            takeLatest('payDetail/getGigatumBank', requestGetGigatumBank)
         ]
     },
 ]

@@ -82,3 +82,13 @@ export const setCheckingHistory = (data) => ({
   type: 'app/setCheckingHistory',
   payload: data
 })
+
+export const getGigatumBank = (...args) => ({
+    type: 'payDetail/getGigatumBank',
+    args
+})
+
+export const setGigatumBank = (data) => ({
+    type: 'app/setGigatumBank',
+    payload: data
+})

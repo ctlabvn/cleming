@@ -20,6 +20,7 @@ import {
 } from "~/store/constants/app"
 @connect(state => ({
     xsession: getSession(state),
+    detail: state.payDetail
 }), {...commonAction, ...walletAction})
 export default class CashoutHistory extends Component {
     constructor(props) {
@@ -32,12 +33,19 @@ export default class CashoutHistory extends Component {
         goBack();
     }
 
+    componentDidMount() {
+        const {xsession, getGigatumBank} = this.props;
+        getGigatumBank(xsession);
+    }
+
     render() {
+        const { gigatumBankId, companyName, bankName, branchName, accountNumber, fullName, phoneNumber } = this.props.detail;
+
         return (
             <Container style={styles.container}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 15}}>
                     <Text medium bold grayDark>Số tiền thanh toán cho Clingme</Text>
-                    <Text medium bold orange>1.000.000 đ</Text>
+                    <Text medium bold orange>000.000.000 đ</Text>
                 </View>
 
                 <Border style={{marginHorizontal: 15}}/>
@@ -45,32 +53,32 @@ export default class CashoutHistory extends Component {
 
                 <View style={styles.detailContainer}>
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Công ty cổ phần Gigatum Việt Nam</Text>
+                        <Text medium grayDark>{companyName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
                         <Text medium grayDark>Ngân hàng</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>Vietcombank</Text>
+                        <Text medium bold grayDark style={styles.rowSubDetail}>{bankName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
                         <Text medium grayDark>Chi nhánh</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>Hoàng Quốc Việt</Text>
+                        <Text medium bold grayDark style={styles.rowSubDetail}>{branchName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
                         <Text medium grayDark>Số tài khoản</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>0000 0000 000 0000</Text>
+                        <Text medium bold grayDark style={styles.rowSubDetail}>{accountNumber}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
                         <Text medium grayDark>Họ tên</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>Nguyễn Văn A</Text>
+                        <Text medium bold grayDark style={styles.rowSubDetail}>{fullName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
                         <Text medium grayDark>Số điện thoại</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>0969 6969 69</Text>
+                        <Text medium bold grayDark style={styles.rowSubDetail}>{phoneNumber}</Text>
                     </View>
                 </View>
                 <View style={{flex: 1}}/>

@@ -44,8 +44,12 @@ export default {
     getCheckingHistory(xsession, option=0, pageNumber=1){
         console.log('Call API Get List Check', xsession+'---'+option+'---'+pageNumber)
         return apiGet('/merchantapp/list-check', {option, pageNumber}, xsession)
+    },
+    getGigatumBank(xsession) {
+        console.log('Call API get gigatum bank', xsession);
+        return apiGet('/merchantapp/gigatum-bank', {}, xsession);
+        // return apiGet('/merchantapp/banks', {}, xsession);
     }
-
 
 
 }

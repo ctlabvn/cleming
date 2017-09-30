@@ -64,6 +64,15 @@ export const wallet_detail = (state = initialWalletDetail, { type, payload }) =>
   }
 }
 
+  export const payDetail = (state = [], {type, payload}) => {
+    switch (type) {
+        case 'app/setGigatumBank':
+          return {...state, ...payload}
+        default:
+          return state
+    }
+}
+
   export const cashoutHistory = (state=initialWalletDetail, {type, payload}) => {
     switch (type) {
       case 'app/setCashoutHistory':
