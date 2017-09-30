@@ -7,14 +7,16 @@ const initBank = []
 export const wallet = (state = initialWallet, { type, payload }) => {
   switch (type) {
     case 'app/setBalance':
-        console.log('Set balance Paylaoad: ', payload)
+        console.log('Set balance Payload: ', payload)
         return {
           ...state,
-          moneyAmount: payload.moneyAmount,
-          pageNumber: payload.pageNumber,
-          totalPage: payload.totalPage,
-          totalRecord: payload.totalRecord,
-          listRevenueItem: payload.pageNumber == 1 ? payload.listRevenueItem : [...state.listRevenueItem, ...payload.listRevenueItem]
+          // moneyAmount: payload.moneyAmount,
+          cashoutMoney: payload.cashoutMoney,
+          balanceMoney: payload.balanceMoney,
+          // pageNumber: payload.pageNumber,
+          // totalPage: payload.totalPage,
+          // totalRecord: payload.totalRecord,
+          // listRevenueItem: payload.pageNumber == 1 ? payload.listRevenueItem : [...state.listRevenueItem, ...payload.listRevenueItem]
         }
     case 'app/setBanks':
         return {...state, bank: payload}

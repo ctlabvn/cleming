@@ -21,14 +21,14 @@ const requestGetBalance = createRequestSaga({
     key: 'app/getBalance',
     success: [
         (data) => {
-            console.log('Balance: ', data)
+            console.log('Panda Balance: ', data)
             if (data.data){
                 return setBalance(data.data)
             }
-            return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
         }
     ],
     failure: [
+        (data) => {return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')},
     ]
 })
 

@@ -5,7 +5,7 @@ import {InteractionManager, View, TouchableOpacity} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
-import {getCashoutOverview} from "~/store/actions/wallet";
+import {getBalance} from "~/store/actions/wallet";
 import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
@@ -19,8 +19,9 @@ import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
-    cashoutOverview: state.cashoutOverview
-}), {...commonAction, getCashoutOverview})
+    cashoutOverview: state.cashoutOverview,
+    balanceMoney: state.wallet.balanceMoney
+}), {...commonAction, getBalance})
 export default class extends Component {
     constructor(props) {
         super(props)
@@ -30,14 +31,12 @@ export default class extends Component {
     }
 
     componentDidMount = () => {
-        const {getCashoutOverview, xsession} = this.props
-        getCashoutOverview(xsession)
+        const {getBalance, xsession} = this.props
+        getBalance(xsession)
     }
 
     render() {
-        const {forwardTo, cashoutOverview} = this.props
-
-        const { balanceMoney } = cashoutOverview
+        const {forwardTo, balanceMoney} = this.props
 
         return (
             <Container style={styles.container}>

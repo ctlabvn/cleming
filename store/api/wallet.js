@@ -4,7 +4,7 @@ export default {
     // ?placeId=3108&fromTime=1494257316&toTime=1494257316&option=1&pageNumber=1
     balance(xsession, fromTime, toTime, pageNumber=1) {
         console.log('API Blance: ', xsession+'---'+fromTime+'---'+toTime+'---'+pageNumber)
-        return apiGet('/merchantapp/balance', {fromTime, toTime, pageNumber}, xsession)
+        return apiGet('/merchantapp/balance', {}, xsession)
     },
 
     balanceDetail(xsession, fromTime, toTime, option=1, pageNumber=1){
