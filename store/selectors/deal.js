@@ -34,3 +34,8 @@ export const dealReloadSelector = (state) => {
   if (!state || !state.deal || !state.deal.reload) return false
   return state.deal.reload
 }
+
+export const transactionNumberSelector = (state) => {
+  if (!state || !state.deal || !state.deal.transactionNumber) return 0
+  return state.deal.transactionNumber
+}

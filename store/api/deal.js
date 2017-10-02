@@ -46,5 +46,11 @@ export default {
   getSingleDealStatistic(session, dealId, fromTime, toTime){
     console.log('Get Single Deal Statistic API', session+'---'+dealId+'---'+fromTime+'---'+toTime)
     return apiGet('/merchantapp/deal-statistic', {dealId, fromTime, toTime}, session)
+  },
+
+  getTransactionNumber(session, placeId, fromTime, toTime){
+    console.log('Get transactionNumber API', session+'---'+placeId+'---'+fromTime+'---'+toTime)
+    if (!placeId || placeId <= 0) return apiGet('/merchantapp/tran-list', {fromTime, toTime}, session)
+    else return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime}, session)
   }
 }

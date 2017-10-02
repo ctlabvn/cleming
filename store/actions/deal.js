@@ -62,3 +62,13 @@ export const markReloadDealManager = (payload) => ({
   type: 'deal/markReloadDealManager',
   payload
 })
+
+export const getTransactionNumber = (...args) => ({
+  type: 'deal/getTransactionNumber',
+  args
+})
+
+export const setTransactionNumber = (payload) => ({
+  type: 'deal/setTransactionNumber',
+  payload
+})

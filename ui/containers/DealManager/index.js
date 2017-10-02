@@ -5,7 +5,7 @@ import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
-import {getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager} from '~/store/actions/deal'
+import {getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
@@ -14,7 +14,7 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {listDealSelector, dateFilterSelector, viewOverviewSelector, dealReloadSelector} from '~/store/selectors/deal'
+import {listDealSelector, dateFilterSelector, viewOverviewSelector, dealReloadSelector, transactionNumberSelector} from '~/store/selectors/deal'
 import {getListPlace} from '~/store/selectors/place'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
@@ -23,8 +23,9 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     viewOverview: viewOverviewSelector(state),
     currentDateFilter: dateFilterSelector(state),
     listPlace: getListPlace(state),
-    reload: dealReloadSelector(state)
-}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager})
+    reload: dealReloadSelector(state),
+    transactionNumber: transactionNumberSelector(state)
+}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -78,7 +79,7 @@ export default class DealManager extends Component {
     }
 
     _load = (placeId, from, to, refreshing=false)=>{
-      const {xsession, getListDeal, getDealStatistic} = this.props
+      const {xsession, getListDeal, getDealStatistic, getTransactionNumber} = this.props
       refreshing && this.setState({refreshing: true})
       getListDeal(xsession, placeId, from, to)
       getDealStatistic(xsession, '', placeId, from, to,
@@ -86,6 +87,7 @@ export default class DealManager extends Component {
           refreshing && this.setState({refreshing: false})
         }
       )
+      getTransactionNumber(xsession, placeId, from, to)
     }
 
     _onRefresh = () => {
@@ -137,7 +139,7 @@ export default class DealManager extends Component {
     }
 
     render() {
-        const {forwardTo, currentDateFilter, viewOverview} = this.props
+        const {forwardTo, currentDateFilter, viewOverview, transactionNumber} = this.props
         return (
           <Container style={styles.bgWhite}>
             <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
@@ -190,7 +192,7 @@ export default class DealManager extends Component {
                 <View style={{...styles.row, ...styles.pd10, ...styles.cardBlock}}>
                     <Text>{I18n.t('transaction')}</Text>
                     <View style={styles.inline}>
-                      <Text>87</Text>
+                      <Text>{transactionNumber>0?transactionNumber: ''}</Text>
                       <Icon name='foward' style={styles.icon} />
                     </View>
                 </View>
