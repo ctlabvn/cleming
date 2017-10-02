@@ -41,20 +41,20 @@ export default class extends Component {
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>
-                    <Icon name='account' style={{fontSize: 65, margin: 30, color: material.gray400}}/>
-                    <View style={{justifyContent: 'center', flex: 1}}>
-                        <Text medium grayDark bold style={{marginBottom: 10}}>{I18n.t('balance_money')}</Text>
+                    <Icon name='account' style={styles.iconAccount}/>
+                    <View style={styles.balanceMoneyContainer}>
+                        <Text medium grayDark bold style={styles.balanceMoneyLabel}>{I18n.t('balance_money')}</Text>
                         <Text largeLight orange bold>{formatNumber(balanceMoney)}đ</Text>
                     </View>
                 </View>
                 <Border/>
-                <View style={{margin: 15}}>
-                    <Text medium bold grayDark italic style={{marginBottom: 10}}>{I18n.t('detail')}</Text>
-                    <View style={{...styles.row, marginBottom: 10, marginLeft: 5}}>
+                <View style={styles.detailContainer}>
+                    <Text medium bold grayDark italic style={styles.detailLabel}>{I18n.t('detail')}</Text>
+                    <View style={{...styles.row, ...styles.detailContentContainer}}>
                         <Text medium grayDark>Số dư kỳ trước</Text>
                         <Text medium grayDark bold>+ 500.000 đ</Text>
                     </View>
-                    <View style={{...styles.row, marginBottom: 10, marginLeft: 5}}>
+                    <View style={{...styles.row, ...styles.detailContentContainer}}>
                         <Text medium grayDark>Thanh toán kỳ đối soát T8/17</Text>
                         <Text medium grayDark bold>- 1.500.000 đ</Text>
                     </View>
@@ -65,14 +65,14 @@ export default class extends Component {
                         <View><Text white medium bold>{I18n.t('pay')}</Text></View>
                     </Button>
                 </View>
-                <View style={{flex: 1}}/>
+                <View style={styles.paddingView}/>
                 <TouchableOpacity
                     onPress={() => forwardTo('cashoutAndPayHistory')}
-                    style={{...styles.row, backgroundColor: material.gray200, padding: 13, margin: 7, marginBottom: 50, borderRadius: 5}}>
+                    style={{...styles.row, ...styles.transactionHistoryBtn}}>
                     <Text medium grayDark bold italic>
                         {I18n.t('transaction_history')}
                     </Text>
-                    <Icon name='foward' style={{fontSize: 24, color: material.gray600}}/>
+                    <Icon name='foward' style={styles.iconFoward}/>
                 </TouchableOpacity>
             </Container>
         )
