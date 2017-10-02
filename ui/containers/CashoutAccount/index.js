@@ -43,13 +43,13 @@ export default class extends Component {
                 <View style={styles.rowNormal}>
                     <Icon name='account' style={{fontSize: 65, margin: 30, color: material.gray400}}/>
                     <View style={{justifyContent: 'center', flex: 1}}>
-                        <Text medium grayDark bold style={{marginBottom: 10}}>Số dư hiện tại</Text>
+                        <Text medium grayDark bold style={{marginBottom: 10}}>{I18n.t('balance_money')}</Text>
                         <Text largeLight orange bold>{formatNumber(balanceMoney)}đ</Text>
                     </View>
                 </View>
                 <Border/>
                 <View style={{margin: 15}}>
-                    <Text medium bold grayDark italic style={{marginBottom: 10}}>Chi tiết</Text>
+                    <Text medium bold grayDark italic style={{marginBottom: 10}}>{I18n.t('detail')}</Text>
                     <View style={{...styles.row, marginBottom: 10, marginLeft: 5}}>
                         <Text medium grayDark>Số dư kỳ trước</Text>
                         <Text medium grayDark bold>+ 500.000 đ</Text>
@@ -59,10 +59,10 @@ export default class extends Component {
                         <Text medium grayDark bold>- 1.500.000 đ</Text>
                     </View>
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
-                        <View><Text white medium bold>Rút tiền</Text></View>
+                        <View><Text white medium bold>{I18n.t('cashout')}</Text></View>
                     </Button>
                     <Button style={styles.payBtn} onPress={() => forwardTo('payDetail')}>
-                        <View><Text white medium bold>Thanh toán</Text></View>
+                        <View><Text white medium bold>{I18n.t('pay')}</Text></View>
                     </Button>
                 </View>
                 <View style={{flex: 1}}/>
@@ -70,7 +70,7 @@ export default class extends Component {
                     onPress={() => forwardTo('cashoutAndPayHistory')}
                     style={{...styles.row, backgroundColor: material.gray200, padding: 13, margin: 7, marginBottom: 50, borderRadius: 5}}>
                     <Text medium grayDark bold italic>
-                        Lịch sử giao dịch
+                        {I18n.t('transaction_history')}
                     </Text>
                     <Icon name='foward' style={{fontSize: 24, color: material.gray600}}/>
                 </TouchableOpacity>

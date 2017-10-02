@@ -273,6 +273,9 @@ export default {
     'receive_time': 'Thời gian nhận tiền',
     'not_checking_yet': 'Chờ đối soát',
     'checked': 'Đã đối soát',
+    'balance_money': 'Số dư hiện tại',
+    'pay': 'Thanh toán',
+
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
