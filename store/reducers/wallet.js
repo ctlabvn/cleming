@@ -15,6 +15,7 @@ export const wallet = (state = initialWallet, { type, payload }) => {
           balanceMoney: payload.balanceMoney,
           compareCheckMoney: payload.compareCheckMoney,
           preBalance: payload.preBalance,
+          compareCheckName: payload.compareCheckName,
           // pageNumber: payload.pageNumber,
           // totalPage: payload.totalPage,
           // totalRecord: payload.totalRecord,

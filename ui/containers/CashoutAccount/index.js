@@ -37,7 +37,7 @@ export default class extends Component {
     }
 
     render() {
-        const {forwardTo, balanceMoney, preBalance, compareCheckMoney} = this.props
+        const {forwardTo, balanceMoney, preBalance, compareCheckMoney, compareCheckName} = this.props
         
         return (
             <Container style={styles.container}>
@@ -57,7 +57,7 @@ export default class extends Component {
                         <Text medium grayDark bold>{formatNumber(preBalance)} đ</Text>
                     </View>
                     <View style={{...styles.row, ...styles.detailContentContainer}}>
-                        <Text medium grayDark>Thanh toán kỳ đối soát</Text>
+                        <Text medium grayDark>Thanh toán kỳ đối soát {compareCheckName}</Text>
                         <Text medium grayDark bold>{formatNumber(compareCheckMoney)} đ</Text>
                     </View>
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
