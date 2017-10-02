@@ -71,6 +71,21 @@ export default class DealPreviewPopup extends Component {
       const {forwardTo, route} = this.props
       const {data} = this.state
       if (!data) return false
+      let discountBlock
+      if (data.leftPromo){
+        discountBlock = <View style={{...styles.row, ...styles.pd15}}>
+          <View style={{...styles.halfRowItem}}>
+            <Text large gray>{this._capitalize(data.leftPromo)}</Text>
+          </View>
+          <View style={{...styles.halfRowItem}}>
+            <Text large warning bold>{data.promoTitle}</Text>
+          </View>
+        </View>
+      }else{
+        discountBlock = <View style={{...styles.rowCenter, ...styles.pd15}}>
+            <Text large warning bold style={{textAlign: 'center'}}>{data.promoTitle}</Text>
+        </View>
+      }
       return (
         <Modal 
             animationType={"none"}
@@ -93,6 +108,7 @@ export default class DealPreviewPopup extends Component {
             </View>
             <ImageSlider data={this._renderImages(data)}/>
             <Text></Text>
+            {discountBlock}
             <ScrollView>
               <View style={{...styles.pd10}}>
                 <Text bold medium>{data.dealTitle}</Text>
@@ -102,14 +118,7 @@ export default class DealPreviewPopup extends Component {
                   <Text medium bold> {moment(data.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
                   <Text warning>{this._renderToDateStatus(data.toDate)}</Text>
                 </Text>
-                <View style={{...styles.row, ...styles.pd15}}>
-                  <View style={{...styles.halfRowItem}}>
-                    <Text large gray>{this._capitalize(data.leftPromo) || 'Tặng'}</Text>
-                  </View>
-                  <View style={{...styles.halfRowItem}}>
-                    <Text large warning bold>{data.promoTitle}</Text>
-                  </View>
-                </View>
+                
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>

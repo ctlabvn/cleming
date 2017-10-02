@@ -34,7 +34,7 @@ export default {
   dateInputHalfOuter: {
     width: half+'%',
     marginBottom: mb,
-    height: 40
+    height: 35
   },
   halfRow: {
     width: half+'%'
@@ -48,10 +48,16 @@ export default {
     alignItems: 'center',
     width: '100%'
   },
+  rowCenter: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
+  },
   rowFull: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start'
+    // alignItems: 'flex-start'
   },
   label: {
     color: material.gray500

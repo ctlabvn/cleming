@@ -63,7 +63,7 @@ export default class Dropdown extends Component {
         )
       }
       return (<TouchableWithoutFeedback onPress={()=>this._openModal()}>
-        <View style={{height: 40, padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{height: 35, padding: 10, flexDirection: 'row', alignItems: 'center'}}>
           <Text>{this._getLabel(this.state.value)}</Text>
           <Modal
               animationType={"none"}

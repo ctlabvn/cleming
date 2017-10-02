@@ -161,9 +161,6 @@ export default class CreateDeal extends Component {
       let from = moment(fromDate, "MM/DD/YYYY").startOf('day').unix()
       let to = moment(toDate, "MM/DD/YYYY").endOf('day').unix()
       let coverPicture = this.dealImageSelector.getCover()
-      if (coverPicture.indexOf('http')==-1){
-        coverPicture = {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))}
-      }
       if (!coverPicture || coverPicture == ''){
         setToast(getToastMessage(I18n.t('err_need_at_least_one_image')), 'info', null, null, 3000, 'top')
         return
@@ -174,6 +171,10 @@ export default class CreateDeal extends Component {
         return
       }
 
+      if (coverPicture.indexOf('http')==-1){
+        coverPicture = {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))}
+      }
+      console.log('Place ID List', placeIdList)
       let imageList = this.dealImageSelector.getImageList()
       imageFiles = imageList.filter(item=>item.path.indexOf('http')==-1)
                               .map(item=>({uri: item.path, name: 'detail_files[]', filename: item.path, type: 'image/jpg'}))
@@ -197,7 +198,7 @@ export default class CreateDeal extends Component {
 
     _renderPromoteBlock = () => {
       return (
-        <View style={{...styles.rowFull, ...styles.mb20}}>
+        <View style={{...styles.rowFull}}>
           <Field autoCapitalize="none" name="leftPromo"
               icon={(input, active) => input.value && active ? 'close' : false}
               iconStyle={{ color: material.gray500 }}
@@ -232,10 +233,12 @@ export default class CreateDeal extends Component {
             <DealPreviewPopup ref={ref=>this.dealPreview=ref} onOk={this.onConfirm}/>
             <Content style={styles.container}>
               <Form>
-                <Text style={styles.label}>{I18n.t('deal_image')}</Text>
-                <DealImageSelector ref={ref=>this.dealImageSelector=ref}
-                  mode='prefill'
-                />
+                <View style={{...styles.mb20}}>
+                  <Text style={styles.label}>{I18n.t('deal_image')}</Text>
+                  <DealImageSelector ref={ref=>this.dealImageSelector=ref}
+                    mode='prefill'
+                  />
+                </View>
                 <Text style={styles.label}>{I18n.t('title')}</Text>
                 <Field autoCapitalize="none" name="dealTitle"
                     icon={(input, active) => input.value && active ? 'close' : false}
@@ -308,7 +311,7 @@ export default class CreateDeal extends Component {
               </Form>
             </Content>
             <Button style={styles.bottomButton} onPress={handleSubmit(this._onOk)}>
-              <Text white>OK</Text>
+              <Text white>{I18n.t('preview')}</Text>
             </Button>
           </Container>
         )

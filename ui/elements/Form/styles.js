@@ -26,7 +26,7 @@ export default {
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    height: (Platform.OS === 'ios' ? 40 : 'auto'),
+    height: (Platform.OS === 'ios' ? 35 : 'auto'),
     backgroundColor: 'white',
     borderColor: material.gray500,
     borderRadius: 3,

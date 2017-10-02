@@ -63,17 +63,15 @@ export default class PlaceSelector extends Component {
     }
 
     _onPressItem = (item) => {
-      // if (this.state.selected.indexOf(item.placeId) == -1){
-      //   let clone = [...this.state.selected]
-      //   clone.push(item.placeId)
-      //   this.setState({selected: clone})
-      // }
-      if (!this.selectedMap[item.placeId]){
-        this.selectedMap[item.placeId] = 1
+        this.selectedMap[item.placeId] = (!this.selectedMap[item.placeId]) ? 1:0
         let clone = [...this.state.selected]
-        clone.push(item.placeId)
+        let index = clone.findIndex(idx=>idx==item.placeId)
+        if (index == -1){
+          clone.push(item.placeId)
+        }else{
+          clone.splice(index, 1)
+        }
         this.setState({selected: clone})
-      }
     }
 
     renderRow = (item) => {

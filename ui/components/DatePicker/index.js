@@ -283,7 +283,7 @@ class DatePicker extends Component {
           placeholderTextColor={material.inputColorPlaceholder}
           style={{...styles.dateInputStyle, ...dateInputStyle}} value={this.getDateStr()} />
           {icon && <Icon
-            style={{...styles.dateIcon, ...customStyles.dateIcon}}
+            style={{fontSize: 18, ...styles.dateIcon, ...customStyles.dateIcon}}
             name={icon}
           />}
           {Platform.OS === 'ios' && <Modal

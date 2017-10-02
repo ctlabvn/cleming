@@ -182,28 +182,30 @@ export default class DealImageSelector extends Component {
               visible={this.state.modalVisible}
               onRequestClose={() => this._close()}
           >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <View style={styles.modalHeader}>
-                  <Text white bold medium>{I18n.t('info')}</Text>
+            <TouchableWithoutFeedback onPress={()=>this._close()}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <View style={styles.modalHeader}>
+                    <Text white bold medium>{I18n.t('info')}</Text>
+                  </View>
+                  <TouchableWithoutFeedback onPress={this._openCamera}>
+                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                      <Text>{I18n.t('take_picture')}</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPress={this._handleMultiplePicker}>
+                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                      <Text>{I18n.t('choose_from_galery')}</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPress={this._close}>
+                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                      <Text>{I18n.t('close')}</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
                 </View>
-                <TouchableWithoutFeedback onPress={this._openCamera}>
-                  <View style={{...styles.modalRow, ...styles.borderBottom}}>
-                    <Text>{I18n.t('take_picture')}</Text>
-                  </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={this._handleMultiplePicker}>
-                  <View style={{...styles.modalRow, ...styles.borderBottom}}>
-                    <Text>{I18n.t('choose_from_galery')}</Text>
-                  </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={this._close}>
-                  <View style={{...styles.modalRow, ...styles.borderBottom}}>
-                    <Text>{I18n.t('close')}</Text>
-                  </View>
-                </TouchableWithoutFeedback>
               </View>
-            </View>
+            </TouchableWithoutFeedback>
           </Modal>
           <View style={styles.imageContainer}>
             <ScrollView horizontal={true} ref={ref=>this.scrollView=ref}>
