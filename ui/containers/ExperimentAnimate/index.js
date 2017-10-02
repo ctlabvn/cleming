@@ -1,11 +1,28 @@
 import React, {Component} from 'react'
 import {
     Text,
+    TextInput,
     View,
     Animated,
-    Button
+    Button,
+    TouchableWithoutFeedback,
+    TouchableNativeFeedback,
+    TouchableHighlight,
+    Image, 
+    Dimensions,
+    ScrollView,
+    ART
 } from 'react-native'
-
+import Icon from "~/ui/elements/Icon"
+const {Shape, LinearGradient} = ART
+var linearGradient = new LinearGradient({
+    '.1': 'blue', // blue in 1% position
+    '1': 'rgba(255, 255, 255, 0)' // opacity white in 100% position
+    },
+    "0", "0", "0", "400"
+  )
+  
+const {height, width} = Dimensions.get('window')
 export default class ExperimentAnimate extends Component {
 
     constructor(props){
@@ -21,6 +38,16 @@ export default class ExperimentAnimate extends Component {
             height1: new Animated.Value(0),
             height2: new Animated.Value(0),
             height3: new Animated.Value(0),
+            inputWidth: new Animated.Value(0),
+            inputWidth1: 0,
+            leftBlockWidth: new Animated.Value(0),
+            placeholder: 'Search',
+            labelOpacity: new Animated.Value(0),
+            labelTop: new Animated.Value(20),
+            showMask: false,
+            scale: new Animated.Value(0),
+            scaleImage: new Animated.Value(1),
+            scaleImage1: new Animated.Value(1),
         }
     }
 
@@ -58,6 +85,35 @@ export default class ExperimentAnimate extends Component {
             }),
         ]).start();
     }
+    onPressSearch = () => {
+        console.log('Animated Search')
+        Animated.spring(this.state.inputWidth, {
+            toValue: 250,
+        }).start()
+        this.setState({inputWidth1: 250})
+    }
+    onFocus= ()=>{
+        this.setState({placeholder: ''},
+            ()=>{
+                Animated.parallel([
+                    Animated.spring(this.state.labelOpacity, {
+                        toValue: 1,
+                    }),
+                    Animated.spring(this.state.labelTop, {
+                        toValue: 0,
+                    })
+                ]).start()
+               
+            }
+        )
+        
+    }
+    onBlur = (text)=>{
+        console.log('Text', text)
+        Animated.spring(this.state.leftBlockWidth, {
+            toValue: 0,
+        }).start()
+    }
     componentDidMount() {
         Animated.parallel([
             Animated.spring(this.state.height, {
@@ -77,80 +133,470 @@ export default class ExperimentAnimate extends Component {
                 duration: 5000,
             }),
         ]).start();
+    }
 
-        // Animated.parallel([
-        //     Animated.timing(this.state.scale1, {
-        //         toValue: 1,
-        //         duration: 500,
-        //         useNativeDriver: true, // <-- Add this
-        //     }),
-        //     Animated.timing(this.state.scale2, {
-        //         toValue: 1,
-        //         duration: 500,
-        //         useNativeDriver: true, // <-- Add this
-        //     }),
-        //     Animated.timing(this.state.scale3, {
-        //         toValue: 1,
-        //         duration: 500,
-        //         useNativeDriver: true, // <-- Add this
-        //     }),
-        //     Animated.timing(this.state.scale4, {
-        //         toValue: 1,
-        //         duration: 500,
-        //         useNativeDriver: true, // <-- Add this
-        //     })
-        // ]).start();
+    onPressMask = () => {
+        if (!this.state.showMask){
+            this.setState({showMask: !this.state.showMask},
+                () => {
+                    // Animated.sequence([
+                        Animated.spring(this.state.scale, {
+                            toValue: 1,
+                            useNativeDriver: true, // <-- Add this
+                        }).start()
+                        Animated.spring(this.state.scale1, {
+                            toValue: 1,
+                            useNativeDriver: true, // <-- Add this
+                        }).start()
+                        Animated.spring(this.state.scale2, {
+                            toValue: 1,
+                            useNativeDriver: true, // <-- Add this
+                        }).start()
+                        Animated.spring(this.state.scale3, {
+                            toValue: 1,
+                            useNativeDriver: true, // <-- Add this
+                        }).start()
+                    // ]).start()
+                }
+            )
+        }else{
+            Animated.sequence([
+                Animated.spring(this.state.scale, {
+                    toValue: 1,
+                    useNativeDriver: true, // <-- Add this
+                }),
+                Animated.spring(this.state.scale1, {
+                    toValue: 1,
+                    useNativeDriver: true, // <-- Add this
+                }),
+                Animated.spring(this.state.scale2, {
+                    toValue: 1,
+                    useNativeDriver: true, // <-- Add this
+                }),
+                Animated.spring(this.state.scale3, {
+                    toValue: 1,
+                    useNativeDriver: true, // <-- Add this
+                })
+            ]).start()
+            this.setState({showMask: !this.state.showMask})
+        }
+        
     }
 
     render() {
         return (
-            <View>
-                <View style={{marginTop: 50, marginLeft: 20, flexDirection: 'row', alignItems: 'flex-end',
-                    width: 300, height: 200, backgroundColor: 'yellow'
-                }}>
-                    {/* <Animated.View 
-                        style={{
-                            height: 50, width: 50, backgroundColor: 'red', marginRight: 10,
-                            position: 'absolute', bottom: 0, left: 0,
-                            transform: [{
-                                scaleY: this.state.scale1.interpolate({
-                                    inputRange: [0, 0.5, 1],
-                                    outputRange: [0, 0.5, 1]
-                                }),
-                            }],
-                        }}
-                    />
+            <ScrollView style={{flex: 1}}>
+                <Image 
+                    source={{uri: 'https://myfreetime.files.wordpress.com/2008/12/bha46487sunset.jpg'}} 
+                    style={{
+                        width, height,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        opacity: 0.7
+                    }}
                     
+                />
+                <TouchableNativeFeedback>
+                    <View style={{height: 100, backgroundColor: 'rgba(81, 45, 168, 0.7)'}}>
+                        <Text style={{fontSize: 26, color: 'white', fontWeight: 'bold', margin: 10}}>Category 1</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback>
+                    <View style={{height: 100, backgroundColor: 'rgba(123, 31, 162, 0.7)'}}>
+                        <Text style={{fontSize: 26, color: 'white', fontWeight: 'bold', margin: 10}}>Category 2</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback>
+                    <View style={{height: 100, backgroundColor: 'rgba(30, 136, 229, 0.7)'}}>
+                        <Text style={{fontSize: 26, color: 'white', fontWeight: 'bold', margin: 10}}>Category 3</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback>
+                    <View style={{height: 100, backgroundColor: 'rgba(0, 121, 107, 0.7)'}}>
+                        <Text style={{fontSize: 26, color: 'white', fontWeight: 'bold', margin: 10}}>Category 4</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                <TouchableNativeFeedback>
+                    <View style={{height: 100, backgroundColor: 'rgba(244, 81, 30, 0.7)'}}>
+                        <Text style={{fontSize: 26, color: 'white', fontWeight: 'bold', margin: 10}}>Category 5</Text>
+                    </View>
+                </TouchableNativeFeedback>
+                {/* <Shape fill={linearGradient} /> */}
+                <TouchableWithoutFeedback>
                     <Animated.View 
                         style={{
-                            height: 150, width: 50, backgroundColor: 'red',
-                            position: 'absolute', left: 60,
+                            width: 150,
+                            height: 150,
+                            borderRadius: 75,
+                            borderWidth: 10,
+                            borderColor: 'rgba(252, 176, 0, 0.4)',
+                            backgroundColor: 'black',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            elevation: 12
+                        }}
+                    >
+                        <Animated.Text
+                            style={{
+                                fontSize: 24,
+                                fontWeight: 'bold',
+                                color: 'white'
+                            }}
+                        >Start</Animated.Text>
+                    </Animated.View>
+                </TouchableWithoutFeedback>
+                
+                <ScrollView horizontal={true}
+                            style={{flex: 1}}
+                >
+                    {/* <View style={{flexDirection: 'row'}}> */}
+                    <TouchableNativeFeedback onPress={()=>{
+                            Animated.spring(this.state.scaleImage, {
+                                toValue: 1.2
+                            }).start()
+                        }}>
+                        <Animated.View style={{
+                            margin: 20, width: 200,
                             transform: [{
-                                scaleY: this.state.scale2.interpolate({
+                                scale: this.state.scaleImage.interpolate({
                                     inputRange: [0, 1],
-                                    outputRange: [0, 1],
-                                    extrapolate: 'extend',
+                                    outputRange: [0, 1]
                                 }),
                             }],
+                            }}>
+                            <Image 
+                                source={{uri: 'https://c1.staticflickr.com/1/66/211293963_a03db70f6d_b.jpg'}}
+                                style={{
+                                    width: 200, 
+                                    height: 250,
+                                    resizeMode: 'cover',
+                                    borderRadius: 5,
+                                    padding: 20
+                                }}
+                            >
+                            </Image>
+                            <View style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                borderRadius: 5,
+                                backgroundColor: 'rgba(1, 142, 20, 0.3)'
+                            }}>
+                                <Text style={{color: 'white', fontSize: 26, fontWeight: 'bold', margin: 10}}>Design</Text>
+                                <Text style={{color: 'white', fontSize: 12, marginLeft: 10}}>by Hải Vũ</Text>
+                            </View>
+                        </Animated.View>
+                    </TouchableNativeFeedback>
+                    
+                    <TouchableNativeFeedback onPress={()=>{
+                            Animated.spring(this.state.scaleImage1, {
+                                toValue: 1.2
+                            }).start()
+                        }}>
+                        <Animated.View style={{margin: 20, width: 200,
+                            transform: [{
+                                scale: this.state.scaleImage1.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, 1]
+                                }),
+                            }],
+                            }}>
+                            <Image 
+                                source={{uri: 'https://c1.staticflickr.com/1/66/211293963_a03db70f6d_b.jpg'}}
+                                style={{
+                                    width: 200, 
+                                    height: 250,
+                                    resizeMode: 'cover',
+                                    borderRadius: 5,
+                                    padding: 20
+                                }}
+                            >
+                            </Image>
+                            <View style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                borderRadius: 5,
+                                backgroundColor: 'rgba(160, 96, 0, 0.3)'
+                            }}>
+                                <Text style={{color: 'white', fontSize: 26, fontWeight: 'bold', margin: 10}}>Design</Text>
+                                <Text style={{color: 'white', fontSize: 12, marginLeft: 10}}>by Hải Vũ</Text>
+                            </View>
+                        </Animated.View>
+                    </TouchableNativeFeedback>
+
+                    <TouchableNativeFeedback>
+                        <View style={{margin: 20, width: 200}}>
+                            <Image 
+                                source={{uri: 'https://c1.staticflickr.com/1/66/211293963_a03db70f6d_b.jpg'}}
+                                style={{
+                                    width: 200, 
+                                    height: 250,
+                                    resizeMode: 'cover',
+                                    borderRadius: 5,
+                                    padding: 20
+                                }}
+                            >
+                            </Image>
+                            <View style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                borderRadius: 5,
+                                backgroundColor: 'rgba(8, 59, 168, 0.3)'
+                            }}>
+                                <Text style={{color: 'white', fontSize: 26, fontWeight: 'bold', margin: 10}}>Design</Text>
+                                <Text style={{color: 'white', fontSize: 12, marginLeft: 10}}>by Hải Vũ</Text>
+                            </View>
+                        </View>
+                    </TouchableNativeFeedback>
+
+                    <TouchableNativeFeedback>
+                        <View style={{margin: 20, width: 200}}>
+                            <Image 
+                                source={{uri: 'https://c1.staticflickr.com/1/66/211293963_a03db70f6d_b.jpg'}}
+                                style={{
+                                    width: 200, 
+                                    height: 250,
+                                    resizeMode: 'cover',
+                                    borderRadius: 5,
+                                    padding: 20
+                                }}
+                            >
+                            </Image>
+                            <View style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                borderRadius: 5,
+                                backgroundColor: 'rgba(181, 1, 1, 0.5)'
+                            }}>
+                                <Text style={{color: 'white', fontSize: 26, fontWeight: 'bold', margin: 10}}>Design</Text>
+                                <Text style={{color: 'white', fontSize: 12, marginLeft: 10}}>by Hải Vũ</Text>
+                            </View>
+                        </View>
+                    </TouchableNativeFeedback>
+                    {/* </View> */}
+                </ScrollView>
+                {/* <View style={{
+                    backgroundColor: '#2a83ac',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 10
+                }}>
+                    <Animated.View
+                        style={{
+                            width: this.state.inputWidth,
                         }}
-                    />
+                    >
+                        <TextInput style={{
+                            width: this.state.inputWidth1,
+                            borderBottomWidth: 1,
+                            borderLeftWidth: 0,
+                            borderRightWidth: 0,
+                            borderTopWidth: 0,
+                            borderBottomColor: 'white',
+                            height: 40,
+                            color: 'white',
+                            }} 
+                            tintColor='white'
+                            underlineColorAndroid='transparent'/>         
+                    </Animated.View>
+                    <Icon name='search' style={{fontSize: 22, color: 'white'}} onPress={this.onPressSearch}/>
+                </View> */}
+            
+            
+            {/* <View  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: 10,
+                    width: '100%'
+                }}>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 10,
+                    backgroundColor: 'yellow',
+                    width: '50%'
+                }}>
+                    
+                    <View style={{height: 50, flex: 1}}>
+                        <Animated.Text
+                            style={{
+                                fontSize: 10,
+                                position: 'absolute',
+                                top: this.state.labelTop,
+                                left: 0,
+                                paddingLeft: 5,
+                                opacity: this.state.labelOpacity
+                            }}>Search</Animated.Text>
+                        <TextInput 
+                            style={{
+                                width: 'auto',
+                                flex: 1,
+                                fontSize: 18
+                            }} 
+                            placeholder={this.state.placeholder}
+                            onFocus={this.onFocus}
+                            onBlur={this.onBlur}
+                        />
+                    </View>
+                </View>
+
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: 10,
+                    backgroundColor: 'red',
+                    width: '50%'
+                }}>
+                    <View style={{width: 40}}>
+                        <Icon name='search' style={{fontSize: 22, color: 'brown'}} onPress={this.onPressSearch}/>
+                    </View>
+                    <View style={{height: 50, flex: 1}}>
+                        <Animated.Text
+                            style={{
+                                fontSize: 10,
+                                position: 'absolute',
+                                top: this.state.labelTop,
+                                left: 0,
+                                paddingLeft: 5,
+                                opacity: this.state.labelOpacity
+                            }}>Search</Animated.Text>
+                        <TextInput 
+                            style={{
+                                width: 'auto',
+                                flex: 1,
+                            }} 
+                            placeholder={this.state.placeholder}
+                            onFocus={this.onFocus}
+                            onBlur={this.onBlur}
+                        />
+                    </View>
+                </View>
+            </View> */}
+                
+{/* 
+                <TouchableNativeFeedback onPress={this.onPressMask}>
+                    <View style={{
+                        padding: 15, 
+                        shadowOffset:{  width: 10,  height: 10,  },
+                        shadowColor: 'black',
+                        shadowOpacity: 1.0,
+                        backgroundColor: 'white',
+                        borderRadius: 3,
+                        margin: 20,
+                        height: 70
+                        }}>
+                        {!this.state.showMask && <View style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <Text>Text Text Text ... Press Me</Text>
+                        </View>
+                        }
+
+                        {this.state.showMask && <View style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'rgba(0,0,0,0.1)'
+                        }}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Animated.View style={{
+                                    flexDirection: 'row', justifyContent: 'center', 
+                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
+                                    marginRight: 20, backgroundColor: 'white',
+                                    transform: [{
+                                        scale: this.state.scale.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: [0, 1]
+                                        }),
+                                    }],
+                                    }}>
+                                    <Icon name='nearby' style={{color: 'yellow'}} />
+                                </Animated.View>
+
+                                <Animated.View style={{
+                                    flexDirection: 'row', justifyContent: 'center', 
+                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
+                                    marginRight: 20, backgroundColor: 'white',
+                                    transform: [{
+                                        scale: this.state.scale1.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: [0, 1]
+                                        }),
+                                    }],
+                                    }}>
+                                    <Icon name='clingme-wallet' style={{color: 'green'}} />
+                                </Animated.View>
+
+                                <Animated.View style={{
+                                    flexDirection: 'row', justifyContent: 'center', 
+                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
+                                    marginRight: 20, backgroundColor: 'white',
+                                    transform: [{
+                                        scale: this.state.scale2.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: [0, 1]
+                                        }),
+                                    }],
+                                    }}>
+                                    <Icon name='qr' style={{color: 'blue'}} />
+                                </Animated.View>
+
+                                <Animated.View style={{
+                                    flexDirection: 'row', justifyContent: 'center', 
+                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
+                                    marginRight: 20, backgroundColor: 'white',
+                                    transform: [{
+                                        scale: this.state.scale3.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: [0, 1]
+                                        }),
+                                    }],
+                                    }}>
+                                    <Icon name='car-parking' style={{color: 'brown'}} />
+                                </Animated.View>
+                            </View>
+                        </View>}
+                    </View>
+                        
+                </TouchableNativeFeedback> */}
+
+
+                <View style={{marginTop: 50, marginLeft: 20, 
+                    flexDirection: 'row', alignItems: 'flex-end',
+                    width: 300, height: 200
+                }}>
 
                     <Animated.View 
                         style={{
-                            height: 120, width: 50, backgroundColor: 'red',
-                            position: 'absolute', bottom: 0, left: 120,
-                            transform: [{
-                                translateY: this.state.translateY1.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [-1, 0],
-                                }),
-                            }],
-                        }}
-                    /> */}
-
-                    <Animated.View 
-                        style={{
-                            width: 50, backgroundColor: 'red',
+                            width: 50, backgroundColor: 'rgba(255,255,255,0.9)',
                             position: 'absolute', bottom: 0, left: 0,
                             height: this.state.height
                         }}
@@ -158,7 +604,7 @@ export default class ExperimentAnimate extends Component {
 
                     <Animated.View 
                         style={{
-                            width: 50, backgroundColor: 'red',
+                            width: 50, backgroundColor: 'rgba(255,255,255,0.9)',
                             position: 'absolute', bottom: 0, left: 60,
                             height: this.state.height1
                         }}
@@ -166,7 +612,7 @@ export default class ExperimentAnimate extends Component {
 
                     <Animated.View 
                         style={{
-                            width: 50, backgroundColor: 'red',
+                            width: 50, backgroundColor: 'rgba(255,255,255,0.9)',
                             position: 'absolute', bottom: 0, left: 120,
                             height: this.state.height2
                         }}
@@ -175,40 +621,30 @@ export default class ExperimentAnimate extends Component {
 
                     <Animated.View 
                         style={{
-                            width: 50, backgroundColor: 'red',
+                            width: 50, backgroundColor: 'rgba(255,255,255,0.9)',
                             position: 'absolute', bottom: 0, left: 180,
                             height: this.state.height3
                         }}
                     />
 
-
-                    {/* <Animated.View 
-                        style={{
-                            height: 120, width: 50, backgroundColor: 'red', marginRight: 10,
-                            transform: [{
-                                scaleY: this.state.scale3.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [0, 1]  // 0 : 150, 0.5 : 75, 1 : 0
-                                }),
-                            }],
-                        }}
-                    />
-
-                    <Animated.View 
-                        style={{
-                            height: 70, width: 50, backgroundColor: 'red', marginRight: 10,
-                            transform: [{
-                                scaleY: this.state.scale3.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [0, 1]  // 0 : 150, 0.5 : 75, 1 : 0
-                                }),
-                            }],
-                        }}
-                    /> */}
                     
                 </View>
-                <Button onPress={this._doAnimate} title='Animate' />
-            </View>
+                {/* <Button onPress={this._doAnimate} title='Animate' style={{marginTop: 50}}/> */}
+                <TouchableNativeFeedback onPress={this._doAnimate}>
+                    <View style={{
+                        borderWidth: 2,
+                        borderRadius: 3,
+                        padding: 12,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        borderColor: 'white',
+                        backgroundColor: 'rgba(255,255,255,0.3)',
+                        marginTop: 15
+                    }}>
+                        <Text style={{color: 'white', fontWeight: 'bold'}}>Animate</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            </ScrollView>
         )
     }
 }

@@ -309,7 +309,7 @@ export default {
     animated: {
         title: 'Animated',
         Page: ExperimentAnimate,
-        headerType: 'back',
+        headerType: 'none',
         footerType: 'none',
     }
 }
