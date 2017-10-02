@@ -11,8 +11,10 @@ export const wallet = (state = initialWallet, { type, payload }) => {
         return {
           ...state,
           // moneyAmount: payload.moneyAmount,
-          cashoutMoney: payload.cashoutMoney,
+          // cashoutMoney: payload.cashoutMoney,
           balanceMoney: payload.balanceMoney,
+          compareCheckMoney: payload.compareCheckMoney,
+          preBalance: payload.preBalance,
           // pageNumber: payload.pageNumber,
           // totalPage: payload.totalPage,
           // totalRecord: payload.totalRecord,
