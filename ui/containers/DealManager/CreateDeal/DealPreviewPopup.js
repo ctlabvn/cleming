@@ -42,7 +42,7 @@ export default class DealPreviewPopup extends Component {
     _capitalize = (str) => (str && str.charAt(0).toUpperCase() + str.slice(1).toLowerCase())
 
     onConfirm = () => {
-      const {allImages, ...data} = this.state.data
+      const {allImages, placeSelectedArr, ...data} = this.state.data
       this.props.onOk && this.props.onOk(data)
     }
     
@@ -86,6 +86,14 @@ export default class DealPreviewPopup extends Component {
             <Text large warning bold style={{textAlign: 'center'}}>{data.promoTitle}</Text>
         </View>
       }
+      let applyPlace
+      if (data.placeSelectedArr.isAll){
+        applyPlace = <Text gray>* {I18n.t('deal_all_place')}</Text>
+      }else{
+        applyPlace = <View>
+          {data.placeSelectedArr.selected.map(item=><Text gray key={item.placeId}>* {item.address}</Text>)}
+        </View>
+      }
       return (
         <Modal 
             animationType={"none"}
@@ -118,7 +126,10 @@ export default class DealPreviewPopup extends Component {
                   <Text medium bold> {moment(data.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
                   <Text warning>{this._renderToDateStatus(data.toDate)}</Text>
                 </Text>
-                
+
+                <Text bold>{I18n.t('apply_place')}:</Text>
+                {applyPlace}
+                <Text bold>{I18n.t('description')}</Text>
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>

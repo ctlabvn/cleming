@@ -33,6 +33,15 @@ export default class PlaceSelector extends Component {
       this.setState({selected: [...this.state.selected, placeId]})
     }
 
+    getSelectedPlaceObj = () => {
+      const {listPlace} = this.props
+      let selected = listPlace.filter(item=>this.state.selected.indexOf(item.placeId)>-1)
+      return {
+        isAll: !!(this.state.selected.length == listPlace.length),
+        selected: selected
+      }
+    }
+
     _markAll = () => {
       const {listPlace} = this.props
       if (this.state.selected.length != listPlace.length){

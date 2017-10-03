@@ -174,7 +174,7 @@ export default class CreateDeal extends Component {
       if (coverPicture.indexOf('http')==-1){
         coverPicture = {uri: coverPicture, name: coverPicture, filename: coverPicture, type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(coverPicture))}
       }
-      console.log('Place ID List', placeIdList)
+      let placeSelectedArr = this.placeSelector.getSelectedPlaceObj()
       let imageList = this.dealImageSelector.getImageList()
       imageFiles = imageList.filter(item=>item.path.indexOf('http')==-1)
                               .map(item=>({uri: item.path, name: 'detail_files[]', filename: item.path, type: 'image/jpg'}))
@@ -188,7 +188,7 @@ export default class CreateDeal extends Component {
         fromDate: from,
         toDate: to,
       }
-      this.dealPreview.open({...data, allImages: imageList})
+      this.dealPreview.open({...data, allImages: imageList, placeSelectedArr})
     }
 
     onConfirm = (data) => {

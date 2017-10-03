@@ -364,5 +364,7 @@ export default {
     'noData': 'Không có dữ liệu',
     'deal_preview': 'Xem trước khuyến mãi',
     'create_deal_fail': 'Tạo deal thất bại',
-    'preview': 'Xem trước'
+    'preview': 'Xem trước',
+    'description': 'Mô tả',
+    'deal_all_place': 'Tất cả cửa hàng'
 }
