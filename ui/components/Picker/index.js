@@ -56,6 +56,7 @@ export default class Dropdown extends Component {
       if (Platform.OS === 'android'){
         return (
           <Picker
+            style={{height: 40, ...this.props.styles}}
             selectedValue={this.state.value}
             onValueChange={(itemValue, itemIndex) => this.onValueChange(itemValue, itemIndex)}>
             {this.props.options.map(item=><Picker.Item label={item.label} value={item.value} key={item.value}/>)}
@@ -63,7 +64,7 @@ export default class Dropdown extends Component {
         )
       }
       return (<TouchableWithoutFeedback onPress={()=>this._openModal()}>
-        <View style={{height: 35, padding: 10, flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{height: 40, padding: 10, flexDirection: 'row', alignItems: 'center', ...this.props.styles}}>
           <Text>{this._getLabel(this.state.value)}</Text>
           <Modal
               animationType={"none"}

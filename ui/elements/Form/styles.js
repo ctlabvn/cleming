@@ -26,7 +26,7 @@ export default {
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderBottomWidth: 1,
-    height: (Platform.OS === 'ios' ? 35 : 'auto'),
+    height: 40,
     backgroundColor: 'white',
     borderColor: material.gray500,
     borderRadius: 3,
@@ -41,6 +41,15 @@ export default {
     borderWidth: 0,
     borderColor: 'transparent'
   },
+  inputWithErr: {
+    fontFamily: 'Roboto',
+    fontWeight: '300',
+    height:'100%',
+    fontSize: 14,
+    borderWidth: 0,
+    borderColor: 'transparent',
+  },
+
   textInput: {
     fontFamily: 'Roboto',
     fontWeight: '300',

@@ -1,11 +1,11 @@
 import material from '~/theme/variables/material.js'
 export default {
   dateTouch: {
-    height: 35
+    height: 40
   },
   dateTouchBody: {
     flexDirection: 'row',
-    height: 35,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center'
   },

@@ -47,7 +47,7 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
           {...input}
           placeholderTextColor={material.inputColorPlaceholder}
           {...custom}
-          style={{...styles.input, ...inputStyle}}
+          style={{...styles.inputWithErr, ...inputStyle}}
         />
         {iconName && <Icon
           onPress={e=>onIconPress && onIconPress(input, active)}
