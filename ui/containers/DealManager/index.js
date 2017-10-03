@@ -81,6 +81,7 @@ export default class DealManager extends Component {
     _load = (placeId, from, to, refreshing=false)=>{
       const {xsession, getListDeal, getDealStatistic, getTransactionNumber} = this.props
       refreshing && this.setState({refreshing: true})
+      if (placeId == 0) placeId = ''
       getListDeal(xsession, placeId, from, to)
       getDealStatistic(xsession, '', placeId, from, to,
         (err, data) => {

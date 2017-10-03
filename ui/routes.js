@@ -285,6 +285,7 @@ export default {
       title: I18n.t('page_deal_manager'),
       Page: DealManager,
       showTopDropdown: true,
+      showItemAllPlaceOnTopDropdown: true,
       tabIndex: 1,
       cache: true,
     },
