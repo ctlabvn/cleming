@@ -259,6 +259,7 @@ export default {
         Page: CashoutAndPayHistory,
         headerType: 'back',
         footerType: 'none',
+        cache: true,
     },
     payDetail: {
         title: I18n.t('page_pay_detail'),

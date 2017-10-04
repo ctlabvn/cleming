@@ -40,13 +40,15 @@ export default class extends Component {
     render() {
         const {forwardTo, balanceMoney, preBalance, compareCheckMoney, compareCheckName } = this.props
 
+        const color = balanceMoney >= 0 ? material.blue500 : material.green500;
+
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>
                     <Icon name='account' style={styles.iconAccount}/>
                     <View style={styles.balanceMoneyContainer}>
                         <Text medium grayDark bold style={styles.balanceMoneyLabel}>{I18n.t('balance_money')}</Text>
-                        <Text largeLight orange bold>{formatNumber(balanceMoney)} đ</Text>
+                        <Text largeLight bold style={{color: color}}>{balanceMoney > 0 && '+'}{formatNumber(balanceMoney)} đ</Text>
                     </View>
                 </View>
                 <Border/>
