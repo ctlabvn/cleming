@@ -71,21 +71,6 @@ export default class DealPreviewPopup extends Component {
       const {forwardTo, route} = this.props
       const {data} = this.state
       if (!data) return false
-      let discountBlock
-      if (data.leftPromo){
-        discountBlock = <View style={{...styles.row, ...styles.pd15}}>
-          <View style={{...styles.halfRowItem}}>
-            <Text large gray>{this._capitalize(data.leftPromo)}</Text>
-          </View>
-          <View style={{...styles.halfRowItem}}>
-            <Text large warning bold>{data.promoTitle}</Text>
-          </View>
-        </View>
-      }else{
-        discountBlock = <View style={{...styles.rowCenter, ...styles.pd15}}>
-            <Text large warning bold style={{textAlign: 'center'}}>{data.promoTitle}</Text>
-        </View>
-      }
       let applyPlace
       if (data.placeSelectedArr.isAll){
         applyPlace = <Text gray>* {I18n.t('deal_all_place')}</Text>
@@ -116,7 +101,14 @@ export default class DealPreviewPopup extends Component {
             </View>
             <ImageSlider data={this._renderImages(data)}/>
             <Text></Text>
-            {discountBlock}
+            <View style={{...styles.row, ...styles.pd15}}>
+              <View style={{...styles.halfRowItem}}>
+                <Text large gray>{I18n.t('deal_discount')}</Text>
+              </View>
+              <View style={{...styles.halfRowItem}}>
+                <Text large warning bold>{data.promoTitle}</Text>
+              </View>
+            </View>
             <ScrollView>
               <View style={{...styles.pd10}}>
                 <Text bold medium>{data.dealTitle}</Text>

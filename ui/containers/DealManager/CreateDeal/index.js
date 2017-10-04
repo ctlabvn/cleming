@@ -39,7 +39,7 @@ const formSelector = formValueSelector('CreateDeal')
 @connect(state => ({
     xsession: getSession(state),
     place: state.place,
-    formValues: formSelector(state, 'leftPromo', 'promoTitle'),
+    // formValues: formSelector(state, 'leftPromo', 'promoTitle'),
     category: dealCategorySelector(state)
 }), {forwardTo, getDealCategory, createDeal, showPopupInfo, setToast, markReloadDealManager, resetForm: reset})
 
@@ -94,7 +94,7 @@ export default class CreateDeal extends Component {
             break
           case 'leftPromo':
           case 'promoTitle':
-            this.content.scrollTo({x:0, y: 280})
+            this.content.scrollTo({x:0, y: 300})
             break
           case 'description':
             this.content.scrollTo({x:0, y: 360})
@@ -222,26 +222,40 @@ export default class CreateDeal extends Component {
     }
 
     _renderPromoteBlock = () => {
+      // <Field autoCapitalize="none" name="leftPromo"
+              // icon={(input, active) => input.value && active ? 'close' : false}
+              // iconStyle={{ color: material.gray500 }}
+              // onIconPress={input => input.onChange('')}
+              // component={InputFieldWithErr}
+              // style={{...styles.inputItem, ...styles.halfRow}}
+              // placeholder='Giảm/Tặng'
+          // />
       return (
         <View style={{...styles.rowFull}}>
-          <Field autoCapitalize="none" name="leftPromo"
-              icon={(input, active) => input.value && active ? 'close' : false}
-              iconStyle={{ color: material.gray500 }}
-              onIconPress={input => input.onChange('')}
-              component={InputFieldWithErr}
-              style={{...styles.inputItem, ...styles.halfRow}}
-              placeholder='Giảm/Tặng'
-          />
-
-          <Field autoCapitalize="none" name="promoTitle"
-              icon={(input, active) => input.value && active ? 'close' : false}
-              iconStyle={{ color: material.gray500 }}
-              onIconPress={input => input.onChange('')}
-              component={InputFieldWithErr}
-              style={{...styles.inputItem, ...styles.halfRow}}
-              placeholder='%'
-              keyboardType='numeric'
-          />
+          <View style={{...styles.halfRow}}>
+            <Text style={styles.label}>{I18n.t('percent_cashback')}</Text>
+            <Field autoCapitalize="none" name="promoTitle"
+                icon={(input, active) => input.value && active ? 'close' : false}
+                iconStyle={{ color: material.gray500 }}
+                onIconPress={input => input.onChange('')}
+                component={InputFieldWithErr}
+                style={{...styles.inputItem}}
+                placeholder='%'
+                keyboardType='numeric'
+            />
+          </View>
+          <View style={{...styles.halfRow}}>
+            <Text style={styles.label}>{I18n.t('max_cashback')}</Text>
+            <Field autoCapitalize="none" name="maxCashback"
+                icon={(input, active) => input.value && active ? 'close' : false}
+                iconStyle={{ color: material.gray500 }}
+                onIconPress={input => input.onChange('')}
+                component={InputFieldWithErr}
+                style={{...styles.inputItem}}
+                placeholder='VND'
+                keyboardType='numeric'
+            />
+          </View>
       </View>
     )
     }
@@ -281,12 +295,6 @@ export default class CreateDeal extends Component {
                   </View>
                 </View>
 
-
-                <View style={{...styles.mb20}}>
-                  <Text style={styles.label}>{I18n.t('spending_level')}</Text>
-                  <RatingBar ref={ref=>this.spendingLevelBar=ref}/>
-                </View>
-
                 <Text style={styles.label}>{I18n.t('discount_period')}</Text>
                 <View style={styles.rowFull}>
                   <Field autoCapitalize="none" name="fromDate"
@@ -313,9 +321,14 @@ export default class CreateDeal extends Component {
                   />
                 </View>
 
+                <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}/>
+                <View style={{...styles.mb20}}>
+                  <Text style={styles.label}>{I18n.t('spending_level')}</Text>
+                  <RatingBar ref={ref=>this.spendingLevelBar=ref}/>
+                </View>
                 {this._renderPromoteBlock()}
 
-                <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}/>
+                
                 <Text style={styles.label}>{I18n.t('deal_description')}</Text>
                 <Field autoCapitalize="none" name="description"
                     component={MultiLineInputFieldWithErr}

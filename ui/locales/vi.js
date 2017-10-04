@@ -327,7 +327,7 @@ export default {
     'err_to_date_must_later_than_from_date': 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
     'err_to_date_must_later_than_now': 'Ngày kết thúc phải lớn hơn hiện tại',
     'create_deal_successful': 'Tạo Khuyến mãi thành công',
-    'spending_level': 'Spending Level (1-5)',
+    'spending_level': 'Mức Cashback (1-5)',
     'discount_period': 'Thời gian khuyến mãi',
     'discount_type': 'Loại hình giảm giá',
     'business_type': 'Loại hình dịch vụ kinh doanh',
@@ -366,5 +366,10 @@ export default {
     'create_deal_fail': 'Tạo deal thất bại',
     'preview': 'Xem trước',
     'description': 'Mô tả',
-    'deal_all_place': 'Tất cả cửa hàng'
+    'deal_all_place': 'Tất cả cửa hàng',
+    'cashback': 'Hoàn tiền',
+    'percent_cashback': 'Tặng (%)',
+    'max_cashback': 'Tối đa (VNĐ)',
+    'deal_discount': 'Tặng'
+
 }
