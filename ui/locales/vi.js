@@ -275,6 +275,8 @@ export default {
     'checked': 'Đã đối soát',
     'balance_money': 'Số dư hiện tại',
     'pay': 'Thanh toán',
+    'pre_balance': 'Số dư kỳ trước',
+    'pay_compare_check': 'Thanh toán kỳ đối soát',
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',

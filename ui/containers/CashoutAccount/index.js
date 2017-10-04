@@ -55,12 +55,12 @@ export default class extends Component {
                 <View style={styles.detailContainer}>
                     <Text medium bold grayDark italic style={styles.detailLabel}>{I18n.t('detail')}</Text>
                     <View style={{...styles.row, ...styles.detailContentContainer}}>
-                        <Text medium grayDark>Số dư kỳ trước</Text>
+                        <Text medium grayDark>{I18n.t('pre_balance')}</Text>
 
                         <Text medium grayDark bold>{formatNumber(preBalance)} đ</Text>
                     </View>
                     <View style={{...styles.row, ...styles.detailContentContainer}}>
-                        <Text medium grayDark>Thanh toán kỳ đối soát {compareCheckName}</Text>
+                        <Text medium grayDark>{I18n.t('pay_compare_check')} {compareCheckName}</Text>
                         <Text medium grayDark bold>{formatNumber(compareCheckMoney)} đ</Text>
                     </View>
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
