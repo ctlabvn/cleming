@@ -6,7 +6,8 @@ import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/action
 
 import {
     setBalance, setBanks, setBalanceDetail, setListBank, 
-    setCashoutHistory, setCashoutOverview, setCheckingHistory, setGigatumBank
+    setCashoutHistory, setCashoutOverview, setCheckingHistory, setGigatumBank,
+    setBalanceHistory
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -45,6 +46,22 @@ const requestGetBalanceDetail = createRequestSaga({
         }
     ],
     failure: [
+    ]
+})
+
+const requestGetBalanceHistory = createRequestSaga({
+    request: api.wallet.balanceHistory,
+    key: 'cashout/getBalanceHistory',
+    success: [
+        (data) => {
+            console.log('get Balance History: ', data)
+            if (data.data){
+                return setBalanceHistory(data.data)
+            }
+        }
+    ],
+    failure: [
+        (data) => {return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')},
     ]
 })
 
@@ -184,7 +201,8 @@ export default [
             takeLatest('app/getCashoutDetail', requestCashoutDetail),
             takeLatest('app/getCashoutOverview', requestCashoutOverview),
             takeLatest('app/getCheckingHistory', requestCheckingHistory),
-            takeLatest('payDetail/getGigatumBank', requestGetGigatumBank)
+            takeLatest('payDetail/getGigatumBank', requestGetGigatumBank),
+            takeLatest('cashout/getBalanceHistory', requestGetBalanceHistory)
         ]
     },
 ]

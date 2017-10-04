@@ -12,7 +12,7 @@ import { report } from './report'
 import { location } from './location'
 import { revenue } from './revenue'
 import { meta } from './meta'
-import {payDetail, banks, wallet, wallet_detail, cashoutHistory, cashoutOverview, checkingHistory} from './wallet'
+import {payDetail, banks, wallet, wallet_detail, cashoutHistory, cashoutOverview, checkingHistory, cashout} from './wallet'
 import {setting} from './setting'
 import { checking } from './checking'
 // a rootReducer is like a single state, key is function return a sub state value
@@ -49,6 +49,7 @@ const rootReducer = combineReducers({
   cashoutOverview,
   checkingHistory,
   payDetail,
+  cashout
 })
 
 export default rootReducer

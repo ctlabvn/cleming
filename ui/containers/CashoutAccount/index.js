@@ -33,12 +33,13 @@ export default class extends Component {
 
     componentDidMount = () => {
         const {getBalance, xsession} = this.props
-        getBalance(xsession)
+        getBalance(xsession);
     }
 
+
     render() {
-        const {forwardTo, balanceMoney, preBalance, compareCheckMoney, compareCheckName} = this.props
-        
+        const {forwardTo, balanceMoney, preBalance, compareCheckMoney, compareCheckName } = this.props
+
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>

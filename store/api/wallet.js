@@ -12,6 +12,12 @@ export default {
         return apiGet('/merchantapp/balance-detail', {fromTime, toTime, option, pageNumber}, xsession)
     },
 
+    balanceHistory(xsession, fromTime, toTime, option = 0, pageNumber = 1){
+        console.log('API Balance History: ', xsession+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+        // return apiGet('/merchantapp/balance-history', {}, xsession)
+        return apiGet('/merchantapp/balance-history', {fromTime, toTime, option, pageNumber}, xsession)
+    },
+
     banks(xsession){
         console.log('Get Banks API: ', xsession)
         return apiGet('/merchantapp/banks', {}, xsession)
@@ -39,7 +45,8 @@ export default {
     },
     getCashoutOverview(xsession){
       console.log('Call Cashout Overview', xsession);
-      return apiGet('/merchantapp/balance-cashout', {}, xsession)
+      // return apiGet('/merchantapp/balance-cashout', {}, xsession)
+        return apiGet('/merchantapp/balance-history', {}, xsession)
     },
     getCheckingHistory(xsession, option=0, pageNumber=1){
         console.log('Call API Get List Check', xsession+'---'+option+'---'+pageNumber)

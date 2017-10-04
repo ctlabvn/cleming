@@ -18,69 +18,102 @@ import I18n from '~/ui/I18n'
 import options from './options'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 import Spinner from '~/ui/components/Spinner'
+
 import {
-    TIME_FORMAT_WITHOUT_SECOND
+    DEFAULT_TIME_FORMAT
 } from "~/store/constants/app"
 
 const TRANSACTION_PROCESSING = 1;
 const TRANSACTION_DONE = 2;
 
+import { CASHOUT_AND_PAY_HISTORY_ALL, CASHOUT_AND_PAY_HISTORY_COME_IN, CASHOUT_AND_PAY_HISTORY_COME_OUT } from '~/store/constants/app'
+
 @connect(state => ({
     xsession: getSession(state),
-    cashoutHistory: state.cashoutHistory
+    cashoutHistory: state.cashoutHistory,
+    cashoutOverview: state.cashoutOverview,
+    balanceHistory: state.cashout.balanceHistory
 }), {...commonAction, ...walletAction})
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
+
+        this.currentPageNumber = 1;
     }
 
     componentDidMount() {
-        const {xsession, getCashoutHistory} = this.props
-        this.listview && this.listview.showRefresh(true)
-        getCashoutHistory(xsession,
-            (err, data) => this.listview && this.listview.showRefresh(false)
-        )
+        // const {xsession, getCashoutHistory} = this.props
+        // this.listview && this.listview.showRefresh(true)
+        // getCashoutHistory(xsession,
+        //     (err, data) => this.listview && this.listview.showRefresh(false)
+        // )
+
+        // const {xsession, getBalanceHistory} = this.props
+        // getBalanceHistory(xsession);
+        this._load();
     }
+
+    _load(fromTime, toTime, option, pageNumber = 1) {
+
+        if (!fromTime || !toTime) {
+            const { value } = this.refs.dateFilter.getCurrentSelectValue();
+            fromTime = value.from
+            toTime = value.to
+        }
+
+        if (!option) {
+            option = this.refs.tabs.getActiveTab();
+        }
+
+        const {xsession, getBalanceHistory} = this.props
+
+        const fromTimeStamp = moment(fromTime * 1000).format(DEFAULT_TIME_FORMAT)
+        const toTimeStamp = moment(toTime * 1000).format(DEFAULT_TIME_FORMAT)
+
+        getBalanceHistory(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
+            if (data && data.data && data.data.balanceConfirm && data.data.balanceConfirm.pageNumber) {
+                this.currentPageNumber = data.data.balanceConfirm.pageNumber;
+            }
+        });
+    }
+
     _onRefresh() {
-        const {getCashoutHistory, xsession} = this.props
-        getCashoutHistory(xsession)
+        this._load();
     }
 
     _onEndReached() {
-        const {xsession, getCashoutHistory} = this.props
-        const {cashoutConfirm} = this.props.cashoutHistory
-        if (!cashoutConfirm) return
-        if (cashoutConfirm.pageNumber >= cashoutConfirm.totalPage) return
-        this.spinner.show(true)
-        getCashoutHistory(xsession, 2, cashoutConfirm.pageNumber + 1,
-            (err, data) => {
-                this.spinner.show(false)
-            }
-        )
+        const { totalPage, pageNumber } = this.props.balanceHistory.balanceConfirm
+        if (this.currentPageNumber < totalPage) {
+            this.currentPageNumber = pageNumber + 1;
+            this._load(null, null, null, this.currentPageNumber);
+        }
     }
 
-    _handlePressFilter() {
-        return 0;
+    _handlePressFilter(data) {
+        const { from, to } = data.currentSelectValue.value;
+        this._load(from, to);
     }
 
-    _handlePressTab() {
-        return 0;
+    _handlePressTab(tab) {
+        this._load(null, null, tab.tabId, null);
     }
 
     _handlePressItem(item) {
-        const { forwardTo } = this.props;
+        const {forwardTo} = this.props;
         forwardTo('cashoutDetail');
     }
 
     _renderRow(...args) {
-
         const item = args[0];
         const index = args[2];
-        const flagProcess = args[args.length -1]
+        const flagProcess = args[args.length - 1]
         let renderBorder = {};
+        if (flagProcess == TRANSACTION_PROCESSING) renderBorder = index < this.waitToDoDataLength - 1 ?
+            <Border/> : null;
+        else if (flagProcess == TRANSACTION_DONE) renderBorder = index < this.transactionDoneLength - 1 ?
+            <Border/> : null;
 
-        if (flagProcess == TRANSACTION_PROCESSING) renderBorder = index < this.waitToDoDataLength - 1 ? <Border/> : null;
-        else if (flagProcess == TRANSACTION_DONE) renderBorder = index < this.transactionDoneLength - 1 ? <Border/> : null;
+        const {balanceTime, balanceMoney, balanceName} = item;
 
         return (
             <ListItem
@@ -88,11 +121,12 @@ export default class CashoutHistory extends Component {
                 onPress={e => this._handlePressItem(item)}
                 style={styles.listItem}>
                 <View style={{flex: 1}}>
-                    <Text medium grayDark style={{alignSelf: 'flex-start'}}>29/09/17</Text>
+                    <Text medium grayDark
+                          style={{alignSelf: 'flex-start'}}>{moment(balanceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7}}>
-                        <Text medium grayDark>Cashout MSB***123</Text>
+                        <Text medium grayDark>{balanceName}</Text>
                         <View style={{flexDirection: 'row', marginTop: 5}}>
-                            <Text medium bold green>-100.000 đ</Text>
+                            <Text medium bold green>{balanceMoney} đ</Text>
                             <Icon
                                 name="foward"
                                 style={{fontSize: 20, color: material.green500}}/>
@@ -102,51 +136,49 @@ export default class CashoutHistory extends Component {
                 </View>
             </ListItem>
         )
-
     }
 
 
     render() {
-        const {forwardTo, cashoutHistory} = this.props
+        const {forwardTo, balanceHistory} = this.props
 
+        const {balanceWait} = balanceHistory;
+        const {balanceConfirm} = balanceHistory;
 
-        // const waitToDoData = [{name: 'mot'}, {name: 'hai'}, {name: 'ba'}, {name: 'bon'}];
-        const waitToDoData = [1,2];
-        this.waitToDoDataLength = waitToDoData.length;
         const maxHeight = 150;
-
-        const doneData = [1,2,3,4,5,6,7,8,9,10];
-        this.transactionDoneLength = doneData.length;
 
         return (
             <Container style={styles.container}>
                 <TabsWithNoti
                     tabData={options.tabData}
-                    activeTab={1}
-                    onPressTab={() => this._handlePressTab()}
+                    activeTab={CASHOUT_AND_PAY_HISTORY_ALL}
+                    onPressTab={(data) => this._handlePressTab(data)}
                     ref='tabs'/>
                 <DateFilter
                     defaultFilter='day'
-                    onPressFilter={() => this._handlePressFilter()}
+                    onPressFilter={(data) => this._handlePressFilter(data)}
                     ref='dateFilter'/>
                 <View>
                     <View style={{backgroundColor: material.gray300, padding: 15}}>
                         <Text strong bold grayDark>Chờ xử lý</Text>
                     </View>
+
+                    {balanceWait &&
                     <List
-                        dataArray={waitToDoData}
+                        dataArray={balanceWait.listBalance}
                         style={{maxHeight, margin: 0, padding: 0}}
-                        renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>
+                        renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>}
                 </View>
                 <View style={{backgroundColor: material.gray300, padding: 15}}>
                     <Text strong bold grayDark>Đã xử lý</Text>
                 </View>
+                {balanceConfirm &&
                 <ListViewExtend
-                    dataArray={doneData}
+                    dataArray={balanceConfirm.listBalance}
                     renderRow={(...args) => this._renderRow(...args, TRANSACTION_DONE)}
                     onEndReached={() => this._onEndReached()}
                     onRefresh={() => this._onRefresh()}
-                />
+                />}
                 <Spinner onItemRef={ref => this.spinner = ref}/>
             </Container>
         )

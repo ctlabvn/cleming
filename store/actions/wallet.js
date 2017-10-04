@@ -92,3 +92,13 @@ export const setGigatumBank = (data) => ({
     type: 'app/setGigatumBank',
     payload: data
 })
+
+export const setBalanceHistory = (data) => ({
+    type: 'app/setBalanceHistory',
+    payload: data
+})
+
+export const getBalanceHistory = (...args) => ({
+    type: 'cashout/getBalanceHistory',
+    args
+})

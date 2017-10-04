@@ -1,19 +1,19 @@
 import I18n from '~/ui/I18n'
 
-import { REVENUE_PROCESSING, REVENUE_DONE } from '~/store/constants/app'
+import { CASHOUT_AND_PAY_HISTORY_ALL, CASHOUT_AND_PAY_HISTORY_COME_IN, CASHOUT_AND_PAY_HISTORY_COME_OUT } from '~/store/constants/app'
 
 export default {
     tabData: [
         {
-            tabID: 1,
+            tabID: CASHOUT_AND_PAY_HISTORY_ALL,
             text: 'Tất cả',
         },
         {
-            tabID: 2,
+            tabID: CASHOUT_AND_PAY_HISTORY_COME_IN,
             text: 'Tiền chuyển vào',
         },
         {
-            tabID: 3,
+            tabID: CASHOUT_AND_PAY_HISTORY_COME_OUT,
             text: 'Tiền chuyển ra',
         }
     ]
