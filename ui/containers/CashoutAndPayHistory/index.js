@@ -143,11 +143,12 @@ export default class CashoutHistory extends Component {
     render() {
         const {forwardTo, balanceHistory} = this.props
 
-        const {balanceWait} = balanceHistory;
-        const {balanceConfirm} = balanceHistory;
+            const {balanceWait} = balanceHistory;
+            const {balanceConfirm} = balanceHistory;
+            const minHeight = balanceWait && balanceWait.listBalance.length > 0 ? 0 : 50;
 
         const maxHeight = 150;
-        const minHeight = balanceWait && balanceWait.listBalance.length > 0 ? 0 : 50;
+
         
         return (
             <Container style={styles.container}>
@@ -164,8 +165,7 @@ export default class CashoutHistory extends Component {
                     <View style={{backgroundColor: material.gray300, padding: 15}}>
                         <Text strong bold grayDark>Chờ xử lý</Text>
                     </View>
-
-                    {balanceWait &&
+                    { balanceHistory &&
                     <List
                         dataArray={balanceWait.listBalance}
                         style={{maxHeight, minHeight, margin: 0, padding: 0}}
@@ -174,7 +174,7 @@ export default class CashoutHistory extends Component {
                 <View style={{backgroundColor: material.gray300, padding: 15}}>
                     <Text strong bold grayDark>Đã xử lý</Text>
                 </View>
-                {balanceConfirm &&
+                {balanceHistory && balanceHistory.balanceConfirm &&
                 <ListViewExtend
                     dataArray={balanceConfirm.listBalance}
                     renderRow={(...args) => this._renderRow(...args, TRANSACTION_DONE)}
