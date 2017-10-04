@@ -82,6 +82,31 @@ export default class CreateDeal extends Component {
       }
     }
 
+    componentWillReceiveProps = (nextProps) => {
+      if (!this.props.submitFailed && nextProps.submitFailed){
+        switch(nextProps.error){
+          case 'dealTitle':
+            this.content.scrollTo({x:0, y: 20})
+            break
+          case 'fromDate':
+          case 'toDate':
+            this.content.scrollTo({x:0, y: 220})
+            break
+          case 'leftPromo':
+          case 'promoTitle':
+            this.content.scrollTo({x:0, y: 280})
+            break
+          case 'description':
+            this.content.scrollTo({x:0, y: 360})
+            break
+          case 'searchTag':
+            this.content.scrollTo({x:0, y: 540})
+            break
+        }
+      }
+      
+    }
+
     componentDidMount(){
       // Move to Prevent warning
       const {xsession, getDealCategory, route} = this.props
@@ -231,7 +256,7 @@ export default class CreateDeal extends Component {
             <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref} loading = {this.state.loading}/>
             <UploadingProgress text= 'Đang tạo khuyến mãi...' ref={ref=>this.uploadingProgress=ref}/>
             <DealPreviewPopup ref={ref=>this.dealPreview=ref} onOk={this.onConfirm}/>
-            <Content style={styles.container}>
+            <Content style={styles.container} ref={ref=>this.content=ref}>
               <Form>
                 <View style={{...styles.mb20}}>
                   <Text style={styles.label}>{I18n.t('deal_image')}</Text>

@@ -15,18 +15,21 @@ const isDigitOnly = (str) => {
 }
 export const validate = (values) => {
 	let errors = {}
-	console.log('Validate Values', values);
+	console.log('Call validate Props', values);
 	if (!values.dealTitle){
 		errors.dealTitle = I18n.t('err_field_must_not_empty')
+		errors._error='dealTitle'
 		return errors
 	}
 
   if (!values.fromDate){
 		errors.fromDate = I18n.t('err_field_must_not_empty')
+		errors._error='fromDate'
 		return errors
 	}
 
   if (!values.toDate){
+  		errors._error='toDate'
 		errors.toDate = I18n.t('err_field_must_not_empty')
 		return errors
 	}
@@ -35,10 +38,12 @@ export const validate = (values) => {
 	let to = moment(values.toDate, "MM/DD/YYYY").endOf('day').unix()
 	let now = moment().unix()
 	if (from > to){
+		errors._error='toDate'
 		errors.toDate = I18n.t('err_to_date_must_later_than_from_date')
 		return errors
 	}
 	if (to<now){
+		errors._error='toDate'
 		errors.toDate = I18n.t('err_to_date_must_later_than_now')
 		return errors
 	}
@@ -49,40 +54,48 @@ export const validate = (values) => {
 // 	}
 
   if (!values.promoTitle){
+  		errors._error='promoTitle'
 		errors.promoTitle = I18n.t('err_field_must_not_empty')
 		return errors
 	}
 
 	if (values.promoType == PROMO_TYPE.MONEY){
 		if (!isDigitOnly(values.leftPromo)){
+			errors._error='leftPromo'
 			errors.leftPromo = I18n.t('err_money_must_number')
 			return errors
 		}
 		if (!isDigitOnly(values.promoTitle)){
+			errors._error='promoTitle'
 			errors.promoTitle = I18n.t('err_money_must_number')
 			return errors
 		}
 		if (values.leftPromo <= values.promoTitle){
+			errors._error='promoTitle'
 			errors.promoTitle = I18n.t('err_new_price_must_smaller_than_old_price')
 			return errors
 		}
 	}else if (values.promoType == PROMO_TYPE.PERCENT){
 		if (!isDigitOnly(values.leftPromo)){
+			errors._error='leftPromo'
 			errors.leftPromo = I18n.t('err_percent_must_number')
 			return errors
 		}
 		if (values.leftPromo > 100){
+			errors._error='leftPromo'
 			errors.leftPromo = I18n.t('err_invalid_percent_number')
 			return errors
 		}
 	}
 
   if (!values.description){
+  		errors._error='description'
 		errors.description = I18n.t('err_field_must_not_empty')
 		return errors
 	}
 
   if (!values.searchTag){
+  		errors._error='searchTag'
 		errors.searchTag = I18n.t('err_field_must_not_empty')
 		return errors
 	}
