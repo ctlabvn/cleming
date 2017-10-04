@@ -42,14 +42,6 @@ export default class CashoutHistory extends Component {
     }
 
     componentDidMount() {
-        // const {xsession, getCashoutHistory} = this.props
-        // this.listview && this.listview.showRefresh(true)
-        // getCashoutHistory(xsession,
-        //     (err, data) => this.listview && this.listview.showRefresh(false)
-        // )
-
-        // const {xsession, getBalanceHistory} = this.props
-        // getBalanceHistory(xsession);
         this._load();
     }
 
@@ -66,10 +58,6 @@ export default class CashoutHistory extends Component {
         }
 
         const {xsession, getBalanceHistory} = this.props
-
-        // const fromTimeStamp = moment(fromTime * 1000).format(DEFAULT_TIME_FORMAT)
-        // const toTimeStamp = moment(toTime * 1000).format(DEFAULT_TIME_FORMAT)
-        // console.warn(fromTimeStamp + " " + toTimeStamp + " " + option + " " + pageNumber);
 
         getBalanceHistory(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
             if (data && data.data && data.data.balanceConfirm && data.data.balanceConfirm.pageNumber) {
