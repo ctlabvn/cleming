@@ -67,8 +67,9 @@ export default class CashoutHistory extends Component {
 
         const {xsession, getBalanceHistory} = this.props
 
-        const fromTimeStamp = moment(fromTime * 1000).format(DEFAULT_TIME_FORMAT)
-        const toTimeStamp = moment(toTime * 1000).format(DEFAULT_TIME_FORMAT)
+        // const fromTimeStamp = moment(fromTime * 1000).format(DEFAULT_TIME_FORMAT)
+        // const toTimeStamp = moment(toTime * 1000).format(DEFAULT_TIME_FORMAT)
+        // console.warn(fromTimeStamp + " " + toTimeStamp + " " + option + " " + pageNumber);
 
         getBalanceHistory(xsession, fromTime, toTime, option, pageNumber, (err, data) => {
             if (data && data.data && data.data.balanceConfirm && data.data.balanceConfirm.pageNumber) {
@@ -95,7 +96,7 @@ export default class CashoutHistory extends Component {
     }
 
     _handlePressTab(tab) {
-        this._load(null, null, tab.tabId, null);
+        this._load(null, null, tab.tabId);
     }
 
     _handlePressItem(item) {
@@ -146,7 +147,8 @@ export default class CashoutHistory extends Component {
         const {balanceConfirm} = balanceHistory;
 
         const maxHeight = 150;
-
+        const minHeight = balanceWait && balanceWait.listBalance.length > 0 ? 0 : 50;
+        
         return (
             <Container style={styles.container}>
                 <TabsWithNoti
@@ -166,7 +168,7 @@ export default class CashoutHistory extends Component {
                     {balanceWait &&
                     <List
                         dataArray={balanceWait.listBalance}
-                        style={{maxHeight, margin: 0, padding: 0}}
+                        style={{maxHeight, minHeight, margin: 0, padding: 0}}
                         renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>}
                 </View>
                 <View style={{backgroundColor: material.gray300, padding: 15}}>
