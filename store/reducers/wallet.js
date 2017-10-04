@@ -146,6 +146,11 @@ export const cashout = (state = [], {type, payload}) => {
                 ...state,
                 balanceHistory: payload
             }
+        case 'app/setCashoutAndPayHistoryDetail':
+            return {
+                ...state,
+                cashoutAndPayHistoryDetail: payload
+            }
         default:
             return state;
     }

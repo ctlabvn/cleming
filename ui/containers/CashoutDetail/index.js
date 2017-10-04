@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Container, Text} from "native-base";
-import {InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator} from "react-native";
+import {InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator, Image} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -18,22 +18,35 @@ import I18n from '~/ui/I18n'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 import Spinner from '~/ui/components/Spinner'
 import {
-    TIME_FORMAT_WITHOUT_SECOND
+    DEFAULT_TIME_FORMAT
 } from "~/store/constants/app"
 @connect(state => ({
     xsession: getSession(state),
+    detail: state.cashout.cashoutAndPayHistoryDetail
 }), {...commonAction, ...walletAction})
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
     }
 
+    _load(){
+        const { route, getCashoutDetail, xsession } = this.props;
+        getCashoutDetail(xsession, route.params.cashoutId)
+    }
+
+    componentDidMount() {
+        this._load();
+    }
+
     render() {
+        const { moneyAmount, bankIcon, bankName, accountNumber, accountName,
+            tranCode, requestTime, confirmTime } = this.props.detail;
+
         return (
             <Container style={styles.container}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 15}}>
                     <Text medium bold grayDark>Số tiền rút</Text>
-                    <Text medium bold orange>999.999.999 đ</Text>
+                    <Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>
                 </View>
 
                 <View style={{backgroundColor: material.gray300}}>
@@ -41,10 +54,14 @@ export default class CashoutHistory extends Component {
                 </View>
 
                 <View style={{flexDirection: 'row', margin: 15, alignItems: 'center'}}>
-                    <Icon gray name="account" style={{fontSize: 50}}/>
+                    <View style={{borderRadius: 5, borderWidth: 0.5, borderColor: material.gray200}}>
+                    <Image source={{ uri: bankIcon }}
+                           resizeMode={'contain'}
+                           style={{ width: 100, height: 60, borderRadius: 5, borderWidth: 1}} />
+                    </View>
                     <View style={{marginLeft: 15}}>
-                        <Text medium bold grayDark>Ngân hàng TMCP VN</Text>
-                        <Text style={{marginTop: 5}}>*1234</Text>
+                        <Text medium bold grayDark>{bankName}</Text>
+                        <Text style={{marginTop: 5}}>{accountNumber}</Text>
                     </View>
                 </View>
 
@@ -52,27 +69,27 @@ export default class CashoutHistory extends Component {
                     <Border/>
                     <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Tên chủ tài khoản</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>Chu Thanh Phong</Text>
+                        <Text medium grayDark style={styles.rowSubDetail}>{accountName}</Text>
                     </View>
 
                     <Border/>
                     <View style={styles.rowDetail}>
 
                         <Text medium bold grayDark>Mã giao dịch</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>99999999</Text>
+                        <Text medium grayDark style={styles.rowSubDetail}>{tranCode}</Text>
                     </View>
 
                     <Border/>
                     <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Thời gian yêu cầu</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>17:30 06/09/1969</Text>
+                        <Text medium grayDark style={styles.rowSubDetail}>{moment(requestTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     </View>
 
-                    <Border/>
-                    <View style={styles.rowDetail}>
+                    { confirmTime && <Border/>}
+                    { confirmTime && <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Thời gian nhận tiền</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>17:30 06/09/1969</Text>
-                    </View>
+                        <Text medium grayDark style={styles.rowSubDetail}>{moment(confirmTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    </View>}
                 </View>
             </Container>
         )

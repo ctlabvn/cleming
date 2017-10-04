@@ -7,7 +7,7 @@ import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/action
 import {
     setBalance, setBanks, setBalanceDetail, setListBank, 
     setCashoutHistory, setCashoutOverview, setCheckingHistory, setGigatumBank,
-    setBalanceHistory
+    setBalanceHistory, setCashoutAndPayHistoryDetail
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -136,7 +136,15 @@ const requestCashoutHistory = createRequestSaga({
 
 const requestCashoutDetail = createRequestSaga({
   request: api.wallet.getCashoutDetail,
-  key: 'app/getCashoutDetail'
+  key: 'app/getCashoutDetail',
+    success: [
+        (data) => {
+            if (data && data.data){
+                return setCashoutAndPayHistoryDetail(data.data)
+            }
+            return noop('')
+        }
+    ]
 })
 
 const requestCashoutOverview = createRequestSaga({

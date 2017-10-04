@@ -58,6 +58,11 @@ export const setCashoutHistory = (data) => ({
   payload: data
 })
 
+export const setCashoutAndPayHistoryDetail = (data) => ({
+    type: 'app/setCashoutAndPayHistoryDetail',
+    payload: data
+})
+
 export const getCashoutDetail = (...args) => ({
   type: 'app/getCashoutDetail',
   args
