@@ -63,10 +63,12 @@ export default class CashoutHistory extends Component {
             if (data && data.data && data.data.balanceConfirm && data.data.balanceConfirm.pageNumber) {
                 this.currentPageNumber = data.data.balanceConfirm.pageNumber;
             }
+            this.listViewConfirm.showRefresh(false);
         });
     }
 
     _onRefresh() {
+        this.listViewConfirm.showRefresh(true);
         this._load();
     }
 
@@ -74,6 +76,7 @@ export default class CashoutHistory extends Component {
         const { totalPage, pageNumber } = this.props.balanceHistory.balanceConfirm
         if (this.currentPageNumber < totalPage) {
             this.currentPageNumber = pageNumber + 1;
+            this.listViewConfirm.
             this._load(null, null, null, this.currentPageNumber);
         }
     }
@@ -168,6 +171,7 @@ export default class CashoutHistory extends Component {
                 </View>
                 {balanceHistory && balanceHistory.balanceConfirm &&
                 <ListViewExtend
+                    ref={(ref) => this.listViewConfirm = ref}
                     dataArray={balanceHistory.balanceConfirm.listBalance}
                     renderRow={(...args) => this._renderRow(...args, TRANSACTION_DONE)}
                     onEndReached={() => this._onEndReached()}
