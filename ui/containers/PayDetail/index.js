@@ -81,12 +81,12 @@ export default class CashoutHistory extends Component {
                         <Text medium bold grayDark style={styles.rowSubDetail}>{phoneNumber}</Text>
                     </View>
                 </View>
-                <View style={{flex: 1}}/>
-                <TouchableOpacity onPress={()=> this._handlePressOK()} style={{margin: 10}}>
-                    <View style={{backgroundColor: material.orange500}}>
-                        <Text medium bold white style={{alignSelf: 'center', padding: 10}}>Đồng ý</Text>
-                    </View>
-                </TouchableOpacity>
+                {/*<View style={{flex: 1}}/>*/}
+                {/*<TouchableOpacity onPress={()=> this._handlePressOK()} style={{margin: 10}}>*/}
+                    {/*<View style={{backgroundColor: material.orange500}}>*/}
+                        {/*<Text medium bold white style={{alignSelf: 'center', padding: 10}}>Đồng ý</Text>*/}
+                    {/*</View>*/}
+                {/*</TouchableOpacity>*/}
             </Container>
         )
     }
