@@ -116,6 +116,8 @@ export default class CashoutHistory extends Component {
 
         const {balanceTime, balanceMoney, balanceName} = item;
 
+        const color = balanceMoney >= 0 ? material.blue500 : material.green500
+
         return (
             <ListItem
                 noBorder
@@ -127,10 +129,10 @@ export default class CashoutHistory extends Component {
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7}}>
                         <Text medium grayDark>{balanceName}</Text>
                         <View style={{flexDirection: 'row', marginTop: 5}}>
-                            <Text medium bold green>{balanceMoney} đ</Text>
+                            <Text medium bold style={{color: color}}>{balanceMoney > 0 && '+'}{balanceMoney} đ</Text>
                             <Icon
                                 name="foward"
-                                style={{fontSize: 20, color: material.green500}}/>
+                                style={{fontSize: 20, color: color}}/>
                         </View>
                     </View>
                     {renderBorder}
