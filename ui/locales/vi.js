@@ -299,8 +299,8 @@ export default {
 
     // Transaction History
     'transaction_history': 'Lịch sử giao dịch',
-    'waiting_revenue' : 'Doanh thu chờ duyệt',
-    'confirmed_revenue': 'Doanh thu đã duyệt',
+    'waiting_revenue' : 'Số tiền chờ duyệt',
+    'confirmed_revenue': 'Số tiền đã duyệt',
 
     // general
     'number_of_items': 'Số lượng',
@@ -336,6 +336,7 @@ export default {
     'err_new_price_must_smaller_than_old_price': 'Gía mới phải nhỏ hơn giá cũ',
     'err_percent_must_number': 'Phần trăm phải ở dạng số',
     'err_invalid_percent_number': 'Số phần trăm không hợp lệ',
+    'err_invalid_money_limit': 'Số tiền tối đa không hợp lệ',
     'page_deal_info': 'Tổng quan khuyến mãi',
     'page_deal_detail': 'Chi tiết khuyến mãi',
     'clone_deal': 'Tạo KM tương tự',
@@ -363,7 +364,7 @@ export default {
     'distance': 'Khoảng cách',
     'noData': 'Không có dữ liệu',
     'deal_preview': 'Xem trước khuyến mãi',
-    'create_deal_fail': 'Tạo deal thất bại',
+    'create_deal_fail': 'Tạo Khuyến mãi thất bại',
     'preview': 'Xem trước',
     'description': 'Mô tả',
     'deal_all_place': 'Tất cả cửa hàng',

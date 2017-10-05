@@ -1,6 +1,6 @@
 import I18n from '~/ui/I18n'
 import moment from 'moment'
-import { PROMO_TYPE } from "~/store/constants/app";
+import { PROMO_TYPE, EXCLUSIVE_TYPE} from "~/store/constants/app";
 
 // export const PROMO_TYPE = {
 //   PERCENT: 1,
@@ -52,49 +52,31 @@ export const validate = (values) => {
 // 		errors.leftPromo = I18n.t('err_field_must_not_empty')
 // 		return errors
 // 	}
-
-  if (!values.promoTitle){
-  		errors._error='promoTitle'
-		errors.promoTitle = I18n.t('err_field_must_not_empty')
-		return errors
-	}
-
-	if (values.promoType == PROMO_TYPE.MONEY){
-		if (!isDigitOnly(values.leftPromo)){
-			errors._error='leftPromo'
-			errors.leftPromo = I18n.t('err_money_must_number')
+	if (values.exclusiveType==EXCLUSIVE_TYPE.CASHBACK){
+		if (!values.promoTitle){
+	  		errors._error='promoTitle'
+			errors.promoTitle = I18n.t('err_field_must_not_empty')
 			return errors
-		}
-		if (!isDigitOnly(values.promoTitle)){
+		}else if (!isDigitOnly(values.promoTitle)){
 			errors._error='promoTitle'
-			errors.promoTitle = I18n.t('err_money_must_number')
+			errors.promoTitle = I18n.t('err_percent_must_number')
 			return errors
 		}
-		if (values.leftPromo <= values.promoTitle){
-			errors._error='promoTitle'
-			errors.promoTitle = I18n.t('err_new_price_must_smaller_than_old_price')
-			return errors
-		}
-	}else if (values.promoType == PROMO_TYPE.PERCENT){
-		if (!isDigitOnly(values.leftPromo)){
-			errors._error='leftPromo'
-			errors.leftPromo = I18n.t('err_percent_must_number')
-			return errors
-		}
-		if (values.leftPromo > 100){
-			errors._error='leftPromo'
-			errors.leftPromo = I18n.t('err_invalid_percent_number')
+
+		if (values.moneyLimit && !isDigitOnly(values.moneyLimit)){
+			errors._error='moneyLimit'
+			errors.moneyLimit = I18n.t('err_invalid_money_limit')
 			return errors
 		}
 	}
 
-  if (!values.description){
+  	if (!values.description){
   		errors._error='description'
 		errors.description = I18n.t('err_field_must_not_empty')
 		return errors
 	}
 
-  if (!values.searchTag){
+  	if (!values.searchTag){
   		errors._error='searchTag'
 		errors.searchTag = I18n.t('err_field_must_not_empty')
 		return errors

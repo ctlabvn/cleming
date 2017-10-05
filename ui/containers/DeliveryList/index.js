@@ -334,7 +334,7 @@ export default class extends Component {
                     || this.selectedStatus == ORDER_SUCCESS
                 ) &&
                   <View style={{...styles.revenueBlock}}>
-                    <Text grayDark>{I18n.t('revenue')}</Text>
+                    <Text grayDark>{I18n.t('money_number')}</Text>
                     <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
                   </View>
                 }

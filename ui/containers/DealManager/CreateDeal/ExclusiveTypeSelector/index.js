@@ -19,6 +19,7 @@ export default class DealImageSelector extends Component {
     }
     _setSelected = (select) => {
       this.setState({selected: select})
+      this.props.onChange && this.props.onChange(select)
     }
 
     getSelected = () => {

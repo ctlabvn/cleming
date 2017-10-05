@@ -23,7 +23,7 @@ import {dealCategorySelector} from '~/store/selectors/deal'
 import LoadingModal from "~/ui/components/LoadingModal"
 import {validate} from './validate'
 import Content from '~/ui/components/Content'
-import { PROMO_TYPE } from "~/store/constants/app";
+import { PROMO_TYPE, EXCLUSIVE_TYPE } from "~/store/constants/app";
 import {API_BASE} from '~/store/constants/api'
 import RNFetchBlob from 'react-native-fetch-blob'
 import UploadingProgress from '~/ui/components/UploadingProgress'
@@ -50,6 +50,7 @@ export default class CreateDeal extends Component {
         this.state = {
           promoType: 1,
           loading: false,
+          showCashback: true
         }
         this.changedPromoType = false
         this.category = []
@@ -67,6 +68,9 @@ export default class CreateDeal extends Component {
       this.placeSelector.setSelectedPlace(dealInfo.placeId)
       this.spendingLevelBar.setValue(dealInfo.spendingLevel)
       this.exclusiveTypeSelector.setSelected(dealInfo.exclusive)
+      this.props.change('exclusiveType', dealInfo.exclusive)
+      //Need some handle
+
       // this.promoPicker.setValue(dealInfo.dealType)
       this.props.change('fromDate', new Date(dealInfo.fromDate*1000))
       this.props.change('toDate', new Date(dealInfo.toDate*1000))
@@ -94,6 +98,7 @@ export default class CreateDeal extends Component {
             break
           case 'leftPromo':
           case 'promoTitle':
+          case 'moneyLimit':
             this.content.scrollTo({x:0, y: 300})
             break
           case 'description':
@@ -113,6 +118,8 @@ export default class CreateDeal extends Component {
       getDealCategory(xsession)
       if (route && route.params && route.params.deal){
         this._fillForm(route.params.deal)
+      }else{
+        this.props.change('exclusiveType', EXCLUSIVE_TYPE.CASHBACK)
       }
     }
 
@@ -131,12 +138,13 @@ export default class CreateDeal extends Component {
           if (data[key] && data[key].type && data[key].type.indexOf('image') > -1){
             // case single file
             formData.push({...data[key], name: key})
-          }else if (data[key]){
+          }else if (typeof data[key] != 'undefined'){
             // case text data
             formData.push({name: key, data: String(data[key])})
           }
         }
       }
+      console.log('Before Send', formData)
       let xVersion = 1
       let xDataVersion = 1
       let xTimeStamp = Math.floor((new Date().getTime()) / 1000)
@@ -176,15 +184,28 @@ export default class CreateDeal extends Component {
 
     _onOk = (item) => {
       const {createDeal, xsession, showPopupInfo, resetForm, setToast} = this.props
-      let {fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag} = item
-      promoTitle = promoTitle+'%' //concat % sign
+      let {exclusiveType, fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag, moneyLimit} = item
+
+      promoTitle = promoTitle ? promoTitle+'%': '*'//concat % sign
       let placeIdList = this.placeSelector.getConcatPlace()
-      let exclusiveType = this.exclusiveTypeSelector.getSelected()
+      // let exclusiveType = this.exclusiveTypeSelector.getSelected()
       let dealCategoryId = this.dealCategoryPicker.getValue()
       let promoType = this.state.promoType
-      let spendingLevel = this.spendingLevelBar.getValue()
+      let spendingLevel = (exclusiveType==EXCLUSIVE_TYPE.CASHBACK) ? this.spendingLevelBar.getValue():1
       let from = moment(fromDate, "MM/DD/YYYY").startOf('day').unix()
       let to = moment(toDate, "MM/DD/YYYY").endOf('day').unix()
+      
+      // exclusiveDealType: 1 là giảm giá theo % không giới hạn số tiền cashback, 2 là giảm giá theo phần trăm có giới hạn số tiền cashback, 3 là giảm tiền cho hoá đơn, 4 là giảm tiền cho hoá đơn nếu hoá đơn lớn hơn một số tiền nhất định. Bắt buộc truyền lên.
+      // moneyLimit (long): số tiền giới hạn cashback, nếu không giới hạn truyền lên là 0. Bắt buộc truyền lên.
+      let exclusiveDealType
+      if (moneyLimit && moneyLimit > 0){
+        exclusiveDealType = 2
+      }else{
+        exclusiveDealType = 1
+        moneyLimit = 0
+      }
+      
+
       let coverPicture = this.dealImageSelector.getCover()
       if (!coverPicture || coverPicture == ''){
         setToast(getToastMessage(I18n.t('err_need_at_least_one_image')), 'info', null, null, 3000, 'top')
@@ -207,7 +228,7 @@ export default class CreateDeal extends Component {
       let data = {
         leftPromo, promoTitle, dealTitle, description, dealCategoryId,
         searchTag, spendingLevel, placeIdList, exclusiveType, promoType,
-        coverPicture: coverPicture,
+        moneyLimit, exclusiveDealType, coverPicture: coverPicture,
         'detail_files[]': {type: 'multi', data: imageFiles},
         'imageLinks': imageLinks,
         fromDate: from,
@@ -221,6 +242,20 @@ export default class CreateDeal extends Component {
       this._fetch(data)
     }
 
+    _onChangeExclusiveType = (select) => {
+      // exclusiveType: int, khuyến mại độc quyền hay khuyến mại thường: 0 – khuyến mại thường, 1 – khuyến mại độc quyền. (bắt buộc)
+      // exclusiveDealType: 1 là giảm giá theo % không giới hạn số tiền cashback, 2 là giảm giá theo phần trăm có giới hạn số tiền cashback, 3 là giảm tiền cho hoá đơn, 4 là giảm tiền cho hoá đơn nếu hoá đơn lớn hơn một số tiền nhất định. Bắt buộc truyền lên.
+      // exclusiveDealType: 1 là giảm giá theo % không giới hạn số tiền cashback, 2 là giảm giá theo phần trăm có giới hạn số tiền cashback, 3 là giảm tiền cho hoá đơn, 4 là giảm tiền cho hoá đơn nếu hoá đơn lớn hơn một số tiền nhất định. Bắt buộc truyền lên.
+      // moneyLimit (long): số tiền giới hạn cashback, nếu không giới hạn truyền lên là 0. Bắt buộc truyền lên.
+      this.props.change('exclusiveType', select)
+      if (select == EXCLUSIVE_TYPE.CASHBACK){
+        this.setState({showCashback: true})
+      }else{
+        this.setState({showCashback: false})
+      }
+
+    }
+
     _renderPromoteBlock = () => {
       // <Field autoCapitalize="none" name="leftPromo"
               // icon={(input, active) => input.value && active ? 'close' : false}
@@ -230,6 +265,7 @@ export default class CreateDeal extends Component {
               // style={{...styles.inputItem, ...styles.halfRow}}
               // placeholder='Giảm/Tặng'
           // />
+
       return (
         <View style={{...styles.rowFull}}>
           <View style={{...styles.halfRow}}>
@@ -246,7 +282,7 @@ export default class CreateDeal extends Component {
           </View>
           <View style={{...styles.halfRow}}>
             <Text style={styles.label}>{I18n.t('max_cashback')}</Text>
-            <Field autoCapitalize="none" name="maxCashback"
+            <Field autoCapitalize="none" name="moneyLimit"
                 icon={(input, active) => input.value && active ? 'close' : false}
                 iconStyle={{ color: material.gray500 }}
                 onIconPress={input => input.onChange('')}
@@ -321,14 +357,17 @@ export default class CreateDeal extends Component {
                   />
                 </View>
 
-                <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}/>
-                <View style={{...styles.mb20}}>
-                  <Text style={styles.label}>{I18n.t('spending_level')}</Text>
-                  <RatingBar ref={ref=>this.spendingLevelBar=ref}/>
-                </View>
-                {this._renderPromoteBlock()}
-
-                
+                <ExclusiveTypeSelector ref={ref=>this.exclusiveTypeSelector=ref}
+                  onChange={this._onChangeExclusiveType}
+                />
+                {this.state.showCashback &&
+                  <View>
+                    <View style={{...styles.mb20}}>
+                      <Text style={styles.label}>{I18n.t('spending_level')}</Text>
+                      <RatingBar ref={ref=>this.spendingLevelBar=ref}/>
+                    </View>
+                    {this._renderPromoteBlock()}
+                  </View>}
                 <Text style={styles.label}>{I18n.t('deal_description')}</Text>
                 <Field autoCapitalize="none" name="description"
                     component={MultiLineInputFieldWithErr}
