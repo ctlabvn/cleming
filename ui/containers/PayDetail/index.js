@@ -29,7 +29,7 @@ export default class CashoutHistory extends Component {
 
     _handlePressOK() {
         const { goBack } = this.props;
-        alert('Yêu cầu đã được gửi đi');
+        // alert('Yêu cầu đã được gửi đi');
         goBack();
     }
 
@@ -39,13 +39,18 @@ export default class CashoutHistory extends Component {
     }
 
     render() {
+        if (!this.props.detail) return (
+            <View/>
+        )
+
+        const { balanceMoney } = this.props.route.params;
         const { gigatumBankId, companyName, bankName, branchName, accountNumber, fullName, phoneNumber } = this.props.detail;
 
         return (
             <Container style={styles.container}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 15}}>
                     <Text medium bold grayDark>Số tiền thanh toán cho Clingme</Text>
-                    <Text medium bold orange>000.000.000 đ</Text>
+                    <Text medium bold orange>{formatNumber(balanceMoney)} đ</Text>
                 </View>
 
                 <Border style={{marginHorizontal: 15}}/>
@@ -81,12 +86,12 @@ export default class CashoutHistory extends Component {
                         <Text medium bold grayDark style={styles.rowSubDetail}>{phoneNumber}</Text>
                     </View>
                 </View>
-                {/*<View style={{flex: 1}}/>*/}
-                {/*<TouchableOpacity onPress={()=> this._handlePressOK()} style={{margin: 10}}>*/}
-                    {/*<View style={{backgroundColor: material.orange500}}>*/}
-                        {/*<Text medium bold white style={{alignSelf: 'center', padding: 10}}>Đồng ý</Text>*/}
-                    {/*</View>*/}
-                {/*</TouchableOpacity>*/}
+                <View style={{flex: 1}}/>
+                <TouchableOpacity onPress={()=> this._handlePressOK()} style={{margin: 10}}>
+                    <View style={{backgroundColor: material.orange500}}>
+                        <Text medium bold white style={{alignSelf: 'center', padding: 10}}>Đồng ý</Text>
+                    </View>
+                </TouchableOpacity>
             </Container>
         )
     }

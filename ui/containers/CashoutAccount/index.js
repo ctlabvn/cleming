@@ -66,7 +66,7 @@ export default class extends Component {
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
                         <View><Text white medium bold>{I18n.t('cashout')}</Text></View>
                     </Button>
-                    <Button style={styles.payBtn} onPress={() => forwardTo('payDetail')}>
+                    <Button style={styles.payBtn} onPress={() => forwardTo('payDetail', {balanceMoney: balanceMoney})}>
                         <View><Text white medium bold>{I18n.t('pay')}</Text></View>
                     </Button>
                 </View>
