@@ -39,6 +39,12 @@ export default class CashoutHistory extends Component {
     }
 
     render() {
+
+        if (!this.props.detail) return (
+            <View/>
+        )
+
+
         const { moneyAmount, bankIcon, bankName, accountNumber, accountName,
             tranCode, requestTime, confirmTime } = this.props.detail;
 
