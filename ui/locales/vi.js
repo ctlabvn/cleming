@@ -370,6 +370,8 @@ export default {
     'cashback': 'Hoàn tiền',
     'percent_cashback': 'Tặng (%)',
     'max_cashback': 'Tối đa (VNĐ)',
-    'deal_discount': 'Tặng'
+    'deal_discount': 'Tặng',
+    'money_number': 'Số tiền',
+    'roi': 'ROI'
 
 }

@@ -139,6 +139,11 @@ export default class DealManager extends Component {
       else return <Text warning>&#8595; {number.toFixed(2)}%</Text>
     }
 
+    _toFixed = (number) => {
+      if (number == undefined) return false
+      return number.toFixed(2)
+    }
+
     render() {
         const {forwardTo, currentDateFilter, viewOverview, transactionNumber} = this.props
         return (
@@ -151,12 +156,28 @@ export default class DealManager extends Component {
               <View style={{...styles.cardBlock, ...styles.pb10}}>
                 <View style={{...styles.row, ...styles.pd15 }}>
                     <View style={styles.moneyItem}>
-                      <Text>{I18n.t('revenue')}</Text>
+                      <Text>{I18n.t('money_number')}</Text>
                       <Text medium bold primary>{formatNumber(viewOverview.totalMoney)} đ</Text>
                     </View>
+                    <TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
+                      <View style={styles.moneyItem}>
+                        <View style={styles.inline}>
+                          <Text medium>{I18n.t('transaction')}</Text>
+                          <Icon name='foward' style={styles.icon} />
+                        </View>
+                        <Text medium bold  primary>{transactionNumber>0?transactionNumber: 0}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                </View>
+
+                <View style={{...styles.row, ...styles.pd15 }}>
                     <View style={styles.moneyItem}>
-                      <Text medium>{I18n.t('clingme_fee')}</Text>
-                      <Text medium bold  primary>{formatNumber(viewOverview.charge)} đ</Text>
+                      <Text>{I18n.t('clingme_fee')}</Text>
+                      <Text medium bold primary>{formatNumber(viewOverview.charge)} đ</Text>
+                    </View>
+                    <View style={styles.moneyItem}>
+                      <Text medium>{I18n.t('roi')}</Text>
+                      <Text medium bold  primary>{this._toFixed(viewOverview.roi)} %</Text>
                     </View>
                 </View>
 
@@ -189,7 +210,7 @@ export default class DealManager extends Component {
                 <Border/>
               </View>
 
-              <TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
+              {/*<TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
                 <View style={{...styles.row, ...styles.pd10, ...styles.cardBlock}}>
                     <Text>{I18n.t('transaction')}</Text>
                     <View style={styles.inline}>
@@ -197,7 +218,9 @@ export default class DealManager extends Component {
                       <Icon name='foward' style={styles.icon} />
                     </View>
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback>*/}
+
+
               <View style={{...styles.cardBlock, ...styles.pd10,}}>
                 <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
                 {/* <ListViewExtend

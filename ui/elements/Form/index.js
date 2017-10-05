@@ -69,10 +69,11 @@ export const MultiLineInputFieldWithErr = ({ input, label, meta: { active, touch
         placeholder={placeholder}
         {...input}
         placeholderTextColor={material.inputColorPlaceholder}
-        style={{...styles.textInput, ...inputStyle}}
+        style={{...styles.textInput, ...inputStyle, textAlignVertical: 'top'}}
         numberOfLines={5}
         multiline={true}
         underlineColorAndroid={'transparent'}
+        blurOnSubmit={false}
       />
       <View>
         {touched && error && <Text small error>{error}</Text>}
