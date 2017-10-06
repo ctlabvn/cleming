@@ -139,5 +139,12 @@ export default {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 0
+    },
+    form: {
+        padding: 10
+    },
+    inputItem: {
+        marginBottom: 10,
+        backgroundColor: material.gray300
     }
 }
