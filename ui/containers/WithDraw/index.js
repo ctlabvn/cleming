@@ -49,7 +49,7 @@ export default class extends Component {
         const {xsession, getBanks, getListBank} = this.props
         getBanks(xsession, (err, data)=> {
             if (data) {
-                console.warn(JSON.stringify(data));
+                // console.warn(JSON.stringify(data));
                 this.bankSelection.selectDefaultItem(data.data[0]);
             }
         })
