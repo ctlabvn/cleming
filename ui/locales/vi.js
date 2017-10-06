@@ -239,7 +239,7 @@ export default {
     'choose_end_date': 'Chọn ngày kết thúc',
 
     //Wallet
-    'balance': 'Số dư TK',
+    'balance': 'Số dư tài khoản',
     'withdraw': 'Rút tiền',
     'view_detail': 'Xem chi tiết',
     'money_credited': 'Tiền ghi có',

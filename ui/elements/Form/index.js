@@ -40,7 +40,7 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)  
   return (
     <View>
-      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
+      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
         {addon}
         <Input   
           placeholder={label}    

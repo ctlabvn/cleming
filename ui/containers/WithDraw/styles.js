@@ -27,13 +27,13 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10
+        paddingVertical: 10,
     },
     rowPadding: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 5,
+        padding: 10,
     },
     icon: {
         fontSize: 20,
@@ -105,14 +105,14 @@ export default {
         padding: 10
     },
     item: {
-        width: '100%',
+
         backgroundColor: material.gray200,
-        borderRadius: 2,
+        borderRadius: 5,
+        margin: 5,
         borderColor: 'transparent'
     },
     input: {
-        // width: '100%', 
-        height: 50,
+        height: 45,
         fontSize: 18,
     },
     bankLogo: {
@@ -146,5 +146,16 @@ export default {
     inputItem: {
         marginBottom: 10,
         backgroundColor: material.gray300
+    },
+    inputItem1: {
+        marginBottom: 10,
+        backgroundColor: material.gray300,
+        width: 215,
+    },
+    rowInput: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 }

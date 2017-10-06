@@ -47,7 +47,7 @@ export default class extends Component {
 
     componentDidMount = () => {
         const {xsession, getBanks, getListBank} = this.props
-        getBanks(xsession, (err, data)=> {
+        getBanks(xsession, (err, data) => {
             if (data) {
                 // console.warn(JSON.stringify(data));
                 this.bankSelection.selectDefaultItem(data.data[0]);
@@ -123,50 +123,59 @@ export default class extends Component {
 
         return (
             <View style={{padding: 10}}>
-                <Text gray>{I18n.t('account_owner')}</Text>
-                <Field autoCapitalize="none" name="account_owner"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input1'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                />
+                <View style={styles.rowInput}>
+                    <Text grayDark medium>{I18n.t('account_owner')}</Text>
+                    <Field autoCapitalize="none" name="account_owner"
+                           icon={(input, active) => input.value && active ? 'close' : false}
+                           iconStyle={{color: material.black500}}
+                           ref='input1'
+                           onIconPress={input => input.onChange('')}
+                           component={InputFieldWithErr}
+                           style={styles.inputItem1}/>
+                </View>
 
-                <Text gray>{I18n.t('identity_card')}</Text>
-                <Field name="identity_card"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input2'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"
-                />
+                <View style={styles.rowInput}>
+                    <Text grayDark medium>{I18n.t('identity_card')}</Text>
+                    <Field name="identity_card"
+                           icon={(input, active) => input.value && active ? 'close' : false}
+                           iconStyle={{color: material.black500}}
+                           ref='input2'
+                           onIconPress={input => input.onChange('')}
+                           component={InputFieldWithErr}
+                           style={styles.inputItem1}
+                           keyboardType="numeric"/>
+                </View>
 
-                <Text gray>{I18n.t('account_number')}</Text>
-                <Field name="account_number"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input3'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"
-                />
+                <View style={styles.rowInput}>
+                    <Text grayDark medium>{I18n.t('account_number')}</Text>
+                    <Field name="account_number"
+                           icon={(input, active) => input.value && active ? 'close' : false}
+                           iconStyle={{color: material.black500}}
+                           ref='input3'
+                           onIconPress={input => input.onChange('')}
+                           component={InputFieldWithErr}
+                           style={styles.inputItem1}
+                           keyboardType="numeric"/>
+                </View>
 
-                <Text gray>{I18n.t('bank_name')}</Text>
-                <SearchableDropdown dropdownValues={this.listBank} ref={ref => this.bankDropdown = ref}/>
+                <View style={styles.rowInput}>
+                    <Text grayDark medium>{I18n.t('bank_name')}</Text>
+                    <SearchableDropdown
+                        style={{width: 215}}
+                        dropdownValues={this.listBank}
+                        ref={ref => this.bankDropdown = ref}/>
+                </View>
 
-                <Text gray>{I18n.t('branch')}</Text>
-                <Field name="branch"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input4'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                />
+                <View style={styles.rowInput}>
+                    <Text grayDark medium>{I18n.t('branch')}</Text>
+                    <Field name="branch"
+                           icon={(input, active) => input.value && active ? 'close' : false}
+                           iconStyle={{color: material.black500}}
+                           ref='input4'
+                           onIconPress={input => input.onChange('')}
+                           component={InputFieldWithErr}
+                           style={styles.inputItem1}/>
+                </View>
             </View>
         )
     }
@@ -191,30 +200,35 @@ export default class extends Component {
                 {/*<View>*/}
                 <PreviewPopup ref={ref => this.preview = ref}
                               onOk={handleSubmit((data) => this._submitDiffrenceAccount(data))}/>
-                <Content>
-                    <View style={{...styles.rowPadding, ...styles.backgroundPrimary}}>
-                        <Text white bold>{I18n.t('balance')}</Text>
-                        <Text white>
-                            <Text white bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)}
-                                đ</Text>
-                        </Text>
+
+                <View style={{...styles.rowPadding, ...styles.backgroundPrimary}}>
+                    <Text white medium>{I18n.t('balance')}</Text>
+                    <Text white>
+                        <Text white bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)}đ</Text>
+                    </Text>
+                </View>
+
+                <Content style={{paddingHorizontal: 10}}>
+
+                    <View>
+                        <View style={{...styles.rowPadding, paddingRight: 115}}>
+                            <Text grayDark medium bold style={{marginRight: 15}}>Số tiền cần rút</Text>
+                            <Item style={styles.item}>
+                                <Input
+                                    style={styles.input}
+                                    keyboardType='phone-pad'
+                                    onChangeText={(value) => this.setState({moneyAmount: value})}
+                                    value={this.state.moneyAmount.toString()}
+                                />
+                                {(this.state.moneyAmount != 0 || this.state.moneyAmount.length > 0) &&
+                                <Icon name='close' style={{...styles.icon, color: material.gray500}}
+                                      onPress={this._handlePressClear}/>}
+                            </Item>
+                        </View>
                     </View>
-                    <View style={styles.rowPadding}>
-                        <Item style={styles.item}>
-                            <Input
-                                style={styles.input}
-                                keyboardType='phone-pad'
-                                placeholder={I18n.t('withdrawn_amount')}
-                                onChangeText={(value) => this.setState({moneyAmount: value})}
-                                value={this.state.moneyAmount.toString()}
-                            />
-                            {(this.state.moneyAmount != 0 || this.state.moneyAmount.length > 0) &&
-                            <Icon name='close' style={{...styles.icon, color: material.gray500}}
-                                  onPress={this._handlePressClear}/>}
-                        </Item>
-                    </View>
+
                     <View style={styles.rowCenter}>
-                        <Text gray>{I18n.t('receive_account')}</Text>
+                        <Text gray medium bold>{I18n.t('receive_account')}</Text>
                     </View>
                     {/*<View style={styles.pd10}>*/}
                     {/*<ScrollView>*/}
@@ -225,14 +239,14 @@ export default class extends Component {
                             ref={bankSelection => this.bankSelection = bankSelection}/>
 
                         {/*<TouchableOpacity onPress={() => forwardTo('bankAccount')}>*/}
-                            {/*<View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>*/}
-                                {/*<Text primary>+ {I18n.t('add_account')}</Text>*/}
-                            {/*</View>*/}
+                        {/*<View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>*/}
+                        {/*<Text primary>+ {I18n.t('add_account')}</Text>*/}
+                        {/*</View>*/}
                         {/*</TouchableOpacity>*/}
 
                         <TouchableOpacity onPress={() => this._handlePressUseDiffrenceAccount()}>
                             <View style={styles.bankLogoContainer}>
-                                <Text blue medium style={{textAlign: 'center'}}>Tài khoản nhận tiền khác</Text>
+                                <Text blue medium style={{textAlign: 'center'}}>+ Tài khoản nhận tiền khác</Text>
                                 <CheckBox type="radio" checked={this.state.useDiffrenceAccount}
                                           onPress={() => this._handlePressUseDiffrenceAccount()}/>
                             </View>
