@@ -13,6 +13,7 @@ import Dropdown from '~/ui/components/Dropdown'
 import Toggle from '~/ui/components/Toggle'
 import material from '~/theme/variables/material'
 import CheckBox from '~/ui/elements/CheckBox'
+import MultipleLineTextInput from '~/ui/components/MultipleLineTextInput'
 import styles from './styles'
 
 export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
@@ -63,9 +64,10 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
 }
 
 export const MultiLineInputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, style, inputStyle, placeholder}) => {
+  // console.log('Input', input)
   return (
     <View style={style}>
-      <TextInput
+      {/*<TextInput
         placeholder={placeholder}
         {...input}
         placeholderTextColor={material.inputColorPlaceholder}
@@ -74,6 +76,11 @@ export const MultiLineInputFieldWithErr = ({ input, label, meta: { active, touch
         multiline={true}
         underlineColorAndroid={'transparent'}
         blurOnSubmit={false}
+      />*/}
+      <MultipleLineTextInput 
+        placeholder={placeholder}
+        style={{...styles.textInput, ...inputStyle, textAlignVertical: 'top'}}
+        {...input}
       />
       <View>
         {touched && error && <Text small error>{error}</Text>}
