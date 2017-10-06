@@ -211,8 +211,8 @@ export default class extends Component {
                 <Content style={{paddingHorizontal: 10}}>
 
                     <View>
-                        <View style={{...styles.rowPadding, paddingRight: 115}}>
-                            <Text grayDark medium bold style={{marginRight: 15}}>Số tiền cần rút</Text>
+                        <View style={{...styles.rowPadding}}>
+                            <Text grayDark medium bold>Số tiền cần rút</Text>
                             <Item style={styles.item}>
                                 <Input
                                     style={styles.input}
@@ -232,7 +232,7 @@ export default class extends Component {
                     </View>
                     {/*<View style={styles.pd10}>*/}
                     {/*<ScrollView>*/}
-                    <View style={{paddingBottom: 50}}>
+                    <View style={{paddingBottom: 30}}>
                         <BankSelection
                             callback={() => this._handleCallBackSelected()}
                             listAccounts={bank}

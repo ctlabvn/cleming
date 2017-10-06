@@ -105,7 +105,7 @@ export default {
         padding: 10
     },
     item: {
-
+        width: 240,
         backgroundColor: material.gray200,
         borderRadius: 5,
         margin: 5,
@@ -125,10 +125,12 @@ export default {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 10,
-        borderRadius: 2,
+        borderRadius: 5,
         borderColor: material.gray300,
         borderWidth: 1,
-        margin: 5
+        height: 50,
+        margin: 5,
+        marginBottom: 10,
     },
     okBtn: {
         backgroundColor: material.primaryColor,
