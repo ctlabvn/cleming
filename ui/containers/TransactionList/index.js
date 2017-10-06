@@ -96,7 +96,17 @@ export default class extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, clearRouteParam, route } = this.props
+
+            // Receive Pram from DealManager screen
+            if (route.params) {
+                // app.topDropdown
+                if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
+                if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                clearRouteParam()
+                delete route.params
+            }
+            
             let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
@@ -138,7 +148,16 @@ export default class extends Component {
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const { app, meta, clearMarkLoad } = this.props
+            const { app, meta, clearMarkLoad, clearRouteParam, route} = this.props
+            
+            // Receive Pram from DealManager screen
+            if (route.params) {
+                // app.topDropdown
+                if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
+                if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                clearRouteParam()
+                delete route.params
+            }
             let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
             let currentPlace = app.topDropdown.getValue()

@@ -73,7 +73,7 @@ export default {
         showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
-            },
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -288,6 +288,9 @@ export default {
       showItemAllPlaceOnTopDropdown: true,
       tabIndex: 1,
       cache: true,
+      cachePlace: {
+        selectedPlace: {}
+      },
     },
     createDeal: {
       title: I18n.t('page_create_deal'),

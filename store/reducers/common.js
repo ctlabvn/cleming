@@ -114,6 +114,8 @@ export const router = (state = initialRouterState, { type, payload }) => {
     case 'navigate/pop':
       // prevent back forever
       return {current: state.stack[0] || defaultRoute, stack: state.stack.slice(1)}
+    case 'navigate/clearParams':
+      return {...state, current: {routeName: state.current.routeName}}
     case 'app/logout':
       return initialRouterState
     case 'app/clearData':

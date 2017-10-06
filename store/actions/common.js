@@ -120,3 +120,7 @@ export const closeModal = () => ({
   type: 'app/closeModal',
 })
 
+export const clearRouteParam = () => ({
+  type: 'navigate/clearParams'
+})
+

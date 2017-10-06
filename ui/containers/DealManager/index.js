@@ -144,6 +144,12 @@ export default class DealManager extends Component {
       return number.toFixed(2)
     }
 
+    _forwardToTransList = () => {
+      const {forwardTo, currentDateFilter, app} = this.props
+      let selectedPlace = app.topDropdown.getValue()
+      forwardTo('transactionList', {from: 'dealManager', currentDateFilter, selectedPlace})
+    }
+
     render() {
         const {forwardTo, currentDateFilter, viewOverview, transactionNumber} = this.props
         return (
@@ -159,7 +165,7 @@ export default class DealManager extends Component {
                       <Text>{I18n.t('money_number')}</Text>
                       <Text medium bold primary>{formatNumber(viewOverview.totalMoney)} đ</Text>
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
+                    <TouchableWithoutFeedback onPress={this._forwardToTransList}>
                       <View style={styles.moneyItem}>
                         <View style={styles.inline}>
                           <Text medium>{I18n.t('transaction')}</Text>
