@@ -100,7 +100,7 @@ export default class extends Component {
     _handlePressUseDiffrenceAccount() {
         this.bankSelection.unSelectedALlItem();
         if (!this.state.useDiffrenceAccount) {
-            this.props.resetForm('AddBankAccount');
+            this.props.resetForm('AddBankAccountForm');
         }
         this.setState({
             useDiffrenceAccount: true,
@@ -119,7 +119,7 @@ export default class extends Component {
             }))
         }
 
-        this.props.resetForm('AddBankAccount');
+        // this.props.resetForm('AddBankAccountForm');
 
         return (
             <View style={{padding: 10}}>
