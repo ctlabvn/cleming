@@ -26,9 +26,7 @@ export default class MultipleLineTextInput extends Component {
       value={this.state.text}
       onSelectionChange={(event) => this.setState({ cursorPosition: event.nativeEvent.selection.start })}
       onSubmitEditing={(event) => {
-        
         const { text, cursorPosition } = this.state;
-        console.log('On Submit editing', text+'---'+cursorPosition)
         let newText = text;
         const ar = newText.split('');
         ar.splice(cursorPosition, 1, "\n");

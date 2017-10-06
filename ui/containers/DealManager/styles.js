@@ -103,17 +103,18 @@ export default {
     height: 70,
     width: 100,
     resizeMode: 'cover',
-    marginRight: 20
+    // marginRight: 
   },
   discountNumber: {
-    paddingLeft: 15,
     borderLeftWidth: 1,
     borderColor: material.gray500
   },
   dealRight: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginLeft: 5
+    // paddingLeft: 10
   },
   dealTransactionIcon: {
     marginRight: 15
