@@ -7,6 +7,7 @@ const isDigitOnly = (str) => {
 
 }
 export const validate = (values) => {
+	console.log('validate values' + JSON.stringify(values))
 	let errors = {}
 	if (!values.account_owner){
 		errors.account_owner = I18n.t('err_field_must_not_empty')
@@ -39,6 +40,15 @@ export const validate = (values) => {
 		errors.branch = I18n.t('err_field_must_not_empty')
 		return errors
 	}
+
+	if (!values.phone_number) {
+		errors.phone_number = I18n.t('err_field_must_not_empty')
+	}
+
+    if (!isDigitOnly(values.phone_number)){
+        errors.phone_number = 'số điện thoại chỉ chứa số'
+        return errors
+    }
 
 	return errors
 }

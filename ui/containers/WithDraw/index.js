@@ -123,24 +123,11 @@ export default class extends Component {
 
         return (
             <View style={{padding: 10}}>
-                <Text grayDark medium>{I18n.t('account_owner')}</Text>
-                <Field autoCapitalize="none" name="account_owner"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input1'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}/>
 
-                <Text grayDark medium>{I18n.t('identity_card')}</Text>
-                <Field name="identity_card"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input2'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"/>
+                <Text grayDark medium>{I18n.t('bank_name')}</Text>
+                <SearchableDropdown
+                    dropdownValues={this.listBank}
+                    ref={ref => this.bankDropdown = ref}/>
 
                 <Text grayDark medium>{I18n.t('account_number')}</Text>
                 <Field name="account_number"
@@ -152,15 +139,36 @@ export default class extends Component {
                        style={styles.inputItem}
                        keyboardType="numeric"/>
 
+                <Text grayDark medium>{I18n.t('account_owner')}</Text>
+                <Field autoCapitalize="none" name="account_owner"
+                       icon={(input, active) => input.value && active ? 'close' : false}
+                       iconStyle={{color: material.black500}}
+                       ref='input1'
+                       onIconPress={input => input.onChange('')}
+                       component={InputFieldWithErr}
+                       style={styles.inputItem}/>
 
-                <Text grayDark medium>{I18n.t('bank_name')}</Text>
-                <SearchableDropdown
-                    dropdownValues={this.listBank}
-                    ref={ref => this.bankDropdown = ref}/>
+                <Text grayDark medium>Số điện thoại</Text>
+                <Field name="phone_number"
+                       icon={(input, active) => input.value && active ? 'close' : false}
+                       iconStyle={{color: material.black500}}
+                       ref='input5'
+                       onIconPress={input => input.onChange('')}
+                       component={InputFieldWithErr}
+                       style={styles.inputItem}
+                       keyboardType="numeric"/>
 
+                <Text grayDark medium>{I18n.t('identity_card')}</Text>
+                <Field name="identity_card"
+                       icon={(input, active) => input.value && active ? 'close' : false}
+                       iconStyle={{color: material.black500}}
+                       ref='input2'
+                       onIconPress={input => input.onChange('')}
+                       component={InputFieldWithErr}
+                       style={styles.inputItem}
+                       keyboardType="numeric"/>
 
                 <Text grayDark medium>{I18n.t('branch')}</Text>
-
                 <Field name="branch"
                        icon={(input, active) => input.value && active ? 'close' : false}
                        iconStyle={{color: material.black500}}
@@ -233,11 +241,11 @@ export default class extends Component {
                             listAccounts={bank}
                             ref={bankSelection => this.bankSelection = bankSelection}/>
 
-                        {/*<TouchableOpacity onPress={() => forwardTo('bankAccount')}>*/}
-                        {/*<View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>*/}
-                        {/*<Text primary>+ {I18n.t('add_account')}</Text>*/}
-                        {/*</View>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity onPress={() => forwardTo('bankAccount')}>
+                        <View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>
+                        <Text primary>+ {I18n.t('add_account')}</Text>
+                        </View>
+                        </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => this._handlePressUseDiffrenceAccount()}>
                             <View style={styles.bankLogoContainer}>
@@ -254,7 +262,7 @@ export default class extends Component {
 
                 </Content>
                 {/*</View>*/}
-                <Button style={styles.okBtn} onPress={handleSubmit((data) => this._handlePressOkAdvance(data))}>
+                <Button style={styles.okBtn} onPress={handleSubmit((input) => this._handlePressOkAdvance(input))}>
                     <Text white>Đồng ý</Text>
                 </Button>
 
