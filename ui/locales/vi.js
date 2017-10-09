@@ -373,6 +373,11 @@ export default {
     'max_cashback': 'Tối đa (VNĐ)',
     'deal_discount': 'Tặng',
     'money_number': 'Số tiền',
-    'roi': 'ROI'
-
+    'roi': 'ROI',
+    'err_invalid_data': 'Thông tin nhập vào không chính xác',
+    'err_place_not_belong_to_merchant': 'Địa điểm này không thuộc quyền quản lí của bạn',
+    'err_missing_cover_picture': 'Thiếu ảnh Cover',
+    'err_invalid_deal_start_date': 'Ngày của bắt đầu Deal không hợp lệ',
+    'err_invalid_deal_end_date': 'Ngày kết thúc Deal không hợp lệ',
+    'err_deal_title_empty': 'Tiêu đề Deal trống'
 }

@@ -7,13 +7,14 @@ import {
 import {TextInput} from 'react-native'
 import Icon from '~/ui/elements/Icon'
 import Switch from '~/ui/elements/Switch'
-
+import { formatMoney, revertFormatMoney } from "~/ui/shared/utils"
 import DatePicker from '~/ui/components/DatePicker'
 import Dropdown from '~/ui/components/Dropdown'
 import Toggle from '~/ui/components/Toggle'
 import material from '~/theme/variables/material'
 import CheckBox from '~/ui/elements/CheckBox'
 import MultipleLineTextInput from '~/ui/components/MultipleLineTextInput'
+import MoneyMaskInput from '~/ui/components/MoneyMaskInput'
 import styles from './styles'
 
 export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
@@ -55,6 +56,22 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
           style={{...styles.inputIcon, ...iconStyle}}
           name={iconName}
         />}
+      </Item>
+      <View>
+        {touched && error && <Text small error>{error}</Text>}
+      </View>
+    </View>
+  )
+}
+
+export const MoneyInputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+  return (
+    <View style={{...style}}>
+      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
+        <MoneyMaskInput
+          style={{...styles.inputWithErr, flex: 1}}
+          {...input}
+        />
       </Item>
       <View>
         {touched && error && <Text small error>{error}</Text>}

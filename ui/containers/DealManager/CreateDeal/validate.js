@@ -1,6 +1,7 @@
 import I18n from '~/ui/I18n'
 import moment from 'moment'
 import { PROMO_TYPE, EXCLUSIVE_TYPE} from "~/store/constants/app";
+import { formatMoney, revertFormatMoney } from "~/ui/shared/utils"
 
 // export const PROMO_TYPE = {
 //   PERCENT: 1,
@@ -63,7 +64,7 @@ export const validate = (values) => {
 			return errors
 		}
 
-		if (values.moneyLimit && !isDigitOnly(values.moneyLimit)){
+		if (values.moneyLimit && !isDigitOnly(revertFormatMoney(values.moneyLimit))){
 			errors._error='moneyLimit'
 			errors.moneyLimit = I18n.t('err_invalid_money_limit')
 			return errors

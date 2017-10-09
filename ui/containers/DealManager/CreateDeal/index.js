@@ -7,12 +7,12 @@ import {connect} from 'react-redux'
 import {forwardTo, showPopupInfo, setToast} from '~/store/actions/common'
 import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
-import { formatNumber, getToastMessage } from "~/ui/shared/utils"
+import { formatNumber, getToastMessage, revertFormatMoney, formatMoney } from "~/ui/shared/utils"
 import Border from "~/ui/elements/Border"
 import RatingBar from '~/ui/components/RatingBar'
 import Picker from '~/ui/components/Picker'
 import { Field, formValueSelector, reduxForm, reset } from "redux-form"
-import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField } from "~/ui/elements/Form"
+import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField, MoneyInputField } from "~/ui/elements/Form"
 import DealImageSelector from './DealImageSelector'
 import ExclusiveTypeSelector from './ExclusiveTypeSelector'
 import PlaceSelector from './PlaceSelector'
@@ -170,6 +170,37 @@ export default class CreateDeal extends Component {
           this.uploadingProgress.close()
           showPopupInfo(I18n.t('create_deal_successful'))
           forwardTo('dealManager')
+        }else if (dataRes.code){
+          // 1901 Invalid input data Data nhập vào không chính xác
+          // 1923 Invalid deal title Tiêu đề khuyến mại bị rỗng
+          // 1924 Invalid deal description Mô tả deal bị rỗng
+          // 1925 Invalid deal deal promo title Chữ ở giữa bị trống
+          // 1926 Invalid date Ngày của deal bị sai
+          // 1927 To date less than from date Từ ngày lớn hơn đến ngày khuyến mại
+          // 1922 Invalid place id list Danh sách các place truyền lên không thuộc quyền quản lý của merchant này
+          // 1921 Invalid cover file Ảnh cover không có
+          this.uploadingProgress.close()
+          switch(dataRes.code){
+            case 1901:
+              showPopupInfo(I18n.t('err_invalid_data'))
+              break
+            case 1923:
+              showPopupInfo(I18n.t('err_deal_title_empty'))
+              break
+            case 1922:
+              showPopupInfo(I18n.t('err_place_not_belong_to_merchant'))
+              break
+            case 1921:
+              showPopupInfo(I18n.t('err_missing_cover_picture'))
+              break
+            case 1926:
+              showPopupInfo(I18n.t('err_invalid_deal_start_date'))
+              break
+            case 1927:
+              showPopupInfo(I18n.t('err_invalid_deal_end_date'))
+              break
+          }
+
         }else{
           this.uploadingProgress.close()
           showPopupInfo(I18n.t('create_deal_fail'))
@@ -197,6 +228,7 @@ export default class CreateDeal extends Component {
       
       // exclusiveDealType: 1 là giảm giá theo % không giới hạn số tiền cashback, 2 là giảm giá theo phần trăm có giới hạn số tiền cashback, 3 là giảm tiền cho hoá đơn, 4 là giảm tiền cho hoá đơn nếu hoá đơn lớn hơn một số tiền nhất định. Bắt buộc truyền lên.
       // moneyLimit (long): số tiền giới hạn cashback, nếu không giới hạn truyền lên là 0. Bắt buộc truyền lên.
+      moneyLimit = revertFormatMoney(moneyLimit)
       let exclusiveDealType
       if (moneyLimit && moneyLimit > 0){
         exclusiveDealType = 2
@@ -282,11 +314,20 @@ export default class CreateDeal extends Component {
           </View>
           <View style={{...styles.halfRow}}>
             <Text style={styles.label}>{I18n.t('max_cashback')}</Text>
-            <Field autoCapitalize="none" name="moneyLimit"
+            {/*<Field autoCapitalize="none" name="moneyLimit"
                 icon={(input, active) => input.value && active ? 'close' : false}
                 iconStyle={{ color: material.gray500 }}
                 onIconPress={input => input.onChange('')}
                 component={InputFieldWithErr}
+                style={{...styles.inputItem}}
+                placeholder='VND'
+                keyboardType='numeric'
+            />*/}
+            <Field autoCapitalize="none" name="moneyLimit"
+                icon={(input, active) => input.value && active ? 'close' : false}
+                iconStyle={{ color: material.gray500 }}
+                onIconPress={input => input.onChange('')}
+                component={MoneyInputField}
                 style={{...styles.inputItem}}
                 placeholder='VND'
                 keyboardType='numeric'
