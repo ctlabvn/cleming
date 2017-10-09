@@ -105,7 +105,6 @@ export default {
         padding: 10
     },
     item: {
-        width: 240,
         backgroundColor: material.gray200,
         borderRadius: 5,
         margin: 5,
@@ -147,17 +146,21 @@ export default {
     },
     inputItem: {
         marginBottom: 10,
-        backgroundColor: material.gray300
+        backgroundColor: material.gray300,
+        width: '100%',
     },
     inputItem1: {
         marginBottom: 10,
         backgroundColor: material.gray300,
-        width: 215,
+        width: '60%',
     },
     rowInput: {
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    inputFieldContainer: {
+        width: '60%'
     }
 }
