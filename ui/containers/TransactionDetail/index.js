@@ -568,7 +568,6 @@ export default class TransactionDetail extends Component {
             case TRANSACTION_TYPE_DIRECT:
                 return this.renderDirect(transactionInfo)
             case TRANSACTION_TYPE_ORDER_SUCCESS:
-                return this.renderDirect(transactionInfo)
                 return this.renderOrder(transactionInfo)
         }
     }
