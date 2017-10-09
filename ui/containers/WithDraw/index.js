@@ -83,6 +83,15 @@ export default class extends Component {
     _handlePressOkAdvance(data) {
         Keyboard.dismiss();
         if (this.state.useDiffrenceAccount) {
+            const {setToast, cashout, xsession} = this.props
+            if (!this.state.moneyAmount || this.state.moneyAmount.trim == '') {
+                setToast(getToastMessage(I18n.t('err_money_not_empty')), 'info', null, null, 2000, 'top')
+                return
+            } else if (isNaN(this.state.moneyAmount)) {
+                setToast(getToastMessage(I18n.t('err_money_must_number')), 'info', null, null, 2000, 'top')
+                return
+            }
+
             data['bank'] = this.bankDropdown.getValue().name
             this.preview.show(data)
         }
@@ -97,16 +106,21 @@ export default class extends Component {
         this.setState({useDiffrenceAccount: false});
     }
 
+    _clearForm() {
+        // this.refs.input2.onChange('');
+
+    }
+
     _handlePressUseDiffrenceAccount() {
         this.bankSelection.unSelectedALlItem();
-        if (!this.state.useDiffrenceAccount) {
-            this.props.resetForm('AddBankAccountForm');
-        }
+        // if (!this.state.useDiffrenceAccount) {
+            // this.props.resetForm('AddBankAccountForm');
+        // }
+
         this.setState({
             useDiffrenceAccount: true,
         }, () => {
-            // alert('done');
-            if (this.refs.input1) this.refs.input1.value = '';
+            this._clearForm();
         })
     }
 
@@ -126,6 +140,7 @@ export default class extends Component {
 
                 <Text grayDark medium>{I18n.t('bank_name')}</Text>
                 <SearchableDropdown
+                    style={{height: 45}}
                     dropdownValues={this.listBank}
                     ref={ref => this.bankDropdown = ref}/>
 
@@ -133,7 +148,7 @@ export default class extends Component {
                 <Field name="account_number"
                        icon={(input, active) => input.value && active ? 'close' : false}
                        iconStyle={{color: material.black500}}
-                       ref='input3'
+                       ref='input2'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
                        style={styles.inputItem}
@@ -143,7 +158,7 @@ export default class extends Component {
                 <Field autoCapitalize="none" name="account_owner"
                        icon={(input, active) => input.value && active ? 'close' : false}
                        iconStyle={{color: material.black500}}
-                       ref='input1'
+                       ref='input3'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
                        style={styles.inputItem}/>
@@ -152,30 +167,30 @@ export default class extends Component {
                 <Field name="phone_number"
                        icon={(input, active) => input.value && active ? 'close' : false}
                        iconStyle={{color: material.black500}}
-                       ref='input5'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"/>
-
-                <Text grayDark medium>{I18n.t('identity_card')}</Text>
-                <Field name="identity_card"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
-                       ref='input2'
-                       onIconPress={input => input.onChange('')}
-                       component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"/>
-
-                <Text grayDark medium>{I18n.t('branch')}</Text>
-                <Field name="branch"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
                        ref='input4'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
-                       style={styles.inputItem}/>
+                       style={styles.inputItem}
+                       keyboardType="numeric"/>
+
+                {/*<Text grayDark medium>{I18n.t('identity_card')}</Text>*/}
+                {/*<Field name="identity_card"*/}
+                       {/*icon={(input, active) => input.value && active ? 'close' : false}*/}
+                       {/*iconStyle={{color: material.black500}}*/}
+                       {/*ref='input2'*/}
+                       {/*onIconPress={input => input.onChange('')}*/}
+                       {/*component={InputFieldWithErr}*/}
+                       {/*style={styles.inputItem}*/}
+                       {/*keyboardType="numeric"/>*/}
+
+                {/*<Text grayDark medium>{I18n.t('branch')}</Text>*/}
+                {/*<Field name="branch"*/}
+                       {/*icon={(input, active) => input.value && active ? 'close' : false}*/}
+                       {/*iconStyle={{color: material.black500}}*/}
+                       {/*ref='input4'*/}
+                       {/*onIconPress={input => input.onChange('')}*/}
+                       {/*component={InputFieldWithErr}*/}
+                       {/*style={styles.inputItem}/>*/}
 
             </View>
         )
@@ -211,21 +226,38 @@ export default class extends Component {
 
                 <Content style={{paddingHorizontal: 10}}>
 
+                    {/*<View>*/}
+                        {/*<View style={{...styles.rowPadding}}>*/}
+                            {/*<Text grayDark medium bold>Số tiền cần rút</Text>*/}
+                            {/*<View style={styles.inputFieldContainer}>*/}
+                                {/*<Item style={styles.item}>*/}
+                                    {/*<Input*/}
+                                        {/*style={styles.input}*/}
+                                        {/*keyboardType='phone-pad'*/}
+                                        {/*onChangeText={(value) => this.setState({moneyAmount: value})}*/}
+                                        {/*value={this.state.moneyAmount.toString()}*/}
+                                    {/*/>*/}
+                                    {/*{(this.state.moneyAmount != 0 || this.state.moneyAmount.length > 0) &&*/}
+                                    {/*<Icon name='close' style={{...styles.icon, color: material.gray500}}*/}
+                                          {/*onPress={this._handlePressClear}/>}*/}
+                                {/*</Item>*/}
+                            {/*</View>*/}
+                        {/*</View>*/}
+                    {/*</View>*/}
+
                     <View>
                         <View style={{...styles.rowPadding}}>
                             <Text grayDark medium bold>Số tiền cần rút</Text>
                             <View style={styles.inputFieldContainer}>
-                                <Item style={styles.item}>
-                                    <Input
-                                        style={styles.input}
-                                        keyboardType='phone-pad'
-                                        onChangeText={(value) => this.setState({moneyAmount: value})}
-                                        value={this.state.moneyAmount.toString()}
-                                    />
-                                    {(this.state.moneyAmount != 0 || this.state.moneyAmount.length > 0) &&
-                                    <Icon name='close' style={{...styles.icon, color: material.gray500}}
-                                          onPress={this._handlePressClear}/>}
-                                </Item>
+                                <Field name="money_amount"
+                                       icon={(input, active) => input.value && active ? 'close' : false}
+                                       iconStyle={{color: material.black500}}
+                                       ref='input1'
+                                       onChangeText={(value) => this.setState({moneyAmount: value})}
+                                       onIconPress={input => input.onChange('')}
+                                       component={InputFieldWithErr}
+                                       style={styles.inputItem}
+                                       keyboardType="numeric"/>
                             </View>
                         </View>
                     </View>

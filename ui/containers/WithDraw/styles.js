@@ -148,6 +148,7 @@ export default {
         marginBottom: 10,
         backgroundColor: material.gray300,
         width: '100%',
+        height: 45,
     },
     inputItem1: {
         marginBottom: 10,
