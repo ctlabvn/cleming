@@ -255,8 +255,8 @@ export default class extends Component {
                             </View>
                         </TouchableOpacity>
 
-                        {/*{this.state.useDiffrenceAccount && this._renderFormAddAccount()}*/}
-                        {this._renderFormAddAccount()}
+                        {this.state.useDiffrenceAccount && this._renderFormAddAccount()}
+                        {/*{this._renderFormAddAccount()}*/}
 
                     </View>
 
