@@ -44,6 +44,7 @@ import CreateDeal from './containers/DealManager/CreateDeal'
 import DealInfo from './containers/DealManager/DealInfo'
 import DealDetail from './containers/DealManager/DealDetail'
 import ExperimentAnimate from './containers/ExperimentAnimate'
+import { ITEM_ALL_PLACE } from '~/store/constants/app'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -284,10 +285,10 @@ export default {
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
-        // showTopDropdown: true,
-        // showItemAllPlaceOnTopDropdown: true,
+        showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
-            selectedPlace: {}
+            selectedPlace: ITEM_ALL_PLACE
         },
         cache: true,
     },
