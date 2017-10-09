@@ -72,7 +72,7 @@ export default class extends Component {
 
         this.state = {
             currentTab: CLINGME_MERCHANT_COLLECTED,
-            placeId: selectedPlace ? selectedPlace.placeId : 0,
+            placeId: selectedPlace ? selectedPlace.id : 0,
             fromTime: null,
             toTime: null,
             loading: false,
@@ -489,7 +489,7 @@ export default class extends Component {
 
         return (
             <Container style={styles.container}>
-                <View style={styles.spaceView}/>
+                {/*<View style={styles.spaceView}/>*/}
                 {/*<TabsWithNoti tabData={options.tabData} activeTab={this.state.currentTab}*/}
                               {/*onPressTab={data => this._handlePressTab(data)}*/}
                               {/*ref='tabs'/>*/}
@@ -513,10 +513,10 @@ export default class extends Component {
                     renderRow={(item) => this._renderTransactionItem(item)}
                     rowHasChanged={true}
                 />}
-                <TopDropdownAllPlace
-                    dropdownValues={listPlace}
-                    onSelect={item => this._handleSelectPlace(item)}
-                />
+                {/*<TopDropdownAllPlace*/}
+                    {/*dropdownValues={listPlace}*/}
+                    {/*onSelect={item => this._handleSelectPlace(item)}*/}
+                {/*/>*/}
             </Container>
         )
     }
