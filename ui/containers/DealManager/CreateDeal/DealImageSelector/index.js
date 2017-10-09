@@ -38,6 +38,7 @@ export default class DealImageSelector extends Component {
     }
 
     reset = () => {
+        console.log('Call Reset')
         this.setState(initState)
     }
 
@@ -109,14 +110,16 @@ export default class DealImageSelector extends Component {
     }
 
     _open = () => {
+      console.log('Call _open')
       this.setState({modalVisible: true})
     }
 
     _isFunction = (obj) => !!(obj && obj.constructor && obj.call && obj.apply)
     _close = (callback) => {
+      console.log('Call _close', callback)
       this.setState({modalVisible: false},
         ()=>{
-          callback && this._isFunction(callback) && callback()
+          setTimeout(()=>callback && this._isFunction(callback) && callback(), 50)
         }
       )
     }
