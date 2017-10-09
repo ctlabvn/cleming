@@ -52,7 +52,7 @@ export default {
     fontSize: 20
   },
   infoItem2: {
-    width: '20%',
+    width: '25%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

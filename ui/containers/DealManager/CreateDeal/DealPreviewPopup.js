@@ -92,13 +92,13 @@ export default class DealPreviewPopup extends Component {
                   borderColor: material.gray500, borderWidth: 1, 
                   borderRadius: 15, flexDirection: 'row', justifyContent: 'center', 
                   alignItems: 'center', backgroundColor: 'black', zIndex: 10,
-                  marginTop: (Platform.OS==='ios'?10:0)
+                  marginTop: (Platform.OS==='ios'?15:0)
                   }}>
                 <Icon name='close_bt' style={{fontSize: 22, color: 'white', fontWeight: 'bold'}}
                   />
               </View>
             </TouchableWithoutFeedback>
-            <View style={{...styles.pd10, marginTop: (Platform.OS==='ios'?10:0)}}>
+            <View style={{...styles.pd10, marginTop: (Platform.OS==='ios'?15:0)}}>
               <Text bold medium>{I18n.t('deal_preview')}</Text>
             </View>
             <ImageSlider data={this._renderImages(data)}/>
@@ -123,7 +123,7 @@ export default class DealPreviewPopup extends Component {
 
                 <Text bold>{I18n.t('apply_place')}:</Text>
                 {applyPlace}
-                <Text bold>{I18n.t('description')}</Text>
+                <Text bold>{I18n.t('description')}:</Text>
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>

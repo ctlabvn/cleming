@@ -415,11 +415,11 @@ export default class DealInfo extends Component {
                     <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.shareNumber)}</Text>
                     
                   </View>
-                  <Border horizontal={false} />
+                  {/*<Border horizontal={false} />
                   <View style={styles.infoItem2}>
                     <Text>{I18n.t('buy')}</Text>
                     <Text bold style={styles.infoNumber2}>{formatNumber(viewDetail.boughtNumber)}</Text>
-                  </View>
+                  </View>*/}
               </View>
               <Border />
             </View>
