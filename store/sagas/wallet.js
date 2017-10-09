@@ -6,7 +6,8 @@ import { setToast, noop, forwardTo, goBack, showPopupInfo } from '~/store/action
 
 import {
     setBalance, setBanks, setBalanceDetail, setListBank, 
-    setCashoutHistory, setCashoutOverview, setCheckingHistory
+    setCashoutHistory, setCashoutOverview, setCheckingHistory, setGigatumBank,
+    setBalanceHistory, setCashoutAndPayHistoryDetail
 } from '~/store/actions/wallet'
 
 import {setSettingHour} from '~/store/actions/setting'
@@ -21,14 +22,14 @@ const requestGetBalance = createRequestSaga({
     key: 'app/getBalance',
     success: [
         (data) => {
-            console.log('Balance: ', data)
+            console.log('Panda Balance: ', data)
             if (data.data){
                 return setBalance(data.data)
             }
-            return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
         }
     ],
     failure: [
+        (data) => {return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')},
     ]
 })
 
@@ -45,6 +46,22 @@ const requestGetBalanceDetail = createRequestSaga({
         }
     ],
     failure: [
+    ]
+})
+
+const requestGetBalanceHistory = createRequestSaga({
+    request: api.wallet.balanceHistory,
+    key: 'cashout/getBalanceHistory',
+    success: [
+        (data) => {
+            console.log('get Balance History: ', data)
+            if (data.data){
+                return setBalanceHistory(data.data)
+            }
+        }
+    ],
+    failure: [
+        (data) => {return setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')},
     ]
 })
 
@@ -119,7 +136,15 @@ const requestCashoutHistory = createRequestSaga({
 
 const requestCashoutDetail = createRequestSaga({
   request: api.wallet.getCashoutDetail,
-  key: 'app/getCashoutDetail'
+  key: 'app/getCashoutDetail',
+    success: [
+        (data) => {
+            if (data && data.data){
+                return setCashoutAndPayHistoryDetail(data.data)
+            }
+            return noop('')
+        }
+    ]
 })
 
 const requestCashoutOverview = createRequestSaga({
@@ -148,6 +173,22 @@ const requestCheckingHistory = createRequestSaga({
   ]
 })
 
+
+const requestGetGigatumBank = createRequestSaga({
+    request: api.wallet.getGigatumBank,
+    key: 'payDetail/getGigatumBank',
+    success: [
+        (data) => {
+            console.log('Data: ', data)
+            if (data && data.data){
+                return setGigatumBank(data.data)
+            }
+        }
+    ],
+    failure: [
+    ]
+})
+
 // root saga reducer
 export default [
     // like case return, this is take => call
@@ -167,7 +208,9 @@ export default [
             takeLatest('app/getCashoutHistory', requestCashoutHistory),
             takeLatest('app/getCashoutDetail', requestCashoutDetail),
             takeLatest('app/getCashoutOverview', requestCashoutOverview),
-            takeLatest('app/getCheckingHistory', requestCheckingHistory)
+            takeLatest('app/getCheckingHistory', requestCheckingHistory),
+            takeLatest('payDetail/getGigatumBank', requestGetGigatumBank),
+            takeLatest('cashout/getBalanceHistory', requestGetBalanceHistory)
         ]
     },
 ]

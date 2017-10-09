@@ -27,13 +27,13 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 10
+        paddingVertical: 10,
     },
     rowPadding: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 5,
+        padding: 10,
     },
     icon: {
         fontSize: 20,
@@ -105,14 +105,13 @@ export default {
         padding: 10
     },
     item: {
-        width: '100%',
         backgroundColor: material.gray200,
-        borderRadius: 2,
+        borderRadius: 5,
+        margin: 5,
         borderColor: 'transparent'
     },
     input: {
-        // width: '100%', 
-        height: 50,
+        height: 45,
         fontSize: 18,
     },
     bankLogo: {
@@ -125,10 +124,12 @@ export default {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 10,
-        borderRadius: 2,
+        borderRadius: 5,
         borderColor: material.gray300,
         borderWidth: 1,
-        margin: 5
+        height: 50,
+        margin: 5,
+        marginBottom: 10,
     },
     okBtn: {
         backgroundColor: material.primaryColor,
@@ -139,5 +140,27 @@ export default {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 0
+    },
+    form: {
+        padding: 10
+    },
+    inputItem: {
+        marginBottom: 10,
+        backgroundColor: material.gray300,
+        width: '100%',
+    },
+    inputItem1: {
+        marginBottom: 10,
+        backgroundColor: material.gray300,
+        width: '60%',
+    },
+    rowInput: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    inputFieldContainer: {
+        width: '60%'
     }
 }

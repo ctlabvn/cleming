@@ -40,9 +40,37 @@ export const InputField = ({ input, label, meta: { active, touched, error, warni
 
 export const InputFieldWithErr = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
+  {/*<View style={{...style}}>
+       <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
+  return (
+    <View>
+      <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
+        {addon}
+        <Input
+          placeholder={label}
+          {...input}
+          placeholderTextColor={material.inputColorPlaceholder}
+          {...custom}
+          style={{...styles.inputWithErr, ...inputStyle}}
+        />
+        {iconName && <Icon
+          onPress={e=>onIconPress && onIconPress(input, active)}
+          style={{...styles.inputIcon, ...iconStyle}}
+          name={iconName}
+        />}
+      </Item>
+      <View>
+        {touched && error && <Text small error>{error}</Text>}
+      </View>
+    </View>
+  )
+}
+
+export const InputFieldWithErr2 = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+  const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   return (
     <View style={{...style}}>
-      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
+       <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
         {addon}
         <Input
           placeholder={label}

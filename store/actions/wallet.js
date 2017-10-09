@@ -58,6 +58,11 @@ export const setCashoutHistory = (data) => ({
   payload: data
 })
 
+export const setCashoutAndPayHistoryDetail = (data) => ({
+    type: 'app/setCashoutAndPayHistoryDetail',
+    payload: data
+})
+
 export const getCashoutDetail = (...args) => ({
   type: 'app/getCashoutDetail',
   args
@@ -81,4 +86,24 @@ export const getCheckingHistory = (...args) => ({
 export const setCheckingHistory = (data) => ({
   type: 'app/setCheckingHistory',
   payload: data
+})
+
+export const getGigatumBank = (...args) => ({
+    type: 'payDetail/getGigatumBank',
+    args
+})
+
+export const setGigatumBank = (data) => ({
+    type: 'app/setGigatumBank',
+    payload: data
+})
+
+export const setBalanceHistory = (data) => ({
+    type: 'app/setBalanceHistory',
+    payload: data
+})
+
+export const getBalanceHistory = (...args) => ({
+    type: 'cashout/getBalanceHistory',
+    args
 })

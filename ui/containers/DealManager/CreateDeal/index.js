@@ -12,7 +12,7 @@ import Border from "~/ui/elements/Border"
 import RatingBar from '~/ui/components/RatingBar'
 import Picker from '~/ui/components/Picker'
 import { Field, formValueSelector, reduxForm, reset } from "redux-form"
-import { DateField, InputFieldWithErr, MultiLineInputFieldWithErr, DropdownField, MoneyInputField } from "~/ui/elements/Form"
+import { DateField, InputFieldWithErr2, MultiLineInputFieldWithErr, DropdownField, MoneyInputField } from "~/ui/elements/Form"
 import DealImageSelector from './DealImageSelector'
 import ExclusiveTypeSelector from './ExclusiveTypeSelector'
 import PlaceSelector from './PlaceSelector'
@@ -289,15 +289,6 @@ export default class CreateDeal extends Component {
     }
 
     _renderPromoteBlock = () => {
-      // <Field autoCapitalize="none" name="leftPromo"
-              // icon={(input, active) => input.value && active ? 'close' : false}
-              // iconStyle={{ color: material.gray500 }}
-              // onIconPress={input => input.onChange('')}
-              // component={InputFieldWithErr}
-              // style={{...styles.inputItem, ...styles.halfRow}}
-              // placeholder='Giảm/Tặng'
-          // />
-
       return (
         <View style={{...styles.rowFull}}>
           <View style={{...styles.halfRow}}>
@@ -306,7 +297,7 @@ export default class CreateDeal extends Component {
                 icon={(input, active) => input.value && active ? 'close' : false}
                 iconStyle={{ color: material.gray500 }}
                 onIconPress={input => input.onChange('')}
-                component={InputFieldWithErr}
+                component={InputFieldWithErr2}
                 style={{...styles.inputItem}}
                 placeholder='%'
                 keyboardType='numeric'
@@ -314,15 +305,6 @@ export default class CreateDeal extends Component {
           </View>
           <View style={{...styles.halfRow}}>
             <Text style={styles.label}>{I18n.t('max_cashback')}</Text>
-            {/*<Field autoCapitalize="none" name="moneyLimit"
-                icon={(input, active) => input.value && active ? 'close' : false}
-                iconStyle={{ color: material.gray500 }}
-                onIconPress={input => input.onChange('')}
-                component={InputFieldWithErr}
-                style={{...styles.inputItem}}
-                placeholder='VND'
-                keyboardType='numeric'
-            />*/}
             <Field autoCapitalize="none" name="moneyLimit"
                 icon={(input, active) => input.value && active ? 'close' : false}
                 iconStyle={{ color: material.gray500 }}
@@ -361,7 +343,7 @@ export default class CreateDeal extends Component {
                     iconStyle={{ color: material.gray500 }}
                     icon={(input, active) => input.value && active ? 'close' : false}
                     onIconPress={input => input.onChange('')}
-                    component={InputFieldWithErr}
+                    component={InputFieldWithErr2}
                     style={styles.inputItem}
                 />
 
@@ -419,7 +401,7 @@ export default class CreateDeal extends Component {
                     icon={(input, active) => input.value && active ? 'close' : false}
                     iconStyle={{ color: material.gray500 }}
                     onIconPress={input => input.onChange('')}
-                    component={InputFieldWithErr}
+                    component={InputFieldWithErr2}
                     style={styles.inputItem}
                 />
                 <Border />

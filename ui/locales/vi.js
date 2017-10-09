@@ -78,7 +78,11 @@ export default {
     'page_wallet_detail': 'Chi tiết các thanh toán',
     'page_bank_account': 'Tài khoản ngân hàng',
     'page_setting': 'Cài đặt',
-    'page_cashout_account': 'Tài khoản Cashout',
+    'page_cashout_account': 'Tài khoản Đối tác',
+    'page_cashout_detail' : 'Chi tiết rút tiền',
+    'page_cashout_and_pay_history': 'Lịch sử giao dịch',
+    'page_pay_detail': 'Chi tiết thanh toán',
+    'cashout': 'Rút tiền',
 
     // Login Screen
     'email_phone': 'Email/Số điện thoại',
@@ -235,7 +239,7 @@ export default {
     'choose_end_date': 'Chọn ngày kết thúc',
 
     //Wallet
-    'balance': 'Số dư TK',
+    'balance': 'Số dư tài khoản',
     'withdraw': 'Rút tiền',
     'view_detail': 'Xem chi tiết',
     'money_credited': 'Tiền ghi có',
@@ -267,8 +271,13 @@ export default {
     'transaction_code': 'Mã giao dịch',
     'request_time': 'Thời gian yêu cầu',
     'receive_time': 'Thời gian nhận tiền',
-    'not_checking_yet': 'Chưa đối soát',
+    'not_checking_yet': 'Chờ đối soát',
     'checked': 'Đã đối soát',
+    'balance_money': 'Số dư hiện tại',
+    'pay': 'Thanh toán',
+    'pre_balance': 'Số dư kỳ trước',
+    'pay_compare_check': 'Thanh toán kỳ đối soát',
+
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
     'could_not_get_network': 'Coudldn\'t get networks',
@@ -291,10 +300,10 @@ export default {
     'total_money_clingme_get': 'Tổng tiền Clingme đã thu:',
     'merchant_get_money_from_clingme': 'Clingme thanh toán \n cho đối tác',
     'clingme_get_money_from_merchant': 'Đối tác thanh toán \n cho Clingme',
-    'clingme_pay': 'Thanh toán Clingme',
+    'clingme_pay': 'Thanh toán cho Clingme',
 
     // Cashout
-    'cashout_account': 'Tài khoản cashout',
+    'cashout_account': 'Tài khoản Đối tác',
     'all_places': 'Tất cả địa điểm',
 
     // Transaction History

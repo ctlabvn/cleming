@@ -116,3 +116,7 @@ export const PROMO_TYPE = {
 export const initialRouteName = 'login'
 export const initialAuthRouteName = 'merchantOverview'
 export const ITEM_ALL_PLACE = {id: 0, name: I18n.t('all_places'), address: I18n.t('all_places')}
+
+export const CASHOUT_AND_PAY_HISTORY_ALL = 0
+export const CASHOUT_AND_PAY_HISTORY_COME_IN = 1
+export const CASHOUT_AND_PAY_HISTORY_COME_OUT = 2
