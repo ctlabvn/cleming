@@ -50,59 +50,60 @@ export default class DealImageSelector extends Component {
     }
 
     _handleMultiplePicker = () => {
-      this._close()
-      ImagePickerMultiple.openPicker({
-        width: 300,
-        height: 400,
-        multiple: true,
-        mediaType: 'photo',
-        showsSelectedCount: true,
-        minFiles: 1
-      }).then(images => {
-        let cloneImages = [...this.state.images]
-        let flag = 0
-        for (let i=0; i<images.length; i++){
-          let image = images[i]
-          if (cloneImages.findIndex(item=>item.path == image.path) == -1){
-            flag ++
-            cloneImages.push(image)
+      this._close(()=>{
+        ImagePickerMultiple.openPicker({
+          width: 300,
+          height: 400,
+          multiple: true,
+          mediaType: 'photo',
+          showsSelectedCount: true,
+          minFiles: 1
+        }).then(images => {
+          let cloneImages = [...this.state.images]
+          let flag = 0
+          for (let i=0; i<images.length; i++){
+            let image = images[i]
+            if (cloneImages.findIndex(item=>item.path == image.path) == -1){
+              flag ++
+              cloneImages.push(image)
+            }
           }
-        }
-        if (flag >0) {
-          if (!this.state.avatar || this.state.avatar == ''){
-            this.setState({images: cloneImages, avatar: images[0].path})
-            setTimeout(()=>{
-              console.log('scrollToEnd');
-              this.scrollView.scrollToEnd()
-            }, 100)
-          }else{
-            this.setState({images: cloneImages})
-            setTimeout(()=>{
-              console.log('scrollToEnd');
-              this.scrollView.scrollToEnd()
-            }, 100)
+          if (flag >0) {
+            if (!this.state.avatar || this.state.avatar == ''){
+              this.setState({images: cloneImages, avatar: images[0].path})
+              setTimeout(()=>{
+                console.log('scrollToEnd');
+                this.scrollView.scrollToEnd()
+              }, 100)
+            }else{
+              this.setState({images: cloneImages})
+              setTimeout(()=>{
+                console.log('scrollToEnd');
+                this.scrollView.scrollToEnd()
+              }, 100)
+            }
           }
-        }
-
-
-      }).catch(e => console.log('Err select Image: ', e));
+        }).catch(e => console.log('Err select Image: ', e));
+      })
     }
 
     _openCamera = () => {
-      this._close()
-      ImagePickerMultiple.openCamera({
-        width: 300,
-        height: 400,
-      }).then(image => {
-        if (this.state.images.findIndex(item=>item.path == image.path) == -1){
-          if (!this.state.avatar || this.state.avatar == ''){
-            this.setState({images: [...this.state.images, image], avatar: image.path})
-          }else{
-            this.setState({images: [...this.state.images, image]})
+      this._close(()=>{
+        ImagePickerMultiple.openCamera({
+          width: 300,
+          height: 400,
+        }).then(image => {
+          if (this.state.images.findIndex(item=>item.path == image.path) == -1){
+            if (!this.state.avatar || this.state.avatar == ''){
+              this.setState({images: [...this.state.images, image], avatar: image.path})
+            }else{
+              this.setState({images: [...this.state.images, image]})
+            }
           }
-        }
-      }).catch(e=>console.log('Err Open Cam', e))
+        }).catch(e=>console.log('Err Open Cam', e))
+      })
     }
+
     componentDidMount(){
 
     }
@@ -110,8 +111,14 @@ export default class DealImageSelector extends Component {
     _open = () => {
       this.setState({modalVisible: true})
     }
-    _close = () => {
-      this.setState({modalVisible: false})
+
+    _isFunction = (obj) => !!(obj && obj.constructor && obj.call && obj.apply)
+    _close = (callback) => {
+      this.setState({modalVisible: false},
+        ()=>{
+          callback && this._isFunction(callback) && callback()
+        }
+      )
     }
 
     _clear = (item) => {

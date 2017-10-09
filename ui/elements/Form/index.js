@@ -97,7 +97,7 @@ export const MoneyInputField = ({ input, label, meta: { active, touched, error, 
     <View style={{...style}}>
       <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} >
         <MoneyMaskInput
-          style={{...styles.inputWithErr, flex: 1}}
+          style={{...styles.inputWithErr, paddingLeft: 5, flex: 1}}
           {...input}
         />
       </Item>
