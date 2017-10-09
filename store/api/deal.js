@@ -52,5 +52,10 @@ export default {
     console.log('Get transactionNumber API', session+'---'+placeId+'---'+fromTime+'---'+toTime)
     if (!placeId || placeId <= 0) return apiGet('/merchantapp/tran-list', {fromTime, toTime}, session)
     else return apiGet('/merchantapp/tran-list', {placeId, fromTime, toTime}, session)
+  },
+
+  getBasicStatistic(session, placeIds, fromTime, toTime){
+    console.log('Get basic statistic API', session+'---'+placeIds+'---'+fromTime+'---'+toTime)
+    return apiGet('/place/statisticBasic', {placeIds, fromTime, toTime}, session)
   }
 }

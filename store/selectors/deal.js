@@ -39,3 +39,8 @@ export const transactionNumberSelector = (state) => {
   if (!state || !state.deal || !state.deal.transactionNumber) return 0
   return state.deal.transactionNumber
 }
+
+export const basicStatisticSelector = (state) => {
+  if (!state || !state.deal || !state.deal.basicStatistic) return emptyObj
+  return state.deal.basicStatistic
+}

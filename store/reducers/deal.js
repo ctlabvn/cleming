@@ -20,6 +20,8 @@ export const deal = (state = initialState, {type, payload}) => {
       return {...state, reload: payload}
     case 'deal/setTransactionNumber':
       return {...state, transactionNumber: payload}
+    case 'deal/setBasicStatistic':
+      return {...state, basicStatistic: payload}
     case 'app/logout':
     case 'app/clearData':
       return initialState

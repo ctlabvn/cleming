@@ -388,5 +388,6 @@ export default {
     'err_missing_cover_picture': 'Thiếu ảnh Cover',
     'err_invalid_deal_start_date': 'Ngày của bắt đầu Deal không hợp lệ',
     'err_invalid_deal_end_date': 'Ngày kết thúc Deal không hợp lệ',
-    'err_deal_title_empty': 'Tiêu đề Deal trống'
+    'err_deal_title_empty': 'Tiêu đề Deal trống',
+    'care': 'Quan tâm'
 }

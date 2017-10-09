@@ -5,7 +5,7 @@ import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
 import {forwardTo} from '~/store/actions/common'
-import {getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber} from '~/store/actions/deal'
+import {getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber, getBasicStatistic} from '~/store/actions/deal'
 import material from '~/theme/variables/material'
 import DateFilter from "~/ui/components/DateFilter"
 import I18n from '~/ui/I18n'
@@ -14,7 +14,7 @@ import Border from "~/ui/elements/Border"
 import DealItem from './DealItem'
 import moment from 'moment'
 import { getSession } from "~/store/selectors/auth"
-import {listDealSelector, dateFilterSelector, viewOverviewSelector, dealReloadSelector, transactionNumberSelector} from '~/store/selectors/deal'
+import {listDealSelector, dateFilterSelector, viewOverviewSelector, dealReloadSelector, transactionNumberSelector, basicStatisticSelector} from '~/store/selectors/deal'
 import {getListPlace} from '~/store/selectors/place'
 import ListViewExtend from '~/ui/components/ListViewExtend'
 @connect(state => ({
@@ -24,8 +24,9 @@ import ListViewExtend from '~/ui/components/ListViewExtend'
     currentDateFilter: dateFilterSelector(state),
     listPlace: getListPlace(state),
     reload: dealReloadSelector(state),
-    transactionNumber: transactionNumberSelector(state)
-}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber})
+    transactionNumber: transactionNumberSelector(state),
+    basicStatistic: basicStatisticSelector(state)
+}), {forwardTo, getListDeal, getDealStatistic, updateDateFilter, markReloadDealManager, getTransactionNumber, getBasicStatistic})
 
 export default class DealManager extends Component {
     constructor(props) {
@@ -79,7 +80,7 @@ export default class DealManager extends Component {
     }
 
     _load = (placeId, from, to, refreshing=false)=>{
-      const {xsession, getListDeal, getDealStatistic, getTransactionNumber} = this.props
+      const {xsession, getListDeal, getDealStatistic, getTransactionNumber, getBasicStatistic} = this.props
       refreshing && this.setState({refreshing: true})
       if (placeId == 0) placeId = ''
       getListDeal(xsession, placeId, from, to)
@@ -88,7 +89,9 @@ export default class DealManager extends Component {
           refreshing && this.setState({refreshing: false})
         }
       )
+      getBasicStatistic(xsession, placeId, from, to)
       getTransactionNumber(xsession, placeId, from, to)
+
     }
 
     _onRefresh = () => {
@@ -151,7 +154,21 @@ export default class DealManager extends Component {
     }
 
     render() {
-        const {forwardTo, currentDateFilter, viewOverview, transactionNumber} = this.props
+        const {forwardTo, currentDateFilter, viewOverview, transactionNumber, basicStatistic} = this.props
+        console.log('Basic Statistic', basicStatistic)
+        // growthDealShare:0
+        // growthInterestCustomer:0
+        // growthLoyalCustomer:0
+        // growthPlaceBought:-0.27272728
+        // growthPlaceInteract:-0.41196012
+        // growthPlaceReach:-0.4167852
+        // growthPlaceView:-0.36728394
+        // interestCustomer:0
+        // loyalCustomer:3
+        // placeBought:8
+        // placeInteract:354
+        // placeReach:410
+        // placeView:410
         return (
           <Container style={styles.bgWhite}>
             <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
@@ -191,26 +208,26 @@ export default class DealManager extends Component {
                 <View style={{...styles.row}}>
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('approach')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalInteract)}</Text>
-                      <Text success>{this._formatIncreaseDecrease(viewOverview.growthInteract)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeInteract)}</Text>
+                      <Text success>{this._formatIncreaseDecrease(basicStatistic.growthPlaceInteract)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('view')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalView)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthView)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeView)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthPlaceView)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('find_out')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalReach)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthReach)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeReach)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthPlaceReach)}</Text>
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('buy')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(viewOverview.totalBought)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(viewOverview.growthBought)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.interestCustomer)}</Text>
+                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthInterestCustomer:0)}</Text>
                     </View>
                 </View>
                 <Border/>

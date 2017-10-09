@@ -72,3 +72,14 @@ export const setTransactionNumber = (payload) => ({
   type: 'deal/setTransactionNumber',
   payload
 })
+
+export const getBasicStatistic = (...args) => ({
+  type: 'deal/getBasicStatistic',
+  args
+})
+
+export const setBasicStatistic = (payload) => ({
+  type: 'deal/setBasicStatistic',
+  payload
+})
+
