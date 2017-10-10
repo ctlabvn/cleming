@@ -21,7 +21,7 @@ import I18n from '~/ui/I18n'
 /* add bank account */
 import {Field, formValueSelector, reduxForm, reset} from "redux-form"
 import {InputFieldWithErr} from "~/ui/elements/Form"
-import SearchableDropdown from '~/ui/components/SearchableDropdown'
+import SearchBankDropdown from './SearchBankDropdown'
 import {validate} from './validate'
 import PreviewPopup from './PreviewPopup'
 /***/
@@ -126,10 +126,12 @@ export default class extends Component {
 
     _renderFormAddAccount() {
         const {listBank} = this.props
+        // console.warn(JSON.stringify(listBank));
         if (listBank && listBank.length > 0 && this.listBank.length == 0) {
             this.listBank = listBank.map(item => ({
                 id: item.bankId,
-                name: item.displayName
+                name: item.bankName,
+                ...item
             }))
         }
 
@@ -139,8 +141,8 @@ export default class extends Component {
             <View style={{padding: 10}}>
 
                 <Text grayDark medium>{I18n.t('bank_name')}</Text>
-                <SearchableDropdown
-                    style={{height: 45}}
+                <SearchBankDropdown
+                    style={{minHeight: 45}}
                     dropdownValues={this.listBank}
                     ref={ref => this.bankDropdown = ref}/>
 
