@@ -48,6 +48,7 @@ export default class ExperimentAnimate extends Component {
             scale: new Animated.Value(0),
             scaleImage: new Animated.Value(1),
             scaleImage1: new Animated.Value(1),
+            scrollAnimatedValue: new Animated.Value(0)
         }
     }
 
@@ -185,7 +186,13 @@ export default class ExperimentAnimate extends Component {
 
     render() {
         return (
-            <ScrollView style={{flex: 1}}>
+            <View style={{flex: 1}}>
+            <Animated.ScrollView
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: this.state.scrollAnimatedValue } } }],
+                    { useNativeDriver: true } // <-- Add this
+                )}
+            >
                 <Image 
                     source={{uri: 'https://myfreetime.files.wordpress.com/2008/12/bha46487sunset.jpg'}} 
                     style={{
@@ -388,205 +395,7 @@ export default class ExperimentAnimate extends Component {
                             </View>
                         </View>
                     </TouchableNativeFeedback>
-                    {/* </View> */}
                 </ScrollView>
-                {/* <View style={{
-                    backgroundColor: '#2a83ac',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 10
-                }}>
-                    <Animated.View
-                        style={{
-                            width: this.state.inputWidth,
-                        }}
-                    >
-                        <TextInput style={{
-                            width: this.state.inputWidth1,
-                            borderBottomWidth: 1,
-                            borderLeftWidth: 0,
-                            borderRightWidth: 0,
-                            borderTopWidth: 0,
-                            borderBottomColor: 'white',
-                            height: 40,
-                            color: 'white',
-                            }} 
-                            tintColor='white'
-                            underlineColorAndroid='transparent'/>         
-                    </Animated.View>
-                    <Icon name='search' style={{fontSize: 22, color: 'white'}} onPress={this.onPressSearch}/>
-                </View> */}
-            
-            
-            {/* <View  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: 10,
-                    width: '100%'
-                }}>
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 10,
-                    backgroundColor: 'yellow',
-                    width: '50%'
-                }}>
-                    
-                    <View style={{height: 50, flex: 1}}>
-                        <Animated.Text
-                            style={{
-                                fontSize: 10,
-                                position: 'absolute',
-                                top: this.state.labelTop,
-                                left: 0,
-                                paddingLeft: 5,
-                                opacity: this.state.labelOpacity
-                            }}>Search</Animated.Text>
-                        <TextInput 
-                            style={{
-                                width: 'auto',
-                                flex: 1,
-                                fontSize: 18
-                            }} 
-                            placeholder={this.state.placeholder}
-                            onFocus={this.onFocus}
-                            onBlur={this.onBlur}
-                        />
-                    </View>
-                </View>
-
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    padding: 10,
-                    backgroundColor: 'red',
-                    width: '50%'
-                }}>
-                    <View style={{width: 40}}>
-                        <Icon name='search' style={{fontSize: 22, color: 'brown'}} onPress={this.onPressSearch}/>
-                    </View>
-                    <View style={{height: 50, flex: 1}}>
-                        <Animated.Text
-                            style={{
-                                fontSize: 10,
-                                position: 'absolute',
-                                top: this.state.labelTop,
-                                left: 0,
-                                paddingLeft: 5,
-                                opacity: this.state.labelOpacity
-                            }}>Search</Animated.Text>
-                        <TextInput 
-                            style={{
-                                width: 'auto',
-                                flex: 1,
-                            }} 
-                            placeholder={this.state.placeholder}
-                            onFocus={this.onFocus}
-                            onBlur={this.onBlur}
-                        />
-                    </View>
-                </View>
-            </View> */}
-                
-{/* 
-                <TouchableNativeFeedback onPress={this.onPressMask}>
-                    <View style={{
-                        padding: 15, 
-                        shadowOffset:{  width: 10,  height: 10,  },
-                        shadowColor: 'black',
-                        shadowOpacity: 1.0,
-                        backgroundColor: 'white',
-                        borderRadius: 3,
-                        margin: 20,
-                        height: 70
-                        }}>
-                        {!this.state.showMask && <View style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            <Text>Text Text Text ... Press Me</Text>
-                        </View>
-                        }
-
-                        {this.state.showMask && <View style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: 'rgba(0,0,0,0.1)'
-                        }}>
-                            <View style={{flexDirection: 'row'}}>
-                                <Animated.View style={{
-                                    flexDirection: 'row', justifyContent: 'center', 
-                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
-                                    marginRight: 20, backgroundColor: 'white',
-                                    transform: [{
-                                        scale: this.state.scale.interpolate({
-                                            inputRange: [0, 1],
-                                            outputRange: [0, 1]
-                                        }),
-                                    }],
-                                    }}>
-                                    <Icon name='nearby' style={{color: 'yellow'}} />
-                                </Animated.View>
-
-                                <Animated.View style={{
-                                    flexDirection: 'row', justifyContent: 'center', 
-                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
-                                    marginRight: 20, backgroundColor: 'white',
-                                    transform: [{
-                                        scale: this.state.scale1.interpolate({
-                                            inputRange: [0, 1],
-                                            outputRange: [0, 1]
-                                        }),
-                                    }],
-                                    }}>
-                                    <Icon name='clingme-wallet' style={{color: 'green'}} />
-                                </Animated.View>
-
-                                <Animated.View style={{
-                                    flexDirection: 'row', justifyContent: 'center', 
-                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
-                                    marginRight: 20, backgroundColor: 'white',
-                                    transform: [{
-                                        scale: this.state.scale2.interpolate({
-                                            inputRange: [0, 1],
-                                            outputRange: [0, 1]
-                                        }),
-                                    }],
-                                    }}>
-                                    <Icon name='qr' style={{color: 'blue'}} />
-                                </Animated.View>
-
-                                <Animated.View style={{
-                                    flexDirection: 'row', justifyContent: 'center', 
-                                    alignItems: 'center', width: 40, height: 40, borderRadius: 20,
-                                    marginRight: 20, backgroundColor: 'white',
-                                    transform: [{
-                                        scale: this.state.scale3.interpolate({
-                                            inputRange: [0, 1],
-                                            outputRange: [0, 1]
-                                        }),
-                                    }],
-                                    }}>
-                                    <Icon name='car-parking' style={{color: 'brown'}} />
-                                </Animated.View>
-                            </View>
-                        </View>}
-                    </View>
-                        
-                </TouchableNativeFeedback> */}
 
 
                 <View style={{marginTop: 50, marginLeft: 20, 
@@ -644,7 +453,35 @@ export default class ExperimentAnimate extends Component {
                         <Text style={{color: 'white', fontWeight: 'bold'}}>Animate</Text>
                     </View>
                 </TouchableNativeFeedback>
-            </ScrollView>
+            </Animated.ScrollView>
+            <TouchableNativeFeedback>
+                 <Animated.View
+                    style={{
+                        width: 50, 
+                        height: 50,
+                        borderRadius: 25,
+                        backgroundColor: 'rgba(0,0,0,0.9)',
+                        position: 'absolute', bottom: 10, right: 10,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        opacity: this.state.scrollAnimatedValue.interpolate({
+                            inputRange: [0, 60],
+                            outputRange: [1, 0],
+                        }),
+                        transform: [{
+                            translateY: this.state.scrollAnimatedValue.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0, 1],
+                            }),
+                        }]
+                        
+                        
+                    }}>
+                    <Text style={{fontWeight: 'bold', fontSize: 30, color: 'white', textAlignVertical: 'center'}}>+</Text>
+                </Animated.View>
+            </TouchableNativeFeedback>
+            </View>
         )
     }
 }

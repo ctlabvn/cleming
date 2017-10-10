@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator, RefreshControl} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator, RefreshControl, Animated} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -33,7 +33,8 @@ export default class DealManager extends Component {
         super(props)
         this.placeMap = {}
         this.state = {
-          refreshing: false
+          refreshing: false,
+          scrollValue: new Animated.Value(0)
         }
     }
 
@@ -155,7 +156,7 @@ export default class DealManager extends Component {
 
     render() {
         const {forwardTo, currentDateFilter, viewOverview, transactionNumber, basicStatistic} = this.props
-        console.log('Basic Statistic', basicStatistic)
+        // console.log('Basic Statistic', basicStatistic)
         // growthDealShare:0
         // growthInterestCustomer:0
         // growthLoyalCustomer:0
@@ -172,8 +173,12 @@ export default class DealManager extends Component {
         return (
           <Container style={styles.bgWhite}>
             <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
-            <ScrollView style={styles.container}
+            <Animated.ScrollView style={styles.container}
               refreshControl = {<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />}
+              onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: this.state.scrollValue } } }],
+                    { useNativeDriver: true } // <-- Add this
+                )}
               >
               {/* <ActivityIndicator animating={true} size='large' color={material.primaryColor} /> */}
               <View style={{...styles.cardBlock, ...styles.pb10}}>
@@ -233,36 +238,28 @@ export default class DealManager extends Component {
                 <Border/>
               </View>
 
-              {/*<TouchableWithoutFeedback onPress={()=>forwardTo('transactionList')}>
-                <View style={{...styles.row, ...styles.pd10, ...styles.cardBlock}}>
-                    <Text>{I18n.t('transaction')}</Text>
-                    <View style={styles.inline}>
-                      <Text>{transactionNumber>0?transactionNumber: ''}</Text>
-                      <Icon name='foward' style={styles.icon} />
-                    </View>
-                </View>
-              </TouchableWithoutFeedback>*/}
-
-
               <View style={{...styles.cardBlock, ...styles.pd10,}}>
                 <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
-                {/* <ListViewExtend
-                    dataArray={this.props.listDeal}
-                    renderRow={(item) => this._renderItem(item)}
-                    keyExtractor={item=>item.dealId}
-                    onRefresh={this._onRefresh}
-                    onItemRef={ref=>this.listview=ref}
-                    onEndReached={this._loadMore}
-                    style={{height: 200}}
-                /> */}
                 {this.props.listDeal.map(item=>this._renderItem(item))}
               </View>
-            </ScrollView>
-            <Button style={styles.fabBtn}
-              onPress={()=>forwardTo('createDeal', {mode: 'new'})}
-              >
-                <Text white style={styles.fabBtnText}>+</Text>
-            </Button>
+            </Animated.ScrollView>
+            <TouchableWithoutFeedback onPress={()=>forwardTo('createDeal', {mode: 'new'})}>
+              <Animated.View style={{
+                ...styles.fabBtn,
+                opacity: this.state.scrollValue.interpolate({
+                    inputRange: [0, 60],
+                    outputRange: [1, 0],
+                }),
+                transform: [{
+                    translateY: this.state.scrollValue.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 1],
+                    }),
+                }]
+              }}>
+                  <Text white style={styles.fabBtnText}>+</Text>
+              </Animated.View>
+            </TouchableWithoutFeedback>
           </Container>
         )
     }
