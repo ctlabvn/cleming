@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styles from './styles'
-import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator, RefreshControl, Animated} from 'react-native'
+import {View, ScrollView, Linking, TouchableWithoutFeedback, ActivityIndicator, RefreshControl, Animated, ListView} from 'react-native'
 import {Text, Button, Container} from 'native-base'
 import Icon from '~/ui/elements/Icon'
 import {connect} from 'react-redux'
@@ -109,7 +109,7 @@ export default class DealManager extends Component {
       console.log('On Load More DealManager');
     }
 
-    _renderItem = (item) => {
+    _renderItem = (item, sectionID, rowID) => {
       const {forwardTo} = this.props
       let address = ''
       if (this.placeMap[item.placeId]){
@@ -121,20 +121,32 @@ export default class DealManager extends Component {
       }
       let cloneItem = Object.assign({}, item)
       cloneItem.address = address
-      return <DealItem
-        image={item.detailPicture}
-        name={item.dealName}
-        number={item.promoBriefTitle}
-        address={address}
-        key={item.dealId}
-        textLeft={item.promoBriefSmallLeft}
-        fromDate={item.fromDate}
-        toDate={item.toDate}
-        status={item.status}
-        promoType={item.promoType}
-        onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
-        style={{marginBottom: 15}}
-      />
+      return (
+        <View style={{backgroundColor: 'white', marginLeft: 5, marginRight: 5, padding: 5, 
+              borderTopLeftRadius: (rowID==0)? 3:0,
+              borderTopRightRadius: (rowID==0)? 3:0,
+              borderBottomLeftRadius: (rowID == this.props.listDeal.length-1)? 3:0,
+              borderBottomRightRadius: (rowID == this.props.listDeal.length-1)? 3:0
+        }}>
+          {(rowID==0)
+            && <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
+          }
+          <DealItem
+            image={item.detailPicture}
+            name={item.dealName}
+            number={item.promoBriefTitle}
+            address={address}
+            key={item.dealId}
+            textLeft={item.promoBriefSmallLeft}
+            fromDate={item.fromDate}
+            toDate={item.toDate}
+            status={item.status}
+            promoType={item.promoType}
+            onPress={()=>forwardTo('dealInfo', {deal: cloneItem})}
+            style={{marginBottom: 15, borderRadius: 3}}
+          />
+        </View>
+      ) 
     }
 
     _formatIncreaseDecrease = (number) => {
@@ -154,34 +166,11 @@ export default class DealManager extends Component {
       forwardTo('transactionList', {from: 'dealManager', currentDateFilter, selectedPlace})
     }
 
-    render() {
-        const {forwardTo, currentDateFilter, viewOverview, transactionNumber, basicStatistic} = this.props
-        // console.log('Basic Statistic', basicStatistic)
-        // growthDealShare:0
-        // growthInterestCustomer:0
-        // growthLoyalCustomer:0
-        // growthPlaceBought:-0.27272728
-        // growthPlaceInteract:-0.41196012
-        // growthPlaceReach:-0.4167852
-        // growthPlaceView:-0.36728394
-        // interestCustomer:0
-        // loyalCustomer:3
-        // placeBought:8
-        // placeInteract:354
-        // placeReach:410
-        // placeView:410
-        return (
-          <Container style={styles.bgWhite}>
-            <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
-            <Animated.ScrollView style={styles.container}
-              refreshControl = {<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />}
-              onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: this.state.scrollValue } } }],
-                    { useNativeDriver: true } // <-- Add this
-                )}
-              >
-              {/* <ActivityIndicator animating={true} size='large' color={material.primaryColor} /> */}
-              <View style={{...styles.cardBlock, ...styles.pb10}}>
+    _renderHeader = () => {
+      const {forwardTo, currentDateFilter, viewOverview, transactionNumber, basicStatistic} = this.props
+      return (
+        <View style={{...styles.bgWhite, marginLeft: 5, marginRight: 5, marginBottom: 5, borderRadius: 3}}>
+          <View style={{...styles.pb10}}>
                 <View style={{...styles.row, ...styles.pd15 }}>
                     <View style={styles.moneyItem}>
                       <Text>{I18n.t('money_number')}</Text>
@@ -237,12 +226,34 @@ export default class DealManager extends Component {
                 </View>
                 <Border/>
               </View>
+        </View>
+      )
+    }
 
-              <View style={{...styles.cardBlock, ...styles.pd10,}}>
-                <Text bold medium style={styles.mb10}>{I18n.t('page_deal_manager')}</Text>
-                {this.props.listDeal.map(item=>this._renderItem(item))}
-              </View>
-            </Animated.ScrollView>
+    render() {
+        const {forwardTo, currentDateFilter, viewOverview, transactionNumber, basicStatistic} = this.props
+        return (
+          <Container style={styles.container}>
+            <DateFilter defaultFilter={currentDateFilter} onPressFilter={this._handlePressFilter} ref={ref=>this.dateFilter=ref} />
+            {/*<Animated.ScrollView style={styles.container}
+              refreshControl = {<RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />}
+              onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: this.state.scrollValue } } }],
+                    { useNativeDriver: true } // <-- Add this
+                )}
+              >
+              </Animated.ScrollView>
+            */}
+          
+            <ListViewExtend
+              renderHeader={this._renderHeader}
+              dataArray={this.props.listDeal}
+              renderRow={(item, sectionID, rowID) => this._renderItem(item, sectionID, rowID)}
+              onRefresh={this._onRefresh}
+              onEndReachedThreshold={10}
+              style={{margin: 5, borderRadius: 3}}
+            />
+
             <TouchableWithoutFeedback onPress={()=>forwardTo('createDeal', {mode: 'new'})}>
               <Animated.View style={{
                 ...styles.fabBtn,
