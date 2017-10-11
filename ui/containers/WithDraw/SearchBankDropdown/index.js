@@ -51,7 +51,7 @@ export default class SearchableDropdown extends Component {
     }
 
     _handleTextChange = (text) => {
-        this.currentPosition
+        if (!this.currentPosition) this.currentPosition = 0;
         if (!text || text.trim() == '') {
             switch (this.currentPosition) {
                 case 0:
@@ -142,6 +142,7 @@ export default class SearchableDropdown extends Component {
                         animationType={"none"}
                         transparent={true}
                         visible={this.state.showing}
+                        keyboardShouldPersistTaps='always'
                         onRequestClose={() => {
                             this.setState({showing: false})
                         }}
