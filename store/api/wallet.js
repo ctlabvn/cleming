@@ -23,14 +23,15 @@ export default {
         return apiGet('/merchantapp/banks', {}, xsession)
     },
 
-    cashout(xsession, bankId, accountNumber, moneyAmount){
-        console.log('Cashout API', bankId+'---'+ accountNumber+'---'+ moneyAmount)
-        return apiPost('/merchantapp/cashout', {bankId, accountNumber, moneyAmount}, xsession)
+    cashout(xsession, bizBankId, moneyAmount){
+        console.log('Cashout API ', xsession + '---' + bizBankId+'---'+ moneyAmount)
+        return apiPost('/merchantapp/cashout', {bizBankId, moneyAmount}, xsession)
     },
 
-    addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
-        console.log('Add Bank API: ', xsession+'---'+accountName+'---'+idNumber+'---'+accountNumber+'---'+bankId+'---'+area+'---'+branchName)
-        return apiPost('/merchantapp/add-bank', {accountName, idNumber, accountNumber, bankId, area, branchName}, xsession)
+    addBank(xsession, accountName, accountNumber, bankId, branchName = '', moneyAmount = 0, phoneNumber){
+        console.log('Add Bank API: ', xsession+'---'+accountName+'---'+accountNumber+'---'+bankId+'---'+branchName+'---'+moneyAmount+'---'+phoneNumber)
+        // return apiPost('/merchantapp/add-bank', {accountName, accountNumber, bankId, branchName, moneyAmount, phoneNumber}, xsession)
+        return apiPost('/merchantapp/cashout-bank', {accountName, accountNumber, bankId, branchName, moneyAmount, phoneNumber}, xsession)
     },
     listBank(xsession){
         return apiGet('/merchantapp/list-bank', {}, xsession)
