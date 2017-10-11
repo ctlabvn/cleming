@@ -15,11 +15,11 @@ export default {
     fontSize: 22
   },
   imageSlider: {
-    width: material.deviceWidth,
+    width: '100%',
     height: 250,
   },
   iconContainer: {
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'transparent',
     width: 30,
     height: 30,
     flexDirection: 'row',

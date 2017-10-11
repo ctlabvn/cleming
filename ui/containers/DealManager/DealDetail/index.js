@@ -42,9 +42,10 @@ export default class DealDetail extends Component {
       const {forwardTo, route} = this.props
       const {deal} = route.params
       console.log('Deal deal Item', deal)
+      let listImage = (deal.lstPicture && deal.lstPicture.length >0) ? deal.lstPicture: [{pictureId: 1, fullPath: deal.detailPicture}]
       return (
         <Container style={{...styles.bgWhite, paddingBottom: 50}}>
-          <ImageSlider data={deal.lstPicture}/>
+          <ImageSlider data={listImage}/>
           <ScrollView>
             <View style={{...styles.pd10}}>
               <Text bold medium>{deal.dealName}</Text>

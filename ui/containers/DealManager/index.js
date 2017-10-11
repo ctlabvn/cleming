@@ -202,28 +202,29 @@ export default class DealManager extends Component {
                 <Border/>
                 <View style={{...styles.row}}>
                     <View style={styles.infoItem}>
+                      <Text>{I18n.t('interest')}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.interestCustomer)}</Text>
+                      {this._formatIncreaseDecrease(basicStatistic.growthInterestCustomer)}
+                    </View>
+                    <Border horizontal={false} />
+                    <View style={styles.infoItem}>
                       <Text>{I18n.t('approach')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeInteract)}</Text>
-                      <Text success>{this._formatIncreaseDecrease(basicStatistic.growthPlaceInteract)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeReach)}</Text>
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceReach)}
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('view')}</Text>
                       <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeView)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthPlaceView)}</Text>
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceView)}
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('find_out')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeReach)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthPlaceReach)}</Text>
+                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeInteract)}</Text>
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceInteract)}
                     </View>
-                    <Border horizontal={false} />
-                    <View style={styles.infoItem}>
-                      <Text>{I18n.t('buy')}</Text>
-                      <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.interestCustomer)}</Text>
-                      <Text warning>{this._formatIncreaseDecrease(basicStatistic.growthInterestCustomer:0)}</Text>
-                    </View>
+                    
                 </View>
                 <Border/>
               </View>

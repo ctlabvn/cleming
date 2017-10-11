@@ -61,8 +61,8 @@ export default class CreateDeal extends Component {
       this.props.change('dealTitle', dealInfo.dealName)
       this.props.change('description', dealInfo.description)
       this.props.change('searchTag', dealInfo.searchTag)
-      let images = dealInfo.lstPicture.map(item=>({...item, path: item.fullPath}))
-      let avatar = dealInfo.lstPicture.filter(item=>item.thumbnail==1)[0].fullPath
+      let images = (dealInfo.lstPicture && dealInfo.lstPicture.length > 0) ? dealInfo.lstPicture.map(item=>({...item, path: item.fullPath})) : [{pictureId: 1, path: dealInfo.detailPicture}]
+      let avatar = (dealInfo.lstPicture && dealInfo.lstPicture.length > 0) ? dealInfo.lstPicture.filter(item=>item.thumbnail==1)[0].fullPath : dealInfo.detailPicture
       this.dealImageSelector.setImages(images)
       this.dealImageSelector._setAvatar(avatar)
       this.placeSelector.setSelectedPlace(dealInfo.placeId)

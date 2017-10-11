@@ -86,7 +86,8 @@ export default class DealPreviewPopup extends Component {
             visible={this.state.visible}
             onRequestClose={() => this.close()}
         >
-          <Container style={{...styles.bgWhite}}>
+          <Container style={{flexDirection: 'column', alignItems: 'center',justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.4)'}}>
+            <View style={{width: '95%', height: '95%', backgroundColor: 'white'}}>
             <TouchableWithoutFeedback onPress={()=>this.close()}>
               <View style={{position: 'absolute', top: 5, right: 5, width: 30, height: 30, 
                   borderColor: material.gray500, borderWidth: 1, 
@@ -103,7 +104,7 @@ export default class DealPreviewPopup extends Component {
             </View>
             <ImageSlider data={this._renderImages(data)}/>
             <Text></Text>
-            <View style={{...styles.row, ...styles.pd15}}>
+            <View style={{...styles.row, ...styles.pd10}}>
               <View style={{...styles.halfRowItem}}>
                 <Text large gray>{I18n.t('deal_discount')}</Text>
               </View>
@@ -113,23 +114,25 @@ export default class DealPreviewPopup extends Component {
             </View>
             <ScrollView>
               <View style={{...styles.pd10}}>
-                <Text bold medium>{data.dealTitle}</Text>
-                <Text medium>{this._capitalize(I18n.t('from_date'))}
-                  <Text medium bold> {moment(data.fromDate*1000).format(DEFAULT_DATE_FORMAT)} </Text>
+                <Text bold style={{fontSize: 18}}>{data.dealTitle}</Text>
+                <Text bold style={{marginTop: 10}}>{I18n.t('apply_time')}:</Text>
+                <Text gray>* {this._capitalize(I18n.t('from_date'))}
+                  <Text bold black> {moment(data.fromDate*1000).format(DEFAULT_DATE_FORMAT)} </Text>
                   {I18n.t('to_date').toLowerCase()}
-                  <Text medium bold> {moment(data.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
+                  <Text bold black> {moment(data.toDate*1000).format(DEFAULT_DATE_FORMAT)} : </Text>
                   <Text warning>{this._renderToDateStatus(data.toDate)}</Text>
                 </Text>
 
-                <Text bold>{I18n.t('apply_place')}:</Text>
+                <Text bold style={{marginTop: 10}}>{I18n.t('apply_place')}:</Text>
                 {applyPlace}
-                <Text bold>{I18n.t('description')}:</Text>
+                <Text bold style={{marginTop: 10}}>{I18n.t('description')}:</Text>
                 <Text gray>{data.description}</Text>
               </View>
             </ScrollView>
             <Button style={styles.bottomBtnPreviewPopup} onPress={this.onConfirm}>
               <Text white>OK</Text>
             </Button>
+            </View>
           </Container>
         </Modal>
       )

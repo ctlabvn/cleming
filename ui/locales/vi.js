@@ -46,7 +46,7 @@ export default {
     'order_number': 'Số đơn hàng',
     'help': 'Trợ giúp',
     'confirm_success':'Xác nhận thành công.',
-    'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong thời gian sớm nhất.',
+    'feedback_message': 'Chúng tôi sẽ xử lý và thông báo kết quả trong dụngsớm nhất.',
     'delivery_success': 'Giao thành công',
     'delivery_failed': 'Giao thất bại',
     'received_feedback': 'Đã ghi nhận phản hồi.',
@@ -389,5 +389,6 @@ export default {
     'err_invalid_deal_start_date': 'Ngày của bắt đầu Deal không hợp lệ',
     'err_invalid_deal_end_date': 'Ngày kết thúc Deal không hợp lệ',
     'err_deal_title_empty': 'Tiêu đề Deal trống',
-    'care': 'Quan tâm'
+    'interest': 'Quan tâm',
+    'apply_time': 'Thời gian áp dụng'
 }
