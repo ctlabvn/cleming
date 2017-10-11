@@ -296,11 +296,11 @@ export default class extends Component {
                             listAccounts={bank}
                             ref={bankSelection => this.bankSelection = bankSelection}/>
 
-                        <TouchableOpacity onPress={() => forwardTo('bankAccount')}>
-                        <View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>
-                        <Text primary>+ {I18n.t('add_account')}</Text>
-                        </View>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity onPress={() => forwardTo('bankAccount')}>*/}
+                        {/*<View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>*/}
+                        {/*<Text primary>+ {I18n.t('add_account')}</Text>*/}
+                        {/*</View>*/}
+                        {/*</TouchableOpacity>*/}
 
                         <TouchableOpacity onPress={() => this._handlePressUseDiffrenceAccount()}>
                             <View style={styles.bankLogoContainer}>
