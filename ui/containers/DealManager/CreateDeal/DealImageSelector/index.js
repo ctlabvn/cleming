@@ -199,17 +199,19 @@ export default class DealImageSelector extends Component {
                     <Text white bold medium>{I18n.t('info')}</Text>
                   </View>
                   <TouchableWithoutFeedback onPress={this._openCamera}>
-                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                    <View style={{...styles.modalRow}}>
                       <Text>{I18n.t('take_picture')}</Text>
                     </View>
                   </TouchableWithoutFeedback>
+                  <View style={{backgroundColor: '#ccc', width: '100%', height: 1}} />
                   <TouchableWithoutFeedback onPress={this._handleMultiplePicker}>
-                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                    <View style={{...styles.modalRow}}>
                       <Text>{I18n.t('choose_from_galery')}</Text>
                     </View>
                   </TouchableWithoutFeedback>
+                  <View style={{backgroundColor: '#ccc', width: '100%', height: 1}} />
                   <TouchableWithoutFeedback onPress={this._close}>
-                    <View style={{...styles.modalRow, ...styles.borderBottom}}>
+                    <View style={{...styles.modalRow}}>
                       <Text>{I18n.t('close')}</Text>
                     </View>
                   </TouchableWithoutFeedback>
