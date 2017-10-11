@@ -163,7 +163,8 @@ export default class DealManager extends Component {
     _forwardToTransList = () => {
       const {forwardTo, currentDateFilter, app} = this.props
       let selectedPlace = app.topDropdown.getValue()
-      forwardTo('transactionList', {from: 'dealManager', currentDateFilter, selectedPlace})
+      let dateFilter = this.dateFilter.getData()
+      forwardTo('transactionList', {from: 'dealManager', dateFilter, selectedPlace})
     }
 
     _renderHeader = () => {
