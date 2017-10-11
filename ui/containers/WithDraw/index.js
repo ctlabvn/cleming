@@ -147,6 +147,7 @@ export default class extends Component {
                     style={{minHeight: 45}}
                     dropdownValues={this.listBank}
                     ref={ref => this.bankDropdown = ref}/>
+                {!this.listBank && <View style={{minHeight: 45}}/>}
 
                 <Text grayDark medium>{I18n.t('account_number')}</Text>
                 <Field name="account_number"
