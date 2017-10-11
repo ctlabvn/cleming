@@ -250,6 +250,13 @@ export default {
     'receive_account': 'Tài khoản nhận tiền',
     'err_money_not_empty':'Số tiền không được để trống.',
     'err_money_must_number':'Số tiền phải ở dạng số.',
+    'not_enough_balance': 'Số dư không đủ',
+    'not_have_phone_number': 'Không có số điện thoại',
+    'branch_name_invalid': 'Tên chi nhánh và ngân hàng không khả dụng',
+    'bank_invalid':'ID ngân hàng không khả dụng',
+    'account_number_invalid':'Số tài khoản không khả dụng',
+    'id_number_invalid': 'Số cmt/cccd không khả dụng',
+    'account_name_invalid': 'Tên chủ tài khoản không khả dụng',
 
     // Bank Account
     'account_owner': 'Tên chủ tài khoản',

@@ -66,7 +66,7 @@ export default class extends Component {
             return
         }
         let selectedBank = this.bankSelection.getSelected()
-        cashout(xsession, selectedBank.bankId, selectedBank.accountNumber, this.state.moneyAmount,
+        cashout(xsession, selectedBank.bizBankId, this.state.moneyAmount,
             (err, data) => {
                 if (data && data.data && data.data.success) {
                     Keyboard.dismiss()
@@ -74,6 +74,7 @@ export default class extends Component {
                     setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 2000, 'top')
                 } else {
                     Keyboard.dismiss()
+                    setToast(getToastMessage(I18n.t(err.msg)), 'info', null, null, 2000, 'top')
                 }
             }
         )
@@ -93,6 +94,7 @@ export default class extends Component {
             }
 
             data['bank'] = this.bankDropdown.getValue().name
+            data['branch'] = this.bankDropdown.getBranch() && this.bankDropdown.getBranch().branchName || null;
             this.preview.show(data)
         }
         else this._handlePressOk()
@@ -200,9 +202,28 @@ export default class extends Component {
 
 
     _submitDiffrenceAccount(data) {
-        const {account_number, account_owner, area, branch, identity_card} = data
-        const bankID = this.bankDropdown.getValue().id
+        const { xsession } = this.props;
+        const {account_owner, account_number, branch, money_amount, phone_number} = data
+
+        const bankId = this.bankDropdown.getValue().id
         // console.warn(account_number + '\n' + account_owner + '\n' + area + '\n' + branch + '\n' + identity_card + '\n' + bankID);
+        const { addBank } = this.props;
+
+        addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
+            const {setToast} = this.props;
+            if (data && data.data && data.data.success) {
+                setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
+                return;
+            }
+            if (data) {
+                setToast(getToastMessage(I18n.t(data.msg)), 'info', null, null, 2000, 'top')
+                return;
+            }
+            if (err) {
+                setToast(getToastMessage(I18n.t(err.msg)), 'info', null, null, 2000, 'top')
+            }
+        })
+
     }
 
     render() {

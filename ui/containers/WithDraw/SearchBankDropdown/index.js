@@ -36,6 +36,10 @@ export default class SearchableDropdown extends Component {
         return this.state.selectedOption
     }
 
+    getBranch() {
+        return this.state.selectedBranch
+    }
+
     componentWillReceiveProps = (nextProps) => {
         if (!this.state.dropdownValues || this.state.dropdownValues.length == 0) {
             this.setState({
@@ -97,7 +101,7 @@ export default class SearchableDropdown extends Component {
             <View style={{...styles.container, ...this.props.style}}>
                 <View>
                     <TouchableOpacity onPress={() => this._handlePress()} transparent style={styles.selectContainer}>
-                        <Text black small numberOfLines={2} style={{marginRight: 5}}>{this._getSelectedOptionName()}</Text>
+                        <Text black medium numberOfLines={2} style={{marginRight: 5}}>{this._getSelectedOptionName()}</Text>
                         <Icon name="foward" style={styles.icon}/>
                     </TouchableOpacity>
                     <Modal
