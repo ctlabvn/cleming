@@ -20,6 +20,7 @@ export default class SearchableDropdown extends Component {
             provinceValues: [],
             branchValues: [],
         }
+        this.currentPosition = 0;
     }
 
     _handlePress = () => {
@@ -50,23 +51,55 @@ export default class SearchableDropdown extends Component {
     }
 
     _handleTextChange = (text) => {
+        this.currentPosition
         if (!text || text.trim() == '') {
-            this.setState({dropdownValues: this.props.dropdownValues})
+            switch (this.currentPosition) {
+                case 0:
+                    this.setState({dropdownValues: this.props.dropdownValues})
+                    break;
+                case 1:
+                    this.setState({provinceValues: this.defaultProvinceValues})
+                    break;
+                case 2:
+                    this.setState({branchValues: this.defaultBranchValues})
+                    break;
+            }
+
         }
-        let dropdownValues = this.props.dropdownValues.slice()
-        let searchResult = dropdownValues.filter(item => item.name.toLowerCase().indexOf(text.toLowerCase().trim()) != -1)
-        this.setState({dropdownValues: searchResult})
+
+        let searchResult;
+
+        switch (this.currentPosition) {
+            case 0:
+                let dropdownValues = this.props.dropdownValues.slice()
+                searchResult = dropdownValues.filter(item => item.name.toLowerCase().indexOf(text.toLowerCase().trim()) != -1)
+                this.setState({dropdownValues: searchResult})
+                return;
+            case 1:
+                let provinceValues = this.defaultProvinceValues.slice();
+                searchResult = provinceValues.filter(item => item.provinceName.toLowerCase().indexOf(text.toLowerCase().trim()) != -1)
+                this.setState({provinceValues: searchResult})
+                return;
+            case 2:
+                let branchValues = this.defaultBranchValues.slice();
+                searchResult = branchValues.filter(item => item.branchName.toLowerCase().indexOf(text.toLowerCase().trim()) != -1)
+                this.setState({branchValues: searchResult})
+                return;
+        }
+
     }
 
     _onSelectBank = (item) => {
         // this.setState({selectedOption: item, showing: false, dropdownValues: this.props.dropdownValues})
         if (!item.provinces || item.provinces.length <= 0) this._close();
+        this.defaultProvinceValues = item.provinces;
         this.setState({selectedOption: item, provinceValues: item.provinces || [], branchValues: []})
         this.refs.viewPager.setPage(1)
     }
 
     _onSelectedProvince(item) {
         if (!item.branchs || item.branchs.length <= 0) this._close();
+        this.defaultBranchValues = item.branchs;
         this.setState({selectedProvince: item, branchValues: item.branchs || []})
         this.refs.viewPager.setPage(2)
     }
@@ -81,6 +114,7 @@ export default class SearchableDropdown extends Component {
 
     _onSwipeViewPager(event) {
         // console.warn(JSON.stringify(event));
+        this.currentPosition = event.position;
     }
 
     _getSelectedOptionName() {
@@ -130,7 +164,6 @@ export default class SearchableDropdown extends Component {
                                 <ViewPager style={{height: 250, width: '100%'}}
                                            keyboardShouldPersistTaps='always'
                                            onPageSelected={(event) => this._onSwipeViewPager(event)}
-                                           peekEnable={true}
                                            ref='viewPager'
                                            initialPage={0}>
                                     <View>
