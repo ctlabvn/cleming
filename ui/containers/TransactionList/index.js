@@ -97,19 +97,21 @@ export default class extends Component {
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
             const { app, clearRouteParam, route } = this.props
-
+            let selectedPlace = app.topDropdown.getValue()
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            let dateFilterData
             // Receive Pram from DealManager screen
             if (route.params) {
                 // app.topDropdown
                 if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
                 if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                this.refs.dateFilter.setSelected(route.params.dateFilter)
+                dateFilterData = route.params.dateFilter.currentSelectValue.value
                 clearRouteParam()
                 delete route.params
+            }else {
+                dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             }
-            
-            let selectedPlace = app.topDropdown.getValue()
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             let transactionFilterComponent = this.refs.transactionFilter
             let transactionFilter = transactionFilterComponent.getCurrentValue()
             if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -149,17 +151,23 @@ export default class extends Component {
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
             const { app, meta, clearMarkLoad, clearRouteParam, route} = this.props
-            
+            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            let dateFilterData
+            let needLoad = false
             // Receive Pram from DealManager screen
             if (route.params) {
                 // app.topDropdown
+                needLoad = true
                 if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
                 if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                this.refs.dateFilter.setSelected(route.params.dateFilter)
+                dateFilterData = route.params.dateFilter.currentSelectValue.value
                 clearRouteParam()
                 delete route.params
+            }else{
+                dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
             }
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
-            app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            
             let currentPlace = app.topDropdown.getValue()
             let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
@@ -170,7 +178,8 @@ export default class extends Component {
                 console.log('Markload transaction clingme')
                 this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
                 clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-            }else if(currentPlace && currentPlace.id != this.currentPlace){
+            }else if((currentPlace && currentPlace.id != this.currentPlace) || needLoad){
+                needLoad = false
                 this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             }
         })
