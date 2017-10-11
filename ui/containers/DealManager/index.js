@@ -151,8 +151,8 @@ export default class DealManager extends Component {
 
     _formatIncreaseDecrease = (number) => {
       if (number == undefined) return false
-      if (number >=0) return  <Text success>&#8593; {number.toFixed(2)}%</Text>
-      else return <Text warning>&#8595; {number.toFixed(2)}%</Text>
+      if (number >=0) return  <Text success>&#8593; {Math.abs(number).toFixed(2)}%</Text>
+      else return <Text warning>&#8595; {Math.abs(number).toFixed(2)}%</Text>
     }
 
     _toFixed = (number) => {
