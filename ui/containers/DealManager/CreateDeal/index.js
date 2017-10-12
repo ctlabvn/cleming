@@ -217,7 +217,7 @@ export default class CreateDeal extends Component {
       const {createDeal, xsession, showPopupInfo, resetForm, setToast} = this.props
       let {exclusiveType, fromDate, toDate, leftPromo, promoTitle, dealTitle, description, searchTag, moneyLimit} = item
 
-      promoTitle = promoTitle ? promoTitle+'%': '*'//concat % sign
+      promoTitle = (exclusiveType==EXCLUSIVE_TYPE.CASHBACK) ? (promoTitle ? promoTitle+'%': '*') : '*' //concat % sign
       let placeIdList = this.placeSelector.getConcatPlace()
       // let exclusiveType = this.exclusiveTypeSelector.getSelected()
       let dealCategoryId = this.dealCategoryPicker.getValue()
