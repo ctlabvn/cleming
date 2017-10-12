@@ -64,6 +64,7 @@ export default class CashoutHistory extends Component {
                 this.currentPageNumber = data.data.balanceConfirm.pageNumber;
             }
             this.listViewConfirm.showRefresh(false);
+            this.spinner.show(false);
         });
     }
 
@@ -76,17 +77,19 @@ export default class CashoutHistory extends Component {
         const { totalPage, pageNumber } = this.props.balanceHistory.balanceConfirm
         if (this.currentPageNumber < totalPage) {
             this.currentPageNumber = pageNumber + 1;
-            this.listViewConfirm.
+            this.spinner.show(true);
             this._load(null, null, null, this.currentPageNumber);
         }
     }
 
     _handlePressFilter(data) {
         const { from, to } = data.currentSelectValue.value;
+        this.listViewConfirm.showRefresh(true);
         this._load(from, to);
     }
 
     _handlePressTab(tab) {
+        this.listViewConfirm.showRefresh(true);
         this._load(null, null, tab.tabId);
     }
 

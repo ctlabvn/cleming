@@ -12,6 +12,8 @@ import material from "~/theme/variables/material.js";
 import {chainParse} from "~/ui/shared/utils"
 import {GENERAL_ERROR_MESSAGE} from "~/store/constants/app"
 import I18n from '~/ui/I18n'
+import Border from "~/ui/elements/Border";
+
 export default class PreviewPopup extends Component {
     constructor(props) {
         super(props)
@@ -48,17 +50,12 @@ export default class PreviewPopup extends Component {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <View style={styles.header}>
-                            <Text bold white>{I18n.t('info')}</Text>
+                            <Text bold white>Thông tin nhận tiền</Text>
                         </View>
                         <View style={styles.textContanter}>
-                            <Text medium grayDark bold style={styles.text}>Bạn có đồng ý với thông tin đã nhập?</Text>
+                            <Text medium orange style={styles.text}>Nhận tiền vào tài khoản ngân hàng?</Text>
                         </View>
                         <View style={styles.pd10}>
-
-                            <View style={styles.rowInfo}>
-                                <Text medium gray>Số tiền: </Text>
-                                <Text strong bold orange>{formatNumber(this.state.data.money_amount)} đ</Text>
-                            </View>
 
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('bank_name')}: </Text>
@@ -88,6 +85,24 @@ export default class PreviewPopup extends Component {
                             <View style={styles.rowInfo}>
                                 <Text medium gray>Số điện thoại: </Text>
                                 <Text medium bold grayDark>{this.state.data.phone_number}</Text>
+                            </View>
+
+                            <View style={{paddingVertical: 15}}>
+                            <Border/>
+                            </View>
+
+                            <View style={styles.rowInfo}>
+                                <Text medium gray>Số tiền: </Text>
+                                <Text strong bold orange>{formatNumber(this.state.data.money_amount)} đ</Text>
+                            </View>
+
+                            {/*<View style={styles.rowInfo}>*/}
+                                {/*<Text medium gray>Phí chuyển khoản: </Text>*/}
+                                {/*<Text strong bold grayDark>0 đ</Text>*/}
+                            {/*</View>*/}
+
+                            <View style={styles.textContanter}>
+                                <Text medium gray italic style={{textAlign: 'center', paddingTop: 20}}>Tôi đồng ý với thông tin nhận tiền trên.</Text>
                             </View>
 
                         </View>
