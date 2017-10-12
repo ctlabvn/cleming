@@ -204,25 +204,25 @@ export default class DealManager extends Component {
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('interest')}</Text>
                       <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.interestCustomer)}</Text>
-                      {this._formatIncreaseDecrease(basicStatistic.growthInterestCustomer)}
+                      {this._formatIncreaseDecrease(basicStatistic.growthInterestCustomer*100)}
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('approach')}</Text>
                       <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeReach)}</Text>
-                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceReach)}
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceReach*100)}
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('view')}</Text>
                       <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeView)}</Text>
-                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceView)}
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceView*100)}
                     </View>
                     <Border horizontal={false} />
                     <View style={styles.infoItem}>
                       <Text>{I18n.t('find_out')}</Text>
                       <Text bold style={styles.infoNumber}>{formatNumber(basicStatistic.placeInteract)}</Text>
-                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceInteract)}
+                      {this._formatIncreaseDecrease(basicStatistic.growthPlaceInteract*100)}
                     </View>
                     
                 </View>
