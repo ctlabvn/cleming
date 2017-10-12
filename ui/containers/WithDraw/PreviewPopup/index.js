@@ -98,7 +98,7 @@ export default class PreviewPopup extends Component {
 
                             <View style={styles.rowInfo}>
                                 <Text medium gray>Phí chuyển khoản: </Text>
-                                <Text strong bold grayDark>{formatNumber(this.state.data.money_amount)} đ</Text>
+                                <Text strong bold grayDark>0 đ</Text>
                             </View>
 
                             <View style={styles.textContanter}>
