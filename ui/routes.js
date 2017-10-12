@@ -136,6 +136,7 @@ export default {
         cachePlace: {
             selectedPlace: {}
         },
+        headerType: 'home',
         tabIndex: 2,
         cache: true,
     },
@@ -314,6 +315,7 @@ export default {
       cachePlace: {
         selectedPlace: {}
       },
+      headerType: 'home',
     },
     createDeal: {
       title: I18n.t('page_create_deal'),
