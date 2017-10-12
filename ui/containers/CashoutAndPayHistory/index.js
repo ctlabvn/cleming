@@ -88,6 +88,7 @@ export default class CashoutHistory extends Component {
     }
 
     _handlePressTab(tab) {
+        this.listViewConfirm.showRefresh(true);
         this._load(null, null, tab.tabId);
     }
 
