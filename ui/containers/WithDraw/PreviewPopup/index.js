@@ -96,10 +96,10 @@ export default class PreviewPopup extends Component {
                                 <Text strong bold orange>{formatNumber(this.state.data.money_amount)} đ</Text>
                             </View>
 
-                            <View style={styles.rowInfo}>
-                                <Text medium gray>Phí chuyển khoản: </Text>
-                                <Text strong bold grayDark>0 đ</Text>
-                            </View>
+                            {/*<View style={styles.rowInfo}>*/}
+                                {/*<Text medium gray>Phí chuyển khoản: </Text>*/}
+                                {/*<Text strong bold grayDark>0 đ</Text>*/}
+                            {/*</View>*/}
 
                             <View style={styles.textContanter}>
                                 <Text medium gray italic style={{textAlign: 'center', paddingTop: 20}}>Tôi đồng ý với thông tin nhận tiền trên.</Text>
