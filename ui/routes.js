@@ -72,7 +72,7 @@ export default {
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
         showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
@@ -96,7 +96,7 @@ export default {
     deliveryList: {
         title: I18n.t('page_delivery_list'),
         Page: DeliveryList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
         showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
@@ -114,7 +114,7 @@ export default {
     placeOrderList: {
         title: I18n.t('page_booking_list'),
         Page: PlaceOrderList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
         showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
