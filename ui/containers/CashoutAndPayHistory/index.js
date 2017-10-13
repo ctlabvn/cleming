@@ -84,12 +84,12 @@ export default class CashoutHistory extends Component {
 
     _handlePressFilter(data) {
         const { from, to } = data.currentSelectValue.value;
-        this.listViewConfirm.showRefresh(true);
+        if (this.listViewConfirm) this.listViewConfirm.showRefresh(true);
         this._load(from, to);
     }
 
     _handlePressTab(tab) {
-        this.listViewConfirm.showRefresh(true);
+        if (this.listViewConfirm) this.listViewConfirm.showRefresh(true);
         this._load(null, null, tab.tabId);
     }
 
