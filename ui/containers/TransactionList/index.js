@@ -212,14 +212,14 @@ export default class extends Component {
             }
         )
 
-        // getMerchantNews(xsession, placeId,
-        //     (err, data) => {
-        //         if (data && data.updated && data.updated.data) {
-        //             let newsUpdate = data.updated.data
-        //             this._updateNews(newsUpdate)
-        //         }
-        //     }
-        // )
+        getMerchantNews(xsession, placeId,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    this._updateNews(newsUpdate)
+                }
+            }
+        )
     }
     // need care about currentPage
     _loadMore = () => {

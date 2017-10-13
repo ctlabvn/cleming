@@ -275,18 +275,18 @@ export default class PlaceOrderList extends Component {
 
         /* hide for api /merchantapp/news */
 
-        // getMerchantNews(xsession, placeId,
-        //     (err, data) => {
-        //         if (data && data.updated && data.updated.data) {
-        //             let newsUpdate = data.updated.data
-        //             if (newsUpdate.bookingNews < 0) {
-        //                 forwardTo('merchantOverview', true)
-        //                 return
-        //             }
-        //             newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
-        //         }
-        //     }
-        // )
+        getMerchantNews(xsession, placeId,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate.bookingNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    newsUpdate && this.refs.tabs.updateNumber(BOOKING_WAITING_CONFIRM, newsUpdate.bookingNews)
+                }
+            }
+        )
     }
 
     componentDidMount() {
