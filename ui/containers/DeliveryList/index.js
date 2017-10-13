@@ -193,19 +193,19 @@ export default class extends Component {
             })
         //update noti Number
         /* hide for new api /merchantapp/news */
-        // getMerchantNews(session, selectedPlace,
-        //     (err, data) => {
-        //         if (data && data.updated && data.updated.data) {
-        //             let newsUpdate = data.updated.data
-        //             if (newsUpdate.orderNews < 0) {
-        //                 forwardTo('merchantOverview', true)
-        //                 return
-        //             }
-        //             newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
-        //             newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
-        //         }
-        //     }
-        // )
+        getMerchantNews(session, selectedPlace,
+            (err, data) => {
+                if (data && data.updated && data.updated.data) {
+                    let newsUpdate = data.updated.data
+                    if (newsUpdate.orderNews < 0) {
+                        forwardTo('merchantOverview', true)
+                        return
+                    }
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_CONFIRM, newsUpdate.orderWaitConfirm)
+                    newsUpdate && this.refs.tabs.updateNumber(ORDER_WAITING_DELIVERY, newsUpdate.orderWaitDelivery)
+                }
+            }
+        )
     }
 
     onModalOpen = (phoneNumber) => {
