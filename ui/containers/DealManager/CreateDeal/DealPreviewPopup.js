@@ -102,7 +102,9 @@ export default class DealPreviewPopup extends Component {
             <View style={{...styles.pd10, marginTop: (Platform.OS==='ios'?15:0)}}>
               <Text bold medium>{I18n.t('deal_preview')}</Text>
             </View>
-            <ImageSlider data={this._renderImages(data)}/>
+            <ImageSlider data={this._renderImages(data)}
+                  imageSize={material.deviceWidth*0.95}
+            />
             <Text></Text>
             <View style={{...styles.row, ...styles.pd10}}>
               <View style={{...styles.halfRowItem}}>

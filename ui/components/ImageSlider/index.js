@@ -13,7 +13,7 @@ export default class ImageSlider extends Component {
   }
 
   _renderItem=(item) => {
-    return <Image source={{uri: item.fullPath}} style={{resizeMode: 'cover', width: material.deviceWidth, height: 250}}
+    return <Image source={{uri: item.fullPath}} style={{resizeMode: 'cover', width: this.props.imageSize || material.deviceWidth, height: 250}}
     />
   }
 
@@ -31,9 +31,10 @@ export default class ImageSlider extends Component {
     this.setState({page: page})
   }
 
-  getItemLayout = (data, index) => (
-    { length: material.deviceWidth, offset: material.deviceWidth * index, index }
-  )
+  getItemLayout = (data, index) => {
+    let imageSize = this.props.imageSize || material.deviceWidth
+    return { length: imageSize, offset: imageSize * index, index }
+  }
 
   onScrollEnd = (e) => {
     let contentOffset = e.nativeEvent.contentOffset;
@@ -48,7 +49,7 @@ export default class ImageSlider extends Component {
     if (this.state.page >= this.props.data.length-1) showNext = false
     if (!this.props.data || this.props.data.length == 0) return <View />
     return (
-      <View style={styles.imageSlider}>
+      <View>
         <FlatList
           horizontal={true}
           data={this.props.data}
