@@ -30,7 +30,8 @@ import PreviewPopup from './PreviewPopup'
     xsession: getSession(state),
     bank: state.wallet.bank,
     listBank: state.banks,
-    cashoutOverview: state.cashoutOverview
+    cashoutOverview: state.cashoutOverview,
+    balanceMoney: state.wallet.balanceMoney,
 }), {...commonAction, ...walletActions, resetForm: reset})
 
 @reduxForm({form: 'AddBankAccountForm', validate})
@@ -230,7 +231,7 @@ export default class extends Component {
 
     render() {
 
-        const {forwardTo, bank, cashoutOverview} = this.props
+        const {forwardTo, bank, balanceMoney} = this.props
 
         const {handleSubmit} = this.props;
         // if (handleSubmit) handleSubmit((d) => alert('submit'));
@@ -245,7 +246,7 @@ export default class extends Component {
                 <View style={{...styles.rowPadding, ...styles.backgroundPrimary}}>
                     <Text white medium>{I18n.t('balance')}</Text>
                     <Text white>
-                        <Text white bold style={styles.moneyNumber}>{formatNumber(cashoutOverview.balanceMoney)}đ</Text>
+                        <Text white bold style={styles.moneyNumber}>{formatNumber(balanceMoney)}đ</Text>
                     </Text>
                 </View>
 
