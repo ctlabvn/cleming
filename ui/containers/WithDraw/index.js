@@ -211,9 +211,10 @@ export default class extends Component {
         const { addBank } = this.props;
 
         addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
-            const {setToast} = this.props;
+            const {setToast, goBack} = this.props;
             if (data && data.data && data.data.success) {
                 setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
+                goBack();
                 return;
             }
             if (data) {
