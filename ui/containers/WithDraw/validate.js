@@ -6,6 +6,15 @@ const isDigitOnly = (str) => {
 	return /^\d+$/.test(str)
 
 }
+
+const isTextOnly = (str) => {
+    for (i = 0; i < str.length; i++) {
+        // console.warn('test ' + value)
+        if (!(('a' <= str[i] && str[i] <= 'z') ||(('A' <= str[i] && str[i] <= 'Z') || (str[i] == ' ')))) return false
+    }
+    return true;
+}
+
 export const validate = (values) => {
 	let errors = {}
 
@@ -18,15 +27,20 @@ export const validate = (values) => {
         errors.account_number = I18n.t('err_field_must_not_empty')
         return errors
     }
-    if (!isDigitOnly(values.account_number)){
-        errors.account_number = I18n.t('err_account_number_must_be_number')
-        return errors
-    }
+    // if (!isDigitOnly(values.account_number)){
+    //     errors.account_number = I18n.t('err_account_number_must_be_number')
+    //     return errors
+    // }
 
 	if (!values.account_owner){
 		errors.account_owner = I18n.t('err_field_must_not_empty')
 		return errors
 	}
+
+    if (!isTextOnly(values.account_owner)){
+        errors.account_owner = 'Sai định dạng'
+        return errors
+    }
 
     if (!values.phone_number) {
         errors.phone_number = I18n.t('err_field_must_not_empty')
