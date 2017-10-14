@@ -125,8 +125,30 @@ export default class CreateDeal extends Component {
 
     _convertURI = (uri) => (Platform.OS === 'android') ? uri.replace('file:///', '') : uri
 
-    _fetch = (data) => {
+
+    _handleCoverPicture = (data) => {
+      if (data['detail_files[]'] && data['detail_files[]'].data && data['detail_files[]'].data.length > 0
+        && !data.coverPicture.data
+      ){
+        return RNFetchBlob.config({
+            path : RNFetchBlob.fs.dirs.DocumentDir+'/coverPicture.jpg',
+            fileCache: true,
+            appendExt : 'jpg'
+          })
+          .fetch('GET', data.coverPicture, {'Content-Type': 'image/jpeg'})
+          .then(res=> {
+            return Promise.resolve({uri: res.path(), name: res.path(), filename: res.path(), type: 'image/jpg', data: RNFetchBlob.wrap(this._convertURI(res.path()))})
+          })
+      }
+      return Promise.resolve(data.coverPicture)
+    }
+
+
+    _fetch = async (data) => {
       const {resetForm, showPopupInfo, forwardTo, markReloadDealManager, xsession} = this.props
+    
+      let cover = await this._handleCoverPicture(data)
+      data['coverPicture'] = cover
       let formData = []
       for (let key in data){
         if (data[key] && data[key].type && data[key].type=='multi'){
@@ -164,7 +186,6 @@ export default class CreateDeal extends Component {
       })
       .then((res) => {
         let dataRes = res.json()
-        console.log('Res ', res)
         if (dataRes && dataRes.updated && dataRes.updated.isSaved){
           markReloadDealManager(true)
           this.uploadingProgress.close()
