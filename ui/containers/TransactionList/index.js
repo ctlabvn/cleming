@@ -192,7 +192,7 @@ export default class extends Component {
 
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         this.currentPlace = placeId
-        const { xsession, getListAllTransaction } = this.props
+        const { xsession, getListAllTransaction, getMerchantNews } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {
             this.spinner.show(true)
@@ -212,14 +212,8 @@ export default class extends Component {
             }
         )
 
-        getMerchantNews(xsession, placeId,
-            (err, data) => {
-                if (data && data.updated && data.updated.data) {
-                    let newsUpdate = data.updated.data
-                    this._updateNews(newsUpdate)
-                }
-            }
-        )
+        getMerchantNews(xsession, placeId)
+        
     }
     // need care about currentPage
     _loadMore = () => {
