@@ -40,11 +40,6 @@ const requestNews = createRequestSaga({
             return setMerchantNews(data.updated.data)
         }
     ],
-    failure: [
-        (data) => {
-            console.log('News Data failure ', data)
-        }
-    ]
 })
 
 export default [
