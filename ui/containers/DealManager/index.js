@@ -91,7 +91,7 @@ export default class DealManager extends Component {
         }
       )
       getBasicStatistic(xsession, placeId, from, to)
-      getTransactionNumber(xsession, placeId, from, to)
+      // getTransactionNumber(xsession, placeId, from, to)
 
     }
 
@@ -177,13 +177,12 @@ export default class DealManager extends Component {
                       <Text>{I18n.t('money_number')}</Text>
                       <Text medium bold primary>{formatNumber(viewOverview.totalMoney)} đ</Text>
                     </View>
-                    <TouchableWithoutFeedback onPress={this._forwardToTransList}>
+                    <TouchableWithoutFeedback>
                       <View style={styles.moneyItem}>
                         <View style={styles.inline}>
                           <Text medium>{I18n.t('transaction')}</Text>
-                          <Icon name='foward' style={styles.icon} />
                         </View>
-                        <Text medium bold  primary>{transactionNumber>0?transactionNumber: 0}</Text>
+                        <Text medium bold  primary>{viewOverview.totalRecord}</Text>
                       </View>
                     </TouchableWithoutFeedback>
                 </View>
