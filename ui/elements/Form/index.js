@@ -94,12 +94,14 @@ export const InputFieldWithErr2 = ({ input, label, meta: { active, touched, erro
   )
 }
 
-export const InputFieldWithErr3 = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
-    /* input number auto addition dot, ex: 1.000; 20.000; 3.000.000 */
+export const InputFieldWithErr3 = ({ input, limitValue, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+    /* input number auto addition dot, ex: 1.000; 20.000; 3.000.000 and auto check limitValue*/
     const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
     {/*<View style={{...style}}>
      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
-    const value = formatNumber(input.value.split('.').join(''))
+    let preValue = input.value.split('.').join('')
+    if (parseInt(preValue) > parseInt(limitValue)) preValue = limitValue;
+    const value = formatNumber(preValue)
     return (
         <View>
             <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >

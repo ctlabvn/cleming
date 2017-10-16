@@ -279,6 +279,7 @@ export default class extends Component {
                                        icon={(input, active) => input.value && active ? 'close' : false}
                                        iconStyle={{color: material.black500}}
                                        ref='input1'
+                                       limitValue={balanceMoney}
                                        onChangeText={(value) => this.setState({moneyAmount: value})}
                                        onIconPress={input => input.onChange('')}
                                        inputStyle={{textAlign: 'right'}}
