@@ -157,8 +157,7 @@ export default class extends Component {
                        ref='input2'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
-                       style={styles.inputItem}
-                       keyboardType="numeric"/>
+                       style={styles.inputItem}/>
 
                 <Text grayDark medium>{I18n.t('account_owner')}</Text>
                 <Field autoCapitalize="none" name="account_owner"
