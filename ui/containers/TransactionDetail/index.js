@@ -73,18 +73,22 @@ export default class TransactionDetail extends Component {
     }
 
     _renderBottomAction(transactionInfo) {
+        const {user} = this.props
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (
-                    <View style={styles.row}>
-                        <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
-                            <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
-                        </Button>
-                        <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
-                            <View><Text medium white>{I18n.t('transaction_complain')}</Text></View>
-                        </Button>
-                    </View>
-                )
+                if (user.isConfirmTran){
+                    return (
+                        <View style={styles.row}>
+                            <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
+                                <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
+                            </Button>
+                            <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
+                                <View><Text medium white>{I18n.t('transaction_complain')}</Text></View>
+                            </Button>
+                        </View>
+                    )
+                }
+                return  <View />
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>{I18n.t('received_feedback')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
