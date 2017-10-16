@@ -109,6 +109,7 @@ export default class SearchableDropdown extends Component {
     }
 
     _close = () => {
+        this.currentPosition = 0;
         this.setState({showing: false, dropdownValues: this.props.dropdownValues})
     }
 
