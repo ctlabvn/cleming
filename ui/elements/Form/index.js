@@ -16,6 +16,7 @@ import CheckBox from '~/ui/elements/CheckBox'
 import MultipleLineTextInput from '~/ui/components/MultipleLineTextInput'
 import MoneyMaskInput from '~/ui/components/MoneyMaskInput'
 import styles from './styles'
+import {formatNumber} from "~/ui/shared/utils";
 
 export const InputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
@@ -42,6 +43,7 @@ export const InputFieldWithErr = ({ input, label, meta: { active, touched, error
   const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
   {/*<View style={{...style}}>
        <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
+
   return (
     <View>
       <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
@@ -90,6 +92,37 @@ export const InputFieldWithErr2 = ({ input, label, meta: { active, touched, erro
       </View>
     </View>
   )
+}
+
+export const InputFieldWithErr3 = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {
+    /* input number auto addition dot, ex: 1.000; 20.000; 3.000.000 */
+    const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
+    {/*<View style={{...style}}>
+     <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
+    const value = formatNumber(input.value.split('.').join(''))
+    return (
+        <View>
+            <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
+                {addon}
+                <Input
+                    placeholder={label}
+                    {...input}
+                    value = {value}
+                    placeholderTextColor={material.inputColorPlaceholder}
+                    {...custom}
+                    style={{...styles.inputWithErr, ...inputStyle}}
+                />
+                {iconName && <Icon
+                    onPress={e=>onIconPress && onIconPress(input, active)}
+                    style={{...styles.inputIcon, ...iconStyle}}
+                    name={iconName}
+                />}
+            </Item>
+            <View>
+                {touched && error && <Text small error>{error}</Text>}
+            </View>
+        </View>
+    )
 }
 
 export const MoneyInputField = ({ input, label, meta: { active, touched, error, warning }, icon, onIconPress, addon, onPress, style, inputStyle, iconStyle, ...custom }) => {

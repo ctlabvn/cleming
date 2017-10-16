@@ -20,7 +20,7 @@ import I18n from '~/ui/I18n'
 
 /* add bank account */
 import {Field, formValueSelector, reduxForm, reset} from "redux-form"
-import {InputFieldWithErr} from "~/ui/elements/Form"
+import {InputFieldWithErr, InputFieldWithErr3} from "~/ui/elements/Form"
 import SearchBankDropdown from './SearchBankDropdown'
 import {validate} from './validate'
 import PreviewPopup from './PreviewPopup'
@@ -281,8 +281,9 @@ export default class extends Component {
                                        ref='input1'
                                        onChangeText={(value) => this.setState({moneyAmount: value})}
                                        onIconPress={input => input.onChange('')}
-                                       component={InputFieldWithErr}
-                                       style={styles.inputItem}
+                                       inputStyle={{textAlign: 'right'}}
+                                       component={InputFieldWithErr3}
+                                       style={{...styles.inputItem}}
                                        keyboardType="numeric"/>
                             </View>
                         </View>
