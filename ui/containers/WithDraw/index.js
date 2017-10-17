@@ -58,7 +58,7 @@ export default class extends Component {
     }
     _handlePressOk = () => {
         // console.log('Selected', this.bankSelection.getSelected())
-        const {setToast, cashout, xsession} = this.props
+        const {setToast} = this.props
         if (!this.state.moneyAmount || this.state.moneyAmount.trim == '') {
             setToast(getToastMessage(I18n.t('err_money_not_empty')), 'info', null, null, 2000, 'top')
             return
@@ -66,20 +66,30 @@ export default class extends Component {
             setToast(getToastMessage(I18n.t('err_money_must_number')), 'info', null, null, 2000, 'top')
             return
         }
+
+        this.previewCashoutUseExistedBank.showExistBank(this.bankSelection.getSelected(), this.state.moneyAmount);
+
+    }
+
+    _cashoutUseExistedBank() {
+        const {setToast, cashout, xsession} = this.props
         let selectedBank = this.bankSelection.getSelected()
+        // console.warn('selectd bank ' + JSON.stringify(selectedBank) + '\nmoney = ' + this.state.moneyAmount);
+
         cashout(xsession, selectedBank.bizBankId, this.state.moneyAmount,
             (err, data) => {
-                if (data && data.data && data.data.success) {
-                    Keyboard.dismiss()
+                Keyboard.dismiss()
+                if (data && data.data) {
                     this._handlePressClear()
-                    setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 2000, 'top')
-                } else {
-                    Keyboard.dismiss()
-                    setToast(getToastMessage(I18n.t(err.msg)), 'info', null, null, 2000, 'top')
-                }
+                    if (data.data.success) {
+                        setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                    } else {
+                        setToast(getToastMessage('Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.'), 'info', null, null, 3000, 'top')
+                    }
+                } else setToast(getToastMessage('Yêu cầu chưa được gửi.'), 'info', null, null, 2000, 'top')
+
             }
         )
-
     }
 
     _handlePressOkAdvance(data) {
@@ -109,6 +119,7 @@ export default class extends Component {
 
     _handlePressClear = () => {
         this.setState({moneyAmount: ''})
+        this.props.resetForm();
     }
 
     _handleCallBackSelected() {
@@ -258,6 +269,8 @@ export default class extends Component {
                 <PreviewPopup ref={ref => this.preview = ref}
                               onOk={handleSubmit((data) => this._submitDiffrenceAccount(data))}/>
 
+                <PreviewPopup ref={ref => this.previewCashoutUseExistedBank = ref}
+                              onOk={handleSubmit(() => this._cashoutUseExistedBank())}/>
                 <View style={{...styles.rowPadding, ...styles.backgroundPrimary}}>
                     <Text white medium>{I18n.t('balance')}</Text>
                     <Text white>

@@ -27,6 +27,15 @@ export default class PreviewPopup extends Component {
         this.setState({showing: true, data: data})
     }
 
+    showExistBank = (selectedBank, moneyAmount) =>{
+        const data = {
+            bank: selectedBank.bankName,
+            account_number: selectedBank.accountNumber,
+            money_amount: moneyAmount,
+        }
+        this.setState({showing: true, data: data})
+    }
+
     hide = () => {
         this.setState({showing: false, data: {}})
     }
@@ -77,15 +86,17 @@ export default class PreviewPopup extends Component {
                                 <Text medium bold grayDark>{this.state.data.account_number}</Text>
                             </View>
 
+                            { this.state.data.account_owner &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('account_owner')}: </Text>
                                 <Text medium bold grayDark>{this.state.data.account_owner}</Text>
-                            </View>
+                            </View>}
 
+                            { this.state.data.phone_number &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>Số điện thoại: </Text>
                                 <Text medium bold grayDark>{this.state.data.phone_number}</Text>
-                            </View>
+                            </View>}
 
                             <View style={{paddingVertical: 15}}>
                             <Border/>
