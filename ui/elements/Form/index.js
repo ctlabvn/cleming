@@ -99,9 +99,15 @@ export const InputFieldWithErr3 = ({ input, limitValue, label, meta: { active, t
     const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
     {/*<View style={{...style}}>
      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
-    let preValue = input.value.split('.').join('')
-    if (parseInt(preValue) > parseInt(limitValue)) preValue = limitValue;
-    const value = formatNumber(preValue)
+
+     if (input.value) {
+         let preValue = input.value.split('.').join('')
+         // maximum value
+         // if (parseInt(preValue) > parseInt(limitValue)) preValue = limitValue;
+         const value = formatNumber(preValue)
+         input.value = value;
+     }
+
     return (
         <View>
             <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >
@@ -109,7 +115,6 @@ export const InputFieldWithErr3 = ({ input, limitValue, label, meta: { active, t
                 <Input
                     placeholder={label}
                     {...input}
-                    value = {value}
                     placeholderTextColor={material.inputColorPlaceholder}
                     {...custom}
                     style={{...styles.inputWithErr, ...inputStyle}}

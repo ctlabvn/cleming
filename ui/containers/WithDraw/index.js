@@ -84,6 +84,12 @@ export default class extends Component {
 
     _handlePressOkAdvance(data) {
         Keyboard.dismiss();
+        const { balanceMoney } = this.props
+        let moneyAmount = data.money_amount.split('.').join('')
+        // maximum value
+        // if (parseInt(moneyAmount) > parseInt(balanceMoney)) moneyAmount = balanceMoney;
+        data.money_amount = moneyAmount;
+
         if (this.state.useDiffrenceAccount) {
             const {setToast, cashout, xsession} = this.props
             if (!this.state.moneyAmount || this.state.moneyAmount.trim == '') {
@@ -228,6 +234,16 @@ export default class extends Component {
 
     }
 
+    _onMoneyAmountChange(value) {
+        const { balanceMoney } = this.props;
+
+        let moneyAmount = value.split('.').join('')
+        // maximum value
+        // if (parseInt(moneyAmount) > parseInt(balanceMoney)) moneyAmount = balanceMoney;
+
+        this.setState({moneyAmount: moneyAmount})
+    }
+
     render() {
 
         const {forwardTo, bank, balanceMoney} = this.props
@@ -279,7 +295,7 @@ export default class extends Component {
                                        iconStyle={{color: material.black500}}
                                        ref='input1'
                                        limitValue={balanceMoney}
-                                       onChangeText={(value) => this.setState({moneyAmount: value})}
+                                       onChangeText={(value) => this._onMoneyAmountChange(value)}
                                        onIconPress={input => input.onChange('')}
                                        inputStyle={{textAlign: 'right'}}
                                        component={InputFieldWithErr3}
