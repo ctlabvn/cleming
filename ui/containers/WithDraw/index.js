@@ -91,29 +91,33 @@ export default class extends Component {
 
         cashout(xsession, selectedBank.bizBankId, this.state.moneyAmount,
             (err, data) => {
-                this.setState({
-                    isLoading: false,
-                })
-                Keyboard.dismiss()
-                this._handlePressClear()
-                // if (data) alert(JSON.stringify(data));
-                // if (err) alert (JSON.stringify(err));
-                if (data && data.data) {
-                    this._handlePressClear()
-                    if (data.data.success) {
-                        this.props.goBack();
-                        // setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
-                        Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
-                        return;
-                    } else {
-                        this.props.goBack();
-                        setToast(getToastMessage('Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.'), 'info', null, null, 3000, 'top')
-                        return;
-                    }
-                } else setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
 
+                this._handleResponse(err, data)
             }
         )
+    }
+
+    _handleResponse(err, data) {
+        this.setState({
+            isLoading: false,
+        })
+        Keyboard.dismiss()
+        this._handlePressClear()
+        // if (data) alert(JSON.stringify(data));
+        // if (err) alert (JSON.stringify(err));
+        if (data && data.data) {
+            this._handlePressClear()
+            if (data.data.success) {
+                this.props.goBack();
+                // setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                Alert.alert(I18n.t('success'), I18n.t('received_message_and_processing'));
+                return;
+            } else {
+                this.props.goBack();
+                setToast(getToastMessage(I18n.t('request_failed_retry')), 'info', null, null, 3000, 'top')
+                return;
+            }
+        } else setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
     }
 
     _handlePressOkAdvance(data) {
@@ -256,27 +260,28 @@ export default class extends Component {
         })
 
         addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
-            this.setState({
-                isLoading: false
-            })
-            const {setToast, goBack} = this.props;
-            // if (data) alert(JSON.stringify(data));
-            // if (err) alert (JSON.stringify(err));
-            if (data && data.data)
-                if (data.data.success) {
-                    goBack();
-                    Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
-                    // setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
-                    return;
-                } else {
-                    goBack();
-                    setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
-                    return;
-                }
-            if (err) {
-                setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
-                return;
-            }
+            this._handleResponse(err, data)
+            // this.setState({
+            //     isLoading: false
+            // })
+            // const {setToast, goBack} = this.props;
+            // // if (data) alert(JSON.stringify(data));
+            // // if (err) alert (JSON.stringify(err));
+            // if (data && data.data)
+            //     if (data.data.success) {
+            //         goBack();
+            //         Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
+            //         // setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
+            //         return;
+            //     } else {
+            //         goBack();
+            //         setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
+            //         return;
+            //     }
+            // if (err) {
+            //     setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
+            //     return;
+            // }
         })
 
     }
@@ -387,7 +392,7 @@ export default class extends Component {
                 </Content>
                 {/*</View>*/}
                 <Button style={styles.okBtn} onPress={handleSubmit((input) => this._handlePressOkAdvance(input))}>
-                    <Text white>Đồng ý</Text>
+                    <Text white>{I18n.t('ok')}</Text>
                 </Button>
                 <Modal
                     onCloseClick={() => { }}

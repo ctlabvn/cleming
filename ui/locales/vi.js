@@ -285,6 +285,9 @@ export default {
     'pay': 'Thanh toán',
     'pre_balance': 'Số dư kỳ trước',
     'pay_compare_check': 'Thanh toán kỳ đối soát',
+    'received_message_and_processing': 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.',
+    'request_failed_and_retry': 'Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.',
+    'something_went_wrong_and_retry': 'Đã có lỗi xảy ra. Xin hãy thử lại.',
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
@@ -398,5 +401,9 @@ export default {
     'err_invalid_deal_end_date': 'Ngày kết thúc Deal không hợp lệ',
     'err_deal_title_empty': 'Tiêu đề Deal trống',
     'interest': 'Quan tâm',
-    'apply_time': 'Thời gian áp dụng'
+    'apply_time': 'Thời gian áp dụng',
+
+
+    // Dictionary
+    'success': 'Thành công',
 }
