@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Container, List, ListItem, Spinner, Text, Item, Input, Form} from "native-base";
-import {InteractionManager, View, TouchableOpacity, Image, Keyboard, ScrollView} from "react-native";
+import {InteractionManager, View, TouchableOpacity, Image, Keyboard, ScrollView, Alert} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -102,7 +102,8 @@ export default class extends Component {
                     this._handlePressClear()
                     if (data.data.success) {
                         this.props.goBack();
-                        setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                        // setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                        Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
                         return;
                     } else {
                         this.props.goBack();
@@ -264,7 +265,8 @@ export default class extends Component {
             if (data && data.data)
                 if (data.data.success) {
                     goBack();
-                    setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
+                    Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
+                    // setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
                     return;
                 } else {
                     goBack();
