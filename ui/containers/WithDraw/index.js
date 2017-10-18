@@ -26,6 +26,11 @@ import {validate} from './validate'
 import PreviewPopup from './PreviewPopup'
 /***/
 
+/* loading */
+import Modal from '~/ui/components/Modal'
+
+/***/
+
 @connect(state => ({
     xsession: getSession(state),
     bank: state.wallet.bank,
@@ -42,6 +47,7 @@ export default class extends Component {
         this.state = {
             moneyAmount: '',
             useDiffrenceAccount: false,
+            isLoading: false,
         }
         this.listBank = []
     }
@@ -51,7 +57,10 @@ export default class extends Component {
         getBanks(xsession, (err, data) => {
             if (data) {
                 // console.warn(JSON.stringify(data));
-                this.bankSelection.selectDefaultItem(data.data[0]);
+                if (data.data && data.data.length > 0) this.bankSelection.selectDefaultItem(data.data[0]);
+                else this._handlePressUseDiffrenceAccount();
+
+
             }
         })
         getListBank(xsession)
@@ -76,18 +85,31 @@ export default class extends Component {
         let selectedBank = this.bankSelection.getSelected()
         // console.warn('selectd bank ' + JSON.stringify(selectedBank) + '\nmoney = ' + this.state.moneyAmount);
 
+        this.setState({
+            isLoading: true
+        })
+
         cashout(xsession, selectedBank.bizBankId, this.state.moneyAmount,
             (err, data) => {
+                this.setState({
+                    isLoading: false,
+                })
                 Keyboard.dismiss()
+                this._handlePressClear()
+                // if (data) alert(JSON.stringify(data));
+                // if (err) alert (JSON.stringify(err));
                 if (data && data.data) {
                     this._handlePressClear()
                     if (data.data.success) {
                         this.props.goBack();
                         setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
+                        return;
                     } else {
+                        this.props.goBack();
                         setToast(getToastMessage('Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.'), 'info', null, null, 3000, 'top')
+                        return;
                     }
-                } else setToast(getToastMessage('Đã có lỗi xảy ra.'), 'info', null, null, 2000, 'top')
+                } else setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
 
             }
         )
@@ -228,18 +250,29 @@ export default class extends Component {
         // console.warn(account_number + '\n' + account_owner + '\n' + area + '\n' + branch + '\n' + identity_card + '\n' + bankID);
         const { addBank } = this.props;
 
+        this.setState({
+            isLoading: true
+        })
+
         addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
+            this.setState({
+                isLoading: false
+            })
             const {setToast, goBack} = this.props;
-            if (data && data.data && data.data.success) {
-                setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
-                goBack();
-                return;
-            } else {
-                setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
-                return;
-            }
+            // if (data) alert(JSON.stringify(data));
+            // if (err) alert (JSON.stringify(err));
+            if (data && data.data)
+                if (data.data.success) {
+                    goBack();
+                    setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
+                    return;
+                } else {
+                    goBack();
+                    setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
+                    return;
+                }
             if (err) {
-                setToast(getToastMessage('Đã có lỗi xảy ra.'), 'info', null, null, 2000, 'top')
+                setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
                 return;
             }
         })
@@ -354,7 +387,11 @@ export default class extends Component {
                 <Button style={styles.okBtn} onPress={handleSubmit((input) => this._handlePressOkAdvance(input))}>
                     <Text white>Đồng ý</Text>
                 </Button>
-
+                <Modal
+                    onCloseClick={() => { }}
+                    open={this.state.isLoading}>
+                    <Spinner/>
+                </Modal>
             </Container>
         )
     }
