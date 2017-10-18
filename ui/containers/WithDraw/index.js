@@ -82,11 +82,12 @@ export default class extends Component {
                 if (data && data.data) {
                     this._handlePressClear()
                     if (data.data.success) {
+                        this.props.goBack();
                         setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
                     } else {
                         setToast(getToastMessage('Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.'), 'info', null, null, 3000, 'top')
                     }
-                } else setToast(getToastMessage('Yêu cầu chưa được gửi.'), 'info', null, null, 2000, 'top')
+                } else setToast(getToastMessage('Đã có lỗi xảy ra.'), 'info', null, null, 2000, 'top')
 
             }
         )
@@ -233,13 +234,13 @@ export default class extends Component {
                 setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
                 goBack();
                 return;
-            }
-            if (data) {
-                setToast(getToastMessage(I18n.t(data.msg)), 'info', null, null, 2000, 'top')
+            } else {
+                setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
                 return;
             }
             if (err) {
-                setToast(getToastMessage(I18n.t(err.msg)), 'info', null, null, 2000, 'top')
+                setToast(getToastMessage('Đã có lỗi xảy ra.'), 'info', null, null, 2000, 'top')
+                return;
             }
         })
 
