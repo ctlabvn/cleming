@@ -28,6 +28,13 @@ export default {
         fontSize: 24
     },
 
+    bankLogo: {
+        width: 70,
+        height: 30,
+        resizeMode: 'cover',
+    },
+
+
     bankLogoContainer: {
         flexDirection: 'row',
         alignItems: 'center',

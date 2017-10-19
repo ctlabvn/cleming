@@ -22,13 +22,14 @@ export default {
     },
 
     listItemContentBalanceName: {
-        width: '80%'
+        maxWidth: '80%'
     },
 
     listItemContentMoney: {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 5,
+        marginRight: 10,
     },
 
     title: {
