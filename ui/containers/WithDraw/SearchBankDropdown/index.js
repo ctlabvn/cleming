@@ -250,9 +250,9 @@ export default class SearchableDropdown extends Component {
                                 {/*/>*/}
                                 {/*</ScrollView>*/}
 
-                                <Button transparent onPress={() => this._close()} style={styles.closeBtn}>
-                                    <Text medium primary>Đóng</Text>
-                                </Button>
+                                {/*<Button transparent onPress={() => this._close()} style={styles.closeBtn}>*/}
+                                    {/*<Text medium primary>Đóng</Text>*/}
+                                {/*</Button>*/}
                             </View>
                         </View>
                     </Modal>
