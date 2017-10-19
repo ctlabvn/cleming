@@ -50,7 +50,7 @@ export default class CashoutHistory extends Component {
             <Container style={styles.container}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 15}}>
                     <Text medium bold grayDark>Số tiền thanh toán cho Clingme</Text>
-                    <Text medium bold orange>{formatNumber(balanceMoney)} đ</Text>
+                    <Text medium bold orange>{formatNumber(Math.abs(balanceMoney))} đ</Text>
                 </View>
 
                 <Border style={{marginHorizontal: 15}}/>

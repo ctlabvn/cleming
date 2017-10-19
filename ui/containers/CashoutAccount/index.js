@@ -64,15 +64,15 @@ export default class extends Component {
                         <Text medium grayDark bold>{formatNumber(compareCheckMoney)} đ</Text>
                     </View>
 
-                    {balanceMoney > 0}
+                    {balanceMoney > 0 &&
                     <Button style={styles.cashoutBtn} onPress={() => forwardTo('withDraw')}>
                         <View><Text white medium bold>{I18n.t('cashout')}</Text></View>
-                    </Button>
+                    </Button>}
 
-                    {balanceMoney < 0}
+                    {balanceMoney < 0 &&
                     <Button style={styles.payBtn} onPress={() => forwardTo('payDetail', {balanceMoney: balanceMoney})}>
                         <View><Text white medium bold>{I18n.t('pay')}</Text></View>
-                    </Button>
+                    </Button>}
                 </View>
                 <View style={styles.paddingView}/>
                 <TouchableOpacity
