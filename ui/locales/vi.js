@@ -288,6 +288,8 @@ export default {
     'received_message_and_processing': 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.',
     'request_failed_and_retry': 'Yêu cầu đã được gửi và không được xử lý. Xin hãy thử lại.',
     'something_went_wrong_and_retry': 'Đã có lỗi xảy ra. Xin hãy thử lại.',
+    'cashout_waiting_for_progressing': 'Chờ xử lý',
+    'cashout_done': 'Đã xử lý',
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',

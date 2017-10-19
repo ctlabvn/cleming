@@ -161,7 +161,7 @@ export default class CashoutHistory extends Component {
                     ref='dateFilter'/>
                 <View>
                     <View style={styles.title}>
-                        <Text strong bold grayDark>Chờ xử lý</Text>
+                        <Text strong bold grayDark>{I18n.t('cashout_waiting_for_progressing')}</Text>
                     </View>
                     { balanceHistory && balanceHistory.balanceWait &&
                     <List
@@ -170,7 +170,7 @@ export default class CashoutHistory extends Component {
                         renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>}
                 </View>
                 <View style={styles.title}>
-                    <Text strong bold grayDark>Đã xử lý</Text>
+                    <Text strong bold grayDark>{I18n.t('cashout_done')}</Text>
                 </View>
                 {balanceHistory && balanceHistory.balanceConfirm &&
                 <ListViewExtend
