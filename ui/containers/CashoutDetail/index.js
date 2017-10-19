@@ -38,6 +38,11 @@ export default class CashoutHistory extends Component {
         this._load();
     }
 
+    getTime(time) {
+        // if (time > 0) return moment(time*1000).format(DEFAULT_TIME_FORMAT);
+        return '--:--:--  --/--/--';
+    }
+
     render() {
 
         if (!this.props.detail) return (
@@ -88,14 +93,14 @@ export default class CashoutHistory extends Component {
                     <Border/>
                     <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Thời gian yêu cầu</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{moment(requestTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(requestTime)}</Text>
                     </View>
 
-                    { confirmTime && <Border/>}
-                    { confirmTime && <View style={styles.rowDetail}>
+                    <Border/>
+                    <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Thời gian nhận tiền</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{moment(confirmTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                    </View>}
+                        <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(confirmTime)}</Text>
+                    </View>
                 </View>
             </Container>
         )

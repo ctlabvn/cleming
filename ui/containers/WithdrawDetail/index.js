@@ -42,6 +42,10 @@ export default class extends Component {
       )
     }
 
+    getTime(time) {
+        if (time > 0) return moment(time*1000).format(TIME_FORMAT_WITHOUT_SECOND);
+        return '--:--  --/--/--';
+    }
 
     render() {
         return (
@@ -78,11 +82,11 @@ export default class extends Component {
                 </View>
                 <View style={{...styles.rowPadding, ...styles.ml20, ...styles.borderBottom}}>
                     <Text bold gray>{I18n.t('request_time')}</Text>
-                    <Text gray>{moment(this.state.cashoutDetail.requestTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                    <Text gray>{this.getTime(this.state.cashoutDetail.requestTime)}</Text>
                 </View>
                 <View style={{...styles.rowPadding, ...styles.ml20, ...styles.borderBottom}}>
                     <Text bold gray>{I18n.t('receive_time')}</Text>
-                    <Text gray>{moment(this.state.cashoutDetail.confirmTime*1000).format(TIME_FORMAT_WITHOUT_SECOND)}</Text>
+                    <Text gray>{this.getTime(this.state.cashoutDetail.confirmTime)}</Text>
                 </View>
             </ScrollView>
         )
