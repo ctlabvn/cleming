@@ -32,6 +32,8 @@ export default class PreviewPopup extends Component {
             bank: selectedBank.bankName,
             account_number: selectedBank.accountNumber,
             money_amount: moneyAmount,
+            account_owner: selectedBank.accountName,
+            phone_number: selectedBank.phoneNumber,
         }
         this.setState({showing: true, data: data})
     }

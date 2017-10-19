@@ -302,7 +302,6 @@ export default class extends Component {
     render() {
 
         const {forwardTo, bank, balanceMoney} = this.props
-
         const {handleSubmit} = this.props;
         // if (handleSubmit) handleSubmit((d) => alert('submit'));
         // else console.warn('use diff acc ');
