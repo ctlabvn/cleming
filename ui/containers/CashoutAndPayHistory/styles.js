@@ -3,60 +3,37 @@ export default {
     container: {
         backgroundColor: 'white'
     },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    rowPadding: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 10
-    },
-    rowPaddingLarge: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: 20,
-        paddingBottom: 20,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
+
     listItem: {
         padding: 0,
         marginRight: -10,
         marginTop: -10,
         marginBottom: -10
     },
-    rowCenter: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10
-    },
-    borderTop: {
-        borderTopWidth: 1,
-        borderColor: material.gray300
-    },
-    borderBottom: {
-        borderBottomWidth: 1,
-        borderColor: material.gray300
-    },
-    rowLeft: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: 10
-    },
-    forwardIconWarning: {
-        fontSize: 20,
-        color: material.warningColor
-    },
-    forwardIconSuccess: {
-        fontSize: 20,
-        color: material.successColor
-    }
 
+    listItemContentContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 7
+    },
+
+    listItemContentTime: {
+        alignSelf: 'flex-start'
+    },
+
+    listItemContentBalanceName: {
+        width: '80%'
+    },
+
+    listItemContentMoney: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5,
+    },
+
+    title: {
+        backgroundColor: material.gray300,
+        padding: 15
+    },
 
 }

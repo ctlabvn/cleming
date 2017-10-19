@@ -119,10 +119,10 @@ export default class CashoutHistory extends Component {
                 style={styles.listItem}>
                 <View style={{flex: 1}}>
                     <Text medium grayDark
-                          style={{alignSelf: 'flex-start'}}>{moment(balanceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7}}>
-                        <Text medium grayDark>{balanceName}</Text>
-                        <View style={{flexDirection: 'row', marginTop: 5}}>
+                          style={styles.listItemContentTime}>{moment(balanceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                    <View style={styles.listItemContentContainer}>
+                        <Text medium grayDark style={styles.listItemContentBalanceName}>{balanceName}</Text>
+                        <View style={styles.listItemContentMoney}>
                             <Text medium bold style={{color: color}}>{balanceMoney > 0 && '+'}{balanceMoney} đ</Text>
                             <Icon
                                 name="foward"
@@ -160,7 +160,7 @@ export default class CashoutHistory extends Component {
                     onPressFilter={(data) => this._handlePressFilter(data)}
                     ref='dateFilter'/>
                 <View>
-                    <View style={{backgroundColor: material.gray300, padding: 15}}>
+                    <View style={styles.title}>
                         <Text strong bold grayDark>Chờ xử lý</Text>
                     </View>
                     { balanceHistory && balanceHistory.balanceWait &&
@@ -169,7 +169,7 @@ export default class CashoutHistory extends Component {
                         style={{maxHeight, minHeight, margin: 0, padding: 0}}
                         renderRow={(...args) => this._renderRow(...args, TRANSACTION_PROCESSING)}/>}
                 </View>
-                <View style={{backgroundColor: material.gray300, padding: 15}}>
+                <View style={styles.title}>
                     <Text strong bold grayDark>Đã xử lý</Text>
                 </View>
                 {balanceHistory && balanceHistory.balanceConfirm &&
