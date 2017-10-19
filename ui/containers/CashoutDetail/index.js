@@ -39,7 +39,7 @@ export default class CashoutHistory extends Component {
     }
 
     getTime(time) {
-        // if (time > 0) return moment(time*1000).format(DEFAULT_TIME_FORMAT);
+        if (time > 0) return moment(time*1000).format(DEFAULT_TIME_FORMAT);
         return '--:--:--  --/--/--';
     }
 
@@ -71,8 +71,8 @@ export default class CashoutHistory extends Component {
                            style={{ width: 100, height: 60, borderRadius: 5, borderWidth: 1}} />
                     </View>
                     <View style={{marginLeft: 15}}>
-                        <Text medium bold grayDark>{bankName}</Text>
-                        <Text style={{marginTop: 5}}>{accountNumber}</Text>
+                        <Text medium bold grayDark numberOfLines={1} style={{maxWidth: '99%'}}>{bankName}</Text>
+                        <Text style={{marginTop: 5, maxWidth: '99%'}}>{accountNumber}</Text>
                     </View>
                 </View>
 
