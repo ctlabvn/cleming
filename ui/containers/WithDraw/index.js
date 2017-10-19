@@ -102,7 +102,7 @@ export default class extends Component {
             isLoading: false,
         })
         Keyboard.dismiss()
-        this._handlePressClear()
+        // this._handlePressClear()
         // if (data) alert(JSON.stringify(data));
         // if (err) alert (JSON.stringify(err));
         if (data && data.data) {
@@ -117,7 +117,10 @@ export default class extends Component {
                 setToast(getToastMessage(I18n.t('request_failed_retry')), 'info', null, null, 3000, 'top')
                 return;
             }
-        } else setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
+        } else {
+            setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
+            return;
+        }
     }
 
     _handlePressOkAdvance(data) {
