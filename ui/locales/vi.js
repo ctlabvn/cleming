@@ -291,6 +291,7 @@ export default {
     'cashout_waiting_for_progressing': 'Chờ xử lý',
     'cashout_done': 'Đã xử lý',
     'the_money_have_to_positive_digit': 'Số tiền phải là số dương',
+    'the_money_have_to_less_than_balance_money': 'Số tiền không được vượt quá số dư hiện có.',
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',

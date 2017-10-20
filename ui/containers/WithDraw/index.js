@@ -129,7 +129,8 @@ export default class extends Component {
         let moneyAmount = data.money_amount.split('.').join('')
         // maximum value
         if (parseInt(moneyAmount) > parseInt(balanceMoney)) {
-            setToast(getToastMessage(I18n.t('Số tiền không được vượt quá số dư hiện có')), 'info', null, null, 2000, 'top')
+            this.props.setToast(getToastMessage(I18n.t('the_money_have_to_less_than_balance_money')), 'info', null, null, 2000, 'top')
+            this.refs.content.scrollTo({x: 0, y: 0, animated: true})
             return;
         }
 
@@ -325,7 +326,7 @@ export default class extends Component {
                     </Text>
                 </View>
 
-                <Content style={{paddingHorizontal: 10}}>
+                <Content ref="content" style={{paddingHorizontal: 10}}>
 
                     {/*<View>*/}
                         {/*<View style={{...styles.rowPadding}}>*/}
