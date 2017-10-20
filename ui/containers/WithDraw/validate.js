@@ -15,6 +15,12 @@ const isTextOnly = (str) => {
     return true;
 }
 
+const isPositiveDigit = (data) => {
+    value = data.split('.').join('');
+    if (parseInt(value) > 0) return true;
+    return false;
+}
+
 export const validate = (values) => {
 	let errors = {}
 
@@ -22,6 +28,11 @@ export const validate = (values) => {
         errors.money_amount = I18n.t('err_field_must_not_empty')
         return errors
 	}
+
+	if (!isPositiveDigit(values.money_amount)) {
+        errors.money_amount = I18n.t('the_money_have_to_positive_digit')
+        return errors
+    }
 
     if (!values.account_number){
         errors.account_number = I18n.t('err_field_must_not_empty')

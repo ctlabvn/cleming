@@ -128,7 +128,11 @@ export default class extends Component {
         const { balanceMoney } = this.props
         let moneyAmount = data.money_amount.split('.').join('')
         // maximum value
-        // if (parseInt(moneyAmount) > parseInt(balanceMoney)) moneyAmount = balanceMoney;
+        if (parseInt(moneyAmount) > parseInt(balanceMoney)) {
+            setToast(getToastMessage(I18n.t('Số tiền không được vượt quá số dư hiện có')), 'info', null, null, 2000, 'top')
+            return;
+        }
+
         data.money_amount = moneyAmount;
 
         if (this.state.useDiffrenceAccount) {

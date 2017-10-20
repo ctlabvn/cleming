@@ -290,6 +290,7 @@ export default {
     'something_went_wrong_and_retry': 'Đã có lỗi xảy ra. Xin hãy thử lại.',
     'cashout_waiting_for_progressing': 'Chờ xử lý',
     'cashout_done': 'Đã xử lý',
+    'the_money_have_to_positive_digit': 'Số tiền phải là số dương',
 
     // network
     'could_not_get_networks': 'Coudldn\'t get networks',
