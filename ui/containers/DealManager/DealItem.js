@@ -56,7 +56,7 @@ export default class DealManager extends Component {
                       <Text small gray>({moment(this.props.fromDate*1000).format(DEFAULT_DATE_FORMAT)} - {moment(this.props.toDate*1000).format(DEFAULT_DATE_FORMAT)})</Text>
                       {statusText}
                     </View>
-                    <Text bold warning large style={styles.discountNumber}>- {this.props.number}</Text>
+                    <Text bold warning style={styles.discountNumber}>-{this.props.number}</Text>
                   </View>
                   
                 </View>
