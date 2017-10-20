@@ -99,13 +99,13 @@ export const InputFieldWithErr3 = ({ input, limitValue, label, meta: { active, t
     const iconName = (typeof icon === 'function' ? icon(input, active) : icon)
     {/*<View style={{...style}}>
      <Item style={{...styles.item2}} error={touched && !!error} onPress={onPress} > */}
-
+     console.log('panda input ', input);
      if (input.value) {
          let preValue = input.value.split('.').join('')
          // maximum value
-         // if (parseInt(preValue) > parseInt(limitValue)) preValue = limitValue;
+         if (parseInt(preValue) > parseInt(limitValue)) preValue = limitValue;
          const value = formatNumber(preValue)
-         input.value = value;
+         input.onChange(value);
      }
 
     return (
