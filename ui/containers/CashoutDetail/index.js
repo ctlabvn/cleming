@@ -48,9 +48,7 @@ export default class CashoutHistory extends Component {
         if (!this.props.detail) return (
             <View/>
         )
-
-        console.warn(JSON.stringify(this.props.detail))
-
+        
         const { moneyAmount, bankIcon, bankName, accountNumber, accountName,
             tranCode, requestTime, confirmTime } = this.props.detail;
 
