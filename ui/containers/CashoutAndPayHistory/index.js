@@ -123,7 +123,7 @@ export default class CashoutHistory extends Component {
                     <View style={styles.listItemContentContainer}>
                         <Text medium grayDark style={styles.listItemContentBalanceName}>{balanceName}</Text>
                         <View style={styles.listItemContentMoney}>
-                            <Text medium bold style={{color: color}}>{balanceMoney > 0 && '+'}{balanceMoney} đ</Text>
+                            <Text medium bold style={{color: color}}>{balanceMoney > 0 && '+'}{formatNumber(balanceMoney)} đ</Text>
                             <Icon
                                 name="foward"
                                 style={{fontSize: 20, color: color}}/>
