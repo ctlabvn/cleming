@@ -49,6 +49,7 @@ export default class CashoutHistory extends Component {
             <View/>
         )
 
+        console.warn(JSON.stringify(this.props.detail))
 
         const { moneyAmount, bankIcon, bankName, accountNumber, accountName,
             tranCode, requestTime, confirmTime } = this.props.detail;
@@ -98,7 +99,7 @@ export default class CashoutHistory extends Component {
 
                     <Border/>
                     <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>Thời gian nhận tiền</Text>
+                        <Text medium bold grayDark>Thời gian Clingme chuyển tiền</Text>
                         <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(confirmTime)}</Text>
                     </View>
                 </View>
