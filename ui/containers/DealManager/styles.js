@@ -108,7 +108,7 @@ export default {
   discountNumber: {
     borderLeftWidth: 1,
     borderColor: material.gray500,
-    paddingLeft: 5
+    fontSize: 20
   },
   dealRight: {
     flex: 1,
@@ -118,7 +118,7 @@ export default {
     // paddingLeft: 10
   },
   dealTransactionIcon: {
-    marginRight: 15
+    // marginRight: 15
   },
   dealContainer: {
     // width: material.deviceWidth
