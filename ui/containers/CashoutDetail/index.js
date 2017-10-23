@@ -69,9 +69,9 @@ export default class CashoutHistory extends Component {
                            resizeMode={'contain'}
                            style={{ width: 100, height: 60, borderRadius: 5, borderWidth: 1}} />
                     </View>
-                    <View style={{marginLeft: 15}}>
-                        <Text medium bold grayDark numberOfLines={1} style={{maxWidth: '99%'}}>{bankName}</Text>
-                        <Text style={{marginTop: 5, maxWidth: '99%'}}>{accountNumber}</Text>
+                    <View style={{marginLeft: 15, flex: 1}}>
+                        <Text medium bold grayDark numberOfLines={3}>{bankName}</Text>
+                        <Text style={{marginTop: 5}}>{accountNumber}</Text>
                     </View>
                 </View>
 
