@@ -71,7 +71,7 @@ export default class PreviewPopup extends Component {
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('bank_name')}: </Text>
                                 <Text medium bold grayDark
-                                      style={{maxWidth: '80%'}}
+                                      style={{ flex: 1, textAlign: 'right'}}
                                       numberOfLines={2}>{this.state.data.bank}</Text>
                             </View>
 
@@ -79,7 +79,7 @@ export default class PreviewPopup extends Component {
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('branch')}: </Text>
                                 <Text medium bold grayDark
-                                      style={{maxWidth: '80%'}}
+                                      style={{flex: 1, textAlign: 'right'}}
                                       numberOfLines={2}>{this.state.data.branch}</Text>
                             </View>}
 
@@ -91,7 +91,7 @@ export default class PreviewPopup extends Component {
                             { this.state.data.account_owner &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('account_owner')}: </Text>
-                                <Text medium bold grayDark>{this.state.data.account_owner.toUpperCase()}</Text>
+                                <Text medium bold grayDark>{this.state.data.account_owner.toUpperCase}</Text>
                             </View>}
 
                             { this.state.data.phone_number &&

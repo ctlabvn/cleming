@@ -63,7 +63,7 @@ export default {
     rowInfo: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       paddingTop: 5,
       paddingBottom: 5,
       width: '100%'
