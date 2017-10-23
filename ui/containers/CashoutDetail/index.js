@@ -79,7 +79,7 @@ export default class CashoutHistory extends Component {
                     <Border/>
                     <View style={styles.rowDetail}>
                         <Text medium bold grayDark>Tên chủ tài khoản</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{accountName}</Text>
+                        <Text medium grayDark style={styles.rowSubDetail}>{accountName.toUpperCase()}</Text>
                     </View>
 
                     <Border/>
