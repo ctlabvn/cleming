@@ -108,7 +108,8 @@ export default {
   discountNumber: {
     borderLeftWidth: 1,
     borderColor: material.gray500,
-    fontSize: 20
+    fontSize: 20,
+    paddingLeft: 10,
   },
   dealRight: {
     flex: 1,
