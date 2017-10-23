@@ -183,17 +183,18 @@ export default class App extends Component {
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
     }
 
-    setCachePlaceCurrentPage(place, allPlaceMode = this.currentRoute.showItemAllPlaceOnTopDropdown, listPlace) {
+    setCachePlaceCurrentPage(place, listPlace) {
+        const allPlaceMode = this.currentRoute.showItemAllPlaceOnTopDropdown;
 
         if (allPlaceMode && this.currentRoute && this.currentRoute.cachePlace) {
             const cachePlace = this.currentRoute.cachePlace;
 
             if (cachePlace && cachePlace.selectedPlace
                 && (typeof cachePlace.selectedPlace.id == 'undefined'
-                || cachePlace.selectedPlace.name)) {
-                place = ITEM_ALL_PLACE;
+                || typeof cachePlace.selectedPlace.name == 'undefined')) {
+                if (listPlace.length > 1) place = ITEM_ALL_PLACE;
 
-                this.setListPlace(listPlace);
+                this.setListPlace();
                 this.switchListPlaceRender(this.currentRoute.showItemAllPlaceOnTopDropdown, this.currentRoute.cachePlace)
                 this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
                 this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
