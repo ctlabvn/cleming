@@ -98,13 +98,21 @@ export default class extends Component {
     }
 
     _handleResponse(err, data) {
+        const { setToast } = this.props;
         this.setState({
             isLoading: false,
         })
         Keyboard.dismiss()
+
         // this._handlePressClear()
         // if (data) alert(JSON.stringify(data));
         // if (err) alert (JSON.stringify(err));
+        if (err) {
+
+            this.props.goBack();
+            setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
+            return;
+        }
         if (data && data.data) {
             this._handlePressClear()
             if (data.data.success) {
@@ -113,13 +121,16 @@ export default class extends Component {
                 Alert.alert(I18n.t('success'), I18n.t('received_message_and_processing'));
                 return;
             } else {
-                this.props.goBack();
+                // this.props.goBack();
+
+                // switch (data.data.msg) {
+                //     case 'not_have_phone_number':
+                //         setToast(getToastMessage(I18n.t('not_have_phone_number')), 'info', null, null, 3000, 'top')
+                //         return;
+                // }
                 setToast(getToastMessage(I18n.t('request_failed_retry')), 'info', null, null, 3000, 'top')
                 return;
             }
-        } else {
-            setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
-            return;
         }
     }
 

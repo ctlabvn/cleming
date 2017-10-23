@@ -91,7 +91,7 @@ export default class PreviewPopup extends Component {
                             { this.state.data.account_owner &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('account_owner')}: </Text>
-                                <Text medium bold grayDark>{this.state.data.account_owner.toUpperCase}</Text>
+                                <Text medium bold grayDark>{this.state.data.account_owner.toUpperCase()}</Text>
                             </View>}
 
                             { this.state.data.phone_number &&
