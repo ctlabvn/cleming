@@ -476,7 +476,8 @@ export default class DateFilter extends Component {
                     display: startHalfYear.format(DEFAULT_DATE_FORMAT) + ` ${I18n.t('to')} ` + current.format(DEFAULT_YEAR_FORMAT)
                 }
             case 'custom':
-                let startCustom = current.clone().subtract(6, 'days').startOf('day')
+                // let startCustom = current.clone().subtract(6, 'days').startOf('day')
+                let startCustom = current.clone().startOf('year')
                 let endCustom = current.endOf('day')
                 this.setState({startDate: new Date(startCustom.unix()*1000), endDate: new Date(endCustom.unix()*1000)})
                 return {

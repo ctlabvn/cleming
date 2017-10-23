@@ -141,7 +141,8 @@ export default class PlaceOrderList extends Component {
                                 {orderCodeBlock}
                                 <View style={styles.rowCenter}>
                                     <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                                    {item.status == 'WAIT_CONFIRMED' && <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
+                                    {(item.status == 'WAIT_CONFIRMED' || item.status == 'CONFIRMED'
+                                    ) && <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.counting}
                                         countTo={bookTime}
                                     />}
