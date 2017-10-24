@@ -258,7 +258,7 @@ export default {
     'id_number_invalid': 'Số cmt/cccd không khả dụng',
     'account_name_invalid': 'Tên chủ tài khoản không khả dụng',
     'bank_account_is_exists': 'Tài khoản ngân hàng đã tồn tại',
-    'clingme_transfer_time': 'Thời gian Clingme chuyển tiền',
+    'clingme_transfer_time': 'Thời gian Clingme\n chuyển tiền',
     'money_receipt_information': 'Thông tin nhận tiền',
     'bank_account_receive_money': 'Nhận tiền vào tài khoản ngân hàng',
     'accept_article': 'Tôi đồng ý với thông tin nhận tiền trên.',

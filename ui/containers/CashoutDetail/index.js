@@ -27,19 +27,29 @@ import {
 export default class CashoutHistory extends Component {
     constructor(props) {
         super(props)
+        this.state = ({
+            loading: false
+        })
     }
 
-    _load(){
-        const { route, getCashoutDetail, xsession } = this.props;
-        getCashoutDetail(xsession, route.params.cashoutId)
+    _load() {
+        const {route, getCashoutDetail, xsession} = this.props;
+        getCashoutDetail(xsession, route.params.cashoutId, () => {
+            this.setState({
+                loading: false
+            })
+        })
     }
 
     componentDidMount() {
+        this.setState({
+            loading: true,
+        })
         this._load();
     }
 
     getTime(time) {
-        if (time > 0) return moment(time*1000).format(DEFAULT_TIME_FORMAT);
+        if (time > 0) return moment(time * 1000).format(DEFAULT_TIME_FORMAT);
         return '--:--:--  --/--/--';
     }
 
@@ -48,61 +58,69 @@ export default class CashoutHistory extends Component {
         if (!this.props.detail) return (
             <View/>
         )
-        
-        const { moneyAmount, bankIcon, bankName, accountNumber, accountName,
-            tranCode, requestTime, confirmTime } = this.props.detail;
+
+        const {
+            moneyAmount, bankIcon, bankName, accountNumber, accountName,
+            tranCode, requestTime, confirmTime
+        } = this.props.detail;
 
         return (
-            <Container style={styles.container}>
-                <View style={styles.moneyWithDrawnContainer}>
-                    <Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>
-                    <Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>
-                </View>
-
-                <View style={styles.moneyInfoLabelContainer}>
-                    <Text medium italic bold grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>
-                </View>
-
-                <View style={styles.bankDetailContainer}>
-                    <View style={styles.bankImageContainer}>
-                    <Image source={{ uri: bankIcon }}
-                           resizeMode={'contain'}
-                           style={styles.bankImage} />
-                    </View>
-                    <View style={styles.accountDetailContainer}>
-                        <Text medium bold grayDark numberOfLines={3}>{bankName}</Text>
-                        <Text style={styles.marginTop5}>{accountNumber}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.detailContainer}>
-                    <Border/>
-                    <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>{I18n.t('account_owner')}</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{accountName.toUpperCase()}</Text>
+            <Container loading={true} style={styles.container}>
+                {this.state.loading &&
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                <Spinner shown={true} color={material.primaryColor}/>
+                    </View>}
+                {!this.state.loading &&
+                <View>
+                    <View style={styles.moneyWithDrawnContainer}>
+                        <Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>
+                        <Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>
                     </View>
 
-                    <Border/>
-                    <View style={styles.rowDetail}>
-
-                        <Text medium bold grayDark>{I18n.t('transaction_code')}</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{tranCode}</Text>
+                    <View style={styles.moneyInfoLabelContainer}>
+                        <Text medium italic bold grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>
                     </View>
 
-                    <Border/>
-                    <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>{I18n.t('request_time')}</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(requestTime)}</Text>
+                    <View style={styles.bankDetailContainer}>
+                        <View style={styles.bankImageContainer}>
+                            <Image source={{uri: bankIcon}}
+                                   resizeMode={'contain'}
+                                   style={styles.bankImage}/>
+                        </View>
+                        <View style={styles.accountDetailContainer}>
+                            <Text medium bold grayDark numberOfLines={3}>{bankName}</Text>
+                            <Text style={styles.marginTop5}>{accountNumber}</Text>
+                        </View>
                     </View>
 
-                    <Border/>
-                    <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>{I18n.t('clingme_transfer_time')}</Text>
-                        <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(confirmTime)}</Text>
+                    <View style={styles.detailContainer}>
+                        <Border/>
+                        <View style={styles.rowDetail}>
+                            <Text medium bold grayDark>{I18n.t('account_owner')}</Text>
+                            <Text medium grayDark style={styles.rowSubDetail}>{accountName.toUpperCase()}</Text>
+                        </View>
+
+                        <Border/>
+                        <View style={styles.rowDetail}>
+
+                            <Text medium bold grayDark>{I18n.t('transaction_code')}</Text>
+                            <Text medium grayDark style={styles.rowSubDetail}>{tranCode}</Text>
+                        </View>
+
+                        <Border/>
+                        <View style={styles.rowDetail}>
+                            <Text medium bold grayDark>{I18n.t('request_time')}</Text>
+                            <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(requestTime)}</Text>
+                        </View>
+
+                        <Border/>
+                        <View style={styles.rowDetail}>
+                            <Text medium bold grayDark>{I18n.t('clingme_transfer_time')}</Text>
+                            <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(confirmTime)}</Text>
+                        </View>
                     </View>
-                </View>
+                </View>}
             </Container>
         )
-
     }
 }
