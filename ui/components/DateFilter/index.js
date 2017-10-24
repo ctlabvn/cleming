@@ -82,12 +82,12 @@ export default class DateFilter extends Component {
                 }
             ]
         }
-        this.state = {
-            currentDateFilter: defaultFilter,
-            currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter),
-            isShowingStartDate: false,
-            isShowingEndDate: false,
-        };
+        // this.state = {
+        //     currentDateFilter: defaultFilter,
+        //     currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter),
+        //     isShowingStartDate: false,
+        //     isShowingEndDate: false,
+        // };
         this.dateFilterHeight = 0
         this.contentWidth = 0
         this.scrollFisrtLoad = true
@@ -478,7 +478,7 @@ export default class DateFilter extends Component {
             case 'custom':
                 // let startCustom = current.clone().subtract(6, 'days').startOf('day')
                 let startCustom = current.clone().startOf('year')
-                let endCustom = current.endOf('day')
+                let endCustom = current.clone().endOf('day')
                 this.setState({startDate: new Date(startCustom.unix()*1000), endDate: new Date(endCustom.unix()*1000)})
                 return {
                     value: {
@@ -550,6 +550,16 @@ export default class DateFilter extends Component {
 
     setSelected = (dateFilter) => {
         this.setState({...dateFilter})
+    }
+
+    componentWillMount() {
+        let defaultFilter = this.props.defaultFilter || 'day'
+        this.setState({
+            currentDateFilter: defaultFilter,
+            currentSelectValue: this._getDefaultCurrnetSelectValue(defaultFilter),
+            isShowingStartDate: false,
+            isShowingEndDate: false,
+        })
     }
 
     render() {        
