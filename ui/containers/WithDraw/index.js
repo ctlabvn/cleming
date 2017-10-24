@@ -105,12 +105,10 @@ export default class extends Component {
         Keyboard.dismiss()
 
         // this._handlePressClear()
-        // if (data) alert(JSON.stringify(data));
-        // if (err) alert (JSON.stringify(err));
         if (err) {
             this.props.goBack();
             switch (err.msg) {
-                case 'have_not_phone_number':
+                case 'not_have_phone_number':
                     setToast(getToastMessage(I18n.t('have_not_phone_number')), 'info', null, null, 3000, 'top')
                     return;
                 default:
@@ -281,27 +279,6 @@ export default class extends Component {
 
         addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
             this._handleResponse(err, data)
-            // this.setState({
-            //     isLoading: false
-            // })
-            // const {setToast, goBack} = this.props;
-            // // if (data) alert(JSON.stringify(data));
-            // // if (err) alert (JSON.stringify(err));
-            // if (data && data.data)
-            //     if (data.data.success) {
-            //         goBack();
-            //         Alert.alert('Thành công', 'Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.')
-            //         // setToast(getToastMessage('Ghi nhận thành công'), 'info', null, null, 2000, 'top')
-            //         return;
-            //     } else {
-            //         goBack();
-            //         setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
-            //         return;
-            //     }
-            // if (err) {
-            //     setToast(getToastMessage('Đã có lỗi xảy ra. Xin hãy thử lại.'), 'info', null, null, 2000, 'top')
-            //     return;
-            // }
         })
 
     }
