@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Container, List, ListItem, Spinner, Text} from "native-base";
-import {InteractionManager, View, TouchableOpacity} from "react-native";
+import {InteractionManager, View, TouchableOpacity, Image} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -17,11 +17,14 @@ import {getSession} from "~/store/selectors/auth";
 import material from "~/theme/variables/material.js";
 import I18n from '~/ui/I18n'
 
+import * as authSelectors from '~/store/selectors/auth'
+
 @connect(state => ({
     xsession: getSession(state),
     balanceMoney: state.wallet.balanceMoney,
     compareCheckMoney: state.wallet.compareCheckMoney,
     preBalance: state.wallet.preBalance,
+    user: authSelectors.getUser(state)
 }), {...commonAction, getBalance})
 export default class extends Component {
     constructor(props) {
@@ -45,7 +48,13 @@ export default class extends Component {
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>
-                    <Icon name='account' style={styles.iconAccount}/>
+                    {/*<Icon name='account' style={styles.iconAccount}/>*/}
+                    {this.props.user.avatar ?
+                        <Image
+                            style={{ width: 65, height: 65, margin: 30, borderRadius: 65}}
+                            placeholder={<Icon name='account' style={styles.iconAccount}/>}
+                            source={{uri: this.props.user.avatar}}/>
+                        : <Icon name='account' style={styles.iconAccount}/>}
                     <View style={styles.balanceMoneyContainer}>
                         <Text medium grayDark bold style={styles.balanceMoneyLabel}>{I18n.t('balance_money')}</Text>
                         <Text largeLight bold style={{color: color}}>{balanceMoney > 0 && '+'}{formatNumber(balanceMoney)} đ</Text>
