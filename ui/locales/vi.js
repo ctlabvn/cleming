@@ -259,6 +259,9 @@ export default {
     'account_name_invalid': 'Tên chủ tài khoản không khả dụng',
     'bank_account_is_exists': 'Tài khoản ngân hàng đã tồn tại',
     'clingme_transfer_time': 'Thời gian Clingme chuyển tiền',
+    'money_receipt_information': 'Thông tin nhận tiền',
+    'bank_account_receive_money': 'Nhận tiền vào tài khoản ngân hàng',
+    'accept_article': 'Tôi đồng ý với thông tin nhận tiền trên.',
 
     // Bank Account
     'account_owner': 'Tên chủ tài khoản',

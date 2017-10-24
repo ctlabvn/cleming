@@ -67,5 +67,13 @@ export default {
       paddingTop: 5,
       paddingBottom: 5,
       width: '100%'
-    }
+    },
+    textContent: {
+        flex: 1,
+        textAlign: 'right'
+    },
+    textAccetpArticle: {
+        textAlign: 'center',
+        paddingTop: 20
+    },
 }

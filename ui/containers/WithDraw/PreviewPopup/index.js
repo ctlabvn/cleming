@@ -61,17 +61,17 @@ export default class PreviewPopup extends Component {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
                         <View style={styles.header}>
-                            <Text bold white>Thông tin nhận tiền</Text>
+                            <Text bold white>{I18n.t('money_receipt_information')}</Text>
                         </View>
                         <View style={styles.textContanter}>
-                            <Text medium orange style={styles.text}>Nhận tiền vào tài khoản ngân hàng?</Text>
+                            <Text medium orange style={styles.text}>{I18n.t('bank_account_receive_money')}</Text>
                         </View>
                         <View style={styles.pd10}>
 
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('bank_name')}: </Text>
                                 <Text medium bold grayDark
-                                      style={{ flex: 1, textAlign: 'right'}}
+                                      style={styles.textContent}
                                       numberOfLines={2}>{this.state.data.bank}</Text>
                             </View>
 
@@ -79,7 +79,7 @@ export default class PreviewPopup extends Component {
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('branch')}: </Text>
                                 <Text medium bold grayDark
-                                      style={{flex: 1, textAlign: 'right'}}
+                                      style={styles.textContent}
                                       numberOfLines={2}>{this.state.data.branch}</Text>
                             </View>}
 
@@ -96,7 +96,7 @@ export default class PreviewPopup extends Component {
 
                             { this.state.data.phone_number &&
                             <View style={styles.rowInfo}>
-                                <Text medium gray>Số điện thoại: </Text>
+                                <Text medium gray>{I18n.t('phone_number')}: </Text>
                                 <Text medium bold grayDark>{this.state.data.phone_number}</Text>
                             </View>}
 
@@ -105,7 +105,7 @@ export default class PreviewPopup extends Component {
                             </View>
 
                             <View style={styles.rowInfo}>
-                                <Text medium gray>Số tiền: </Text>
+                                <Text medium gray>{I18n.t('money_number')}: </Text>
                                 <Text strong bold orange>{formatNumber(this.state.data.money_amount)} đ</Text>
                             </View>
 
@@ -115,7 +115,7 @@ export default class PreviewPopup extends Component {
                             {/*</View>*/}
 
                             <View style={styles.textContanter}>
-                                <Text medium gray italic style={{textAlign: 'center', paddingTop: 20}}>Tôi đồng ý với thông tin nhận tiền trên.</Text>
+                                <Text medium gray italic style={styles.textAccetpArticle}>{I18n.t('accept_article')}</Text>
                             </View>
 
                         </View>
