@@ -108,9 +108,16 @@ export default class extends Component {
         // if (data) alert(JSON.stringify(data));
         // if (err) alert (JSON.stringify(err));
         if (err) {
-
             this.props.goBack();
-            setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
+            switch (err.msg) {
+                case 'not_have_phone_number':
+                    setToast(getToastMessage(I18n.t('not_have_phone_number')), 'info', null, null, 3000, 'top')
+                    return;
+                default:
+                    setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')
+                    return;
+            }
+
             return;
         }
         if (data && data.data) {
@@ -122,12 +129,6 @@ export default class extends Component {
                 return;
             } else {
                 // this.props.goBack();
-
-                // switch (data.data.msg) {
-                //     case 'not_have_phone_number':
-                //         setToast(getToastMessage(I18n.t('not_have_phone_number')), 'info', null, null, 3000, 'top')
-                //         return;
-                // }
                 setToast(getToastMessage(I18n.t('request_failed_retry')), 'info', null, null, 3000, 'top')
                 return;
             }

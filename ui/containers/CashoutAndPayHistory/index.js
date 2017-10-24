@@ -156,7 +156,7 @@ export default class CashoutHistory extends Component {
                     onPressTab={(data) => this._handlePressTab(data)}
                     ref='tabs'/>
                 <DateFilter
-                    defaultFilter='day'
+                    defaultFilter='custom'
                     onPressFilter={(data) => this._handlePressFilter(data)}
                     ref='dateFilter'/>
                 <View>
