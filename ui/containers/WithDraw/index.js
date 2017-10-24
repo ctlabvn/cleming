@@ -110,8 +110,8 @@ export default class extends Component {
         if (err) {
             this.props.goBack();
             switch (err.msg) {
-                case 'not_have_phone_number':
-                    setToast(getToastMessage(I18n.t('not_have_phone_number')), 'info', null, null, 3000, 'top')
+                case 'have_not_phone_number':
+                    setToast(getToastMessage(I18n.t('have_not_phone_number')), 'info', null, null, 3000, 'top')
                     return;
                 default:
                     setToast(getToastMessage(I18n.t('something_went_wrong_and_retry')), 'info', null, null, 2000, 'top')

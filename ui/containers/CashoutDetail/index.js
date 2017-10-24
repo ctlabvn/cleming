@@ -54,50 +54,50 @@ export default class CashoutHistory extends Component {
 
         return (
             <Container style={styles.container}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 15}}>
-                    <Text medium bold grayDark>Số tiền rút</Text>
+                <View style={styles.moneyWithDrawnContainer}>
+                    <Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>
                     <Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>
                 </View>
 
-                <View style={{backgroundColor: material.gray300}}>
-                    <Text medium italic bold grayDark style={{margin: 15}}>Thông tin chi tiết</Text>
+                <View style={styles.moneyInfoLabelContainer}>
+                    <Text medium italic bold grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>
                 </View>
 
-                <View style={{flexDirection: 'row', margin: 15, alignItems: 'center'}}>
-                    <View style={{borderRadius: 5, borderWidth: 0.5, borderColor: material.gray200}}>
+                <View style={styles.bankDetailContainer}>
+                    <View style={styles.bankImageContainer}>
                     <Image source={{ uri: bankIcon }}
                            resizeMode={'contain'}
-                           style={{ width: 100, height: 60, borderRadius: 5, borderWidth: 1}} />
+                           style={styles.bankImage} />
                     </View>
-                    <View style={{marginLeft: 15, flex: 1}}>
+                    <View style={styles.accountDetailContainer}>
                         <Text medium bold grayDark numberOfLines={3}>{bankName}</Text>
-                        <Text style={{marginTop: 5}}>{accountNumber}</Text>
+                        <Text style={styles.marginTop5}>{accountNumber}</Text>
                     </View>
                 </View>
 
                 <View style={styles.detailContainer}>
                     <Border/>
                     <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>Tên chủ tài khoản</Text>
+                        <Text medium bold grayDark>{I18n.t('account_owner')}</Text>
                         <Text medium grayDark style={styles.rowSubDetail}>{accountName.toUpperCase()}</Text>
                     </View>
 
                     <Border/>
                     <View style={styles.rowDetail}>
 
-                        <Text medium bold grayDark>Mã giao dịch</Text>
+                        <Text medium bold grayDark>{I18n.t('transaction_code')}</Text>
                         <Text medium grayDark style={styles.rowSubDetail}>{tranCode}</Text>
                     </View>
 
                     <Border/>
                     <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>Thời gian yêu cầu</Text>
+                        <Text medium bold grayDark>{I18n.t('request_time')}</Text>
                         <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(requestTime)}</Text>
                     </View>
 
                     <Border/>
                     <View style={styles.rowDetail}>
-                        <Text medium bold grayDark>Thời gian Clingme chuyển tiền</Text>
+                        <Text medium bold grayDark>{I18n.t('clingme_transfer_time')}</Text>
                         <Text medium grayDark style={styles.rowSubDetail}>{this.getTime(confirmTime)}</Text>
                     </View>
                 </View>
