@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {Button, Container, List, ListItem, Spinner, Text, Item, Input, Form} from "native-base";
+import {Content, Button, Container, List, ListItem, Spinner, Text, Item, Input, Form} from "native-base";
 import {InteractionManager, View, TouchableOpacity, Image, Keyboard, ScrollView, Alert} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
@@ -10,7 +10,7 @@ import * as walletActions from "~/store/actions/wallet";
 import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import {formatNumber, getToastMessage} from "~/ui/shared/utils";
-import Content from "~/ui/components/Content";
+// import Content from "~/ui/components/Content";
 import {getSession} from "~/store/selectors/auth";
 import CheckBox from '~/ui/elements/CheckBox'
 import material from "~/theme/variables/material.js";
