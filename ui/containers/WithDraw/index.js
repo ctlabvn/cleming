@@ -276,8 +276,8 @@ export default class extends Component {
         this.setState({
             isLoading: true
         })
-
-        addBank(xsession, account_owner, account_number, bankId, branch, money_amount, phone_number, (err, data) =>{
+        let moneyAmount = money_amount.split('.').join('')
+        addBank(xsession, account_owner, account_number, bankId, branch, moneyAmount, phone_number, (err, data) =>{
             this._handleResponse(err, data)
         })
 
