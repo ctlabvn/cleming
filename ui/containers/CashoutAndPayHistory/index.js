@@ -112,7 +112,7 @@ export default class CashoutHistory extends Component {
 
         let symbol = (type == 1 || balanceMoney < 0) ? '-' : '+';
 
-        const color = symbol == '-' ? material.green500 : material.blue500;
+        const color = symbol == '-' ? material.red500 : material.blue500;
 
         return (
             <ListItem
