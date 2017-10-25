@@ -61,7 +61,7 @@ export default class extends Component {
             </Row>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, minWidth: '80%'}}>
               <Text medium grayDark bold>Bạn có muốn gọi đến số</Text>
-              <Text medium grayDark bold style={{marginTop: 5}}>{formatPhoneNumber(phoneNumber)}?</Text>
+              <Text medium orange bold style={{marginTop: 5}}>{formatPhoneNumber(phoneNumber)}?</Text>
             </View>
             <Row style={{justifyContent: 'space-around', alignItems: 'center', height: 45, borderTopWidth: 1, borderColor: material.gray300}}>
               <Text medium gray onPress={()=> onCloseClick()}>Huỷ</Text>
