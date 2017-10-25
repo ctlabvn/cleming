@@ -67,6 +67,8 @@ export default class TransactionDetail extends Component {
                 return <Text medium bold success>{I18n.t('transaction_cashback_success')}</Text>
             case TRANSACTION_DIRECT_STATUS.REJECT:
                 return <Text medium bold error>{I18n.t('transaction_reject')}</Text>
+            case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
+                return <Text medium bold warning>{I18n.t('transaction_wait_check')}</Text>
             default:
                 return <Text medium bold warning>{I18n.t('transaction_wait_confirm')}</Text>
         }
