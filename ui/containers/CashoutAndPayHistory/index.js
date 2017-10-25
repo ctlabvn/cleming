@@ -108,9 +108,11 @@ export default class CashoutHistory extends Component {
         else if (flagProcess == TRANSACTION_DONE) renderBorder = index < this.transactionDoneLength - 1 ?
             <Border/> : null;
 
-        const {balanceTime, balanceMoney, balanceName} = item;
+        const {balanceTime, balanceMoney, balanceName, type} = item;
 
-        const color = balanceMoney >= 0 ? material.blue500 : material.green500
+        let symbol = (type == 1 || balanceMoney < 0) ? '-' : '+';
+
+        const color = symbol == '-' ? material.green500 : material.blue500;
 
         return (
             <ListItem
@@ -123,7 +125,7 @@ export default class CashoutHistory extends Component {
                     <View style={styles.listItemContentContainer}>
                         <Text medium grayDark style={styles.listItemContentBalanceName}>{balanceName}</Text>
                         <View style={styles.listItemContentMoney}>
-                            <Text medium bold style={{color: color}}>{balanceMoney > 0 && '+'}{formatNumber(balanceMoney)} đ</Text>
+                            <Text medium bold style={{color: color}}>{symbol}{formatNumber(Math.abs(balanceMoney))} đ</Text>
                             <Icon
                                 name="foward"
                                 style={{fontSize: 20, color: color}}/>
