@@ -367,8 +367,6 @@ export default class PlaceOrderList extends Component {
             )
         }
 
-        console.log('panda booking ', booking)
-
         return (
             <View style={styles.container}>
                 <CallModal
