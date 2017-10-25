@@ -200,7 +200,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _loadMore = () => {
-        console.log('On load More Booking')
+        console.log('On load More Booking', booking)
         const { booking, app } = this.props
         if (booking.isLast) return
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -208,7 +208,6 @@ export default class PlaceOrderList extends Component {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to,
             this.refs.tabs.getActiveTab(), true, booking.page + 1)
-
     }
     _handlePressTab = (item) => {
         const { app } = this.props
@@ -382,9 +381,9 @@ export default class PlaceOrderList extends Component {
                     </View>
                     <ListViewExtend
                         onItemRef={ref=>this.listview=ref}
-                        onEndReached={()=> this._loadMore}
+                        onEndReached={()=>this._loadMore()}
                         keyExtractor={item=>item.clingmeId}
-                        onRefresh={()=> this._onRefresh}
+                        onRefresh={()=>this._onRefresh()}
                         dataArray={booking.bookingList}
                         renderRow={(item) => this._renderBookingItem(item)}
                     />
