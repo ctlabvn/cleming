@@ -124,7 +124,7 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: 'white',
+        borderColor: material.primaryColor,
         borderWidth: 1,
         marginLeft: 20,
         marginRight: 20,

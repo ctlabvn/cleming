@@ -6,8 +6,7 @@ import Icon from '~/ui/elements/Icon'
 import styles from './styles'
 import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
-import ListViewExtend from '~/ui/components/ListViewExtend'
-
+import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
 
 const SEARCH_IF_MORE_THAN = 9;
@@ -32,6 +31,7 @@ export default class TopDropdownListValue extends Component {
             selectingMultiple: false,
             selectingHash: {}
         }
+        this.selectingHashBackup = {}
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,7 +64,20 @@ export default class TopDropdownListValue extends Component {
     }
 
     updateSelectedOption(selectedOption) {
-        this.setState({ selectedOption: selectedOption })
+        console.log('Call Update Selected Option', JSON.stringify(selectedOption))
+        console.log('Type', typeof selectedOption.id)
+        if (selectedOption.id && selectedOption.id.toString().indexOf(',')>-1){
+            let selectedArr = selectedOption.id.split(',')
+            let selectingHash = {}
+            for (let i=0; i<selectedArr.length; i++){
+                selectingHash[selectedArr[i]] = true
+            }
+            this.setState({selectedOption: selectedOption, selectingHash: selectingHash, selectingMultiple: true})
+            this.selectingHashBackup = {...selectingHash}
+            return
+        }
+        this.setState({ selectedOption: selectedOption, selectingMultiple: false })
+
         // this._handlePress(selectedOption);
     }
     getValue() {
@@ -82,12 +95,34 @@ export default class TopDropdownListValue extends Component {
         this.setState({
             dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
-            selectingMultiple: false
         })
     }
     componentWillMount() {
 
     }
+
+    _genOutputMultipleSelect = () =>{
+        if (this.state.selectingHash[0]===true){
+            return this.props.dropdownValues.filter(item=>item.id==0)[0]
+        }
+        let keyArr = Object.keys(this.state.selectingHash)
+        let result = []
+        for (let i=0; i<keyArr.length; i++){
+            if (this.state.selectingHash[keyArr[i]]===true){
+                result.push(keyArr[i])
+            }
+        }
+        if (!result || !result.length) return {}
+        if (result.length == 1){
+            return this.props.dropdownValues.filter(item=>item.id==result[0])[0]
+        }
+        return {
+            id: result.join(','),
+            name: `${result.length} ${I18n.t('multiple_select_display')}`,
+            address: `${result.length} ${I18n.t('multiple_select_display')}`
+        }
+    }
+
     _handlePress(item) {
         if (this.state.selectingMultiple){
             let cloneSelectingHash = {...this.state.selectingHash}
@@ -98,7 +133,6 @@ export default class TopDropdownListValue extends Component {
                 }
             }else{
                 if (!cloneSelectingHash[item.id]){
-                    console.log('Handle Press Case 1')
                     cloneSelectingHash[item.id] = true
                     let keyArr = Object.keys(cloneSelectingHash)
                     let countAllSelect = 0
@@ -109,13 +143,10 @@ export default class TopDropdownListValue extends Component {
                         cloneSelectingHash[0] = true
                     }
                 }else{
-                    console.log('Handle Press Case 2')
                     cloneSelectingHash[0] = false
                     cloneSelectingHash[item.id] = false   
                 }    
             }
-            
-            console.log('Clone Hash', cloneSelectingHash)
             this.setState({selectingHash: cloneSelectingHash})
             return
         }
@@ -177,24 +208,7 @@ export default class TopDropdownListValue extends Component {
         // })
     }
 
-    // searchByWord(word, data){
-    //     // calculate the sum of similarity by compare word by word
-    //     const searchWord = convertVn(word.trim().toLowerCase())
-    //     const searchedData = data.map(item=>{
-    //         const compareWords = convertVn(item.name.trim().toLowerCase())
-    //         const longest = Math.max(searchWord.length, compareWords.length)
-    //         const distance = leven(searchWord, compareWords)
-    //         const point = (longest-distance)/longest
-    //         return {
-    //             item,
-    //             point,
-    //         }
-    //     })
-    //     return searchedData.sort((a,b)=>b.point-a.point).map(c=>c.item)
-    // }
-
     _onLongPressItem = (item) => {
-        console.log('On Long Press', item)
         let cloneSelectingHash = {...this.state.selectingHash}
         if (item.id != 0){
             cloneSelectingHash[item.id] = true
@@ -203,7 +217,6 @@ export default class TopDropdownListValue extends Component {
                 cloneSelectingHash[this.state.dropdownValues[i].id] = true
             }
         }
-        
         this.setState({selectingMultiple: true, selectingHash: cloneSelectingHash})
     }
 
@@ -212,11 +225,34 @@ export default class TopDropdownListValue extends Component {
     }
 
     _handleOkMultiple = () => {
-        this.close()
+        this.selectingHashBackup = {...this.state.selectingHash}
+        this.props.onPressOverlay && this.props.onPressOverlay()
+        let multipleSelectValue = this._genOutputMultipleSelect()
+        console.log('Multiple Select Value', multipleSelectValue)
+        this.props.onSelect && this.props.onSelect(multipleSelectValue)
+        if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(',')>-1){
+            this.setState({
+                dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+                openningDropdown: false,
+            })
+            return
+        }
+        this.setState({
+            dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+            openningDropdown: false,
+            selectingHash: {},
+            selectingMultiple: false
+        })        
     }
 
     _handleCancelMultiple = () => {
-        this._handlePressOverlay()
+        // this._handlePressOverlay()
+        this.props.onPressOverlay && this.props.onPressOverlay()
+        this.setState({
+            dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+            openningDropdown: false,
+            selectingHash: this.selectingHashBackup
+        })
     }
 
     render() {
