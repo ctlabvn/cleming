@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Container, Text, List, ListItem} from "native-base";
-import {InteractionManager, View, TouchableWithoutFeedback, ActivityIndicator} from "react-native";
+import {View} from "react-native";
 import styles from "./styles";
 import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
@@ -11,7 +11,6 @@ import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import moment from "moment";
 import {formatNumber, chainParse} from "~/ui/shared/utils";
-import Content from "~/ui/components/Content";
 import {getSession} from "~/store/selectors/auth";
 import material from "~/theme/variables/material.js";
 import I18n from '~/ui/I18n'

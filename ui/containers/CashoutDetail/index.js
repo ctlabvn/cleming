@@ -72,15 +72,6 @@ export default class CashoutHistory extends Component {
                     </View>}
                 {!this.state.loading &&
                 <View>
-                    {/*<View style={styles.moneyWithDrawnContainer}>*/}
-                        {/*<Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>*/}
-                        {/*<Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>*/}
-                    {/*</View>*/}
-
-                    {/*<View style={styles.moneyInfoLabelContainer}>*/}
-                        {/*<Text medium italic grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>*/}
-                    {/*</View>*/}
-
                     <View style={styles.bankDetailContainer}>
                         <View style={styles.bankImageContainer}>
                             <Image source={{uri: bankIcon}}
