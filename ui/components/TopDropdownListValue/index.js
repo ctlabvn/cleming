@@ -327,7 +327,7 @@ export default class TopDropdownListValue extends Component {
                         maxHeight,
                     }}
                     rowHasChanged={(r1, r2) => {
-                        return this.rowHasChanged || this.rowHasChangedHash[r1.id] || r1.id != r2.id
+                        return this.rowHasChanged || r1.id != r2.id || this.rowHasChangedHash[r1.id]
                         {/* return true */}
                     }}
                     renderRow={(item) => {
