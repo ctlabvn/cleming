@@ -73,13 +73,6 @@ export default class extends Component {
 
     }
     _handlePressSumRevenue() {
-        // const item = this.refs.dateFilter.getCurrentSelectValue()
-
-        // const { setCheckingDateFilterCurrentSelectValue } = this.props;
-        // setCheckingDateFilterCurrentSelectValue(item);
-        //
-        // const { datefiltercurrentvalue } =this.props;
-
         const {forwardTo} = this.props
         forwardTo('transactionHistory');
     }
@@ -88,12 +81,6 @@ export default class extends Component {
 
     _load(page=1) {
         const {xsession, getCheckingDetail} = this.props;
-        // if (!fromTime && !toTime) {
-        //     const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-        //     fromTime = dateFilterData.from;
-        //     toTime = dateFilterData.to;
-        // }
-
         getCheckingDetail(xsession, page, (err, data) => {
           console.log('Err Checking', err);
           console.log('Data Checking', data);
@@ -108,7 +95,6 @@ export default class extends Component {
 
     _generateDataForDateFilterPeriod = () => {
       const {checking} = this.props
-      // console.log('Checking', checking);
       if (checking && checking.listCompareCheckDt){
         return checking.listCompareCheckDt.map(item => ({
           id: item.compareId,
@@ -131,7 +117,7 @@ export default class extends Component {
         let colorStyle = (detail.status == 2) ? styles.warning : styles.success
         let checkText = (detail.status == 2) ? I18n.t('not_checking_yet') : I18n.t('checked')
         if (!checking || !checking.listCompareCheckDt || checking.listCompareCheckDt.length == 0){
-          return <View style={styles.emptyPage}><Text style={styles.emptyText}>Chưa có đối soát nào</Text></View>
+          return <View style={styles.emptyPage}><Text style={styles.emptyText}>{I18n.t('have_not_any_compare_check')}</Text></View>
         }
         return (
             <Container style={styles.container}>
@@ -161,7 +147,7 @@ export default class extends Component {
                         </View>
                     </View>
 
-                    <View style={{marginRight: 20}}>
+                    <View style={styles.marginRight20}>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>{I18n.t('total_money_merchant_get')}</Text>
                             <Text medium bold grayDark>{formatNumber(detail.mcMoneyCollected)}</Text>

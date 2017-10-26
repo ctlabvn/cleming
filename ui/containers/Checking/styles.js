@@ -48,6 +48,10 @@ export default {
         width: '100%'
     },
 
+    marginRight20: {
+        marginRight: 20
+    },
+
     moneyContent: {
         justifyContent: 'space-between',
         marginBottom: 15,

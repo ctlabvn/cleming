@@ -321,6 +321,7 @@ export default {
     'merchant_get_money_from_clingme': 'Clingme thanh toán \n cho đối tác',
     'clingme_get_money_from_merchant': 'Đối tác thanh toán \n cho Clingme',
     'clingme_pay': 'Thanh toán cho Clingme',
+    'have_not_any_compare_check': 'Chưa có đối soát nào',
 
     // Cashout
     'cashout_account': 'Tài khoản Đối tác',
