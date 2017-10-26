@@ -10,7 +10,7 @@ import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
 const SEARCH_IF_MORE_THAN = 9;
 const CONCAT_CHARACTER = ';'
-
+const emptyObj = {}
 export default class TopDropdownListValue extends Component {
     constructor(props) {
         super(props)
@@ -34,6 +34,7 @@ export default class TopDropdownListValue extends Component {
         }
         this.selectingHashBackup = {}
         this.rowHasChanged = false
+        this.rowHasChangedHash = {}
     }
 
     componentWillReceiveProps(nextProps) {
@@ -203,20 +204,19 @@ export default class TopDropdownListValue extends Component {
             let keyArr = Object.keys(this.state.selectingHash)
             for (let i=0; i<keyArr.length; i++){
                 if (this.state.selectingHash[keyArr[i]] != nextState.selectingHash[keyArr[i]]){
-                    this.rowHasChanged = true
+                    this.rowHasChangedHash[keyArr[i]] = true
                 }
             }
         }
-        if (!this.rowHasChanged){
-            this.rowHasChanged = (this.state.openningDropdown != nextState.openningDropdown
-                || this.state.canMultipleSelect != nextState.canMultipleSelect
-                || this.state.selectingMultiple != nextState.selectingMultiple
-                || Object.keys(this.state.selectingHash).length != Object.keys(nextState.selectingHash).length
-            )
-        }
+        this.rowHasChanged = (this.state.openningDropdown != nextState.openningDropdown
+            || this.state.canMultipleSelect != nextState.canMultipleSelect
+            || this.state.selectingMultiple != nextState.selectingMultiple
+            || Object.keys(this.state.selectingHash).length != Object.keys(nextState.selectingHash).length
+        )
         
         return (
             this.rowHasChanged
+            || Object.keys(this.rowHasChangedHash).length > 0
             || this._isDiff(this.state.selectedOption, nextState.selectedOption)
             || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
         )
@@ -224,6 +224,7 @@ export default class TopDropdownListValue extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         this.rowHasChanged = false
+        this.rowHasChangedHash = {}
     }
 
     componentDidMount(){
@@ -319,7 +320,7 @@ export default class TopDropdownListValue extends Component {
                         maxHeight,
                     }}
                     rowHasChanged={(r1, r2) => {
-                        return this.rowHasChanged || r1.id != r2.id
+                        return this.rowHasChanged || this.rowHasChangedHash[r1.id] || r1.id != r2.id
                         {/* return true */}
                     }}
                     renderRow={(item) => {
