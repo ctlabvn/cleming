@@ -8,8 +8,8 @@ import Content from '~/ui/components/Content'
 import material from '~/theme/variables/material'
 import I18n from '~/ui/I18n'
 const { height, width } = Dimensions.get('window')
-
 const SEARCH_IF_MORE_THAN = 9;
+const CONCAT_CHARACTER = ';'
 
 export default class TopDropdownListValue extends Component {
     constructor(props) {
@@ -66,8 +66,8 @@ export default class TopDropdownListValue extends Component {
     updateSelectedOption(selectedOption) {
         console.log('Call Update Selected Option', JSON.stringify(selectedOption))
         console.log('Type', typeof selectedOption.id)
-        if (selectedOption.id && selectedOption.id.toString().indexOf(',')>-1){
-            let selectedArr = selectedOption.id.split(',')
+        if (selectedOption.id && selectedOption.id.toString().indexOf(CONCAT_CHARACTER)>-1){
+            let selectedArr = selectedOption.id.split(CONCAT_CHARACTER)
             let selectingHash = {}
             for (let i=0; i<selectedArr.length; i++){
                 selectingHash[selectedArr[i]] = true
@@ -117,7 +117,7 @@ export default class TopDropdownListValue extends Component {
             return this.props.dropdownValues.filter(item=>item.id==result[0])[0]
         }
         return {
-            id: result.join(','),
+            id: result.join(CONCAT_CHARACTER),
             name: `${result.length} ${I18n.t('multiple_select_display')}`,
             address: `${result.length} ${I18n.t('multiple_select_display')}`
         }
@@ -230,7 +230,7 @@ export default class TopDropdownListValue extends Component {
         let multipleSelectValue = this._genOutputMultipleSelect()
         console.log('Multiple Select Value', multipleSelectValue)
         this.props.onSelect && this.props.onSelect(multipleSelectValue)
-        if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(',')>-1){
+        if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             this.setState({
                 dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
                 openningDropdown: false,
