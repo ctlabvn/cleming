@@ -72,14 +72,14 @@ export default class CashoutHistory extends Component {
                     </View>}
                 {!this.state.loading &&
                 <View>
-                    <View style={styles.moneyWithDrawnContainer}>
-                        <Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>
-                        <Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>
-                    </View>
+                    {/*<View style={styles.moneyWithDrawnContainer}>*/}
+                        {/*<Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>*/}
+                        {/*<Text medium bold orange>{formatNumber(moneyAmount)} đ</Text>*/}
+                    {/*</View>*/}
 
-                    <View style={styles.moneyInfoLabelContainer}>
-                        <Text medium italic bold grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>
-                    </View>
+                    {/*<View style={styles.moneyInfoLabelContainer}>*/}
+                        {/*<Text medium italic grayDark style={styles.margin15}>{I18n.t('info_detail')}</Text>*/}
+                    {/*</View>*/}
 
                     <View style={styles.bankDetailContainer}>
                         <View style={styles.bankImageContainer}>
@@ -89,11 +89,17 @@ export default class CashoutHistory extends Component {
                         </View>
                         <View style={styles.accountDetailContainer}>
                             <Text medium bold grayDark numberOfLines={3}>{bankName}</Text>
-                            <Text style={styles.marginTop5}>{accountNumber}</Text>
+                            <Text italic bold style={styles.marginTop5}>{accountNumber}</Text>
                         </View>
                     </View>
 
                     <View style={styles.detailContainer}>
+                        <Border/>
+                        <View style={styles.rowDetail}>
+                            <Text medium bold grayDark>{I18n.t('money_withdrawn_2')}</Text>
+                            <Text medium grayDark style={styles.rowSubDetail}>{formatNumber(moneyAmount)} đ</Text>
+                        </View>
+
                         <Border/>
                         <View style={styles.rowDetail}>
                             <Text medium bold grayDark>{I18n.t('account_owner')}</Text>
