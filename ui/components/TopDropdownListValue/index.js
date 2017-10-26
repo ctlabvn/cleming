@@ -126,7 +126,9 @@ export default class TopDropdownListValue extends Component {
     _handlePress(item) {
         if (this.state.selectingMultiple){
             let cloneSelectingHash = {...this.state.selectingHash}
+            // If press `Tất cả địa điểm`, all item will be select or unselect
             if (item.id == 0){
+
                 let allSyncValue = cloneSelectingHash[item.id] ? false : true
                 for (let i=0; i<this.state.dropdownValues.length; i++){
                     cloneSelectingHash[this.state.dropdownValues[i].id] = allSyncValue
@@ -135,6 +137,7 @@ export default class TopDropdownListValue extends Component {
                 if (!cloneSelectingHash[item.id]){
                     cloneSelectingHash[item.id] = true
                     let keyArr = Object.keys(cloneSelectingHash)
+                    // If all item selected, `Tất cả địa điểm` will be select too
                     let countAllSelect = 0
                     for (let i=0; i<keyArr.length; i++){
                         if(keyArr[i] != 0 && cloneSelectingHash[keyArr[i]] == true) countAllSelect++
@@ -143,6 +146,7 @@ export default class TopDropdownListValue extends Component {
                         cloneSelectingHash[0] = true
                     }
                 }else{
+                    // If any item unselect, `Tất cả địa điểm` will be unselect too
                     cloneSelectingHash[0] = false
                     cloneSelectingHash[item.id] = false   
                 }    
@@ -150,19 +154,13 @@ export default class TopDropdownListValue extends Component {
             this.setState({selectingHash: cloneSelectingHash})
             return
         }
-
-        // this.state.selectedOption = item
         this.props.onSelect && this.props.onSelect(item)
-        // this.state.dropdownValues = this.props.dropdownValues
-
         this.setState({
             selectedOption: item,
-            dropdownValues: this.props.dropdownValues
+            dropdownValues: this.props.dropdownValues,
+            dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+            openningDropdown: false,
         })
-
-        // this.toggle()
-
-        this.close();
     }
     _handlePressOverlay = () => {
         this.props.onPressOverlay && this.props.onPressOverlay()
@@ -228,7 +226,6 @@ export default class TopDropdownListValue extends Component {
         this.selectingHashBackup = {...this.state.selectingHash}
         this.props.onPressOverlay && this.props.onPressOverlay()
         let multipleSelectValue = this._genOutputMultipleSelect()
-        console.log('Multiple Select Value', multipleSelectValue)
         this.props.onSelect && this.props.onSelect(multipleSelectValue)
         if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             this.setState({

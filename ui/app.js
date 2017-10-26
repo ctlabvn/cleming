@@ -157,16 +157,15 @@ export default class App extends Component {
         const {setSelectedOption, selectedPlace } = this.props;
 
         let selectedOption = this.listPlaceRender[0]
-
-            if (cachePlace && cachePlace.selectedPlace
-                && typeof cachePlace.selectedPlace.id != 'undefined'
-                && cachePlace.selectedPlace.name) {
-                selectedOption = cachePlace.selectedPlace
-            } else {
-                if (selectedPlace && selectedPlace.id && selectedPlace.name) selectedOption = selectedPlace;
-                else {
-                    selectedOption = this.listPlaceRender[0]
-                }
+        if (cachePlace && cachePlace.selectedPlace
+            && typeof cachePlace.selectedPlace.id != 'undefined'
+            && cachePlace.selectedPlace.name) {
+            selectedOption = cachePlace.selectedPlace
+        } else {
+            if (selectedPlace && selectedPlace.id && selectedPlace.name && showItemAllPlaceOnTopDropdown)
+              selectedOption = selectedPlace
+            else 
+              selectedOption = this.listPlaceRender[0]
         }
 
         // addition 16/09/2017 fix bug for All Place Mode <<<
