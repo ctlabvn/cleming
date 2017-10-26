@@ -33,8 +33,12 @@ export default {
     },
 
     title: {
-        backgroundColor: material.gray300,
-        padding: 15
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: material.gray200,
+        paddingHorizontal: 15,
+        paddingVertical: 5
     },
 
 }

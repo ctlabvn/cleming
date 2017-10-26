@@ -113,7 +113,6 @@ export default class CashoutHistory extends Component {
         let symbol = (type == 1 || balanceMoney < 0) ? '-' : '+';
 
         const color = symbol == '-' ? material.red500 : material.blue500;
-
         return (
             <ListItem
                 noBorder
@@ -123,7 +122,7 @@ export default class CashoutHistory extends Component {
                     <Text medium grayDark
                           style={styles.listItemContentTime}>{moment(balanceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
                     <View style={styles.listItemContentContainer}>
-                        <Text medium grayDark style={styles.listItemContentBalanceName}>{balanceName}</Text>
+                        <Text medium grayDark numberOfLines={2} style={styles.listItemContentBalanceName}>{balanceName}</Text>
                         <View style={styles.listItemContentMoney}>
                             <Text medium bold style={{color: color}}>{symbol}{formatNumber(Math.abs(balanceMoney))} đ</Text>
                             <Icon
@@ -141,6 +140,7 @@ export default class CashoutHistory extends Component {
     render() {
         const {forwardTo, balanceHistory} = this.props
         let minHeight = 0;
+
         if (balanceHistory) {
             const { balanceWait } = balanceHistory;
             if (balanceWait) {
@@ -164,6 +164,7 @@ export default class CashoutHistory extends Component {
                 <View>
                     <View style={styles.title}>
                         <Text strong bold grayDark>{I18n.t('cashout_waiting_for_progressing')}</Text>
+                        <Text medium>{balanceHistory.balanceWait.listBalance.length || 0}</Text>
                     </View>
                     { balanceHistory && balanceHistory.balanceWait &&
                     <List
@@ -173,6 +174,7 @@ export default class CashoutHistory extends Component {
                 </View>
                 <View style={styles.title}>
                     <Text strong bold grayDark>{I18n.t('cashout_done')}</Text>
+                    <Text medium>{balanceHistory.balanceConfirm.listBalance.length || 0}</Text>
                 </View>
                 {balanceHistory && balanceHistory.balanceConfirm &&
                 <ListViewExtend
