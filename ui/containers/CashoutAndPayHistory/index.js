@@ -140,11 +140,16 @@ export default class CashoutHistory extends Component {
     render() {
         const {forwardTo, balanceHistory} = this.props
         let minHeight = 0;
-
+        let balanceWaitLength = 0;
+        let balanceConfirmLength = 0;
         if (balanceHistory) {
-            const { balanceWait } = balanceHistory;
+            const { balanceWait, balanceConfirm } = balanceHistory;
             if (balanceWait) {
                 minHeight = balanceWait && balanceWait.listBalance.length > 0 ? 0 : 50;
+                balanceWaitLength = balanceWait.listBalance.length;
+            }
+            if (balanceConfirm) {
+                balanceConfirmLength = balanceConfirm.listBalance.length;
             }
         }
 
@@ -164,7 +169,7 @@ export default class CashoutHistory extends Component {
                 <View>
                     <View style={styles.title}>
                         <Text strong bold grayDark>{I18n.t('cashout_waiting_for_progressing')}</Text>
-                        <Text medium>{balanceHistory.balanceWait.listBalance.length || 0}</Text>
+                        <Text medium>{balanceWaitLength}</Text>
                     </View>
                     { balanceHistory && balanceHistory.balanceWait &&
                     <List
@@ -174,7 +179,7 @@ export default class CashoutHistory extends Component {
                 </View>
                 <View style={styles.title}>
                     <Text strong bold grayDark>{I18n.t('cashout_done')}</Text>
-                    <Text medium>{balanceHistory.balanceConfirm.listBalance.length || 0}</Text>
+                    <Text medium>{balanceConfirmLength}</Text>
                 </View>
                 {balanceHistory && balanceHistory.balanceConfirm &&
                 <ListViewExtend
