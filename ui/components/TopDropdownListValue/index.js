@@ -70,6 +70,13 @@ export default class TopDropdownListValue extends Component {
         this.setState({canMultipleSelect : canSelect})
     }
 
+    resetMultipleSelect = () => {
+        if (this.state.selectingHash && Object.keys(this.state.selectingHash).length > 0){
+            this.setState({selectingHash: {}})
+            this.selectingHashBackup = {}
+        }
+    }
+
     updateSelectedOption(selectedOption, canMultipleSelect) {
         if (selectedOption.id && selectedOption.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             let selectedArr = selectedOption.id.split(CONCAT_CHARACTER)

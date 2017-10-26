@@ -67,6 +67,7 @@ export default class extends Component {
 
   componentDidMount = () => {
     this.props.app && this.props.app.navigator && this.props.app.navigator.resetTo('login')
+    this.props.app.topDropdownListValue.resetMultipleSelect()
   }
 
   componentWillReceiveProps(nextProps) {
