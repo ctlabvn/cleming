@@ -12,6 +12,12 @@ export default {
     rowNormal: {
         flexDirection: 'row',
     },
+    image: {
+		width: 65,
+		height: 65,
+		margin: 30,
+		borderRadius: 65
+	},
     cashoutBtn: {
         backgroundColor: material.orange500,
         paddingLeft: 45,

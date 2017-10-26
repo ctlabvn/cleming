@@ -1,17 +1,13 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Button, Container, List, ListItem, Spinner, Text} from "native-base";
-import {InteractionManager, View, TouchableOpacity, Image} from "react-native";
+import {View, TouchableOpacity, Image} from "react-native";
 import styles from "./styles";
-import DateFilter from "~/ui/components/DateFilter";
 import * as commonAction from "~/store/actions/common";
 import {getBalance} from "~/store/actions/wallet";
-import TabsWithNoti from "~/ui/components/TabsWithNoti";
 import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
-import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
-import Content from "~/ui/components/Content";
 import {getSession} from "~/store/selectors/auth";
 
 import material from "~/theme/variables/material.js";
@@ -48,10 +44,8 @@ export default class extends Component {
         return (
             <Container style={styles.container}>
                 <View style={styles.rowNormal}>
-                    {/*<Icon name='account' style={styles.iconAccount}/>*/}
                     {this.props.user.avatar ?
-                        <Image
-                            style={{ width: 65, height: 65, margin: 30, borderRadius: 65}}
+                        <Image style={styles.image}
                             placeholder={<Icon name='account' style={styles.iconAccount}/>}
                             source={{uri: this.props.user.avatar}}/>
                         : <Icon name='account' style={styles.iconAccount}/>}
