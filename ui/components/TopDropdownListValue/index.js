@@ -29,9 +29,11 @@ export default class TopDropdownListValue extends Component {
             selectedOption: selectedOption,
             dropdownValues: props.dropdownValues || [],
             selectingMultiple: false,
+            canMultipleSelect: true,
             selectingHash: {}
         }
         this.selectingHashBackup = {}
+        this.rowHasChanged = false
     }
 
     componentWillReceiveProps(nextProps) {
@@ -63,20 +65,24 @@ export default class TopDropdownListValue extends Component {
         this.setState({ defaultDropdownValues: defaultDropdownValues})
     }
 
-    updateSelectedOption(selectedOption) {
-        console.log('Call Update Selected Option', JSON.stringify(selectedOption))
-        console.log('Type', typeof selectedOption.id)
+    setCanMultileSelect = (canSelect) => {
+        this.setState({canMultipleSelect : canSelect})
+    }
+
+    updateSelectedOption(selectedOption, canMultipleSelect) {
         if (selectedOption.id && selectedOption.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             let selectedArr = selectedOption.id.split(CONCAT_CHARACTER)
             let selectingHash = {}
             for (let i=0; i<selectedArr.length; i++){
                 selectingHash[selectedArr[i]] = true
             }
-            this.setState({selectedOption: selectedOption, selectingHash: selectingHash, selectingMultiple: true})
-            this.selectingHashBackup = {...selectingHash}
+            this.setState({selectedOption: selectedOption, selectingHash: selectingHash, 
+                selectingMultiple: true, canMultipleSelect: canMultipleSelect
+            })
+            this.selectingHashBackup = this._cloneHash(this.state.selectingHash)
             return
         }
-        this.setState({ selectedOption: selectedOption, selectingMultiple: false })
+        this.setState({ selectedOption: selectedOption, selectingMultiple: false, canMultipleSelect: canMultipleSelect })
 
         // this._handlePress(selectedOption);
     }
@@ -123,9 +129,18 @@ export default class TopDropdownListValue extends Component {
         }
     }
 
+    _cloneHash = (hash) => {
+        let newHash = {}
+        let keyArr = Object.keys(hash)
+        for (let i=0; i< keyArr.length; i++){
+            newHash[keyArr[i]] = hash[keyArr[i]]
+        }
+        return newHash
+    }
+
     _handlePress(item) {
         if (this.state.selectingMultiple){
-            let cloneSelectingHash = {...this.state.selectingHash}
+            let cloneSelectingHash = this._cloneHash(this.state.selectingHash)
             // If press `Tất cả địa điểm`, all item will be select or unselect
             if (item.id == 0){
 
@@ -187,17 +202,28 @@ export default class TopDropdownListValue extends Component {
             if (!nextState.selectingMultiple) return true
             let keyArr = Object.keys(this.state.selectingHash)
             for (let i=0; i<keyArr.length; i++){
-                if (this.state.selectingHash[keyArr[i]] != nextState.selectingHash[keyArr[i]]) return true
+                if (this.state.selectingHash[keyArr[i]] != nextState.selectingHash[keyArr[i]]){
+                    this.rowHasChanged = true
+                }
             }
         }
+        if (!this.rowHasChanged){
+            this.rowHasChanged = (this.state.openningDropdown != nextState.openningDropdown
+                || this.state.canMultipleSelect != nextState.canMultipleSelect
+                || this.state.selectingMultiple != nextState.selectingMultiple
+                || Object.keys(this.state.selectingHash).length != Object.keys(nextState.selectingHash).length
+            )
+        }
+        
         return (
-            this.state.openningDropdown != nextState.openningDropdown
-            || this.state.selectingMultiple != nextState.selectingMultiple
+            this.rowHasChanged
             || this._isDiff(this.state.selectedOption, nextState.selectedOption)
             || this._isArrDiff(this.state.dropdownValues, nextState.dropdownValues)
-            || Object.keys(this.state.selectingHash).length != Object.keys(nextState.selectingHash).length
-            
         )
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        this.rowHasChanged = false
     }
 
     componentDidMount(){
@@ -207,7 +233,8 @@ export default class TopDropdownListValue extends Component {
     }
 
     _onLongPressItem = (item) => {
-        let cloneSelectingHash = {...this.state.selectingHash}
+        if (!this.state.canMultipleSelect) return
+        let cloneSelectingHash = this._cloneHash(this.state.selectingHash)
         if (item.id != 0){
             cloneSelectingHash[item.id] = true
         }else{
@@ -223,9 +250,19 @@ export default class TopDropdownListValue extends Component {
     }
 
     _handleOkMultiple = () => {
-        this.selectingHashBackup = {...this.state.selectingHash}
-        this.props.onPressOverlay && this.props.onPressOverlay()
         let multipleSelectValue = this._genOutputMultipleSelect()
+        if (!multipleSelectValue || !multipleSelectValue.id){
+            this.props.onPressOverlay && this.props.onPressOverlay()
+            this.setState({
+                dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+                openningDropdown: false,
+                selectingHash: {},
+                selectingMultiple: false
+            })
+            return
+        }
+        this.selectingHashBackup = this._cloneHash(this.state.selectingHash)
+        this.props.onPressOverlay && this.props.onPressOverlay()
         this.props.onSelect && this.props.onSelect(multipleSelectValue)
         if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             this.setState({
@@ -267,7 +304,7 @@ export default class TopDropdownListValue extends Component {
         // }
 
 
-        // console.log('similarity', this.searchByWord('lang ha ha noi', dropdownValues))
+        
         let overlayStyle = openningDropdown ? (this.needSearch() ? styles.ovarlayContainerOpenPlus : styles.ovarlayContainerOpen) :styles.ovarlayContainerClose
         // let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen :styles.ovarlayContainerClose
         // console.warn('topdropdownlistvalue render dropdownValues ' + JSON.stringify(dropdownValues));
@@ -281,7 +318,10 @@ export default class TopDropdownListValue extends Component {
                         ...styles.dropdownList,
                         maxHeight,
                     }}
-                    rowHasChanged={(r1, r2) => true}
+                    rowHasChanged={(r1, r2) => {
+                        return this.rowHasChanged || r1.id != r2.id
+                        {/* return true */}
+                    }}
                     renderRow={(item) => {
                         return (
                             <TouchableWithoutFeedback
@@ -289,8 +329,14 @@ export default class TopDropdownListValue extends Component {
                                 onLongPress={()=>this._onLongPressItem(item)}
                             >
                                 <View style={styles.dropdownListItem}>
-                                    {this.state.selectingMultiple && this.state.selectingHash[item.id]===true && <Icon name='checked' style={styles.checkedIcon}/>}
-                                    {this.state.selectingMultiple && !this.state.selectingHash[item.id] && <Icon name='option_uncheck' style={styles.checkedIcon}/>}
+                                    {this.state.canMultipleSelect && this.state.selectingMultiple 
+                                        && this.state.selectingHash[item.id]===true && 
+                                        <Icon name='checked' style={styles.checkedIcon}/>
+                                    }
+                                    {this.state.canMultipleSelect && this.state.selectingMultiple 
+                                        && !this.state.selectingHash[item.id] 
+                                        && <Icon name='option_uncheck' style={styles.checkedIcon}/>
+                                    }
                                     {item.name.length > 60 ? <Text  numberOfLines={2} style={styles.dropdownListItemText}>{item.name}</Text>
                                     : <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>}
 

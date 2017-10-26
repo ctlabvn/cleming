@@ -179,7 +179,7 @@ export default class App extends Component {
 
         setSelectedOption(selectedOption)
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
-        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption, showItemAllPlaceOnTopDropdown)
     }
 
     setCachePlaceCurrentPage(place, listPlace) {
@@ -205,7 +205,7 @@ export default class App extends Component {
 
         if (this.currentRoute && this.currentRoute.cachePlace) this.currentRoute.cachePlace.selectedPlace = place
         if (this.topDropdown) this.topDropdown.updateSelectedOption(place, true)
-        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place)
+        if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(place, true)
         this._handleChangePlace(place);
 
         return place
@@ -415,7 +415,7 @@ export default class App extends Component {
       }
       this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
       this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
-      this.topDropdownListValue.updateSelectedOption(selectedPlace)
+      this.topDropdownListValue.updateSelectedOption(selectedPlace, true)
     // }
 
 
