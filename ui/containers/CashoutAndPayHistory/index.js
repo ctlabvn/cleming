@@ -45,6 +45,10 @@ export default class CashoutHistory extends Component {
         this._load();
     }
 
+    componentWillFocus() {
+        this._load();
+    }
+
     _load(fromTime, toTime, option, pageNumber = 1) {
 
         if (!fromTime || !toTime) {
