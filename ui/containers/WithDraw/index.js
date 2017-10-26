@@ -56,7 +56,6 @@ export default class extends Component {
         const {xsession, getBanks, getListBank} = this.props
         getBanks(xsession, (err, data) => {
             if (data) {
-                // console.warn(JSON.stringify(data));
                 if (data.data && data.data.length > 0) this.bankSelection.selectDefaultItem(data.data[0]);
                 else this._handlePressUseDiffrenceAccount();
 
@@ -66,7 +65,6 @@ export default class extends Component {
         getListBank(xsession)
     }
     _handlePressOk = () => {
-        // console.log('Selected', this.bankSelection.getSelected())
         const {setToast} = this.props
         if (!this.state.moneyAmount || this.state.moneyAmount.trim == '') {
             setToast(getToastMessage(I18n.t('err_money_not_empty')), 'info', null, null, 2000, 'top')
@@ -83,7 +81,6 @@ export default class extends Component {
     _cashoutUseExistedBank() {
         const {setToast, cashout, xsession} = this.props
         let selectedBank = this.bankSelection.getSelected()
-        // console.warn('selectd bank ' + JSON.stringify(selectedBank) + '\nmoney = ' + this.state.moneyAmount);
 
         this.setState({
             isLoading: true
@@ -122,7 +119,6 @@ export default class extends Component {
             this._handlePressClear()
             if (data.data.success) {
                 this.props.goBack();
-                // setToast(getToastMessage('Chúng tôi đã nhận được yêu cầu rút tiền của quý khách và sẽ xử lí trong thời gian sớm nhất.'), 'info', null, null, 3000, 'top')
                 Alert.alert(I18n.t('success'), I18n.t('received_message_and_processing'));
                 return;
             } else {
@@ -231,7 +227,7 @@ export default class extends Component {
                        component={InputFieldWithErr}
                        style={styles.inputItem}/>
 
-                <Text grayDark medium>Số điện thoại</Text>
+                <Text grayDark medium>{I18n.t('phone_number')}</Text>
                 <Field name="phone_number"
                        icon={(input, active) => input.value && active ? 'close' : false}
                        iconStyle={{color: material.black500}}
@@ -240,26 +236,6 @@ export default class extends Component {
                        component={InputFieldWithErr}
                        style={styles.inputItem}
                        keyboardType="numeric"/>
-
-                {/*<Text grayDark medium>{I18n.t('identity_card')}</Text>*/}
-                {/*<Field name="identity_card"*/}
-                       {/*icon={(input, active) => input.value && active ? 'close' : false}*/}
-                       {/*iconStyle={{color: material.black500}}*/}
-                       {/*ref='input2'*/}
-                       {/*onIconPress={input => input.onChange('')}*/}
-                       {/*component={InputFieldWithErr}*/}
-                       {/*style={styles.inputItem}*/}
-                       {/*keyboardType="numeric"/>*/}
-
-                {/*<Text grayDark medium>{I18n.t('branch')}</Text>*/}
-                {/*<Field name="branch"*/}
-                       {/*icon={(input, active) => input.value && active ? 'close' : false}*/}
-                       {/*iconStyle={{color: material.black500}}*/}
-                       {/*ref='input4'*/}
-                       {/*onIconPress={input => input.onChange('')}*/}
-                       {/*component={InputFieldWithErr}*/}
-                       {/*style={styles.inputItem}/>*/}
-
             </View>
         )
     }
@@ -270,7 +246,6 @@ export default class extends Component {
         const {account_owner, account_number, branch, money_amount, phone_number} = data
 
         const bankId = this.bankDropdown.getValue().id
-        // console.warn(account_number + '\n' + account_owner + '\n' + area + '\n' + branch + '\n' + identity_card + '\n' + bankID);
         const { addBank } = this.props;
 
         this.setState({
@@ -285,11 +260,7 @@ export default class extends Component {
 
     _onMoneyAmountChange(value) {
         const { balanceMoney } = this.props;
-
         let moneyAmount = value.split('.').join('')
-        // maximum value
-        // if (parseInt(moneyAmount) > parseInt(balanceMoney)) moneyAmount = balanceMoney;
-
         this.setState({moneyAmount: moneyAmount})
     }
 
@@ -297,12 +268,8 @@ export default class extends Component {
 
         const {forwardTo, bank, balanceMoney} = this.props
         const {handleSubmit} = this.props;
-        // if (handleSubmit) handleSubmit((d) => alert('submit'));
-        // else console.warn('use diff acc ');
-
         return (
             <Container style={styles.container}>
-                {/*<View>*/}
                 <PreviewPopup ref={ref => this.preview = ref}
                               onOk={handleSubmit((data) => this._submitDiffrenceAccount(data))}/>
 
@@ -316,29 +283,9 @@ export default class extends Component {
                 </View>
 
                 <Content ref="content" style={{paddingHorizontal: 10}}>
-
-                    {/*<View>*/}
-                        {/*<View style={{...styles.rowPadding}}>*/}
-                            {/*<Text grayDark medium bold>Số tiền cần rút</Text>*/}
-                            {/*<View style={styles.inputFieldContainer}>*/}
-                                {/*<Item style={styles.item}>*/}
-                                    {/*<Input*/}
-                                        {/*style={styles.input}*/}
-                                        {/*keyboardType='phone-pad'*/}
-                                        {/*onChangeText={(value) => this.setState({moneyAmount: value})}*/}
-                                        {/*value={this.state.moneyAmount.toString()}*/}
-                                    {/*/>*/}
-                                    {/*{(this.state.moneyAmount != 0 || this.state.moneyAmount.length > 0) &&*/}
-                                    {/*<Icon name='close' style={{...styles.icon, color: material.gray500}}*/}
-                                          {/*onPress={this._handlePressClear}/>}*/}
-                                {/*</Item>*/}
-                            {/*</View>*/}
-                        {/*</View>*/}
-                    {/*</View>*/}
-
                     <View>
                         <View style={{...styles.rowPadding}}>
-                            <Text grayDark medium bold>Số tiền cần rút</Text>
+                            <Text grayDark medium bold>{I18n.t('withdrawn_amount')}</Text>
                             <View style={styles.inputFieldContainer}>
                                 <Field name="money_amount"
                                        icon={(input, active) => input.value && active ? 'close' : false}
@@ -358,20 +305,11 @@ export default class extends Component {
                     <View style={styles.rowCenter}>
                         <Text gray medium bold>{I18n.t('receive_account')}</Text>
                     </View>
-                    {/*<View style={styles.pd10}>*/}
-                    {/*<ScrollView>*/}
                     <View style={{paddingBottom: 30}}>
                         <BankSelection
                             callback={() => this._handleCallBackSelected()}
                             listAccounts={bank}
                             ref={bankSelection => this.bankSelection = bankSelection}/>
-
-                        {/*<TouchableOpacity onPress={() => forwardTo('bankAccount')}>*/}
-                        {/*<View style={{...styles.bankLogoContainer, justifyContent: 'center', height: 50}}>*/}
-                        {/*<Text primary>+ {I18n.t('add_account')}</Text>*/}
-                        {/*</View>*/}
-                        {/*</TouchableOpacity>*/}
-
                         <TouchableOpacity onPress={() => this._handlePressUseDiffrenceAccount()}>
                             <View style={styles.bankLogoContainer}>
                                 <Text blue medium style={{textAlign: 'center'}}>+ Tài khoản nhận tiền khác</Text>
@@ -381,12 +319,10 @@ export default class extends Component {
                         </TouchableOpacity>
 
                         {this.state.useDiffrenceAccount && this._renderFormAddAccount()}
-                        {/*{this._renderFormAddAccount()}*/}
 
                     </View>
 
                 </Content>
-                {/*</View>*/}
                 <Button style={styles.okBtn} onPress={handleSubmit((input) => this._handlePressOkAdvance(input))}>
                     <Text white>{I18n.t('ok')}</Text>
                 </Button>
