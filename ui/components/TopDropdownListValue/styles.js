@@ -53,7 +53,9 @@ export default {
         alignItems: 'center'
     },
     dropdownListItemText: {
-        color: material.white500,        
+        color: material.white500,    
+        // overflow: 'hidden'
+        maxWidth: material.deviceWidth-50    
         // fontWeight: '100'
     },
     content: {

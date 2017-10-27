@@ -146,6 +146,15 @@ export default class TopDropdownListValue extends Component {
         return newHash
     }
 
+    _getNumberMultipleSelect = (hash) => {
+        let counter = 0
+        let keyArr = Object.keys(hash)
+        for (let i=0; i< keyArr.length; i++){
+            if (hash[keyArr[i]]===true) counter++
+        }
+        return counter
+    }
+
     _handlePress(item) {
         if (this.state.selectingMultiple){
             let cloneSelectingHash = this._cloneHash(this.state.selectingHash)
@@ -259,7 +268,7 @@ export default class TopDropdownListValue extends Component {
 
     _handleOkMultiple = () => {
         let multipleSelectValue = this._genOutputMultipleSelect()
-        if (!multipleSelectValue || !multipleSelectValue.id){
+        if (!multipleSelectValue || typeof multipleSelectValue.id == 'undefined'){
             this.props.onPressOverlay && this.props.onPressOverlay()
             this.setState({
                 dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
@@ -290,10 +299,15 @@ export default class TopDropdownListValue extends Component {
     _handleCancelMultiple = () => {
         // this._handlePressOverlay()
         this.props.onPressOverlay && this.props.onPressOverlay()
+        let numberSelectBackup = this._getNumberMultipleSelect(this.selectingHashBackup)
+        let numberSelectCurrent = this._getNumberMultipleSelect(this.state.selectingHash)
+        console.log('Number Select BackUp', numberSelectBackup)
+        console.log('Number Select Current', numberSelectCurrent)
         this.setState({
             dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
-            selectingHash: this.selectingHashBackup
+            selectingHash: this.selectingHashBackup,
+            selectingMultiple: (numberSelectBackup > 0) ? true : false
         })
     }
 
