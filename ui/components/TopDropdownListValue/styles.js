@@ -86,6 +86,7 @@ export default {
         position: 'absolute',
         bottom: 0,
         width: '100%',
+        zIndex: 1000
     },
     multipleActionIcon: {
         fontSize: 40,
