@@ -502,7 +502,7 @@ export default class DateFilter extends Component {
     }
     _onConfirmStartDate = (date)=>{
         console.log('Start Date Confirm: ', date)
-        let start = moment(date.getTime())
+        let start = moment(date.getTime()).startOf('day')
         let end = moment(this.state.currentSelectValue.value.to*1000)
         let currentValue = {
             value: {
@@ -527,7 +527,7 @@ export default class DateFilter extends Component {
 
     _onConfirmEndDate = (date)=>{
         let start = moment(this.state.currentSelectValue.value.from*1000)
-        let end = moment(date.getTime())
+        let end = moment(date.getTime()).endOf('day')
         let currentValue = {
             value: {
                 from: this.state.currentSelectValue.value.from,
