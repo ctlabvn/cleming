@@ -17,7 +17,10 @@ export default {
 		paddingVertical: 15,
 	},
 	rowSubDetail: {
-		marginRight: 15
+		marginRight: 15,
+		marginLeft: 15 ,
+		flex: 1,
+		textAlign: 'right'
 	}
 
 

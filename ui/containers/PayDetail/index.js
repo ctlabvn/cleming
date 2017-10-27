@@ -62,28 +62,28 @@ export default class CashoutHistory extends Component {
                     </View>
 
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Ngân hàng</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>{bankName}</Text>
+                        <Text medium grayDark>Ngân hàng:</Text>
+                        <Text medium bold grayDark numberOfLines={2} style={styles.rowSubDetail}>{bankName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Chi nhánh</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>{branchName}</Text>
+                        <Text medium grayDark>Chi nhánh:</Text>
+                        <Text medium bold grayDark numberOfLines={2} style={styles.rowSubDetail}>{branchName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Số tài khoản</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>{accountNumber}</Text>
+                        <Text medium grayDark>Số tài khoản:</Text>
+                        <Text medium bold grayDark numberOfLines={2} style={styles.rowSubDetail}>{accountNumber}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Họ tên</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>{fullName}</Text>
+                        <Text medium grayDark>Họ tên:</Text>
+                        <Text medium bold grayDark numberOfLines={2} style={styles.rowSubDetail}>{fullName}</Text>
                     </View>
 
                     <View style={styles.rowDetail}>
-                        <Text medium grayDark>Số điện thoại</Text>
-                        <Text medium bold grayDark style={styles.rowSubDetail}>{phoneNumber}</Text>
+                        <Text medium grayDark>Số điện thoại:</Text>
+                        <Text medium bold grayDark numberOfLines={2} style={styles.rowSubDetail}>{phoneNumber}</Text>
                     </View>
                 </View>
                 <View style={{flex: 1}}/>
