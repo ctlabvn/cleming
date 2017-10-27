@@ -85,19 +85,25 @@ export default class PreviewPopup extends Component {
 
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('account_number')}: </Text>
-                                <Text medium bold grayDark>{this.state.data.account_number}</Text>
+                                <Text medium bold grayDark
+                                      style={styles.textContent}
+                                      numberOfLines={2}>{this.state.data.account_number}</Text>
                             </View>
 
                             { this.state.data.account_owner &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('account_owner')}: </Text>
-                                <Text medium bold grayDark>{this.state.data.account_owner.toUpperCase()}</Text>
+                                <Text medium bold grayDark
+                                      style={styles.textContent}
+                                      numberOfLines={2}>{this.state.data.account_owner.toUpperCase()}</Text>
                             </View>}
 
                             { this.state.data.phone_number &&
                             <View style={styles.rowInfo}>
                                 <Text medium gray>{I18n.t('phone_number')}: </Text>
-                                <Text medium bold grayDark>{this.state.data.phone_number}</Text>
+                                <Text medium bold grayDark
+                                      style={styles.textContent}
+                                      numberOfLines={2}>{this.state.data.phone_number}</Text>
                             </View>}
 
                             <View style={{paddingVertical: 15}}>
