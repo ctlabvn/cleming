@@ -78,7 +78,7 @@ export default class TopDropdownListValue extends Component {
     }
 
     updateSelectedOption(selectedOption, canMultipleSelect) {
-        if (selectedOption.id && selectedOption.id.toString().indexOf(CONCAT_CHARACTER)>-1){
+        if (selectedOption.id && selectedOption.id.toString().indexOf(CONCAT_CHARACTER)>-1){    
             let selectedArr = selectedOption.id.split(CONCAT_CHARACTER)
             let selectingHash = {}
             for (let i=0; i<selectedArr.length; i++){
@@ -87,10 +87,14 @@ export default class TopDropdownListValue extends Component {
             this.setState({selectedOption: selectedOption, selectingHash: selectingHash, 
                 selectingMultiple: true, canMultipleSelect: canMultipleSelect
             })
-            this.selectingHashBackup = this._cloneHash(this.state.selectingHash)
+            this.selectingHashBackup = this._cloneHash(selectingHash)
             return
         }
-        this.setState({ selectedOption: selectedOption, selectingMultiple: false, canMultipleSelect: canMultipleSelect })
+        this.selectingHashBackup = {}
+        this.setState({ 
+            selectedOption: selectedOption, selectingHash: {}, 
+            selectingMultiple: false, canMultipleSelect: canMultipleSelect 
+        })
 
         // this._handlePress(selectedOption);
     }
@@ -268,15 +272,23 @@ export default class TopDropdownListValue extends Component {
 
     _handleOkMultiple = () => {
         let multipleSelectValue = this._genOutputMultipleSelect()
+        let numberSelectBackup = this._getNumberMultipleSelect(this.selectingHashBackup)
         if (!multipleSelectValue || typeof multipleSelectValue.id == 'undefined'){
             this.props.onPressOverlay && this.props.onPressOverlay()
             this.setState({
                 dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
                 openningDropdown: false,
-                selectingHash: {},
-                selectingMultiple: false
+                selectingHash: this.selectingHashBackup,
+                selectingMultiple: numberSelectBackup > 0? true: false
             })
             return
+        }else if (multipleSelectValue.id == 0){
+            this.setState({
+                dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
+                openningDropdown: false,
+                selectingHash: {},
+                selectingMultiple: numberSelectBackup > 0? true: false
+            })
         }
         this.selectingHashBackup = this._cloneHash(this.state.selectingHash)
         this.props.onPressOverlay && this.props.onPressOverlay()
@@ -300,9 +312,6 @@ export default class TopDropdownListValue extends Component {
         // this._handlePressOverlay()
         this.props.onPressOverlay && this.props.onPressOverlay()
         let numberSelectBackup = this._getNumberMultipleSelect(this.selectingHashBackup)
-        let numberSelectCurrent = this._getNumberMultipleSelect(this.state.selectingHash)
-        console.log('Number Select BackUp', numberSelectBackup)
-        console.log('Number Select Current', numberSelectCurrent)
         this.setState({
             dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
