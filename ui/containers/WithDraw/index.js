@@ -119,7 +119,8 @@ export default class extends Component {
             this._handlePressClear()
             if (data.data.success) {
                 this.props.goBack();
-                Alert.alert(I18n.t('success'), I18n.t('received_message_and_processing'));
+                // Alert.alert(I18n.t('success'), I18n.t('received_message_and_processing'));
+                setToast(getToastMessage(I18n.t('received_message_and_processing')), 'info', null, null, 3000, 'top')
                 return;
             } else {
                 // this.props.goBack();
