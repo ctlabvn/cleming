@@ -109,10 +109,11 @@ export default class TopDropdownListValue extends Component {
         this.setState({ openningDropdown: true })
     }
     close() {
-        // console.warn(this.state.defaultDropdownValues.length);
         this.setState({
             dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
             openningDropdown: false,
+            selectingMultiple: (this._getNumberMultipleSelect(this.selectingHashBackup) > 0),
+            selectingHash: this.selectingHashBackup 
         })
     }
     componentWillMount() {
@@ -273,6 +274,7 @@ export default class TopDropdownListValue extends Component {
     _handleOkMultiple = () => {
         let multipleSelectValue = this._genOutputMultipleSelect()
         let numberSelectBackup = this._getNumberMultipleSelect(this.selectingHashBackup)
+        // Case not select anything, keep as origin
         if (!multipleSelectValue || typeof multipleSelectValue.id == 'undefined'){
             this.props.onPressOverlay && this.props.onPressOverlay()
             this.setState({
@@ -282,17 +284,19 @@ export default class TopDropdownListValue extends Component {
                 selectingMultiple: numberSelectBackup > 0? true: false
             })
             return
+        // Case `Tất cả địa điểm`
         }else if (multipleSelectValue.id == 0){
             this.setState({
                 dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
                 openningDropdown: false,
                 selectingHash: {},
-                selectingMultiple: numberSelectBackup > 0? true: false
+                selectingMultiple: false
             })
         }
         this.selectingHashBackup = this._cloneHash(this.state.selectingHash)
         this.props.onPressOverlay && this.props.onPressOverlay()
         this.props.onSelect && this.props.onSelect(multipleSelectValue)
+        // Case select some place
         if (multipleSelectValue && multipleSelectValue.id && multipleSelectValue.id.toString().indexOf(CONCAT_CHARACTER)>-1){
             this.setState({
                 dropdownValues: this.state.defaultDropdownValues ? this.state.defaultDropdownValues : this.state.dropdownValues,
