@@ -134,8 +134,7 @@ export default class extends Component {
                     </Text>
                     <Text medium style={{...styles.textContent}}>
                         Công ty Cổ phần Gigatum Việt Nam{'\n'}
-                        Hà Nội: Phòng 707, tòa nhà VET, 98 Hoàng Quốc Việt, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội, Việt
-                        Nam.{'\n'}
+                        Hà Nội: Unit 8 tầng 8, Toà nhà TNR, 54A Nguyễn Chí Thanh, Đống Đa, Hà Nội.{'\n'}
                         TP. Hồ Chí Minh: Tầng 5, tòa nhà GB Building, 78-80 Cách Mạng Tháng 8, Phường 6, Quận 3, TP. Hồ
                         Chí Minh, Việt Nam.
                     </Text>

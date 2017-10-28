@@ -6,8 +6,9 @@ export default {
   container: {
     backgroundColor: material.white500,
     width: '80%',
-    height: 130,
-    overflow: 'hidden'
+    minHeight: 200,
+    overflow: 'hidden',
+      borderRadius: 5,
   },
   text: {
     alignSelf: 'center'
@@ -21,6 +22,10 @@ export default {
     backgroundColor: material.primaryColor,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 0,
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 5,
+      height: 45
   },
   leftButton: {
     backgroundColor: material.gray400,

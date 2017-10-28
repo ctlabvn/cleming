@@ -10,12 +10,13 @@ import report from './report'
 import wallet from './wallet'
 import revenue from './revenue'
 import checking from './checking'
+import deal from './deal'
 // saga must be a function like generator of other functions
 export default function* () {
-  yield [       
+  yield [
     ...auth.map(watcher => fork(watcher)),
-    ...account.map(watcher => fork(watcher)),    
-    ...notification.map(watcher => fork(watcher)),    
+    ...account.map(watcher => fork(watcher)),
+    ...notification.map(watcher => fork(watcher)),
     ...transaction.map(watcher => fork(watcher)),
     ...place.map(watcher => fork(watcher)),
     ...booking.map(watcher => fork(watcher)),
@@ -24,5 +25,6 @@ export default function* () {
     ...wallet.map(watcher => fork(watcher)),
     ...revenue.map(watcher => fork(watcher)),
     ...checking.map(watcher => fork(watcher)),
+    ...deal.map(watcher => fork(watcher))
   ]
 }

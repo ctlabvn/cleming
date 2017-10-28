@@ -183,7 +183,9 @@ export default class TopDropdownListValue extends Component {
                     renderRow={(item) => {
                         return (
                             <ListItem onPress={e => this._handlePress(item)} style={styles.dropdownListItem}>
-                                <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>
+                                {item.name.length > 60 ? <Text  numberOfLines={2} style={styles.dropdownListItemText}>{item.name}</Text>
+                                : <Text  numberOfLines={1} style={styles.dropdownListItemText}>{item.name}</Text>}
+
                             </ListItem>
                         )
                     }

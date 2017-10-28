@@ -42,7 +42,6 @@ export const formatNumber = str => {
   return str.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
 }
 
-
 export const isValidEmail = (email) => {
   email = email.trim();
   return email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) !== null
@@ -145,3 +144,15 @@ export const cloneObjArray = (arr) => {
   }
   return cloneArr
 }
+
+export const formatMoney = (str) => {
+  if (!str) return ''
+  return str.replace(/\./g, '').replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1\.")
+}
+
+export const revertFormatMoney = (str) => {
+  if (!str) return ''
+  return str.replace(/\./g, '')
+}
+
+

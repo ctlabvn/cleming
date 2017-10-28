@@ -67,30 +67,36 @@ export default class TransactionDetail extends Component {
                 return <Text medium bold success>{I18n.t('transaction_cashback_success')}</Text>
             case TRANSACTION_DIRECT_STATUS.REJECT:
                 return <Text medium bold error>{I18n.t('transaction_reject')}</Text>
+            case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
+                return <Text medium bold warning>{I18n.t('transaction_wait_check')}</Text>
             default:
                 return <Text medium bold warning>{I18n.t('transaction_wait_confirm')}</Text>
         }
     }
 
     _renderBottomAction(transactionInfo) {
+        const {user} = this.props
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                return (
-                    <View style={styles.row}>
-                        <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
-                            <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
-                        </Button>
-                        <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
-                            <View><Text medium white>{I18n.t('transaction_complain')}</Text></View>
-                        </Button>
-                    </View>
-                )
+                if (user.isConfirmTran){
+                    return (
+                        <View style={styles.row}>
+                            <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
+                                <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
+                            </Button>
+                            <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
+                                <View><Text medium white>{I18n.t('transaction_complain')}</Text></View>
+                            </Button>
+                        </View>
+                    )
+                }
+                return  <View />
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
-                return (<Button style={styles.feedbackButtonDisable} light disabled><Text>Đã ghi nhận phản hồi</Text></Button>)
+                return (<Button style={styles.feedbackButtonDisable} light disabled><Text>{I18n.t('received_feedback')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
                 return (<Text medium transparent>Fake success</Text>)
             case TRANSACTION_DIRECT_STATUS.REJECT:
-                return (<Text medium error>*{transactionInfo.rejectReason}</Text>)
+                return (<Text medium error>*{I18n.t('reject_reason')}: {transactionInfo.rejectReason}</Text>)
 
             default:
                 return (<View key='bottomBlock'></View>)
@@ -434,6 +440,9 @@ export default class TransactionDetail extends Component {
                     <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
                         {this._renderBottomAction(transactionInfo)}
                     </View>
+                    {/*<View style={styles.complaintContainer}>*/}
+                    {/*<Text medium bold grayDark>{I18n.t('feedback_of_merchant')}</Text>*/}
+                    {/*</View>*/}
                 </View>
             </Content>
         )

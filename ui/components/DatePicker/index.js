@@ -11,21 +11,21 @@ import {
 import styles from './styles'
 import Moment from 'moment'
 
-import {Icon, View, Text, Button, Item, Input} from 'native-base'
-
+import {View, Text, Button, Item, Input} from 'native-base'
+import Icon from '~/ui/elements/Icon'
 import material from '~/theme/variables/material'
 
 const FORMATS = {
   'date': 'YYYY-MM-DD',
   'datetime': 'YYYY-MM-DD HH:mm',
-  'time': 'HH:mm',  
+  'time': 'HH:mm',
 }
 
 const SUPPORTED_ORIENTATIONS = [
-  'portrait', 
-  'portrait-upside-down', 
-  'landscape', 
-  'landscape-left', 
+  'portrait',
+  'portrait-upside-down',
+  'landscape',
+  'landscape-left',
   'landscape-right',
 ]
 
@@ -220,14 +220,14 @@ class DatePicker extends Component {
     } else {
 
       const {mode, format = FORMATS[mode], minDate, maxDate, is24Hour = !format.match(/h|a/)} = this.props
-      
+
       if (mode === 'date') {
         DatePickerAndroid.open({
           date: this.state.date,
           minDate: minDate && this.getDate(minDate),
           maxDate: maxDate && this.getDate(maxDate)
         }).then(this.onDatePicked)
-      } else if (mode === 'time') {        
+      } else if (mode === 'time') {
         let timeMoment = Moment(this.state.date)
 
         TimePickerAndroid.open({
@@ -235,7 +235,7 @@ class DatePicker extends Component {
           minute: timeMoment.minutes(),
           is24Hour: is24Hour
         }).then(this.onTimePicked)
-      } else if (mode === 'datetime') {        
+      } else if (mode === 'datetime') {
         DatePickerAndroid.open({
           date: this.state.date,
           minDate: minDate && this.getDate(minDate),
@@ -267,23 +267,23 @@ class DatePicker extends Component {
     } = this.props
 
     const dateInputStyle = {
-      ...styles.dateInput, 
+      ...styles.dateInput,
       ...customStyles.dateInput
     }
 
     disabled && Object.assign(dateInputStyle, styles.disabled, customStyles.disabled)
-      
+
     return (
       <Item
-        style={{...styles.dateTouch, ...customStyles.dateTouch}}        
+        style={{...styles.dateTouch, ...customStyles.dateTouch}}
         onPress={this.onPressDate}
       >
-        <Input disabled 
+        <Input disabled
           placeholder={placeholder}
-          placeholderTextColor={material.inputColorPlaceholder} 
-          style={{...styles.dateInputStyle, ...dateInputStyle}} value={this.getDateStr()} />                
+          placeholderTextColor={material.inputColorPlaceholder}
+          style={{...styles.dateInputStyle, ...dateInputStyle}} value={this.getDateStr()} />
           {icon && <Icon
-            style={{...styles.dateIcon, ...customStyles.dateIcon}}
+            style={{fontSize: 18, ...styles.dateIcon, ...customStyles.dateIcon}}
             name={icon}
           />}
           {Platform.OS === 'ios' && <Modal
@@ -342,7 +342,7 @@ class DatePicker extends Component {
               </Button>
             </View>
           </Modal>}
-        
+
       </Item>
     )
   }
@@ -357,7 +357,7 @@ DatePicker.defaultProps = {
   // slide animation duration time, default to 300ms, IOS only
   duration: 300,
   confirmBtnText: 'OK',
-  cancelBtnText: 'Cancel',  
+  cancelBtnText: 'Cancel',
   customStyles: {},
 
   // whether or not show the icon
@@ -376,7 +376,7 @@ DatePicker.propTypes = {
   height: React.PropTypes.number,
   duration: React.PropTypes.number,
   confirmBtnText: React.PropTypes.string,
-  cancelBtnText: React.PropTypes.string,  
+  cancelBtnText: React.PropTypes.string,
   customStyles: React.PropTypes.object,
   icon: React.PropTypes.string,
   disabled: React.PropTypes.bool,

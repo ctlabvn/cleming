@@ -4,7 +4,7 @@ export default {
     // ?placeId=3108&fromTime=1494257316&toTime=1494257316&option=1&pageNumber=1
     balance(xsession, fromTime, toTime, pageNumber=1) {
         console.log('API Blance: ', xsession+'---'+fromTime+'---'+toTime+'---'+pageNumber)
-        return apiGet('/merchantapp/balance', {fromTime, toTime, pageNumber}, xsession)
+        return apiGet('/merchantapp/balance', {}, xsession)
     },
 
     balanceDetail(xsession, fromTime, toTime, option=1, pageNumber=1){
@@ -12,19 +12,26 @@ export default {
         return apiGet('/merchantapp/balance-detail', {fromTime, toTime, option, pageNumber}, xsession)
     },
 
+    balanceHistory(xsession, fromTime, toTime, option = 0, pageNumber = 1){
+        console.log('API Balance History: ', xsession+'---'+fromTime+'---'+toTime+'---'+option+'---'+pageNumber)
+        // return apiGet('/merchantapp/balance-history', {}, xsession)
+        return apiGet('/merchantapp/balance-history', {fromTime, toTime, option, pageNumber}, xsession)
+    },
+
     banks(xsession){
         console.log('Get Banks API: ', xsession)
         return apiGet('/merchantapp/banks', {}, xsession)
     },
 
-    cashout(xsession, bankId, accountNumber, moneyAmount){
-        console.log('Cashout API', bankId+'---'+ accountNumber+'---'+ moneyAmount)
-        return apiPost('/merchantapp/cashout', {bankId, accountNumber, moneyAmount}, xsession)
+    cashout(xsession, bizBankId, moneyAmount){
+        console.log('Cashout API ', xsession + '---' + bizBankId+'---'+ moneyAmount)
+        return apiPost('/merchantapp/cashout', {bizBankId, moneyAmount}, xsession)
     },
 
-    addBank(xsession, accountName, idNumber, accountNumber, bankId, area, branchName){
-        console.log('Add Bank API: ', xsession+'---'+accountName+'---'+idNumber+'---'+accountNumber+'---'+bankId+'---'+area+'---'+branchName)
-        return apiPost('/merchantapp/add-bank', {accountName, idNumber, accountNumber, bankId, area, branchName}, xsession)
+    addBank(xsession, accountName, accountNumber, bankId, branchName = '', moneyAmount = 0, phoneNumber){
+        console.log('Add Bank API: ', xsession+'---'+accountName+'---'+accountNumber+'---'+bankId+'---'+branchName+'---'+moneyAmount+'---'+phoneNumber)
+        // return apiPost('/merchantapp/add-bank', {accountName, accountNumber, bankId, branchName, moneyAmount, phoneNumber}, xsession)
+        return apiPost('/merchantapp/cashout-bank', {accountName, accountNumber, bankId, branchName, moneyAmount, phoneNumber}, xsession)
     },
     listBank(xsession){
         return apiGet('/merchantapp/list-bank', {}, xsession)
@@ -39,13 +46,18 @@ export default {
     },
     getCashoutOverview(xsession){
       console.log('Call Cashout Overview', xsession);
-      return apiGet('/merchantapp/balance-cashout', {}, xsession)
+      // return apiGet('/merchantapp/balance-cashout', {}, xsession)
+        return apiGet('/merchantapp/balance-history', {}, xsession)
     },
     getCheckingHistory(xsession, option=0, pageNumber=1){
         console.log('Call API Get List Check', xsession+'---'+option+'---'+pageNumber)
         return apiGet('/merchantapp/list-check', {option, pageNumber}, xsession)
+    },
+    getGigatumBank(xsession) {
+        console.log('Call API get gigatum bank', xsession);
+        return apiGet('/merchantapp/gigatum-bank', {}, xsession);
+        // return apiGet('/merchantapp/banks', {}, xsession);
     }
-
 
 
 }

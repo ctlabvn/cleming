@@ -1,27 +1,22 @@
-import React, {Component} from 'react'
-import {Container, Text, List, Spinner, View, Button} from 'native-base'
-import {TouchableHighlight} from 'react-native'
-import I18n from '~/ui/I18n'
-import styles from './styles'
-import options from './options'
-import {connect} from 'react-redux'
-import * as commonActions from '~/store/actions/common'
-import * as checkingActions from '~/store/actions/checking'
-import {getSession} from '~/store/selectors/auth'
-import {getCheckingData} from '~/store/selectors/checking'
-import {ALL_PLACES_CHECKING} from '~/store/constants/app'
-import TabsWithNoti from '~/ui/components/TabsWithNoti'
-import DateFilter from '~/ui/components/DateFilter'
-import material from '~/theme/variables/material'
-import Icon from '~/ui/elements/Icon'
+import React, {Component} from "react";
+import {Button, Container, List, Spinner, Text, View} from "native-base";
+import I18n from "~/ui/I18n";
+import styles from "./styles";
+import options from "./options";
+import {connect} from "react-redux";
+import * as commonActions from "~/store/actions/common";
+import * as checkingActions from "~/store/actions/checking";
+import {getSession} from "~/store/selectors/auth";
+import {getCheckingData, getCheckingDateFilterCurrentSelectValue} from "~/store/selectors/checking";
+import {ALL_PLACES_CHECKING} from "~/store/constants/app";
+import TabsWithNoti from "~/ui/components/TabsWithNoti";
+import Icon from "~/ui/elements/Icon";
 import Border from "~/ui/elements/Border";
 import Content from "~/ui/components/Content";
-
-import moment from "moment";
 import {formatNumber} from "~/ui/shared/utils";
+import DateFilterPeriod from "./DateFilterPeriod";
 
-import { getCheckingDateFilterCurrentSelectValue } from "~/store/selectors/checking";
-import DateFilterPeriod from './DateFilterPeriod'
+import material from '~/theme/variables/material';
 
 @connect(state => ({
     xsession: getSession(state),
@@ -78,13 +73,6 @@ export default class extends Component {
 
     }
     _handlePressSumRevenue() {
-        // const item = this.refs.dateFilter.getCurrentSelectValue()
-
-        // const { setCheckingDateFilterCurrentSelectValue } = this.props;
-        // setCheckingDateFilterCurrentSelectValue(item);
-        //
-        // const { datefiltercurrentvalue } =this.props;
-
         const {forwardTo} = this.props
         forwardTo('transactionHistory');
     }
@@ -93,26 +81,20 @@ export default class extends Component {
 
     _load(page=1) {
         const {xsession, getCheckingDetail} = this.props;
-        // if (!fromTime && !toTime) {
-        //     const dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value;
-        //     fromTime = dateFilterData.from;
-        //     toTime = dateFilterData.to;
-        // }
-
         getCheckingDetail(xsession, page, (err, data) => {
           console.log('Err Checking', err);
           console.log('Data Checking', data);
         });
     }
 
-    _gotoCashoutAccount() {
+    _gotoCashoutAccount(active = false) {
+        if (!active) return;
         const {forwardTo} = this.props
         forwardTo('cashoutAccount');
     }
 
     _generateDataForDateFilterPeriod = () => {
       const {checking} = this.props
-      // console.log('Checking', checking);
       if (checking && checking.listCompareCheckDt){
         return checking.listCompareCheckDt.map(item => ({
           id: item.compareId,
@@ -135,7 +117,7 @@ export default class extends Component {
         let colorStyle = (detail.status == 2) ? styles.warning : styles.success
         let checkText = (detail.status == 2) ? I18n.t('not_checking_yet') : I18n.t('checked')
         if (!checking || !checking.listCompareCheckDt || checking.listCompareCheckDt.length == 0){
-          return <View style={styles.emptyPage}><Text style={styles.emptyText}>Chưa có đối soát nào</Text></View>
+          return <View style={styles.emptyPage}><Text style={styles.emptyText}>{I18n.t('have_not_any_compare_check')}</Text></View>
         }
         return (
             <Container style={styles.container}>
@@ -152,7 +134,7 @@ export default class extends Component {
                     onRefresh={() => this._onRefresh()}>
 
                     <View>
-                        <Text strong bold style={{...styles.title, ...colorStyle}}>{'\x3C'}{checkText}{'\x3E'}</Text>
+                        <Text strong bold style={{...styles.title, ...colorStyle}}>{checkText}</Text>
                         <Border/>
                         <View row style={styles.moneyTitle}>
                             <Text strong bold grayDark>{I18n.t('total_revenue')}</Text>
@@ -165,7 +147,7 @@ export default class extends Component {
                         </View>
                     </View>
 
-                    <View style={{marginRight: 20}}>
+                    <View style={styles.marginRight20}>
                         <View row style={styles.moneyContent}>
                             <Text medium grayDark>{I18n.t('total_money_merchant_get')}</Text>
                             <Text medium bold grayDark>{formatNumber(detail.mcMoneyCollected)}</Text>
@@ -212,11 +194,22 @@ export default class extends Component {
                     </View>
 
                 </Content>
-                {/* <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/> */}
-                {/* <View style={styles.fixButtonBlock}>
-                    <Text medium onPress={() => alert('thanh toán Clingme')} gray>{I18n.t('clingme_pay')}</Text>
-                    <Text medium onPress={() => this._gotoCashoutAccount()} primary>{I18n.t('cashout_account')}</Text>
-                </View> */}
+
+                {/* hiện ra khi ở trạng thái đã đối soát: detail.status == 3 */}
+                {detail.status == 3 &&
+                <View>
+                    <Border color='rgba(0,0,0,0.5)' size={1} style={styles.marginBottom}/>
+                    <View style={styles.fixButtonBlock}>
+                        <Text
+                            medium
+                            onPress={() => this._gotoCashoutAccount(chargeSubClmTotalMoney > 0)}
+                            style={{color: chargeSubClmTotalMoney > 0 ? material.blue500 : material.gray400}}>{I18n.t('clingme_pay')}</Text>
+                        <Text
+                            medium
+                            onPress={() => this._gotoCashoutAccount(clmTotalMoneySubCharge > 0)}
+                            style={{color: clmTotalMoneySubCharge > 0 ? material.blue500 : material.gray400}}>{I18n.t('cashout')}</Text>
+                    </View>
+                </View>}
             </Container>
         )
     }

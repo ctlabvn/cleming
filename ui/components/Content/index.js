@@ -27,6 +27,9 @@ export default class extends Component {
       // this.refs.content._root.scrollToPosition(0, 0, false)
       // this.content && this.content.wrappedInstance && this.content.wrappedInstance._root && this.content.wrappedInstance._root.scrollToPosition(0, 0, false)
   }
+  scrollTo = (position) => {
+    this.content && this.content.scrollTo && this.content.scrollTo(position)
+  }
 
   showRefresh(refreshing){
     this.setState({refreshing})

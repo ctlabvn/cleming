@@ -34,11 +34,12 @@ import {
 } from "~/store/constants/app";
 import material from "~/theme/variables/material.js";
 import ListViewExtend from '~/ui/components/ListViewExtend'
+import I18n from '~/ui/I18n'
 
 @connect(state => ({
     xsession: getSession(state),
     booking: state.booking,
-    modal: state.modal.modal,
+    // modal: state.modal.modal,
     news: getNews(state),
     meta: state.meta
 }), { ...commonActions, ...bookingActions, ...placeActions, ...metaActions }, null, { withRef: true })
@@ -140,7 +141,8 @@ export default class PlaceOrderList extends Component {
                                 {orderCodeBlock}
                                 <View style={styles.rowCenter}>
                                     <Text small grayDark style={{ marginRight: 5 }}>{moment(item.clingmeCreatedTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                                    {item.status == 'WAIT_CONFIRMED' && <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
+                                    {(item.status == 'WAIT_CONFIRMED' || item.status == 'CONFIRMED'
+                                    ) && <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                         counting={this.counting}
                                         countTo={bookTime}
                                     />}
@@ -198,7 +200,7 @@ export default class PlaceOrderList extends Component {
     }
 
     _loadMore = () => {
-        console.log('On load More Booking')
+        console.log('On load More Booking', booking)
         const { booking, app } = this.props
         if (booking.isLast) return
         // let currentPlace = this.refs.placeDropdown.getValue()
@@ -206,7 +208,6 @@ export default class PlaceOrderList extends Component {
         let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
         this._load(selectedPlace.id, dateFilterData.from, dateFilterData.to,
             this.refs.tabs.getActiveTab(), true, booking.page + 1)
-
     }
     _handlePressTab = (item) => {
         const { app } = this.props
@@ -271,6 +272,9 @@ export default class PlaceOrderList extends Component {
                 }
             }
         )
+
+        /* hide for api /merchantapp/news */
+
         getMerchantNews(xsession, placeId,
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
@@ -361,6 +365,7 @@ export default class PlaceOrderList extends Component {
                 </View>
             )
         }
+
         return (
             <View style={styles.container}>
                 <CallModal
@@ -371,12 +376,14 @@ export default class PlaceOrderList extends Component {
                     <TabsWithNoti tabData={options.tabData} activeTab={BOOKING_WAITING_CONFIRM} ref='tabs'
                         onPressTab={this._handlePressTab} />
                     <DateFilter defaultFilter={booking.currentDateFilter}  onPressFilter={this._handlePressFilter.bind(this)} ref='dateFilter' />
-
+                    <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', paddingRight: 10, paddingBottom: 3, ...styles.primaryBorder}}>
+                        <Text small bold grayDark>{I18n.t('number_of_items')}: {booking.resultNumber}</Text>
+                    </View>
                     <ListViewExtend
                         onItemRef={ref=>this.listview=ref}
-                        onEndReached={()=> this._loadMore}
+                        onEndReached={()=>this._loadMore()}
                         keyExtractor={item=>item.clingmeId}
-                        onRefresh={()=> this._onRefresh}
+                        onRefresh={()=>this._onRefresh()}
                         dataArray={booking.bookingList}
                         renderRow={(item) => this._renderBookingItem(item)}
                     />

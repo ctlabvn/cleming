@@ -169,8 +169,9 @@ export default class extends Component {
 
     loadPage(page = 1, from_time, to_time, isLoadMore = false) {
         const { session, getOrderList, clearOrderList, getMerchantNews, forwardTo } = this.props
+
         const { selectedPlace } = this.state
-        if (!selectedPlace) return
+        if (selectedPlace == null) return
         if (isLoadMore) {
             this.spinner.show(true)
         } else {
@@ -191,6 +192,7 @@ export default class extends Component {
                 this.clickCount = 0
             })
         //update noti Number
+        /* hide for new api /merchantapp/news */
         getMerchantNews(session, selectedPlace,
             (err, data) => {
                 if (data && data.updated && data.updated.data) {
@@ -223,6 +225,7 @@ export default class extends Component {
         const { setSelectedOption, session } = this.props
         // setSelectedOption(item)
         let dateFilter = this.refs.dateFilter.getData().currentSelectValue.value //currentSelectValue
+
         this.setState({
             selectedPlace: item.id,
         }, () => this.loadPage(1, dateFilter.from, dateFilter.to))
@@ -310,6 +313,7 @@ export default class extends Component {
 
         const { handleSubmit, submitting, place, order } = this.props
         const { orderList } = order
+
         return (
             <Container style={styles.container}>
                 <LoadingModal loading = {this.state.processing} text={I18n.t('processing')}/>
@@ -324,6 +328,20 @@ export default class extends Component {
                     listValue={order.denyReason}
                     onClickYes={this._handleFeedbackOrder}
                 />
+
+                {(this.selectedStatus == ORDER_WAITING_CONFIRM
+                    || this.selectedStatus == ORDER_WAITING_DELIVERY
+                    || this.selectedStatus == ORDER_SUCCESS
+                ) &&
+                  <View style={{...styles.revenueBlock}}>
+                    <Text grayDark>{I18n.t('money_number')}</Text>
+                    <Text medium bold primary style={{fontSize: 18}}>{formatNumber(order.revenue)} đ</Text>
+                  </View>
+                }
+                <View style={{width: '100%', alignItems: 'flex-end', backgroundColor: '#fff', paddingRight: 10, paddingBottom: 3, ...styles.primaryBorder}}>
+                    <Text small bold grayDark>{I18n.t('number_of_items')}: {order.resultNumber}</Text>
+                </View>
+
                 <ListViewExtend
                     onItemRef={ref=>this.listview=ref}
                     onEndReached={this._loadMore}

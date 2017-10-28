@@ -15,6 +15,8 @@ import Icon from '~/ui/elements/Icon'
 import Border from '~/ui/elements/Border'
 import moment from 'moment'
 import { formatNumber } from '~/ui/shared/utils'
+import I18n from '~/ui/I18n'
+
 export default class TransactionFilter extends Component {
     constructor(props) {
         super(props)
@@ -66,7 +68,7 @@ export default class TransactionFilter extends Component {
                             <Text small grayDark>{this.state.selectValue.display}</Text>
                         </View>
                     </TouchableOpacity>
-                    <Text small grayDark style={styles.numberRight}>{this.state.indicatorNumber}</Text>
+                    <Text small grayDark style={styles.numberRight}>{I18n.t('number_of_items')}: {this.state.indicatorNumber}</Text>
                 </View>
 
 

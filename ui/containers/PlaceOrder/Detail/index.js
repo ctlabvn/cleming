@@ -153,7 +153,10 @@ export default class PlaceOrderDetail extends Component {
                                 medium
                                 grayDark>{moment(this.state.bookingDetail.clingmeCreatedTime * 1000).format(TIME_FORMAT_WITHOUT_SECOND_FULL_YEAR)}</Text>
                             
-                            {this.state.bookingDetail.status == 'WAIT_CONFIRMED' && <View style={{right: 10, position: 'absolute'}}>
+                            {(this.state.bookingDetail.status == 'WAIT_CONFIRMED' 
+                                || this.state.bookingDetail.status == 'CONFIRMED'
+                            )
+                            && <View style={{right: 10, position: 'absolute'}}>
                                 <CircleCountdown baseMinute={BASE_COUNTDOWN_BOOKING_MINUTE}
                                                  counting={true}
                                                  countTo={bookTime}

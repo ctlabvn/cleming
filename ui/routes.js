@@ -32,10 +32,19 @@ import ComingSoon from './containers/ComingSoon'
 import Setting from './containers/Setting'
 import CashoutAccount from './containers/CashoutAccount'
 import CashoutHistory from './containers/CashoutHistory'
+import CashoutDetail from './containers/CashoutDetail'
+import CashoutAndPayHistory from './containers/CashoutAndPayHistory'
+import PayDetail from './containers/PayDetail'
 import Checking from './containers/Checking'
 import TransactionHistory from './containers/TransactionHistory'
 import WithdrawDetail from './containers/WithdrawDetail'
 import CheckingHistory from './containers/CheckingHistory'
+import DealManager from './containers/DealManager'
+import CreateDeal from './containers/DealManager/CreateDeal'
+import DealInfo from './containers/DealManager/DealInfo'
+import DealDetail from './containers/DealManager/DealDetail'
+import ExperimentAnimate from './containers/ExperimentAnimate'
+import { ITEM_ALL_PLACE } from '~/store/constants/app'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
     comingSoon: {
@@ -53,6 +62,7 @@ export default {
         Page: MerchantOverview,
         headerType: 'home',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
@@ -62,12 +72,12 @@ export default {
     transactionList: {
         title: I18n.t('page_transaction_list'),
         Page: TransactionList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
-        // showItemAllPlaceOnTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
-            },
+        },
         tabIndex: 1,
         cache: true,
     },
@@ -86,8 +96,9 @@ export default {
     deliveryList: {
         title: I18n.t('page_delivery_list'),
         Page: DeliveryList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
@@ -103,8 +114,9 @@ export default {
     placeOrderList: {
         title: I18n.t('page_booking_list'),
         Page: PlaceOrderList,
-        headerType: 'home',
+        headerType: 'back',
         showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
@@ -124,6 +136,7 @@ export default {
         cachePlace: {
             selectedPlace: {}
         },
+        headerType: 'home',
         tabIndex: 2,
         cache: true,
     },
@@ -242,6 +255,25 @@ export default {
         headerType: 'back',
         footerType: 'none',
     },
+    cashoutDetail: {
+        title: I18n.t('page_cashout_detail'),
+        Page: CashoutDetail,
+        headerType: 'back',
+        footerType: 'none',
+    },
+    cashoutAndPayHistory: {
+        title: I18n.t('page_cashout_and_pay_history'),
+        Page: CashoutAndPayHistory,
+        headerType: 'back',
+        footerType: 'none',
+        cache: true,
+    },
+    payDetail: {
+        title: I18n.t('page_pay_detail'),
+        Page: PayDetail,
+        headerType: 'back',
+        footerType: 'none',
+    },
     checking: {
         title: I18n.t('checking'),
         Page: Checking,
@@ -254,10 +286,10 @@ export default {
         Page: TransactionHistory,
         headerType: 'back',
         footerType: 'none',
-        // showTopDropdown: true,
-        // showItemAllPlaceOnTopDropdown: true,
+        showTopDropdown: true,
+        showItemAllPlaceOnTopDropdown: true,
         cachePlace: {
-            selectedPlace: {}
+            selectedPlace: ITEM_ALL_PLACE
         },
         cache: true,
     },
@@ -271,6 +303,42 @@ export default {
         title: I18n.t('checking_history'),
         Page: CheckingHistory,
         headerType: 'back',
+        footerType: 'none',
+    },
+    dealManager: {
+      title: I18n.t('page_deal_manager'),
+      Page: DealManager,
+      showTopDropdown: true,
+      showItemAllPlaceOnTopDropdown: true,
+      tabIndex: 1,
+      cache: true,
+      cachePlace: {
+        selectedPlace: {}
+      },
+      headerType: 'home',
+    },
+    createDeal: {
+      title: I18n.t('page_create_deal'),
+      Page: CreateDeal,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    dealInfo: {
+      title: I18n.t('page_deal_info'),
+      Page: DealInfo,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    dealDetail: {
+      title: I18n.t('page_deal_detail'),
+      Page: DealDetail,
+      headerType: 'back',
+      footerType: 'none',
+    },
+    animated: {
+        title: 'Animated',
+        Page: ExperimentAnimate,
+        headerType: 'none',
         footerType: 'none',
     }
 }

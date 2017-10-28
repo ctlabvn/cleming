@@ -14,6 +14,7 @@ export default {
     },
     news(xsession, placeId){
         console.log('Place News API', xsession+'---'+placeId)
+        if (!placeId || placeId <= 0) return apiGet('/merchantapp/news', {}, xsession)
         return apiGet('/merchantapp/news', {placeId}, xsession)
     }
 }

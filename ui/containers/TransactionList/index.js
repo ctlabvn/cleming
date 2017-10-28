@@ -96,10 +96,22 @@ export default class extends Component {
 
     componentDidMount() {
         InteractionManager.runAfterInteractions(() => {
-            const { app } = this.props
+            const { app, clearRouteParam, route } = this.props
             let selectedPlace = app.topDropdown.getValue()
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            let dateFilterData
+            // Receive Pram from DealManager screen
+            if (route.params) {
+                // app.topDropdown
+                if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
+                if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                this.refs.dateFilter.setSelected(route.params.dateFilter)
+                dateFilterData = route.params.dateFilter.currentSelectValue.value
+                clearRouteParam()
+                delete route.params
+            }else {
+                dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            }
             let transactionFilterComponent = this.refs.transactionFilter
             let transactionFilter = transactionFilterComponent.getCurrentValue()
             if (selectedPlace && Object.keys(selectedPlace).length > 0) {
@@ -138,9 +150,24 @@ export default class extends Component {
 
     componentWillFocus() {
         InteractionManager.runAfterInteractions(() => {
-            const { app, meta, clearMarkLoad } = this.props
-            let dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            const { app, meta, clearMarkLoad, clearRouteParam, route} = this.props
             app.topDropdown.setCallbackPlaceChange(this._handleTopDrowpdown)
+            let dateFilterData
+            let needLoad = false
+            // Receive Pram from DealManager screen
+            if (route.params) {
+                // app.topDropdown
+                needLoad = true
+                if (app.topDropdown) app.topDropdown.updateSelectedOption(route.params.selectedPlace, false)
+                if (app.topDropdownListValue) app.topDropdownListValue.updateSelectedOption(route.params.selectedPlace)
+                this.refs.dateFilter.setSelected(route.params.dateFilter)
+                dateFilterData = route.params.dateFilter.currentSelectValue.value
+                clearRouteParam()
+                delete route.params
+            }else{
+                dateFilterData = this.refs.dateFilter.getData().currentSelectValue.value
+            }
+            
             let currentPlace = app.topDropdown.getValue()
             let transactionFilter = this.refs.transactionFilter.getCurrentValue()
             if (meta && meta[SCREEN.TRANSACTION_LIST_DIRECT]){
@@ -151,7 +178,8 @@ export default class extends Component {
                 console.log('Markload transaction clingme')
                 this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
                 clearMarkLoad(SCREEN.TRANSACTION_LIST_CLINGME)
-            }else if(currentPlace && currentPlace.id != this.currentPlace){
+            }else if((currentPlace && currentPlace.id != this.currentPlace) || needLoad){
+                needLoad = false
                 this._load(currentPlace.id, dateFilterData.from, dateFilterData.to, transactionFilter.value)
             }
         })
@@ -164,7 +192,7 @@ export default class extends Component {
 
     _load(placeId, fromTime, toTime, filter = 0, page = 1, isLoadMore = false) {
         this.currentPlace = placeId
-        const { xsession, getListAllTransaction } = this.props
+        const { xsession, getListAllTransaction, getMerchantNews } = this.props
         let transactionFilterComponent = this.refs.transactionFilter
         if (isLoadMore) {
             this.spinner.show(true)
@@ -184,14 +212,8 @@ export default class extends Component {
             }
         )
 
-        // getMerchantNews(xsession, placeId,
-        //     (err, data) => {
-        //         if (data && data.updated && data.updated.data) {
-        //             let newsUpdate = data.updated.data
-        //             this._updateNews(newsUpdate)
-        //         }
-        //     }
-        // )
+        getMerchantNews(xsession, placeId)
+        
     }
     // need care about currentPage
     _loadMore = () => {
