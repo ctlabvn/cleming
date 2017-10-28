@@ -103,7 +103,7 @@ android {
         targetSdkVersion 22
         multiDexEnabled true
         versionCode 6
-        versionName "1.0.4"
+        versionName "1.0.4.1"
         vectorDrawables.useSupportLibrary = true
         ndk {
             abiFilters "armeabi-v7a", "x86"
