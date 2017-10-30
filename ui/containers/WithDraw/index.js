@@ -262,7 +262,9 @@ export default class extends Component {
     _onMoneyAmountChange(value) {
         const { balanceMoney } = this.props;
         let moneyAmount = value.split('.').join('')
-        this.setState({moneyAmount: moneyAmount})
+        if (parseInt(moneyAmount) >= parseInt(balanceMoney)) moneyAmount = balanceMoney;
+            this.props.change('money_amount', formatNumber(moneyAmount));
+            this.setState({moneyAmount: moneyAmount})
     }
 
     render() {
@@ -296,7 +298,7 @@ export default class extends Component {
                                        onChangeText={(value) => this._onMoneyAmountChange(value)}
                                        onIconPress={input => input.onChange('')}
                                        inputStyle={{textAlign: 'right'}}
-                                       component={InputFieldWithErr3}
+                                       component={InputFieldWithErr}
                                        style={{...styles.inputItem}}
                                        keyboardType="numeric"/>
                             </View>
