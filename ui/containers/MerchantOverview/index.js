@@ -85,7 +85,7 @@ export default class MerchantOverview extends Component {
 
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
-                        app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        app.topDropdownListValue.updateSelectedOption(selectedOption, true)
 
                     } else if ((lat != 0 || long != 0) && !location.alreadyGotLocation) {
                         let selectedOption = {}
@@ -93,7 +93,7 @@ export default class MerchantOverview extends Component {
                         selectedOption.name = data.updated.data[0].address
                         setSelectedOption(selectedOption)
                         app.topDropdown.updateSelectedOption(selectedOption)
-                        app.topDropdownListValue.updateSelectedOption(selectedOption)
+                        app.topDropdownListValue.updateSelectedOption(selectedOption, true)
                         alreadyGotLocation()
                     }
 
