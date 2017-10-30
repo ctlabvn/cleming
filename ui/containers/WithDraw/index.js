@@ -212,8 +212,8 @@ export default class extends Component {
 
                 <Text grayDark medium>{I18n.t('account_number')}</Text>
                 <Field name="account_number"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
+                       icon={(input, active) => input.value ? 'close' : false}
+                       iconStyle={{color: material.gray500}}
                        ref='input2'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
@@ -221,8 +221,8 @@ export default class extends Component {
 
                 <Text grayDark medium>{I18n.t('account_owner')}</Text>
                 <Field autoCapitalize="none" name="account_owner"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
+                       icon={(input, active) => input.value ? 'close' : false}
+                       iconStyle={{color: material.gray500}}
                        ref='input3'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
@@ -230,8 +230,8 @@ export default class extends Component {
 
                 <Text grayDark medium>{I18n.t('phone_number')}</Text>
                 <Field name="phone_number"
-                       icon={(input, active) => input.value && active ? 'close' : false}
-                       iconStyle={{color: material.black500}}
+                       icon={(input, active) => input.value ? 'close' : false}
+                       iconStyle={{color: material.gray500}}
                        ref='input4'
                        onIconPress={input => input.onChange('')}
                        component={InputFieldWithErr}
@@ -291,8 +291,8 @@ export default class extends Component {
                             <Text grayDark medium bold>{I18n.t('withdrawn_amount')}</Text>
                             <View style={styles.inputFieldContainer}>
                                 <Field name="money_amount"
-                                       icon={(input, active) => input.value && active ? 'close' : false}
-                                       iconStyle={{color: material.black500}}
+                                       icon={(input, active) => input.value ? 'close' : false}
+                                       iconStyle={{color: material.gray500}}
                                        ref='input1'
                                        limitValue={balanceMoney}
                                        onChangeText={(value) => this._onMoneyAmountChange(value)}
