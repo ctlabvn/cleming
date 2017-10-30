@@ -246,7 +246,7 @@ export default class CreateUserContainer extends Component {
     // if (this.props.formState.CreateUserForm.syncErrors) {
 
 
-    if (errRet.name || errRet.phone || errRet.email) {
+    if (errRet.name || errRet.phone || errRet.phoneSms || errRet.email) {
       // this.props.actions.setToast(getToastMessage(I18n.t('err_employee_info_invalid')), 'info', null, null, 3000, 'top')
       this._scrollPageUp()
       // return;
@@ -260,7 +260,7 @@ export default class CreateUserContainer extends Component {
       // let listPlaceId = this.state.chosenListPlace.map(c => c.placeId).join(";")
       userInfo.fullName = data.name
       userInfo.phoneNumber = data.phone
-
+        userInfo.phoneSms = data.phoneSms
       userInfo.email = data.email
       userInfo.typeTitle = this.state.currentJob.id
       userInfo.fromTimeWork = this.state.fromTime
@@ -270,7 +270,6 @@ export default class CreateUserContainer extends Component {
       this.setState({
         isLoading: true,
       })
-
 
         const {employeeDetail} = this.props;
       // if ((this.props.route.params && this.props.route.params.id)) {
@@ -317,6 +316,8 @@ export default class CreateUserContainer extends Component {
     let errorNameStyle = null
     let phoneError = null
     let phoneTouched = false
+      let phoneSmsError = null
+      let phoneSmsTouched = false
     let errorPhoneStyle = null
     let emailError = null
     let errorEmailStyle = null
@@ -342,6 +343,11 @@ export default class CreateUserContainer extends Component {
           errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
           phoneError = <Text style={{ color: material.red500 }}>{errorForm.phone}</Text>
         }
+          if (errorForm.phoneSms) {
+              phoneSmsTouched = true
+              errorPhoneStyle = { borderColor: material.red500, borderWidth: 1 }
+              phoneSmsError = <Text style={{ color: material.red500 }}>{errorForm.phoneSms}</Text>
+          }
         if (errorForm.email) {
           emailTouched = true
           errorEmailStyle = { borderColor: material.red500, borderWidth: 1 }
@@ -382,6 +388,9 @@ export default class CreateUserContainer extends Component {
 
         <RenderTextField label={I18n.t('phone_number')} name="phone" errorStyle={errorPhoneStyle} keyboardType="numeric" />
         {phoneTouched && phoneError}
+
+        <RenderTextField label={I18n.t('phone_number') + ' SMS'} name="phoneSms" errorStyle={errorPhoneStyle} keyboardType="numeric" />
+          {phoneSmsTouched && phoneSmsError}
 
         <RenderTextField label={I18n.t('email')} name="email" errorStyle={errorEmailStyle} />
         {emailTouched && emailError}

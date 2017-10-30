@@ -3,6 +3,7 @@ const defaultEmployeeValues = {
   name: '',
   email: '',
   phone: '',
+  phoneSms: '',
   // titleType: 1,   
 }
 
@@ -24,6 +25,7 @@ export const getCurrentEmployeeValues = state =>{
     name: employeeDetail.userName,
     email: employeeDetail.email,
     phone: employeeDetail.phoneNumber ? employeeDetail.phoneNumber : '',
+      phoneSms: employeeDetail.phoneSms ? employeeDetail.phoneSms : '',
   }
 }
 

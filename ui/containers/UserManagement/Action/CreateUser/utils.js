@@ -68,6 +68,7 @@ export const RenderTextField = ({errorStyle, ...props}) => (
 
 // if long then seperate
 export const validateField = (values) => {
+
   const errors = {}
   if(!values) return errors
 
@@ -93,6 +94,16 @@ export const validateField = (values) => {
         return errors;
     }
   }
+
+    if (values.phoneSms.trim() == '') {
+        errors.phoneSms = I18n.t('err_phone_empty')
+        return errors;
+    } else {
+        if (!_.isUndefined(validate({phone: values.phone}, phoneConstraints))) {
+            errors.phoneSms = I18n.t('err_phone_invalid_format')
+            return errors;
+        }
+    }
 
   if (values.email.trim() != '') {
     if (!_.isUndefined(validate({email: values.email}, emailConstraints))) {
