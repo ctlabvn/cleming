@@ -412,7 +412,7 @@ export default {
     'err_deal_title_empty': 'Tiêu đề Deal trống',
     'interest': 'Quan tâm',
     'apply_time': 'Thời gian áp dụng',
-
+    'multiple_select_display': 'địa điểm',
 
     // Dictionary
     'success': 'Thành công',
