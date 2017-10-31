@@ -61,6 +61,8 @@ export default class CreateUserContainer extends Component {
     // let selectedPlaceId = props.selectedPlace.id
     super(props)
 
+    this.bindPhoneNumberAndPhoneSms = true;
+
     const { employeeDetail } = props;
 
     let fromTime = props.employeeDetail ? props.employeeDetail.fromTimeWork : '07:00';
@@ -88,7 +90,6 @@ export default class CreateUserContainer extends Component {
       selectedPlaceId: props.selectedPlace.id,
     }
   }
-
   // componentWillBlur() {
   //   // console.log('step', 'componentWillBlur');    
   //   this.props.actions.resetForm('CreateUserForm')
@@ -301,7 +302,13 @@ export default class CreateUserContainer extends Component {
     })
   }
 
+    _onPhoneNumberChange(input){
+      if (this.bindPhoneNumberAndPhoneSms) this.props.change('phoneSms',input);
+    }
 
+    _onPhoneSmsChange(input) {
+      this.bindPhoneNumberAndPhoneSms = false;
+    }
 
   renderMainContainer() {
     // console.log('renderMainContainer catch state time :: props time', fromTime + " - " + toTime + " :: " + this.props.initialValues.fromTimeWork + " - " + this.props.initialValues.toTimeWork);
@@ -386,10 +393,10 @@ export default class CreateUserContainer extends Component {
         <RenderTextField label={I18n.t('full_name')} name="name" errorStyle={errorNameStyle} />
         {nameTouched && nameError}
 
-        <RenderTextField label={I18n.t('phone_number')} name="phone" errorStyle={errorPhoneStyle} keyboardType="numeric" />
+        <RenderTextField onChangeText={input => this._onPhoneNumberChange(input)} label={I18n.t('phone_number')} name="phone" errorStyle={errorPhoneStyle} keyboardType="numeric" />
         {phoneTouched && phoneError}
 
-        <RenderTextField label={I18n.t('phone_number') + ' SMS'} name="phoneSms" errorStyle={errorPhoneStyle} keyboardType="numeric" />
+        <RenderTextField onChangeText={input => this._onPhoneSmsChange(input)} label={I18n.t('phone_number') + ' SMS'} name="phoneSms" errorStyle={errorPhoneStyle} keyboardType="numeric" />
           {phoneSmsTouched && phoneSmsError}
 
         <RenderTextField label={I18n.t('email')} name="email" errorStyle={errorEmailStyle} />
