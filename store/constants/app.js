@@ -120,3 +120,12 @@ export const ITEM_ALL_PLACE = {id: 0, name: I18n.t('all_places'), address: I18n.
 export const CASHOUT_AND_PAY_HISTORY_ALL = 0
 export const CASHOUT_AND_PAY_HISTORY_COME_IN = 1
 export const CASHOUT_AND_PAY_HISTORY_COME_OUT = 2
+export const DEEP_LINK_SCREEN = {
+    'payclm': {
+        screen: 'transactionDetail',
+        extraParam: 2
+    },
+    'order': {
+        screen: 'deliveryDetail'
+    }
+}

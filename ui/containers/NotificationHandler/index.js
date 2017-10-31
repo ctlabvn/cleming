@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View } from 'native-base'
 import PushNotification from 'react-native-push-notification'
 import { connect } from 'react-redux'
-
+import {Linking} from 'react-native'
 import { SENDER_ID } from '~/store/constants/api'
 import {forwardTo, setToast} from '~/store/actions/common'
 import {getNotification, updateRead} from '~/store/actions/notification'
@@ -12,6 +12,10 @@ import {getMerchantNews} from '~/store/actions/place'
 import { getSession } from '~/store/selectors/auth'
 import { NOTIFY_TYPE, TRANSACTION_TYPE, SCREEN } from '~/store/constants/app'
 import { getSelectedPlace } from '~/store/selectors/place'
+import {
+  DEEP_LINK_SCREEN
+} from '~/store/constants/app'
+
 @connect(state => ({
   xsession: getSession(state),
   selectedPlace: getSelectedPlace(state),
@@ -133,6 +137,41 @@ export default class NotificationHandler extends Component {
         forwardTo('deliveryDetail', {id: notificationData.param1})
         break
     }
+  }
+
+
+
+  componentDidMount(){
+    console.log('Did Mount Notifi Handler')
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        this._handleOpenURL(url)
+      }
+    }).catch(err => console.error('An error occurred', err))
+
+    Linking.addEventListener('url', event=>this._handleOpenURL(event.url))
+  }
+
+  componentWillUnmount() {
+    console.log('Unmount Nofification Handler')
+    // Linking.removeEventListener('url', this._handleOpenURL)
+  }
+
+
+  _handleOpenURL = (url) => {
+    if (!url) return
+    let splitArr = url.split('/')
+    if (!splitArr || splitArr.length == 0) return
+    let deepLinkKeys = Object.keys(DEEP_LINK_SCREEN)
+    for (let i=0; i<deepLinkKeys.length; i++){
+      let screenObj = DEEP_LINK_SCREEN[deepLinkKeys[i]]
+      let keyIdx = splitArr.indexOf(deepLinkKeys[i])
+      if (keyIdx > -1 && keyIdx < splitArr.length-1){
+        let idParam = splitArr[keyIdx+1]
+        break
+      }
+    }
+    
   }
 
   render() {
