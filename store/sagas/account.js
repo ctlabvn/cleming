@@ -14,7 +14,7 @@ import {
   setUserAvatar,
   updateProfileToRedux
 } from '~/store/actions/auth'
-import { getToastMessage } from '~/ui/shared/utils'
+import { getToastMessage, advanceI18nMessage } from '~/ui/shared/utils'
 import I18n from '~/ui/I18n'
 import { GENERAL_ERROR_MESSAGE } from '~/store/constants/app'
 
@@ -111,7 +111,7 @@ const requestUpdateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
-        return setToast(getToastMessage(I18n.t(error.msg || 'err_connection')), 'info', null, null, 3000, 'top')
+        return setToast(getToastMessage(advanceI18nMessage(error.msg || 'err_connection')), 'info', null, null, 3000, 'top')
     }
   ],
 })
@@ -124,7 +124,7 @@ const requestCreateEmployeeInfo = createRequestSaga({
   ],
   failure: [
     (error) => {
-        return setToast(getToastMessage(I18n.t(error.msg || 'err_connection')), 'info', null, null, 3000, 'top')
+        return setToast(getToastMessage(advanceI18nMessage(error.msg)), 'info', null, null, 3000, 'top')
     }
   ],
 })

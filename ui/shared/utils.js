@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import {View} from 'react-native'
 import {Text} from 'native-base'
 
+import I18n from '~/ui/I18n'
+
 import { Platform } from 'react-native'
 
 export const getPopoverOptions = (popoverWidth, fromRect, arrowPadding = -5) => ({
@@ -89,6 +91,26 @@ export const chainParse = (obj, attrArr) => {
     if (!cloneObj) return null
   }
   return cloneObj
+}
+
+export const advanceI18nMessage = (text, defaultText) => {
+    /**
+     * Note:
+     * this function prevent problem [missing 'text' translate] by I18n.t(text)
+     * and addition defaultText for deafult result if text is not exist in "./ui/locales/vi.js" file.
+     * defaultText have to existed in "./ui/locales/vi.js" file.
+     * if text and defaultText is not existed the result will be text after replace all "_" by " "
+     *
+     * Caution:
+     * use this function with text which is not explicit
+     */
+    if (I18n.t(text).indexOf('[missing') < 0) {
+      return I18n.t(text);
+    }
+    else {
+      if (defaultText && I18n.t(defaultText).indexOf('[missing') < 0) return I18n.t(defaultText)
+        else return text.toString().replace(new RegExp('_', 'g'),' ')
+    }
 }
 
 export const getToastMessage = (message) => {
