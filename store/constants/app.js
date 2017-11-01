@@ -123,9 +123,18 @@ export const CASHOUT_AND_PAY_HISTORY_COME_OUT = 2
 export const DEEP_LINK_SCREEN = {
     'payclm': {
         screen: 'transactionDetail',
-        extraParam: 2
+        paramName: 'id',
+        extraParam: {
+            name: 'type',
+            value: TRANSACTION_TYPE_CLINGME
+        }
     },
-    'order': {
-        screen: 'deliveryDetail'
+    'ordersuccess': {
+        screen: 'transactionDetail',
+        paramName: 'id',
+        extraParam: {
+            name: 'type',
+            value: TRANSACTION_TYPE_ORDER_SUCCESS
+        }
     }
 }

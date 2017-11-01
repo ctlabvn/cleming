@@ -159,6 +159,8 @@ export default class NotificationHandler extends Component {
 
 
   _handleOpenURL = (url) => {
+    const { xsession, forwardTo } = this.props
+    if (!xsession) return
     if (!url) return
     let splitArr = url.split('/')
     if (!splitArr || splitArr.length == 0) return
@@ -168,16 +170,21 @@ export default class NotificationHandler extends Component {
       let keyIdx = splitArr.indexOf(deepLinkKeys[i])
       if (keyIdx > -1 && keyIdx < splitArr.length-1){
         let idParam = splitArr[keyIdx+1]
+        if (!idParam) continue
+        let params = {}
+        params[screenObj.paramName] = idParam
+        if (screenObj.extraParam){
+          params[screenObj.extraParam.name] = screenObj.extraParam.value
+        }
+        forwardTo('merchantOverview')
+        forwardTo(screenObj.screen, params)
         break
       }
     }
-    
   }
 
   render() {
-    return (
-        <View />
-    )
+    return null
   }
 }
 
