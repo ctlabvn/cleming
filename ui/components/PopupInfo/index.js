@@ -20,6 +20,9 @@ export default class PopupInfo extends Component {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible })
     }
+    sss() {
+
+    }
     show(text){
         this.setState({modalVisible: true, text: text})
     }

@@ -58,6 +58,11 @@ export default {
     updateViewStatusPayCLM(xsession, tranId){
         console.log('Update View CLM API: ', xsession+'---'+tranId)
         return apiPost('/merchantapp/view-tran', {tranId}, xsession)
+    },
+
+    updateInvoiceNumber(xsession, tranId, invoiceNumber) {
+        console.log('Update Invoice Number: ', xsession+'---'+tranId+'---'+invoiceNumber);
+        return apiPost('/payclm/update-invoicenumber', {tranId, invoiceNumber}, xsession)
     }
 }
 

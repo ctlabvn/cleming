@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Container, Spinner, Text, Thumbnail, List, ListItem } from "native-base";
-import { Image, InteractionManager, TouchableWithoutFeedback, View } from "react-native";
+import { Image, InteractionManager, TouchableWithoutFeedback, View, TextInput } from "react-native";
 import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
-import { formatNumber, getToastMessage, chainParse, formatPhoneNumber } from "~/ui/shared/utils";
+import { formatNumber, getToastMessage, advanceI18nMessage, chainParse, formatPhoneNumber } from "~/ui/shared/utils";
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
@@ -15,7 +15,7 @@ import { storeFilled, storeTransparent } from "~/assets";
 import PopupPhotoView from "~/ui/components/PopupPhotoView";
 import FeedbackDialog from "./FeedbackDialog";
 import FeedbackDialogClingme from "./FeedbackDialogClingme";
-import PopupInfo from "~/ui/components/PopupInfo";
+import PopupConfirm from "~/ui/components/PopupConfirm";
 import Content from "~/ui/components/Content";
 import { BASE_COUNTDOWN_ORDER_MINUTE } from "~/ui/shared/constants"
 import {
@@ -53,7 +53,7 @@ export default class TransactionDetail extends Component {
             // loading: false,
             page: 1, // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading,
             callModalOpen: false,
-            phoneNumber: ''
+            phoneNumber: '',
         }
         this.swiping = false
         this.confirmCounter = 0
@@ -235,14 +235,55 @@ export default class TransactionDetail extends Component {
 
     }
 
+    _handlePressTextBillNumberInput() {
+        InteractionManager.runAfterInteractions(() => this.refs.content1.scrollToEnd({animated: true}));
+    }
+
+    _handlePressConfirm() {
+        if (this.billNumberChanged && this.billNumberChanged.length > 4) {
+            const { xsession, updateInvoiceNumber } = this.props;
+            const { transactionId } = this.state.transactionInfo;
+            updateInvoiceNumber(xsession, transactionId, this.billNumberChanged,(err, data)=> {
+                if (err && err.msg) {
+                    this.props.setToast(getToastMessage(advanceI18nMessage(err.msg)), 'info', null, null, 3000, 'top')
+                    this.props.goBack();
+                    return;
+                }
+
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
+                    this.props.setToast(getToastMessage(I18n.t('success')), 'info', null, null, 3000, 'top')
+                } else {
+                    this.props.setToast(getToastMessage(I18n.t('do_not_success')), 'info', null, null, 3000, 'top')
+                }
+                this.props.goBack();
+                return;
+            })
+        } else if (this.state.transactionInfo.invoiceNumber && !this.changedBillNumberInput) {
+            this.props.goBack();
+            return;
+        } else {
+            this.refs.popupConfirm.show('Nhập số hóa đơn để đảm bảo quyền lợi của bạn đối với các giao dịch thanh toán qua Clingme. \n\nBạn chắc chắn vẫn nhập số hóa đơn?');
+        }
+    }
+
+    _handlePressPopupConfirmOK() {
+        this.refs.popupConfirm.setModalVisible(false);
+    }
+
+    _handlePressPopupConfirmCancel() {
+        this.props.goBack();
+    }
+
     renderClingme(transactionInfo){
         const {user} = this.props
         let payStatus, helpBtn = null
-        const {goBack} = this.props
+
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
-        if (transactionInfo.viewNumber == 0){
+        // if (transactionInfo.viewNumber == 0 || true) {   // true for test mode; transactionInfo.viewNumber == 0 is deprecated;
+            let invoiceNumber = this.state.transactionInfo ? this.state.transactionInfo.invoiceNumber : ''
+
           helpBtn =
-              <View style={styles.rowCenter}>
+              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 15}}>
                 {/* <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                    <View style={styles.round20}>
                        <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
@@ -250,13 +291,25 @@ export default class TransactionDetail extends Component {
                    <Text medium primary>{I18n.t('help')}</Text>
                 </Button> */}
 
-                  <Button primary style={{...styles.backgroundPrimary}}
-                    onPress={()=>goBack()}
-                  >
-                      <Text medium white>{I18n.t('close')}</Text>
-                  </Button>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                    <Text medium grayDark bold italic style={{alignSelf: 'center', textAlign: 'center'}}>Số hóa đơn</Text>
+                  <TextInput
+                      ref='billNumberInput'
+                      defaultValue={invoiceNumber}
+                      onChangeText={input => {this.billNumberChanged = input; this.changedBillNumberInput = true}}
+                      medium grayDark
+                      underlineColorAndroid='transparent'
+                      selectionColor={material.gray600}
+                      onFocus={()=> this._handlePressTextBillNumberInput}
+                      style={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5, borderColor: material.primaryColor,
+                          margin: 10, padding: 5, paddingLeft: 10, flex: 1, color: material.gray600, }}/>
+                </View>
+
+                  <Text small grayDark italic style={{alignSelf: 'center', textAlign: 'center'}}>(Nếu không có số hóa đơn, vui lòng nhập mã theo định dạng: {'\n'}
+                  năm/tháng/ngày/giờ/phút/số tiền)</Text>
+
               </View>
-        }
+        // }
         // else{
         //   helpBtn =
         //       <View style={styles.rowCenter}>
@@ -293,7 +346,7 @@ export default class TransactionDetail extends Component {
         // }
 
         return (
-            <Content>
+            <Content ref='content1'>
                 <View style={styles.contentRootChild}>
                     <FeedbackDialogClingme ref='feedbackDialogClingme' listValue={this.props.denyReasonClm}
                         transactionCode={transactionInfo.transactionIdDisplay}
@@ -316,6 +369,9 @@ export default class TransactionDetail extends Component {
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                     </View>}
+                    <View style={styles.rowCenter}>
+                        {helpBtn}
+                    </View>
                     {(user.accTitle != 1) && <View style={{width: '100%', height: 100}} />}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
@@ -327,9 +383,10 @@ export default class TransactionDetail extends Component {
                                 <Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />}
                         </View>
                     </View>
-                    <View style={styles.rowCenter}>
-                        {helpBtn}
-                    </View>
+                    <Button primary style={{backgroundColor: material.primaryColor, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0}}
+                            onPress={() => this._handlePressConfirm()}>
+                        <Text small white>{I18n.t('confirm')}</Text>
+                    </Button>
                 </View>
             </Content>
         )
@@ -838,7 +895,7 @@ export default class TransactionDetail extends Component {
 
         return (
             <Container style={{backgroundColor: material.white500}}>
-                <PopupInfo ref='popupInfo' />
+                <PopupConfirm ref='popupConfirm' onCancel={() => this._handlePressPopupConfirmCancel()} onOk={() => this._handlePressPopupConfirmOK()}/>
                 <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref}/>
                 <CallModal
                     phoneNumber={this.state.phoneNumber}

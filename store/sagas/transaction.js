@@ -122,6 +122,12 @@ requestUpdateViewNumberCLM = createRequestSaga({
     cancel: 'app/logout',
 })
 
+const requestUpdateInvoiceNumber = createRequestSaga({
+    request: api.transaction.updateInvoiceNumber,
+    key: 'transaction/updateInvoiceNumber',
+    cancel: 'app/logout',
+})
+
 export default [
     function* fetchWatcher() {
         yield [
@@ -136,7 +142,8 @@ export default [
             takeLatest('transaction/denyReasonClm', requestDenyReasonClm),
             takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm),
             takeLatest('transaction/historyList', requestHistoryListTransaction),
-            takeLatest('transaction/updateViewStatusPayCLM', requestUpdateViewNumberCLM)
+            takeLatest('transaction/updateViewStatusPayCLM', requestUpdateViewNumberCLM),
+            takeLatest('transaction/updateInvoiceNumber', requestUpdateInvoiceNumber)
         ]
     },
 ]

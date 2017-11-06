@@ -100,3 +100,8 @@ export const updateViewStatusPayCLM = (...args) => ({
   args
 })
 
+
+export const updateInvoiceNumber = (...args) => ({
+    type: 'transaction/updateInvoiceNumber',
+    args
+})

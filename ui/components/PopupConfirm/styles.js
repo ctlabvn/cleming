@@ -6,7 +6,7 @@ export default {
         backgroundColor: 'rgba(0,0,0,0.7)',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     modalContainer: {
         width: '90%',
@@ -15,6 +15,8 @@ export default {
         alignSelf: 'center',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
+        minHeight: 200,
+        borderRadius: 10,
         // padding: 10,
     },
     rowPadding: {
@@ -30,32 +32,26 @@ export default {
         alignItems: 'center'
     },
     btnLeft: {
-        width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRightColor: 'lightgrey',
-        borderLeftColor: 'transparent',
-        borderTopColor: 'transparent',
-        borderBottomColor: 'transparent',
-        borderWidth: 0.5,
-        borderRadius: 0,
-
+        marginRight: 10,
+        marginBottom: 10,
+        borderRadius: 10,
     },
     btnRight: {
-        width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderRadius: 0,
-        borderColor: 'transparent'
+        marginRight: 10,
+        marginBottom: 10,
+        borderRadius: 10,
     },
     confirmContainer: {
-        borderTopWidth: 0.5,
-        borderTopColor: 'lightgrey',
         width: '100%',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderRadius: 10,
+        paddingRight: 10,
     },
     textContanter: {
         marginBottom: 15,
@@ -64,10 +60,13 @@ export default {
         paddingRight: 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        width: '100%'
+        flex: 1,
+        width: '100%',
+        alignItems: 'center',
     },
     text: {
-        textAlign: 'center'
+        textAlign: 'center',
+        padding: 20,
     },
     header: {
         padding: 10,

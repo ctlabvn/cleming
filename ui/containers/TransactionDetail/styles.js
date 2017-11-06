@@ -310,7 +310,7 @@ export default {
         backgroundColor: material.blue500
     },
     backgroundPrimary: {
-        backgroundColor: material.primaryColor
+        backgroundColor: material.primaryColor,
     },
     backgroundWarning: {
         backgroundColor: material.warningColor
@@ -372,8 +372,7 @@ export default {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
-        marginBottom: 20
+        marginTop: 15,
         // height: 50
         // marginBottom: 30
 

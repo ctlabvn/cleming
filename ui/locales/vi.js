@@ -416,4 +416,6 @@ export default {
 
     // Dictionary
     'success': 'Thành công',
+    'do_not_success': 'Không thành công',
+    'time_change_expires': 'Thời gian thay đổi hết hạn',
 }

@@ -5,6 +5,7 @@ import styles from './styles'
 import PopupPhotoView from '~/ui/components/PopupPhotoView'
 import I18n from '~/ui/I18n'
 import { connect } from 'react-redux'
+import material from "../../../theme/variables/material";
 export default class PopupInfo extends Component {
     constructor(props) {
         super(props)
@@ -33,15 +34,20 @@ export default class PopupInfo extends Component {
             >
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContainer}>
-                        <View style={styles.header}>
-                            <Text bold white>{I18n.t('info')}</Text>
-                        </View>
+                        {/*<View style={styles.header}>*/}
+                            {/*<Text bold white>{I18n.t('info')}</Text>*/}
+                        {/*</View>*/}
                         <View style={styles.textContanter}>
-                            <Text style={styles.text}>{text}</Text>
+                            <Text medium style={styles.text}>{text}</Text>
                         </View>
                         <View style={styles.confirmContainer}>
-                            <Button transparent onPress={()=>this._close()} style={styles.btnLeft}>
-                                <Text light>{I18n.t('cancel')}</Text>
+                            <Button
+                                transparent  style={styles.btnLeft}
+                                onPress={()=>{
+                                    this._close()
+                                    this.props.onCancel();
+                                }}>
+                                <Text style={{color: material.blue500}}>{I18n.t('cancel')}</Text>
                             </Button>
 
                             <Button transparent style={styles.btnRight}
@@ -50,7 +56,7 @@ export default class PopupInfo extends Component {
                                     this.props.onOk()   
                                 }}
                                 >
-                                <Text primary>{I18n.t('ok')}</Text>
+                                <Text style={{color: material.blue500}}>{I18n.t('ok')}</Text>
                             </Button>
                         </View>
                     </View>
