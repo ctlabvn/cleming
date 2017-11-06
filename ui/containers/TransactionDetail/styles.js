@@ -496,4 +496,34 @@ export default {
         borderColor: material.gray500,
         width: '95%'
     },
+    helpBtnContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 15,
+    },
+    billNumberContainer: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    billNumber: {
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+    billNumberInput: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: material.primaryColor,
+        margin: 10,
+        padding: 5,
+        paddingLeft: 10,
+        flex: 1,
+        color: material.gray600
+    },
+    noteMessage: {
+        alignSelf: 'center',
+        textAlign: 'center'
+    },
+
 }

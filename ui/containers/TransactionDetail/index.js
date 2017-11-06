@@ -57,6 +57,7 @@ export default class TransactionDetail extends Component {
         }
         this.swiping = false
         this.confirmCounter = 0
+        this.changedBillNumberInput = false;
     }
 
     _renderStatus(status) {
@@ -262,7 +263,7 @@ export default class TransactionDetail extends Component {
             this.props.goBack();
             return;
         } else {
-            this.refs.popupConfirm.show('Nhập số hóa đơn để đảm bảo quyền lợi của bạn đối với các giao dịch thanh toán qua Clingme. \n\nBạn chắc chắn vẫn nhập số hóa đơn?');
+            this.refs.popupConfirm.show(I18n.t('transaction_detail_mess_1'));
         }
     }
 
@@ -283,7 +284,7 @@ export default class TransactionDetail extends Component {
             let invoiceNumber = this.state.transactionInfo ? this.state.transactionInfo.invoiceNumber : ''
 
           helpBtn =
-              <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 15}}>
+              <View style={styles.helpBtnContainer}>
                 {/* <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
                    <View style={styles.round20}>
                        <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
@@ -291,23 +292,19 @@ export default class TransactionDetail extends Component {
                    <Text medium primary>{I18n.t('help')}</Text>
                 </Button> */}
 
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                    <Text medium grayDark bold italic style={{alignSelf: 'center', textAlign: 'center'}}>Số hóa đơn</Text>
-                  <TextInput
-                      ref='billNumberInput'
-                      defaultValue={invoiceNumber}
-                      onChangeText={input => {this.billNumberChanged = input; this.changedBillNumberInput = true}}
-                      medium grayDark
-                      underlineColorAndroid='transparent'
-                      selectionColor={material.gray600}
-                      onFocus={()=> this._handlePressTextBillNumberInput}
-                      style={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5, borderColor: material.primaryColor,
-                          margin: 10, padding: 5, paddingLeft: 10, flex: 1, color: material.gray600, }}/>
-                </View>
-
-                  <Text small grayDark italic style={{alignSelf: 'center', textAlign: 'center'}}>(Nếu không có số hóa đơn, vui lòng nhập mã theo định dạng: {'\n'}
-                  năm/tháng/ngày/giờ/phút/số tiền)</Text>
-
+                    <View style={styles.billNumberContainer}>
+                        <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text>
+                        <TextInput
+                          ref='billNumberInput'
+                          defaultValue={invoiceNumber}
+                          onChangeText={input => {this.billNumberChanged = input; this.changedBillNumberInput = true}}
+                          medium grayDark
+                          underlineColorAndroid='transparent'
+                          selectionColor={material.gray600}
+                          onFocus={()=> this._handlePressTextBillNumberInput}
+                          style={styles.billNumberInput}/>
+                    </View>
+                    <Text small grayDark italic style={styles.noteMessage}>{I18n.t('transaction_detail_mess_2')}</Text>
               </View>
         // }
         // else{

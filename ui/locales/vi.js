@@ -54,6 +54,8 @@ export default {
     'close': 'Đóng',
     'feedback_of_merchant': 'Phản hồi',
     'reject_reason': 'Lý do từ chối',
+    'transaction_detail_mess_1' : 'Nhập số hóa đơn để đảm bảo quyền lợi của bạn đối với các giao dịch thanh toán qua Clingme. \n\nBạn chắc chắn vẫn nhập số hóa đơn?',
+    'transaction_detail_mess_2' : 'Nếu không có số hóa đơn, vui lòng nhập mã theo định dạng: \nnăm/tháng/ngày/giờ/phút/số tiền',
 
     // SideBar
     'manage_account': 'Quản lý tài khoản',
@@ -417,5 +419,5 @@ export default {
     // Dictionary
     'success': 'Thành công',
     'do_not_success': 'Không thành công',
-    'time_change_expires': 'Thời gian thay đổi hết hạn',
+    'time_change_expires': 'Hết hạn thời gian thay đổi',
 }
