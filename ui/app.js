@@ -164,7 +164,7 @@ export default class App extends Component {
         } else {
             if (selectedPlace && selectedPlace.id && selectedPlace.name && showItemAllPlaceOnTopDropdown)
               selectedOption = selectedPlace
-            else 
+            else
               selectedOption = this.listPlaceRender[0]
         }
 
@@ -178,6 +178,7 @@ export default class App extends Component {
         // >>>
 
         setSelectedOption(selectedOption)
+
         if (this.topDropdown) this.topDropdown.updateSelectedOption(selectedOption, false)
         if (this.topDropdownListValue) this.topDropdownListValue.updateSelectedOption(selectedOption, showItemAllPlaceOnTopDropdown)
     }
@@ -236,8 +237,10 @@ export default class App extends Component {
           this.footer.show(route.footerType, route.routeName)
 
           this.currentRoute = route;
-          this.setListPlace()
-          this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
+          if (route.showTopDropdown) {
+              this.setListPlace()
+              this.switchListPlaceRender(route.showItemAllPlaceOnTopDropdown, route.cachePlace)
+          }
           this.topDropdownListValue.updateDropdownValues(this.listPlaceRender)
           this.topDropdownListValue.updateDefaultDropdownValues(this.listPlaceRender)
 

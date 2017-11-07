@@ -162,11 +162,12 @@ export default {
     userManagement: {
         title: I18n.t('page_manage_account'),
         Page: UserManagement,
+        footerType: 'none',
+        showTopDropdown: true,
         cachePlace: {
             selectedPlace: {}
         },
-        footerType: 'none',
-        showTopDropdown: true,
+        cache: true,
     },
     'userManagement/action/createUser': {
         title: I18n.t('page_add_account'),
