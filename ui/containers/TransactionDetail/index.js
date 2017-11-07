@@ -281,7 +281,12 @@ export default class TransactionDetail extends Component {
 
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
         // if (transactionInfo.viewNumber == 0 || true) {   // true for test mode; transactionInfo.viewNumber == 0 is deprecated;
-            let invoiceNumber = this.state.transactionInfo ? this.state.transactionInfo.invoiceNumber : ''
+        let invoiceNumber = '';
+        let changeInvNum = false;
+        if (this.state.transactionInfo) {
+            invoiceNumber = this.state.transactionInfo.invoiceNumber;
+            changeInvNum = this.state.transactionInfo.changeInvNum == 1;
+        }
 
           helpBtn =
               <View style={styles.helpBtnContainer}>
@@ -297,6 +302,7 @@ export default class TransactionDetail extends Component {
                         <TextInput
                           ref='billNumberInput'
                           defaultValue={invoiceNumber}
+                          editable={changeInvNum}
                           onChangeText={input => {this.billNumberChanged = input; this.changedBillNumberInput = true}}
                           medium grayDark
                           underlineColorAndroid='transparent'
