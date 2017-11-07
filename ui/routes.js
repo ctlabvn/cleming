@@ -162,6 +162,9 @@ export default {
     userManagement: {
         title: I18n.t('page_manage_account'),
         Page: UserManagement,
+        cachePlace: {
+            selectedPlace: {}
+        },
         footerType: 'none',
         showTopDropdown: true,
     },

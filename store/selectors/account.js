@@ -19,13 +19,13 @@ export const getCurrentEmployee = state =>
 
 export const getCurrentEmployeeValues = state =>{
   const employeeDetail = state.account.currentEmployee
-  if(!employeeDetail)
-    return defaultEmployeeValues
+  if(!employeeDetail) return defaultEmployeeValues
+
   return {    
     name: employeeDetail.userName,
     email: employeeDetail.email,
     phone: employeeDetail.phoneNumber ? employeeDetail.phoneNumber : '',
-      phoneSms: employeeDetail.phoneSms ? employeeDetail.phoneSms : '',
+    phoneSms: employeeDetail.phoneSms ? employeeDetail.phoneSms : '',
   }
 }
 
