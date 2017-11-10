@@ -519,6 +519,7 @@ export default {
         padding: 5,
         paddingLeft: 10,
         flex: 1,
+        minHeight: 40,
         color: material.gray600
     },
     noteMessage: {
