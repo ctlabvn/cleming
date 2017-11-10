@@ -169,7 +169,7 @@ export const cloneObjArray = (arr) => {
 
 export const formatMoney = (str) => {
   if (!str) return ''
-  return str.replace(/\./g, '').replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1\.")
+  return str.toString().replace(/\./g, '').replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1\.")
 }
 
 export const revertFormatMoney = (str) => {

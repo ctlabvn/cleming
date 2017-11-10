@@ -205,7 +205,7 @@ export default class MerchantOverview extends Component {
 
     renderMainContainer() {
 
-        const {handleSubmit, submitting, place} = this.props
+        const {handleSubmit, submitting, place, user} = this.props
 
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
@@ -283,14 +283,14 @@ export default class MerchantOverview extends Component {
                         </View>
                     </TouchableWithoutFeedback>}
 
-                    <TouchableWithoutFeedback onPress={()=>this.navigate('qr')}>
+                    {(true || user.accTitle != 1) && <TouchableWithoutFeedback onPress={()=>this.navigate('qrForm')}>
                         <View style={styles.menuItem}>
                             <View style={styles.leftBlock}>
                                 <Icon name='shiping-bike2' style={styles.icon}/>
                                 <Text strong style={{...styles.textLabelRightImage}}>QR</Text>
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback>}
 
             </View>
             // </Content>
