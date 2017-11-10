@@ -241,6 +241,16 @@ export default class TransactionDetail extends Component {
     }
 
     _handlePressConfirm() {
+        if (!this.billNumberChanged || this.billNumberChanged.lengh <= 0) {
+            this.refs.popupConfirm.show(I18n.t('you_have_to_input_bill_number'))
+            return;
+        }
+
+        if (this.billNumberChanged.length < 4) {
+            this.refs.popupConfirm.show(I18n.t('please_input_valid_bill_number'));
+            return;
+        }
+
         if (this.billNumberChanged && this.billNumberChanged.length > 4) {
             const { xsession, updateInvoiceNumber } = this.props;
             const { transactionId } = this.state.transactionInfo;
