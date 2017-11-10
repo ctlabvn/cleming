@@ -283,6 +283,15 @@ export default class MerchantOverview extends Component {
                         </View>
                     </TouchableWithoutFeedback>}
 
+                    <TouchableWithoutFeedback onPress={()=>this.navigate('qr')}>
+                        <View style={styles.menuItem}>
+                            <View style={styles.leftBlock}>
+                                <Icon name='shiping-bike2' style={styles.icon}/>
+                                <Text strong style={{...styles.textLabelRightImage}}>QR</Text>
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
+
             </View>
             // </Content>
         )
