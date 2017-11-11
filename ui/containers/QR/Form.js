@@ -33,7 +33,7 @@ export default class QRForm extends Component {
 
     _onPressGenerate = () => {
         if (!this.props.app || !this.props.app.topDropdown || !this.props.app.topDropdown.getValue()
-            || Object.keys(this.props.app.topDropdown.getValue()).length == 0) return
+            || Object.keys(this.props.app.topDropdown.getValue()).length == 0 || this.state.loading) return
         const {user, createQR, xsession} = this.props
         let moneyAmount = revertFormatMoney(this.state.money)
         let invoiceNumber = this.state.invoiceNumber

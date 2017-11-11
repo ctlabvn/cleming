@@ -26,7 +26,7 @@ export default class QR extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => this.close()}
+          onRequestClose={() => false}
         >
           <View style={{
             flex: 1, justifyContent: 'center', alignItems: 'center',
