@@ -4,13 +4,19 @@ import {Text, Button} from 'native-base'
 import material from '~/theme/variables/material'
 import styles from './styles'
 import { formatMoney, revertFormatMoney } from "~/ui/shared/utils"
+import I18n from '~/ui/I18n'
 
+const defaultData = {
+    invoiceNumber: '',
+    moneyAmount: '',
+    noBill: false
+}
 export default class ConfirmPopup extends Component {
   constructor(props){
     super(props)
     this.state = {
       modalVisible: false,
-      data: {}
+      data: defaultData,
     }
   }
 
@@ -19,7 +25,7 @@ export default class ConfirmPopup extends Component {
   }
 
   close = () => {
-    this.setState({modalVisible: false, data: ''})
+    this.setState({modalVisible: false, data: defaultData})
   }
 
   _handleOk = () => {
@@ -42,22 +48,37 @@ export default class ConfirmPopup extends Component {
                     flex: 1, justifyContent: 'center', alignItems: 'center',
                     backgroundColor: 'rgba(0,0,0,0.3)'
                     }}>
-                        <View style={{backgroundColor: 'white'}}>
-                            <View style={{...styles.rowSpace, ...styles.pd10}}>
-                                <Text black>Số tiền:</Text>
-                                <Text bold>{formatMoney(this.state.data.moneyAmount)}đ</Text>
+                        <View style={styles.dialogContainer}>
+                            <View style={{...styles.rowStart, ...styles.mb20}}>
+                                <Text grayDark bold medium>{I18n.t('confirm_info')}</Text>
                             </View>
-                            <View style={{...styles.rowSpace, ...styles.pd10}}>
-                                <Text black>Số hoá đơn:</Text>
-                                <Text bold>{this.state.data.invoiceNumber}</Text>
+                            <View style={{...styles.rowSpaceDialog, ...styles.pd10}}>
+                                <Text grayDark>{I18n.t('money_number')}:</Text>
+                                <Text bold grayDark>{formatMoney(this.state.data.moneyAmount)}đ</Text>
                             </View>
+                            {!this.state.data.noBill && 
+                                <View style={{...styles.rowSpaceDialog, ...styles.pd10}}>
+                                    <Text grayDark>{I18n.t('invoice_number_hint')}:</Text>
+                                    <Text bold grayDark>{this.state.data.invoiceNumber.toUpperCase()}</Text>
+                                </View>
+                            }
+                            {this.state.data.noBill && 
+                                <View style={{...styles.rowSpaceDialog, ...styles.pd10}}>
+                                    <Text grayDark>{I18n.t('invoice_time')}:</Text>
+                                    <Text bold grayDark>{this.state.data.invoiceNumber}</Text>
+                                </View>
+                            }
                             <View style={styles.rowEnd}>
-                                <Button onPress={()=>this.close()} transparent style={{margin: 5}}>
-                                    <Text gray>Đóng</Text>
-                                </Button>
-                                <Button onPress={this._handleOk} style={{...styles.primaryButton, margin: 5}}>
-                                    <Text white>Hoàn tất</Text>
-                                </Button>
+                                <TouchableWithoutFeedback onPress={()=>this.close()}>
+                                    <View style={styles.btnDialog}>
+                                        <Text gray bold>{I18n.t('back')}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onPress={this._handleOk}>
+                                    <View style={styles.btnDialog}>
+                                        <Text primary bold>{I18n.t('ok')}</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
                             </View>
                         </View>
                 </View>

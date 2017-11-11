@@ -1,3 +1,8 @@
+export const INVOICE_TYPE = {
+    HAS_BILL: 1,
+    NO_BILL: 0
+}
+
 export const getDateArray = (str) => {
     if (!str) return 
     str = revertDateTime(str)

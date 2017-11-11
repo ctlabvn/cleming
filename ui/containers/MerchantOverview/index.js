@@ -283,15 +283,6 @@ export default class MerchantOverview extends Component {
                         </View>
                     </TouchableWithoutFeedback>}
 
-                    {(true || user.accTitle != 1) && <TouchableWithoutFeedback onPress={()=>this.navigate('qrForm')}>
-                        <View style={styles.menuItem}>
-                            <View style={styles.leftBlock}>
-                                <Icon name='shiping-bike2' style={styles.icon}/>
-                                <Text strong style={{...styles.textLabelRightImage}}>QR</Text>
-                            </View>
-                        </View>
-                    </TouchableWithoutFeedback>}
-
             </View>
             // </Content>
         )
@@ -330,6 +321,18 @@ export default class MerchantOverview extends Component {
                 <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
                     {mainContainer}
                 </Content>
+                {(user.accTitle != 1) && <TouchableWithoutFeedback onPress={()=>this.navigate('qrForm')}>
+                    <View style={styles.qrBlock}>
+                        <View style={styles.qrLabelOuter}>
+                            <View style={styles.qrLabel}>
+                                <Text primary>{I18n.t('create_qr')}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.qrOuter}>
+                            <Icon name='qr' style={styles.qrIcon} />
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>}
             </Container>
         )
     }

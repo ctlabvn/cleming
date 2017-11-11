@@ -1,18 +1,38 @@
 import material from '~/theme/variables/material.js'
 export default {
+    container: {
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'flex-start',
+        padding: 10,
+        backgroundColor: 'white'
+    },
     inputMoney: {
         height: 40,
-        width: material.deviceWidth-40,
-        borderWidth: 1,
-        borderColor: material.gray300,
-        borderRadius: 3,
+        flex: 1
+    },
+    currency: {
+        color: material.gray500,
+        marginRight: 5,
+        fontWeight: 'bold'
     },
     inputStyle: {
         height: 40,
         width: material.deviceWidth-20,
-        borderWidth: 1,
-        borderColor: material.gray300,
+        backgroundColor: material.gray300,
         borderRadius: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5
+    },
+    dateTimeInput: {
+        height: 40,
+        width: 100,
+        backgroundColor: material.gray300,
+        borderRadius: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5
     },
     fakeDisable: {
         height: 40,
@@ -20,7 +40,7 @@ export default {
         borderWidth: 1,
         borderColor: material.gray300,
         borderRadius: 3,
-        backgroundColor: material.gray300
+        backgroundColor: 'white'
     },
     pd10: {
         padding: 10
@@ -32,10 +52,20 @@ export default {
         marginBottom: 20
     },
     primaryButton: {
-        backgroundColor: material.primaryColor
+        backgroundColor: material.primaryColor,
+        paddingTop: 15,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 15,
+        borderRadius: 4
     },
     disableBtn: {
-        backgroundColor: material.gray300
+        backgroundColor: material.gray300,
+        paddingTop: 15,
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingBottom: 15,
+        borderRadius: 4
     },
     rowCenter: {
         flexDirection: 'row',
@@ -44,6 +74,12 @@ export default {
         width: '100%'
     },
     rowSpace: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
+    },
+    rowSpaceDialog: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -59,6 +95,43 @@ export default {
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%'
+    },
+    btnDialog: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    dialogContainer: {
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: 'white',
+        width: material.deviceWidth-20
+    },
+    fixBottomButtonBlock: {
+        position: 'absolute',
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        bottom: 0
+    },
+    bottomBtn: {
+        width: '50%',
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    bgPrimary: {
+        backgroundColor: material.primaryColor
+    },
+    bgWarning: {
+        backgroundColor: material.warningColor
+    },
+    fullScreenPopup: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+        flex: 1
     }
 
 }
