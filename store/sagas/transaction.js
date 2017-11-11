@@ -128,6 +128,11 @@ const requestUpdateInvoiceNumber = createRequestSaga({
     cancel: 'app/logout',
 })
 
+const requestCreateQR = createRequestSaga({
+    request: api.transaction.createQR,
+    key: 'transaction/createQR'
+})
+
 export default [
     function* fetchWatcher() {
         yield [
@@ -143,7 +148,8 @@ export default [
             takeLatest('transaction/sendDenyReasonClm', requestSendDenyReasonClm),
             takeLatest('transaction/historyList', requestHistoryListTransaction),
             takeLatest('transaction/updateViewStatusPayCLM', requestUpdateViewNumberCLM),
-            takeLatest('transaction/updateInvoiceNumber', requestUpdateInvoiceNumber)
+            takeLatest('transaction/updateInvoiceNumber', requestUpdateInvoiceNumber),
+            takeLatest('transaction/createQR', requestCreateQR)
         ]
     },
 ]

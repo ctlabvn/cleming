@@ -8,7 +8,12 @@ import { formatMoney } from "~/ui/shared/utils"
 import MoneyMaskInput from '~/ui/components/MoneyMaskInput'
 import styles from './styles'
 import {formatDateTime, revertDateTime, getFormatObj, getDateArray} from './utils'
+import {createQR} from '~/store/actions/transaction'
+import {getSession, getUser} from "~/store/selectors/auth";
 
+@connect(state => ({
+    xsession: getSession(state),
+}), {createQR})
 export default class QRForm extends Component {
     constructor(props){
         super(props)
@@ -81,12 +86,6 @@ export default class QRForm extends Component {
                         <Text white bold>Tạo QR</Text>
                     </Button>
                 </View>
-                {/* <ActivityIndicator size={70} animating={true} color={material.primaryColor} />
-                <QRCode
-                    value='Vũ Long Hải'
-                    size={250}
-                    bgColor='black'
-                    fgColor='white'/> */}
             </View>
         )
   }
