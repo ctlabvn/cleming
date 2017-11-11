@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from "react-redux"
 import {View, ActivityIndicator, TextInput, TouchableWithoutFeedback} from 'react-native'
-import {Text, Button} from 'native-base'
+import {Text, Button, Content} from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
 import QRCode from 'react-native-qrcode'
 import material from '~/theme/variables/material'
@@ -14,6 +14,7 @@ import {getSession, getUser} from "~/store/selectors/auth";
 import md5 from 'md5'
 import moment from "moment"
 import QR from './QR'
+import ConfirmPopup from './ConfirmPopup'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -34,6 +35,17 @@ export default class QRForm extends Component {
     _onPressGenerate = () => {
         if (!this.props.app || !this.props.app.topDropdown || !this.props.app.topDropdown.getValue()
             || Object.keys(this.props.app.topDropdown.getValue()).length == 0 || this.state.loading) return
+        const {user, createQR, xsession} = this.props
+        let moneyAmount = revertFormatMoney(this.state.money).trim()
+        let invoiceNumber = this.state.noBill ? 
+            moment().year().toString() + (moment().month()+1).toString() + moment().date().toString()+ revertDateTime(this.state.noBillInvoiceNumber)
+            : this.state.invoiceNumber.trim()
+        this.confirmPopup.open({moneyAmount, invoiceNumber})
+    }
+
+    _doGenerate = () => {
+        if (!this.props.app || !this.props.app.topDropdown || !this.props.app.topDropdown.getValue()
+        || Object.keys(this.props.app.topDropdown.getValue()).length == 0 || this.state.loading) return
         const {user, createQR, xsession} = this.props
         let moneyAmount = revertFormatMoney(this.state.money).trim()
         let invoiceNumber = this.state.noBill ? 
@@ -74,70 +86,72 @@ export default class QRForm extends Component {
         let enableBtn = (!this.state.noBill && !!this.state.money && !!this.state.invoiceNumber)
             || (this.state.noBill && !!this.state.money && !!this.state.noBillInvoiceNumber)
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', ...styles.pd10 }}>
-                <QR ref={ref=>this.qr=ref} />
-                
-                <Text bold black medium style={{...styles.mt20, ...styles.mb20}}>Tạo mã QR để khách hàng thanh toán trên Clingme</Text>
-                <View style={styles.rowSpace}>
-                    <MoneyMaskInput 
-                        placeholder='Nhập số tiền cần thanh toán'
-                        underlineColorAndroid={'transparent'}
-                        onChange={text=>this.setState({money: formatMoney(text)})}
-                        style={{...styles.inputMoney, ...styles.mb20}}
-                    />
-                    <Text large gray bold> đ</Text>
-                </View>
-                {!this.state.noBill &&
-                    <TextInput 
-                        placeholder='Nhập số hoá đơn'
-                        underlineColorAndroid={'transparent'}
-                        style={{...styles.inputStyle, ...styles.mb20}}
-                        onChangeText={text=>this.setState({invoiceNumber: text})}
-                    />
-                }
-                {this.state.noBill && 
-                    <View style={{...styles.fakeDisable, ...styles.mb20}} />
-                }
-                <TouchableWithoutFeedback onPress={this._onPressNoBill}>
-                    <View style={{...styles.rowStart, ...styles.mb20}}>
-                        <CheckBox checked={this.state.noBill}/>
-                        <Text>Không có mã hoá đơn</Text>
+            <Content>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', ...styles.pd10 }}>
+                    <QR ref={ref=>this.qr=ref} />
+                    <ConfirmPopup ref={ref=>this.confirmPopup=ref} onOK={this._doGenerate} />
+                    <Text bold black medium style={{...styles.mt20, ...styles.mb20}}>Tạo mã QR để khách hàng thanh toán trên Clingme</Text>
+                    <View style={styles.rowSpace}>
+                        <MoneyMaskInput 
+                            placeholder='Nhập số tiền cần thanh toán'
+                            underlineColorAndroid={'transparent'}
+                            onChange={text=>this.setState({money: formatMoney(text)})}
+                            style={{...styles.inputMoney, ...styles.mb20}}
+                        />
+                        <Text medium gray> đ</Text>
                     </View>
-                </TouchableWithoutFeedback>
+                    {!this.state.noBill &&
+                        <TextInput 
+                            placeholder='Nhập số hoá đơn'
+                            underlineColorAndroid={'transparent'}
+                            style={{...styles.inputStyle, ...styles.mb20}}
+                            onChangeText={text=>this.setState({invoiceNumber: text})}
+                        />
+                    }
+                    {this.state.noBill && 
+                        <View style={{...styles.fakeDisable, ...styles.mb20}} />
+                    }
+                    <TouchableWithoutFeedback onPress={this._onPressNoBill}>
+                        <View style={{...styles.rowStart, ...styles.mb20}}>
+                            <CheckBox checked={this.state.noBill}/>
+                            <Text>Không có mã hoá đơn</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                {this.state.noBill &&
-                    <TextInput 
-                        placeholder='Nhập số hoá đơn'
-                        underlineColorAndroid={'transparent'}
-                        style={{...styles.inputStyle, ...styles.mb20}}
-                        keyboardType='numeric'
-                        onChangeText={this._onChangeTextNoBill}
-                        value={this.state.noBillInvoiceNumber}
-                    />
-                }
+                    {this.state.noBill &&
+                        <TextInput 
+                            placeholder='Nhập số hoá đơn'
+                            underlineColorAndroid={'transparent'}
+                            style={{...styles.inputStyle, ...styles.mb20}}
+                            keyboardType='numeric'
+                            onChangeText={this._onChangeTextNoBill}
+                            value={this.state.noBillInvoiceNumber}
+                        />
+                    }
 
-                <Text gray style={{...styles.mb20}}>(Nếu không có mã hoá đơn, vui lòng nhập mã theo định dạng: năm/tháng/ngày/giờ/phút/số tiền)</Text>
-                {(enableBtn)
-                && <View style={styles.rowCenter}>
-                    <Button style={styles.primaryButton} onPress={this._onPressGenerate}>
-                        <Text white bold>Tạo QR</Text>
-                    </Button>
-                </View>
-                }
-
-                {(!enableBtn) &&
-                    <View style={styles.rowCenter}>
-                    <Button style={styles.disableBtn}>
-                        <Text white bold>Tạo QR</Text>
-                    </Button>
-                </View>}
-
-                {this.state.loading &&
-                    <View style={styles.rowCenter}>
-                        <ActivityIndicator size={80} color={material.primaryColor} />
+                    <Text gray style={{...styles.mb20}}>(Nếu không có mã hoá đơn, vui lòng nhập mã theo định dạng: năm/tháng/ngày/giờ/phút/số tiền)</Text>
+                    {(enableBtn)
+                    && <View style={styles.rowCenter}>
+                        <Button style={styles.primaryButton} onPress={this._onPressGenerate}>
+                            <Text white bold>Tạo QR</Text>
+                        </Button>
                     </View>
-                }
-            </View>
+                    }
+
+                    {(!enableBtn) &&
+                        <View style={styles.rowCenter}>
+                        <Button style={styles.disableBtn}>
+                            <Text white bold>Tạo QR</Text>
+                        </Button>
+                    </View>}
+
+                    {this.state.loading &&
+                        <View style={styles.rowCenter}>
+                            <ActivityIndicator size={80} color={material.primaryColor} />
+                        </View>
+                    }
+                </View>
+            </Content>
         )
   }
 }

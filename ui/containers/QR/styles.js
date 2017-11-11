@@ -47,11 +47,16 @@ export default {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '100%'
     },
     rowStart: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: '100%'
+    },
+    rowEnd: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%'
     }
