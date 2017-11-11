@@ -8,7 +8,7 @@ import material from '~/theme/variables/material'
 import { formatMoney, revertFormatMoney } from "~/ui/shared/utils"
 import MoneyMaskInput from '~/ui/components/MoneyMaskInput'
 import styles from './styles'
-import {formatDateTime, revertDateTime, getFormatObj, getDateArray} from './utils'
+import {formatDateTime, revertDateTime, getFormatObj, getDateArray, formatTime} from './utils'
 import {createQR} from '~/store/actions/transaction'
 import {getSession, getUser} from "~/store/selectors/auth";
 import md5 from 'md5'
@@ -25,7 +25,7 @@ export default class QRForm extends Component {
         this.state = {
             noBill: false,
             money: 0,
-            noBillCode: '',
+            noBillInvoiceNumber: moment().hour()+':'+moment().minute(),
             invoiceNumber: '',
             loading: false
         }
@@ -35,8 +35,10 @@ export default class QRForm extends Component {
         if (!this.props.app || !this.props.app.topDropdown || !this.props.app.topDropdown.getValue()
             || Object.keys(this.props.app.topDropdown.getValue()).length == 0 || this.state.loading) return
         const {user, createQR, xsession} = this.props
-        let moneyAmount = revertFormatMoney(this.state.money)
-        let invoiceNumber = this.state.invoiceNumber
+        let moneyAmount = revertFormatMoney(this.state.money).trim()
+        let invoiceNumber = this.state.noBill ? 
+            moment().year().toString() + (moment().month()+1).toString() + moment().date().toString()+ revertDateTime(this.state.noBillInvoiceNumber)
+            : this.state.invoiceNumber.trim()
         let placeId = this.props.app.topDropdown.getValue().id
         let timeClient = moment().unix()
         let checkSum =  md5(invoiceNumber+moneyAmount+placeId+timeClient+user.bizAccountId)
@@ -46,12 +48,6 @@ export default class QRForm extends Component {
                 this.setState({loading: false})
                 // Case success
                 if (data && data.data && data.data.tranQRId){
-                //    {"id":"TSTOCO14162467","am":122000,"cu":"VND","da":"2017-09-23 12:18:58","mi":"IPOSTSTOCOHBF2R83YLWX64765E53BL5","biilid":""}
-                //     id: mã transaction
-                //     am : amount
-                //     da: ngày tháng
-                //     mi: merchant id
-                //     billid: mã hóa đơn
                     let qrObj = {
                         id: data.data.tranQRId,
                         am: moneyAmount,
@@ -66,16 +62,17 @@ export default class QRForm extends Component {
     }
 
     _onPressNoBill = () => {
-        this.setState({noBill: !this.state.noBill})
+        this.setState({noBill: !this.state.noBill, invoiceNumber: ''})
     } 
 
     _onChangeTextNoBill = (text) => {
-        console.log('Text', text)
-        console.log('Format Obj', formatDateTime(text))
-        this.setState({noBillCode: formatDateTime(text)})
+        this.setState({noBillInvoiceNumber: formatTime(text)})
     }
 
     render() {
+
+        let enableBtn = (!this.state.noBill && !!this.state.money && !!this.state.invoiceNumber)
+            || (this.state.noBill && !!this.state.money && !!this.state.noBillInvoiceNumber)
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start', ...styles.pd10 }}>
                 <QR ref={ref=>this.qr=ref} />
@@ -98,7 +95,7 @@ export default class QRForm extends Component {
                         onChangeText={text=>this.setState({invoiceNumber: text})}
                     />
                 }
-                {this.state.noBill &&
+                {this.state.noBill && 
                     <View style={{...styles.fakeDisable, ...styles.mb20}} />
                 }
                 <TouchableWithoutFeedback onPress={this._onPressNoBill}>
@@ -115,16 +112,25 @@ export default class QRForm extends Component {
                         style={{...styles.inputStyle, ...styles.mb20}}
                         keyboardType='numeric'
                         onChangeText={this._onChangeTextNoBill}
-                        value={this.state.noBillCode}
+                        value={this.state.noBillInvoiceNumber}
                     />
                 }
 
                 <Text gray style={{...styles.mb20}}>(Nếu không có mã hoá đơn, vui lòng nhập mã theo định dạng: năm/tháng/ngày/giờ/phút/số tiền)</Text>
-                <View style={styles.rowCenter}>
+                {(enableBtn)
+                && <View style={styles.rowCenter}>
                     <Button style={styles.primaryButton} onPress={this._onPressGenerate}>
                         <Text white bold>Tạo QR</Text>
                     </Button>
                 </View>
+                }
+
+                {(!enableBtn) &&
+                    <View style={styles.rowCenter}>
+                    <Button style={styles.disableBtn}>
+                        <Text white bold>Tạo QR</Text>
+                    </Button>
+                </View>}
 
                 {this.state.loading &&
                     <View style={styles.rowCenter}>

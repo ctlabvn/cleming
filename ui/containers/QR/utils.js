@@ -62,6 +62,50 @@ export const getDateArray = (str) => {
     return result
 }
 
+export const getTimeArray = (str) => {
+    if (!str) return 
+    str = revertDateTime(str)
+    let result = {
+        hour: '',
+        minute: ''
+    }
+    let sliceIndex = Math.floor(str.length/2)
+    // Hour Part
+    for (let i=0; i<=sliceIndex; i++){
+        let value = str
+        value = value.substr(2*i, 2)
+        if (i== 0){
+            if (value.length == 1 && parseInt(value)>2){
+                value = '0'+value.toString()
+            }
+            result['hour']= value > 23 ? 23 : value
+        // Minute Part
+        }else if (i==1){
+            if (value.length == 1 && parseInt(value)>5){
+                value = '0'+value.toString()
+            }
+            result['minute']= value > 59 ? 59 : value
+        }
+    }
+    return result
+}
+
+export const formatTime = (str) => {
+    if (!str) return
+    const dateArr = getTimeArray(str)
+    let dateLabel = ['hour', 'minute']
+    let result = ''
+    for (let i=0; i<dateLabel.length; i++){
+        let part = dateArr[dateLabel[i]]
+        if (part && part != ''){
+            if (i>0) result += ':'
+            result += (part)
+        }
+    }
+    return result
+}
+
+
 export const formatDateTime = (str) => {
     if (!str) return
     const dateArr = getDateArray(str)
@@ -79,5 +123,5 @@ export const formatDateTime = (str) => {
 
 export const revertDateTime = (str) => {
     if (!str) return ''
-    return str.replace(/-/g, '')
+    return str.replace(/:/g, '')
   }

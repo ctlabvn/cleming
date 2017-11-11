@@ -34,6 +34,9 @@ export default {
     primaryButton: {
         backgroundColor: material.primaryColor
     },
+    disableBtn: {
+        backgroundColor: material.gray300
+    },
     rowCenter: {
         flexDirection: 'row',
         justifyContent: 'center',
