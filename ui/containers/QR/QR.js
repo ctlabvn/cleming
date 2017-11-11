@@ -33,7 +33,7 @@ export default class QR extends Component {
           onRequestClose={() => false}
         >
           <View style={styles.fullScreenPopup}>
-            <View style={{width: '100%', height: 50, backgroundColor: material.primaryColor, flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.popupHeader}>
               <TouchableWithoutFeedback>
                 <Icon style={{fontSize: 25, color: 'white', padding: 10}} name='back' onPress={()=>this.close()}/>
               </TouchableWithoutFeedback>
@@ -44,7 +44,9 @@ export default class QR extends Component {
             }}>
               <Text bold medium grayDark style={{marginBottom: 40}}>{I18n.t('qr_use_hint')}</Text>
               {this.props.loading &&
-                  <ActivityIndicator size={80} color={material.primaryColor} />
+                  <View style={styles.loadingPlaceHolder}>
+                    <ActivityIndicator size='large' color={material.primaryColor} />
+                  </View>
               }
               {!this.props.loading &&
                   <QRCode

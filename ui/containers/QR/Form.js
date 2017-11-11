@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {connect} from "react-redux"
-import {View, ActivityIndicator, TextInput, TouchableWithoutFeedback} from 'react-native'
+import {View, TextInput, TouchableWithoutFeedback} from 'react-native'
 import {Text, Button, Content} from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
 import QRCode from 'react-native-qrcode'
@@ -55,13 +55,7 @@ export default class QRForm extends Component {
         let timeClient = moment().unix()
         let checkSum =  md5(invoiceNumber+moneyAmount+placeId+timeClient+user.bizAccountId)
         this.setState({loading: true})
-        this.qr.open({
-                id: '',
-                am: '',
-                da: '',
-                mi: '',
-                billid: ''
-        })
+        this.qr.open()
         createQR(xsession, invoiceNumber, moneyAmount, placeId, timeClient, checkSum,
             (err, data) => {
                 this.setState({loading: false})
@@ -113,6 +107,7 @@ export default class QRForm extends Component {
                             underlineColorAndroid={'transparent'}
                             style={{...styles.inputStyle, ...styles.mb20}}
                             onChangeText={text=>this.setState({invoiceNumber: text})}
+                            autoCorrect={false}
                         />
                     }
                     {this.state.noBill && 
@@ -156,11 +151,11 @@ export default class QRForm extends Component {
                         </TouchableWithoutFeedback>
                     </View>}
 
-                    {this.state.loading &&
+                    {/* {this.state.loading &&
                         <View style={styles.rowCenter}>
                             <ActivityIndicator size={80} color={material.primaryColor} />
                         </View>
-                    }
+                    } */}
                 </View>
             </Content>
         )

@@ -1,4 +1,5 @@
 import material from '~/theme/variables/material.js'
+import {Platform} from 'react-native'
 export default {
     container: {
         flex: 1, 
@@ -8,8 +9,8 @@ export default {
         backgroundColor: 'white'
     },
     inputMoney: {
-        height: 40,
-        flex: 1
+        flex: 1,
+        height: Platform.OS == 'ios' ? 'auto':40
     },
     currency: {
         color: material.gray500,
@@ -131,7 +132,23 @@ export default {
     fullScreenPopup: {
         justifyContent: 'center', 
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 17:0
+    },
+    popupHeader: {
+        width: '100%', 
+        height: 50, 
+        backgroundColor: material.primaryColor, 
+        flexDirection: 'row', 
+        alignItems: 'center'
+    },
+    loadingPlaceHolder: {
+        width: 250,
+        height: 250,
+        backgroundColor: material.gray300,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 }
