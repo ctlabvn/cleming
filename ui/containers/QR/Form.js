@@ -28,7 +28,7 @@ export default class QRForm extends Component {
         this.state = {
             noBill: false,
             money: '',
-            noBillInvoiceNumber: moment().hour()+':'+moment().minute(),
+            noBillInvoiceNumber: this._formatTwoDigit(moment().hour())+':'+this._formatTwoDigit(moment().minute()),
             invoiceNumber: '',
             loading: false
         }
@@ -48,10 +48,14 @@ export default class QRForm extends Component {
         this.setState({
             noBill: false,
             money: '',
-            noBillInvoiceNumber: moment().hour()+':'+moment().minute(),
+            noBillInvoiceNumber: this._formatTwoDigit(moment().hour())+':'+this._formatTwoDigit(moment().minute()),
             invoiceNumber: '',
             loading: false
         })
+    }
+
+    _formatTwoDigit = (number) => {
+        return (number < 10) ? 0+number.toString() : number.toString()
     }
 
     _doGenerate = () => {
@@ -60,7 +64,7 @@ export default class QRForm extends Component {
         const {user, createQR, xsession} = this.props
         let moneyAmount = revertFormatMoney(this.state.money).trim()
         let invoiceNumber = this.state.noBill ? 
-            moment().year().toString() + (moment().month()+1).toString() + moment().date().toString()+ revertDateTime(this.state.noBillInvoiceNumber)
+            moment().year().toString() + this._formatTwoDigit((moment().month()+1)) + this._formatTwoDigit(moment().date())+ revertDateTime(this.state.noBillInvoiceNumber)
             : this.state.invoiceNumber.trim()
         let placeId = this.props.app.topDropdown.getValue().id
         let timeClient = moment().unix()
@@ -160,7 +164,6 @@ export default class QRForm extends Component {
                         </View>
                     }
 
-                    <Text gray style={{...styles.mb20}}>(Nếu không có mã hoá đơn, vui lòng nhập mã theo định dạng: năm/tháng/ngày/giờ/phút/số tiền)</Text>
                     {(enableBtn) && <View style={styles.rowCenter}>
                         <TouchableWithoutFeedback onPress={this._onPressGenerate}>
                             <View style={styles.primaryButton} >
@@ -171,7 +174,7 @@ export default class QRForm extends Component {
                     }
 
                     {(!enableBtn) &&<View style={styles.rowCenter}>
-                        <TouchableWithoutFeedback onPress={this._onPressGenerate}>
+                        <TouchableWithoutFeedback>
                             <View style={styles.disableBtn} >
                                 <Text grayDark bold>{I18n.t('create_qr_2')}</Text>
                             </View>
