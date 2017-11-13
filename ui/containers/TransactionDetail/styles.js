@@ -519,7 +519,8 @@ export default {
         padding: 5,
         paddingLeft: 10,
         flex: 1,
-        color: material.gray600
+        color: material.gray600,
+        height: 40
     },
     noteMessage: {
         alignSelf: 'center',

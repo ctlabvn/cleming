@@ -372,6 +372,10 @@ export default class TransactionDetail extends Component {
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                     </View>}
+                    {(user.accTitle != 1 && !!transactionInfo.invoiceNumber) && <View style={styles.blockCenter}>
+                        <Text medium gray>{I18n.t('invoice_number_hint')}</Text>
+                        <Text largeLight bold>{transactionInfo.invoiceNumber.toUpperCase()}</Text>
+                    </View>}
                     <View style={styles.rowCenter}>
                         {helpBtn}
                     </View>
