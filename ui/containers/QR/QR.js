@@ -18,6 +18,7 @@ export default class QR extends Component {
   }
 
   open = (qr) => {
+    if (!qr) qr=''
     this.setState({modalVisible: true, qr})
   }
 
@@ -54,12 +55,12 @@ export default class QR extends Component {
               backgroundColor: 'white', padding: 10
             }}>
               <Text bold medium grayDark style={{marginBottom: 40}}>{I18n.t('qr_use_hint')}</Text>
-              {this.props.loading &&
+              {!(!!this.state.qr) &&
                   <View style={styles.loadingPlaceHolder}>
-                    <ActivityIndicator size='large' color={material.primaryColor} />
+                    {this.props.loading && <ActivityIndicator size='large' color={material.primaryColor} />}
                   </View>
               }
-              {!this.props.loading &&
+              {!this.props.loading && !!this.state.qr &&
                   <QRCode
                     value={this.state.qr}
                     size={250}

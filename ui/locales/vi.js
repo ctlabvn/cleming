@@ -434,6 +434,8 @@ export default {
     'invoice_time': 'Thời gian xuất hoá đơn',
     'qr_use_hint': 'Bạn hãy đưa mã này để khách hàng thanh toán',
     'gen_another': 'Tạo mã khác',
-    'create_qr_2': 'Tạo mã QR'
+    'create_qr_2': 'Tạo mã QR',
+    'retry': 'Thử lại',
+    'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?'
 
 }

@@ -17,6 +17,7 @@ import QR from './QR'
 import ConfirmPopup from './ConfirmPopup'
 import I18n from '~/ui/I18n'
 import {setToast, goBack} from '~/store/actions/common'
+import ErrorPopup from './ErrorPopup'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -44,7 +45,6 @@ export default class QRForm extends Component {
     }
 
     _reset = () => {
-        console.log('Call Reset')
         this.setState({
             noBill: false,
             money: '',
@@ -71,7 +71,8 @@ export default class QRForm extends Component {
         let checkSum =  md5(invoiceNumber+moneyAmount+placeId+timeClient+user.bizAccountId)
         this.setState({loading: true})
         this.qr.open()
-        createQR(xsession, invoiceNumber, moneyAmount, placeId, timeClient, checkSum,
+        
+        createQR(xsession , invoiceNumber, moneyAmount, placeId, timeClient, checkSum,
             (err, data) => {
                 this.setState({loading: false})
                 // Case success
@@ -84,6 +85,8 @@ export default class QRForm extends Component {
                         billid: invoiceNumber
                     }
                     this.qr.open(JSON.stringify(qrObj))
+                }else{
+                    this.errorPopup.open()
                 }
             }
         )
@@ -102,9 +105,15 @@ export default class QRForm extends Component {
     }
 
     _onGenAnother = () => {
-        console.log('On Gen Another')
-        // this.props.setToast(getToastMessage(I18n.t('add_bank_success')), 'danger', null, null, 3000, 'top')
         this._reset()
+    }
+
+    _onRetry = () =>{
+        this._doGenerate()
+    }
+
+    _onCancelError = () => {
+        this.qr.close()
     }
 
     render() {
@@ -117,6 +126,10 @@ export default class QRForm extends Component {
                     <QR ref={ref=>this.qr=ref} loading={this.state.loading} 
                         onPaid={this._onPaid}
                         onGenAnother={this._onGenAnother}
+                    />
+                    <ErrorPopup ref={ref=>this.errorPopup=ref} 
+                        onRetry={this._onRetry}  
+                        onCancel={this._onCancelError}  
                     />
                     <ConfirmPopup ref={ref=>this.confirmPopup=ref} onOK={this._doGenerate} />
                     <Text bold grayDark medium style={{...styles.mt20, ...styles.mb20}}>{I18n.t('qr_hint')}</Text>
