@@ -6,6 +6,7 @@ import material from '~/theme/variables/material'
 import Icon from "~/ui/elements/Icon"
 import I18n from '~/ui/I18n'
 import styles from './styles'
+import {setToast} from '~/store/actions/common'
 
 export default class QR extends Component {
   constructor(props){
@@ -22,6 +23,16 @@ export default class QR extends Component {
 
   close = () => {
     this.setState({modalVisible: false, qr: ''})
+  }
+
+  _onGenAnother = () => {
+    this.close()
+    this.props.onGenAnother && this.props.onGenAnother()
+  }
+
+  _onPaid = () => {
+    this.close()
+    this.props.onPaid && this.props.onPaid()
   }
 
   render() {
@@ -58,14 +69,14 @@ export default class QR extends Component {
               
             </View>
             <View style={styles.fixBottomButtonBlock}>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={this._onGenAnother}>
                     <View style={{...styles.bottomBtn, ...styles.bgWarning}}>
                         <Text white bold>{I18n.t('gen_another')}</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={this._onPaid}>
                     <View style={{...styles.bottomBtn, ...styles.bgPrimary}}> 
-                        <Text white bold>{I18n.t('paid')}</Text>
+                        <Text white bold>{I18n.t('close')}</Text>
                     </View>
                 </TouchableWithoutFeedback>
               </View>

@@ -347,7 +347,7 @@ export default {
         footerType: 'none',
     },
     qrForm: {
-        title: 'QR Form',
+        title: I18n.t('create_qr_2'),
         Page: QRForm,
         headerType: 'back',
         footerType: 'none',

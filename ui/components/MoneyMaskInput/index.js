@@ -10,7 +10,13 @@ export default class MoneyMaskInput extends Component {
   constructor(props){
     super(props)
     this.state = {
-      text: '',
+      text: props.value || '',
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value != nextProps.value){
+      this.setState({value: nextProps.value})
     }
   }
 
@@ -18,7 +24,7 @@ export default class MoneyMaskInput extends Component {
     return (<TextInput
       underlineColorAndroid={'transparent'}
       onChangeText={(text) => {
-        this.setState({ text });
+        this.setState({ text })
         this.props.onChange && this.props.onChange(formatMoney(text))
       }}
       value={formatMoney(this.state.text)}

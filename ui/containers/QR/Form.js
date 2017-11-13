@@ -5,7 +5,7 @@ import {Text, Button, Content} from 'native-base'
 import CheckBox from '~/ui/elements/CheckBox'
 import QRCode from 'react-native-qrcode'
 import material from '~/theme/variables/material'
-import { formatMoney, revertFormatMoney } from "~/ui/shared/utils"
+import { formatMoney, revertFormatMoney, getToastMessage } from "~/ui/shared/utils"
 import MoneyMaskInput from '~/ui/components/MoneyMaskInput'
 import styles from './styles'
 import {formatDateTime, revertDateTime, getFormatObj, getDateArray, formatTime, INVOICE_TYPE} from './utils'
@@ -16,18 +16,18 @@ import moment from "moment"
 import QR from './QR'
 import ConfirmPopup from './ConfirmPopup'
 import I18n from '~/ui/I18n'
-
+import {setToast, goBack} from '~/store/actions/common'
 
 @connect(state => ({
     xsession: getSession(state),
     user: getUser(state)
-}), {createQR})
+}), {createQR, setToast, goBack})
 export default class QRForm extends Component {
     constructor(props){
         super(props)
         this.state = {
             noBill: false,
-            money: 0,
+            money: '',
             noBillInvoiceNumber: moment().hour()+':'+moment().minute(),
             invoiceNumber: '',
             loading: false
@@ -41,6 +41,17 @@ export default class QRForm extends Component {
         let moneyAmount = revertFormatMoney(this.state.money).trim()
         let invoiceNumber = this.state.noBill ? this.state.noBillInvoiceNumber : this.state.invoiceNumber.trim()
         this.confirmPopup.open({moneyAmount, invoiceNumber, noBill: this.state.noBill})
+    }
+
+    _reset = () => {
+        console.log('Call Reset')
+        this.setState({
+            noBill: false,
+            money: '',
+            noBillInvoiceNumber: moment().hour()+':'+moment().minute(),
+            invoiceNumber: '',
+            loading: false
+        })
     }
 
     _doGenerate = () => {
@@ -82,6 +93,16 @@ export default class QRForm extends Component {
         this.setState({noBillInvoiceNumber: formatTime(text)})
     }
 
+    _onPaid = () => {
+        this.props.goBack()
+    }
+
+    _onGenAnother = () => {
+        console.log('On Gen Another')
+        // this.props.setToast(getToastMessage(I18n.t('add_bank_success')), 'danger', null, null, 3000, 'top')
+        this._reset()
+    }
+
     render() {
 
         let enableBtn = (!this.state.noBill && !!this.state.money && !!this.state.invoiceNumber)
@@ -89,7 +110,10 @@ export default class QRForm extends Component {
         return (
             <Content style={{backgroundColor: 'white'}}>
                 <View style={styles.container}>
-                    <QR ref={ref=>this.qr=ref} loading={this.state.loading}/>
+                    <QR ref={ref=>this.qr=ref} loading={this.state.loading} 
+                        onPaid={this._onPaid}
+                        onGenAnother={this._onGenAnother}
+                    />
                     <ConfirmPopup ref={ref=>this.confirmPopup=ref} onOK={this._doGenerate} />
                     <Text bold grayDark medium style={{...styles.mt20, ...styles.mb20}}>{I18n.t('qr_hint')}</Text>
                     <View style={{...styles.rowSpace, ...styles.inputStyle, ...styles.mb20}}>
@@ -97,6 +121,7 @@ export default class QRForm extends Component {
                             placeholder={I18n.t('qr_money_hint')}
                             underlineColorAndroid={'transparent'}
                             onChange={text=>this.setState({money: formatMoney(text)})}
+                            value={this.state.money}
                             style={{...styles.inputMoney}}
                         />
                         <Text medium style={styles.currency}> đ</Text>
@@ -107,7 +132,9 @@ export default class QRForm extends Component {
                             underlineColorAndroid={'transparent'}
                             style={{...styles.inputStyle, ...styles.mb20}}
                             onChangeText={text=>this.setState({invoiceNumber: text})}
+                            value={this.state.invoiceNumber}
                             autoCorrect={false}
+                            autoCapitalize='none'
                         />
                     }
                     {this.state.noBill && 
@@ -137,7 +164,7 @@ export default class QRForm extends Component {
                     {(enableBtn) && <View style={styles.rowCenter}>
                         <TouchableWithoutFeedback onPress={this._onPressGenerate}>
                             <View style={styles.primaryButton} >
-                                <Text white bold>Tạo QR</Text>
+                                <Text white bold>{I18n.t('create_qr_2')}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -146,16 +173,10 @@ export default class QRForm extends Component {
                     {(!enableBtn) &&<View style={styles.rowCenter}>
                         <TouchableWithoutFeedback onPress={this._onPressGenerate}>
                             <View style={styles.disableBtn} >
-                                <Text grayDark bold>Tạo QR</Text>
+                                <Text grayDark bold>{I18n.t('create_qr_2')}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>}
-
-                    {/* {this.state.loading &&
-                        <View style={styles.rowCenter}>
-                            <ActivityIndicator size={80} color={material.primaryColor} />
-                        </View>
-                    } */}
                 </View>
             </Content>
         )
