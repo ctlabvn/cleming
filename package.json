@@ -43,6 +43,7 @@
     "react-native-progress-circle": "1.0.3",
     "react-native-push-notification": "3.0.0",
     "react-native-qrcode": "^0.2.6",
+    "react-native-qrcode-svg": "^5.0.3",
     "react-native-responsive-image": "2.1.0",
     "react-native-scandit": "git+https://github.com/salathegroup/react-native-scandit.git",
     "react-native-svg": "5.1.8",

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {View, ActivityIndicator, Modal, TouchableWithoutFeedback} from 'react-native'
 import {Text} from 'native-base'
-import QRCode from 'react-native-qrcode'
+// import QRCode from 'react-native-qrcode'
+import QRCode from 'react-native-qrcode-svg'
 import material from '~/theme/variables/material'
 import Icon from "~/ui/elements/Icon"
 import I18n from '~/ui/I18n'
@@ -64,8 +65,9 @@ export default class QR extends Component {
                   <QRCode
                     value={this.state.qr}
                     size={250}
-                    bgColor='black'
-                    fgColor='white'/>
+                    ecl='L'
+                    color='black' 
+                  />
               }
               
             </View>
