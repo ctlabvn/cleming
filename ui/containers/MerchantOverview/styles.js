@@ -165,7 +165,8 @@ export default {
         elevation: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        overflow: 'hidden'
     },
     qrIcon: {
         color: 'white',
@@ -178,12 +179,12 @@ export default {
         paddingTop: 10,
         paddingBottom: 10,
         paddingRight: 17,
-        right: -12
     },
     qrLabelOuter: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        right: -12
     }
 
 }
