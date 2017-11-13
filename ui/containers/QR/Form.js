@@ -76,12 +76,12 @@ export default class QRForm extends Component {
             (err, data) => {
                 this.setState({loading: false})
                 // Case success
-                if (data && data.data && data.data.tranQRId){
+                if (data && data.data && data.data.success){
                     let qrObj = {
                         id: data.data.tranQRId,
                         am: moneyAmount,
                         da: timeClient,
-                        mi: 'clingme'+placeId,
+                        mi: data.data.merchantId,
                         billid: invoiceNumber
                     }
                     this.qr.open(JSON.stringify(qrObj))
