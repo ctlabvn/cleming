@@ -351,12 +351,13 @@ export default class TransactionDetail extends Component {
         const { user } = this.props
         let payStatus, helpBtn = null
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
-        let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber)
+        let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber) && this.state.transactionInfo.showInvNum && (user.accTitle != 1)
         let enableConfirmBtn = (!this.state.noBill && !!this.state.invoiceNumber && this.state.invoiceNumber.length > 4)
         || (this.state.noBill && !!this.state.noBillInvoiceNumber)
 
         if (!this.state.transactionInfo.invoiceNumber){
-            helpBtn =   <View style={styles.helpBtnContainer}>
+            if (user.accTitle != 1 && this.state.transactionInfo.showInvNum){
+                helpBtn =   <View style={styles.helpBtnContainer}>
                     <View style={{...styles.rowSpace}}>
                         {/* <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text> */}
                         {!this.state.noBill && <TextInput
@@ -395,6 +396,8 @@ export default class TransactionDetail extends Component {
                         </View>
                     }
                 </View>
+            }
+            
         }else{
             helpBtn =   <View style={{...styles.blockCenter, ...styles.mb20}}>
                 <Text medium gray>{I18n.t('invoice_number_hint')}</Text>
