@@ -439,6 +439,7 @@ export default {
     'gen_another': 'Tạo mã khác',
     'create_qr_2': 'Tạo mã QR',
     'retry': 'Thử lại',
-    'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?'
+    'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?',
+    'update_success': 'Cập nhật thông tin thành công'
 
 }

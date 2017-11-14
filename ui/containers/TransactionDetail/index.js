@@ -273,9 +273,9 @@ export default class TransactionDetail extends Component {
         updateInvoiceNumber(xsession, transactionId, invoiceNumber, (err, data) => {
             if (data && data.updated && data.updated.data && data.updated.data.success) {
                 this._load(this.state.transactionInfo.transactionId)
-                this.props.setToast(getToastMessage(I18n.t('success')), 'info', null, null, 3000, 'top')
+                this.props.setToast(getToastMessage(I18n.t('update_success')), 'info', null, null, 3000, 'top')
             } else {
-                this.props.setToast(getToastMessage(I18n.t('do_not_success')), 'info', null, null, 3000, 'top')
+                this.props.setToast(getToastMessage(GENERAL_ERROR_MESSAGE), 'info', null, null, 3000, 'top')
             }
         })
     }
