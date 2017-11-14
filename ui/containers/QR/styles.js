@@ -1,16 +1,16 @@
 import material from '~/theme/variables/material.js'
-import {Platform} from 'react-native'
+import { Platform } from 'react-native'
 export default {
     container: {
-        flex: 1, 
-        alignItems: 'center', 
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'flex-start',
         padding: 10,
         backgroundColor: 'white'
     },
     inputMoney: {
         flex: 1,
-        height: Platform.OS == 'ios' ? 'auto':40
+        height: Platform.OS == 'ios' ? 'auto' : 40
     },
     currency: {
         color: material.gray500,
@@ -19,7 +19,7 @@ export default {
     },
     inputStyle: {
         height: 40,
-        width: material.deviceWidth-20,
+        width: material.deviceWidth - 20,
         backgroundColor: material.gray300,
         borderRadius: 3,
         flexDirection: 'row',
@@ -37,7 +37,7 @@ export default {
     },
     fakeDisable: {
         height: 40,
-        width: material.deviceWidth-20,
+        width: material.deviceWidth - 20,
         borderWidth: 1,
         borderColor: material.gray300,
         borderRadius: 3,
@@ -107,7 +107,7 @@ export default {
         borderRadius: 5,
         padding: 10,
         backgroundColor: 'white',
-        width: material.deviceWidth-20
+        width: material.deviceWidth - 20
     },
     fixBottomButtonBlock: {
         position: 'absolute',
@@ -130,16 +130,16 @@ export default {
         backgroundColor: material.warningColor
     },
     fullScreenPopup: {
-        justifyContent: 'center', 
+        justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        paddingTop: Platform.OS === 'ios' ? 17:0
+        paddingTop: Platform.OS === 'ios' ? 17 : 0
     },
     popupHeader: {
-        width: '100%', 
-        height: 50, 
-        backgroundColor: material.primaryColor, 
-        flexDirection: 'row', 
+        width: '100%',
+        height: 50,
+        backgroundColor: material.primaryColor,
+        flexDirection: 'row',
         alignItems: 'center'
     },
     loadingPlaceHolder: {
