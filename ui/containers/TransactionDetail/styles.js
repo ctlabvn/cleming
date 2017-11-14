@@ -526,5 +526,54 @@ export default {
         alignSelf: 'center',
         textAlign: 'center'
     },
+    mb20: {
+        marginBottom: 20
+    },
+    rowSpace: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        // width: '100%'
+        width: material.deviceWidth-20
+    },
+    rowStart: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width: material.deviceWidth-20
+    },
+    dateTimeInput: {
+        height: 40,
+        width: 150,
+        backgroundColor: material.gray300,
+        borderRadius: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5
+    },
+    inputStyle: {
+        height: 40,
+        flex: 1,
+        backgroundColor: material.gray300,
+        borderRadius: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5
+    },
+    fakeDisable: {
+        height: 40,
+        width: material.deviceWidth - 20,
+        borderWidth: 1,
+        borderColor: material.gray300,
+        borderRadius: 3,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    fakePlaceHolder: {
+        color: 'rgba(0,0,0,0.4)',
+        paddingLeft: 7
+    },
 
 }

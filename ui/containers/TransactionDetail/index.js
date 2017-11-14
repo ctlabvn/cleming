@@ -6,6 +6,7 @@ import Icon from "~/ui/elements/Icon";
 import styles from "./styles";
 import moment from "moment";
 import { formatNumber, getToastMessage, advanceI18nMessage, chainParse, formatPhoneNumber } from "~/ui/shared/utils";
+import { formatTime, revertDateTime, formatDateTime } from './utils'
 import * as transactionActions from "~/store/actions/transaction";
 import * as commonActions from "~/store/actions/common";
 import * as notificationActions from "~/store/actions/notification";
@@ -35,6 +36,9 @@ import I18n from '~/ui/I18n'
 import * as metaAction from "~/store/actions/meta"
 import LoadingModal from "~/ui/components/LoadingModal"
 import CallModal from "~/ui/components/CallModal"
+import CheckBox from '~/ui/elements/CheckBox'
+import ConfirmInvoice from './ConfirmInvoice'
+
 @connect(state => ({
     xsession: getSession(state),
     transaction: state.transaction,
@@ -54,6 +58,9 @@ export default class TransactionDetail extends Component {
             page: 1, // Swipe effect, 3 page, mainContent in page 1, page 0 & 3 for loading,
             callModalOpen: false,
             phoneNumber: '',
+            noBill: false,
+            noBillInvoiceNumber: this._getDefaultNoBill(),
+            invoiceNumber: ''
         }
         this.swiping = false
         this.confirmCounter = 0
@@ -240,41 +247,84 @@ export default class TransactionDetail extends Component {
         InteractionManager.runAfterInteractions(() => this.refs.content1.scrollToEnd({ animated: true }));
     }
 
+    _getDefaultNoBill = () => {
+        return moment().year().toString()+'-'+
+            this._formatTwoDigit(moment().month()+1)+'-'+
+            this._formatTwoDigit(moment().date())+' '+
+            this._formatTwoDigit(moment().hour()) + ':' + this._formatTwoDigit(moment().minute())
+    }
+
+    _getTimeStr = (inputValue) => {
+        let now = moment()
+        let timeInput = revertDateTime(inputValue)
+        let hourInput = parseInt(timeInput.substr(0, 2))
+        return moment().year().toString() + this._formatTwoDigit((moment().month() + 1)) + this._formatTwoDigit(moment().date()) + timeInput
+    }
+
+    _onOkInvoice = () => {
+        const { xsession, updateInvoiceNumber } = this.props;
+        const { transactionId } = this.state.transactionInfo;
+        let invoiceNumber
+        if (!this.state.noBill){
+            invoiceNumber = this.state.invoiceNumber
+        }else{
+            invoiceNumber = revertDateTime(this.state.noBillInvoiceNumber)
+        }
+        updateInvoiceNumber(xsession, transactionId, invoiceNumber, (err, data) => {
+            if (data && data.updated && data.updated.data && data.updated.data.success) {
+                this._load(this.state.transactionInfo.transactionId)
+                this.props.setToast(getToastMessage(I18n.t('success')), 'info', null, null, 3000, 'top')
+            } else {
+                this.props.setToast(getToastMessage(I18n.t('do_not_success')), 'info', null, null, 3000, 'top')
+            }
+        })
+    }
+    
     _handlePressConfirm() {
-        if (!this.billNumberChanged || this.billNumberChanged.lengh <= 0) {
-            this.refs.popupConfirm.show(I18n.t('you_have_to_input_bill_number'))
-            return;
-        }
-
-        if (this.billNumberChanged.length < 4) {
-            this.refs.popupConfirm.show(I18n.t('please_input_valid_bill_number'));
-            return;
-        }
-
-        if (this.billNumberChanged && this.billNumberChanged.length > 4) {
-            const { xsession, updateInvoiceNumber } = this.props;
-            const { transactionId } = this.state.transactionInfo;
-            updateInvoiceNumber(xsession, transactionId, this.billNumberChanged, (err, data) => {
-                if (err && err.msg) {
-                    this.props.setToast(getToastMessage(advanceI18nMessage(err.msg)), 'info', null, null, 3000, 'top')
-                    this.props.goBack();
-                    return;
-                }
-
-                if (data && data.updated && data.updated.data && data.updated.data.success) {
-                    this.props.setToast(getToastMessage(I18n.t('success')), 'info', null, null, 3000, 'top')
-                } else {
-                    this.props.setToast(getToastMessage(I18n.t('do_not_success')), 'info', null, null, 3000, 'top')
-                }
-                this.props.goBack();
+        let invoiceNumber
+        if (!this.state.noBill){
+            if (!this.state.invoiceNumber || this.state.invoiceNumber.lengh <= 0) {
+                this.refs.popupConfirm.show(I18n.t('you_have_to_input_bill_number'))
                 return;
-            })
-        } else if (this.state.transactionInfo.invoiceNumber && !this.changedBillNumberInput) {
-            this.props.goBack();
-            return;
-        } else {
-            this.refs.popupConfirm.show(I18n.t('transaction_detail_mess_1'));
+            }
+    
+            if (this.state.invoiceNumber < 4) {
+                this.refs.popupConfirm.show(I18n.t('please_input_valid_bill_number'));
+                return;
+            }
+            invoiceNumber = this.state.invoiceNumber
+        }else{
+            invoiceNumber = this.state.noBillInvoiceNumber
         }
+        this.confirmInvoice.open({
+            invoiceNumber,
+            noBill: this.state.noBill
+        })
+
+        // if (this.billNumberChanged && this.billNumberChanged.length > 4) {
+        //     const { xsession, updateInvoiceNumber } = this.props;
+        //     const { transactionId } = this.state.transactionInfo;
+        //     updateInvoiceNumber(xsession, transactionId, this.billNumberChanged, (err, data) => {
+        //         if (err && err.msg) {
+        //             this.props.setToast(getToastMessage(advanceI18nMessage(err.msg)), 'info', null, null, 3000, 'top')
+        //             this.props.goBack();
+        //             return;
+        //         }
+
+        //         if (data && data.updated && data.updated.data && data.updated.data.success) {
+        //             this.props.setToast(getToastMessage(I18n.t('success')), 'info', null, null, 3000, 'top')
+        //         } else {
+        //             this.props.setToast(getToastMessage(I18n.t('do_not_success')), 'info', null, null, 3000, 'top')
+        //         }
+        //         this.props.goBack();
+        //         return;
+        //     })
+        // } else if (this.state.transactionInfo.invoiceNumber && !this.changedBillNumberInput) {
+        //     this.props.goBack();
+        //     return;
+        // } else {
+        //     this.refs.popupConfirm.show(I18n.t('transaction_detail_mess_1'));
+        // }
     }
 
     _handlePressPopupConfirmOK() {
@@ -285,38 +335,68 @@ export default class TransactionDetail extends Component {
         this.props.goBack();
     }
 
+    _onPressNoBill = () => {
+        this.setState({noBill: !this.state.noBill})
+    }
+
+    _formatTwoDigit = (number) => {
+        return (number < 10) ? 0 + number.toString() : number.toString()
+    }
+
+    _onChangeTextNoBill = (text) => {
+        this.setState({ noBillInvoiceNumber: formatDateTime(text) })
+    }
+
     renderClingme(transactionInfo) {
         const { user } = this.props
         let payStatus, helpBtn = null
-
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
-        // if (transactionInfo.viewNumber == 0 || true) {   // true for test mode; transactionInfo.viewNumber == 0 is deprecated;
-        let invoiceNumber = '';
-        let changeInvNum = false;
-        if (this.state.transactionInfo) {
-            invoiceNumber = this.state.transactionInfo.invoiceNumber;
-            changeInvNum = this.state.transactionInfo.changeInvNum == 1;
-        }
+        let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber)
+        let enableConfirmBtn = (!this.state.noBill && !!this.state.invoiceNumber && this.state.invoiceNumber.length > 4)
+        || (this.state.noBill && !!this.state.noBillInvoiceNumber)
 
-        if (changeInvNum){
+        if (!this.state.transactionInfo.invoiceNumber){
             helpBtn =   <View style={styles.helpBtnContainer}>
-                    <View style={styles.billNumberContainer}>
-                        <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text>
-                        <TextInput
+                    <View style={{...styles.rowSpace}}>
+                        {/* <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text> */}
+                        {!this.state.noBill && <TextInput
                             ref='billNumberInput'
-                            defaultValue={invoiceNumber}
-                            editable={true}
-                            onChangeText={input => { this.billNumberChanged = input; this.changedBillNumberInput = true }}
+                            placeholder={I18n.t('qr_invoice_hint')}
+                            value={this.state.invoiceNumber}
+                            onChangeText={text=>this.setState({invoiceNumber: text})}
                             medium grayDark
                             underlineColorAndroid='transparent'
                             selectionColor={material.gray600}
                             onFocus={() => this._handlePressTextBillNumberInput}
-                            style={styles.billNumberInput} />
+                            style={{...styles.inputStyle, ...styles.mb20}} />}
                     </View>
-                    <Text small grayDark italic style={styles.noteMessage}>{I18n.t('transaction_detail_mess_2')}</Text>
+                    {this.state.noBill &&
+                        <View style={{ ...styles.fakeDisable, ...styles.mb20 }}>
+                            <Text style={styles.fakePlaceHolder}>{I18n.t('qr_invoice_hint')}</Text>
+                        </View>
+                    }
+                    <TouchableWithoutFeedback onPress={this._onPressNoBill}>
+                        <View style={{ ...styles.rowStart, ...styles.mb20 }}>
+                            <CheckBox checked={this.state.noBill} />
+                            <Text grayDark>{I18n.t('no_bill_hint')}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                    {this.state.noBill &&
+                        <View style={{ ...styles.rowSpace, ...styles.mb20 }}>
+                            <Text grayDark>{I18n.t('invoice_time_hint')}</Text>
+                            <TextInput
+                                underlineColorAndroid={'transparent'}
+                                style={{ ...styles.dateTimeInput }}
+                                keyboardType='numeric'
+                                onChangeText={this._onChangeTextNoBill}
+                                value={this.state.noBillInvoiceNumber}
+                            />
+                        </View>
+                    }
                 </View>
-        }else if (!changeInvNum && !!this.state.transactionInfo.invoiceNumber){
-            helpBtn =   <View style={styles.blockCenter}>
+        }else{
+            helpBtn =   <View style={{...styles.blockCenter, ...styles.mb20}}>
                 <Text medium gray>{I18n.t('invoice_number_hint')}</Text>
                 <Text largeLight bold>{transactionInfo.invoiceNumber.toUpperCase()}</Text>
             </View>
@@ -349,7 +429,7 @@ export default class TransactionDetail extends Component {
                     <View style={styles.rowCenter}>
                         {helpBtn}
                     </View>
-                    {(user.accTitle != 1) && <View style={{ width: '100%', height: 100 }} />}
+                    {/* {(user.accTitle != 1) && <View style={{ width: '100%', height: 100 }} />} */}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
@@ -360,10 +440,13 @@ export default class TransactionDetail extends Component {
                                 <Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />}
                         </View>
                     </View>
-                    <Button primary style={{ backgroundColor: material.primaryColor, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0 }}
+                    {showConfirmBtn && enableConfirmBtn && <Button primary style={{ backgroundColor: material.primaryColor, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0 }}
                         onPress={() => this._handlePressConfirm()}>
                         <Text small white>{I18n.t('confirm')}</Text>
-                    </Button>
+                    </Button>}
+                    {showConfirmBtn && !enableConfirmBtn && <Button light style={{ backgroundColor: material.gray300, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0 }}>
+                        <Text small gray>{I18n.t('confirm')}</Text>
+                    </Button>}
                 </View>
             </Content>
         )
@@ -577,7 +660,7 @@ export default class TransactionDetail extends Component {
                     }>
                 </List>
                 <View style={styles.line} />
-                <View style={{ paddingBottom: 50 }}>
+                <View>
                     <View style={styles.rowPadding}>
                         <Text medium bold grayDark>{I18n.t('money')}:</Text>
                         <Text medium bold grayDark>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'price']))}đ</Text>
@@ -786,6 +869,12 @@ export default class TransactionDetail extends Component {
             this.swiping = false
             return
         } else {
+            this.setState({
+                noBill: false,
+                noBillInvoiceNumber: this._getDefaultNoBill(),
+                invoiceNumber: ''
+            })
+
             if (event.position < this.state.page) {
                 if (this.state.hasPrevious) {
                     this.goPrevious()
@@ -871,6 +960,7 @@ export default class TransactionDetail extends Component {
             <Container style={{ backgroundColor: material.white500 }}>
                 <PopupConfirm ref='popupConfirm' onCancel={() => this._handlePressPopupConfirmCancel()} onOk={() => this._handlePressPopupConfirmOK()} />
                 <LoadingModal text={I18n.t('processing')} ref={ref => this.loadingModal = ref} />
+                <ConfirmInvoice  ref={ref=>this.confirmInvoice=ref} onOK={this._onOkInvoice}/>
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
                     onCloseClick={() => this._onPhoneModalClose()}
