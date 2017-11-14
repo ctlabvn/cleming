@@ -166,7 +166,9 @@ export default class QRForm extends Component {
                         />
                     }
                     {this.state.noBill &&
-                        <View style={{ ...styles.fakeDisable, ...styles.mb20 }} />
+                        <View style={{ ...styles.fakeDisable, ...styles.mb20 }}>
+                            <Text style={styles.fakePlaceHolder}>{I18n.t('qr_invoice_hint')}</Text>
+                        </View>
                     }
                     <TouchableWithoutFeedback onPress={this._onPressNoBill}>
                         <View style={{ ...styles.rowStart, ...styles.mb20 }}>

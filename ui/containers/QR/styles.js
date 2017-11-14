@@ -10,15 +10,15 @@ export default {
     },
     inputMoney: {
         flex: 1,
-        height: Platform.OS == 'ios' ? 'auto' : 50
+        height: Platform.OS == 'ios' ? 'auto' : 40
     },
     currency: {
-        color: material.gray500,
+        color: material.gray40,
         marginRight: 5,
         fontWeight: 'bold'
     },
     inputStyle: {
-        height: 50,
+        height: 40,
         width: material.deviceWidth - 20,
         backgroundColor: material.gray300,
         borderRadius: 3,
@@ -41,7 +41,14 @@ export default {
         borderWidth: 1,
         borderColor: material.gray300,
         borderRadius: 3,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    fakePlaceHolder: {
+        color: 'rgba(0,0,0,0.4)',
+        paddingLeft: 7
     },
     pd10: {
         padding: 10
