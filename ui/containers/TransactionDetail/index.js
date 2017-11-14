@@ -76,13 +76,13 @@ export default class TransactionDetail extends Component {
     }
 
     _renderBottomAction(transactionInfo) {
-        const {user} = this.props
+        const { user } = this.props
         switch (transactionInfo.transactionStatus) {
             case TRANSACTION_DIRECT_STATUS.WAITING_MERCHANT_CHECK:
-                if (user.isConfirmTran){
+                if (user.isConfirmTran) {
                     return (
                         <View style={styles.row}>
-                            <Button style={styles.confirmButton} onPress={()=>{this._handleConfirmDirectTransaction()}}>
+                            <Button style={styles.confirmButton} onPress={() => { this._handleConfirmDirectTransaction() }}>
                                 <View><Text medium white>{I18n.t('confirm_2')}</Text></View>
                             </Button>
                             <Button style={styles.feedbackButton} onPress={() => this._showReasonPopup()}>
@@ -91,7 +91,7 @@ export default class TransactionDetail extends Component {
                         </View>
                     )
                 }
-                return  <View />
+                return <View />
             case TRANSACTION_DIRECT_STATUS.MERCHANT_CHECKED:
                 return (<Button style={styles.feedbackButtonDisable} light disabled><Text>{I18n.t('received_feedback')}</Text></Button>)
             case TRANSACTION_DIRECT_STATUS.SUCCESS:
@@ -133,7 +133,7 @@ export default class TransactionDetail extends Component {
     _confirmTransaction = () => {
         // console.log('Confirming', clingmeId)
         if (this.confirmCounter > 0) return
-        this.confirmCounter ++
+        this.confirmCounter++
         const { xsession, confirmTransaction, transaction, setToast, markWillLoad } = this.props
         console.log("trans", this.state.transactionInfo)
         confirmTransaction(xsession, this.state.transactionInfo.payOfflineId,
@@ -149,16 +149,16 @@ export default class TransactionDetail extends Component {
     }
 
     _handleConfirmDirectTransaction = () => {
-        const {sendDenyReason, xsession, markWillLoad, setToast} = this.props
+        const { sendDenyReason, xsession, markWillLoad, setToast } = this.props
         this.loadingModal.show()
         sendDenyReason(xsession, this.state.transactionInfo.dealTransactionId, 0, '', 1,
             (err, data) => {
                 this.loadingModal.hide()
-                if (data && data.updated && data.updated.data && data.updated.data.success){
+                if (data && data.updated && data.updated.data && data.updated.data.success) {
                     markWillLoad(SCREEN.TRANSACTION_LIST_DIRECT)
-                    let updatedTrans = {...this.state.transactionInfo, transactionStatus: TRANSACTION_DIRECT_STATUS.SUCCESS}
+                    let updatedTrans = { ...this.state.transactionInfo, transactionStatus: TRANSACTION_DIRECT_STATUS.SUCCESS }
                     setToast(getToastMessage(I18n.t('confirm_success')), 'info', null, null, 2000, 'top')
-                    this.setState({transactionInfo: updatedTrans})
+                    this.setState({ transactionInfo: updatedTrans })
                 }
             }
         )
@@ -171,20 +171,20 @@ export default class TransactionDetail extends Component {
             transactionId = this.state.transactionInfo.transactionId
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-        }else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS){
+        } else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS) {
             transactionId = this.state.transactionInfo.orderInfo.clingmeId
         }
         index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-        if (index == -1){
+        if (index == -1) {
             index = transaction.listTransaction.findIndex(item => item.posOrderId == transactionId)
         }
         if (index <= 0) return
         index--
         let preTrans = transaction.listTransaction[index]
         // this.setState({ type: preTrans.tranType })
-        if (preTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+        if (preTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS) {
             this._load(preTrans.posOrderId, preTrans.tranType)
-        }else{
+        } else {
             this._load(preTrans.tranId, preTrans.tranType)
         }
     }
@@ -196,19 +196,19 @@ export default class TransactionDetail extends Component {
             transactionId = this.state.transactionInfo.transactionId
         } else if (this.state.type == TRANSACTION_TYPE_DIRECT) {
             transactionId = this.state.transactionInfo.dealTransactionId
-        } else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS){
+        } else if (this.state.type = TRANSACTION_TYPE_ORDER_SUCCESS) {
             transactionId = this.state.transactionInfo.orderInfo.clingmeId
         }
         index = transaction.listTransaction.findIndex(item => item.tranId == transactionId)
-        if (index == -1){
+        if (index == -1) {
             index = transaction.listTransaction.findIndex(item => item.posOrderId == transactionId)
         }
         if (index >= transaction.listTransaction.length - 1) return
         index++
         let nextTrans = transaction.listTransaction[index]
-        if (nextTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS){
+        if (nextTrans.tranType == TRANSACTION_TYPE_ORDER_SUCCESS) {
             this._load(nextTrans.posOrderId, nextTrans.tranType)
-        }else{
+        } else {
             this._load(nextTrans.tranId, nextTrans.tranType)
         }
     }
@@ -217,7 +217,7 @@ export default class TransactionDetail extends Component {
         // InteractionManager.runAfterInteractions(() => {
 
         const { xsession, listTransaction, getTransactionDetail, route, getListDenyReason,
-                getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
+            getDenyReasonClm, app, denyReason, denyReasonClm } = this.props
         // this._goToMiddlePage()
         let transactionId = route.params.id
         let transactionType = +route.params.type
@@ -237,7 +237,7 @@ export default class TransactionDetail extends Component {
     }
 
     _handlePressTextBillNumberInput() {
-        InteractionManager.runAfterInteractions(() => this.refs.content1.scrollToEnd({animated: true}));
+        InteractionManager.runAfterInteractions(() => this.refs.content1.scrollToEnd({ animated: true }));
     }
 
     _handlePressConfirm() {
@@ -254,7 +254,7 @@ export default class TransactionDetail extends Component {
         if (this.billNumberChanged && this.billNumberChanged.length > 4) {
             const { xsession, updateInvoiceNumber } = this.props;
             const { transactionId } = this.state.transactionInfo;
-            updateInvoiceNumber(xsession, transactionId, this.billNumberChanged,(err, data)=> {
+            updateInvoiceNumber(xsession, transactionId, this.billNumberChanged, (err, data) => {
                 if (err && err.msg) {
                     this.props.setToast(getToastMessage(advanceI18nMessage(err.msg)), 'info', null, null, 3000, 'top')
                     this.props.goBack();
@@ -285,8 +285,8 @@ export default class TransactionDetail extends Component {
         this.props.goBack();
     }
 
-    renderClingme(transactionInfo){
-        const {user} = this.props
+    renderClingme(transactionInfo) {
+        const { user } = this.props
         let payStatus, helpBtn = null
 
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
@@ -298,66 +298,30 @@ export default class TransactionDetail extends Component {
             changeInvNum = this.state.transactionInfo.changeInvNum == 1;
         }
 
-          helpBtn =
-              <View style={styles.helpBtnContainer}>
-                {/* <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-                   <View style={styles.round20}>
-                       <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-                   </View>
-                   <Text medium primary>{I18n.t('help')}</Text>
-                </Button> */}
-
+        if (changeInvNum){
+            helpBtn =   <View style={styles.helpBtnContainer}>
                     <View style={styles.billNumberContainer}>
                         <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text>
                         <TextInput
-                          ref='billNumberInput'
-                          defaultValue={invoiceNumber}
-                          editable={changeInvNum}
-                          onChangeText={input => {this.billNumberChanged = input; this.changedBillNumberInput = true}}
-                          medium grayDark
-                          underlineColorAndroid='transparent'
-                          selectionColor={material.gray600}
-                          onFocus={()=> this._handlePressTextBillNumberInput}
-                          style={styles.billNumberInput}/>
+                            ref='billNumberInput'
+                            defaultValue={invoiceNumber}
+                            editable={true}
+                            onChangeText={input => { this.billNumberChanged = input; this.changedBillNumberInput = true }}
+                            medium grayDark
+                            underlineColorAndroid='transparent'
+                            selectionColor={material.gray600}
+                            onFocus={() => this._handlePressTextBillNumberInput}
+                            style={styles.billNumberInput} />
                     </View>
                     <Text small grayDark italic style={styles.noteMessage}>{I18n.t('transaction_detail_mess_2')}</Text>
-              </View>
-        // }
-        // else{
-        //   helpBtn =
-        //       <View style={styles.rowCenter}>
-        //         <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-        //            <View style={styles.round20}>
-        //                <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-        //            </View>
-        //            <Text medium primary>{I18n.t('help')}</Text>
-        //        </Button>
-        //       </View>
-        // }
-
-
-
-        // "transactionStatus": int,    // 1 là đã thanh toán, 2 là đã xác nhận
-        // if (transactionInfo.transactionStatus == 1) {
-        //     payStatus = <Text strong primary bold>{I18n.t('not_confirm_yet')}</Text>
-        //     helpBtn =
-        //         <View style={styles.rowPaddingFull}>
-        //             <Button transparent style={styles.feedbackClmTransaction} onPress={() => this._showReasonPopupClingme()}>
-        //                 <View style={styles.round20}>
-        //                     <Icon name='help' style={{ ...styles.iconButton, ...styles.primary }} />
-        //                 </View>
-        //                 <Text medium primary>{I18n.t('help')}</Text>
-        //             </Button>
-        //             <Button primary style={{ ...styles.confirmButton, ...styles.backgroundPrimary }}
-        //                 onPress={()=>this._confirmTransaction()}
-        //             >
-        //                 <Text medium white>{I18n.t('confirm')}</Text>
-        //             </Button>
-        //         </View>
-        // } else if (transactionInfo.transactionStatus == 2) {
-        //     payStatus = <Text medium success bold>{I18n.t('confirmed')}</Text>
-        // }
-
+                </View>
+        }else if (!changeInvNum && !!this.state.transactionInfo.invoiceNumber){
+            helpBtn =   <View style={styles.blockCenter}>
+                <Text medium gray>{I18n.t('invoice_number_hint')}</Text>
+                <Text largeLight bold>{transactionInfo.invoiceNumber.toUpperCase()}</Text>
+            </View>
+        }
+        
         return (
             <Content ref='content1'>
                 <View style={styles.contentRootChild}>
@@ -382,26 +346,22 @@ export default class TransactionDetail extends Component {
                         <Text medium gray>{I18n.t('clingme_fee')}</Text>
                         <Text largeLight bold>{formatNumber(transactionInfo.clingmeCost)}</Text>
                     </View>}
-                    {(user.accTitle != 1 && !!transactionInfo.invoiceNumber) && <View style={styles.blockCenter}>
-                        <Text medium gray>{I18n.t('invoice_number_hint')}</Text>
-                        <Text largeLight bold>{transactionInfo.invoiceNumber.toUpperCase()}</Text>
-                    </View>}
                     <View style={styles.rowCenter}>
                         {helpBtn}
                     </View>
-                    {(user.accTitle != 1) && <View style={{width: '100%', height: 100}} />}
+                    {(user.accTitle != 1) && <View style={{ width: '100%', height: 100 }} />}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>
                             <Text medium bold style={{ marginRight: 5 }}>{transactionInfo.userName}</Text>
 
-                            {transactionInfo.avatarUrl!='' ?
+                            {transactionInfo.avatarUrl != '' ?
                                 <Thumbnail size={80} source={{ uri: transactionInfo.avatarUrl }} /> :
                                 <Icon name='account' style={{ color: 'lightgrey', marginLeft: 5 }} />}
                         </View>
                     </View>
-                    <Button primary style={{backgroundColor: material.primaryColor, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0}}
-                            onPress={() => this._handlePressConfirm()}>
+                    <Button primary style={{ backgroundColor: material.primaryColor, alignSelf: 'center', marginTop: 20, marginBottom: 20, paddingTop: 0 }}
+                        onPress={() => this._handlePressConfirm()}>
                         <Text small white>{I18n.t('confirm')}</Text>
                     </Button>
                 </View>
@@ -409,10 +369,10 @@ export default class TransactionDetail extends Component {
         )
     }
 
-    renderDirect(transactionInfo){
-        const {user} = this.props
+    renderDirect(transactionInfo) {
+        const { user } = this.props
         let moneyBlock
-        if (user.accTitle == 1 && transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT){
+        if (user.accTitle == 1 && transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
             moneyBlock = <View style={styles.rowSpaceAround}>
                 <View style={styles.gridItem}>
                     <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
@@ -423,7 +383,7 @@ export default class TransactionDetail extends Component {
                     <Text style={styles.labelInfo}>{I18n.t('clingme_fee')}</Text>
                 </View>
             </View>
-        }else if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT){
+        } else if (transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) {
             moneyBlock = <View style={styles.rowSpaceAround}>
                 <View style={styles.gridItem}>
                     <Text style={styles.textInfo}>{formatNumber(transactionInfo.originPrice)}đ</Text>
@@ -482,10 +442,10 @@ export default class TransactionDetail extends Component {
                     </View>
 
                     {(transactionInfo.transactionStatus != TRANSACTION_DIRECT_STATUS.REJECT) &&
-                    <View style={styles.rowPadding}>
-                        <Text medium grayDark>{I18n.t('export_bill')}:</Text>
-                        <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
-                    </View>
+                        <View style={styles.rowPadding}>
+                            <Text medium grayDark>{I18n.t('export_bill')}:</Text>
+                            <Text medium grayDark bold>{moment(transactionInfo.invoiceTime * 1000).format(DEFAULT_TIME_FORMAT)}</Text>
+                        </View>
                     }
 
                     <View style={styles.rowPadding}>
@@ -514,9 +474,6 @@ export default class TransactionDetail extends Component {
                     <View style={{ ...styles.rowPadding, ...styles.center, marginBottom: 30 }}>
                         {this._renderBottomAction(transactionInfo)}
                     </View>
-                    {/*<View style={styles.complaintContainer}>*/}
-                    {/*<Text medium bold grayDark>{I18n.t('feedback_of_merchant')}</Text>*/}
-                    {/*</View>*/}
                 </View>
             </Content>
         )
@@ -541,10 +498,10 @@ export default class TransactionDetail extends Component {
         return (
             <Content>
                 <View style={styles.rowPadding}>
-                        <Text success largeLight bold>{I18n.t('order_completed')}</Text>
-                        <Text medium grayDark style={{ marginRight: 5, marginTop: 3 }}>
-                            {moment(chainParse(transactionInfo, ['orderInfo', 'clingmeCreatedTime']) * 1000).format(DEFAULT_TIME_FORMAT)}
-                        </Text>
+                    <Text success largeLight bold>{I18n.t('order_completed')}</Text>
+                    <Text medium grayDark style={{ marginRight: 5, marginTop: 3 }}>
+                        {moment(chainParse(transactionInfo, ['orderInfo', 'clingmeCreatedTime']) * 1000).format(DEFAULT_TIME_FORMAT)}
+                    </Text>
                 </View>
                 <View style={styles.rowPadding}>
                     <Text medium grayDark>{I18n.t('order_number_2')}</Text>
@@ -564,7 +521,7 @@ export default class TransactionDetail extends Component {
                 }
                 <View style={styles.line} />
                 <View style={{ ...styles.block, ...styles.pd10 }}>
-                    <Text medium  grayDark>{I18n.t('deliver_address')}</Text>
+                    <Text medium grayDark>{I18n.t('deliver_address')}</Text>
                     <Text medium bold grayDark>{chainParse(transactionInfo, ['orderInfo', 'fullAddress'])}
                         {(parseFloat(chainParse(transactionInfo, ['orderInfo', 'deliveryDistance'])) > 0) &&
                             <Text medium bold grayDark> - {parseFloat(chainParse(transactionInfo, ['orderInfo', 'deliveryDistance'])).toFixed(2)} km</Text>
@@ -580,7 +537,7 @@ export default class TransactionDetail extends Component {
                 <View style={styles.rowPaddingTopMedium}>
                     <Text medium grayDark>{I18n.t('phone_number')}</Text>
 
-                    <TouchableWithoutFeedback onPress={()=>this._onPressPhoneNumber(chainParse(transactionInfo, ['orderInfo', 'userInfo', 'phoneNumber']))}>
+                    <TouchableWithoutFeedback onPress={() => this._onPressPhoneNumber(chainParse(transactionInfo, ['orderInfo', 'userInfo', 'phoneNumber']))}>
                         <View style={styles.row}>
                             <Icon name='phone' style={{ ...styles.icon, ...styles.phoneIcon }} />
                             <Text strong bold
@@ -588,61 +545,61 @@ export default class TransactionDetail extends Component {
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
-                    {
-                        (chainParse(transactionInfo, ['orderInfo', 'enableFastDelivery']) == FAST_DELIVERY.YES) &&
-                        <View style={styles.rowPaddingTopMedium}>
-                            <Text medium grayDark>{I18n.t('receive_within')}</Text>
-                            <Text medium bold grayDark>{BASE_COUNTDOWN_ORDER_MINUTE}'</Text>
-                        </View>
-                    }
-
-                    {otherRequire != null ? otherRequireBlock : null}
-
-                    <View style={{...styles.line, marginTop: 5}} />
-                    <View style={styles.rowPadding}>
-                        <Text medium bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
+                {
+                    (chainParse(transactionInfo, ['orderInfo', 'enableFastDelivery']) == FAST_DELIVERY.YES) &&
+                    <View style={styles.rowPaddingTopMedium}>
+                        <Text medium grayDark>{I18n.t('receive_within')}</Text>
+                        <Text medium bold grayDark>{BASE_COUNTDOWN_ORDER_MINUTE}'</Text>
                     </View>
-                    <List
-                        style={{marginBottom: 20}}
-                        dataArray={transactionInfo.orderRowList}
-                        renderRow={(item) => (
-                            <ListItem style={styles.orderItem}>
-                                <View style={styles.cartLeft}>
-                                    <Image style={{ width: 60, height: 60 }} source={{ uri: item.itemImage }} />
-                                    <View style={styles.cartContent}>
-                                        <Text medium grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
-                                        <Text medium grayDark style={styles.textLeft}>{I18n.t('number_full')}: {item.quantity}</Text>
-                                    </View>
+                }
+
+                {otherRequire != null ? otherRequireBlock : null}
+
+                <View style={{ ...styles.line, marginTop: 5 }} />
+                <View style={styles.rowPadding}>
+                    <Text medium bold grayDark>{I18n.t('cart')}: {totalItem}</Text>
+                </View>
+                <List
+                    style={{ marginBottom: 20 }}
+                    dataArray={transactionInfo.orderRowList}
+                    renderRow={(item) => (
+                        <ListItem style={styles.orderItem}>
+                            <View style={styles.cartLeft}>
+                                <Image style={{ width: 60, height: 60 }} source={{ uri: item.itemImage }} />
+                                <View style={styles.cartContent}>
+                                    <Text medium grayDark style={styles.textLeftFlex}>{item.itemName}</Text>
+                                    <Text medium grayDark style={styles.textLeft}>{I18n.t('number_full')}: {item.quantity}</Text>
                                 </View>
-                                <Text strong bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
-                            </ListItem>
-                        )
-                        }>
-                    </List>
-                    <View style={styles.line} />
-                    <View style={{paddingBottom: 50}}>
-                        <View style={styles.rowPadding}>
-                            <Text medium bold grayDark>{I18n.t('money')}:</Text>
-                            <Text medium bold grayDark>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'price']))}đ</Text>
-                        </View>
-                        <View style={styles.rowPadding}>
-                            <Text medium grayDark>{I18n.t('ship_fee')}:</Text>
-                            <Text medium
-                                grayDark>{(transactionInfo && transactionInfo.orderInfo && transactionInfo.orderInfo.shipPriceReal > 0) ? formatNumber(transactionInfo.orderInfo.shipPriceReal) : 0}đ</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.rowPadding}>
-                            <Text strong bold grayDark>{I18n.t('total_pay')}: </Text>
-                            <Text strong bold error>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'moneyAmount']))}đ</Text>
-                        </View>
+                            </View>
+                            <Text strong bold grayDark style={{ ...styles.itemCash }}>{item.price / 1000}k</Text>
+                        </ListItem>
+                    )
+                    }>
+                </List>
+                <View style={styles.line} />
+                <View style={{ paddingBottom: 50 }}>
+                    <View style={styles.rowPadding}>
+                        <Text medium bold grayDark>{I18n.t('money')}:</Text>
+                        <Text medium bold grayDark>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'price']))}đ</Text>
                     </View>
+                    <View style={styles.rowPadding}>
+                        <Text medium grayDark>{I18n.t('ship_fee')}:</Text>
+                        <Text medium
+                            grayDark>{(transactionInfo && transactionInfo.orderInfo && transactionInfo.orderInfo.shipPriceReal > 0) ? formatNumber(transactionInfo.orderInfo.shipPriceReal) : 0}đ</Text>
+                    </View>
+                    <View style={styles.line} />
+                    <View style={styles.rowPadding}>
+                        <Text strong bold grayDark>{I18n.t('total_pay')}: </Text>
+                        <Text strong bold error>{formatNumber(chainParse(transactionInfo, ['orderInfo', 'moneyAmount']))}đ</Text>
+                    </View>
+                </View>
             </Content>
         )
     }
 
     _renderContent() {
         let transactionInfo = this.state.transactionInfo
-        switch(this.state.type){
+        switch (this.state.type) {
             case TRANSACTION_TYPE_CLINGME:
                 return this.renderClingme(transactionInfo)
             case TRANSACTION_TYPE_DIRECT:
@@ -672,8 +629,8 @@ export default class TransactionDetail extends Component {
 
                     if (data && data.updated && data.updated.data) {
                         let transInfo = data.updated.data
-                        if (transInfo.viewNumber == 0){
-                          updateViewStatusPayCLM(xsession, transInfo.transactionId)
+                        if (transInfo.viewNumber == 0) {
+                            updateViewStatusPayCLM(xsession, transInfo.transactionId)
                         }
                         let hasNext = false, hasPrevious = false
                         if (transaction) {
@@ -729,7 +686,7 @@ export default class TransactionDetail extends Component {
                             updateRead(xsession, transInfo.notifyIdCorrespond)
                         }
 
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type : transactionType},
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type: transactionType },
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -742,7 +699,7 @@ export default class TransactionDetail extends Component {
                     }
                 }
             )
-        }else if (transactionType == TRANSACTION_TYPE_ORDER_SUCCESS){
+        } else if (transactionType == TRANSACTION_TYPE_ORDER_SUCCESS) {
             getOrderDetail(xsession, transactionId,
                 (err, data) => {
                     if (err) {
@@ -766,7 +723,7 @@ export default class TransactionDetail extends Component {
                                 hasNext = (index == transaction.listTransaction.length - 1) ? false : true
                             }
                         }
-                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type : transactionType },
+                        this.setState({ transactionInfo: transInfo, hasPrevious: hasPrevious, hasNext: hasNext, type: transactionType },
                             () => {
                                 this.swiping = true
                                 this.refs.viewPager.setPageWithoutAnimation(this.state.page)
@@ -797,9 +754,9 @@ export default class TransactionDetail extends Component {
 
     _handleFeedbackClingme = (dealID, selectedValue, note) => {
         const { forwardTo, sendDenyReasonClm, xsession, setToast } = this.props
-        if (selectedValue==FEEDBACK_CLM_TRANSACTION.MISS || selectedValue==FEEDBACK_CLM_TRANSACTION.REDUNDANT){
-            forwardTo('transactionInputFeedback', {dealID: dealID, reasonID: selectedValue})
-        }else{
+        if (selectedValue == FEEDBACK_CLM_TRANSACTION.MISS || selectedValue == FEEDBACK_CLM_TRANSACTION.REDUNDANT) {
+            forwardTo('transactionInputFeedback', { dealID: dealID, reasonID: selectedValue })
+        } else {
             sendDenyReasonClm(xsession, this.state.transactionInfo.transactionId, selectedValue, note,
                 (err, data) => {
                     console.log('Deny Reason CLM', data)
@@ -863,17 +820,17 @@ export default class TransactionDetail extends Component {
     }
     render() {
         if (!this.state.transactionInfo || Object.keys(this.state.transactionInfo).length == 0) {
-          return (
-              <View style={{
-                  backgroundColor: material.white500,
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%'
-              }}>
-                  <Spinner color={material.tabBarActiveTextColor} />
-              </View>
-          )
+            return (
+                <View style={{
+                    backgroundColor: material.white500,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%'
+                }}>
+                    <Spinner color={material.tabBarActiveTextColor} />
+                </View>
+            )
         }
         let transactionInfo = this.state.transactionInfo
         let btnPrev, btnNext
@@ -911,12 +868,12 @@ export default class TransactionDetail extends Component {
         }
 
         return (
-            <Container style={{backgroundColor: material.white500}}>
-                <PopupConfirm ref='popupConfirm' onCancel={() => this._handlePressPopupConfirmCancel()} onOk={() => this._handlePressPopupConfirmOK()}/>
-                <LoadingModal text={I18n.t('processing')} ref={ref=>this.loadingModal=ref}/>
+            <Container style={{ backgroundColor: material.white500 }}>
+                <PopupConfirm ref='popupConfirm' onCancel={() => this._handlePressPopupConfirmCancel()} onOk={() => this._handlePressPopupConfirmOK()} />
+                <LoadingModal text={I18n.t('processing')} ref={ref => this.loadingModal = ref} />
                 <CallModal
                     phoneNumber={this.state.phoneNumber}
-                    onCloseClick={()=>this._onPhoneModalClose()}
+                    onCloseClick={() => this._onPhoneModalClose()}
                     open={this.state.callModalOpen} />
                 <ViewPager style={{ flex: 1, height: '100%' }}
                     keyboardShouldPersistTaps='always'
