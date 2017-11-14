@@ -58,13 +58,24 @@ export default class QRForm extends Component {
         return (number < 10) ? 0 + number.toString() : number.toString()
     }
 
+    _getTimeStr = (inputValue) => {
+        let now = moment()
+        let timeInput = revertDateTime(inputValue)
+        let hourInput = parseInt(timeInput.substr(0, 2))
+        // Case over midnight
+        if (hourInput >= 23 && now.hour() <= 1){
+            now = moment().subtract(1, 'days')
+        }
+        return moment().year().toString() + this._formatTwoDigit((moment().month() + 1)) + this._formatTwoDigit(moment().date()) + timeInput
+    }
+
     _doGenerate = () => {
         if (!this.props.app || !this.props.app.topDropdown || !this.props.app.topDropdown.getValue()
             || Object.keys(this.props.app.topDropdown.getValue()).length == 0 || this.state.loading) return
         const { user, createQR, xsession } = this.props
         let moneyAmount = revertFormatMoney(this.state.money).trim()
         let invoiceNumber = this.state.noBill ?
-            moment().year().toString() + this._formatTwoDigit((moment().month() + 1)) + this._formatTwoDigit(moment().date()) + revertDateTime(this.state.noBillInvoiceNumber)
+            this._getTimeStr(this.state.noBillInvoiceNumber)
             : this.state.invoiceNumber.trim()
         let placeId = this.props.app.topDropdown.getValue().id
         let timeClient = moment().unix()

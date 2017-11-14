@@ -10,7 +10,7 @@ export default {
     },
     inputMoney: {
         flex: 1,
-        height: Platform.OS == 'ios' ? 'auto' : 40
+        height: Platform.OS == 'ios' ? 'auto' : 50
     },
     currency: {
         color: material.gray500,
@@ -18,7 +18,7 @@ export default {
         fontWeight: 'bold'
     },
     inputStyle: {
-        height: 40,
+        height: 50,
         width: material.deviceWidth - 20,
         backgroundColor: material.gray300,
         borderRadius: 3,
