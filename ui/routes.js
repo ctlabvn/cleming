@@ -44,6 +44,7 @@ import CreateDeal from './containers/DealManager/CreateDeal'
 import DealInfo from './containers/DealManager/DealInfo'
 import DealDetail from './containers/DealManager/DealDetail'
 import ExperimentAnimate from './containers/ExperimentAnimate'
+import QRForm from './containers/QR/Form'
 import { ITEM_ALL_PLACE } from '~/store/constants/app'
 // we can use animationType object for each route via Navigator.SceneConfigs
 export default {
@@ -343,6 +344,12 @@ export default {
         title: 'Animated',
         Page: ExperimentAnimate,
         headerType: 'none',
+        footerType: 'none',
+    },
+    qrForm: {
+        title: I18n.t('create_qr_2'),
+        Page: QRForm,
+        headerType: 'back',
         footerType: 'none',
     }
 }

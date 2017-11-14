@@ -423,4 +423,22 @@ export default {
     'success': 'Thành công',
     'do_not_success': 'Không thành công',
     'time_change_expires': 'Hết hạn thời gian thay đổi',
+
+    // QR 
+    'create_qr': 'Tạo mã thanh toán',
+    'qr_hint': 'Tạo mã QR để khách hàng thanh toán trên Clingme',
+    'qr_money_hint': 'Nhập số tiền cần thanh toán',
+    'qr_invoice_hint': 'Nhập số hoá đơn',
+    'no_bill_hint': 'Địa điểm không có số hoá đơn',
+    'invoice_time_hint': 'Thời gian xuất hoá đơn',
+    'invoice_number_hint': 'Số hoá đơn',
+    'back': 'Quay lại',
+    'confirm_info': 'Xác nhận thông tin',
+    'invoice_time': 'Thời gian xuất hoá đơn',
+    'qr_use_hint': 'Bạn hãy đưa mã này để khách hàng thanh toán',
+    'gen_another': 'Tạo mã khác',
+    'create_qr_2': 'Tạo mã QR',
+    'retry': 'Thử lại',
+    'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?'
+
 }

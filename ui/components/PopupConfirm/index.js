@@ -45,7 +45,7 @@ export default class PopupInfo extends Component {
                                 transparent  style={styles.btnLeft}
                                 onPress={()=>{
                                     this._close()
-                                    this.props.onCancel();
+                                    this.props.onCancel && this.props.onCancel();
                                 }}>
                                 <Text style={{color: material.blue500}}>{I18n.t('cancel')}</Text>
                             </Button>
@@ -53,7 +53,7 @@ export default class PopupInfo extends Component {
                             <Button transparent style={styles.btnRight}
                                 onPress={()=>{
                                     this._close()
-                                    this.props.onOk()   
+                                    this.props.onOk && this.props.onOk()   
                                 }}
                                 >
                                 <Text style={{color: material.blue500}}>{I18n.t('ok')}</Text>

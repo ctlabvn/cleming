@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Container, Text} from "native-base";
-import {ActivityIndicator, Image, TouchableOpacity, View, TouchableWithoutFeedback} from "react-native";
+import {ActivityIndicator, Image, TouchableOpacity, View, TouchableWithoutFeedback, Animated} from "react-native";
 import styles from "./styles";
 import * as commonActions from "~/store/actions/common";
 import * as placeAction from "~/store/actions/place";
@@ -11,6 +11,7 @@ import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import {storeFilled, storeTransparent} from "~/assets";
 import {formatNumber} from "~/ui/shared/utils";
+import * as Animatable from 'react-native-animatable'
 // import LinearGradient from 'react-native-linear-gradient'
 import GradientBackground from "~/ui/elements/GradientBackground";
 
@@ -31,8 +32,10 @@ export default class MerchantOverview extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            loading: false
+            loading: false,
+            animate: new Animated.Value(0)
         }
+        this.labelWidth = 0
     }
 
     _load(showLoading = false) {
@@ -136,6 +139,34 @@ export default class MerchantOverview extends Component {
       this._load()
     }
 
+    _playLabelAnimation = () => {
+        // setTimeout(()=>{
+        // Animated.timing(this.state.animate, {
+        //     toValue: 1,
+        //     duration: 2000,
+        //     useNativeDriver: true
+        // }).start(()=>{
+        //     setTimeout(()=>{
+        //         Animated.timing(this.state.animate, {
+        //             toValue: 0,
+        //             duration: 2000,
+        //             useNativeDriver: true
+        //             }).start()
+        //     }, 500)
+        // })
+        
+        // setTimeout(()=>{
+        //     this.animatableLabel
+        //         .slideInRight()
+        //         .then(()=>{
+        //             setTimeout(()=>{
+        //                 this.animatableLabel.slideOutRight()
+        //             }, 1000)
+        //         })
+        // }, 200)
+
+    }
+
     componentWillFocus() {
         const {app, place, user} = this.props
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
@@ -205,7 +236,7 @@ export default class MerchantOverview extends Component {
 
     renderMainContainer() {
 
-        const {handleSubmit, submitting, place} = this.props
+        const {handleSubmit, submitting, place, user} = this.props
 
         return (
             // <Content style={{ width: '100%', height: '100%' }}>
@@ -307,6 +338,22 @@ export default class MerchantOverview extends Component {
     }
     render() {
         console.log('Rendering MerchantOverview')
+
+        // opacity: this.state.animate,
+        // transform: [
+        //     {
+        //         translateX: this.state.animate.interpolate({
+        //             inputRange: [0, 1],
+        //             outputRange: [this.labelWidth, 10]
+        //         })
+        //     }
+        // ]
+
+        // onLayout={e=>{
+        //     this.labelWidth = e.nativeEvent.layout.width
+        //     this._playLabelAnimation()    
+        // }}
+
         const {handleSubmit, submitting, place, selectedPlace, user} = this.props
 
         let mainContainer = null
@@ -321,6 +368,30 @@ export default class MerchantOverview extends Component {
                 <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
                     {mainContainer}
                 </Content>
+                {(user.accTitle != 1) && <TouchableWithoutFeedback onPress={()=>this.navigate('qrForm')}>
+                    <View style={styles.qrBlock}>
+                        <Animatable.View
+                            ref={ref=>this.animatableLabel=ref}
+                            animation="slideInRight"
+                            duration={2000}
+                            delay={100}
+                            useNativeDriver={true}
+                            onAnimationEnd={endState=>{
+                                setTimeout(()=>this.animatableLabel.slideOutRight())
+                            }}
+                            style={{
+                            ...styles.qrLabelOuter,
+                            }}
+                        >
+                            <View style={styles.qrLabel}>
+                                <Text primary>{I18n.t('create_qr')}</Text>
+                            </View>
+                        </Animatable.View>
+                        <View style={styles.qrOuter}>
+                            <Icon name='qr' style={styles.qrIcon} />
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>}
             </Container>
         )
     }

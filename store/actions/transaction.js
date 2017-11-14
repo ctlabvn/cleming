@@ -105,3 +105,8 @@ export const updateInvoiceNumber = (...args) => ({
     type: 'transaction/updateInvoiceNumber',
     args
 })
+
+export const createQR = (...args) => ({
+  type: 'transaction/createQR',
+  args
+})

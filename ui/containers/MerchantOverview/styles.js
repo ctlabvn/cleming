@@ -148,6 +148,43 @@ export default {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         padding: 5,
+    },
+    qrBlock: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    qrOuter: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        zIndex: 2,
+        backgroundColor: material.primaryColor,
+        elevation: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden'
+    },
+    qrIcon: {
+        color: 'white',
+        fontSize: 25,
+    },
+    qrLabel: {
+        backgroundColor: 'white',
+        borderRadius: 4,
+        paddingLeft: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingRight: 17,
+    },
+    qrLabelOuter: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        right: -12
     }
 
 }

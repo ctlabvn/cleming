@@ -63,6 +63,13 @@ export default {
     updateInvoiceNumber(xsession, tranId, invoiceNumber) {
         console.log('Update Invoice Number: ', xsession+'---'+tranId+'---'+invoiceNumber);
         return apiPost('/payclm/update-invoicenumber', {tranId, invoiceNumber}, xsession)
+    },
+
+    createQR(xsession, invoiceNumber, moneyAmount, placeId, timeClient, checkSum){
+        console.log('Call CreateQR: ', xsession+'---'+invoiceNumber+'---'+moneyAmount+'---'+placeId+'---'+timeClient+'---'+checkSum)
+        return apiPost('/payclm/create-qrcode', {invoiceNumber, moneyAmount, placeId, timeClient, checkSum}, xsession)
     }
+
+
 }
 
