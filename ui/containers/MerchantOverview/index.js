@@ -139,40 +139,19 @@ export default class MerchantOverview extends Component {
       this._load()
     }
 
-    _playLabelAnimation = () => {
-        // setTimeout(()=>{
-        // Animated.timing(this.state.animate, {
-        //     toValue: 1,
-        //     duration: 2000,
-        //     useNativeDriver: true
-        // }).start(()=>{
-        //     setTimeout(()=>{
-        //         Animated.timing(this.state.animate, {
-        //             toValue: 0,
-        //             duration: 2000,
-        //             useNativeDriver: true
-        //             }).start()
-        //     }, 500)
-        // })
-        
-        // setTimeout(()=>{
-        //     this.animatableLabel
-        //         .slideInRight()
-        //         .then(()=>{
-        //             setTimeout(()=>{
-        //                 this.animatableLabel.slideOutRight()
-        //             }, 1000)
-        //         })
-        // }, 200)
-
-    }
-
     componentWillFocus() {
         const {app, place, user} = this.props
+        console.log('TRigger Component Will Focus')
         app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
         if (!place.listPlace || place.listPlace.length == 0) {
             console.log('Place List will focus', place.listPlace)
             this._load()
+        }
+        if (user.accTitle != 1){
+            this.animatableLabel.slideInRight(2000)
+                .then(()=>{
+                    setTimeout(()=>this.animatableLabel.slideOutRight(), 1500)
+                })
         }
     }
 
@@ -377,7 +356,7 @@ export default class MerchantOverview extends Component {
                             delay={100}
                             useNativeDriver={true}
                             onAnimationEnd={endState=>{
-                                setTimeout(()=>this.animatableLabel.slideOutRight())
+                                setTimeout(()=>this.animatableLabel.slideOutRight(), 1500)
                             }}
                             style={{
                             ...styles.qrLabelOuter,
