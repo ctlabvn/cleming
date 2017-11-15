@@ -96,11 +96,9 @@ export const getDateArray = (str) => {
             break
     }
 
-    console.log('Current Part Idx', currentPartIdx)
     for (let i=0; i<=currentPartIdx; i++){
         let value=str
         value=value.substr(partDetect[timePart[i]].start, partDetect[timePart[i]].length)
-        console.log('Value', value)
         // Day Part
         if (i == 0) {
             if (value.length == 1 && parseInt(value) > 3) {
@@ -155,7 +153,6 @@ export const getDateArray = (str) => {
 export const formatDateTime = (str) => {
     if (!str) return
     const dateArr = getDateArray(str)
-    console.log('Date Array', dateArr)
     let dateLabel = ['day', 'month', 'year', 'hour', 'minute']
     let result = ''
     for (let i = 0; i < dateLabel.length; i++) {
@@ -174,7 +171,6 @@ export const formatDateTime = (str) => {
             result += (part)
         }
     }
-    console.log('Result', result)
     return result
 }
 
