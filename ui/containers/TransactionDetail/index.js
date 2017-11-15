@@ -248,9 +248,9 @@ export default class TransactionDetail extends Component {
     }
 
     _getDefaultNoBill = () => {
-        return moment().year().toString()+'-'+
+        return this._formatTwoDigit(moment().date())+'-'+
             this._formatTwoDigit(moment().month()+1)+'-'+
-            this._formatTwoDigit(moment().date())+' '+
+            moment().year().toString()+' '+
             this._formatTwoDigit(moment().hour()) + ':' + this._formatTwoDigit(moment().minute())
     }
 
