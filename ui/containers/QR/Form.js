@@ -18,6 +18,7 @@ import ConfirmPopup from './ConfirmPopup'
 import I18n from '~/ui/I18n'
 import { setToast, goBack } from '~/store/actions/common'
 import ErrorPopup from './ErrorPopup'
+import DuplicatePopup from './DuplicatePopup'
 
 @connect(state => ({
     xsession: getSession(state),
@@ -85,7 +86,6 @@ export default class QRForm extends Component {
         let checkSum = md5(invoiceNumber + moneyAmount + placeId + timeClient + user.bizAccountId)
         this.setState({ loading: true })
         this.qr.open()
-
         createQR(xsession, invoiceNumber, moneyAmount, placeId, timeClient, checkSum,
             (err, data) => {
                 this.setState({ loading: false })
@@ -99,7 +99,9 @@ export default class QRForm extends Component {
                         billid: invoiceNumber
                     }
                     this.qr.open(JSON.stringify(qrObj))
-                } else {
+                } else if (data && data.data && !data.data.success){
+                    this.duplicatePopup.open()
+                }else{
                     this.errorPopup.open()
                 }
             }
@@ -130,6 +132,10 @@ export default class QRForm extends Component {
         this.qr.close()
     }
 
+    _onCloseDuplicate = () => {
+        this.qr.close()
+    }
+
     render() {
         let enableBtn = (!!this.state.money && revertFormatMoney(this.state.money) && parseInt(revertFormatMoney(this.state.money)) > 1000)
             &&
@@ -138,14 +144,18 @@ export default class QRForm extends Component {
         return (
             <Content style={{ backgroundColor: 'white' }}>
                 <View style={styles.container}>
-                    <QR ref={ref => this.qr = ref} loading={this.state.loading}
-                        onPaid={this._onPaid}
-                        onGenAnother={this._onGenAnother}
-                    />
                     <ErrorPopup ref={ref => this.errorPopup = ref}
                         onRetry={this._onRetry}
                         onCancel={this._onCancelError}
                     />
+                    <DuplicatePopup ref={ref=>this.duplicatePopup = ref} 
+                        onClose={this._onCloseDuplicate}    
+                    />
+                    <QR ref={ref => this.qr = ref} loading={this.state.loading}
+                        onPaid={this._onPaid}
+                        onGenAnother={this._onGenAnother}
+                    />
+            
                     <ConfirmPopup ref={ref => this.confirmPopup = ref} onOK={this._doGenerate} />
                     <Text bold grayDark medium style={{ ...styles.mt20, ...styles.mb20 }}>{I18n.t('qr_hint')}</Text>
                     <View style={{ ...styles.rowSpace, ...styles.inputStyle, ...styles.mb20 }}>

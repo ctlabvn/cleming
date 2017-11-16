@@ -440,6 +440,7 @@ export default {
     'create_qr_2': 'Tạo mã QR',
     'retry': 'Thử lại',
     'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?',
+    'err_qr_duplicate': 'Mã QR đã tồn tại, bạn vui lòng kiểm tra lại các thông tin',
     'update_success': 'Cập nhật thông tin thành công'
 
 }

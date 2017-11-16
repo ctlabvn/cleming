@@ -45,7 +45,7 @@ export default class QR extends Component {
                 visible={this.state.modalVisible}
                 onRequestClose={() => false}
             >
-                <View style={styles.fullScreenPopup}>
+                <View style={{...styles.fullScreenPopup, zIndex: 3}}>
                     <View style={styles.popupHeader}>
                         <Left>
                             <TouchableWithoutFeedback>
