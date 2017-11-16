@@ -131,11 +131,10 @@ export default class QRForm extends Component {
     }
 
     render() {
-
         let enableBtn = (!!this.state.money && revertFormatMoney(this.state.money) && parseInt(revertFormatMoney(this.state.money)) > 1000)
             &&
             ((!this.state.noBill && !!this.state.invoiceNumber && !!this.state.invoiceNumber.trim())
-            || (this.state.noBill && !!this.state.noBillInvoiceNumber))
+            || (this.state.noBill && !!this.state.noBillInvoiceNumber && revertDateTime(this.state.noBillInvoiceNumber).length >= 4))
         return (
             <Content style={{ backgroundColor: 'white' }}>
                 <View style={styles.container}>
