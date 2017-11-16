@@ -263,7 +263,7 @@ class UserManagement extends Component {
             //     owner = data0.owner;
             //     if (typeof owner != 'undefined') {
                     // console.warn('owner ' + JSON.stringify(owner, null, 2));
-                    if (user && user.accTitle == 1) {
+                    if (user && user.accTitle == 1 && this.props.listEmployee.length <= 0) {
                         return (
                             <Button
                                 onPress={this.onCreateUserPress.bind(this)}
