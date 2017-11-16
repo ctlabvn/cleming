@@ -66,7 +66,10 @@ export default class QRForm extends Component {
         if (hourInput >= 23 && now.hour() <= 1){
             now = moment().subtract(1, 'days')
         }
-        return moment().year().toString() + this._formatTwoDigit((moment().month() + 1)) + this._formatTwoDigit(moment().date()) + timeInput
+        return  this._formatTwoDigit(moment().date()) +
+            this._formatTwoDigit((moment().month() + 1)) +
+            moment().year().toString() +
+            timeInput
     }
 
     _doGenerate = () => {
@@ -129,7 +132,7 @@ export default class QRForm extends Component {
 
     render() {
 
-        let enableBtn = (!this.state.noBill && !!this.state.money && !!this.state.invoiceNumber && this.state.invoiceNumber.length >= 4)
+        let enableBtn = (!this.state.noBill && !!this.state.money && !!this.state.invoiceNumber && !!this.state.invoiceNumber.trim())
             || (this.state.noBill && !!this.state.money && !!this.state.noBillInvoiceNumber)
         return (
             <Content style={{ backgroundColor: 'white' }}>

@@ -283,15 +283,6 @@ export default class TransactionDetail extends Component {
     _handlePressConfirm() {
         let invoiceNumber
         if (!this.state.noBill){
-            if (!this.state.invoiceNumber || this.state.invoiceNumber.lengh <= 0) {
-                this.refs.popupConfirm.show(I18n.t('you_have_to_input_bill_number'))
-                return;
-            }
-    
-            if (this.state.invoiceNumber < 4) {
-                this.refs.popupConfirm.show(I18n.t('please_input_valid_bill_number'));
-                return;
-            }
             invoiceNumber = this.state.invoiceNumber
         }else{
             invoiceNumber = this.state.noBillInvoiceNumber
@@ -352,7 +343,7 @@ export default class TransactionDetail extends Component {
         let payStatus, helpBtn = null
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
         let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber) && this.state.transactionInfo.showInvNum && (user.accTitle != 1)
-        let enableConfirmBtn = (!this.state.noBill && !!this.state.invoiceNumber && this.state.invoiceNumber.length > 4)
+        let enableConfirmBtn = (!this.state.noBill && !!this.state.invoiceNumber && !!this.state.invoiceNumber.trim())
         || (this.state.noBill && !!this.state.noBillInvoiceNumber)
 
         if (!this.state.transactionInfo.invoiceNumber){
