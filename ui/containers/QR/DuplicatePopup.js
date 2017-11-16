@@ -10,7 +10,13 @@ export default class DuplicatePopup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalVisible: false,
+            modalVisible: false || this.props.visible,
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.visible != this.props.visible || nextProps.visible != this.state.modalVisible){
+            this.setState({modalVisible: nextProps.visible})
         }
     }
 
