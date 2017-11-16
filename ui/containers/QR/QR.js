@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native'
-import { Text } from 'native-base'
+import { Text, Left, Body, Title, Right } from 'native-base'
 // import QRCode from 'react-native-qrcode'
 import QRCode from 'react-native-qrcode-svg'
 import material from '~/theme/variables/material'
@@ -47,9 +47,15 @@ export default class QR extends Component {
             >
                 <View style={styles.fullScreenPopup}>
                     <View style={styles.popupHeader}>
-                        <TouchableWithoutFeedback>
-                            <Icon style={{ fontSize: 25, color: 'white', padding: 10 }} name='back' onPress={() => this.close()} />
-                        </TouchableWithoutFeedback>
+                        <Left>
+                            <TouchableWithoutFeedback>
+                                <Icon style={{ fontSize: 25, color: 'white', padding: 10 }} name='back' onPress={() => this.close()} />
+                            </TouchableWithoutFeedback>
+                        </Left>
+                        <Body>
+                            <Text bold white>{I18n.t('create_qr_2')}</Text>
+                        </Body>
+                        <Right />
                     </View>
                     <View style={{
                         width: '100%', flex: 1, justifyContent: 'flex-start', alignItems: 'center',
