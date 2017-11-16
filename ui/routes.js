@@ -163,6 +163,7 @@ export default {
     userManagement: {
         title: I18n.t('page_manage_account'),
         Page: UserManagement,
+        headerType: 'back',
         footerType: 'none',
         showTopDropdown: true,
         cachePlace: {
