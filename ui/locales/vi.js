@@ -277,6 +277,7 @@ export default {
     'area': 'Khu vực',
     'branch': 'Chi nhánh',
     'add_bank_success': 'Chúng tôi đã nhận được yêu cầu tạo tài khoản của bạn và sẽ xử lí trong thời gian sớm nhất.',
+    'bank_name_must_not_empty': 'Tên ngân hàng không được để trống',
 
     // Cashout Account
     'balance_available': 'Số dư khả dụng',

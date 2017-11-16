@@ -15,7 +15,7 @@ export default class SearchableDropdown extends Component {
         super(props)
         this.state = {
             showing: false,
-            selectedOption: props.selectedOption || props.dropdownValues[0],
+            selectedOption: props.selectedOption,
             dropdownValues: props.dropdownValues,
             provinceValues: [],
             branchValues: [],
@@ -120,7 +120,7 @@ export default class SearchableDropdown extends Component {
 
     _getSelectedOptionName() {
         const {selectedOption, selectedBranch} = this.state;
-
+        if (!selectedOption) return 'Chọn tên ngân hàng';
         const { bankName } = selectedOption
         let provinceName = this.state.selectedProvince && this.state.selectedProvince.provinceName || '';
         let branchName = this.state.selectedBranch && this.state.selectedBranch.branchName || '';

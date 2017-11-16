@@ -152,7 +152,10 @@ export default class extends Component {
                 setToast(getToastMessage(I18n.t('err_money_must_number')), 'info', null, null, 2000, 'top')
                 return
             }
-
+            if (!this.bankDropdown.getValue()) {
+                setToast(getToastMessage(I18n.t('bank_name_must_not_empty')), 'info', null, null, 2000, 'top')
+                return
+            }
             data['bank'] = this.bankDropdown.getValue().name
             data['branch'] = this.bankDropdown.getBranch() && this.bankDropdown.getBranch().branchName || null;
             this.preview.show(data)
