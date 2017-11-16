@@ -249,6 +249,7 @@ class UserManagement extends Component {
     }
 
     onCreateUserPress() {
+        if (this.props.listEmployee.length > 0) return;
         const {forwardTo, user} = this.props
         this.props.setEmployee(null)
         forwardTo('userManagement/action/createUser')
@@ -263,12 +264,13 @@ class UserManagement extends Component {
             //     owner = data0.owner;
             //     if (typeof owner != 'undefined') {
                     // console.warn('owner ' + JSON.stringify(owner, null, 2));
-                    if (user && user.accTitle == 1 && this.props.listEmployee.length <= 0) {
+                    textColor = this.props.listEmployee.length > 0 ? material.gray400 : material.white500;
+                    if (user && user.accTitle == 1) {
                         return (
                             <Button
-                                onPress={this.onCreateUserPress.bind(this)}
+                                onPress={ this.onCreateUserPress.bind(this)}
                                 style={styles.addUserButton}>
-                                <Text medium style={styles.addUserText}>{I18n.t('add_account')}</Text>
+                                <Text medium style={{...styles.addUserText, color: textColor}}>{I18n.t('add_account')}</Text>
                             </Button>)
                     }
                 // }
