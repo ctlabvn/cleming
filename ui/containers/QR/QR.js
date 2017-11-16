@@ -8,13 +8,17 @@ import Icon from "~/ui/elements/Icon"
 import I18n from '~/ui/I18n'
 import styles from './styles'
 import { setToast } from '~/store/actions/common'
+import ErrorPopup from './ErrorPopup'
+import DuplicatePopup from './DuplicatePopup'
 
 export default class QR extends Component {
     constructor(props) {
         super(props)
         this.state = {
             modalVisible: false,
-            qr: ''
+            qr: '',
+            errorVisible: false,
+            duplicateVisible: false
         }
     }
 
@@ -23,8 +27,29 @@ export default class QR extends Component {
         this.setState({ modalVisible: true, qr })
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return  this.props.loading != nextProps.loading
+            || this.state.modalVisible != nextState.modalVisible
+            || this.state.qr != nextState.qr
+            || this.state.errorVisible != nextState.errorVisible
+            || this.state.duplicateVisible != nextState.duplicateVisible
+    }
+
     close = () => {
-        this.setState({ modalVisible: false, qr: '' })
+        this.setState({
+            errorVisible: false,
+            duplicateVisible: false
+        }, ()=>{
+            setTimeout(()=>this.setState({modalVisible: false,qr: '',}), 50)
+        })   
+    }
+
+    openError = () => {
+        this.setState({errorVisible: true, duplicateVisible: false})
+    }
+
+    openDuplicate = () => {
+        this.setState({duplicateVisible: true, errorVisible: false})
     }
 
     _onGenAnother = () => {
@@ -45,7 +70,17 @@ export default class QR extends Component {
                 visible={this.state.modalVisible}
                 onRequestClose={() => false}
             >
-                <View style={{...styles.fullScreenPopup, zIndex: 3}}>
+                <ErrorPopup ref={ref => this.errorPopup = ref}
+                    onRetry={this.props.onRetry}
+                    onCancel={this.props.onCancelError}
+                    visible={this.state.errorVisible}
+                    />
+                <DuplicatePopup ref={ref=>this.duplicatePopup = ref} 
+                    onClose={this.props.onCloseDuplicate}   
+                    visible={this.state.duplicateVisible} 
+                />
+
+                <View style={{...styles.fullScreenPopup}}>
                     <View style={styles.popupHeader}>
                         <Left>
                             <TouchableWithoutFeedback>
