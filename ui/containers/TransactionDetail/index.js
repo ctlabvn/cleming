@@ -342,12 +342,12 @@ export default class TransactionDetail extends Component {
         const { user } = this.props
         let payStatus, helpBtn = null
         payStatus = <Text strong primary bold>{I18n.t('paid')}</Text>
-        let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber) && this.state.transactionInfo.showInvNum && (user.accTitle != 1)
+        let showConfirmBtn = !!(!this.state.transactionInfo.invoiceNumber) && this.state.transactionInfo.showInvNum
         let enableConfirmBtn = (!this.state.noBill && !!this.state.invoiceNumber && !!this.state.invoiceNumber.trim())
         || (this.state.noBill && !!this.state.noBillInvoiceNumber)
 
         if (!this.state.transactionInfo.invoiceNumber){
-            if (user.accTitle != 1 && this.state.transactionInfo.showInvNum){
+            if (this.state.transactionInfo.showInvNum){
                 helpBtn =   <View style={styles.helpBtnContainer}>
                     <View style={{...styles.rowSpace}}>
                         {/* <Text medium grayDark bold italic style={styles.billNumber}>{I18n.t('bill_number')}</Text> */}
@@ -423,7 +423,6 @@ export default class TransactionDetail extends Component {
                     <View style={styles.rowCenter}>
                         {helpBtn}
                     </View>
-                    {/* {(user.accTitle != 1) && <View style={{ width: '100%', height: 100 }} />} */}
                     <View style={styles.row}>
                         <Text medium>{I18n.t('customer')}</Text>
                         <View style={styles.row}>

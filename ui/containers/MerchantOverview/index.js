@@ -10,7 +10,7 @@ import {InputField} from "~/ui/elements/Form";
 import Icon from "~/ui/elements/Icon";
 import moment from "moment";
 import {storeFilled, storeTransparent} from "~/assets";
-import {formatNumber} from "~/ui/shared/utils";
+import {formatNumber, getToastMessage} from "~/ui/shared/utils";
 import * as Animatable from 'react-native-animatable'
 // import LinearGradient from 'react-native-linear-gradient'
 import GradientBackground from "~/ui/elements/GradientBackground";
@@ -147,12 +147,10 @@ export default class MerchantOverview extends Component {
             console.log('Place List will focus', place.listPlace)
             this._load()
         }
-        if (user.accTitle != 1){
-            this.animatableLabel.slideInRight(2000)
-                .then(()=>{
-                    setTimeout(()=>this.animatableLabel.slideOutRight(), 1500)
-                })
-        }
+        this.animatableLabel && this.animatableLabel.slideInRight(2000)
+        .then(()=>{
+            setTimeout(()=>this.animatableLabel.slideOutRight(), 1500)
+        })
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
@@ -315,6 +313,18 @@ export default class MerchantOverview extends Component {
             )
         }
     }
+
+    onPressQR = () => {
+        const {app, setToast} = this.props
+        let selectedPlace = app.topDropdown.getValue()
+        if (!selectedPlace || !selectedPlace.id){
+            setToast(getToastMessage(I18n.t('qr_err_all_place')), 'info', null, null, 3000, 'top')
+        }else{
+            this.navigate('qrForm')
+        }
+        
+    }
+
     render() {
         console.log('Rendering MerchantOverview')
 
@@ -347,7 +357,7 @@ export default class MerchantOverview extends Component {
                 <Content onRefresh={this._onRefresh} refreshing={this.state.loading}>
                     {mainContainer}
                 </Content>
-                {(user.accTitle != 1) && <TouchableWithoutFeedback onPress={()=>this.navigate('qrForm')}>
+                <TouchableWithoutFeedback onPress={this.onPressQR}>
                     <View style={styles.qrBlock}>
                         <Animatable.View
                             ref={ref=>this.animatableLabel=ref}
@@ -370,7 +380,7 @@ export default class MerchantOverview extends Component {
                             <Icon name='qr' style={styles.qrIcon} />
                         </View>
                     </View>
-                </TouchableWithoutFeedback>}
+                </TouchableWithoutFeedback>
             </Container>
         )
     }

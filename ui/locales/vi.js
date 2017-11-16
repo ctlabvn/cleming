@@ -443,6 +443,7 @@ export default {
     'retry': 'Thử lại',
     'err_qr': 'Thật tiếc, mã QR chưa được tạo thành công.\nBạn có muốn thử lại không?',
     'err_qr_duplicate': 'Mã QR đã tồn tại, bạn vui lòng kiểm tra lại các thông tin',
-    'update_success': 'Cập nhật thông tin thành công'
+    'update_success': 'Cập nhật thông tin thành công',
+    'qr_err_all_place': 'Bạn phải chọn 1 địa điểm thanh toán'
 
 }
