@@ -68,6 +68,16 @@ class UserManagement extends Component {
         })
     }
 
+    componentWillFocus() {
+        const {app} = this.props
+        InteractionManager.runAfterInteractions(()=> {
+            app.topDropdown.setCallbackPlaceChange(this._handleChangePlace)
+            let currentPlace = app.topDropdown.getValue()
+            if (currentPlace && Object.keys(currentPlace).length>0){
+                this._loadListEmployee(currentPlace.id)
+            }
+        })
+    }
 
     // componentWillMount() {
     //     const {app} = this.props
