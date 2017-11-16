@@ -343,6 +343,7 @@ export default class TopDropdownListValue extends Component {
         let overlayStyle = openningDropdown ? (this.needSearch() ? styles.ovarlayContainerOpenPlus : styles.ovarlayContainerOpen) :styles.ovarlayContainerClose
         // let overlayStyle = openningDropdown ? styles.ovarlayContainerOpen :styles.ovarlayContainerClose
         // console.warn('topdropdownlistvalue render dropdownValues ' + JSON.stringify(dropdownValues));
+        // onLongPress={()=>this._onLongPressItem(item)}
         return (
             <View style={overlayStyle}>
                 <List
@@ -361,7 +362,6 @@ export default class TopDropdownListValue extends Component {
                         return (
                             <TouchableWithoutFeedback
                                 onPress={e => this._handlePress(item)}
-                                onLongPress={()=>this._onLongPressItem(item)}
                             >
                                 <View style={styles.dropdownListItem}>
                                     {this.state.canMultipleSelect && this.state.selectingMultiple 
