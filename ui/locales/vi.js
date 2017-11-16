@@ -267,7 +267,8 @@ export default {
     'clingme_transfer_time': 'Thời gian Clingme\n chuyển tiền',
     'money_receipt_information': 'Thông tin nhận tiền',
     'bank_account_receive_money': 'Nhận tiền vào tài khoản ngân hàng',
-    'accept_article': 'Tôi đồng ý với thông tin nhận tiền trên.',
+    'accept_article': 'Phí chuyển khoản do người nhận trả theo quy định ngân hàng.',
+    
 
     // Bank Account
     'account_owner': 'Tên chủ tài khoản',
